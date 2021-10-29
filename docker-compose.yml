@@ -2,7 +2,9 @@ version: '3.8'
 
 services:  
   postgres:
-    image: "postgres:14.0-alpine"
+    build:
+      context: ./docker/postgres/
+      dockerfile: Dockerfile
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -10,6 +12,7 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
     volumes:
        - db-data:${PGDATA}
+       - ./scripts:/docker-entrypoint-initdb.d/
     ports:
       - "5432:5432"
     restart: unless-stopped
