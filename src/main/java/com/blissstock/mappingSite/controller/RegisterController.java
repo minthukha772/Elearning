@@ -3,23 +3,42 @@ package com.blissstock.mappingSite.controller;
 
 import java.util.List;
 
-import com.blissstock.mappingSite.dto.UserForm;
+import javax.validation.Valid;
+
+import com.blissstock.mappingSite.dto.TeacherRegisterDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @Controller
 public class RegisterController {
     
     @GetMapping("/register")
-    public String login(Model model){
-        model.addAttribute("userForm", new UserForm());
+    public String form(Model model){
+        TeacherRegisterDTO userInfo = new TeacherRegisterDTO();
+        userInfo.setEmail("sai@gmail.com");
+        model.addAttribute("userInfo", userInfo);
         return "register.html";
     }
+
+    @PostMapping("/register")
+    public String register(@ModelAttribute @Valid TeacherRegisterDTO userInfo, Model model){
+        model.addAttribute("userInfo", userInfo);
+        System.out.println(userInfo);
+        model.addAttribute("action", "confirm");
+        return "register.html";
+    }
+
+
 
 
 }

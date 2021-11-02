@@ -18,13 +18,18 @@
       <div class="card">
         <div class="card-body">
           <div class="container">
-            <form id="contactForm">
-              
+            <form
+              id="contactForm"
+              th:action="@{/register}"
+              th:object="${userInfo}"
+              method="post"
+            >
               <div class="mb-3">
                 <label class="form-label" for="emailAddress"
                   >Email Address</label
                 >
                 <input
+                  th:field="*{email}"
                   class="form-control-plaintext"
                   id="emailAddress"
                   type="email"
@@ -36,12 +41,13 @@
                   class="invalid-feedback"
                   data-sb-feedback="emailAddress:required"
                 >
-                  This field is required. 
+                  This field is required.
                 </div>
               </div>
               <div class="mb-3">
                 <label class="form-label" for="name">Name</label>
                 <input
+                  th:field="*{name}"
                   class="form-control"
                   id="name"
                   type="text"
@@ -55,6 +61,7 @@
               <div class="mb-3">
                 <label class="form-label" for="password">Password</label>
                 <input
+                  th:field="*{password}"
                   class="form-control"
                   id="password"
                   type="password"
@@ -73,6 +80,7 @@
                   >Confirm Password</label
                 >
                 <input
+                  th:field="*{confirmPassword}"
                   class="form-control"
                   id="confirmPassword"
                   type="password"
@@ -89,6 +97,7 @@
               <div class="mb-3">
                 <label class="form-label" for="phoneNumber">Phone Number</label>
                 <input
+                  th:field="*{phone}"
                   class="form-control"
                   id="phoneNumber"
                   type="text"
@@ -130,6 +139,7 @@
                   >Date of birth</label
                 >
                 <input
+                  th:field="*{dob}"
                   class="form-control"
                   id="dateOfBirth"
                   type="date"
@@ -147,6 +157,7 @@
                 <div class="col-sm-2">
                   <label class="form-label" for="zipCode">Zip Code</label>
                   <input
+                    th:field="*{zipCode}"
                     class="form-control"
                     id="zipCode"
                     type="number"
@@ -163,6 +174,7 @@
                 <div class="col-sm-5">
                   <label class="form-label" for="city">City</label>
                   <input
+                    th:field="*{city}"
                     class="form-control"
                     id="city"
                     type="text"
@@ -179,6 +191,7 @@
                 <div class="col-sm-5">
                   <label class="form-label" for="division">Division</label>
                   <input
+                    th:field="*{division}"
                     class="form-control"
                     id="division"
                     type="text"
@@ -197,11 +210,11 @@
               <div class="mb-3">
                 <label class="form-label" for="address">Address</label>
                 <textarea
+                  th:field="*{address}"
                   class="form-control"
                   id="address"
                   type="text"
                   placeholder="Address"
-
                   data-sb-validations="required"
                 ></textarea>
                 <div
@@ -214,6 +227,7 @@
               <div class="mb-3">
                 <label class="form-label" for="education">Education</label>
                 <input
+                  th:field="*{education}"
                   class="form-control"
                   id="education"
                   type="text"
@@ -230,6 +244,7 @@
               <div class="mb-3">
                 <label class="form-label" for="nrc">NRC</label>
                 <input
+                  th:field="*{nrc}"
                   class="form-control"
                   id="nrc"
                   type="text"
@@ -245,6 +260,7 @@
                   >Award &amp; Certification</label
                 >
                 <input
+                  th:field="*{award}"
                   class="form-control"
                   id="awardCertification"
                   type="text"
@@ -258,12 +274,13 @@
                   This field is required. on is required.
                 </div>
               </div>
-              
+
               <div class="mb-3">
                 <label class="form-label" for="describeAboutYourself"
                   >Describe about yourself</label
                 >
                 <textarea
+                  th:field="*{selfDescription}"
                   class="form-control"
                   id="describeAboutYourself"
                   type="text"
@@ -277,23 +294,22 @@
                   This field is required. is required.
                 </div>
               </div>
-              
+
               <fieldset>
-                <legend>
-                  Payment
-                </legend>
+                <legend>Payment</legend>
                 <div class="mb-3 row">
                   <label class="col-sm-3 col-form-label" for="kPayPhoneNumber"
                     >KPay Phone Number</label
                   >
                   <div class="col-sm-9">
-                  <input
-                    class="form-control"
-                    id="kPayPhoneNumber"
-                    type="number"
-                    placeholder="KPay Phone Number"
-                    data-sb-validations=""
-                  />
+                    <input
+                      th:field="*{kPay}"
+                      class="form-control"
+                      id="kPayPhoneNumber"
+                      type="number"
+                      placeholder="KPay Phone Number"
+                      data-sb-validations=""
+                    />
                   </div>
                 </div>
                 <div class="mb-3 row">
@@ -301,13 +317,14 @@
                     >CBPay Phone Number</label
                   >
                   <div class="col-sm-9">
-                  <input
-                    class="form-control"
-                    id="cbPayPhoneNumber"
-                    type="number"
-                    placeholder="CBPay Phone Number"
-                    data-sb-validations=""
-                  />
+                    <input
+                      th:field="*{cbPay}"
+                      class="form-control"
+                      id="cbPayPhoneNumber"
+                      type="number"
+                      placeholder="CBPay Phone Number"
+                      data-sb-validations=""
+                    />
                   </div>
                 </div>
                 <div class="mb-3 row">
@@ -315,13 +332,14 @@
                     >Wave Phone Number</label
                   >
                   <div class="col-sm-9">
-                  <input
-                    class="form-control"
-                    id="wavePhoneNumber"
-                    type="number"
-                    placeholder="Wave Phone Number"
-                    data-sb-validations=""
-                  />
+                    <input
+                      th:field="*{wave}"
+                      class="form-control"
+                      id="wavePhoneNumber"
+                      type="number"
+                      placeholder="Wave Phone Number"
+                      data-sb-validations=""
+                    />
                   </div>
                 </div>
                 <div class="mb-3 row">
@@ -329,13 +347,14 @@
                     >KBZ Account Number</label
                   >
                   <div class="col-sm-9">
-                  <input
-                    class="form-control"
-                    id="kbzAccountNumber"
-                    type="number"
-                    placeholder="KBZ Account Number"
-                    data-sb-validations=""
-                  />
+                    <input
+                      th:field="*{kbz}"
+                      class="form-control"
+                      id="kbzAccountNumber"
+                      type="number"
+                      placeholder="KBZ Account Number"
+                      data-sb-validations=""
+                    />
                   </div>
                 </div>
                 <div class="mb-3 row">
@@ -343,13 +362,14 @@
                     >CB Account Number</label
                   >
                   <div class="col-sm-9">
-                  <input
-                    class="form-control"
-                    id="cbAccountNumber"
-                    type="number"
-                    placeholder="CB Account Number"
-                    data-sb-validations=""
-                  />
+                    <input
+                      th:field="*{cb}"
+                      class="form-control"
+                      id="cbAccountNumber"
+                      type="number"
+                      placeholder="CB Account Number"
+                      data-sb-validations=""
+                    />
                   </div>
                 </div>
                 <div class="mb-3 row">
@@ -357,27 +377,23 @@
                     >Aya Account Number</label
                   >
                   <div class="col-sm-9">
-                  <input
-                    class="form-control"
-                    id="ayaAccountNumber"
-                    type="number"
-                    placeholder="Aya Account Number"
-                    data-sb-validations=""
-                  />
+                    <input
+                      th:field="*{aya}"
+                      class="form-control"
+                      id="ayaAccountNumber"
+                      type="number"
+                      placeholder="Aya Account Number"
+                      data-sb-validations=""
+                    />
                   </div>
                 </div>
               </fieldset>
 
-
-
-
-
-
-              
               <div class="mb-3">
                 <label class="form-label d-block"></label>
                 <div class="form-check form-check-inline">
                   <input
+                    
                     class="form-check-input"
                     id="iAgreeToTermCondition"
                     type="checkbox"
@@ -408,7 +424,7 @@
               </div>
               <div class="d-grid">
                 <button
-                  class="btn btn-primary btn-lg disabled"
+                  class="btn btn-primary btn-lg"
                   id="submitButton"
                   type="submit"
                 >
