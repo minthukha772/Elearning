@@ -1,38 +1,444 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
     <title>Register</title>
-</head>
-<body>
-    <section class="vh-100 bg-image" style="background-color: #f0f0f0;">
-        <div class="card" style="width:600px; margin: 0 auto;">
-            <div class="card-header">
-              <h4>Register</h2>
-            </div>
-            <div class="card-body">
-                <div class="form-floating mb-3">
-                  <form th:action="@{/}" th:object="${userForm}" method="post">
-                    <input type="email" class="form-control" th:field="*{email}" id="floatingInput" placeholder="saihorm@gmail.com">
-                    <label for="floatingInput">Email address</label>
+  </head>
+
+  <body style="background-color: #f0f0f0">
+    <div class="container">
+      <div class="card">
+        <div class="card-body">
+          <div class="container">
+            <form id="contactForm">
+              
+              <div class="mb-3">
+                <label class="form-label" for="emailAddress"
+                  >Email Address</label
+                >
+                <input
+                  class="form-control-plaintext"
+                  id="emailAddress"
+                  type="email"
+                  placeholder="Email Address"
+                  data-sb-validations="required,email"
+                  readonly
+                />
+                <div
+                  class="invalid-feedback"
+                  data-sb-feedback="emailAddress:required"
+                >
+                  This field is required. 
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="name">Name</label>
+                <input
+                  class="form-control"
+                  id="name"
+                  type="text"
+                  placeholder="Name"
+                  data-sb-validations="required"
+                />
+                <div class="invalid-feedback" data-sb-feedback="name:required">
+                  This field is required.
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="password">Password</label>
+                <input
+                  class="form-control"
+                  id="password"
+                  type="password"
+                  placeholder="Password"
+                  data-sb-validations="required"
+                />
+                <div
+                  class="invalid-feedback"
+                  data-sb-feedback="password:required"
+                >
+                  This field is required.
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="confirmPassword"
+                  >Confirm Password</label
+                >
+                <input
+                  class="form-control"
+                  id="confirmPassword"
+                  type="password"
+                  placeholder="Confirm Password"
+                  data-sb-validations="required"
+                />
+                <div
+                  class="invalid-feedback"
+                  data-sb-feedback="confirmPassword:required"
+                >
+                  This field is required. uired.
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="phoneNumber">Phone Number</label>
+                <input
+                  class="form-control"
+                  id="phoneNumber"
+                  type="text"
+                  placeholder="Phone Number"
+                  data-sb-validations="required"
+                />
+                <div
+                  class="invalid-feedback"
+                  data-sb-feedback="phoneNumber:required"
+                >
+                  This field is required.
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label d-block">Gender</label>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    id="male"
+                    type="radio"
+                    name="gender"
+                    data-sb-validations=""
+                  />
+                  <label class="form-check-label" for="male">Male</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    id="female"
+                    type="radio"
+                    name="gender"
+                    data-sb-validations=""
+                  />
+                  <label class="form-check-label" for="female">Female</label>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="dateOfBirth"
+                  >Date of birth</label
+                >
+                <input
+                  class="form-control"
+                  id="dateOfBirth"
+                  type="date"
+                  placeholder="Date of birth"
+                  data-sb-validations="required"
+                />
+                <div
+                  class="invalid-feedback"
+                  data-sb-feedback="dateOfBirth:required"
+                >
+                  This field is required. ed.
+                </div>
+              </div>
+              <div class="mb-3 row g-3">
+                <div class="col-sm-2">
+                  <label class="form-label" for="zipCode">Zip Code</label>
+                  <input
+                    class="form-control"
+                    id="zipCode"
+                    type="number"
+                    placeholder="Zip Code"
+                    data-sb-validations="required"
+                  />
+                  <div
+                    class="invalid-feedback"
+                    data-sb-feedback="zipCode:required"
+                  >
+                    This field is required.
                   </div>
-                  <div class="form-floating mb-3">
-                    <input type="password" class="form-control" id="floatingInput">
-                    <label for="floatingInput">Password</label>
+                </div>
+                <div class="col-sm-5">
+                  <label class="form-label" for="city">City</label>
+                  <input
+                    class="form-control"
+                    id="city"
+                    type="text"
+                    placeholder="City"
+                    data-sb-validations="required"
+                  />
+                  <div
+                    class="invalid-feedback"
+                    data-sb-feedback="zipCode:required"
+                  >
+                    This field is required.
                   </div>
-                  <div class="form-floating mb-3">
-                    <input type="password" class="form-control" id="floatingInput" >
-                    <label for="floatingInput">Confirm Password</label>
+                </div>
+                <div class="col-sm-5">
+                  <label class="form-label" for="division">Division</label>
+                  <input
+                    class="form-control"
+                    id="division"
+                    type="text"
+                    placeholder="Division"
+                    data-sb-validations="required"
+                  />
+                  <div
+                    class="invalid-feedback"
+                    data-sb-feedback="zipCode:required"
+                  >
+                    This field is required.
                   </div>
-                  <div class="col-12">
-                    <button class="btn btn-primary" type="submit">Submit form</button>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label" for="address">Address</label>
+                <textarea
+                  class="form-control"
+                  id="address"
+                  type="text"
+                  placeholder="Address"
+
+                  data-sb-validations="required"
+                ></textarea>
+                <div
+                  class="invalid-feedback"
+                  data-sb-feedback="address:required"
+                >
+                  This field is required.
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="education">Education</label>
+                <input
+                  class="form-control"
+                  id="education"
+                  type="text"
+                  placeholder="Education"
+                  data-sb-validations="required"
+                />
+                <div
+                  class="invalid-feedback"
+                  data-sb-feedback="education:required"
+                >
+                  This field is required.
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="nrc">NRC</label>
+                <input
+                  class="form-control"
+                  id="nrc"
+                  type="text"
+                  placeholder="NRC"
+                  data-sb-validations="required"
+                />
+                <div class="invalid-feedback" data-sb-feedback="nrc:required">
+                  This field is requi
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="awardCertification"
+                  >Award &amp; Certification</label
+                >
+                <input
+                  class="form-control"
+                  id="awardCertification"
+                  type="text"
+                  placeholder="Award &amp; Certification"
+                  data-sb-validations="required"
+                />
+                <div
+                  class="invalid-feedback"
+                  data-sb-feedback="awardCertification:required"
+                >
+                  This field is required. on is required.
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="awardCertificationPhoto"
+                  >Award &amp; Certification Photo</label
+                >
+                <input
+                  class="form-control"
+                  id="awardCertificationPhoto"
+                  type="file"
+                  placeholder="Award &amp; Certification Photo"
+                  data-sb-validations="required"
+                  multiple
+                />
+                <div
+                  class="invalid-feedback"
+                  data-sb-feedback="awardCertificationPhoto:required"
+                >
+                  This field is required. on Photo is required.
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="describeAboutYourself"
+                  >Describe about yourself</label
+                >
+                <textarea
+                  class="form-control"
+                  id="describeAboutYourself"
+                  type="text"
+                  placeholder="Describe about yourself"
+                  data-sb-validations="required"
+                ></textarea>
+                <div
+                  class="invalid-feedback"
+                  data-sb-feedback="describeAboutYourself:required"
+                >
+                  This field is required. is required.
+                </div>
+              </div>
+              
+              <fieldset>
+                <legend>
+                  Payment
+                </legend>
+                <div class="mb-3 row">
+                  <label class="col-sm-3 col-form-label" for="kPayPhoneNumber"
+                    >KPay Phone Number</label
+                  >
+                  <div class="col-sm-9">
+                  <input
+                    class="form-control"
+                    id="kPayPhoneNumber"
+                    type="number"
+                    placeholder="KPay Phone Number"
+                    data-sb-validations=""
+                  />
                   </div>
-                  </form>
-            </div>
+                </div>
+                <div class="mb-3 row">
+                  <label class="col-sm-3 col-form-label" for="cbPayPhoneNumber"
+                    >CBPay Phone Number</label
+                  >
+                  <div class="col-sm-9">
+                  <input
+                    class="form-control"
+                    id="cbPayPhoneNumber"
+                    type="number"
+                    placeholder="CBPay Phone Number"
+                    data-sb-validations=""
+                  />
+                  </div>
+                </div>
+                <div class="mb-3 row">
+                  <label class="col-sm-3 col-form-label" for="wavePhoneNumber"
+                    >Wave Phone Number</label
+                  >
+                  <div class="col-sm-9">
+                  <input
+                    class="form-control"
+                    id="wavePhoneNumber"
+                    type="number"
+                    placeholder="Wave Phone Number"
+                    data-sb-validations=""
+                  />
+                  </div>
+                </div>
+                <div class="mb-3 row">
+                  <label class="col-sm-3 col-form-label" for="kbzAccountNumber"
+                    >KBZ Account Number</label
+                  >
+                  <div class="col-sm-9">
+                  <input
+                    class="form-control"
+                    id="kbzAccountNumber"
+                    type="number"
+                    placeholder="KBZ Account Number"
+                    data-sb-validations=""
+                  />
+                  </div>
+                </div>
+                <div class="mb-3 row">
+                  <label class="col-sm-3 col-form-label" for="cbAccountNumber"
+                    >CB Account Number</label
+                  >
+                  <div class="col-sm-9">
+                  <input
+                    class="form-control"
+                    id="cbAccountNumber"
+                    type="number"
+                    placeholder="CB Account Number"
+                    data-sb-validations=""
+                  />
+                  </div>
+                </div>
+                <div class="mb-3 row">
+                  <label class="col-sm-3 col-form-label" for="ayaAccountNumber"
+                    >Aya Account Number</label
+                  >
+                  <div class="col-sm-9">
+                  <input
+                    class="form-control"
+                    id="ayaAccountNumber"
+                    type="number"
+                    placeholder="Aya Account Number"
+                    data-sb-validations=""
+                  />
+                  </div>
+                </div>
+              </fieldset>
+
+
+
+
+
+
+              
+              <div class="mb-3">
+                <label class="form-label d-block"></label>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    id="iAgreeToTermCondition"
+                    type="checkbox"
+                    name=""
+                    data-sb-validations="required"
+                  />
+                  <label class="form-check-label" for="iAgreeToTermCondition"
+                    >I agree to Term &amp; Condition</label
+                  >
+                </div>
+                <div class="invalid-feedback" data-sb-feedback=":required">
+                  This field is required.
+                </div>
+              </div>
+              <div class="d-none" id="submitSuccessMessage">
+                <div class="text-center mb-3">
+                  <div class="fw-bolder">Form submission successful!</div>
+                  <p>To activate this form, sign up at</p>
+                  <a href="https://startbootstrap.com/solution/contact-forms"
+                    >https://startbootstrap.com/solution/contact-forms</a
+                  >
+                </div>
+              </div>
+              <div class="d-none" id="submitErrorMessage">
+                <div class="text-center text-danger mb-3">
+                  Error sending message!
+                </div>
+              </div>
+              <div class="d-grid">
+                <button
+                  class="btn btn-primary btn-lg disabled"
+                  id="submitButton"
+                  type="submit"
+                >
+                  Submit
+                </button>
+              </div>
+            </form>
           </div>
-    </section>
-</body>
+        </div>
+      </div>
+      <!---End of Card-->
+    </div>
+    <!-- End of Container -->
+  </body>
 </html>
