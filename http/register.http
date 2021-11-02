@@ -1,0 +1,29 @@
+####
+
+POST /check HTTP/1.1
+Host: localhost:8080
+Content-Type: application/x-www-form-urlencoded
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+
+
+email=sai%40gmail.com
+&name=dsaf
+&password=saihormkham
+&confirmPassword=saihormkham
+&phone=jkj
+&gender=on
+&dob=2021-11-02
+&zipCode=0
+&city=adfasd
+&division=sds1f2as1d
+&address=sdas21fa23f1
+&education=23fas1d23f1sad32f
+&nrc=sasdf1as23df132
+&award=f21a23f1
+&selfDescription=asdf1as32df1
+&kPay=12313
+&cbPay=12312
+&wave=213
+&kbz=221312
+&cb=11231
+&aya=12313

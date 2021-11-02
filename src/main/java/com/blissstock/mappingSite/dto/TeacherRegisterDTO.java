@@ -36,7 +36,6 @@ public @Data class TeacherRegisterDTO {
     @NotBlank
     private String dob;
 
-    @NotNull
     private int zipCode;
 
     @NotBlank
