@@ -39,41 +39,45 @@
                 />
                 <div
                   class="invalid-feedback"
-                  data-sb-feedback="emailAddress:required"
+                  th:if="${#fields.hasErrors('password')}"
+                  th:errors="*{password}"
                 >
                   This field is required.
                 </div>
               </div>
               <div class="mb-3">
                 <label class="form-label" for="name">Name</label>
+
                 <input
                   th:field="*{name}"
                   class="form-control"
+                  th:classappend="${#fields.hasErrors('name')}?'is-invalid':''"
                   id="name"
                   type="text"
                   placeholder="Name"
-                  data-sb-validations="required"
                 />
-                <div class="invalid-feedback" data-sb-feedback="name:required">
-                  This field is required.
-                </div>
+                <div
+                  class="invalid-feedback"
+                  th:if="${#fields.hasErrors('name')}"
+                  th:errors="*{name}"
+                ></div>
               </div>
+
               <div class="mb-3">
                 <label class="form-label" for="password">Password</label>
                 <input
                   th:field="*{password}"
                   class="form-control"
+                  th:classappend="${#fields.hasErrors('password')}?'is-invalid':''"
                   id="password"
                   type="password"
                   placeholder="Password"
-                  data-sb-validations="required"
                 />
                 <div
                   class="invalid-feedback"
-                  data-sb-feedback="password:required"
-                >
-                  This field is required.
-                </div>
+                  th:if="${#fields.hasErrors('password')}"
+                  th:errors="*{password}"
+                ></div>
               </div>
               <div class="mb-3">
                 <label class="form-label" for="confirmPassword"
@@ -82,31 +86,31 @@
                 <input
                   th:field="*{confirmPassword}"
                   class="form-control"
+                  th:classappend="${#fields.hasErrors('confirmPassword')}?'is-invalid':''"
                   id="confirmPassword"
                   type="password"
                   placeholder="Confirm Password"
-                  data-sb-validations="required"
                 />
                 <div
                   class="invalid-feedback"
-                  data-sb-feedback="confirmPassword:required"
-                >
-                  This field is required. uired.
-                </div>
+                  th:if="${#fields.hasErrors('confirmPassword')}"
+                  th:errors="*{confirmPassword}"
+                ></div>
               </div>
               <div class="mb-3">
-                <label class="form-label" for="phoneNumber">Phone Number</label>
+                <label class="form-label" for="phone">Phone Number</label>
                 <input
                   th:field="*{phone}"
                   class="form-control"
-                  id="phoneNumber"
+                  th:classappend="${#fields.hasErrors('phone')}?'is-invalid':''"
+                  id="phone"
                   type="text"
                   placeholder="Phone Number"
-                  data-sb-validations="required"
                 />
                 <div
                   class="invalid-feedback"
-                  data-sb-feedback="phoneNumber:required"
+                  th:if="${#fields.hasErrors('phone')}"
+                  th:errors="*{phone}"
                 >
                   This field is required.
                 </div>
@@ -119,7 +123,7 @@
                     id="male"
                     type="radio"
                     name="gender"
-                    data-sb-validations=""
+                
                   />
                   <label class="form-check-label" for="male">Male</label>
                 </div>
@@ -129,7 +133,7 @@
                     id="female"
                     type="radio"
                     name="gender"
-                    data-sb-validations=""
+                
                   />
                   <label class="form-check-label" for="female">Female</label>
                 </div>
@@ -141,14 +145,15 @@
                 <input
                   th:field="*{dob}"
                   class="form-control"
+                  th:classappend="${#fields.hasErrors('dob')}?'is-invalid':''"
                   id="dateOfBirth"
                   type="date"
                   placeholder="Date of birth"
-                  data-sb-validations="required"
                 />
                 <div
                   class="invalid-feedback"
-                  data-sb-feedback="dateOfBirth:required"
+                  th:if="${#fields.hasErrors('dob')}"
+                  th:errors="*{dob}"
                 >
                   This field is required. ed.
                 </div>
@@ -159,14 +164,15 @@
                   <input
                     th:field="*{zipCode}"
                     class="form-control"
+                    th:classappend="${#fields.hasErrors('zipCode')}?'is-invalid':''"
                     id="zipCode"
                     type="number"
                     placeholder="Zip Code"
-                    data-sb-validations="required"
                   />
                   <div
                     class="invalid-feedback"
-                    data-sb-feedback="zipCode:required"
+                    th:if="${#fields.hasErrors('zipCode')}"
+                    th:errors="*{zipCode}"
                   >
                     This field is required.
                   </div>
@@ -176,14 +182,15 @@
                   <input
                     th:field="*{city}"
                     class="form-control"
+                    th:classappend="${#fields.hasErrors('city')}?'is-invalid':''"
                     id="city"
                     type="text"
                     placeholder="City"
-                    data-sb-validations="required"
                   />
                   <div
                     class="invalid-feedback"
-                    data-sb-feedback="zipCode:required"
+                    th:if="${#fields.hasErrors('city')}"
+                    th:errors="*{city}"
                   >
                     This field is required.
                   </div>
@@ -193,14 +200,15 @@
                   <input
                     th:field="*{division}"
                     class="form-control"
+                    th:classappend="${#fields.hasErrors('division')}?'is-invalid':''"
                     id="division"
                     type="text"
                     placeholder="Division"
-                    data-sb-validations="required"
                   />
                   <div
                     class="invalid-feedback"
-                    data-sb-feedback="zipCode:required"
+                    th:if="${#fields.hasErrors('division')}"
+                    th:errors="*{division}"
                   >
                     This field is required.
                   </div>
@@ -212,14 +220,15 @@
                 <textarea
                   th:field="*{address}"
                   class="form-control"
+                  th:classappend="${#fields.hasErrors('address')}?'is-invalid':''"
                   id="address"
                   type="text"
                   placeholder="Address"
-                  data-sb-validations="required"
                 ></textarea>
                 <div
                   class="invalid-feedback"
-                  data-sb-feedback="address:required"
+                  th:if="${#fields.hasErrors('address')}"
+                  th:errors="*{address}"
                 >
                   This field is required.
                 </div>
@@ -229,14 +238,15 @@
                 <input
                   th:field="*{education}"
                   class="form-control"
+                  th:classappend="${#fields.hasErrors('education')}?'is-invalid':''"
                   id="education"
                   type="text"
                   placeholder="Education"
-                  data-sb-validations="required"
                 />
                 <div
                   class="invalid-feedback"
-                  data-sb-feedback="education:required"
+                  th:if="${#fields.hasErrors('education')}"
+                  th:errors="*{education}"
                 >
                   This field is required.
                 </div>
@@ -246,13 +256,17 @@
                 <input
                   th:field="*{nrc}"
                   class="form-control"
+                  th:classappend="${#fields.hasErrors('nrc')}?'is-invalid':''"
                   id="nrc"
                   type="text"
                   placeholder="NRC"
-                  data-sb-validations="required"
                 />
-                <div class="invalid-feedback" data-sb-feedback="nrc:required">
-                  This field is requi
+                <div
+                  class="invalid-feedback"
+                  th:if="${#fields.hasErrors('nrc')}"
+                  th:errors="*{nrc}"
+                >
+                  This field is required.
                 </div>
               </div>
               <div class="mb-3">
@@ -262,14 +276,15 @@
                 <input
                   th:field="*{award}"
                   class="form-control"
+                  th:classappend="${#fields.hasErrors('award')}?'is-invalid':''"
                   id="awardCertification"
                   type="text"
                   placeholder="Award &amp; Certification"
-                  data-sb-validations="required"
                 />
                 <div
                   class="invalid-feedback"
-                  data-sb-feedback="awardCertification:required"
+                  th:if="${#fields.hasErrors('award')}"
+                  th:errors="*{award}"
                 >
                   This field is required. on is required.
                 </div>
@@ -282,14 +297,15 @@
                 <textarea
                   th:field="*{selfDescription}"
                   class="form-control"
+                  th:classappend="${#fields.hasErrors('selfDescription')}?'is-invalid':''"
                   id="describeAboutYourself"
                   type="text"
                   placeholder="Describe about yourself"
-                  data-sb-validations="required"
                 ></textarea>
                 <div
                   class="invalid-feedback"
-                  data-sb-feedback="describeAboutYourself:required"
+                  th:if="${#fields.hasErrors('selfDescription')}"
+                  th:errors="*{selfDescription}"
                 >
                   This field is required. is required.
                 </div>
@@ -305,10 +321,11 @@
                     <input
                       th:field="*{kPay}"
                       class="form-control"
+                      th:classappend="${#fields.hasErrors('kPay')}?'is-invalid':''"
                       id="kPayPhoneNumber"
                       type="number"
                       placeholder="KPay Phone Number"
-                      data-sb-validations=""
+                  
                     />
                   </div>
                 </div>
@@ -320,10 +337,11 @@
                     <input
                       th:field="*{cbPay}"
                       class="form-control"
+                      th:classappend="${#fields.hasErrors('cbPay')}?'is-invalid':''"
                       id="cbPayPhoneNumber"
                       type="number"
                       placeholder="CBPay Phone Number"
-                      data-sb-validations=""
+                  
                     />
                   </div>
                 </div>
@@ -335,10 +353,11 @@
                     <input
                       th:field="*{wave}"
                       class="form-control"
+                      th:classappend="${#fields.hasErrors('wave')}?'is-invalid':''"
                       id="wavePhoneNumber"
                       type="number"
                       placeholder="Wave Phone Number"
-                      data-sb-validations=""
+                  
                     />
                   </div>
                 </div>
@@ -350,10 +369,11 @@
                     <input
                       th:field="*{kbz}"
                       class="form-control"
+                      th:classappend="${#fields.hasErrors('kbz')}?'is-invalid':''"
                       id="kbzAccountNumber"
                       type="number"
                       placeholder="KBZ Account Number"
-                      data-sb-validations=""
+                  
                     />
                   </div>
                 </div>
@@ -365,10 +385,11 @@
                     <input
                       th:field="*{cb}"
                       class="form-control"
+                      th:classappend="${#fields.hasErrors('cb')}?'is-invalid':''"
                       id="cbAccountNumber"
                       type="number"
                       placeholder="CB Account Number"
-                      data-sb-validations=""
+                  
                     />
                   </div>
                 </div>
@@ -380,10 +401,11 @@
                     <input
                       th:field="*{aya}"
                       class="form-control"
+                      th:classappend="${#fields.hasErrors('aya')}?'is-invalid':''"
                       id="ayaAccountNumber"
                       type="number"
                       placeholder="Aya Account Number"
-                      data-sb-validations=""
+                  
                     />
                   </div>
                 </div>
@@ -393,18 +415,20 @@
                 <label class="form-label d-block"></label>
                 <div class="form-check form-check-inline">
                   <input
-                    
                     class="form-check-input"
                     id="iAgreeToTermCondition"
                     type="checkbox"
                     name=""
-                    data-sb-validations="required"
                   />
                   <label class="form-check-label" for="iAgreeToTermCondition"
                     >I agree to Term &amp; Condition</label
                   >
                 </div>
-                <div class="invalid-feedback" data-sb-feedback=":required">
+                <div
+                  class="invalid-feedback"
+                  th:if="${#fields.hasErrors('password')}"
+                  th:errors="*{password}"
+                >
                   This field is required.
                 </div>
               </div>

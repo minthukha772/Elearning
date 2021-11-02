@@ -1,6 +1,8 @@
 package com.blissstock.mappingSite.dto;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -16,47 +18,49 @@ public @Data class TeacherRegisterDTO {
     @Email
     private String email;
 
-    @NotBlank
+    @NotBlank(message = "This field is required")
     private String name;
 
-    @NotBlank
-    @Size(min = 8)
+    @NotBlank(message = "This field is required")
+    @Size(min = 8, message = "Password must be at least 8 characters")
     private String password;
 
-    @NotBlank
-    @Size(min = 8)
+    @NotBlank(message = "This field is required")
+    @Size(min = 8, message = "Confirm Password must be at least 8 characters")
     private String confirmPassword;
 
-    @NotBlank
+    @NotBlank(message = "This field is required")
     private String gender;
 
-    @NotBlank
+    @NotBlank(message = "This field is required")
     private String phone;
 
-    @NotBlank
+    @NotBlank(message = "This field is required")
     private String dob;
 
+    @Min(value =  10000, message = "invalid format")
+    @Max(value =  99999, message = "invalid format")
     private int zipCode;
 
-    @NotBlank
+    @NotBlank(message = "This field is required")
     private String city;
 
-    @NotBlank
+    @NotBlank(message = "This field is required")
     private String division;
 
-    @NotBlank
+    @NotBlank(message = "This field is required")
     private String address;
 
-    @NotBlank
+    @NotBlank(message = "This field is required")
     private String education;
 
-    @NotBlank
+    @NotBlank(message = "This field is required")
     private String nrc;
 
-    @NotBlank
+    @NotBlank(message = "This field is required")
     private String award;
 
-    @NotBlank
+    @NotBlank(message = "This field is required")
     private String selfDescription;
 
     private String kPay;
