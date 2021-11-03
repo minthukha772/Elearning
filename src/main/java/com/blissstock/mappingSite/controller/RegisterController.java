@@ -18,16 +18,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@Validated
+
 public class RegisterController {
 
-  @ExceptionHandler(value = ConstraintViolationException.class)
+/*   @ExceptionHandler(value = ConstraintViolationException.class)
   public String exception(ConstraintViolationException exception) {
     System.out.println("excption occur");
     System.out.println(exception.getMessage());
     return "redirect:/";
   }
-
+ */
+  @Valid
   @GetMapping("/register/{role}/{email}")
   public String registerForm(
     @PathVariable(required = false) String role,
