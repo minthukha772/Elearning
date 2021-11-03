@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+
+import com.blissstock.mappingSite.constrains.PaymentMethod;
+
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,12 +27,27 @@ public class TeacherRegisterDTO extends UserRegisterDTO{
   @NotBlank(message = "This field is required")
   private String selfDescription;
 
-  private List<PaymentInfoDTO> paymentInfo;
+  @NotBlank(message = "This field is required")
+  private String primaryServiceName;
 
-  private boolean isAcceptTerm;
+  @NotBlank(message = "This field is required")
+  private String primaryAccountName;
 
-  public TeacherRegisterDTO(){
-    paymentInfo = new ArrayList<>();
-    for(PaymentMethod.)
-  }
+  @NotBlank(message = "This field is required")
+  @Pattern(regexp = "[0-9]+", message = "Account Number cannot contain character")
+  private String primaryAccountNumber;
+
+  @NotBlank(message = "This field is required")
+  private String secondaryServiceName;
+  
+  @NotBlank(message = "This field is required")
+  private String secondaryAccountName;
+  
+  @NotBlank(message = "This field is required")
+  @Pattern(regexp = "/[0-9]+", message = "Account Number cannot contain character")
+  @NotBlank(message = "This field is required")
+  private String secondaryAccountNumber;
+
+
+
 }

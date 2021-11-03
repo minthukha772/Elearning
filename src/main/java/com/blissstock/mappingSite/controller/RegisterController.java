@@ -1,5 +1,6 @@
 package com.blissstock.mappingSite.controller;
 
+import com.blissstock.mappingSite.constrains.PaymentMethod;
 import com.blissstock.mappingSite.dto.TeacherRegisterDTO;
 import java.util.List;
 import javax.validation.ConstraintViolationException;
@@ -38,13 +39,15 @@ public class RegisterController {
     if (role == null || role != "teacher") {
       role = "student";
     }
-
-    System.out.println(role);
-    System.out.println(email);
     TeacherRegisterDTO userInfo = new TeacherRegisterDTO();
     userInfo.setEmail(email);
+
+    //Initialized payment value
+    model.addAttribute("paymentMethodList", PaymentMethod.list);
+
     model.addAttribute("action", "register");
     model.addAttribute("role", role);
+    
     model.addAttribute("userInfo", userInfo);
     return "register.html";
   }
@@ -56,7 +59,8 @@ public class RegisterController {
     BindingResult bindingResult
   ) {
     //model.addAttribute("userInfo", userInfo);
-    //System.out.println(bindingResult.getFieldError("passwordMatch"));
+    System.out.println(userInfo.getDob());
+    model.addAttribute("paymentMethodList", PaymentMethod.list);
     //System.out.println(bindingResult.toString());
     return "register.html";
   }
