@@ -21,6 +21,7 @@ import lombok.Setter;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @PasswordMatch
+// @PasswordMatch only work with PasswordData classees
 public class UserRegisterDTO extends PasswordData{
 
   @Email
