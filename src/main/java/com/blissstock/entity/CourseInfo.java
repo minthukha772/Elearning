@@ -1,5 +1,7 @@
-package entity;
+package com.blissstock.entity;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -90,12 +92,12 @@ public class CourseInfo {
 	@JsonIgnore
 	private List<PaymentReceive> paymentReceive= new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
 		@JoinTable(
 				name = "join_course_user", 
-				joinColumns = {@JoinColumn(name = "uid")} ,
-				inverseJoinColumns = {@JoinColumn(name = "course_id")}
+				joinColumns = {@JoinColumn(name = "course_id")} ,
+				inverseJoinColumns = {@JoinColumn(name = "uid")}
 				) 
-		private List<CourseInfo> courseInfo = new ArrayList<>();
+		private List<UserInfo> userInfo = new ArrayList<>();
 }
 

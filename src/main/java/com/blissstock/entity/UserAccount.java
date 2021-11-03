@@ -1,4 +1,4 @@
-package entity;
+package com.blissstock.entity;
 import java.util.Date;
 
 import javax.persistence.*;
@@ -11,7 +11,14 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "user_account")
 public class UserAccount {
@@ -48,9 +55,9 @@ public class UserAccount {
 	private Date registeredDate;
 	
 	//mapping
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="userInfo")
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="userAccount")
 	@JsonIgnore
-	private UserAccount userAccount;
+	private UserInfo userInfo;
 	
 	
 }

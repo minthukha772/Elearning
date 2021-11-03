@@ -1,4 +1,4 @@
-package entity;
+package com.blissstock.entity;
 import java.util.Date;
 
 import javax.persistence.*;
@@ -7,7 +7,14 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "payment_account")
 public class PaymentAccount {

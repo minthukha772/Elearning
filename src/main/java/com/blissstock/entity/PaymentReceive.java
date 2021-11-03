@@ -1,4 +1,4 @@
-package entity;
+package com.blissstock.entity;
 import java.util.Date;
 
 import javax.persistence.*;
@@ -7,6 +7,15 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import org.springframework.format.annotation.DateTimeFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "payment_receive")
 public class PaymentReceive {

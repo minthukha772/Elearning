@@ -1,5 +1,7 @@
-package entity;
+package com.blissstock.entity;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -11,7 +13,14 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
 
 @Entity
 @Table(name = "user_info")
@@ -70,13 +79,12 @@ public class UserInfo {
 	private String selfDescription;
 	
 	//mapping
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="userAccount")
-	@JsonIgnore
-	private UserInfo userInfo;
+	@OneToOne(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
+	UserAccount userAccount;
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="userInfo")
 	@JsonIgnore
-	private List<Certificate> certificate= new ArrayList<>();
+	private List<Certificate> certificateInfo= new ArrayList<>();
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="userInfo")
 	@JsonIgnore
