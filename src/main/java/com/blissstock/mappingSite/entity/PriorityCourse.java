@@ -1,4 +1,5 @@
-package com.blissstock.entity;
+package com.blissstock.mappingSite.entity;
+import java.util.Date;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -14,28 +15,27 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "certificate")
-public class Certificate {
+@Table(name = "priority_course")
+public class PriorityCourse {
 	
-	@Column(name = "certificate_id")
+	@Column(name = "priority_course_id")
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Long certificateId;
+	private Long priorityId;
 	
-    @Column(name = "certificate_name", length = 255)
-    @NotBlank(message="Please fill certificate name")
-	private String certificatName;
+    @Column(name = "priority_number")
+	private int priorityNumber;
 
-    @Column(name = "certificate_photo")
-    @NotBlank(message="Please upload certificate photos")
-	private String certificatePhoto;
-
-	
 	//mapping
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "uid_fkey")
     @JsonIgnore
     private UserInfo userInfo;
+
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "courseId_fkey")
+    @JsonIgnore
+    private CourseInfo courseInfo;
 	
 }
 

@@ -1,6 +1,6 @@
 package com.blissstock.repository;
 
-import com.blissstock.entity.Review;
+import com.blissstock.mappingSite.entity.Review;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
