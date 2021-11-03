@@ -30,7 +30,7 @@ public class RegisterController {
     @PostMapping("/check")
     public String register(Model model,@Valid @ModelAttribute("userInfo")  TeacherRegisterDTO userInfo,  BindingResult bindingResult){
         //model.addAttribute("userInfo", userInfo);
-        //System.out.println(bindingResult.getFieldError("password").get());
+        //System.out.println(bindingResult.getFieldError("passwordMatch"));
         //System.out.println(bindingResult.toString());
         return "register.html";
     }
