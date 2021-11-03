@@ -1,5 +1,6 @@
 package com.blissstock.mappingSite.controller;
 
+<<<<<<< HEAD
 
 import java.util.List;
 
