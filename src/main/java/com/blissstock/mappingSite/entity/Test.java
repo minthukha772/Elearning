@@ -1,4 +1,4 @@
-package com.blissstock.entity;
+package com.blissstock.mappingSite.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -14,23 +14,23 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "content")
-public class Content {
+@Table(name = "test")
+public class Test {
 	
-	@Column(name = "content_id")
+	@Column(name = "test_id")
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Long contentId;
+	private Long testId;
 
-    @NotBlank(message="Please fill content under title")
-	@Column(name="content", length = 50)
-	private String content;
+    @NotBlank(message="Please enter test link")
+    @Column(name = "test_link")
+	private String testLink;
 
 	//mapping
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "syllabusId_fkey")
+    @JoinColumn(name = "courseId_fkey")
     @JsonIgnore
-    private Syllabus syllabus;
+    private CourseInfo courseInfo;
 	
 }
 

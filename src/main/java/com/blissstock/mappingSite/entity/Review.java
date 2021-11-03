@@ -1,13 +1,9 @@
-package com.blissstock.entity;
-import java.util.Date;
+package com.blissstock.mappingSite.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import org.springframework.format.annotation.DateTimeFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,25 +13,29 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "payment_receive")
-public class PaymentReceive {
+@Table(name = "review")
+public class Review {
 	
-	@Column(name = "payment_receive_id")
+	@Column(name = "review_id")
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Long paymentReceiveId;
+	private Long reviewId;
 	
-    @Column(name="slip")
-	private String slip;
-    
-    @NotNull
-    @Column(name = "payment_status", length = 15)
-	private String paymentStatus;
+    @NotBlank(message="Please choose review type")
+    @Column(name = "review_type")
+	private int reviewType;
+
+    @NotBlank(message="Please fill rating star")
+    @Column(name = "star")
+	private int star;
+
+    @NotBlank(message="Please fill feedback")
+	@Column(name="feedback")
+	private String feedback;
 
     @NotNull
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@Column(name="payment_receive_date")
-	private Date paymentReceiveDate;
+    @Column(name = "review_status", length = 15)
+	private String reviewStatus;
 
 	//mapping
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
