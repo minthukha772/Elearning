@@ -7,6 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
+
 @Data
 public class TeacherRegisterDTO extends UserRegisterDTO{
   
