@@ -15,6 +15,7 @@ import com.blissstock.mappingSite.validation.constrains.PasswordData;
 import com.blissstock.mappingSite.validation.constrains.PasswordMatch;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -28,6 +29,9 @@ import lombok.Setter;
 @PasswordMatch
 // @PasswordMatch only work with PasswordData classees
 public class UserRegisterDTO extends PasswordData{
+
+  
+  private MultipartFile profilePhoto;
 
   @Email
   private String email;

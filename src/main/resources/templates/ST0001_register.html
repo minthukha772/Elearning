@@ -1,5 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"
+>
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -10,11 +15,12 @@
       integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
       crossorigin="anonymous"
     />
+    <link rel="stylesheet" href="/css/ST0001_register.css" />
     <title>Register</title>
   </head>
 
   <body style="background-color: #f0f0f0">
-    <div class="container">
+    <div class="container-custom">
       <div class="card">
         <div class="card-body">
           <div class="container">
@@ -23,7 +29,38 @@
               th:action="@{/register}"
               th:object="${userInfo}"
               method="post"
+              enctype="multipart/form-data"
             >
+              <div class="profile-pic-wrapper mb-3">
+                <div class="pic-holder">
+                  <!-- uploaded pic shown here -->
+                  <img id="profilePic" class="pic" th:if="${pic64 == null}" src="/images/profile.png" />
+                  <img id="profilePic" class="pic" th:unless="${pic64 == null}" th:src="${pic64}" />
+                 
+                 
+                  <label for="newProfilePhoto" class="upload-file-block">
+                    <div class="text-center">
+                      <div class="mb-2">
+                        <i class="fa fa-camera fa-2x"></i>
+                      </div>
+                      <div class="text-uppercase">
+                        Upload <br />
+                        Profile Photo
+                      </div>
+                    </div>
+                  </label>
+                  <input
+                    class="uploadProfileInput"
+                    type="file"
+                    name="profile_pic"
+                    id="newProfilePhoto"
+                    accept="image/*"
+                    style="display: none"
+                    th:field="*{profilePhoto}"
+                  />
+                </div>
+                <h4>Profile Pic</h4>
+              </div>
               <div class="mb-3">
                 <label class="form-label" for="emailAddress"
                   >Email Address</label
@@ -31,7 +68,7 @@
                 <input
                   th:field="*{email}"
                   class="form-control-plaintext"
-                  id="emailAddress"
+                  id="email"
                   type="email"
                   placeholder="Email Address"
                   data-sb-validations="required,email"
@@ -71,6 +108,7 @@
                   th:classappend="${#fields.hasErrors('password')}?'is-invalid':''"
                   id="password"
                   type="password"
+                  autocomplete="new-password"
                   placeholder="Password"
                 />
                 <div
@@ -89,6 +127,7 @@
                   th:classappend="${#fields.hasErrors('confirmPassword')}?'is-invalid':''"
                   id="confirmPassword"
                   type="password"
+                  autocomplete="new-password"
                   placeholder="Confirm Password"
                 />
                 <div
@@ -141,7 +180,7 @@
                 </div>
               </div>
               <div class="mb-3">
-                <label class="form-label" for="dateOfBirth"
+                <label class="form-label" for="dob"
                   >Date of birth</label
                 >
                 <input
@@ -149,7 +188,6 @@
                   class="form-control"
                   th:classappend="${#fields.hasErrors('dob')}?'is-invalid':''"
                   id="dateOfBirth"
-                  
                   type="date"
                   placeholder="Date of birth"
                 />
@@ -273,7 +311,7 @@
                 </div>
               </div>
               <div class="mb-3">
-                <label class="form-label" for="awardCertification"
+                <label class="form-label" for="award"
                   >Award &amp; Certification</label
                 >
                 <input
@@ -294,7 +332,7 @@
               </div>
 
               <div class="mb-3">
-                <label class="form-label" for="describeAboutYourself"
+                <label class="form-label" for="selfDescription"
                   >Describe about yourself</label
                 >
                 <textarea
@@ -453,7 +491,7 @@
                     th:classappend="${#fields.hasErrors('acceptTerm')}?'is-invalid':''"
                     name=""
                   />
-                  <label class="form-check-label" for="iAgreeToTermCondition"
+                  <label class="form-check-label" for="acceptTerm"
                     >I agree to Term &amp; Condition</label
                   >
                   <div
@@ -466,20 +504,7 @@
                   </div>
                 </div>
               </div>
-              <div class="d-none" id="submitSuccessMessage">
-                <div class="text-center mb-3">
-                  <div class="fw-bolder">Form submission successful!</div>
-                  <p>To activate this form, sign up at</p>
-                  <a href="https://startbootstrap.com/solution/contact-forms"
-                    >https://startbootstrap.com/solution/contact-forms</a
-                  >
-                </div>
-              </div>
-              <div class="d-none" id="submitErrorMessage">
-                <div class="text-center text-danger mb-3">
-                  Error sending message!
-                </div>
-              </div>
+
               <div class="d-grid">
                 <button
                   class="btn btn-primary btn-lg"
@@ -496,5 +521,12 @@
       <!---End of Card-->
     </div>
     <!-- End of Container -->
+    
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
+      integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI="
+      crossorigin="anonymous"
+    ></script>
+    <script src="/js/ST0001_register.js"></script>
   </body>
 </html>

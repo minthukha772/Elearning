@@ -2,6 +2,8 @@ package com.blissstock.mappingSite.controller;
 
 import com.blissstock.mappingSite.constrains.PaymentMethod;
 import com.blissstock.mappingSite.dto.TeacherRegisterDTO;
+import com.blissstock.mappingSite.utils.MultipartFileUtil;
+
 import java.util.List;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
@@ -49,7 +51,7 @@ public class RegisterController {
     model.addAttribute("role", role);
     
     model.addAttribute("userInfo", userInfo);
-    return "register.html";
+    return "ST0001_register.html";
   }
 
   @PostMapping("/register")
@@ -59,9 +61,16 @@ public class RegisterController {
     BindingResult bindingResult
   ) {
     //model.addAttribute("userInfo", userInfo);
-    System.out.println(userInfo.getDob());
+    System.out.println(userInfo.getProfilePhoto());
+    
     model.addAttribute("paymentMethodList", PaymentMethod.list);
+
+    if(userInfo.getProfilePhoto() != null){
+      String profilePhotoBase64 = MultipartFileUtil.toBase64(userInfo.getProfilePhoto());
+      model.addAttribute("pic64", profilePhotoBase64);
+    }
+    
     //System.out.println(bindingResult.toString());
-    return "register.html";
+    return "ST0001_register.html";
   }
 }
