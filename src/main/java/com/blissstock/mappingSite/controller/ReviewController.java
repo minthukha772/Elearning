@@ -3,8 +3,10 @@ package com.blissstock.mappingSite.controller;
 import javax.validation.Valid;
 
 import com.blissstock.mappingSite.entity.Review;
+import com.blissstock.mappingSite.entity.ReviewTest;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.repository.ReviewRepository;
+import com.blissstock.mappingSite.repository.ReviewTestRepository;
 import com.blissstock.mappingSite.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 
@@ -25,33 +28,45 @@ public class ReviewController {
     UserRepository userRepo;
 
     @Autowired
-    ReviewRepository reviewRepo;
-
-    @GetMapping(value="/StudentReview")
-    private String getStudentReviewForm() {
-    
-    // UserInfo userInfo=userRepo.findById(uid).orElse(null);
-    // model.addAttribute("userInfo", userInfo);
-
+    ReviewTestRepository reviewTestRepo;
+    //get student review 
+    @GetMapping(value="/student-review")
+    private String getStudentReviewForm(Model model) {
+        ReviewTest stuReview = new ReviewTest();
+        model.addAttribute("review", stuReview);
 	return "CM0007_WriteReviewStudent.html";
 	}
-    @PostMapping(value="/PostStudentReview")
-    private String StudentWriteReview(@Valid @ModelAttribute("review") Review inputReview,BindingResult bindingResult,Model model) {
-    // ReviewInfo newReview = new ReviewInfo(inputReview.getFeed, inputHelper.getLastName(),
-    // inputHelper.getGender(), inputHelper.getAcc().getBirthDate(), inputHelper.getCountryCode(),
-    // inputHelper.getPhoneNo(), inputHelper.getBuildingNo(), inputHelper.getStreetAddress(),
-    // inputHelper.getCity(), inputHelper.getState(), inputHelper.getPostalCode(), inputHelper.getCountry(),
-    // inputHelper.getHireDate(), inputHelper.getContractStartDate(), inputHelper.getContractEndDate(),
-    // inputHelper.getHourlyWage(), inputHelper.getHourlyWageCurrency(), inputHelper.getShiftType(),
-    // inputHelper.getRemark(),inputHelper.getEducation());
-
-	return "CM0007_WriteReviewStudent.html";
+    @PostMapping(value="/update-student-review")
+    private String postStudentReviewForm( @Valid @ModelAttribute("review") ReviewTest inputStuReview, BindingResult bindingResult, Model model) {
+        ReviewTest newStuReview = new ReviewTest(null, 0, inputStuReview.getStar(),inputStuReview.getFeedback(),inputStuReview.getReviewStatus());
+        
+        //model.addAttribute("review", inputReview); 
+        reviewTestRepo.save(newStuReview);
+	return "redirect:/student-review";
 	}
-    @RequestMapping("/TeacherReview")
-    private String TeacherWriteReview() {
-            return "CM0007_WriteReviewTeacher.html";
-    }
-
+    //get teacher review 
+    @GetMapping(value="/teacher-review")
+    private String getTeacherReviewForm(Model model) {
+        ReviewTest trReview = new ReviewTest();
+        model.addAttribute("review", trReview);
+	return "CM0007_WriteReviewTeacher.html";
+	}
+    @PostMapping(value="/update-teacher-review")
+    private String postTeacherReviewForm( @Valid @ModelAttribute("review") Review inputTrReview, BindingResult bindingResult, Model model) {
+        ReviewTest newTrReview = new ReviewTest(null, 0, inputTrReview.getReviewType(),inputTrReview.getFeedback(),inputTrReview.getReviewStatus()); 
+        reviewTestRepo.save(newTrReview);
+	return "redirect:/teacher-review";
+	}
+    //admin edit review
+    @PostMapping("/edit-student-review") 
+    public String helperTaskPost(@RequestParam("reviewId") Long reviewId, @ModelAttribute @Valid Review reviewInfo, BindingResult result, Model model,RedirectAttributes redirectAttr) { 
+    ReviewTest review= reviewTestRepo.findById(reviewId).orElse(null);
+    review.setStar(reviewInfo.getStar());
+    review.setFeedback(reviewInfo.getFeedback());
+    reviewTestRepo.save(review);
+    return "redirect:/student-review?reviewId="+reviewId;
+   
+   }
 }
     
 
