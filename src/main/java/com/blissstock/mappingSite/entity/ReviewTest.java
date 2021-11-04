@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "review")
-public class Review {
+@Table(name = "review_test")
+public class ReviewTest {
 	
 	@Column(name = "review_id")
 	@Id
@@ -34,28 +34,18 @@ public class Review {
     @Column(name = "review_status", length = 15)
 	private String reviewStatus;
 
-	//mapping
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "uid_fkey")
-    @JsonIgnore
-    private UserInfo userInfo;
+	
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "courseId_fkey")
-    @JsonIgnore
-    private CourseInfo courseInfo;
-
-    public Review() {
+    public ReviewTest() {
     }
    
-    public Review(Long reviewId, int reviewType, float star, String feedback, String reviewStatus, UserInfo userInfo, CourseInfo courseInfo) {
+    public ReviewTest(Long reviewId, int reviewType, float f, String feedback, String reviewStatus) {
         this.reviewId = reviewId;
         this.reviewType = reviewType;
-        this.star = star;
+        this.star = f;
         this.feedback = feedback;
         this.reviewStatus = reviewStatus;
-        this.userInfo = userInfo;
-        this.courseInfo = courseInfo;
+
     }
 
     public Long getReviewId() {
@@ -98,22 +88,7 @@ public class Review {
         this.reviewStatus = reviewStatus;
     }
 
-    public UserInfo getUserInfo() {
-        return this.userInfo;
-    }
-
-    public void setUserInfo(UserInfo userInfo) {
-        this.userInfo = userInfo;
-    }
-
-    public CourseInfo getCourseInfo() {
-        return this.courseInfo;
-    }
-
-    public void setCourseInfo(CourseInfo courseInfo) {
-        this.courseInfo = courseInfo;
-    }
-    
 	
 }
+
 

@@ -14,21 +14,23 @@
         <h5 class="card-header">
           Add Review
         </h5>
+        <form method="post" action="/update-teacher-review" th:object="${review}">
         <div class="card-body">
               <div class="feedback">
                 <div class="review-type">
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" th:field="*{reviewType}" value="1" id="inlineRadio1">
                     <label class="form-check-label" for="inlineRadio1">Concerns</label>
                   </div>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" th:field="*{reviewType}" value="2" id="inlineRadio2">
                     <label class="form-check-label" for="inlineRadio2">Compliment</label>
                   </div>
                 </div>
               </div>
               <div class="textarea">
-              <textarea class="form-control" id="review" rows="5" cols="40" placeholder="Write feedback here "></textarea>
+              <textarea class="form-control" id="review" rows="5" cols="40" placeholder="Write feedback here "  th:field=*{feedback}></textarea>
+              <input type="hidden" value="finished" th:field="*{reviewStatus}"> 
               </div>
               <div class="row">
                 <div class="buttons col-sm-12 text-center">                   
@@ -37,6 +39,7 @@
                  </div>
             </div>
         </div>
+      </form>
       </div>
     </div>
       <footer class="fixed-bottom">

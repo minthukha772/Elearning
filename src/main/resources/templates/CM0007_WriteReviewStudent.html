@@ -18,22 +18,33 @@
         <h5 class="card-header">
           Add Review
         </h5>
-        <form method="post" th:action ="@{/StudentReview}" th:object="${review}">
+        <form method="post" action="/update-student-review"  th:object="${review}">
         <div class="card-body">          
               <div class="feedback">
                 <div class="rating">
-                  <input type="radio" name="rating" id="rating-5">
+                  <input type="radio" name="rating" value="5" id="rating-5" th:field="*{star}">
                   <label for="rating-5"></label>
-                  <input type="radio" name="rating" id="rating-4">
+            
+                  
+                  <input type="radio" name="rating" value="4" id="rating-4" th:field="*{star}">
                   <label for="rating-4"></label>
-                  <input type="radio" name="rating" id="rating-3">
+                 
+                  
+                  <input type="radio" name="rating" value="3" id="rating-3" th:field="*{star}">
                   <label for="rating-3"></label>
-                  <input type="radio" name="rating" id="rating-2">
+           
+                 
+                  <input type="radio" name="rating" value="2" id="rating-2" th:field="*{star}">
                   <label for="rating-2"></label>
-                  <input type="radio" name="rating" id="rating-1">
+            
+                  
+                  <input type="radio" name="rating" value="1" id="rating-1" th:field="*{star}">
                   <label for="rating-1"></label>
+               
                 </div>
+           
               <textarea class="form-control" id="review" rows="5" cols="40" placeholder="Write feedback here " th:field=*{feedback}></textarea>
+              <input type="hidden" value="finished" th:field="*{reviewStatus}"> 
             </div>
               <div class="row">
                 <div class="buttons col-sm-12 text-center">                   
