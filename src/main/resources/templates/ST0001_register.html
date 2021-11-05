@@ -31,9 +31,9 @@
               method="post"
               enctype="multipart/form-data"
             >
-              <div class="profile-pic-wrapper mb-3">
+              <!--  <div class="profile-pic-wrapper mb-3">
                 <div class="pic-holder">
-                  <!-- uploaded pic shown here -->
+                  <!-- uploaded pic shown here 
                   <img id="profilePic" class="pic" th:if="${pic64 == null}" src="/images/profile.png" />
                   <img id="profilePic" class="pic" th:unless="${pic64 == null}" th:src="${pic64}" />
                  
@@ -60,7 +60,16 @@
                   />
                 </div>
                 <h4>Profile Pic</h4>
-              </div>
+              </div> -->
+              <input
+                class="uploadProfileInput"
+                type="file"
+                name="profile_pic"
+                id="newProfilePhoto"
+                accept="image/*"
+                
+                th:field="*{profilePhoto}"
+              />
               <div class="mb-3">
                 <label class="form-label" for="emailAddress"
                   >Email Address</label
@@ -180,9 +189,7 @@
                 </div>
               </div>
               <div class="mb-3">
-                <label class="form-label" for="dob"
-                  >Date of birth</label
-                >
+                <label class="form-label" for="dob">Date of birth</label>
                 <input
                   th:field="*{dob}"
                   class="form-control"
@@ -521,7 +528,7 @@
       <!---End of Card-->
     </div>
     <!-- End of Container -->
-    
+
     <script
       src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
       integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI="

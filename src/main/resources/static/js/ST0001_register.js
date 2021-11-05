@@ -1,4 +1,4 @@
-$(document).on("change", ".uploadProfileInput", function () {
+/* $(document).on("change", ".uploadProfileInput", function () {
   var triggerInput = this;
   var currentImg = $(this).closest(".pic-holder").find(".pic").attr("src");
   var holder = $(this).closest(".pic-holder");
@@ -25,7 +25,7 @@ $(document).on("change", ".uploadProfileInput", function () {
       $(holder).removeClass("uploadInProgress");
       $(holder).find(".upload-loader").remove();
       // If upload successful
-   
+
     };
   } else {
     $(wrapper).append(
@@ -36,3 +36,4 @@ $(document).on("change", ".uploadProfileInput", function () {
     }, 3000);
   }
 });
+ */

@@ -1,11 +1,11 @@
-.container-custom{
+ .container-custom{
     max-width: 720px;
     padding-right: 16px;
     padding-left: 16px;
     margin-right: auto;
     margin-left: auto;
 }
-
+/*
 .profile-pic-wrapper {
   position: relative;
   display: flex;
@@ -69,7 +69,7 @@
   opacity: 1;
 }
 
-/* Snackbar css */
+/* Snackbar css 
 .snackbar {
   visibility: hidden;
   min-width: 250px;
@@ -135,3 +135,4 @@
     opacity: 0;
   }
 }
+ */

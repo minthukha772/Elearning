@@ -61,14 +61,17 @@ public class RegisterController {
     BindingResult bindingResult
   ) {
     //model.addAttribute("userInfo", userInfo);
-    System.out.println(userInfo.getProfilePhoto());
+    System.out.println(userInfo.getProfilePhoto().getSize());
     
     model.addAttribute("paymentMethodList", PaymentMethod.list);
+    model.addAttribute("userInfo", userInfo);
 
-    if(userInfo.getProfilePhoto() != null){
+/*     if(userInfo.getProfilePhoto() != null){
+      //Convert Multipart to Base64 format to show preview on browser
       String profilePhotoBase64 = MultipartFileUtil.toBase64(userInfo.getProfilePhoto());
+      System.out.println(profilePhotoBase64.length());
       model.addAttribute("pic64", profilePhotoBase64);
-    }
+    } */
     
     //System.out.println(bindingResult.toString());
     return "ST0001_register.html";
