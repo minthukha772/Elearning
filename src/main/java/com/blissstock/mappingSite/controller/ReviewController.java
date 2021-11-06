@@ -2,6 +2,7 @@ package com.blissstock.mappingSite.controller;
 
 import javax.validation.Valid;
 
+import com.blissstock.mappingSite.dto.ReviewDTO;
 import com.blissstock.mappingSite.entity.Review;
 import com.blissstock.mappingSite.entity.ReviewTest;
 import com.blissstock.mappingSite.entity.UserInfo;
@@ -15,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,36 +32,37 @@ public class ReviewController {
     @Autowired
     ReviewTestRepository reviewTestRepo;
     //get student review 
-    @GetMapping(value="/student-review")
-    private String getStudentReviewForm(Model model) {
+    @Valid
+    @GetMapping(value="/student-review/{courseName}/{userName}")
+    private String getStudentReviewForm(@PathVariable String courseName, @PathVariable String userName, Model model) {  
         ReviewTest stuReview = new ReviewTest();
         model.addAttribute("review", stuReview);
-	return "CM0007_WriteReviewStudent.html";
+	    return "CM0007_WriteReviewStudent";
 	}
     @PostMapping(value="/update-student-review")
-    private String postStudentReviewForm( @Valid @ModelAttribute("review") ReviewTest inputStuReview, BindingResult bindingResult, Model model) {
-        ReviewTest newStuReview = new ReviewTest(null, 0, inputStuReview.getStar(),inputStuReview.getFeedback(),inputStuReview.getReviewStatus());
-        
-        //model.addAttribute("review", inputReview); 
-        reviewTestRepo.save(newStuReview);
-	return "redirect:/student-review";
+    private String postStudentReviewForm( @Valid @ModelAttribute("review") ReviewDTO inputStuReview, BindingResult bindingResult, Model model) {
+	return "CM0008_WriteReviewConfirmStudent";
 	}
     //get teacher review 
-    @GetMapping(value="/teacher-review")
-    private String getTeacherReviewForm(Model model) {
+    @GetMapping(value="/teacher-review/{courseName}/{userName}")
+    private String getTeacherReviewForm(@PathVariable String courseName, @PathVariable String userName,Model model) {
         ReviewTest trReview = new ReviewTest();
         model.addAttribute("review", trReview);
-	return "CM0007_WriteReviewTeacher.html";
+	return "CM0007_WriteReviewTeacher";
 	}
     @PostMapping(value="/update-teacher-review")
-    private String postTeacherReviewForm( @Valid @ModelAttribute("review") Review inputTrReview, BindingResult bindingResult, Model model) {
-        ReviewTest newTrReview = new ReviewTest(null, 0, inputTrReview.getReviewType(),inputTrReview.getFeedback(),inputTrReview.getReviewStatus()); 
-        reviewTestRepo.save(newTrReview);
-	return "redirect:/teacher-review";
+    private String postTeacherReviewForm( @Valid @ModelAttribute("review") ReviewDTO inputTrReview, BindingResult bindingResult, Model model) { 
+    return "CM0008_WriteReviewConfirmTeacher";
 	}
     //admin edit review
+    @GetMapping(value="/admin-student-review/{id}")
+    private String adminGetStudentReviewForm(@PathVariable("id") Long reviewId,Model model) {
+        ReviewTest review= reviewTestRepo.findById(reviewId).orElse(null);
+        model.addAttribute("review", review);
+	return "CM0007_AdminEditStudentReview.html";
+	}
     @PostMapping("/edit-student-review") 
-    public String helperTaskPost(@RequestParam("reviewId") Long reviewId, @ModelAttribute @Valid Review reviewInfo, BindingResult result, Model model,RedirectAttributes redirectAttr) { 
+    public String helperTaskPost(@RequestParam("reviewId") Long reviewId, @Valid @ModelAttribute("review") ReviewTest reviewInfo, BindingResult result, Model model,RedirectAttributes redirectAttr) { 
     ReviewTest review= reviewTestRepo.findById(reviewId).orElse(null);
     review.setStar(reviewInfo.getStar());
     review.setFeedback(reviewInfo.getFeedback());

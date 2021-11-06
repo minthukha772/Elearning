@@ -6,10 +6,10 @@
 }
 
 body{
-  margin-top: 100px;
   background: #F0F0F0;
 }
 .card{
+    margin-top: 50px;
     width: 600px;
     height: 400px;
 }
@@ -91,4 +91,9 @@ textarea {
 .btn-spacing {
 margin-right: 30px;
 margin-bottom: 10px !important;
+}
+
+/* Only in review confirm screen */
+.submit-sure{
+  text-align: center;
 }

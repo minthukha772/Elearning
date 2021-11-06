@@ -1,6 +1,8 @@
 package com.blissstock.mappingSite.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -22,11 +24,13 @@ public class ReviewTest {
     @Column(name = "review_type")
 	private int reviewType;
 
-    //@NotBlank(message="Please fill rating star")
+    @Min(value = 1, message = "Please fill rating")
+    @Max(value = 5, message = "Please fill rating")
     @Column(name = "star")
-	private float star;
+	private int star;
 
-    //@NotBlank(message="Please fill feedback")
+    @NotBlank(message="Please fill feedback")
+    @NotNull
 	@Column(name="feedback")
 	private String feedback;
 
@@ -39,10 +43,10 @@ public class ReviewTest {
     public ReviewTest() {
     }
    
-    public ReviewTest(Long reviewId, int reviewType, float f, String feedback, String reviewStatus) {
+    public ReviewTest(Long reviewId, int reviewType, int star, String feedback, String reviewStatus) {
         this.reviewId = reviewId;
         this.reviewType = reviewType;
-        this.star = f;
+        this.star = star;
         this.feedback = feedback;
         this.reviewStatus = reviewStatus;
 
@@ -64,11 +68,11 @@ public class ReviewTest {
         this.reviewType = reviewType;
     }
 
-    public float getStar() {
+    public int getStar() {
         return this.star;
     }
 
-    public void setStar(float star) {
+    public void setStar(int star) {
         this.star = star;
     }
 

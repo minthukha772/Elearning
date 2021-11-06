@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <title>Mapping Site</title>
-    <link rel="stylesheet" type="text/css" href="/css/CM0007_WriteReview.css">
-    <link rel="stylesheet" type="text/css" href="/css/footer.css">
+    <link rel="stylesheet" type="text/css" href="css/CM0007_WriteReview.css">
+    <link rel="stylesheet" type="text/css" href="css/footer.css">
   </head>
 <body>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -44,6 +44,9 @@
         </h5>
         <form method="post" action="/update-teacher-review" th:object="${review}">
         <div class="card-body">
+          <h5 class="submit-sure">
+            Are You Sure to Submit?
+          </h5> 
               <div class="feedback">
                 <div class="review-type">
                 <div class="form-check form-check-inline">

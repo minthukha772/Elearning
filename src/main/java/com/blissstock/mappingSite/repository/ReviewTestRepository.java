@@ -2,6 +2,8 @@ package com.blissstock.mappingSite.repository;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import com.blissstock.mappingSite.entity.Review;
 import com.blissstock.mappingSite.entity.ReviewTest;
 
@@ -14,4 +16,5 @@ import org.springframework.stereotype.Repository;
 public interface ReviewTestRepository extends JpaRepository<ReviewTest, Long> {
     @Query(nativeQuery = true, value="select * from review where uid_fkey=:uid")
 	public List<Review> findReviews(@Param("uid")long uid);
+
 }
