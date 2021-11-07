@@ -20,6 +20,11 @@
   </head>
 
   <body style="background-color: #f0f0f0">
+    <!-- guest user navi bar -->
+    <div th:replace="fragments/guestnav"></div>
+
+
+
     <div class="container-custom">
       <div class="card">
         <div class="card-body">
@@ -79,7 +84,7 @@
                   class="form-control-plaintext"
                   id="email"
                   type="email"
-                  placeholder="Email Address"
+                  placeholder="e.g. john@gmail.com"
                   data-sb-validations="required,email"
                   readonly
                 />
@@ -100,7 +105,7 @@
                   th:classappend="${#fields.hasErrors('name')}?'is-invalid':''"
                   id="name"
                   type="text"
-                  placeholder="Name"
+                  placeholder="Johny Hardy"
                 />
                 <div
                   class="invalid-feedback"
@@ -118,7 +123,7 @@
                   id="password"
                   type="password"
                   autocomplete="new-password"
-                  placeholder="Password"
+                  placeholder="note: at least 8 characters long, and contains at least one digit, one alphabet"
                 />
                 <div
                   class="invalid-feedback"
@@ -137,7 +142,7 @@
                   id="confirmPassword"
                   type="password"
                   autocomplete="new-password"
-                  placeholder="Confirm Password"
+                  placeholder="note: at least 8 characters long, and contains at least one digit, one alphabet"
                 />
                 <div
                   class="invalid-feedback"
