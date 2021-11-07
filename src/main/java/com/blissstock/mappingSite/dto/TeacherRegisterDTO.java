@@ -26,7 +26,7 @@ public class TeacherRegisterDTO extends UserRegisterDTO{
 
   @NotBlank(message = "This field is required")
   private String selfDescription;
-
+/* 
   @NotBlank(message = "This field is required")
   private String primaryServiceName;
 
@@ -46,7 +46,7 @@ public class TeacherRegisterDTO extends UserRegisterDTO{
   @NotBlank(message = "This field is required")
   @Pattern(regexp = "/[0-9]+", message = "Account Number cannot contain character")
   @NotBlank(message = "This field is required")
-  private String secondaryAccountNumber;
+  private String secondaryAccountNumber; */
 
 
 

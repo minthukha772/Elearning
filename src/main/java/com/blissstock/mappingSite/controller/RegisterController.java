@@ -1,33 +1,39 @@
 package com.blissstock.mappingSite.controller;
 
-import com.blissstock.mappingSite.constrains.PaymentMethod;
-import com.blissstock.mappingSite.dto.TeacherRegisterDTO;
-import com.blissstock.mappingSite.utils.MultipartFileUtil;
-
-import java.util.List;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
-import org.hibernate.validator.HibernateValidator;
+
+import com.blissstock.mappingSite.constrains.PaymentMethod;
+import com.blissstock.mappingSite.dto.TeacherRegisterDTO;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-
 public class RegisterController {
 
-/*   @ExceptionHandler(value = ConstraintViolationException.class)
+  @ExceptionHandler(value = ConstraintViolationException.class)
   public String exception(ConstraintViolationException exception) {
     System.out.println("excption occur");
     System.out.println(exception.getMessage());
-    return "redirect:/";
+    return "redirect:/email_check/register/";
   }
- */
+
+  @GetMapping("/register")
+  public String registerForm()
+  {
+    return "redirect:/email_check/register/";
+
+  }
+ 
   @Valid
   @GetMapping("/register/{role}/{email}")
   public String registerForm(
@@ -46,7 +52,7 @@ public class RegisterController {
 
     model.addAttribute("action", "register");
     model.addAttribute("role", role);
-    
+
     model.addAttribute("userInfo", userInfo);
     return "ST0001_register.html";
   }
@@ -58,18 +64,15 @@ public class RegisterController {
     BindingResult bindingResult
   ) {
     //model.addAttribute("userInfo", userInfo);
-    System.out.println(userInfo.getProfilePhoto().getSize());
-    
-    model.addAttribute("paymentMethodList", PaymentMethod.list);
     model.addAttribute("userInfo", userInfo);
 
-/*     if(userInfo.getProfilePhoto() != null){
+    /*     if(userInfo.getProfilePhoto() != null){
       //Convert Multipart to Base64 format to show preview on browser
       String profilePhotoBase64 = MultipartFileUtil.toBase64(userInfo.getProfilePhoto());
       System.out.println(profilePhotoBase64.length());
       model.addAttribute("pic64", profilePhotoBase64);
     } */
-    
+
     //System.out.println(bindingResult.toString());
     return "ST0001_register.html";
   }

@@ -23,19 +23,75 @@
     <!-- guest user navi bar -->
     <div th:replace="fragments/guestnav"></div>
 
-
-
-    <div class="container-custom">
-      <div class="card">
-        <div class="card-body">
-          <div class="container">
-            <form
-              id="contactForm"
-              th:action="@{/register}"
-              th:object="${userInfo}"
-              method="post"
-              enctype="multipart/form-data"
+    <div class="m-3">
+      <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="#" data-bs-toggle="modal" data-bs-target="#reEnterEmail"
+              >Email</a
             >
+          </li>
+          <li class="breadcrumb-item active">Registration</li>
+          <li class="breadcrumb-item" aria-current="page">Confirmation</li>
+          <li class="breadcrumb-item" aria-current="page">Completion</li>
+        </ol>
+      </nav>
+    </div>
+
+    <!-- Email Return Modal -->
+    <div
+      class="modal fade"
+      id="reEnterEmail"
+      tabindex="-1"
+      aria-labelledby="reEnterEmailLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="reEnterEmailLabel">Discard Changes</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            All the filled information will be lost. Do you willing to continue?
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+<!-- TODO To Add Role in DTO -->
+            <a
+              class="btn btn-danger"
+              
+              th:href="@{/email_check/register/{role}(role=${category.idCategory})}"
+              >Discard</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <form
+      id="contactForm"
+      th:action="@{/register}"
+      th:object="${userInfo}"
+      method="post"
+      enctype="multipart/form-data"
+    >
+      <div class="container-custom">
+        <div class="card">
+          <div class="card-header">Personal Information</div>
+          <div class="card-body">
+            <div class="container">
               <!--  <div class="profile-pic-wrapper mb-3">
                 <div class="pic-holder">
                   <!-- uploaded pic shown here 
@@ -66,15 +122,7 @@
                 </div>
                 <h4>Profile Pic</h4>
               </div> -->
-              <input
-                class="uploadProfileInput"
-                type="file"
-                name="profile_pic"
-                id="newProfilePhoto"
-                accept="image/*"
-                
-                th:field="*{profilePhoto}"
-              />
+
               <div class="mb-3">
                 <label class="form-label" for="emailAddress"
                   >Email Address</label
@@ -90,8 +138,8 @@
                 />
                 <div
                   class="invalid-feedback"
-                  th:if="${#fields.hasErrors('password')}"
-                  th:errors="*{password}"
+                  th:if="${#fields.hasErrors('email')}"
+                  th:errors="*{email}"
                 >
                   This field is required.
                 </div>
@@ -113,6 +161,14 @@
                   th:errors="*{name}"
                 ></div>
               </div>
+              <div class="mb-2">
+                <span class="badge bg-info">Notice</span> Password must be at
+                least 8 characters long, and contains at least one digit, one
+                alphabet. <br />
+                <span class="badge bg-info">Notice</span>We recommend
+                <span class="badge bg-danger">not</span> to reuse the email
+                address as the password.
+              </div>
 
               <div class="mb-3">
                 <label class="form-label" for="password">Password</label>
@@ -123,7 +179,7 @@
                   id="password"
                   type="password"
                   autocomplete="new-password"
-                  placeholder="note: at least 8 characters long, and contains at least one digit, one alphabet"
+                  placeholder="ExamplePassword001"
                 />
                 <div
                   class="invalid-feedback"
@@ -142,7 +198,7 @@
                   id="confirmPassword"
                   type="password"
                   autocomplete="new-password"
-                  placeholder="note: at least 8 characters long, and contains at least one digit, one alphabet"
+                  placeholder="ExamplePassword001"
                 />
                 <div
                   class="invalid-feedback"
@@ -364,7 +420,7 @@
                 </div>
               </div>
 
-              <fieldset>
+              <!-- <fieldset>
                 <legend>Payment</legend>
 
                 <div>
@@ -490,7 +546,7 @@
                     </div>
                   </div>
                 </div>
-              </fieldset>
+              </fieldset> -->
 
               <div class="mb-3">
                 <label class="form-label d-block"></label>
@@ -526,14 +582,18 @@
                   Submit
                 </button>
               </div>
-            </form>
+            </div>
           </div>
         </div>
+        <!---End of Card-->
       </div>
-      <!---End of Card-->
-    </div>
-    <!-- End of Container -->
-
+      <!-- End of Container -->
+    </form>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
     <script
       src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
       integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI="

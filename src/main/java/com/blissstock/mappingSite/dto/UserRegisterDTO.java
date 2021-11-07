@@ -30,9 +30,6 @@ import lombok.Setter;
 // @PasswordMatch only work with PasswordData classees
 public class UserRegisterDTO extends PasswordData{
 
-  
-  private MultipartFile profilePhoto;
-
   @Email
   private String email;
 
