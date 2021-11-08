@@ -31,8 +31,8 @@ public class PasswordMatchValidator implements ConstraintValidator<PasswordMatch
             //Ignore if any of the field is null
             
             if(data.getPassword()!=null && data.getConfirmPassword()!=null ){
-                System.out.println(data.getPassword());
-                System.out.println(data.getConfirmPassword());
+               /*  System.out.println(data.getPassword());
+                System.out.println(data.getConfirmPassword()); */
                 valid = data.getPassword().equals(data.getConfirmPassword());
             }
 
