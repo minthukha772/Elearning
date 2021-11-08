@@ -24,8 +24,8 @@ public class ReviewTest {
     @Column(name = "review_type")
 	private int reviewType;
 
-    @Min(value = 1, message = "Please fill rating")
-    @Max(value = 5, message = "Please fill rating")
+    // @Min(value = 1, message = "Please fill rating")
+    // @Max(value = 5, message = "Please fill rating")
     @Column(name = "star")
 	private int star;
 
@@ -37,8 +37,6 @@ public class ReviewTest {
     @NotNull
     @Column(name = "review_status", length = 15)
 	private String reviewStatus;
-
-	
 
     public ReviewTest() {
     }

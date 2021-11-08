@@ -46,11 +46,10 @@
         <form method="post" th:action="@{/update-student-review}"  th:object="${review}">
         <div class="card-body">          
               <div class="feedback">
-                <div class="rating">
-                  <small th:text="${starErr}"></small>
+                
+                <div class="rating" th:classappend="${#fields.hasErrors('star')}?'is-invalid':''">
                   <input type="radio" name="rating-star" value="5" id="rating-5" th:field="*{star}">
                   <label for="rating-5"></label>
-            
                   
                   <input type="radio" name="rating-star" value="4" id="rating-4" th:field="*{star}">
                   <label for="rating-4"></label>
@@ -65,13 +64,13 @@
             
                   
                   <input type="radio" name="rating-star" value="1" id="rating-1" th:field="*{star}">
-                  <label for="rating-1"></label>               
-                </div>
-                <div class="invalid-feedback" th:if="${#fields.hasErrors('star')}" th:errors="*{starErr}">
+                  <label for="rating-1"></label>             
+                </div> 
+                <div class="invalid-feedback mb-3"  id= "star-error" th:if="${#fields.hasErrors('star')}" th:errors="*{star}">
                   Please fill raing star
-                </div>
-              <textarea class="form-control" id="review" rows="5" cols="40" placeholder="Write feedback here " th:field=*{feedback}></textarea>
-              <div class="invalid-feedback" th:if="${#fields.hasErrors('star')}" th:errors="*{starErr}">
+                </div>                                
+              <textarea class="form-control" id="review" rows="5" cols="40" placeholder="Write feedback here " th:field=*{feedback} th:classappend="${#fields.hasErrors('feedback')}?'is-invalid':''"></textarea>
+              <div class="invalid-feedback" th:if="${#fields.hasErrors('feedback')}" th:errors="*{feedback}">
                 Please fill review
               </div>
               <input type="hidden" value="finished" th:field="*{reviewStatus}"> 

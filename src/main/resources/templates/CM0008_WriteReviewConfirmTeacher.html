@@ -6,8 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <title>Mapping Site</title>
-    <link rel="stylesheet" type="text/css" href="css/CM0007_WriteReview.css">
+    <link rel="stylesheet" type="text/css" href="css/CM0008_WriteReviewConfirm.css">
     <link rel="stylesheet" type="text/css" href="css/footer.css">
+    <style>
+      textarea { 
+      border-style: none; 
+      border-color: Transparent; 
+      overflow: auto;        
+    }
+    </style>
   </head>
 <body>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -42,7 +49,7 @@
         <h5 class="card-header">
           Add Review
         </h5>
-        <form method="post" action="/update-teacher-review" th:object="${review}">
+        <form method="post" action="/save-teacher-review" th:object="${review}">
         <div class="card-body">
           <h5 class="submit-sure">
             Are You Sure to Submit?
@@ -50,23 +57,23 @@
               <div class="feedback">
                 <div class="review-type">
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" th:field="*{reviewType}" value="1" id="inlineRadio1">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" th:field="*{reviewType}" value="1" id="inlineRadio1" disabled>
                     <label class="form-check-label" for="inlineRadio1">Concerns</label>
                   </div>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" th:field="*{reviewType}" value="2" id="inlineRadio2">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" th:field="*{reviewType}" value="2" id="inlineRadio2" disabled>
                     <label class="form-check-label" for="inlineRadio2">Compliment</label>
                   </div>
                 </div>
               </div>
               <div class="textarea">
-              <textarea class="form-control" id="review" rows="5" cols="40" placeholder="Write feedback here "  th:field=*{feedback}></textarea>
+              <textarea class="form-control" id="feedback" placeholder="Write feedback here "  th:field=*{feedback} disabled></textarea>
               <input type="hidden" value="finished" th:field="*{reviewStatus}"> 
               </div>
               <div class="row">
                 <div class="buttons col-sm-12 text-center">                   
-                     <button id="btnReset" type="reset" class="btn btn-spacing btn-secondary center-block" Style="width: 100px;" OnClick="btnClear_Click" >Reset</button>
-                     <button id="btnSubmit" class="btn btn-spacing btn-primary center-block" Style="width: 150px;" OnClick="btnSearch_Click" >Save Changes</button>
+                     <button id="btnBack" type="button" class="btn btn-spacing btn-secondary center-block" style="width: 100px;" onclick="history.go(-1);" >Back</button>
+                     <button id="btnSubmit" class="btn btn-spacing btn-primary center-block" style="width: 150px; "   >Confirm</button>
                  </div>
             </div>
         </div>

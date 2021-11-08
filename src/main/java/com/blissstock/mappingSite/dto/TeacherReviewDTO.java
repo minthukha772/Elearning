@@ -11,19 +11,16 @@ import lombok.Setter;
 @Setter
 
 @Data
-public class ReviewDTO{
+public class TeacherReviewDTO{
 
-	  private Long reviewId;
+	private Long reviewId;
 	
-    //@NotBlank(message="Please choose review type")
-	  private int reviewType;
-
-    @Min(value = 1, message = "Please fill rating")
-    @Max(value = 5, message = "Please fill rating")
-	  private int star;
+    @Min(value = 1, message = "Please fill review type")
+    @Max(value = 2, message = "Please fill review type")
+	private int reviewType;
 
     @NotBlank(message="Please fill feedback")
-	  private String feedback;
+	private String feedback;
 
 	  private String reviewStatus;
 }

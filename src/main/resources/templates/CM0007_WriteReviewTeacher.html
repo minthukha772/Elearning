@@ -45,7 +45,7 @@
         <form method="post" action="/update-teacher-review" th:object="${review}">
         <div class="card-body">
               <div class="feedback">
-                <div class="review-type">
+                <div class="review-type" th:classappend="${#fields.hasErrors('reviewType')}?'is-invalid':''">
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" name="inlineRadioOptions" th:field="*{reviewType}" value="1" id="inlineRadio1">
                     <label class="form-check-label" for="inlineRadio1">Concerns</label>
@@ -55,9 +55,15 @@
                     <label class="form-check-label" for="inlineRadio2">Compliment</label>
                   </div>
                 </div>
+                <div class="invalid-feedback mb-3" id= "review-type-error" th:if="${#fields.hasErrors('reviewType')}" th:errors="*{reviewType}">
+                  Please fill review type
+                </div>
               </div>
               <div class="textarea">
-              <textarea class="form-control" id="review" rows="5" cols="40" placeholder="Write feedback here "  th:field=*{feedback}></textarea>
+              <textarea class="form-control" id="review" rows="5" cols="40" placeholder="Write feedback here "  th:field=*{feedback} th:classappend="${#fields.hasErrors('feedback')}?'is-invalid':''"></textarea>
+              <div class="invalid-feedback" th:if="${#fields.hasErrors('feedback')}" th:errors="*{feedback}">
+                Please fill review
+              </div>
               <input type="hidden" value="finished" th:field="*{reviewStatus}"> 
               </div>
               <div class="row">
