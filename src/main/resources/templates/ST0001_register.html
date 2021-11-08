@@ -68,11 +68,10 @@
             >
               Close
             </button>
-<!-- TODO To Add Role in DTO -->
+
             <a
               class="btn btn-danger"
-              
-              th:href="@{/email_check/register/{role}(role=${category.idCategory})}"
+              th:href="@{/email_check/register/{role}(role=${role})}"
               >Discard</a
             >
           </div>
@@ -82,7 +81,7 @@
 
     <form
       id="contactForm"
-      th:action="@{/register}"
+      th:action="@{${postAction}}"
       th:object="${userInfo}"
       method="post"
       enctype="multipart/form-data"
@@ -360,65 +359,71 @@
                   This field is required.
                 </div>
               </div>
-              <div class="mb-3">
-                <label class="form-label" for="nrc">NRC</label>
-                <input
-                  th:field="*{nrc}"
-                  class="form-control"
-                  th:classappend="${#fields.hasErrors('nrc')}?'is-invalid':''"
-                  id="nrc"
-                  type="text"
-                  placeholder="NRC"
-                />
-                <div
-                  class="invalid-feedback"
-                  th:if="${#fields.hasErrors('nrc')}"
-                  th:errors="*{nrc}"
-                >
-                  This field is required.
+
+              <!-- Visible only on teacher registeration -->
+              <div th:if="${role == 'teacher'}">
+                <div class="mb-3">
+                  <label class="form-label" for="nrc">NRC</label>
+                  <input
+                    th:field="*{nrc}"
+                    class="form-control"
+                    th:classappend="${#fields.hasErrors('nrc')}?'is-invalid':''"
+                    id="nrc"
+                    type="text"
+                    placeholder="NRC"
+                  />
+                  <div
+                    class="invalid-feedback"
+                    th:if="${#fields.hasErrors('nrc')}"
+                    th:errors="*{nrc}"
+                  >
+                    This field is required.
+                  </div>
                 </div>
-              </div>
-              <div class="mb-3">
-                <label class="form-label" for="award"
-                  >Award &amp; Certification</label
-                >
-                <input
-                  th:field="*{award}"
-                  class="form-control"
-                  th:classappend="${#fields.hasErrors('award')}?'is-invalid':''"
-                  id="awardCertification"
-                  type="text"
-                  placeholder="Award &amp; Certification"
-                />
-                <div
-                  class="invalid-feedback"
-                  th:if="${#fields.hasErrors('award')}"
-                  th:errors="*{award}"
-                >
-                  This field is required. on is required.
+                <div class="mb-3">
+                  <label class="form-label" for="award"
+                    >Award &amp; Certification</label
+                  >
+                  <input
+                    th:field="*{award}"
+                    class="form-control"
+                    th:classappend="${#fields.hasErrors('award')}?'is-invalid':''"
+                    id="awardCertification"
+                    type="text"
+                    placeholder="Award &amp; Certification"
+                  />
+                  <div
+                    class="invalid-feedback"
+                    th:if="${#fields.hasErrors('award')}"
+                    th:errors="*{award}"
+                  >
+                    This field is required. on is required.
+                  </div>
+                </div>
+  
+                <div class="mb-3">
+                  <label class="form-label" for="selfDescription"
+                    >Describe about yourself</label
+                  >
+                  <textarea
+                    th:field="*{selfDescription}"
+                    class="form-control"
+                    th:classappend="${#fields.hasErrors('selfDescription')}?'is-invalid':''"
+                    id="describeAboutYourself"
+                    type="text"
+                    placeholder="Describe about yourself"
+                  ></textarea>
+                  <div
+                    class="invalid-feedback"
+                    th:if="${#fields.hasErrors('selfDescription')}"
+                    th:errors="*{selfDescription}"
+                  >
+                    This field is required. is required.
+                  </div>
                 </div>
               </div>
 
-              <div class="mb-3">
-                <label class="form-label" for="selfDescription"
-                  >Describe about yourself</label
-                >
-                <textarea
-                  th:field="*{selfDescription}"
-                  class="form-control"
-                  th:classappend="${#fields.hasErrors('selfDescription')}?'is-invalid':''"
-                  id="describeAboutYourself"
-                  type="text"
-                  placeholder="Describe about yourself"
-                ></textarea>
-                <div
-                  class="invalid-feedback"
-                  th:if="${#fields.hasErrors('selfDescription')}"
-                  th:errors="*{selfDescription}"
-                >
-                  This field is required. is required.
-                </div>
-              </div>
+              
 
               <!-- <fieldset>
                 <legend>Payment</legend>

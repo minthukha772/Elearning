@@ -1,11 +1,12 @@
 package com.blissstock.mappingSite.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
 
-import com.blissstock.mappingSite.constrains.PaymentMethod;
 import com.blissstock.mappingSite.dto.TeacherRegisterDTO;
+import com.blissstock.mappingSite.dto.UserRegisterDTO;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class RegisterController {
@@ -28,12 +28,10 @@ public class RegisterController {
   }
 
   @GetMapping("/register")
-  public String registerForm()
-  {
+  public String registerForm() {
     return "redirect:/email_check/register/";
-
   }
- 
+
   @Valid
   @GetMapping("/register/{role}/{email}")
   public String registerForm(
@@ -41,39 +39,53 @@ public class RegisterController {
     @Email @PathVariable String email,
     Model model
   ) {
-    if (role == null || role != "teacher") {
+    if (role == null || !role.equals("teacher")) {
       role = "student";
     }
-    TeacherRegisterDTO userInfo = new TeacherRegisterDTO();
-    userInfo.setEmail(email);
 
-    //Initialized payment value
-    model.addAttribute("paymentMethodList", PaymentMethod.list);
+    UserRegisterDTO userInfo;
+
+    userInfo =
+      role.equals("student") ? new UserRegisterDTO() : new TeacherRegisterDTO();
+    userInfo.setEmail(email);
 
     model.addAttribute("action", "register");
     model.addAttribute("role", role);
+
+    model.addAttribute("postAction", "/register/"+role);
 
     model.addAttribute("userInfo", userInfo);
     return "ST0001_register.html";
   }
 
-  @PostMapping("/register")
-  public String register(
+  @PostMapping("/register/student")
+  public String registerStudent(
     Model model,
-    @Valid @ModelAttribute("userInfo") TeacherRegisterDTO userInfo,
-    BindingResult bindingResult
+    @Valid @ModelAttribute("userInfo") UserRegisterDTO userInfo,
+    BindingResult bindingResult,
+    HttpServletRequest request
   ) {
-    //model.addAttribute("userInfo", userInfo);
+
     model.addAttribute("userInfo", userInfo);
 
-    /*     if(userInfo.getProfilePhoto() != null){
-      //Convert Multipart to Base64 format to show preview on browser
-      String profilePhotoBase64 = MultipartFileUtil.toBase64(userInfo.getProfilePhoto());
-      System.out.println(profilePhotoBase64.length());
-      model.addAttribute("pic64", profilePhotoBase64);
-    } */
+    model.addAttribute("role","student");
 
-    //System.out.println(bindingResult.toString());
+    return "ST0001_register.html";
+  }
+
+  @PostMapping("/register/teacher")
+  public String registerTeacher(
+    Model model,
+    @Valid @ModelAttribute("userInfo") TeacherRegisterDTO userInfo,
+    BindingResult bindingResult,
+    HttpServletRequest request
+  ) {
+
+    model.addAttribute("userInfo", userInfo);
+
+    model.addAttribute("role","teacher");
+    
+
     return "ST0001_register.html";
   }
 }
