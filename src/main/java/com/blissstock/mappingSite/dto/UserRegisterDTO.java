@@ -5,7 +5,6 @@ import com.blissstock.mappingSite.utils.DateFormatter;
 import com.blissstock.mappingSite.validation.constrains.PasswordData;
 import com.blissstock.mappingSite.validation.constrains.PasswordMatch;
 import com.blissstock.mappingSite.validation.constrains.ValidEmail;
-import com.blissstock.mappingSite.validation.constrains.ValidPassword;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import javax.validation.constraints.AssertTrue;
@@ -35,11 +34,19 @@ public class UserRegisterDTO extends PasswordData implements Confirmable {
   @NotBlank(message = "This field is required")
   private String name;
 
-  @ValidPassword
+  @Pattern(
+    regexp = "^(?=.*[\\w\\d]).+",
+    message = "Password must contain at least one aplhabet, one digit"
+  )
+  @Min(value = 8, message = "password must be at least 8 characters")
   @NotBlank(message = "This field is required")
   private String password;
 
-  @ValidPassword
+  @Pattern(
+    regexp = "^(?=.*[\\w\\d]).+",
+    message = "Password must contain at least one aplhabet, one digit"
+  )
+  @Min(value = 8, message = "password must be at least 8 characters")
   @NotBlank(message = "This field is required")
   private String confirmPassword;
 
