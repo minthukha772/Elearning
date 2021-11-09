@@ -1,15 +1,44 @@
-$(document).ready(function(){
+$(document).ready(function () {
   fillPassword();
+
+
+ 
+
+  $(".back").click(function (event) {
+    //TODO prevent external link
+
+    event.preventDefault();
+
+    if(isInternal() && history.length > 0){
+      history.back(1);
+    }
+    
+  });
 });
 
-function fillPassword(){
+function fillPassword() {
   //Initialize previous password value to the password field
-  $("input[type='password']").each(function(){
+  $("input[type='password']").each(function () {
     const oldPassword = $(this).attr("data-value");
-    $(this).attr("value", oldPassword);
+    if (oldPassword && oldPassword.length > 0) {
+      console.log("Password re enter");
+      $(this).attr("value", oldPassword);
+    }
   });
- 
+
 }
+
+function isInternal(){
+  /* Get Previous Page */
+  const prevPage = document.referrer;
+  /* Get current Page Host */
+  const regExp = new RegExp(location.host);
+  return regExp.test(prevPage);
+  
+}
+
+
+
 
 /* $(document).on("change", ".uploadProfileInput", function () {
   var triggerInput = this;

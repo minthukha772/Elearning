@@ -3,6 +3,8 @@ package com.blissstock.mappingSite.dto;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
+import com.blissstock.mappingSite.validation.constrains.ValidEmail;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +15,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EmailDTO {
-    @Email 
+    @ValidEmail 
     @NotBlank
     private String email;
 }

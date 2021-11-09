@@ -70,8 +70,7 @@ public class RegisterController {
     BindingResult bindingResult
   ) {
     //System.out.println(userInfo);
-    model.addAttribute("infoMap", userInfo.toMap());
-    System.out.println(userInfo.toMap()+"mapped");
+     
     if(bindingResult.hasErrors()){
       //model.addAttribute("userInfo", userInfo);
 
@@ -79,8 +78,11 @@ public class RegisterController {
   
       return "ST0001_register.html";
     }
+
+    //Information For Randering Confirm
+    model.addAttribute("infoMap", userInfo.toMap());
     
-    return "forward:/register_confirm/student";
+    return "ST0001_register.html";
 
   }
 
@@ -91,9 +93,21 @@ public class RegisterController {
     BindingResult bindingResult,
     HttpServletRequest request
   ) {
-    model.addAttribute("userInfo", userInfo);
+ 
+
+    if(bindingResult.hasErrors()){
+      //model.addAttribute("userInfo", userInfo);
+
+      model.addAttribute("role", "teacher");
+  
+      return "ST0001_register.html";
+    }
+
 
     model.addAttribute("role", "teacher");
+
+    //Information For Randering Confirm
+    model.addAttribute("infoMap", userInfo.toMap());
 
     return "ST0001_register";
   }

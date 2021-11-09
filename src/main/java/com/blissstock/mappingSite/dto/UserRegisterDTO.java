@@ -4,14 +4,11 @@ import com.blissstock.mappingSite.interfaces.Confirmable;
 import com.blissstock.mappingSite.utils.DateFormatter;
 import com.blissstock.mappingSite.validation.constrains.PasswordData;
 import com.blissstock.mappingSite.validation.constrains.PasswordMatch;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import com.blissstock.mappingSite.validation.constrains.ValidEmail;
+import com.blissstock.mappingSite.validation.constrains.ValidPassword;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Map;
 import javax.validation.constraints.AssertTrue;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -23,7 +20,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
@@ -33,28 +29,18 @@ import org.springframework.web.multipart.MultipartFile;
 // @PasswordMatch only work with PasswordData classees
 public class UserRegisterDTO extends PasswordData implements Confirmable {
 
-  @Email
+  @ValidEmail
   private String email;
 
   @NotBlank(message = "This field is required")
   private String name;
 
-  @Size(min = 8, message = "Password must be at least 8 characters")
-  @Pattern(
-    //check if the string contain at least one character and one digit
-    regexp = "(?:[0-9]+[a-z]|[a-z]+[0-9])[a-z0-9]*$",
-    flags = { Pattern.Flag.CASE_INSENSITIVE },
-    message = "Password must contain at least one character and one digit"
-  )
+  @ValidPassword
+  @NotBlank(message = "This field is required")
   private String password;
 
-  @Size(min = 8, message = "Confirm Password must be at least 8 characters")
-  @Pattern(
-    //check if the string contain at least one character and one digit
-    regexp = "(?:[0-9]+[a-z]|[a-z]+[0-9])[a-z0-9]*$",
-    flags = { Pattern.Flag.CASE_INSENSITIVE },
-    message = "Password must contain at least one character and one digit"
-  )
+  @ValidPassword
+  @NotBlank(message = "This field is required")
   private String confirmPassword;
 
   @NotBlank(message = "This field is required")
