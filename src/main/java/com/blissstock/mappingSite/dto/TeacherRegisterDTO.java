@@ -1,12 +1,8 @@
 package com.blissstock.mappingSite.dto;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashMap;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-
-import com.blissstock.mappingSite.constrains.PaymentMethod;
 
 import lombok.Data;
 import lombok.Getter;
@@ -26,6 +22,16 @@ public class TeacherRegisterDTO extends UserRegisterDTO{
 
   @NotBlank(message = "This field is required")
   private String selfDescription;
+
+  @Override
+  public LinkedHashMap<String,String> toMap(){
+    LinkedHashMap<String,String> map = super.toMap();
+    map.put("NRC",this.nrc);
+    map.put("award",this.award);
+    map.put("Self Description",this.selfDescription);
+    return map;
+  }
+
 /* 
   @NotBlank(message = "This field is required")
   private String primaryServiceName;

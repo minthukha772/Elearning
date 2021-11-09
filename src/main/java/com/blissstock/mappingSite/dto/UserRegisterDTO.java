@@ -1,7 +1,15 @@
 package com.blissstock.mappingSite.dto;
 
+import com.blissstock.mappingSite.interfaces.Confirmable;
+import com.blissstock.mappingSite.utils.DateFormatter;
+import com.blissstock.mappingSite.validation.constrains.PasswordData;
+import com.blissstock.mappingSite.validation.constrains.PasswordMatch;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
-
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Max;
@@ -10,17 +18,12 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-
-import com.blissstock.mappingSite.validation.constrains.PasswordData;
-import com.blissstock.mappingSite.validation.constrains.PasswordMatch;
-
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.multipart.MultipartFile;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
@@ -28,7 +31,7 @@ import lombok.Setter;
 @EqualsAndHashCode(callSuper = true)
 @PasswordMatch
 // @PasswordMatch only work with PasswordData classees
-public class UserRegisterDTO extends PasswordData{
+public class UserRegisterDTO extends PasswordData implements Confirmable {
 
   @Email
   private String email;
@@ -82,4 +85,20 @@ public class UserRegisterDTO extends PasswordData{
 
   @AssertTrue(message = "You must agree to Term & Condition")
   private boolean acceptTerm;
+
+  @Override
+  public LinkedHashMap<String, String> toMap() {
+    LinkedHashMap<String, String> map = new LinkedHashMap<>();
+    map.put("Email", this.email);
+    map.put("Name", this.name);
+    map.put("Phone Number", this.phone);
+    map.put("Gender", this.gender);
+    map.put("Date of Birth", DateFormatter.format(this.dob));
+    map.put("Zip Code", this.zipCode + "");
+    map.put("City", this.city);
+    map.put("Division", this.division);
+    map.put("Address", this.address);
+    map.put("Education", this.education);
+    return map;
+  }
 }

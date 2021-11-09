@@ -1,3 +1,16 @@
+$(document).ready(function(){
+  fillPassword();
+});
+
+function fillPassword(){
+  //Initialize previous password value to the password field
+  $("input[type='password']").each(function(){
+    const oldPassword = $(this).attr("data-value");
+    $(this).attr("value", oldPassword);
+  });
+ 
+}
+
 /* $(document).on("change", ".uploadProfileInput", function () {
   var triggerInput = this;
   var currentImg = $(this).closest(".pic-holder").find(".pic").attr("src");

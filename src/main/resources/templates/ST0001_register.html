@@ -123,8 +123,8 @@
               </div> -->
 
               <div class="mb-3">
-                <label class="form-label" for="emailAddress"
-                  >Email Address</label
+                <label class="form-label" for="emailAddress">
+                  Email Address</label
                 >
                 <input
                   th:field="*{email}"
@@ -171,13 +171,15 @@
 
               <div class="mb-3">
                 <label class="form-label" for="password">Password</label>
+                <span th:text="*{password}"></span>
                 <input
                   th:field="*{password}"
+                  th:attr="data-value=*{password}"
                   class="form-control"
                   th:classappend="${#fields.hasErrors('password')}?'is-invalid':''"
                   id="password"
                   type="password"
-                  autocomplete="new-password"
+                  automplete="new-password"
                   placeholder="ExamplePassword001"
                 />
                 <div
@@ -192,11 +194,12 @@
                 >
                 <input
                   th:field="*{confirmPassword}"
+                  th:attr="data-value=*{password}"
                   class="form-control"
                   th:classappend="${#fields.hasErrors('confirmPassword')}?'is-invalid':''"
                   id="confirmPassword"
                   type="password"
-                  autocomplete="new-password"
+                  automplete="new-password"
                   placeholder="ExamplePassword001"
                 />
                 <div
@@ -267,7 +270,7 @@
                 </div>
               </div>
               <div class="mb-3 row g-3">
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                   <label class="form-label" for="zipCode">Zip Code</label>
                   <input
                     th:field="*{zipCode}"
@@ -285,7 +288,7 @@
                     This field is required.
                   </div>
                 </div>
-                <div class="col-sm-5">
+                <div class="col-sm-4">
                   <label class="form-label" for="city">City</label>
                   <input
                     th:field="*{city}"
@@ -400,7 +403,7 @@
                     This field is required. on is required.
                   </div>
                 </div>
-  
+
                 <div class="mb-3">
                   <label class="form-label" for="selfDescription"
                     >Describe about yourself</label
@@ -422,8 +425,6 @@
                   </div>
                 </div>
               </div>
-
-              
 
               <!-- <fieldset>
                 <legend>Payment</legend>
@@ -578,9 +579,43 @@
                 </div>
               </div>
 
-              <div class="d-grid">
+              <div class="table-responsivemb-3">
+                
+
+                <table class="table table-borderless table-hover">
+                  <tr th:each="entry, stats : ${infoMap}" >
+                    <!-- <td th:text="${stats.index + 1}">1</td> -->
+                    <td th:text="${entry.key}" class="text-end">100</td>
+                    <td>:</td>
+                    <td th:text="${entry.value}">John</td>
+                  </tr>
+                </table>
+
+              End
+              </div>
+
+
+              <div class="row justify-content-end">
                 <button
-                  class="btn btn-primary btn-lg"
+                  class="btn btn-primary col-auto"
+                  id="submitButton"
+                  type="submit"
+                >
+                  Next
+                </button>
+              </div>
+              <div class="row justify-content-between">
+                <button
+                  class="btn btn-primary col-auto "
+                  id="submitButton"
+                  type="submit"
+                >
+                  Back
+                </button>
+          
+
+                <button
+                  class="btn btn-primary col-auto"
                   id="submitButton"
                   type="submit"
                 >

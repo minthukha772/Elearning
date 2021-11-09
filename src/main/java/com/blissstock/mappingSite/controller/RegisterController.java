@@ -68,15 +68,18 @@ public class RegisterController {
     Model model,
     @Valid @ModelAttribute("userInfo") UserRegisterDTO userInfo,
     BindingResult bindingResult
-
   ) {
+    //System.out.println(userInfo);
+    model.addAttribute("infoMap", userInfo.toMap());
+    System.out.println(userInfo.toMap()+"mapped");
     if(bindingResult.hasErrors()){
-      model.addAttribute("userInfo", userInfo);
+      //model.addAttribute("userInfo", userInfo);
 
       model.addAttribute("role", "student");
   
       return "ST0001_register.html";
     }
+    
     return "forward:/register_confirm/student";
 
   }
