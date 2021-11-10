@@ -2,7 +2,8 @@ package com.blissstock.mappingSite.controller;
 
 import com.blissstock.mappingSite.dto.TeacherRegisterDTO;
 import com.blissstock.mappingSite.dto.UserRegisterDTO;
-import com.blissstock.mappingSite.utils.CheckEmail;
+import com.blissstock.mappingSite.validation.validators.EmailValidator;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
@@ -40,7 +41,9 @@ public class RegisterController {
     Model model
   ) {
     //if email is not validate throw ConstraintViolationException exception
-    CheckEmail.check(email);
+    if(new EmailValidator().validateEmail(email)){
+      throw new ConstraintViolationException("Invalid Email", null);
+    }
 
     //set role to student unless it is equal to teacher
     if (role == null || !role.equals("teacher")) {
