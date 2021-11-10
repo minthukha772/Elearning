@@ -1,8 +1,9 @@
 package com.blissstock.mappingSite.controller;
 
-import com.blissstock.mappingSite.dto.EmailCheckRegisterDTO;
-import com.blissstock.mappingSite.dto.TeacherRegisterDTO;
 import javax.validation.Valid;
+
+import com.blissstock.mappingSite.dto.EmailCheckRegisterDTO;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;

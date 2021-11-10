@@ -33,7 +33,11 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	//testImplementation 'org.springframework.security:spring-security-test'
-	
+	// https://mvnrepository.com/artifact/com.github.javafaker/javafaker
+	implementation 'com.github.javafaker:javafaker:1.0.2'
+
+
+
 }
 
 

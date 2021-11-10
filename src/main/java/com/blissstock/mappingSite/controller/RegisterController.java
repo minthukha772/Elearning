@@ -41,7 +41,7 @@ public class RegisterController {
     Model model
   ) {
     //if email is not validate throw ConstraintViolationException exception
-    if(new EmailValidator().validateEmail(email)){
+    if(!new EmailValidator().validateEmail(email)){
       throw new ConstraintViolationException("Invalid Email", null);
     }
 

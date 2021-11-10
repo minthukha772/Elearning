@@ -1,6 +1,5 @@
 package com.blissstock.mappingSite.dto;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 import com.blissstock.mappingSite.validation.constrains.ValidEmail;
