@@ -2,7 +2,6 @@ package com.blissstock.mappingSite.controller;
 
 import com.blissstock.mappingSite.dto.TeacherRegisterDTO;
 import com.blissstock.mappingSite.dto.UserRegisterDTO;
-import com.blissstock.mappingSite.utils.CheckEmail;
 import javax.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
