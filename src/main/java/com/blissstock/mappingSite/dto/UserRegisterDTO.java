@@ -41,17 +41,17 @@ public class UserRegisterDTO extends PasswordData implements Confirmable {
   private String name;
 
   @Pattern(
-    regexp = "^(?=.*[\\w\\d]).+",
+    regexp = "^(?=.*?[A-Za-z])(?=.*?[0-9]).{8,}$",
     message = ConstrainMessage.PASSWORD_CONSTRAIN_MESSAGE
   )
-  @Size(min = 8, message = ConstrainMessage.PASSWORD_LENGTH_CONSTRAIN_MESSAGE)
+  @Size(min = 8, max = 32, message = ConstrainMessage.PASSWORD_LENGTH_CONSTRAIN_MESSAGE)
   private String password;
 
   @Pattern(
-    regexp = "^(?=.*[\\w\\d]).+",
+    regexp = "^(?=.*?[A-Za-z])(?=.*?[0-9]).{8,}$",
     message = ConstrainMessage.PASSWORD_CONSTRAIN_MESSAGE
   )
-  @Size(min = 8, message = ConstrainMessage.PASSWORD_LENGTH_CONSTRAIN_MESSAGE)
+  @Size(min = 8, max = 32, message = ConstrainMessage.PASSWORD_LENGTH_CONSTRAIN_MESSAGE)
   private String confirmPassword;
 
   @NotBlank(message = ConstrainMessage.EMPTY_CONSTRAIN_MESSAGE)

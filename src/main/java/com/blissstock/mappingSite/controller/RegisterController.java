@@ -3,7 +3,6 @@ package com.blissstock.mappingSite.controller;
 import com.blissstock.mappingSite.dto.TeacherRegisterDTO;
 import com.blissstock.mappingSite.dto.UserRegisterDTO;
 import com.blissstock.mappingSite.validation.validators.EmailValidator;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
@@ -41,7 +40,7 @@ public class RegisterController {
     Model model
   ) {
     //if email is not validate throw ConstraintViolationException exception
-    if(!new EmailValidator().validateEmail(email)){
+    if (!new EmailValidator().validateEmail(email)) {
       throw new ConstraintViolationException("Invalid Email", null);
     }
 
@@ -66,52 +65,60 @@ public class RegisterController {
     return "ST0001_register.html";
   }
 
-  @PostMapping("/register/student")
-  public String registerStudent(
+  @PostMapping(path = "/register/student", params = "action=next")
+  public String toSutdentRegisterConfirm(
     Model model,
     @Valid @ModelAttribute("userInfo") UserRegisterDTO userInfo,
     BindingResult bindingResult
   ) {
     //System.out.println(userInfo);
-     
-    if(bindingResult.hasErrors()){
-      //model.addAttribute("userInfo", userInfo);
+    model.addAttribute("role", "student");
 
-      model.addAttribute("role", "student");
-  
-      return "ST0001_register.html";
+    if (bindingResult.hasErrors()) {
+        return "ST0001_register.html";
     }
 
     //Information For Randering Confirm
     model.addAttribute("infoMap", userInfo.toMap());
-    
     return "ST0001_register.html";
-
   }
 
-  @PostMapping("/register/teacher")
-  public String registerTeacher(
+  @PostMapping(path = "/register/teacher", params = "action=next")
+  public String toTeacherRegisterConfirm(
     Model model,
-    @Valid @ModelAttribute("userInfo") TeacherRegisterDTO userInfo,
-    BindingResult bindingResult,
-    HttpServletRequest request
+    @Valid @ModelAttribute("userInfo") UserRegisterDTO userInfo,
+    BindingResult bindingResult
   ) {
- 
+    //System.out.println(userInfo);
+    model.addAttribute("role", "student");
 
-    if(bindingResult.hasErrors()){
-      //model.addAttribute("userInfo", userInfo);
-
-      model.addAttribute("role", "teacher");
-  
-      return "ST0001_register.html";
+    if (bindingResult.hasErrors()) {
+        return "ST0001_register.html";
     }
-
-
-    model.addAttribute("role", "teacher");
 
     //Information For Randering Confirm
     model.addAttribute("infoMap", userInfo.toMap());
+    return "ST0001_register.html";
+  }
 
-    return "ST0001_register";
+  @PostMapping(path = "/register/student", params = "action=submit")
+  public String saveSutdentInfo(
+    Model model,
+    @Valid @ModelAttribute("userInfo") UserRegisterDTO userInfo,
+    BindingResult bindingResult
+  ) {
+    //System.out.println(userInfo);
+    //submiting
+
+
+    model.addAttribute("role", "student");
+
+    if (bindingResult.hasErrors()) {
+        return "ST0001_register.html";
+    }
+
+    //Information For Randering Confirm
+    model.addAttribute("infoMap", userInfo.toMap());
+    return "ST0001_register.html";
   }
 }
