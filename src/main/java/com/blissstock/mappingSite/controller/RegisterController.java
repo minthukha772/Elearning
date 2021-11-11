@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class RegisterController {
@@ -58,24 +59,31 @@ public class RegisterController {
     model.addAttribute("userInfo", userInfo);
     //
 
-    model.addAttribute("action", "register");
+    model.addAttribute("task", "register");
     model.addAttribute("role", role);
     model.addAttribute("postAction", "/register/" + role);
 
     return "ST0001_register.html";
   }
 
-  @PostMapping(path = "/register/student", params = "action=next")
+  @PostMapping(path = "/register/student")
   public String toSutdentRegisterConfirm(
     Model model,
     @Valid @ModelAttribute("userInfo") UserRegisterDTO userInfo,
-    BindingResult bindingResult
+    BindingResult bindingResult,
+    @RequestParam(value="action", required=true) String action
   ) {
-    //System.out.println(userInfo);
-    model.addAttribute("role", "student");
+    String role = "student";
+    model.addAttribute("task", "register");
+    model.addAttribute("role", role);
+    model.addAttribute("postAction", "/register/" + role);
 
     if (bindingResult.hasErrors()) {
         return "ST0001_register.html";
+    }
+
+    if(action.equals("submit")){
+      System.out.println("Submitting");
     }
 
     //Information For Randering Confirm
@@ -101,24 +109,5 @@ public class RegisterController {
     return "ST0001_register.html";
   }
 
-  @PostMapping(path = "/register/student", params = "action=submit")
-  public String saveSutdentInfo(
-    Model model,
-    @Valid @ModelAttribute("userInfo") UserRegisterDTO userInfo,
-    BindingResult bindingResult
-  ) {
-    //System.out.println(userInfo);
-    //submiting
-
-
-    model.addAttribute("role", "student");
-
-    if (bindingResult.hasErrors()) {
-        return "ST0001_register.html";
-    }
-
-    //Information For Randering Confirm
-    model.addAttribute("infoMap", userInfo.toMap());
-    return "ST0001_register.html";
-  }
+  
 }

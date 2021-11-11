@@ -82,10 +82,10 @@
     <form
       id="contactForm"
       th:action="@{${postAction}}"
+      data-th-action="@{/student/edit}"
       th:object="${userInfo}"
       method="post"
-      enctype="multipart/form-data"
-    >
+   >
       <div class="container-custom">
         <div class="card">
           <div class="card-header">Personal Information</div>
@@ -595,6 +595,7 @@
                   <button
                     class="btn btn-primary col-auto"
                     id="submitButton"
+                    name="action"
                     type="submit"
                     value="next"
                   >
@@ -621,6 +622,7 @@
                     class="btn btn-primary col-auto"
                     id="submitButton"
                     type="submit"
+                    name="action"
                     value="submit"
                   >
                     Submit
