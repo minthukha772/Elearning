@@ -36,7 +36,7 @@ dependencies {
 	// https://mvnrepository.com/artifact/com.github.javafaker/javafaker
 	implementation 'com.github.javafaker:javafaker:1.0.2'
 	testImplementation 'org.assertj:assertj-core:3.21.0'
-
+	
 
 
 

@@ -2,10 +2,13 @@ package com.blissstock.mappingSite.controller;
 
 import com.blissstock.mappingSite.dto.TeacherRegisterDTO;
 import com.blissstock.mappingSite.dto.UserRegisterDTO;
+import com.blissstock.mappingSite.service.UserService;
 import com.blissstock.mappingSite.validation.validators.EmailValidator;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,6 +21,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class RegisterController {
+
+  @Autowired
+  UserService userService;
 
   @ExceptionHandler(value = ConstraintViolationException.class)
   public String exception(ConstraintViolationException exception) {
@@ -82,9 +88,15 @@ public class RegisterController {
         return "ST0001_register.html";
     }
 
-    if(action.equals("submit")){
-      System.out.println("Submitting");
+    try{
+      if(action.equals("submit")){
+        System.out.println("Submitting");
+        userService.addUser(userInfo);
+      }
+    }catch(Exception e){
+      System.out.println(e);
     }
+   
 
     //Information For Randering Confirm
     model.addAttribute("infoMap", userInfo.toMap());
