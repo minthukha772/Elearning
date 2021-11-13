@@ -1,0 +1,1 @@
+Delete from user_account;
