@@ -1,46 +1,26 @@
-####
+#############
 
-https://online.nojima.co.jp/app/common/util/back
+//Post Valid Student
 
+curl 'http://localhost:8080/register/student' \
+  -H 'Connection: keep-alive' \
+  -H 'Cache-Control: max-age=0' \
+  -H 'sec-ch-ua: "Google Chrome";v="95", "Chromium";v="95", ";Not A Brand";v="99"' \
+  -H 'sec-ch-ua-mobile: ?1' \
+  -H 'sec-ch-ua-platform: "Android"' \
+  -H 'Upgrade-Insecure-Requests: 1' \
+  -H 'User-Agent: Mozilla/5.0 (Linux; Android 6.0.1; Moto G (4)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Mobile Safari/537.36' \
+  -H 'Origin: http://localhost:8080' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9' \
+  -H 'Sec-Fetch-Site: same-origin' \
+  -H 'Sec-Fetch-Mode: navigate' \
+  -H 'Sec-Fetch-User: ?1' \
+  -H 'Sec-Fetch-Dest: document' \
+  -H 'Referer: http://localhost:8080/register/student' \
+  -H 'Accept-Language: en-GB,en;q=0.9,my-MM;q=0.8,my;q=0.7,en-US;q=0.6' \
+  -H $'Cookie: pga4_session=f565977b-b5af-4adb-adfd-5d242c3286a4\u0021kghqmXqfLU9n2gM6Vh2ALZB7fig=; PGADMIN_LANGUAGE=en' \
+  --data-raw 'email=sai%40gmaill.com&name=Sai+Horm+Kham&password=asdfqwer1&confirmPassword=asdfqwer1&phone=09259658621&gender=male&dob=1998-11-12&zipCode=11990&city=City&division=Division&address=Address&education=KE&acceptTerm=true&_acceptTerm=on&action=submit' \
+  --compressed
 
-
-
-#####
-GET /register/student/saihorm@gmail.com HTTP/1.1
-Host: localhost:8080
-Content-Type: application/x-www-form-urlencoded
-###
-
-GET /register/student/.email@example.com HTTP/1.1
-Host: localhost:8080
-Content-Type: application/x-www-form-urlencoded
-
-
-#####
-POST /check HTTP/1.1
-Host: localhost:8080
-Content-Type: application/x-www-form-urlencoded
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
-
-
-email=sai%40gmail.com
-&name=dsaf
-&password=saihormkham
-&confirmPassword=saihormkham
-&phone=jkj
-&gender=on
-&dob=2021-11-02
-&zipCode=0
-&city=adfasd
-&division=sds1f2as1d
-&address=sdas21fa23f1
-&education=23fas1d23f1sad32f
-&nrc=sasdf1as23df132
-&award=f21a23f1
-&selfDescription=asdf1as32df1
-&kPay=12313
-&cbPay=12312
-&wave=213
-&kbz=221312
-&cb=11231
-&aya=12313
+##################

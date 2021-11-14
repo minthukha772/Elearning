@@ -1,4 +1,4 @@
-package com.blissstock.mappingSite.entity;
+  package com.blissstock.mappingSite.entity;
 
 import com.blissstock.mappingSite.dto.TeacherRegisterDTO;
 import com.blissstock.mappingSite.dto.UserRegisterDTO;
@@ -153,6 +153,7 @@ public class UserInfo {
     userInfo.postalCode = userRegisterDTO.getZipCode() + "";
     userInfo.city = userRegisterDTO.getCity();
     userInfo.division = userRegisterDTO.getDivision();
+    userInfo.address = userRegisterDTO.getAddress();
     userInfo.education = userRegisterDTO.getName();
 
     if (userRegisterDTO instanceof TeacherRegisterDTO) {
