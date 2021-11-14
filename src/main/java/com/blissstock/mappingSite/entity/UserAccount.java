@@ -5,7 +5,6 @@ import com.blissstock.mappingSite.dto.UserRegisterDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Date;
 import java.util.GregorianCalendar;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,7 +17,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
-
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,7 +30,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Data
 @Table(name = "user_account")
 public class UserAccount {
-
 
   @Id
   @Column(name = "mail", length = 255)
@@ -70,8 +67,9 @@ public class UserAccount {
   public static UserAccount fromRegisterDTO(UserRegisterDTO userRegisterDTO) {
     UserAccount userAccount = new UserAccount();
     userAccount.mail = userRegisterDTO.getEmail();
-	  userAccount.password = userRegisterDTO.getPassword();
-	  userAccount.role = userRegisterDTO instanceof TeacherRegisterDTO?"teacher":"student";
+    userAccount.password = userRegisterDTO.getPassword();
+    userAccount.role =
+      userRegisterDTO instanceof TeacherRegisterDTO ? "teacher" : "student";
     userAccount.registeredDate = GregorianCalendar.getInstance().getTime();
     return userAccount;
   }
