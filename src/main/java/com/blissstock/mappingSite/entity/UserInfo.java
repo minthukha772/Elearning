@@ -37,6 +37,9 @@ public class UserInfo {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long uid;
 
+  @Column(name = "photo")
+  private String photo;
+
   @Column(name = "user_name", length = 100)
   @NotBlank(message = "Please enter your name")
   private String userName;

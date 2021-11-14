@@ -33,20 +33,14 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Table(name = "user_account")
 public class UserAccount {
 
-  @Column(name = "account_id")
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private Long accountId;
 
+  @Id
   @Column(name = "mail", length = 255)
   @NotBlank(message = "Please enter email address")
   private String mail;
 
   @Column(name = "isMailVerified", nullable = false)
   private boolean isMailVerified = false;
-
-  @Column(name = "photo")
-  private String photo;
 
   @NotBlank(message = "Please enter password.")
   @Column(name = "password", length = 64)
