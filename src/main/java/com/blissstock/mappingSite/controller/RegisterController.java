@@ -1,16 +1,23 @@
 package com.blissstock.mappingSite.controller;
 
-import com.blissstock.mappingSite.dto.TeacherRegisterDTO;
-import com.blissstock.mappingSite.dto.UserRegisterDTO;
-import com.blissstock.mappingSite.service.UserService;
-import com.blissstock.mappingSite.validation.validators.EmailValidator;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 
+import com.blissstock.mappingSite.dto.TeacherRegisterDTO;
+import com.blissstock.mappingSite.dto.UserRegisterDTO;
+import com.blissstock.mappingSite.entity.UserAccount;
+import com.blissstock.mappingSite.event.OnRegistrationCompleteEvent;
+import com.blissstock.mappingSite.exceptions.UserAlreadyExistException;
+import com.blissstock.mappingSite.service.UserService;
+import com.blissstock.mappingSite.validation.validators.EmailValidator;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -23,6 +30,9 @@ public class RegisterController {
 
   @Autowired
   UserService userService;
+
+  @Autowired
+  ApplicationEventPublisher eventPublisher;
 
   @ExceptionHandler(value = ConstraintViolationException.class)
   public String exception(ConstraintViolationException exception) {
@@ -76,7 +86,9 @@ public class RegisterController {
     Model model,
     @Valid @ModelAttribute("userInfo") UserRegisterDTO userInfo,
     BindingResult bindingResult,
-    @RequestParam(value="action", required=true) String action
+    @RequestParam(value = "action", required = true) String action,
+    HttpServletRequest request,
+    Errors errors
   ) {
     String role = "student";
     model.addAttribute("task", "register");
@@ -84,18 +96,31 @@ public class RegisterController {
     model.addAttribute("postAction", "/register/" + role);
 
     if (bindingResult.hasErrors()) {
-        return "ST0001_register.html";
+      return "ST0001_register.html";
     }
 
-    try{
-      if(action.equals("submit")){
-        System.out.println("Submitting");
-        userService.addUser(userInfo);
+    try {
+      if (action.equals("submit")) {
+        try {
+          UserAccount userAccount = userService.addUser(userInfo);
+          String appUrl = request.getContextPath();
+          eventPublisher.publishEvent(
+            new OnRegistrationCompleteEvent(
+              userAccount,
+              request.getLocale(),
+              appUrl
+            )
+          );
+        } catch (UserAlreadyExistException e) {
+          System.out.println(e.getMessage());
+          model.addAttribute("userExistError", true);
+        }catch(Exception e){
+          System.out.println(e);
+        }
       }
-    }catch(Exception e){
+    } catch (Exception e) {
       System.out.println(e);
     }
-   
 
     //Information For Randering Confirm
     model.addAttribute("infoMap", userInfo.toMap());
@@ -112,13 +137,11 @@ public class RegisterController {
     model.addAttribute("role", "student");
 
     if (bindingResult.hasErrors()) {
-        return "ST0001_register.html";
+      return "ST0001_register.html";
     }
 
     //Information For Randering Confirm
     model.addAttribute("infoMap", userInfo.toMap());
     return "ST0001_register.html";
   }
-
-  
 }

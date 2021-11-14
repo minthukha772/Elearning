@@ -10,7 +10,9 @@ import javax.validation.Validator;
 import com.blissstock.mappingSite.dto.UserRegisterDTO;
 import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.entity.UserInfo;
+import com.blissstock.mappingSite.entity.VerificationToken;
 import com.blissstock.mappingSite.exceptions.UserAlreadyExistException;
+import com.blissstock.mappingSite.repository.TokenRepository;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
 import com.blissstock.mappingSite.repository.UserInfoRepository;
 
@@ -28,6 +30,9 @@ public class UserServiceImpl implements UserService {
   @Autowired
   private final UserInfoRepository userInfoRepository;
 
+  @Autowired
+  private final TokenRepository tokenRepository;
+
   private Validator validator;
 
   @Autowired
@@ -35,14 +40,16 @@ public class UserServiceImpl implements UserService {
 
   public UserServiceImpl(
     UserAccountRepository userAccountRepository,
-    UserInfoRepository userInfoRepository
+    UserInfoRepository userInfoRepository,
+    TokenRepository tokenRepository
   ) {
     this.userAccountRepository = userAccountRepository;
     this.userInfoRepository = userInfoRepository;
+    this.tokenRepository = tokenRepository;
     this.validator = Validation.buildDefaultValidatorFactory().getValidator();
   }
 
-  public void addUser(UserRegisterDTO userRegisterDTO) throws UserAlreadyExistException {
+  public UserAccount addUser(UserRegisterDTO userRegisterDTO) throws UserAlreadyExistException {
     UserInfo userInfo = UserInfo.fromRegisterDTO(userRegisterDTO);
     UserAccount userAccount = UserAccount.fromRegisterDTO(userRegisterDTO);
     //Encode Password
@@ -56,6 +63,7 @@ public class UserServiceImpl implements UserService {
     userInfo.setUserAccount(savedUserAccount);
     userInfoRepository.save(userInfo);
     //userAccountRepository.save(entity);
+    return savedUserAccount;
   }
 
   @Override
@@ -73,5 +81,23 @@ public class UserServiceImpl implements UserService {
   @Override
   public boolean isUserAccountPresent(String email) {
     return userAccountRepository.findById(email).isPresent();
+  }
+
+  @Override
+  public void createVerificationToken(UserAccount userAccount, String token) {
+    VerificationToken myToken = new VerificationToken(token, userAccount);
+    tokenRepository.save(myToken);
+    
+  }
+
+  @Override
+  public VerificationToken getVerificationToken(String VerificationToken) {
+    return tokenRepository.findByToken(VerificationToken);
+  }
+
+  @Override
+  public UserAccount getUserAccountByToken(String verificationToken) {
+    UserAccount userAccount = tokenRepository.findByToken(verificationToken).getUserAccount();
+    return userAccount;
   }
 }

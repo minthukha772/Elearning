@@ -2,10 +2,14 @@ package com.blissstock.mappingSite.service;
 
 import com.blissstock.mappingSite.dto.UserRegisterDTO;
 import com.blissstock.mappingSite.entity.UserAccount;
+import com.blissstock.mappingSite.entity.VerificationToken;
 
 public interface UserService {
-  public void addUser(UserRegisterDTO userRegisterDTO) throws Exception;
+  public UserAccount addUser(UserRegisterDTO userRegisterDTO) throws Exception;
   public UserRegisterDTO getUserByID(Long id);
   public UserAccount getUserAccountByEmail(String email);
   public boolean isUserAccountPresent(String email);
+  public UserAccount getUserAccountByToken(String verificationToken);
+  void createVerificationToken(UserAccount userAccount, String token);
+  VerificationToken getVerificationToken(String VerificationToken);
 }
