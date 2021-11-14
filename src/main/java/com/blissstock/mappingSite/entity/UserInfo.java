@@ -1,4 +1,4 @@
-package com.blissstock.mappingSite.entity;
+  package com.blissstock.mappingSite.entity;
 
 import com.blissstock.mappingSite.dto.TeacherRegisterDTO;
 import com.blissstock.mappingSite.dto.UserRegisterDTO;
