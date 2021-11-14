@@ -2,6 +2,7 @@ package com.blissstock.mappingSite.validation.constrains;
 
 import javax.validation.Payload;
 
+import com.blissstock.mappingSite.validation.ConstrainMessage;
 import com.blissstock.mappingSite.validation.validators.PasswordMatchValidator;
 
 import javax.validation.Constraint;
@@ -18,7 +19,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Documented
 public @interface PasswordMatch
 {
-    String message() default "The passwords must be match";
+    String message() default ConstrainMessage.PASSWORD_MATCH_CONSTRAIN_MESSAGE;
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
     String target() default "confirmPassword";
