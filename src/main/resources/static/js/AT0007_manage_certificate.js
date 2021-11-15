@@ -1,3 +1,5 @@
-$(document).ready(function () {
-  $("#file").pekeUpload();
+$(function () {
+
+  
+  
 });

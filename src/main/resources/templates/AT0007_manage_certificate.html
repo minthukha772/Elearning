@@ -16,35 +16,15 @@
       integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
       crossorigin="anonymous"
     />
-    <!-- Uppy: File Upload -->
-   
-    <link rel="stylesheet" href="/css/photoPlaceHolder.css" />
+
     <title>Manage Certificate</title>
   </head>
 
   <body style="background-color: #f0f0f0">
     <!-- TODO Add Teacher Navi -->
-    <div class="profile-pic-wrapper mb-3">
-      <div class="pic-holder">
-        <!-- uploaded pic shown here -->
-        <img
-          id="profilePic"
-          class="pic"
-          src="/images/profile.png"
-        />
-    
-       
-        <input
-          class="uploadProfileInput"
-          type="file"
-          name="profile_pic"
-          id="newProfilePhoto"
-          accept="image/*"
-          style="display: none"
 
-        />
-      </div>
-      
+    <div class="file-loading">
+      <input id="input-id" type="file" multiple />
     </div>
 
     <!-- BootStrap Js -->
@@ -60,7 +40,8 @@
       crossorigin="anonymous"
     ></script>
 
+    <!-- the main fileinput plugin script JS file -->
+
     <script src="js/AT0007_manage_certificate.js"></script>
-    <script src="js/photoPlaceHolder.js"></script>
   </body>
 </html>
