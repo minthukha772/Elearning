@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- BootStrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <!-- Uppy: File Upload -->
+   
+    <link rel="stylesheet" href="/css/photoPlaceHolder.css" />
+    <title>Manage Certificate</title>
+  </head>
+
+  <body style="background-color: #f0f0f0">
+    <!-- TODO Add Teacher Navi -->
+    <div class="profile-pic-wrapper mb-3">
+      <div class="pic-holder">
+        <!-- uploaded pic shown here -->
+        <img
+          id="profilePic"
+          class="pic"
+          src="/images/profile.png"
+        />
+    
+       
+        <input
+          class="uploadProfileInput"
+          type="file"
+          name="profile_pic"
+          id="newProfilePhoto"
+          accept="image/*"
+          style="display: none"
+
+        />
+      </div>
+      
+    </div>
+
+    <!-- BootStrap Js -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+    <!-- JQuery -->
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
+      integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI="
+      crossorigin="anonymous"
+    ></script>
+
+    <script src="js/AT0007_manage_certificate.js"></script>
+    <script src="js/photoPlaceHolder.js"></script>
+  </body>
+</html>
