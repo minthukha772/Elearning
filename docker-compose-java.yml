@@ -1,28 +1,13 @@
 version: '3.8'
 
-services:
-  spring:
-    depends_on: 
-      - postgres
-    image: "adoptopenjdk/openjdk11:jdk-11.0.6_10-alpine"
-    volumes: 
-      - "./:${SPRING_PATH_IN_CONTAINER}"
-    ports:
-      - "8080:8080"
-        # デバッグ用ポート
-      - "3030:3030"
-    working_dir: ${SPRING_PATH_IN_CONTAINER}
-    # aplineにはbashがなくashを使用
-    command: /bin/ash -c "./gradlew bootRun"
-    
+services:  
   postgres:
-    image: "postgres:14.0-alpine"
+    image: postgres:14.0-alpine
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       PGDATA: ${PGDATA}
-    volumes:
-       - db-data:${PGDATA}
+      POSTGRES_DB: ${POSTGRES_DB}
     ports:
       - "5432:5432"
     restart: unless-stopped
@@ -43,5 +28,4 @@ services:
     restart: unless-stopped
 
 volumes:
-    db-data:
     pgadmin-data:

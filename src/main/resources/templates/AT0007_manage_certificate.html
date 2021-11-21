@@ -17,14 +17,106 @@
       crossorigin="anonymous"
     />
 
+    <link rel="stylesheet" href="/css/ST0007_manage_certificates.css" />
+
     <title>Manage Certificate</title>
   </head>
 
   <body style="background-color: #f0f0f0">
     <!-- TODO Add Teacher Navi -->
+    <div class="container">
+      <div class="card mb-3">
+        <div class="card-header">Certificate Photo</div>
 
-    <div class="file-loading">
-      <input id="input-id" type="file" multiple />
+        <div class="container" style="margin: auto">
+          <p>Empty! Please Upload Certificate Photo</p>
+        </div>
+
+        <div th:if="${files!=null and !files.empty}"></div>
+
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+          <div class="col" th:each="fileInfo, stats : ${files}">
+            <div class="card h-100">
+              <img
+                th:src="${fileInfo.url}"
+                class="card-img-top"
+                th:alt="${fileInfo.name}"
+              />
+              <div class="card-body">
+                <p class="card-title" th:text="${fileInfo.name}">Card title</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 
+
+        <table class="table table-striped ">
+          <tbody>
+            <tr th:each="fileInfo, stats : ${files}">
+              <th scope="row" th:text="${stats.index + 1}">1</th>
+              <td>
+                <a
+                  th:href="${fileInfo.url}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  th:text=${fileInfo.name}
+                  >google.png</a
+                >
+              </td>
+              <td>
+                <button type="button" class="btn btn-sm btn-outline-danger">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    class="bi bi-trash-fill"
+                    viewBox="0 0 16 16"
+                  >
+                    <path
+                      d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"
+                    ></path>
+                  </svg>
+                </button>
+              </td>
+            </tr>
+            
+          </tbody>
+        </table> -->
+      </div>
+
+      <div th:if="${fileUploadError != null}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <span th:text=${fileUploadError}></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+
+      <div class="card">
+        <h5 class="card-header">Upload Files</h5>
+        <div class="card-body">
+          <form
+            th:action="@{/manage_certificate}"
+            method="post"
+            enctype="multipart/form-data"
+          >
+            <div class="mb-3">
+              <label for="files" class="form-label">Certificate Photo</label>
+              <input
+                class="form-control"
+                type="file"
+                id="formFile"
+                name="files"
+                required
+                multiple
+              />
+            </div>
+            <div class="row justify-content-end px-3">
+              <button class="btn btn-primary col-auto" type="submit">
+                Submit
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
 
     <!-- BootStrap Js -->
