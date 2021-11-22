@@ -4,6 +4,7 @@ import com.blissstock.mappingSite.exceptions.NotImageFileException;
 import com.blissstock.mappingSite.model.FileInfo;
 import com.blissstock.mappingSite.service.StorageService;
 import com.blissstock.mappingSite.validation.validators.ImageFileValidator;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,27 +60,30 @@ public class ManageCertificateController {
     return "AT0007_manage_certificate";
   }
 
-
   //TODO Implement DELETE REQUEST
 
   private List<FileInfo> loadImages() {
-    return storageService
-      .loadAllCertificates()
-      .map(
-        path -> {
-          String name = path.getFileName().toString();
-          String url = MvcUriComponentsBuilder
-            .fromMethodName(
-              FileController.class,
-              "getCertificates",
-              path.getFileName().toString()
-            )
-            .build()
-            .toString();
+    try {
+      return storageService
+        .loadAllCertificates()
+        .map(
+          path -> {
+            String name = path.getFileName().toString();
+            String url = MvcUriComponentsBuilder
+              .fromMethodName(
+                FileController.class,
+                "getCertificates",
+                path.getFileName().toString()
+              )
+              .build()
+              .toString();
 
-          return new FileInfo(name, url);
-        }
-      )
-      .collect(Collectors.toList());
+            return new FileInfo(name, url);
+          }
+        )
+        .collect(Collectors.toList());
+    } catch (Exception e) {
+      return new ArrayList<>();
+    }
   }
 }

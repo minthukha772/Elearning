@@ -22,6 +22,8 @@ import org.springframework.web.multipart.MultipartFile;
 public class StorageServiceImpl implements StorageService {
 
   private final Path root = Paths.get("uploads");
+  private final Path certificatePath = Paths.get(root+File.separator+"certificates");
+  private final Path profilepath = Paths.get(root+File.separator+"profiles");
   private final Long uid = 13L;
 
   @Override
@@ -29,6 +31,12 @@ public class StorageServiceImpl implements StorageService {
     try {
       if (!Files.exists(root)) {
         Files.createDirectory(root);
+      }
+      if (!Files.exists(certificatePath)) {
+        Files.createDirectory(certificatePath);
+      }
+      if (!Files.exists(profilepath)) {
+        Files.createDirectory(profilepath);
       }
     } catch (IOException e) {
       throw new RuntimeException("Could not initialize folder for upload!");
@@ -45,7 +53,7 @@ public class StorageServiceImpl implements StorageService {
       }
     }
 
-    Path storeLocation = Paths.get(root + File.separator + uid);
+    Path storeLocation = Paths.get(certificatePath + File.separator + uid);
     if (!Files.exists(storeLocation)) {
       try {
         Files.createDirectories(storeLocation);
@@ -82,7 +90,7 @@ public class StorageServiceImpl implements StorageService {
 
   @Override
   public Stream<Path> loadAllCertificates() {
-    Path storeLocation = Paths.get(root + File.separator + uid);
+    Path storeLocation = Paths.get(certificatePath + File.separator + uid);
     try {
       return Files
         .walk(storeLocation, 1)
@@ -95,7 +103,7 @@ public class StorageServiceImpl implements StorageService {
 
   @Override
   public Resource loadCertificate(String filename) {
-    Path storeLocation = Paths.get(root + File.separator + uid);
+    Path storeLocation = Paths.get(certificatePath + File.separator + uid);
     try {
       Path file = storeLocation.resolve(filename);
       Resource resource = new UrlResource(file.toUri());

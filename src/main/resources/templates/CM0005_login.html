@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="css/CM0005_login.css" />
+    <title>Login</title>
+  </head>
+
+  <body>
+    <div th:replace="fragments/guestnav"></div>
+
+    <div class="container-custom">
+      <div class="card">
+        <div class="card-header">Personal Information</div>
+        <div class="card-body">
+          <div class="container">
+            <form
+              id="contactForm"
+              th:action="@{login}"
+              th:object="${userInfo}"
+              method="post"
+            >
+              <!--   -->
+              <div
+                th:if="${loginError != null}"
+                class="alert alert-danger alert-dismissible fade show"
+                role="alert"
+              >
+                <span th:text="${loginError}"></span>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="alert"
+                  aria-label="Close"
+                ></button>
+              </div>
+
+              <div>
+                <div class="mb-3">
+                  <label class="form-label" for="emailAddress">
+                    Email Address</label
+                  >
+                  <input
+                    th:field="*{email}"
+                    class="form-control"
+                    id="email"
+                    type="email"
+                    th:classappend="${#fields.hasErrors('email')}?'is-invalid':''"
+                    placeholder="e.g. john@gmail.com"
+                    
+                  />
+                  <div
+                    class="invalid-feedback"
+                    th:if="${#fields.hasErrors('email')}"
+                    th:errors="*{email}"
+                  >
+                    This field is required.
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label" for="password">Password</label>
+                  <span th:text="*{password}" class="invisible"></span>
+                  <input
+                    th:field="*{password}"
+                    th:attr="data-value=*{password}"
+                    class="form-control"
+                    
+                    id="password"
+                    type="password"
+                    automplete="new-password"
+                    placeholder="ExamplePassword001"
+                  />
+                  <div
+                    class="invalid-feedback"
+                    th:if="${#fields.hasErrors('password')}"
+                    th:errors="*{password}"
+                  ></div>
+                </div>
+
+                <div class="row justify-content-between">
+                  <button
+                    class="btn btn-link col-auto"
+                    id="submitButton"
+                    type="submit"
+                    name="action"
+                    value="forget"
+                  >
+                    Forget Password
+                  </button>
+
+                  <button
+                    class="btn btn-primary col-auto"
+                    id="submitButton"
+                    type="submit"
+                    name="action"
+                    value="login"
+                  >
+                    Login
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <!-- End of Card Body -->
+      </div>
+      <!---End of Card-->
+    </div>
+    <!-- End of Container -->
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
+      integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI="
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
