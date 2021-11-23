@@ -35,7 +35,6 @@
                 role="alert"
               >
                 <span th:text="${error}"></span>
-              
               </div>
               <div
                 th:if="${message != null}"
@@ -43,7 +42,6 @@
                 role="alert"
               >
                 <span th:text="${message}"></span>
-              
               </div>
 
               <div>
@@ -58,7 +56,6 @@
                     type="email"
                     th:classappend="${#fields.hasErrors('email')}?'is-invalid':''"
                     placeholder="e.g. john@gmail.com"
-                    
                   />
                   <div
                     class="invalid-feedback"
@@ -76,7 +73,6 @@
                     th:field="*{password}"
                     th:attr="data-value=*{password}"
                     class="form-control"
-                    
                     id="password"
                     type="password"
                     automplete="new-password"
@@ -91,14 +87,14 @@
 
                 <div class="row justify-content-between">
                   <a
-                    
+                    class="col-auto"
                     id="submitButton"
                     type="submit"
                     name="action"
                     value="forget"
                   >
                     Forget Password
-                </a>
+                  </a>
 
                   <button
                     class="btn btn-primary col-auto"

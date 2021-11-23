@@ -26,10 +26,10 @@ public class LoginController {
   @GetMapping("/login")
   public String loginView(Model model, String error, String logout) {
 
-    if(userSessionService.isAuthenticated()){
+/*     if(userSessionService.isAuthenticated()){
       return "redirect:/home";
     }
-    
+     */
     if (error != null) {
       model.addAttribute("error", "Your email and password is invalid.");
     }

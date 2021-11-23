@@ -56,13 +56,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   protected void configure(HttpSecurity http) throws Exception {
     http
       .authorizeRequests()
-      .antMatchers("/ST0001_register")
+      .antMatchers("/")
       .permitAll()
-      .antMatchers("/email_check")
-      .hasRole(UserRole.SUPER_ADMIN.getValue())
       .and()
       .formLogin()
-      .loginPage("/CM0005_login") //ログインページはコントローラを経由しないのでViewNameとの紐付けが必要
+      .loginPage("/login") //ログインページはコントローラを経由しないのでViewNameとの紐付けが必要
       .loginProcessingUrl("/sign_in") //フォームのSubmitURL、このURLへリクエストが送られると認証処理が実行される
       .usernameParameter("email") //リクエストパラメータのname属性を明示
       .passwordParameter("password")
