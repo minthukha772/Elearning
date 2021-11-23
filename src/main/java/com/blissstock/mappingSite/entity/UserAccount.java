@@ -2,6 +2,7 @@ package com.blissstock.mappingSite.entity;
 
 import com.blissstock.mappingSite.dto.TeacherRegisterDTO;
 import com.blissstock.mappingSite.dto.UserRegisterDTO;
+import com.blissstock.mappingSite.enums.UserRole;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -44,7 +45,7 @@ public class UserAccount {
   private String password;
 
   @Column(name = "role", length = 15)
-  private String role;
+  private UserRole role;
 
   @Column(name = "account_status", length = 10)
   private String accountStatus;
@@ -69,7 +70,7 @@ public class UserAccount {
     userAccount.mail = userRegisterDTO.getEmail();
     userAccount.password = userRegisterDTO.getPassword();
     userAccount.role =
-      userRegisterDTO instanceof TeacherRegisterDTO ? "teacher" : "student";
+      userRegisterDTO instanceof TeacherRegisterDTO ? UserRole.TEACHER : UserRole.STUDENT;
     userAccount.registeredDate = GregorianCalendar.getInstance().getTime();
     return userAccount;
   }
