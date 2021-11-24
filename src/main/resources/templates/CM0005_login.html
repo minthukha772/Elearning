@@ -17,7 +17,12 @@
   <body>
     <div th:replace="fragments/guestnav"></div>
 
-    <div class="container-custom">
+    <div sec:authorize="isAuthenticated()">
+      Welcome <b><span sec:authentication="name">Username</span></b>
+      <i><span sec:authentication="principal.authorities">Roles</span></i>
+    </div>
+
+
       <div class="card mt-5">
         <div class="card-header">Login</div>
         <div class="card-body">

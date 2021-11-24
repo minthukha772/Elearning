@@ -1,7 +1,4 @@
 package com.blissstock.mappingSite.config;
-
-import com.blissstock.mappingSite.enums.UserRole;
-import com.blissstock.mappingSite.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -55,9 +52,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http
+      .httpBasic()
+      .disable()
       .authorizeRequests()
       .antMatchers("/")
       .permitAll()
+    /*   .antMatchers("/register/**")
+      .permitAll()
+      .antMatchers("/** /register/**")
+      .permitAll()
+      .antMatchers("/student/**")
+      .hasAnyRole(UserRole.STUDENT.getValue())
+      .antMatchers("/teacher/**")
+      .hasAnyRole(UserRole.TEACHER.getValue())
+      .antMatchers("/admin/**")
+      .hasAnyRole(UserRole.ADMIN.getValue(), UserRole.SUPER_ADMIN.getValue()) */
+      .anyRequest()
+      .authenticated()
       .and()
       .formLogin()
       .loginPage("/login") //ログインページはコントローラを経由しないのでViewNameとの紐付けが必要
@@ -72,6 +83,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
       .logoutUrl("/logout")
       .logoutSuccessUrl("/login?logout")
       .permitAll();
+
     http.csrf().disable();
   }
 

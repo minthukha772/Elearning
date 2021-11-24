@@ -1,12 +1,5 @@
 package com.blissstock.mappingSite.service;
 
-import java.util.Set;
-
-import javax.transaction.Transactional;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-
 import com.blissstock.mappingSite.dto.UserRegisterDTO;
 import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.entity.UserInfo;
@@ -15,7 +8,11 @@ import com.blissstock.mappingSite.exceptions.UserAlreadyExistException;
 import com.blissstock.mappingSite.repository.TokenRepository;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
 import com.blissstock.mappingSite.repository.UserInfoRepository;
-
+import java.util.Set;
+import javax.transaction.Transactional;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -49,13 +46,14 @@ public class UserServiceImpl implements UserService {
     this.validator = Validation.buildDefaultValidatorFactory().getValidator();
   }
 
-  public UserAccount addUser(UserRegisterDTO userRegisterDTO) throws UserAlreadyExistException {
-    UserInfo userInfo = UserInfo.fromRegisterDTO(userRegisterDTO);
+  public UserAccount addUser(UserRegisterDTO userRegisterDTO)
+    throws UserAlreadyExistException {
+    UserInfo userInfo = UserRegisterDTO.toUserInfo(userRegisterDTO);
     UserAccount userAccount = UserAccount.fromRegisterDTO(userRegisterDTO);
     //Encode Password
     userAccount.setPassword(passwordEncoder.encode(userAccount.getPassword()));
 
-    if(this.isUserAccountPresent(userAccount.getMail())){
+    if (this.isUserAccountPresent(userAccount.getMail())) {
       throw new UserAlreadyExistException();
     }
 
@@ -67,14 +65,20 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public UserRegisterDTO getUserByID(Long id) {
-    //TODO to Implement
-    return new UserRegisterDTO();
+  public void updateUser(UserRegisterDTO userRegisterDTO) {
+    UserInfo userInfo = UserRegisterDTO.toUserInfo(userRegisterDTO);
+    userInfoRepository.save(userInfo);
+  }
+
+  @Override
+  public UserRegisterDTO getUserByEmail(String email) {
+    System.out.println("email " + email);
+    UserInfo userInfo = userInfoRepository.findUserInfoByEmail(email);
+    return UserRegisterDTO.fromUserInfo(userInfo);
   }
 
   @Override
   public UserAccount getUserAccountByEmail(String email) {
-
     return userAccountRepository.findById(email).get();
   }
 
@@ -87,7 +91,6 @@ public class UserServiceImpl implements UserService {
   public void createVerificationToken(UserAccount userAccount, String token) {
     VerificationToken myToken = new VerificationToken(token, userAccount);
     tokenRepository.save(myToken);
-    
   }
 
   @Override
@@ -97,7 +100,9 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public UserAccount getUserAccountByToken(String verificationToken) {
-    UserAccount userAccount = tokenRepository.findByToken(verificationToken).getUserAccount();
+    UserAccount userAccount = tokenRepository
+      .findByToken(verificationToken)
+      .getUserAccount();
     return userAccount;
   }
 }

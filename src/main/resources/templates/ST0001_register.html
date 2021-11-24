@@ -85,7 +85,7 @@
       data-th-action="@{/student/edit}"
       th:object="${userInfo}"
       method="post"
-   >
+    >
       <div class="container-custom">
         <div class="card">
           <div class="card-header">Personal Information</div>
@@ -136,54 +136,59 @@
                     th:errors="*{name}"
                   ></div>
                 </div>
-                <div class="mb-2">
-                  <span class="badge bg-info">Notice</span> Password must be at
-                  least 8 characters long, and contains at least one digit, one
-                  alphabet. <br />
-                  <span class="badge bg-info">Notice</span>We recommend
-                  <span class="badge bg-danger">not</span> to reuse the email
-                  address as the password.
+
+                <!-- Profile Edit Do not need Password Related information -->
+                <div th:if="${task=='register'}">
+                  <div class="mb-2">
+                    <span class="badge bg-info">Notice</span> Password must be
+                    at least 8 characters long, and contains at least one digit,
+                    one alphabet. <br />
+                    <span class="badge bg-info">Notice</span>We recommend
+                    <span class="badge bg-danger">not</span> to reuse the email
+                    address as the password.
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label" for="password">Password</label>
+                    <span th:text="*{password}" class="invisible"></span>
+                    <input
+                      th:field="*{password}"
+                      th:attr="data-value=*{password}"
+                      class="form-control"
+                      th:classappend="${#fields.hasErrors('password')}?'is-invalid':''"
+                      id="password"
+                      type="password"
+                      automplete="new-password"
+                      placeholder="ExamplePassword001"
+                    />
+                    <div
+                      class="invalid-feedback"
+                      th:if="${#fields.hasErrors('password')}"
+                      th:errors="*{password}"
+                    ></div>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label" for="confirmPassword"
+                      >Confirm Password</label
+                    >
+                    <input
+                      th:field="*{confirmPassword}"
+                      th:attr="data-value=*{password}"
+                      class="form-control"
+                      th:classappend="${#fields.hasErrors('confirmPassword')}?'is-invalid':''"
+                      id="confirmPassword"
+                      type="password"
+                      automplete="new-password"
+                      placeholder="ExamplePassword001"
+                    />
+                    <div
+                      class="invalid-feedback"
+                      th:if="${#fields.hasErrors('confirmPassword')}"
+                      th:errors="*{confirmPassword}"
+                    ></div>
+                  </div>
                 </div>
 
-                <div class="mb-3">
-                  <label class="form-label" for="password">Password</label>
-                  <span th:text="*{password}" class="invisible"></span>
-                  <input
-                    th:field="*{password}"
-                    th:attr="data-value=*{password}"
-                    class="form-control"
-                    th:classappend="${#fields.hasErrors('password')}?'is-invalid':''"
-                    id="password"
-                    type="password"
-                    automplete="new-password"
-                    placeholder="ExamplePassword001"
-                  />
-                  <div
-                    class="invalid-feedback"
-                    th:if="${#fields.hasErrors('password')}"
-                    th:errors="*{password}"
-                  ></div>
-                </div>
-                <div class="mb-3">
-                  <label class="form-label" for="confirmPassword"
-                    >Confirm Password</label
-                  >
-                  <input
-                    th:field="*{confirmPassword}"
-                    th:attr="data-value=*{password}"
-                    class="form-control"
-                    th:classappend="${#fields.hasErrors('confirmPassword')}?'is-invalid':''"
-                    id="confirmPassword"
-                    type="password"
-                    automplete="new-password"
-                    placeholder="ExamplePassword001"
-                  />
-                  <div
-                    class="invalid-feedback"
-                    th:if="${#fields.hasErrors('confirmPassword')}"
-                    th:errors="*{confirmPassword}"
-                  ></div>
-                </div>
                 <div class="mb-3">
                   <label class="form-label" for="phone">Phone Number</label>
                   <input
@@ -537,27 +542,30 @@
                   </div>
                 </fieldset> -->
 
-                <div class="mb-3">
-                  <label class="form-label d-block"></label>
-                  <div class="form-check form-check-inline">
-                    <input
-                      class="form-check-input"
-                      id="iAgreeToTermCondition"
-                      type="checkbox"
-                      th:field="*{acceptTerm}"
-                      th:classappend="${#fields.hasErrors('acceptTerm')}?'is-invalid':''"
-                      name=""
-                    />
-                    <label class="form-check-label" for="acceptTerm"
-                      >I agree to Term &amp; Condition</label
-                    >
-                    <div
-                      class="invalid-feedback"
-                      for="iAgreeToTermCondition"
-                      th:if="${#fields.hasErrors('acceptTerm')}"
-                      th:errors="*{acceptTerm}"
-                    >
-                      This field is required.
+                <!-- Profile Edit Do not need Password Related information -->
+                <div th:classappend="${task=='register'}?'':'visually-hidden'">
+                  <div class="mb-3">
+                    <label class="form-label d-block"></label>
+                    <div class="form-check form-check-inline">
+                      <input
+                        class="form-check-input"
+                        id="iAgreeToTermCondition"
+                        type="checkbox"
+                        th:field="*{acceptTerm}"
+                        th:classappend="${#fields.hasErrors('acceptTerm')}?'is-invalid':''"
+                        name=""
+                      />
+                      <label class="form-check-label" for="acceptTerm"
+                        >I agree to Term &amp; Condition</label
+                      >
+                      <div
+                        class="invalid-feedback"
+                        for="iAgreeToTermCondition"
+                        th:if="${#fields.hasErrors('acceptTerm')}"
+                        th:errors="*{acceptTerm}"
+                      >
+                        This field is required.
+                      </div>
                     </div>
                   </div>
                 </div>

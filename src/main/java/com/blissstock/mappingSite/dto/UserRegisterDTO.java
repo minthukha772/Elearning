@@ -10,6 +10,7 @@ import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.interfaces.Confirmable;
 import com.blissstock.mappingSite.utils.DateFormatter;
 import com.blissstock.mappingSite.validation.ConstrainMessage;
@@ -96,5 +97,46 @@ public class UserRegisterDTO extends PasswordData implements Confirmable {
     map.put("Address", this.address);
     map.put("Education", this.education);
     return map;
+  }
+
+  public static UserInfo toUserInfo(UserRegisterDTO userRegisterDTO) {
+    UserInfo userInfo = new UserInfo();
+    userInfo.setUserName (userRegisterDTO.getName());
+    userInfo.setPhoneNo (userRegisterDTO.getPhone());
+    userInfo.setGender (userRegisterDTO.getGender());
+    userInfo.setBirthDate (userRegisterDTO.getDob());
+    userInfo.setPostalCode (userRegisterDTO.getZipCode() + "");
+    userInfo.setCity (userRegisterDTO.getCity());
+    userInfo.setDivision (userRegisterDTO.getDivision());
+    userInfo.setAddress (userRegisterDTO.getAddress());
+    userInfo.setEducation (userRegisterDTO.getEducation());
+
+    if (userRegisterDTO instanceof TeacherRegisterDTO) {
+      TeacherRegisterDTO teacherRegisterDTO = (TeacherRegisterDTO) userRegisterDTO;
+      userInfo.setNrc ( teacherRegisterDTO.getNrc());
+      userInfo.setSelfDescription( teacherRegisterDTO.getSelfDescription());
+      userInfo.setCertificate(teacherRegisterDTO.getAward());
+    }
+
+    return userInfo;
+  }
+
+  public static UserRegisterDTO fromUserInfo(UserInfo userInfo){
+    TeacherRegisterDTO registerDTO = new TeacherRegisterDTO();
+    registerDTO.setEmail(userInfo.getUserAccount().getMail());
+    registerDTO.setName(userInfo.getUserName());
+    registerDTO.setPhone(userInfo.getPhoneNo());
+    registerDTO.setPhone(userInfo.getPhoneNo());
+    registerDTO.setGender(userInfo.getGender());
+    registerDTO.setDob(userInfo.getBirthDate());
+    registerDTO.setZipCode(Integer.parseInt(userInfo.getPostalCode()));
+    registerDTO.setCity(userInfo.getCity());
+    registerDTO.setDivision(userInfo.getDivision());
+    registerDTO.setAddress(userInfo.getAddress());
+    registerDTO.setEducation(userInfo.getEducation());
+    registerDTO.setNrc(userInfo.getNrc());
+    registerDTO.setSelfDescription(userInfo.getSelfDescription());
+    registerDTO.setAward(userInfo.getCertificate());
+    return registerDTO;
   }
 }

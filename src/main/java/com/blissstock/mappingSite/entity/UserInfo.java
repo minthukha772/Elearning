@@ -147,25 +147,5 @@ public class UserInfo {
   @JsonIgnore
   private List<CourseInfo> courseInfo = new ArrayList<>();
 
-  public static UserInfo fromRegisterDTO(UserRegisterDTO userRegisterDTO) {
-    UserInfo userInfo = new UserInfo();
-    userInfo.userName = userRegisterDTO.getName();
-    userInfo.phoneNo = userRegisterDTO.getPhone();
-    userInfo.gender = userRegisterDTO.getGender();
-    userInfo.birthDate = userRegisterDTO.getDob();
-    userInfo.postalCode = userRegisterDTO.getZipCode() + "";
-    userInfo.city = userRegisterDTO.getCity();
-    userInfo.division = userRegisterDTO.getDivision();
-    userInfo.address = userRegisterDTO.getAddress();
-    userInfo.education = userRegisterDTO.getName();
-
-    if (userRegisterDTO instanceof TeacherRegisterDTO) {
-      TeacherRegisterDTO teacherRegisterDTO = (TeacherRegisterDTO) userRegisterDTO;
-      userInfo.nrc = teacherRegisterDTO.getNrc();
-      userInfo.selfDescription = teacherRegisterDTO.getSelfDescription();
-      userInfo.certificate = teacherRegisterDTO.getAward();
-    }
-
-    return userInfo;
-  }
+  
 }
