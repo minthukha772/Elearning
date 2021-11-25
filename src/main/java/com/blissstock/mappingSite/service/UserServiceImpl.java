@@ -66,8 +66,12 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public void updateUser(UserRegisterDTO userRegisterDTO) {
-    UserInfo userInfo = UserRegisterDTO.toUserInfo(userRegisterDTO);
-    userInfoRepository.save(userInfo);
+    UserInfo existingUserInfo = userInfoRepository.findUserInfoByEmail(userRegisterDTO.getEmail());
+    System.out.println(existingUserInfo);
+    if(existingUserInfo!=null){
+      existingUserInfo = UserRegisterDTO.toUserInfo(userRegisterDTO,existingUserInfo);
+    }
+     userInfoRepository.save(existingUserInfo);
   }
 
   @Override
@@ -104,5 +108,10 @@ public class UserServiceImpl implements UserService {
       .findByToken(verificationToken)
       .getUserAccount();
     return userAccount;
+  }
+
+  @Override
+  public UserInfo getUserInfoByID(Long id) {
+    return userInfoRepository.findById(id).get();
   }
 }

@@ -99,8 +99,9 @@ public class UserRegisterDTO extends PasswordData implements Confirmable {
     return map;
   }
 
-  public static UserInfo toUserInfo(UserRegisterDTO userRegisterDTO) {
-    UserInfo userInfo = new UserInfo();
+  //This Funcation has side use with
+  public static UserInfo toUserInfo(UserRegisterDTO userRegisterDTO, UserInfo userInfo) {
+    
     userInfo.setUserName (userRegisterDTO.getName());
     userInfo.setPhoneNo (userRegisterDTO.getPhone());
     userInfo.setGender (userRegisterDTO.getGender());
@@ -119,6 +120,10 @@ public class UserRegisterDTO extends PasswordData implements Confirmable {
     }
 
     return userInfo;
+  }
+
+  public static UserInfo toUserInfo(UserRegisterDTO userRegisterDTO){
+    return toUserInfo(userRegisterDTO,new UserInfo());
   }
 
   public static UserRegisterDTO fromUserInfo(UserInfo userInfo){
