@@ -1,17 +1,15 @@
 package com.blissstock.mappingSite.controller;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.ConstraintViolationException;
-import javax.validation.Valid;
-
 import com.blissstock.mappingSite.dto.TeacherRegisterDTO;
 import com.blissstock.mappingSite.dto.UserRegisterDTO;
-import com.blissstock.mappingSite.entity.UserAccount;
+import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.event.OnRegistrationCompleteEvent;
 import com.blissstock.mappingSite.exceptions.UserAlreadyExistException;
 import com.blissstock.mappingSite.service.UserService;
 import com.blissstock.mappingSite.validation.validators.EmailValidator;
-
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Controller;
@@ -102,11 +100,11 @@ public class RegisterController {
     try {
       if (action.equals("submit")) {
         try {
-          UserAccount userAccount = userService.addUser(userInfo);
+          UserInfo savedUserInfo = userService.addUser(userInfo);
           String appUrl = request.getContextPath();
           eventPublisher.publishEvent(
             new OnRegistrationCompleteEvent(
-              userAccount,
+              savedUserInfo,
               request.getLocale(),
               appUrl
             )
@@ -114,7 +112,7 @@ public class RegisterController {
         } catch (UserAlreadyExistException e) {
           System.out.println(e.getMessage());
           model.addAttribute("userExistError", true);
-        }catch(Exception e){
+        } catch (Exception e) {
           System.out.println(e);
         }
       }

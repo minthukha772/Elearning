@@ -30,7 +30,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     Set<SimpleGrantedAuthority> grantedAuthorities = new HashSet<>();
-    grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole().getValue()));
+    grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole()));
 
     return new org.springframework.security.core.userdetails.User(
       user.getMail(),

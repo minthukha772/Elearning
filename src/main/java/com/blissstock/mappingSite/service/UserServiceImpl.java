@@ -1,5 +1,9 @@
 package com.blissstock.mappingSite.service;
 
+import javax.transaction.Transactional;
+import javax.validation.Validation;
+import javax.validation.Validator;
+
 import com.blissstock.mappingSite.dto.UserRegisterDTO;
 import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.entity.UserInfo;
@@ -8,11 +12,7 @@ import com.blissstock.mappingSite.exceptions.UserAlreadyExistException;
 import com.blissstock.mappingSite.repository.TokenRepository;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
 import com.blissstock.mappingSite.repository.UserInfoRepository;
-import java.util.Set;
-import javax.transaction.Transactional;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
     this.validator = Validation.buildDefaultValidatorFactory().getValidator();
   }
 
-  public UserAccount addUser(UserRegisterDTO userRegisterDTO)
+  public UserInfo addUser(UserRegisterDTO userRegisterDTO)
     throws UserAlreadyExistException {
     UserInfo userInfo = UserRegisterDTO.toUserInfo(userRegisterDTO);
     UserAccount userAccount = UserAccount.fromRegisterDTO(userRegisterDTO);
@@ -57,11 +57,12 @@ public class UserServiceImpl implements UserService {
       throw new UserAlreadyExistException();
     }
 
-    UserAccount savedUserAccount = userAccountRepository.save(userAccount);
-    userInfo.setUserAccount(savedUserAccount);
-    userInfoRepository.save(userInfo);
+   /*  UserAccount savedUserAccount = userAccountRepository.save(userAccount);
+    userInfo.setUserAccount(savedUserAccount); */
+    userInfo.setUserAccount(userAccount);
+    UserInfo savedUserInfo = userInfoRepository.save(userInfo);
     //userAccountRepository.save(entity);
-    return savedUserAccount;
+    return savedUserInfo;
   }
 
   @Override

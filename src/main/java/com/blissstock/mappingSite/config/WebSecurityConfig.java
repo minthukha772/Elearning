@@ -66,9 +66,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
       .antMatchers("/teacher/**")
       .hasAnyRole(UserRole.TEACHER.getValue())
       .antMatchers("/admin/**")
-      .hasAnyRole(UserRole.ADMIN.getValue(), UserRole.SUPER_ADMIN.getValue()) */
+      .hasAnyRole(UserRole.ADMIN.getValue(), UserRole.SUPER_ADMIN.getValue())
       .anyRequest()
-      .authenticated()
+      .authenticated() */
       .and()
       .formLogin()
       .loginPage("/login") //ログインページはコントローラを経由しないのでViewNameとの紐付けが必要

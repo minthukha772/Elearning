@@ -45,7 +45,7 @@ public class UserAccount {
   private String password;
 
   @Column(name = "role", length = 15)
-  private UserRole role;
+  private String role;
 
   @Column(name = "account_status", length = 10)
   private String accountStatus;
@@ -70,7 +70,7 @@ public class UserAccount {
     userAccount.mail = userRegisterDTO.getEmail();
     userAccount.password = userRegisterDTO.getPassword();
     userAccount.role =
-      userRegisterDTO instanceof TeacherRegisterDTO ? UserRole.TEACHER : UserRole.STUDENT;
+      userRegisterDTO instanceof TeacherRegisterDTO ? UserRole.TEACHER.getValue() : UserRole.STUDENT.getValue();
     userAccount.registeredDate = GregorianCalendar.getInstance().getTime();
     return userAccount;
   }

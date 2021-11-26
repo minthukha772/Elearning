@@ -1,12 +1,13 @@
 package com.blissstock.mappingSite.controller;
 
-import com.blissstock.mappingSite.exceptions.NotImageFileException;
-import com.blissstock.mappingSite.model.FileInfo;
-import com.blissstock.mappingSite.service.StorageService;
-import com.blissstock.mappingSite.validation.validators.ImageFileValidator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.blissstock.mappingSite.exceptions.NotImageFileException;
+import com.blissstock.mappingSite.model.FileInfo;
+import com.blissstock.mappingSite.service.StorageService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

@@ -1,21 +1,20 @@
 package com.blissstock.mappingSite.service;
 
-import com.blissstock.mappingSite.exceptions.FileStorageException;
-import com.blissstock.mappingSite.exceptions.NotImageFileException;
-import com.blissstock.mappingSite.validation.validators.ImageFileValidator;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.stream.Stream;
-import org.springframework.beans.factory.annotation.Value;
+
+import com.blissstock.mappingSite.exceptions.FileStorageException;
+import com.blissstock.mappingSite.exceptions.NotImageFileException;
+import com.blissstock.mappingSite.validation.validators.ImageFileValidator;
+
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service

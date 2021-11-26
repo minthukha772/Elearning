@@ -6,7 +6,7 @@ import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.entity.VerificationToken;
 
 public interface UserService {
-  public UserAccount addUser(UserRegisterDTO userRegisterDTO) throws Exception;
+  public UserInfo addUser(UserRegisterDTO userRegisterDTO) throws Exception;
   public void updateUser(UserRegisterDTO userRegisterDTO);
   public UserRegisterDTO getUserByEmail(String email);
   public UserAccount getUserAccountByEmail(String email);

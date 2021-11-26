@@ -2,7 +2,7 @@ package com.blissstock.mappingSite.listener;
 
 import java.util.UUID;
 
-import com.blissstock.mappingSite.entity.UserAccount;
+import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.event.OnRegistrationCompleteEvent;
 import com.blissstock.mappingSite.service.UserService;
 
@@ -33,11 +33,11 @@ public class RegistrationListener implements
 
     private void confirmRegistration(OnRegistrationCompleteEvent event) {
         System.out.println("Init Sending Mail");
-        UserAccount userAccount = event.getUserAccount();
+        UserInfo userInfo = event.getUserInfo();
         String token = UUID.randomUUID().toString();
-        service.createVerificationToken(userAccount, token);
+        service.createVerificationToken(userInfo.getUserAccount(), token);
         
-        String recipientAddress = userAccount.getMail();
+        String recipientAddress = userInfo.getUserAccount().getMail();
         String subject = "Registration Confirmation";
         String confirmationUrl 
           = event.getAppUrl() + "/regitrationConfirm.html?token=" + token;

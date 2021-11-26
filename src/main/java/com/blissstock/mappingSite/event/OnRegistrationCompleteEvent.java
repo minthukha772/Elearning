@@ -1,7 +1,9 @@
 package com.blissstock.mappingSite.event;
 
-import com.blissstock.mappingSite.entity.UserAccount;
 import java.util.Locale;
+
+import com.blissstock.mappingSite.entity.UserInfo;
+
 import org.springframework.context.ApplicationEvent;
 
 import lombok.Data;
@@ -15,15 +17,15 @@ public class OnRegistrationCompleteEvent extends ApplicationEvent {
 
   private String appUrl;
   private Locale locale;
-  private UserAccount userAccount;
+  private UserInfo userInfo;
 
   public OnRegistrationCompleteEvent(
-    UserAccount userAccount,
+    UserInfo userInfo,
     Locale locale,
     String appUrl
   ) {
-    super(userAccount);
-    this.userAccount = userAccount;
+    super(userInfo);
+    this.userInfo = userInfo;
     this.locale = locale;
     this.appUrl = appUrl;
   }

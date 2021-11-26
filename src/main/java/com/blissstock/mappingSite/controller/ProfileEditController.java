@@ -1,15 +1,14 @@
 package com.blissstock.mappingSite.controller;
 
-import com.blissstock.mappingSite.dto.TeacherRegisterDTO;
-import com.blissstock.mappingSite.dto.UserRegisterDTO;
-import com.blissstock.mappingSite.entity.UserAccount;
-import com.blissstock.mappingSite.entity.UserInfo;
-import com.blissstock.mappingSite.enums.UserRole;
-import com.blissstock.mappingSite.service.UserService;
-import com.blissstock.mappingSite.service.UserSessionService;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import javax.websocket.server.PathParam;
+
+import com.blissstock.mappingSite.dto.TeacherRegisterDTO;
+import com.blissstock.mappingSite.dto.UserRegisterDTO;
+import com.blissstock.mappingSite.entity.UserInfo;
+import com.blissstock.mappingSite.service.UserService;
+import com.blissstock.mappingSite.service.UserSessionService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -47,7 +46,7 @@ public class ProfileEditController {
       //Id only present on admin side
       UserInfo userInfo = userService.getUserInfoByID(id);
       email = userInfo.getUserAccount().getMail();
-      role = userInfo.getUserAccount().getRole().getValue();
+      role = userInfo.getUserAccount().getRole();
       postAction = "/admin/profile_edit/" + role;
     } else {
       email = userSessionService.getEmail();
