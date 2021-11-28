@@ -20,8 +20,12 @@ $(function () {
     const button = $(event.relatedTarget);
 
     $("#contentContainer").empty();
+    const modal = $(this);
     
     previousAction = button.data("action");
+    if (button.data("action") == "new"){
+        modal.find(".modal-title").text("New");
+    }
     if (button.data("action") == "modify") {
       // Extract info from data-* attributes
       const cardId = button.data("id");
@@ -33,7 +37,7 @@ $(function () {
       const titleId = titleTag.data("id");
       console.log(titleText, titleId);
 
-      const modal = $(this);
+      
       modal.find(".modal-title").text("Modify " + titleText);
       modal.find("input[name=syllabusId]").attr("value", titleId);
       modal.find("input[name=title]").attr("value", titleText);
