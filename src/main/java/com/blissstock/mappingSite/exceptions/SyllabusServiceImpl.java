@@ -3,15 +3,28 @@ package com.blissstock.mappingSite.exceptions;
 import com.blissstock.mappingSite.entity.Content;
 import com.blissstock.mappingSite.entity.Syllabus;
 import com.blissstock.mappingSite.service.SyllabusService;
+import com.blissstock.mappingSite.service.UserSessionService;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class SyllabusServiceImpl implements SyllabusService {
 
+    @Autowired
+    UserSessionService userSessionService;
+
   @Override
   public void addSyllabus(Syllabus syllabus) {
+        String courseId = "";
+        String teacherEmail = courseId;
+        if(teacherEmail != userSessionService.getEmail()){
+            throw new InsuffientPermssionException();
+        }
+      syllabus.getSyllabusId();
     // TODO Auto-generated method stub
 
   }

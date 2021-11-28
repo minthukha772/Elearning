@@ -3,6 +3,7 @@ package com.blissstock.mappingSite.controller;
 import com.blissstock.mappingSite.entity.Content;
 import com.blissstock.mappingSite.entity.Syllabus;
 import com.blissstock.mappingSite.enums.UserRole;
+import com.blissstock.mappingSite.exceptions.InsuffientPermssionException;
 import com.blissstock.mappingSite.service.SyllabusService;
 import com.blissstock.mappingSite.service.UserSessionService;
 import java.util.ArrayList;
@@ -71,7 +72,13 @@ public class CourseSyllabusController {
 
     try {
       //syllabusService.deleteSyllabus(id);
-    } catch (Exception e) {}
+      syllabusService.addSyllabus(syllabus);
+    } catch(InsuffientPermssionException e){
+      //
+    }
+    catch (Exception e) {
+      //
+    }
 
     /* 
     if(userRole==UserRole.ADMIN){
