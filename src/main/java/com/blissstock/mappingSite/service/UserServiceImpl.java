@@ -1,18 +1,15 @@
 package com.blissstock.mappingSite.service;
 
-import javax.transaction.Transactional;
-import javax.validation.Validation;
-import javax.validation.Validator;
-
 import com.blissstock.mappingSite.dto.UserRegisterDTO;
 import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.entity.UserInfo;
-import com.blissstock.mappingSite.entity.VerificationToken;
+import com.blissstock.mappingSite.entity.Token;
 import com.blissstock.mappingSite.exceptions.UserAlreadyExistException;
 import com.blissstock.mappingSite.repository.TokenRepository;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
 import com.blissstock.mappingSite.repository.UserInfoRepository;
-
+import java.util.GregorianCalendar;
+import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -30,8 +27,6 @@ public class UserServiceImpl implements UserService {
   @Autowired
   private final TokenRepository tokenRepository;
 
-  private Validator validator;
-
   @Autowired
   private PasswordEncoder passwordEncoder;
 
@@ -43,13 +38,16 @@ public class UserServiceImpl implements UserService {
     this.userAccountRepository = userAccountRepository;
     this.userInfoRepository = userInfoRepository;
     this.tokenRepository = tokenRepository;
-    this.validator = Validation.buildDefaultValidatorFactory().getValidator();
+    //validator = Validation.buildDefaultValidatorFactory().getValidator();
   }
 
   public UserInfo addUser(UserRegisterDTO userRegisterDTO)
     throws UserAlreadyExistException {
     UserInfo userInfo = UserRegisterDTO.toUserInfo(userRegisterDTO);
-    UserAccount userAccount = UserAccount.fromRegisterDTO(userRegisterDTO);
+    UserAccount userAccount = UserRegisterDTO.toUserAccount(
+      userRegisterDTO,
+      GregorianCalendar.getInstance().getTime()
+    );
     //Encode Password
     userAccount.setPassword(passwordEncoder.encode(userAccount.getPassword()));
 
@@ -57,7 +55,7 @@ public class UserServiceImpl implements UserService {
       throw new UserAlreadyExistException();
     }
 
-   /*  UserAccount savedUserAccount = userAccountRepository.save(userAccount);
+    /*  UserAccount savedUserAccount = userAccountRepository.save(userAccount);
     userInfo.setUserAccount(savedUserAccount); */
     userInfo.setUserAccount(userAccount);
     UserInfo savedUserInfo = userInfoRepository.save(userInfo);
@@ -67,12 +65,15 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public void updateUser(UserRegisterDTO userRegisterDTO) {
-    UserInfo existingUserInfo = userInfoRepository.findUserInfoByEmail(userRegisterDTO.getEmail());
+    UserInfo existingUserInfo = userInfoRepository.findUserInfoByEmail(
+      userRegisterDTO.getEmail()
+    );
     System.out.println(existingUserInfo);
-    if(existingUserInfo!=null){
-      existingUserInfo = UserRegisterDTO.toUserInfo(userRegisterDTO,existingUserInfo);
+    if (existingUserInfo != null) {
+      existingUserInfo =
+        UserRegisterDTO.toUserInfo(userRegisterDTO, existingUserInfo);
     }
-     userInfoRepository.save(existingUserInfo);
+    userInfoRepository.save(existingUserInfo);
   }
 
   @Override
@@ -94,21 +95,25 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public void createVerificationToken(UserAccount userAccount, String token) {
-    VerificationToken myToken = new VerificationToken(token, userAccount);
+    Token myToken = new Token(token, userAccount);
     tokenRepository.save(myToken);
   }
 
   @Override
-  public VerificationToken getVerificationToken(String VerificationToken) {
-    return tokenRepository.findByToken(VerificationToken);
+  public Token getVerificationToken(String VerificationToken) {
+    return null;
+    //TODO fix bug
+    //return tokenRepository.findByToken(VerificationToken);
   }
 
   @Override
   public UserAccount getUserAccountByToken(String verificationToken) {
-    UserAccount userAccount = tokenRepository
+    return null;
+    //TODo fix bug
+    /* UserAccount userAccount = tokenRepository
       .findByToken(verificationToken)
-      .getUserAccount();
-    return userAccount;
+      .getUserAccount(); */
+    //return userAccount;
   }
 
   @Override

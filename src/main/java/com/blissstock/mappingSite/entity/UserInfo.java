@@ -11,7 +11,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -36,7 +38,6 @@ public class UserInfo {
 
   @Column(name = "uid")
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
   private Long uid;
 
   @Column(name = "photo")
@@ -91,6 +92,8 @@ public class UserInfo {
 
   //mapping
   @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  @MapsId
+  @JoinColumn(name = "id")
   UserAccount userAccount;
 
   @OneToMany(

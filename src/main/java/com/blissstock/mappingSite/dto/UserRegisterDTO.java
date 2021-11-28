@@ -10,7 +10,9 @@ import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.entity.UserInfo;
+import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.interfaces.Confirmable;
 import com.blissstock.mappingSite.utils.DateFormatter;
 import com.blissstock.mappingSite.validation.ConstrainMessage;
@@ -33,8 +35,6 @@ import lombok.Setter;
 // @PasswordMatch only work with PasswordData classees
 public class UserRegisterDTO extends PasswordData implements Confirmable {
 
-  
-
   @ValidEmail
   private String email;
 
@@ -45,14 +45,22 @@ public class UserRegisterDTO extends PasswordData implements Confirmable {
     regexp = "^(?=.*?[A-Za-z])(?=.*?[0-9]).{8,}$",
     message = ConstrainMessage.PASSWORD_CONSTRAIN_MESSAGE
   )
-  @Size(min = 8, max = 32, message = ConstrainMessage.PASSWORD_LENGTH_CONSTRAIN_MESSAGE)
+  @Size(
+    min = 8,
+    max = 32,
+    message = ConstrainMessage.PASSWORD_LENGTH_CONSTRAIN_MESSAGE
+  )
   private String password;
 
   @Pattern(
     regexp = "^(?=.*?[A-Za-z])(?=.*?[0-9]).{8,}$",
     message = ConstrainMessage.PASSWORD_CONSTRAIN_MESSAGE
   )
-  @Size(min = 8, max = 32, message = ConstrainMessage.PASSWORD_LENGTH_CONSTRAIN_MESSAGE)
+  @Size(
+    min = 8,
+    max = 32,
+    message = ConstrainMessage.PASSWORD_LENGTH_CONSTRAIN_MESSAGE
+  )
   private String confirmPassword;
 
   @NotBlank(message = ConstrainMessage.EMPTY_CONSTRAIN_MESSAGE)
@@ -62,10 +70,13 @@ public class UserRegisterDTO extends PasswordData implements Confirmable {
   private String phone;
 
   @DateTimeFormat(pattern = "yyyy-MM-dd")
-  @Past  
+  @Past
   private Date dob = new Date();
 
-  @Max(value = 99999, message = ConstrainMessage.INVALID_FORMAT_CONSTRAIN_MESSAGE)
+  @Max(
+    value = 99999,
+    message = ConstrainMessage.INVALID_FORMAT_CONSTRAIN_MESSAGE
+  )
   private int zipCode;
 
   @NotBlank(message = ConstrainMessage.EMPTY_CONSTRAIN_MESSAGE)
@@ -100,33 +111,35 @@ public class UserRegisterDTO extends PasswordData implements Confirmable {
   }
 
   //This Funcation has side use with
-  public static UserInfo toUserInfo(UserRegisterDTO userRegisterDTO, UserInfo userInfo) {
-    
-    userInfo.setUserName (userRegisterDTO.getName());
-    userInfo.setPhoneNo (userRegisterDTO.getPhone());
-    userInfo.setGender (userRegisterDTO.getGender());
-    userInfo.setBirthDate (userRegisterDTO.getDob());
-    userInfo.setPostalCode (userRegisterDTO.getZipCode() + "");
-    userInfo.setCity (userRegisterDTO.getCity());
-    userInfo.setDivision (userRegisterDTO.getDivision());
-    userInfo.setAddress (userRegisterDTO.getAddress());
-    userInfo.setEducation (userRegisterDTO.getEducation());
+  public static UserInfo toUserInfo(
+    UserRegisterDTO userRegisterDTO,
+    UserInfo userInfo
+  ) {
+    userInfo.setUserName(userRegisterDTO.getName());
+    userInfo.setPhoneNo(userRegisterDTO.getPhone());
+    userInfo.setGender(userRegisterDTO.getGender());
+    userInfo.setBirthDate(userRegisterDTO.getDob());
+    userInfo.setPostalCode(userRegisterDTO.getZipCode() + "");
+    userInfo.setCity(userRegisterDTO.getCity());
+    userInfo.setDivision(userRegisterDTO.getDivision());
+    userInfo.setAddress(userRegisterDTO.getAddress());
+    userInfo.setEducation(userRegisterDTO.getEducation());
 
     if (userRegisterDTO instanceof TeacherRegisterDTO) {
       TeacherRegisterDTO teacherRegisterDTO = (TeacherRegisterDTO) userRegisterDTO;
-      userInfo.setNrc ( teacherRegisterDTO.getNrc());
-      userInfo.setSelfDescription( teacherRegisterDTO.getSelfDescription());
+      userInfo.setNrc(teacherRegisterDTO.getNrc());
+      userInfo.setSelfDescription(teacherRegisterDTO.getSelfDescription());
       userInfo.setCertificate(teacherRegisterDTO.getAward());
     }
 
     return userInfo;
   }
 
-  public static UserInfo toUserInfo(UserRegisterDTO userRegisterDTO){
-    return toUserInfo(userRegisterDTO,new UserInfo());
+  public static UserInfo toUserInfo(UserRegisterDTO userRegisterDTO) {
+    return toUserInfo(userRegisterDTO, new UserInfo());
   }
 
-  public static UserRegisterDTO fromUserInfo(UserInfo userInfo){
+  public static UserRegisterDTO fromUserInfo(UserInfo userInfo) {
     TeacherRegisterDTO registerDTO = new TeacherRegisterDTO();
     registerDTO.setEmail(userInfo.getUserAccount().getMail());
     registerDTO.setName(userInfo.getUserName());
@@ -143,5 +156,30 @@ public class UserRegisterDTO extends PasswordData implements Confirmable {
     registerDTO.setSelfDescription(userInfo.getSelfDescription());
     registerDTO.setAward(userInfo.getCertificate());
     return registerDTO;
+  }
+
+  public static UserAccount toUserAccount(
+    UserRegisterDTO userRegisterDTO,
+    Date registeredDate
+  ) {
+    UserAccount userAccount = new UserAccount();
+    userAccount.setMail(userRegisterDTO.getEmail());
+    userAccount.setPassword(userRegisterDTO.getPassword());
+    userAccount.setRole(
+      userRegisterDTO instanceof TeacherRegisterDTO
+        ? UserRole.TEACHER.getValue()
+        : UserRole.STUDENT.getValue()
+    );
+    if (registeredDate != null) {
+      userAccount.setRegisteredDate(registeredDate);
+    }
+
+    return userAccount;
+  }
+
+  public static UserAccount toUserAccount(
+    UserRegisterDTO userRegisterDTO
+  ) {
+    return toUserAccount(userRegisterDTO,null);
   }
 }
