@@ -98,3 +98,7 @@ margin-bottom: 10px !important;
   border: none transparent; 
   background-color:#FFF !important;
 }
+
+textarea:focus {
+  outline: none !important;
+  }

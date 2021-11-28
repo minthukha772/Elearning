@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <title>Mapping Site</title>
-    <link rel="stylesheet" type="text/css" href="css/CM0008_WriteReviewConfirm.css">
-    <link rel="stylesheet" type="text/css" href="css/footer.css">
+    <link rel="stylesheet" type="text/css" href="/css/CM0008_WriteReviewConfirm.css">
+    <link rel="stylesheet" type="text/css" href="/css/footer.css">
   <style>
    textarea:focus {
     outline: none !important;
@@ -47,42 +47,41 @@
         <h5 class="card-header">
           Add Review
         </h5>
-        <form method="post" action="/save-student-review"  th:object="${review}">
+        <form method="post" th:action="@{${saveAction}}"  th:object="${review}">
         <div class="card-body">
           <h5 class="submit-sure">
             Are You Sure to Submit?
           </h5>          
               <div class="feedback">
+
                 <div class="rating">
-                  <small th:text="${starErr}"></small>
-                  <input type="radio" name="rating-star" value="5" id="rating-5" th:field="*{star}" disabled>
+                
+                  <input type="radio" name="rating-star" value="5" id="rating-5" th:field="${star}" disabled>
                   <label for="rating-5"></label>
             
                   
-                  <input type="radio" name="rating-star" value="4" id="rating-4" th:field="*{star}" disabled>
+                  <input type="radio" name="rating-star" value="4" id="rating-4" th:field="${star}" disabled>
                   <label for="rating-4"></label>
                  
                   
-                  <input type="radio" name="rating-star" value="3" id="rating-3" th:field="*{star}" disabled>
+                  <input type="radio" name="rating-star" value="3" id="rating-3" th:field="${star}" disabled>
                   <label for="rating-3"></label>
            
                  
-                  <input type="radio" name="rating-star" value="2" id="rating-2" th:field="*{star}" disabled>
+                  <input type="radio" name="rating-star" value="2" id="rating-2" th:field="${star}" disabled>
                   <label for="rating-2"></label>
             
                   
-                  <input type="radio" name="rating-star" value="1" id="rating-1" th:field="*{star}" disabled>
+                  <input type="radio" name="rating-star" value="1" id="rating-1" th:field="${star}" disabled>
                   <label for="rating-1"></label>
                 
                 </div>
-                <small th:text="${feedbackErr}"></small>
-              <textarea class="form-control" id="feedback" th:field=*{feedback} disabled></textarea>
-              <input type="hidden" value="finished" th:field="*{reviewStatus}"> 
+              <textarea class="form-control" id="feedback" th:field=${feedback} disabled></textarea> 
             </div>
               <div class="row">
                 <div class="buttons col-sm-12 text-center">                   
                      <button id="btnBack" type="button" class="btn btn-spacing btn-secondary center-block" Style="width: 100px;" onclick="history.go(-1);"  >Back</button>
-                     <button id="btnSubmit" class="btn btn-spacing btn-primary center-block" Style="width: 150px;" OnClick="btnSearch_Click" >Confirm</button>
+                     <button id="btnSubmit" type="submit" class="btn btn-spacing btn-primary center-block" Style="width: 150px;" OnClick="btnSearch_Click"  name="action" value="submit">Confirm</button>
                  </div>
             </div>
         </div>

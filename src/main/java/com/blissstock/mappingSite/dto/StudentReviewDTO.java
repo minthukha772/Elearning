@@ -1,22 +1,23 @@
 package com.blissstock.mappingSite.dto;
 
+import java.util.LinkedHashMap;
+
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+
+import com.blissstock.mappingSite.interfaces.StudentReview;
+
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-
 @Data
-public class StudentReviewDTO{
+public class StudentReviewDTO implements StudentReview{
 
 	  private Long reviewId;
-	
-    //@NotBlank(message="Please choose review type")
-	  private int reviewType;
 
     @Min(value = 1, message = "Please fill rating")
     @Max(value = 5, message = "Please fill rating")
@@ -25,5 +26,13 @@ public class StudentReviewDTO{
     @NotBlank(message="Please fill feedback")
 	  private String feedback;
 
-	  private String reviewStatus;
+
+	  @Override
+	  public LinkedHashMap<String, String> toMapReview() {
+		LinkedHashMap<String, String> map = new LinkedHashMap<>();
+		map.put("star", this.star + "");
+		map.put("feedback", this.feedback);
+		
+		return map;
+	  }
 }

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="/css/CM0004_Student Profile.css" />
+    <title>Register</title>
+  </head>
+
+  <body style="background-color: #f0f0f0">
+    <!-- guest user navi bar -->
+    <div th:replace="fragments/usernav"></div>
+
+    <div class="m-3">
+      <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="#" data-bs-toggle="modal" data-bs-target="#reEnterEmail"
+              >Email</a
+            >
+          </li>
+          <li class="breadcrumb-item active">Registration</li>
+          <li class="breadcrumb-item" aria-current="page">Confirmation</li>
+          <li class="breadcrumb-item" aria-current="page">Completion</li>
+        </ol>
+      </nav>
+    </div>
+
+    <!-- Email Return Modal -->
+    <div
+      class="modal fade"
+      id="reEnterEmail"
+      tabindex="-1"
+      aria-labelledby="reEnterEmailLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="reEnterEmailLabel">Discard Changes</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            All the filled information will be lost. Do you willing to continue?
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+
+            <a
+              class="btn btn-danger"
+              th:href="@{/email_check/register/{role}(role=${role})}"
+              >Discard</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <form
+      id="contactForm"
+      th:action="@{${postAction}}"
+      data-th-action="@{/student/edit}"
+      th:object="${userInfo}"
+      method="post"
+   >
+      <div class="container-custom">
+        <div class="card">
+          <div class="card-header">Personal Information</div>
+          <div class="card-body">
+            <div class="container">
+              <!--  <div class="profile-pic-wrapper mb-3">
+                <div class="pic-holder">
+                  <!-- uploaded pic shown here 
+                  <img id="profilePic" class="pic" th:if="${pic64 == null}" src="/images/profile.png" />
+                  <img id="profilePic" class="pic" th:unless="${pic64 == null}" th:src="${pic64}" />
+                 
+                 
+                  <label for="newProfilePhoto" class="upload-file-block">
+                    <div class="text-center">
+                      <div class="mb-2">
+                        <i class="fa fa-camera fa-2x"></i>
+                      </div>
+                      <div class="text-uppercase">
+                        Upload <br />
+                        Profile Photo
+                      </div>
+                    </div>
+                  </label>
+                  <input
+                    class="uploadProfileInput"
+                    type="file"
+                    name="profile_pic"
+                    id="newProfilePhoto"
+                    accept="image/*"
+                    style="display: none"
+                    th:field="*{profilePhoto}"
+                  />
+                </div>
+                <h4>Profile Pic</h4>
+              </div> -->
+
+        
+              <div id="profile">
+                <div class="table-responsive mb-3">
+                  <div class="d-flex justify-content-center">
+                    <img th:src="@{${imagePath}}" class="profile_img">
+                  </div>
+                  <table class="table table-borderless table-hover">
+                    <tr th:each="entry, stats : ${trInfo}">
+                      <!-- <td th:text="${stats.index + 1}">1</td> -->
+                      <td th:text="${entry.key}" class="text-end">100</td>
+                      <td>:</td>
+                      <td th:text="${entry.value}">John</td>
+                    </tr>
+                  </table>
+                </div>
+                <div th:if="${files!=null and !files.empty}"></div>
+
+                <div class="row row-cols-1 row-cols-md-3 g-4">
+                  <div class="col" th:each="fileInfo, stats : ${files}">
+                    <div class="card h-100">
+                      <img
+                        th:src="${fileInfo.url}"
+                        class="card-img-top"
+                        th:alt="${fileInfo.name}"
+                      />
+                      <div class="card-body">
+                        <p class="card-title" th:text="${fileInfo.name}">Card title</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row justify-content-between">
+                  <button class="btn btn-primary col-auto back">Change Password</button>
+
+                  <button
+                    class="btn btn-primary col-auto"
+                    id="submitButton"
+                    type="submit"
+                    name="action"
+                    value="submit"
+                  >
+                    Edit
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!---End of Card-->
+      </div>
+      <!-- End of Container -->
+    </form>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
+      integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI="
+      crossorigin="anonymous"
+    ></script>
+    <script src="/js/ST0001_register.js"></script>
+  </body>
+</html>

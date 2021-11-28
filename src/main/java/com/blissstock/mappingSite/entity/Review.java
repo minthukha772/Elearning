@@ -1,10 +1,15 @@
 package com.blissstock.mappingSite.entity;
 
+import java.time.LocalDate;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -34,6 +39,10 @@ public class Review {
     @Column(name = "review_status", length = 15)
 	private String reviewStatus;
 
+    @Column(name = "assigned_date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate assignedDate;
+    
 	//mapping
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "uid_fkey")
@@ -48,15 +57,18 @@ public class Review {
     public Review() {
     }
    
-    public Review(Long reviewId, int reviewType, float star, String feedback, String reviewStatus, UserInfo userInfo, CourseInfo courseInfo) {
+
+    public Review(Long reviewId, int reviewType, float star, String feedback, String reviewStatus, LocalDate assignedDate, UserInfo userInfo, CourseInfo courseInfo) {
         this.reviewId = reviewId;
         this.reviewType = reviewType;
         this.star = star;
         this.feedback = feedback;
         this.reviewStatus = reviewStatus;
+        this.assignedDate = assignedDate;
         this.userInfo = userInfo;
         this.courseInfo = courseInfo;
     }
+    
 
     public Long getReviewId() {
         return this.reviewId;
@@ -114,6 +126,14 @@ public class Review {
         this.courseInfo = courseInfo;
     }
     
+
+    public LocalDate getAssignedDate() {
+        return this.assignedDate;
+    }
+
+    public void setAssignedDate(LocalDate assignedDate) {
+        this.assignedDate = assignedDate;
+    }
 	
 }
 

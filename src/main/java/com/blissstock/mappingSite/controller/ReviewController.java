@@ -1,17 +1,22 @@
 package com.blissstock.mappingSite.controller;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
 import javax.validation.Valid;
 
 import com.blissstock.mappingSite.dto.StudentReviewDTO;
 import com.blissstock.mappingSite.dto.TeacherReviewDTO;
-// import com.blissstock.mappingSite.entity.Review;
-// import com.blissstock.mappingSite.entity.ReviewTest;
-// import com.blissstock.mappingSite.entity.UserInfo;
-// import com.blissstock.mappingSite.repository.ReviewRepository;
-// import com.blissstock.mappingSite.repository.ReviewTestRepository;
-// import com.blissstock.mappingSite.repository.UserRepository;
+import com.blissstock.mappingSite.entity.CourseInfo;
+import com.blissstock.mappingSite.entity.Review;
 import com.blissstock.mappingSite.entity.ReviewTest;
+import com.blissstock.mappingSite.repository.CourseInfoRepository;
+import com.blissstock.mappingSite.repository.ReviewRepository;
 import com.blissstock.mappingSite.repository.ReviewTestRepository;
+import com.blissstock.mappingSite.service.StudentReviewService;
+import com.blissstock.mappingSite.service.TeacherReviewService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +26,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,67 +37,100 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class ReviewController {
     // @Autowired
     // UserRepository userRepo;
+    @Autowired
+    CourseInfoRepository courseInfoRepo;
 
     @Autowired
     ReviewTestRepository reviewTestRepo;
+
+    @Autowired
+    ReviewRepository reviewRepo;
+
+    @Autowired
+    StudentReviewService stuReviewService;
+
+    @Autowired
+    TeacherReviewService trReviewService;
     //get student review 
     @Valid
-    @GetMapping(value="/student-review/{courseName}/{userName}")
-    private String getStudentReviewForm(@PathVariable String courseName, @PathVariable String userName, Model model) {  
+    @GetMapping(value="/student-review/{courseId}/{userName}")
+    private String getStudentReviewForm(@PathVariable Long courseId, @PathVariable String userName, Model model) {  
         StudentReviewDTO stuReview = new StudentReviewDTO();
         model.addAttribute("review", stuReview);
-	    return "CM0007_WriteReviewStudent";
-	}
-    @PostMapping(value="/update-student-review")
-    private String postStudentReviewForm( @Valid @ModelAttribute("review") StudentReviewDTO inputStuReview, BindingResult bindingResult, Model model) {
-	    if(bindingResult.hasErrors()) {
-			return "CM0007_WriteReviewStudent";			
-		}
-        return "CM0008_WriteReviewConfirmStudent";
+        model.addAttribute("postAction", "/update-student-review/"+courseId);
+	    
+        return "CM0007_WriteReviewStudent";
+
 	}
 
-    @PostMapping(value="/save-student-review")
-    private String saveStudentReviewForm( @Valid @ModelAttribute("review") ReviewTest newStuReview, BindingResult bindingResult, Model model) {
-        ReviewTest saveStuReview = new ReviewTest(null, 0, newStuReview.getStar(),newStuReview.getFeedback(),newStuReview.getReviewStatus());
-        reviewTestRepo.save(saveStuReview);
-        return "CM0008_WriteReviewConfirmStudent";
+    @PostMapping(value="/update-student-review/{courseId}")
+    private String postStudentReviewForm( @Valid @ModelAttribute("review") StudentReviewDTO stuReviewDTO, @PathVariable Long courseId,BindingResult bindingResult, Model model, @RequestParam(value="action", required=true) String action) { 
+        if(bindingResult.hasErrors()) {
+			return "CM0007_WriteReviewStudent";			
+		}
+        CourseInfo course = courseInfoRepo.findById(courseId).orElse(null);
+        try{
+            if(action.equals("submit")){
+              stuReviewService.addReview(stuReviewDTO, course);
+            }
+          }catch(Exception e){
+            System.out.println(e);
+          }
+        model.addAttribute("infoMap", stuReviewDTO.toMapReview());
+        return "CM0007_WriteReviewStudent";
+	}
+    
+    @Valid
+    @GetMapping(value="/edit-student-review/{reviewId}")
+    private String editStudentReviewForm(@PathVariable Long reviewId, Model model, final RedirectAttributes redirectAttributes) {  
+        Review review=reviewRepo.findById(reviewId).orElse(null);
+        model.addAttribute("review", review);
+	    return "CM0007_WriteReviewStudent";
 	}
     //get teacher review 
-    @GetMapping(value="/teacher-review/{courseName}/{userName}")
-    private String getTeacherReviewForm(@PathVariable String courseName, @PathVariable String userName, Model model) {
+    @GetMapping(value="/teacher-review/{courseId}/{userName}")
+    private String getTeacherReviewForm(@PathVariable Long courseId, @PathVariable String userName, Model model) {
         TeacherReviewDTO trReview = new TeacherReviewDTO();
         model.addAttribute("review", trReview);
-	return "CM0007_WriteReviewTeacher";
+        model.addAttribute("postAction", "/update-teacher-review/"+courseId);
+	    return "CM0007_WriteReviewTeacher";
 	}
-    @PostMapping(value="/update-teacher-review")
-    private String postTeacherReviewForm( @Valid @ModelAttribute("review") TeacherReviewDTO inputTrReview, BindingResult bindingResult, Model model) { 
+    @PostMapping(value="/update-teacher-review/{courseId}")
+    private String postTeacherReviewForm( @Valid @ModelAttribute("review") TeacherReviewDTO trReviewDTO, BindingResult bindingResult,@PathVariable Long courseId, Model model, @RequestParam(value="action", required=true) String action) { 
         if(bindingResult.hasErrors()) {
 			return "CM0007_WriteReviewTeacher";			
 		}
+        if(bindingResult.hasErrors()) {
+			return "CM0007_WriteReviewStudent";			
+		}
+        CourseInfo course = courseInfoRepo.findById(courseId).orElse(null);
+        try{
+            if(action.equals("submit")){
+              trReviewService.addReview(trReviewDTO, course);
+            }
+          }catch(Exception e){
+            System.out.println(e);
+          }
+        model.addAttribute("infoMap", trReviewDTO.toMapTrReview());
         return "CM0008_WriteReviewConfirmTeacher";
 	}
 
     @PostMapping(value="/save-teacher-review")
     private String saveTeacherReviewForm( @Valid @ModelAttribute("review") ReviewTest newTrReview, BindingResult bindingResult, Model model) {
-        ReviewTest saveStuReview = new ReviewTest(null, newTrReview.getReviewType(), 0,newTrReview.getFeedback(),newTrReview.getReviewStatus());
-        reviewTestRepo.save(saveStuReview);
+        //ReviewTest saveTrReview = new ReviewTest(null, newTrReview.getReviewType(), 0,newTrReview.getFeedback(),newTrReview.getReviewStatus(), null, null);
+        reviewTestRepo.save(newTrReview);
         return "CM0008_WriteReviewConfirmTeacher";
 	}
-    //admin edit review
-    // @GetMapping(value="/admin-student-review/{id}")
-    // private String adminGetStudentReviewForm(@PathVariable("id") Long reviewId,Model model) {
-    //     ReviewTest review= reviewTestRepo.findById(reviewId).orElse(null);
-    //     model.addAttribute("review", review);
-	// return "CM0007_AdminEditStudentReview.html";
-	// }
-    // @PostMapping("/edit-student-review") 
-    // public String helperTaskPost(@RequestParam("reviewId") Long reviewId, @Valid @ModelAttribute("review") ReviewTest reviewInfo, BindingResult result, Model model,RedirectAttributes redirectAttr) { 
-    // ReviewTest review= reviewTestRepo.findById(reviewId).orElse(null);
-    // review.setStar(reviewInfo.getStar());
-    // review.setFeedback(reviewInfo.getFeedback());
-    // reviewTestRepo.save(review);
-    // return "redirect:/student-review?reviewId="+reviewId;
-    // }
+
+     //edit teacher review
+     @Valid
+     @GetMapping(value="/edit-teacher-review/{reviewId}")
+     private String editTeacherReviewForm(@PathVariable Long reviewId, Model model, final RedirectAttributes redirectAttributes) {  
+         Review review=reviewRepo.findById(reviewId).orElse(null);
+         model.addAttribute("review", review);
+         return "CM0007_WriteReviewTeacher";
+     }
+   
    }
 
     
