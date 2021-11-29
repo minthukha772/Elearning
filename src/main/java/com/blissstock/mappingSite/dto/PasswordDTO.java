@@ -1,11 +1,13 @@
 package com.blissstock.mappingSite.dto;
 
+import com.blissstock.mappingSite.enums.PasswordResetType;
 import com.blissstock.mappingSite.validation.ConstrainMessage;
 
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -14,7 +16,10 @@ import javax.validation.constraints.Size;
 @Setter
 public class PasswordDTO {
 
+  @NotBlank
   private String oldPassword;
+
+  private PasswordResetType type;
 
   @Size(
     min = 8,

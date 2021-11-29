@@ -81,7 +81,7 @@ public class MailServiceImpl implements MailService {
     userService.createToken(userAccount, token, TokenType.PASSWORD_RESET);
 
     String recipientAddress = userAccount.getMail();
-    String subject = "Registration Confirmation";
+    String subject = "Reset Password";
 
     String confirmationUrl = appUrl + "/reset_password_verify?token=" + token;
     String message =

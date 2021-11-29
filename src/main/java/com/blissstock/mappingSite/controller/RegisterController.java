@@ -105,7 +105,7 @@ public class RegisterController {
             request.getServerName() + // "localhost"
             ":" +
             request.getServerPort(); //"8080"
-          mailService.sendVerificationMail(savedUserInfo, appUrl);
+          mailService.sendVerificationMail(savedUserInfo.getUserAccount(), appUrl);
         } catch (UserAlreadyExistException e) {
           e.printStackTrace();
           model.addAttribute("userExistError", true);
@@ -149,7 +149,7 @@ public class RegisterController {
             request.getServerName() + // "localhost"
             ":" +
             request.getServerPort(); //"8080"
-          mailService.sendVerificationMail(savedUserInfo, appUrl);
+          mailService.sendVerificationMail(savedUserInfo.getUserAccount(), appUrl);
         } catch (UserAlreadyExistException e) {
           e.printStackTrace();
           model.addAttribute("userExistError", true);
