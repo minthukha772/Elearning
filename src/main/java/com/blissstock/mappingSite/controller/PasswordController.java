@@ -62,6 +62,7 @@ public class PasswordController {
     HttpServletRequest request,
     @RequestParam("email") String userEmail
   ) throws UserNotFoundException {
+    System.out.println(userEmail);
     UserAccount user = userService.getUserAccountByEmail(userEmail);
     if (user == null) {
       throw new UserNotFoundException();
@@ -76,15 +77,9 @@ public class PasswordController {
     return "redirect:/login?resetSuccess";
   } 
 
-  @GetMapping("/send")
+  @GetMapping("/change_password")
   public String sendMail(Model model) {
-    mailService.sendMail(
-      "Test Subject",
-      "lycuzmarki@gmail.com",
-      "",
-      "",
-      "body"
-    );
-    return "redirect:/";
+
+    return "CM0006_change_password_screen";
   }
 }
