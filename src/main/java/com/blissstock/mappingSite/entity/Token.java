@@ -1,5 +1,6 @@
 package com.blissstock.mappingSite.entity;
 
+import com.blissstock.mappingSite.enums.TokenType;
 import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -9,12 +10,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 
@@ -23,6 +23,7 @@ import org.springframework.data.annotation.CreatedDate;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "token")
 public class Token {
 
@@ -32,21 +33,26 @@ public class Token {
 
   private String token;
 
-  private String type;
+  private String tokenType;
 
   @CreatedDate
   private Long created;
 
-  public Token(String token, UserAccount userAccount) {
-    this.token = token;
-    this.userAccount = userAccount;
+  private boolean isUsed;
+
+  public Token(String token, UserAccount userAccount, TokenType tokenType) {
+    this(token,userAccount,tokenType,null);
   }
 
-  @ManyToOne(
-    targetEntity = UserAccount.class,
-    fetch = FetchType.EAGER,
-    cascade = CascadeType.ALL
-  )
+  public Token(String token, UserAccount userAccount, TokenType tokenType, Long created) {
+    this.token = token;
+    this.userAccount = userAccount;
+    this.tokenType = tokenType.getValue();
+    this.created = created;
+    this.isUsed = false;
+  }
+
+  @ManyToOne
   @JoinColumn(nullable = false, name = "user_account")
   private UserAccount userAccount;
 

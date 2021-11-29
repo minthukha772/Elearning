@@ -1,15 +1,13 @@
-  package com.blissstock.mappingSite.entity;
+package com.blissstock.mappingSite.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
@@ -20,14 +18,10 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import org.springframework.format.annotation.DateTimeFormat;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
 @Setter
@@ -91,7 +85,7 @@ public class UserInfo {
   private String selfDescription;
 
   //mapping
-  @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  @OneToOne(fetch = FetchType.EAGER)
   @MapsId
   @JoinColumn(name = "id")
   UserAccount userAccount;
@@ -151,6 +145,4 @@ public class UserInfo {
   )
   @JsonIgnore
   private List<CourseInfo> courseInfo = new ArrayList<>();
-
-  
 }

@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public enum UserRole {
-    SUPER_ADMIN("super admin"), // all these enums give error, for no constructor
+    SUPER_ADMIN("super_admin"), // all these enums give error, for no constructor
     ADMIN("admin"),
     STUDENT("student"),
     TEACHER("teacher"),

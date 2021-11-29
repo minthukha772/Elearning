@@ -1,9 +1,10 @@
 package com.blissstock.mappingSite.service;
 
 import com.blissstock.mappingSite.dto.UserRegisterDTO;
+import com.blissstock.mappingSite.entity.Token;
 import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.entity.UserInfo;
-import com.blissstock.mappingSite.entity.Token;
+import com.blissstock.mappingSite.enums.TokenType;
 import com.blissstock.mappingSite.exceptions.UserAlreadyExistException;
 import com.blissstock.mappingSite.repository.TokenRepository;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
@@ -85,25 +86,33 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public UserAccount getUserAccountByEmail(String email) {
-    return userAccountRepository.findById(email).get();
+    return userAccountRepository.findByMail(email);
   }
 
   @Override
   public boolean isUserAccountPresent(String email) {
-    return userAccountRepository.findById(email).isPresent();
+    return userAccountRepository.findByMail(email) != null;
   }
 
   @Override
-  public void createVerificationToken(UserAccount userAccount, String token) {
-    Token myToken = new Token(token, userAccount);
+  public void createToken(
+    UserAccount userAccount,
+    String token,
+    TokenType tokenType
+  ) {
+    Token myToken = new Token(
+      token,
+      userAccount,
+      tokenType,
+      System.currentTimeMillis()
+    );
     tokenRepository.save(myToken);
   }
 
   @Override
-  public Token getVerificationToken(String VerificationToken) {
-    return null;
+  public Token getToken(String token, TokenType tokenType) {
     //TODO fix bug
-    //return tokenRepository.findByToken(VerificationToken);
+    return tokenRepository.getToken(token, tokenType.getValue());
   }
 
   @Override
@@ -119,5 +128,15 @@ public class UserServiceImpl implements UserService {
   @Override
   public UserInfo getUserInfoByID(Long id) {
     return userInfoRepository.findById(id).get();
+  }
+
+  @Override
+  public void updateUserAccount(UserAccount savedUserAccount) {
+    userAccountRepository.save(savedUserAccount);
+  }
+
+  @Override
+  public void updateToken(Token savedToken) {
+    tokenRepository.save(savedToken);
   }
 }

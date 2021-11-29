@@ -6,7 +6,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserAccountRepository
-  extends CrudRepository<UserAccount, String> {
+  extends CrudRepository<UserAccount, Long> {
+  
+    UserAccount findByMail(String mail);
   /* @Query(nativeQuery = true, value = "SELECT * FROM user_account u WHERE u.mail = :mail")
   UserAccount findUserByEmail(@Param("mail") String mail); */
 }
