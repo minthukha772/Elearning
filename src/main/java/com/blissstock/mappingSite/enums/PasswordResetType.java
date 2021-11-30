@@ -1,6 +1,6 @@
 package com.blissstock.mappingSite.enums;
 
-public class PasswordResetType {
+public enum PasswordResetType {
     TOKEN,
     OLD_PASSWORD
     
