@@ -1,30 +1,211 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <title>Mapping Site</title>
-</head>
-<body>
-    
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="css/index.css" />
+    <title>Login</title>
+  </head>
 
-      <div class="card">
-        <div class="card-header">
-          No!
+  <body>
+    <div th:replace="fragments/guestnav"></div>
+
+    <div
+      id="carouselIndicators"
+      class="carousel slide"
+      data-bs-ride="carousel"
+      style="width: 100%"
+    >
+      <div class="carousel-indicators">
+        <button
+          type="button"
+          data-bs-target="#carouselIndicators"
+          data-bs-slide-to="0"
+          class="active"
+          aria-current="true"
+          aria-label="Slide 1"
+        ></button>
+        <button
+          type="button"
+          data-bs-target="#carouselIndicators"
+          data-bs-slide-to="1"
+          aria-label="Slide 2"
+        ></button>
+        <button
+          type="button"
+          data-bs-target="#carouselIndicators"
+          data-bs-slide-to="2"
+          aria-label="Slide 3"
+        ></button>
+      </div>
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="images/top/1.jpg" class="d-block w-100" alt="..." />
         </div>
-        <div class="card-body">
-          <h5 class="card-title">Special title treatment</h5>
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
+        <div class="carousel-item">
+          <img src="images/top/2.jpg" class="d-block w-100" alt="..." />
+        </div>
+        <div class="carousel-item">
+          <img src="images/top/3.jpg" class="d-block w-100" alt="..." />
         </div>
       </div>
+      <button
+        class="carousel-control-prev"
+        type="button"
+        data-bs-target="#carouselIndicators"
+        data-bs-slide="prev"
+      >
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button
+        class="carousel-control-next"
+        type="button"
+        data-bs-target="#carouselIndicators"
+        data-bs-slide="next"
+      >
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
 
-      <footer class="fixed-bottom">
-          Some footer
-      </footer>
+    <section id="courses" class="container pt-5">
+      <h4>Choose From Teaching Method</h4>
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link active"
+            id="live-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#live"
+            type="button"
+            role="tab"
+            aria-controls="live"
+            aria-selected="true"
+          >
+            Live Session
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link"
+            id="recorded-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#recorded"
+            type="button"
+            role="tab"
+            aria-controls="recorded"
+            aria-selected="false"
+          >
+            Recorded Class
+          </button>
+        </li>
+      </ul>
+      <div class="tab-content" id="myTabContent">
+        <div
+          class="tab-pane fade show active"
+          id="live"
+          role="tabpanel"
+          aria-labelledby="live-tab"
+        >
+          .live session
+        </div>
+        <div
+          class="tab-pane fade"
+          id="recorded"
+          role="tabpanel"
+          aria-labelledby="recorded-tab"
+        >
+          ...
+        </div>
+      </div>
+    </section>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-</body>
+    <section id="hiring" class="mt-5 py-3">
+      <div class="container">
+        <h4>We are hiring!</h4>
+        <div class="row">
+          <img
+            class="col-sm-12 col-md-5"
+            src="images/top/hiring.jpg"
+            alt=""
+            srcset=""
+          />
+          <div class="col-sm-12 col-md-7 pt-sm-2">
+            <p class="justify">
+              Online teaching/learning plays an important part especially during
+              the hard time of COVID-19 pandemic. As an Instructor, you may find
+              hard time finding a place where you can deliver your knowledge to
+              the younger generation. By using the "Mapping Site", meet 10
+              million students and give them a proper gift.
+            </p>
+            <a href="/check_email/teacher" class="btn btn-lg btn-primary">Register Now</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="searchCourses" class="mt-5 py-3">
+      <div class="container">
+        
+        <div class="row">
+          <div class="col-sm-12 col-md-5">
+            <h4>Searching Courses by date</h4>
+            <p class="justify">
+              For students who are too busy and do not give studing, you can search course by peroid
+            </p>
+          </div>
+          
+          <div class="col-sm-12 col-md-7 pt-sm-2">
+            <form action="get">
+              <div class="row">
+                <div class="col-md-6 col-sm-12">
+                  <input type="date" class="form-control" placeholder="Start Date" aria-label="Start Date" name="startDate">
+                </div>
+                <div class="col-md-6 col-sm-12">
+                  <input type="date" class="form-control" placeholder="End Date" aria-label="End Date">
+                </div>
+              </div>
+              <div class="row justify-content-end">
+                <button
+                  class="btn btn-primary col-auto me-2 mt-2"
+                  id="submitButton"
+                  name="action"
+                  type="submit"
+                  value="next"
+                >
+                  Search
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!--  <div class="sticky-top">
+      <div class="row justify-content-center p-2 b">
+        <button class="btn btn-lg btn-primary col-auto">Register As a Student</button>
+        <button class="btn btn-lg btn-primary col-auto ms-2">Register As a Teacher</button>
+      </div>
+    </div>
+ -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
+      integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI="
+      crossorigin="anonymous"
+    ></script>
+  </body>
 </html>
