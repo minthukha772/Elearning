@@ -7,6 +7,10 @@
   text-justify: inter-word;
 }
 
-#hiring {
+#hiring, #termOfService {
     background-color: #f0f0f0;
+}
+
+.img-circle {
+  border-radius: 50%;
 }
