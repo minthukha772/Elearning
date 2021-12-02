@@ -19,7 +19,7 @@ public class PasswordDTO {
   @NotBlank
   private String oldPassword;
 
-  private PasswordResetType type;
+  private String type;
 
   @Size(
     min = 8,

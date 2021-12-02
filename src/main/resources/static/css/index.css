@@ -7,10 +7,36 @@
   text-justify: inter-word;
 }
 
-#hiring, #termOfService {
-    background-color: #f0f0f0;
+#hiring,
+#termOfService {
+  background-color: #f0f0f0;
 }
 
 .img-circle {
   border-radius: 50%;
+}
+
+.carousel .carousel-item {
+  height: 100vh;
+}
+
+.carousel-item img {
+  position: absolute;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  min-height: 100vh;
+}
+
+.float {
+  position: fixed;
+  top: 60px;
+  right: 40px;
+  color: #fff;
+  background-color: #5eba7d;
+  text-align: center;
+}
+
+.item {
+  width: 20%;
 }
