@@ -17,7 +17,7 @@
       crossorigin="anonymous"
     />
 
-    <link rel="stylesheet" href="/css/ST0007_manage_certificates.css" />
+    <link rel="stylesheet" th:href="@{/css/ST0007_manage_certificates.css}" />
 
     <title>Manage Certificate</title>
   </head>
@@ -134,6 +134,6 @@
 
     <!-- the main fileinput plugin script JS file -->
 
-    <script src="js/AT0007_manage_certificate.js"></script>
+    <script th:src="@{/js/AT0007_manage_certificate.js}"></script>
   </body>
 </html>

@@ -1,5 +1,6 @@
 package com.blissstock.mappingSite.service;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.stream.Stream;
 
@@ -10,11 +11,13 @@ public interface StorageService {
 
 	void init();
 
-	public Resource loadCertificate(String filename);
+	public Resource loadCertificate(Long uid, String filename);
 
-	void storeCertificates(MultipartFile[] files) ;
+	void storeCertificates(Long uid, MultipartFile[] files) ;
 
-	Stream<Path> loadAllCertificates();
+	Stream<Path> loadAllCertificates(Long uid);
+
+	public void deleteCertificate(Long uid, String filename) throws IOException;
 
 
 

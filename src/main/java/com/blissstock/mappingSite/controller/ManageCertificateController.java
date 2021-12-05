@@ -1,17 +1,18 @@
 package com.blissstock.mappingSite.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
+import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.exceptions.NotImageFileException;
 import com.blissstock.mappingSite.model.FileInfo;
 import com.blissstock.mappingSite.service.StorageService;
-
+import com.blissstock.mappingSite.service.UserSessionService;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,23 +24,38 @@ public class ManageCertificateController {
   @Autowired
   StorageService storageService;
 
-  @GetMapping("/manage_certificate")
-  public String manageCertificate(Model model) {
-    List<FileInfo> fileInfos = loadImages();
+  @Autowired
+  UserSessionService userSessionService;
+
+  @GetMapping(
+    value = { "/teacher/manage_certificate", "/admin/manage_certificate/{id}" }
+  )
+  public String manageCertificate(
+    Model model,
+    @PathVariable(name = "id", required = false) Long id
+  ) {
+    Long uid = getUid(id);
+    List<FileInfo> fileInfos = loadImages(uid);
     model.addAttribute("files", fileInfos);
 
     return "AT0007_manage_certificate";
   }
 
-  @PostMapping(value = "/manage_certificate")
+  
+
+  @PostMapping(
+    value = { "/teacher/manage_certificate", "/admin/manage_certificate/{id}" }
+  )
   public String uploadFiles(
     @RequestParam("files") MultipartFile[] files,
-    Model model
+    Model model,
+    @PathVariable(name = "id", required = false) Long id
   ) {
     System.out.println(files.length);
+    Long uid = getUid(id);
     try {
       if (files.length > 0) {
-        storageService.storeCertificates(files);
+        storageService.storeCertificates(uid,files);
       } else {
         model.addAttribute(
           "fileUploadError",
@@ -55,7 +71,7 @@ public class ManageCertificateController {
       e.printStackTrace();
     }
 
-    List<FileInfo> fileInfos = loadImages();
+    List<FileInfo> fileInfos = loadImages(uid);
     model.addAttribute("files", fileInfos);
 
     return "AT0007_manage_certificate";
@@ -63,10 +79,10 @@ public class ManageCertificateController {
 
   //TODO Implement DELETE REQUEST
 
-  private List<FileInfo> loadImages() {
+  private List<FileInfo> loadImages(Long uid) {
     try {
       return storageService
-        .loadAllCertificates()
+        .loadAllCertificates(uid)
         .map(
           path -> {
             String name = path.getFileName().toString();
@@ -86,5 +102,22 @@ public class ManageCertificateController {
     } catch (Exception e) {
       return new ArrayList<>();
     }
+  }
+
+
+  //To decide with user id to use
+  //If user is teacher, use id from session
+  //If user is admin, use id provide by the path value
+  private Long getUid(Long id) {
+    Long uid = 0L;
+    UserRole role = userSessionService.getRole();
+    if (role == UserRole.ADMIN || role == UserRole.SUPER_ADMIN) {
+      uid = id;
+    } else if (role == UserRole.TEACHER) {
+      uid = userSessionService.getUserAccount().getId();
+    } else {
+      throw new RuntimeException("user authetication fail");
+    }
+    return uid;
   }
 }

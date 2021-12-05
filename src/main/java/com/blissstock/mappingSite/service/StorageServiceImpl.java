@@ -1,5 +1,8 @@
 package com.blissstock.mappingSite.service;
 
+import com.blissstock.mappingSite.exceptions.FileStorageException;
+import com.blissstock.mappingSite.exceptions.NotImageFileException;
+import com.blissstock.mappingSite.validation.validators.ImageFileValidator;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -7,11 +10,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
-
-import com.blissstock.mappingSite.exceptions.FileStorageException;
-import com.blissstock.mappingSite.exceptions.NotImageFileException;
-import com.blissstock.mappingSite.validation.validators.ImageFileValidator;
-
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -21,9 +19,12 @@ import org.springframework.web.multipart.MultipartFile;
 public class StorageServiceImpl implements StorageService {
 
   private final Path root = Paths.get("uploads");
-  private final Path certificatePath = Paths.get(root+File.separator+"certificates");
-  private final Path profilepath = Paths.get(root+File.separator+"profiles");
-  private final Long uid = 13L;
+  private final Path certificatePath = Paths.get(
+    root + File.separator + "certificates"
+  );
+  private final Path profilepath = Paths.get(
+    root + File.separator + "profiles"
+  );
 
   @Override
   public void init() {
@@ -43,7 +44,7 @@ public class StorageServiceImpl implements StorageService {
   }
 
   @Override
-  public void storeCertificates(MultipartFile[] files) {
+  public void storeCertificates(Long uid, MultipartFile[] files) {
     //Checking Content Type
     ImageFileValidator fileValidator = new ImageFileValidator();
     for (MultipartFile file : files) {
@@ -88,7 +89,7 @@ public class StorageServiceImpl implements StorageService {
   }
 
   @Override
-  public Stream<Path> loadAllCertificates() {
+  public Stream<Path> loadAllCertificates(Long uid) {
     Path storeLocation = Paths.get(certificatePath + File.separator + uid);
     try {
       return Files
@@ -101,7 +102,7 @@ public class StorageServiceImpl implements StorageService {
   }
 
   @Override
-  public Resource loadCertificate(String filename) {
+  public Resource loadCertificate(Long uid, String filename) {
     Path storeLocation = Paths.get(certificatePath + File.separator + uid);
     try {
       Path file = storeLocation.resolve(filename);
@@ -115,5 +116,15 @@ public class StorageServiceImpl implements StorageService {
     } catch (MalformedURLException e) {
       throw new RuntimeException("Error: " + e.getMessage());
     }
+  }
+
+  @Override
+  public void deleteCertificate(Long uid, String filename) throws IOException {
+    // TODO Auto-generated method stub
+    Path storeLocation = Paths.get(certificatePath + File.separator + uid);
+    Path file = storeLocation.resolve(filename);
+    Files.delete(file);
+    
+    
   }
 }

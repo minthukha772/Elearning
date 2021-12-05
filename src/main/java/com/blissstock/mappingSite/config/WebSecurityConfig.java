@@ -39,7 +39,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
    */
   @Override
   public void configure(WebSecurity web) throws Exception {
-    web.ignoring().antMatchers("/images/**", "/css/**", "/javascript/**");
+    System.out.println("Ignoring");
+    web.ignoring().antMatchers("/images/**", "/css/**", "/js/**");
   }
 
   /**
@@ -49,8 +50,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http
-      .httpBasic()
-      .disable()
       .authorizeRequests()
       .antMatchers("/")
       .permitAll()
@@ -58,11 +57,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
       .permitAll()
       .antMatchers("/check_email/**")
       .permitAll()
-      .antMatchers("/css/**")
-      .permitAll()
-      .antMatchers("/js/**")
-      .permitAll()
-      .antMatchers("/images/**")
+      .antMatchers("/images/**", "/css/**", "/js/**")
       .permitAll()
       .antMatchers("/student/**")
       .hasAnyAuthority(UserRole.STUDENT.getValue())
