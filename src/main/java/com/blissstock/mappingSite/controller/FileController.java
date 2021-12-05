@@ -28,4 +28,17 @@ public class FileController {
       )
       .body(file);
   }
+  @GetMapping("/files/profiles/{filename:.+}")
+  @ResponseBody
+  public ResponseEntity<Resource> getProfile(@PathVariable String filename) {
+    Resource file = storageService.loadAsResource(filename);
+    return ResponseEntity
+      .ok()
+      .header(
+        HttpHeaders.CONTENT_DISPOSITION,
+        "attachment; filename=\"" + file.getFilename() + "\""
+      )
+      .body(file);
+  }
+
 }

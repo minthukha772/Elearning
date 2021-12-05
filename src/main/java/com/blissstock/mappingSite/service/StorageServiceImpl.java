@@ -5,6 +5,7 @@ import com.blissstock.mappingSite.exceptions.NotImageFileException;
 import com.blissstock.mappingSite.validation.validators.ImageFileValidator;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -62,7 +63,7 @@ public class StorageServiceImpl implements StorageService {
         throw new RuntimeException("Could not initialize folder for upload!");
       }
     }
-    System.out.println(storeLocation.toAbsolutePath());
+   
     for (MultipartFile file : files) {
       try {
         try {
@@ -117,4 +118,47 @@ public class StorageServiceImpl implements StorageService {
       throw new RuntimeException("Error: " + e.getMessage());
     }
   }
+
+  @Override
+	public void storeProfile(MultipartFile file,String fileName) {
+		try {
+			if (file.isEmpty()) {
+				throw new StorageException("Failed to store empty file " + fileName);
+			}
+			if (fileName.contains("..")) {
+				// This is a security check
+				throw new StorageException(
+						"Cannot store file with relative path outside current directory "
+								+ fileName);
+			}
+			try (InputStream inputStream = file.getInputStream()) {
+				Files.copy(inputStream, this.profilepath.resolve(fileName),
+					StandardCopyOption.REPLACE_EXISTING);
+			}
+		}
+		catch (IOException e) {
+			throw new StorageException("Failed to store file " + fileName, e);
+		}
+	}
+
+  @Override 
+  public Path loadProfile(String filename) { 
+    
+    return profilepath.resolve(filename); 
+  }
+	 
+	  
+	  @Override public Resource loadAsResource(String filename) { 
+      try { 
+        Path file = loadProfile(filename); Resource resource = new UrlResource(file.toUri()); 
+        if(resource.exists() || resource.isReadable()) { 
+          return resource; 
+        } else {
+	      
+          throw new StorageFileNotFoundException( "Could not read file: " + filename);
+	      } 
+      } catch (MalformedURLException e) { 
+        throw new StorageFileNotFoundException("Could not read file: " + filename, e); 
+      } 
+    }
 }

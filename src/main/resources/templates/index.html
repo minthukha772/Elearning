@@ -18,7 +18,7 @@
         <h5 class="card-header">
           Add Review
         </h5>
-        <form method="post" th:action ="@{/StudentReview}" th:object="${taskInfo}">
+
         <div class="card-body">          
               <div class="feedback">
                 <div class="rating">
@@ -33,7 +33,7 @@
                   <input type="radio" name="rating" id="rating-1">
                   <label for="rating-1"></label>
                 </div>
-              <textarea class="form-control" id="review" rows="5" cols="40" placeholder="Write feedback here " th:field=*{feedback}></textarea>
+              <textarea class="form-control" id="review" rows="5" cols="40" placeholder="Write feedback here "></textarea>
             </div>
               <div class="row">
                 <div class="buttons col-sm-12 text-center">                   
@@ -42,7 +42,7 @@
                  </div>
             </div>
         </div>
-      </form>
+
       </div>
     </div>
       <footer class="fixed-bottom">

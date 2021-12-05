@@ -77,7 +77,7 @@ public class ReviewTest {
 
       public static ReviewTest fromTrReviewDTO(TeacherReviewDTO trReviewDTO) {
         ReviewTest review = new ReviewTest();
-        review.star= trReviewDTO.getReviewType();
+        review.reviewType= trReviewDTO.getReviewType();
         review.feedback= trReviewDTO.getFeedback();
         review.assignedDate=GregorianCalendar.getInstance().getTime();
         return review;

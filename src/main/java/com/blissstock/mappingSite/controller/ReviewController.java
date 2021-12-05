@@ -12,9 +12,11 @@ import com.blissstock.mappingSite.dto.TeacherReviewDTO;
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.Review;
 import com.blissstock.mappingSite.entity.ReviewTest;
+import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
 import com.blissstock.mappingSite.repository.ReviewRepository;
 import com.blissstock.mappingSite.repository.ReviewTestRepository;
+import com.blissstock.mappingSite.repository.UserRepository;
 import com.blissstock.mappingSite.service.StudentReviewService;
 import com.blissstock.mappingSite.service.TeacherReviewService;
 
@@ -35,13 +37,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 
 public class ReviewController {
-    // @Autowired
-    // UserRepository userRepo;
+    @Autowired
+    UserRepository userRepo;
+    
     @Autowired
     CourseInfoRepository courseInfoRepo;
-
-    @Autowired
-    ReviewTestRepository reviewTestRepo;
 
     @Autowired
     ReviewRepository reviewRepo;
@@ -53,25 +53,26 @@ public class ReviewController {
     TeacherReviewService trReviewService;
     //get student review 
     @Valid
-    @GetMapping(value="/student-review/{courseId}/{userName}")
-    private String getStudentReviewForm(@PathVariable Long courseId, @PathVariable String userName, Model model) {  
+    @GetMapping(value="/student-review/{courseId}/{userId}")
+    private String getStudentReviewForm(@PathVariable Long courseId, @PathVariable Long userId, Model model) {  
         StudentReviewDTO stuReview = new StudentReviewDTO();
         model.addAttribute("review", stuReview);
-        model.addAttribute("postAction", "/update-student-review/"+courseId);
+        model.addAttribute("postAction", "/update-student-review/"+courseId+"/"+userId);
 	    
         return "CM0007_WriteReviewStudent";
 
 	}
 
-    @PostMapping(value="/update-student-review/{courseId}")
-    private String postStudentReviewForm( @Valid @ModelAttribute("review") StudentReviewDTO stuReviewDTO, @PathVariable Long courseId,BindingResult bindingResult, Model model, @RequestParam(value="action", required=true) String action) { 
+    @PostMapping(value="/update-student-review/{courseId}/{userId}")
+    private String postStudentReviewForm( @Valid @ModelAttribute("review") StudentReviewDTO stuReviewDTO, @PathVariable Long courseId, @PathVariable Long userId, BindingResult bindingResult, Model model, @RequestParam(value="action", required=true) String action) { 
         if(bindingResult.hasErrors()) {
 			return "CM0007_WriteReviewStudent";			
 		}
         CourseInfo course = courseInfoRepo.findById(courseId).orElse(null);
+        UserInfo user = userRepo.findById(courseId).orElse(null);
         try{
             if(action.equals("submit")){
-              stuReviewService.addReview(stuReviewDTO, course);
+              stuReviewService.addReview(stuReviewDTO, course, user);
             }
           }catch(Exception e){
             System.out.println(e);
@@ -88,39 +89,37 @@ public class ReviewController {
 	    return "CM0007_WriteReviewStudent";
 	}
     //get teacher review 
-    @GetMapping(value="/teacher-review/{courseId}/{userName}")
-    private String getTeacherReviewForm(@PathVariable Long courseId, @PathVariable String userName, Model model) {
+    @GetMapping(value="/teacher-review/{courseId}/{userId}")
+    private String getTeacherReviewForm(@PathVariable Long courseId, @PathVariable Long userId, Model model) {
         TeacherReviewDTO trReview = new TeacherReviewDTO();
         model.addAttribute("review", trReview);
-        model.addAttribute("postAction", "/update-teacher-review/"+courseId);
+        model.addAttribute("postAction", "/update-teacher-review/"+courseId+"/"+userId);
 	    return "CM0007_WriteReviewTeacher";
 	}
-    @PostMapping(value="/update-teacher-review/{courseId}")
-    private String postTeacherReviewForm( @Valid @ModelAttribute("review") TeacherReviewDTO trReviewDTO, BindingResult bindingResult,@PathVariable Long courseId, Model model, @RequestParam(value="action", required=true) String action) { 
+    @PostMapping(value="/update-teacher-review/{courseId}/{userId}")
+    private String postTeacherReviewForm( @Valid @ModelAttribute("review") TeacherReviewDTO trReviewDTO, BindingResult bindingResult,@PathVariable Long courseId, @PathVariable Long userId, Model model, @RequestParam(value="action", required=true) String action) { 
         if(bindingResult.hasErrors()) {
 			return "CM0007_WriteReviewTeacher";			
 		}
-        if(bindingResult.hasErrors()) {
-			return "CM0007_WriteReviewStudent";			
-		}
-        CourseInfo course = courseInfoRepo.findById(courseId).orElse(null);
+        CourseInfo course = courseInfoRepo.findById(courseId).orElse(null); 
+        UserInfo user = userRepo.findById(courseId).orElse(null);
         try{
             if(action.equals("submit")){
-              trReviewService.addReview(trReviewDTO, course);
+              trReviewService.addReview(trReviewDTO, course, user);
             }
           }catch(Exception e){
             System.out.println(e);
           }
         model.addAttribute("infoMap", trReviewDTO.toMapTrReview());
-        return "CM0008_WriteReviewConfirmTeacher";
+        return "CM0007_WriteReviewTeacher";
 	}
 
-    @PostMapping(value="/save-teacher-review")
-    private String saveTeacherReviewForm( @Valid @ModelAttribute("review") ReviewTest newTrReview, BindingResult bindingResult, Model model) {
-        //ReviewTest saveTrReview = new ReviewTest(null, newTrReview.getReviewType(), 0,newTrReview.getFeedback(),newTrReview.getReviewStatus(), null, null);
-        reviewTestRepo.save(newTrReview);
-        return "CM0008_WriteReviewConfirmTeacher";
-	}
+  //   @PostMapping(value="/save-teacher-review")
+  //   private String saveTeacherReviewForm( @Valid @ModelAttribute("review") ReviewTest newTrReview, BindingResult bindingResult, Model model) {
+  //       //ReviewTest saveTrReview = new ReviewTest(null, newTrReview.getReviewType(), 0,newTrReview.getFeedback(),newTrReview.getReviewStatus(), null, null);
+  //       reviewTestRepo.save(newTrReview);
+  //       return "CM0008_WriteReviewConfirmTeacher";
+	// }
 
      //edit teacher review
      @Valid

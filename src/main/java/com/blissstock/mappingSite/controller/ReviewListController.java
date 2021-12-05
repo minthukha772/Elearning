@@ -37,9 +37,10 @@ public class ReviewListController {
     UserRepository userRepo;
     //get student review 
     @Valid
-    @GetMapping(value="/review-list/{courseId}/{userName}/{role}")
-    private String getReviewList(@PathVariable Long courseId, @PathVariable String userName, @PathVariable String role, Model model) {  
+    @GetMapping(value="/{role}/review-list/{courseId}/{userId}")
+    private String getReviewList(@PathVariable Long courseId, @PathVariable Long userId,@PathVariable String userName, @PathVariable String role, Model model) {  
         CourseInfo courseInfo=courseInfoRepo.findById(courseId).orElse(null);
+        UserInfo user=userRepo.findById(userId).orElse(null);
         //Display course name
         String courseName=courseInfo.getCourseName();
         model.addAttribute("courseName", courseName);
@@ -61,6 +62,9 @@ public class ReviewListController {
         //Display review
         List<Review> reviews=courseInfo.getReview();
         model.addAttribute("reviews", reviews);
+
+        List<Review> stuReviews=user.getReview();
+        model.addAttribute("stuReviews", stuReviews);
         // for(Review review : reviews){
         //     model.addAttribute("review", review);  
         // }

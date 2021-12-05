@@ -33,7 +33,7 @@ public class TeacherReviewDTO implements TeacherReview{
     @Override
 	  public LinkedHashMap<String, String> toMapTrReview() {
 		LinkedHashMap<String, String> map = new LinkedHashMap<>();
-		map.put("reveiw type", this.reviewType + "");
+		map.put("review type", this.reviewType + "");
 		map.put("feedback", this.feedback);
 		
 		return map;

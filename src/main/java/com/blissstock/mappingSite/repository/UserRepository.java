@@ -9,6 +9,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserInfo, Long> {
-    @Query(nativeQuery = true, value="select * from user_info where user_name=:userName")
-	public UserInfo findByUserName(@Param("userName")String userName);
+    
+    @Query(nativeQuery = true, value="delete from user_info  where uid =:userId")
+	public UserInfo removeById(@Param("userId")Long userId);
+
+    
 }

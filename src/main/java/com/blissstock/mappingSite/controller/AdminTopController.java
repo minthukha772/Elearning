@@ -14,12 +14,8 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import com.blissstock.mappingSite.model.FileInfo;
-import com.blissstock.mappingSite.entity.CourseInfo;
-import com.blissstock.mappingSite.entity.PaymentAccount;
 import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.entity.UserInfo;
-import com.blissstock.mappingSite.repository.CourseInfoRepository;
-import com.blissstock.mappingSite.repository.PaymentAccountRepository;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
 import com.blissstock.mappingSite.repository.UserRepository;
 import com.blissstock.mappingSite.service.StorageService;
@@ -42,58 +38,63 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 
 
 @Controller
-public class ProfileController {
+public class AdminTopController {
   @Autowired
   StorageService storageService;
 
 	@Autowired
-	public ProfileController(StorageService storageService) {
+	public AdminTopController(StorageService storageService) {
 		this.storageService = storageService;
 	}
-    
+
     @Autowired
     UserRepository userRepo;
 
     @Autowired
     UserAccountRepository userAccRepo;
 
-    @Autowired
-    PaymentAccountRepository payAccRepo;
-    //Get profile
-    @Valid
-    @GetMapping(value="{role}/profile/{userId}")
-    private String getProfile( @PathVariable Long userId, @PathVariable String role, Model model) {  
+    @GetMapping(value="{role}/top/{userId}")
+    private String getAdminTopScreen( @PathVariable String role, @PathVariable Long userId, Model model) {  
         UserInfo userInfo=userRepo.findById(userId).orElse(null);
-        model.addAttribute("userInfo", userInfo);
-        model.addAttribute("role", role);
         UserAccount userAcc = userInfo.getUserAccount();
-
-        if(userAcc.getRole().equals("student")){
-          FileInfo profile = loadProfile(userId);
-          model.addAttribute("profile", profile);
-          model.addAttribute("stuInfo", userInfo.toMapStudent());        
-            return "CM0004_StudentProfile";
-        }
-        model.addAttribute("trInfo", userInfo.toMapTeacher());
-        //load profile picture
-        if(userAcc.getPhoto()==null){
+         //load profile picture
+         if(userAcc.getPhoto()==null){
           String photoString=null;
           model.addAttribute("pic64", photoString);
         }
         FileInfo profile = loadProfile(userId);
         model.addAttribute("profile", profile);
+        
+        model.addAttribute("userInfo", userInfo);
+        model.addAttribute("userAcc", userAcc);
 
-        //load certificates
-        List<FileInfo> fileInfos = loadImages();
-        model.addAttribute("files", fileInfos);
-
-        //post action
-        model.addAttribute("profilePost", role+"/profile-upload/"+userId);
-        return "CM0004_TeacherProfile";
+        // model.addAttribute("trInfo", userInfo.toMapTeacher());
+        // List<FileInfo> fileInfos = loadImages();
+        // model.addAttribute("files", fileInfos);
+        model.addAttribute("postAction","/top/update/"+userId);;
+            return "AD0001_AdminTop";
     }
+    private FileInfo loadProfile(long userId) {
+      try {
+          UserAccount userAcc=userAccRepo.findById(userId).orElse(null);
+          Path path= storageService.loadProfile(userAcc.getPhoto());
+          String name = path.getFileName().toString();
+          String url = MvcUriComponentsBuilder
+            .fromMethodName(
+              FileController.class,
+              "getProfile",
+              path.getFileName().toString()
+            )
+            .build()
+            .toString();
+  
+          return new FileInfo(name, url);
+      } catch (Exception e) {
+        return null;
+      }
+  }
 
-  //upload profile and payment
-  @PostMapping(value= "{role}/profile-upload/{userId}")
+  @PostMapping(value= "{role}/top/update/{userId}")
   private String postProfile(Model model,
     @RequestParam("profile_pic") MultipartFile photo, 
     @RequestParam(value="action", required=true) String action,
@@ -102,8 +103,6 @@ public class ProfileController {
   ) {
     UserInfo userInfo=userRepo.findById(userId).orElse(null);
     UserAccount acc=userInfo.getUserAccount();
-
-    if(action.equals("submit")){
         
     if(!photo.isEmpty()) {
       if(CheckUploadFileType.checkType(photo)) {
@@ -122,7 +121,8 @@ public class ProfileController {
         return "CM0004_TeacherProfile";
       }
     }
-  }
+    userInfo.setUserName(userInfo.getUserName());
+    userRepo.save(userInfo);
   // else if(action.equals("add_payment")){
   //   List<PaymentAccount> payAccs=userInfo.getPaymentAccount();
   //   System.out.println(payAccs);
@@ -132,58 +132,10 @@ public class ProfileController {
   //     }
   //   }
       
-      return "redirect:/"+role+"/profile/"+userId;
+      return "redirect:/"+role+"/top/"+userId;
   
 
   }
 
-  //Get profile
-  private FileInfo loadProfile(long userId) {
-    try {
-        UserAccount userAcc=userAccRepo.findById(userId).orElse(null);
-        Path path= storageService.loadProfile(userAcc.getPhoto());
-        String name = path.getFileName().toString();
-        String url = MvcUriComponentsBuilder
-          .fromMethodName(
-            FileController.class,
-            "getProfile",
-            path.getFileName().toString()
-          )
-          .build()
-          .toString();
-
-        return new FileInfo(name, url);
-    } catch (Exception e) {
-      return null;
-    }
-    
-  }
-    
-  //Get certificate  
-  private List<FileInfo> loadImages() {
-    try {
-      return storageService
-        .loadAllCertificates()
-        .map(
-          path -> {
-            String name = path.getFileName().toString();
-            String url = MvcUriComponentsBuilder
-              .fromMethodName(
-                FileController.class,
-                "getCertificates",
-                path.getFileName().toString()
-              )
-              .build()
-              .toString();
-
-            return new FileInfo(name, url);
-          }
-        )
-        .collect(Collectors.toList());
-    } catch (Exception e) {
-      return new ArrayList<>();
-    }
-    
-  }
-
+ 
 }

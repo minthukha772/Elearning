@@ -16,6 +16,10 @@ public interface StorageService {
 
 	Stream<Path> loadAllCertificates();
 
+	void storeProfile(MultipartFile file,String fileName);
 
+	Path loadProfile(String filename);
+
+	Resource loadAsResource(String filename);
 
 }
