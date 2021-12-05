@@ -4,7 +4,7 @@ import com.blissstock.mappingSite.dto.TeacherRegisterDTO;
 import com.blissstock.mappingSite.dto.UserRegisterDTO;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.exceptions.UserAlreadyExistException;
-import com.blissstock.mappingSite.service.MailServiceImpl;
+import com.blissstock.mappingSite.service.MailService;
 import com.blissstock.mappingSite.service.UserService;
 import com.blissstock.mappingSite.validation.validators.EmailValidator;
 import javax.servlet.http.HttpServletRequest;
@@ -29,7 +29,7 @@ public class RegisterController {
   UserService userService;
 
   @Autowired
-  MailServiceImpl mailService;
+  MailService mailService;
 
   @ExceptionHandler(value = ConstraintViolationException.class)
   public String exception(ConstraintViolationException exception) {

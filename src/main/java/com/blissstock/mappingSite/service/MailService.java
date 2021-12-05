@@ -1,7 +1,7 @@
 package com.blissstock.mappingSite.service;
 
 import com.blissstock.mappingSite.entity.UserAccount;
-import com.blissstock.mappingSite.entity.UserInfo;
+
 
 public interface MailService {
   public void sendMail(
