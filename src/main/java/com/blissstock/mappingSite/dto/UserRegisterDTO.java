@@ -67,6 +67,7 @@ public class UserRegisterDTO extends PasswordData implements Confirmable {
   private String gender = "male";
 
   @NotBlank(message = ConstrainMessage.EMPTY_CONSTRAIN_MESSAGE)
+  @Size(max = 15, min = 6, message = "Invalid Phone Number")
   private String phone;
 
   @DateTimeFormat(pattern = "yyyy-MM-dd")

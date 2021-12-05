@@ -42,7 +42,7 @@ public class UserInfo {
   private String userName;
 
   @NotBlank(message = "Please enter phone number.")
-  @Size(max = 20, min = 8, message = "Phone number should be under 11 digits")
+  @Size(max = 15, min = 6, message = "Invalid Phone Number")
   @Column(name = "phone_no")
   private String phoneNo;
 

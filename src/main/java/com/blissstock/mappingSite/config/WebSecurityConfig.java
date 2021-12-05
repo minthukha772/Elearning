@@ -1,4 +1,6 @@
 package com.blissstock.mappingSite.config;
+
+import com.blissstock.mappingSite.enums.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,11 +33,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     return bCryptPasswordEncoder;
   }
 
-  @Bean
-  public AuthenticationSuccessHandler myAuthenticationSuccessHandler() {
-    return new MySimpleUrlAuthenticationSuccessHandler();
-  }
-
   /**
    * 認可設定を無視するリクエストを設定
    * 静的リソース(image,javascript,css)を認可処理の対象から除外する
@@ -57,18 +54,27 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
       .authorizeRequests()
       .antMatchers("/")
       .permitAll()
-    /*   .antMatchers("/register/**")
+      .antMatchers("/register/**")
       .permitAll()
-      .antMatchers("/** /register/**")
+      .antMatchers("/check_email/**")
+      .permitAll()
+      .antMatchers("/css/**")
+      .permitAll()
+      .antMatchers("/js/**")
+      .permitAll()
+      .antMatchers("/images/**")
       .permitAll()
       .antMatchers("/student/**")
-      .hasAnyRole(UserRole.STUDENT.getValue())
+      .hasAnyAuthority(UserRole.STUDENT.getValue())
       .antMatchers("/teacher/**")
-      .hasAnyRole(UserRole.TEACHER.getValue())
+      .hasAnyAuthority(UserRole.TEACHER.getValue())
       .antMatchers("/admin/**")
-      .hasAnyRole(UserRole.ADMIN.getValue(), UserRole.SUPER_ADMIN.getValue())
+      .hasAnyAuthority(
+        UserRole.ADMIN.getValue(),
+        UserRole.SUPER_ADMIN.getValue()
+      )
       .anyRequest()
-      .authenticated() */
+      .authenticated()
       .and()
       .formLogin()
       .loginPage("/login") //ログインページはコントローラを経由しないのでViewNameとの紐付けが必要

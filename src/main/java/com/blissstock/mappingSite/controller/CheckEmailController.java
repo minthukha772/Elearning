@@ -1,8 +1,11 @@
 package com.blissstock.mappingSite.controller;
 
 import com.blissstock.mappingSite.dto.EmailCheckRegisterDTO;
+import com.blissstock.mappingSite.service.UserService;
 import com.blissstock.mappingSite.validation.validators.EmailValidator;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,8 +17,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class CheckEmailController {
 
+  @Autowired
+  UserService userService;
+
   /// A Get Method For Email Check Before Register
-  @GetMapping(path = { "/check_email/{role}", "/check_email/" })
+  @GetMapping(path = { "/check_email/{role}", "/check_email" })
   public String registerForm(
     @PathVariable(name = "role", required = false) String role,
     Model model,
@@ -27,30 +33,29 @@ public class CheckEmailController {
     // For Post Method Action
     model.addAttribute("postAction", "/check_email/register/");
 
-    if (email != null && !email.isBlank()) {
+/*     if (email != null && !email.isBlank()) {
       EmailValidator emailValidator = new EmailValidator();
       boolean isValidEmail = emailValidator.validateEmail(email);
-      System.out.println(email);
-      System.out.println(isValidEmail);
       if (isValidEmail) {
         model.addAttribute("email", email);
       }
-    }
+    } */
 
     // Initialize Form
     if (role == null || !role.equals("teacher")) {
       role = "student";
     }
     EmailCheckRegisterDTO emailCheckRegisterDTO = new EmailCheckRegisterDTO();
+    emailCheckRegisterDTO.setEmail(email);
     emailCheckRegisterDTO.setRole(role);
     model.addAttribute("emailCheck", emailCheckRegisterDTO);
 
     // render
-    return "ST0000_check_email.html";
+    return "ST0000_check_email";
   }
 
   /// A Post Method for email check before Register
-  @PostMapping("/check_email/")
+  @PostMapping("/check_email/register")
   public String register(
     Model model,
     @Valid @ModelAttribute("emailCheck") EmailCheckRegisterDTO emailRegister,
@@ -58,11 +63,19 @@ public class CheckEmailController {
   ) {
     if (bindingResult.hasErrors()) {
       model.addAttribute("action", "register");
-
-      // For Rendering the title
+      /* // For Rendering the title
       model.addAttribute("role", emailRegister.getRole());
-
-      System.out.println(emailRegister);
+ */
+      // render
+      return "ST0000_check_email.html";
+    }
+    if (userService.getUserAccountByEmail(emailRegister.getEmail()) != null) {
+      //User already exists
+      model.addAttribute("action", "register");
+      /*  // For Rendering the title
+      model.addAttribute("role", emailRegister.getRole()); */
+      //For displaying error message
+      model.addAttribute("error", true);
 
       // render
       return "ST0000_check_email.html";

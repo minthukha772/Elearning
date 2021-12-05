@@ -1,7 +1,5 @@
 $(document).ready(function () {
   fillPassword();
-
-
  
 
   $(".back").click(function (event) {
@@ -18,6 +16,7 @@ $(document).ready(function () {
 
 function fillPassword() {
   //Initialize previous password value to the password field
+  console.log("filling pervious password");
   $("input[type='password']").each(function () {
     const oldPassword = $(this).attr("data-value");
     if (oldPassword && oldPassword.length > 0) {
