@@ -1,0 +1,45 @@
+body{
+    background-color: #f0f0f0;
+  }
+  
+  footer{
+    background-color: #0B0D17;
+  }
+  .footertext{
+    color: #EEEFF4;
+  }
+  .footerhead{
+    color: #F4F5F7;
+  }
+  .completecard{
+    height: 195px;
+    width: 604px;
+    left: 418px;
+    top: 146px;
+    border-radius: 4px;
+    padding: 32px;
+
+    /* Auto Layout */
+
+    /*display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    padding: 32px;*/
+
+    position: static;
+    width: 604px;
+    height: 195px;
+    left: 418px;
+    top: 146px;
+
+    background: #FFFFFF;
+    border-radius: 4px;
+
+    /* Inside Auto Layout */
+
+    flex: none;
+    order: 2;
+    flex-grow: 0;
+    margin: 32px 0px;
+  }

@@ -9,6 +9,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "review")
 public class Review {
@@ -18,15 +21,15 @@ public class Review {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long reviewId;
 	
-    //@NotBlank(message="Please choose review type")
+    @NotBlank(message="Please choose review type")
     @Column(name = "review_type")
 	private int reviewType;
 
-    //@NotBlank(message="Please fill rating star")
+    @NotBlank(message="Please fill rating star")
     @Column(name = "star")
-	private float star;
+	private int star;
 
-    //@NotBlank(message="Please fill feedback")
+    @NotBlank(message="Please fill feedback")
 	@Column(name="feedback")
 	private String feedback;
 
@@ -44,76 +47,6 @@ public class Review {
     @JoinColumn(name = "courseId_fkey")
     @JsonIgnore
     private CourseInfo courseInfo;
-
-    public Review() {
-    }
-   
-    public Review(Long reviewId, int reviewType, float star, String feedback, String reviewStatus, UserInfo userInfo, CourseInfo courseInfo) {
-        this.reviewId = reviewId;
-        this.reviewType = reviewType;
-        this.star = star;
-        this.feedback = feedback;
-        this.reviewStatus = reviewStatus;
-        this.userInfo = userInfo;
-        this.courseInfo = courseInfo;
-    }
-
-    public Long getReviewId() {
-        return this.reviewId;
-    }
-
-    public void setReviewId(Long reviewId) {
-        this.reviewId = reviewId;
-    }
-
-    public int getReviewType() {
-        return this.reviewType;
-    }
-
-    public void setReviewType(int reviewType) {
-        this.reviewType = reviewType;
-    }
-
-    public float getStar() {
-        return this.star;
-    }
-
-    public void setStar(float star) {
-        this.star = star;
-    }
-
-    public String getFeedback() {
-        return this.feedback;
-    }
-
-    public void setFeedback(String feedback) {
-        this.feedback = feedback;
-    }
-
-    public String getReviewStatus() {
-        return this.reviewStatus;
-    }
-
-    public void setReviewStatus(String reviewStatus) {
-        this.reviewStatus = reviewStatus;
-    }
-
-    public UserInfo getUserInfo() {
-        return this.userInfo;
-    }
-
-    public void setUserInfo(UserInfo userInfo) {
-        this.userInfo = userInfo;
-    }
-
-    public CourseInfo getCourseInfo() {
-        return this.courseInfo;
-    }
-
-    public void setCourseInfo(CourseInfo courseInfo) {
-        this.courseInfo = courseInfo;
-    }
-    
 	
 }
 

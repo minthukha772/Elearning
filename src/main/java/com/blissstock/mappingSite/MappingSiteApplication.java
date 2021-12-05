@@ -8,8 +8,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @ComponentScan("com.blissstock.mappingsite")
-@EntityScan("com.blissstock.mappingsite.entity")
-@EnableJpaRepositories("com.blissstock.mappingsite.repository")
+// @EntityScan("com.blissstock.mappingsite.entity")
+// @EnableJpaRepositories("com.blissstock.mappingsite.repository")
 public class MappingSiteApplication {
 
 	public static void main(String[] args) {
