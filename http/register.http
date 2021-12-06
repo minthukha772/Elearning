@@ -46,7 +46,7 @@ curl 'http://localhost:8080/register/teacher' \
   -H 'Accept-Language: en-GB,en;q=0.9,my-MM;q=0.8,my;q=0.7,en-US;q=0.6' \
   -H 'Cookie: SESSION=YjY1MjY1MzgtZDhkZi00NzZkLTg2MTgtNDY0ZWZjZDYyODY1' \
   --data-raw 'email=sai%40gmail.com&name=Sai&password=asdf1234&confirmPassword=asdf1234&phone=%2B959259658621&gender=male&dob=2021-12-06&zipCode=0&city=City&division=Division&address=Address&education=Edu&nrc=Nrc&award=Award&selfDescription=Describe&acceptTerm=true&_acceptTerm=on&action=submit' \
-  --compressed
+  --compressed  
 
 
 

@@ -11,8 +11,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javassist.bytecode.analysis.ControlFlow.Catcher;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -105,6 +108,13 @@ public class ManageCertificateController {
     } catch (Exception e) {
       return new ArrayList<>();
     }
+  }
+
+  @DeleteMapping(value = { "/teacher/manage_certificate", "/admin/manage_certificate/{id}" })
+  public ResponseEntity<Object> deleteCertificate(Long id){
+      System.out.println("Delete requested for id: "+id);
+
+      return ResponseEntity.ok().body("delete successfully");
   }
 
   //To decide with user id to use
