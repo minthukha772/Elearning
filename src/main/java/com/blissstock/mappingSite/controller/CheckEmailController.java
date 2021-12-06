@@ -93,17 +93,5 @@ public class CheckEmailController {
     );
   }
 
-  @GetMapping("/check_email/password_reset")
-  public String resetPassword(
-    @PathVariable(required = false) String role,
-    Model model
-  ) {
-    if (role == null || role != "reset_password") {
-      role = "register";
-    }
-    model.addAttribute("role", role);
-    model.addAttribute("action", "register");
-    model.addAttribute("email", new EmailCheckRegisterDTO());
-    return "ST0000_check_email.html";
-  }
+
 }

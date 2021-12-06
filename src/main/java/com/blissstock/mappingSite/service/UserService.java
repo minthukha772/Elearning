@@ -11,8 +11,6 @@ public interface UserService {
 
   public void updateUser(UserRegisterDTO userRegisterDTO);
 
-  public UserRegisterDTO getUserByEmail(String email);
-
   public UserAccount getUserAccountByEmail(String email);
 
   public UserInfo getUserInfoByID(Long id);

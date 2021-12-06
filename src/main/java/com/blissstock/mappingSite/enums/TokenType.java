@@ -5,8 +5,8 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public enum TokenType {
-    PASSWORD_RESET("password_reset"),
-    VERIFICATION("verification");
+    PASSWORD_RESET("PASSWORD_RESET"),
+    VERIFICATION("VERIFICATION");
 
     
     @Getter private String value;

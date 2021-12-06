@@ -6,12 +6,15 @@ import com.blissstock.mappingSite.exceptions.UnauthorizedFileAccessException;
 import com.blissstock.mappingSite.model.FileInfo;
 import com.blissstock.mappingSite.service.StorageService;
 import com.blissstock.mappingSite.service.UserSessionService;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import javassist.bytecode.analysis.ControlFlow.Catcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -83,7 +86,6 @@ public class ManageCertificateController {
     return "AT0007_manage_certificate";
   }
 
-
   private List<FileInfo> loadImages(Long uid) {
     try {
       return storageService
@@ -110,11 +112,27 @@ public class ManageCertificateController {
     }
   }
 
-  @DeleteMapping(value = { "/teacher/manage_certificate", "/admin/manage_certificate/{id}" })
-  public ResponseEntity<Object> deleteCertificate(Long id){
-      System.out.println("Delete requested for id: "+id);
+  @DeleteMapping(
+    value = { "/teacher/manage_certificate", "/admin/manage_certificate/{id}" }
+  )
+  public ResponseEntity<Object> deleteCertificate(
+    String name,
+    @PathVariable(name = "id", required = false) Long id
+  ) {
+    System.out.println("Delete requested for file name: " + name);
+    Long uid = getUid(id);
+    //return ResponseEntity.badRequest().body("something went wrong");
+    try {
+      storageService.deleteCertificate(uid, name);
+    } catch (IOException e) {
+      e.printStackTrace();
+      return ResponseEntity.status(HttpStatus.OK).body("something went wrong");
+    } catch (UnauthorizedFileAccessException e) {
+      e.printStackTrace();
+      return ResponseEntity.status(HttpStatus.FORBIDDEN).body("forbidden");
+    }
 
-      return ResponseEntity.ok().body("delete successfully");
+    return ResponseEntity.ok().body("delete successfully");
   }
 
   //To decide with user id to use

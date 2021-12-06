@@ -77,13 +77,7 @@ public class UserServiceImpl implements UserService {
     userInfoRepository.save(existingUserInfo);
   }
 
-  @Override
-  public UserRegisterDTO getUserByEmail(String email) {
-    System.out.println("email " + email);
-    UserInfo userInfo = userInfoRepository.findUserInfoByEmail(email);
-    return UserRegisterDTO.fromUserInfo(userInfo);
-  }
-
+ 
   @Override
   public UserAccount getUserAccountByEmail(String email) {
     return userAccountRepository.findByMail(email);

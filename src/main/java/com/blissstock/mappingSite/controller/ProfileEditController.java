@@ -1,14 +1,13 @@
 package com.blissstock.mappingSite.controller;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-
 import com.blissstock.mappingSite.dto.TeacherRegisterDTO;
 import com.blissstock.mappingSite.dto.UserRegisterDTO;
 import com.blissstock.mappingSite.entity.UserInfo;
+import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.service.UserService;
 import com.blissstock.mappingSite.service.UserSessionService;
-
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,29 +38,29 @@ public class ProfileEditController {
     Model model,
     @PathVariable(name = "id", required = false) Long id
   ) {
-    String email, role, postAction;
+    Long email;
+    String role, postAction;
     System.out.println("id is " + id);
 
     if (id != null) {
       //Id only present on admin side
       UserInfo userInfo = userService.getUserInfoByID(id);
-      email = userInfo.getUserAccount().getMail();
-      role = userInfo.getUserAccount().getRole();
-      postAction = "/admin/profile_edit/" + role;
+      id = userInfo.getUserAccount().getId();
+      role = "admin";
     } else {
-      email = userSessionService.getEmail();
-      role = userSessionService.getRole().getValue();
-      postAction = "/" + role + "/profile_edit/";
+      id = userSessionService.getUserAccount().getId();
+      role =
+        userSessionService.getRole() == UserRole.TEACHER
+          ? "teacher"
+          : "student";
     }
-    System.out.println(postAction);
 
-    UserRegisterDTO userInfo;
-    userInfo = userService.getUserByEmail(email);
-    userInfo.setAcceptTerm(true);
-    model.addAttribute("userInfo", userInfo);
+    UserInfo userInfo = userService.getUserInfoByID(id);
+    UserRegisterDTO userRegisterDTO = UserRegisterDTO.fromUserInfo(userInfo);
+    userRegisterDTO.setAcceptTerm(true);
+    model.addAttribute("userInfo", userRegisterDTO);
     model.addAttribute("task", "profile_edit");
     model.addAttribute("role", role);
-    model.addAttribute("postAction", postAction);
 
     return "ST0001_register";
   }
@@ -105,7 +104,7 @@ public class ProfileEditController {
   }
 
   @PostMapping(
-    path = { "/student/profile_edit", "/admin/profile_edit/teacher" }
+    path = { "/teacher/profile_edit", "/admin/profile_edit/teacher" }
   )
   public String editTeacherProfile(
     Model model,

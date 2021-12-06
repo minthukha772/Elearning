@@ -148,6 +148,7 @@ public class StorageServiceImpl implements StorageService {
     Path storeLocation = Paths.get(certificatePath + File.separator + uid);
     Path file = storeLocation.resolve(filename);
     Files.delete(file);
+    System.out.println(filename+" is deleted");
   }
 
   @Override

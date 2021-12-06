@@ -6,6 +6,8 @@ import com.blissstock.mappingSite.dto.LoginDTO;
 import com.blissstock.mappingSite.service.UserSessionService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -56,5 +58,11 @@ public class LoginController {
     }
     model.addAttribute("userInfo", userInfo);
     return "CM0005_login.html";
+  }
+
+  @PostMapping(value = "login/reset_password")
+  public ResponseEntity<Object> resetPassword(String email){
+    
+    return ResponseEntity.status(HttpStatus.OK).body("operation success");
   }
 }

@@ -56,8 +56,10 @@
                     >Open</a
                   >
                   <button
-                    class="delete btn btn-outline-danger"
-                    th:data-name="${fileInfo.name}"
+                    class="btn btn-outline-danger"
+                    th:data-bs-name="${fileInfo.name}"
+                    data-bs-toggle="modal"
+                    data-bs-target="#deleteConfirmModal"
                   >
                     Delete
                   </button>
@@ -66,6 +68,52 @@
             </div>
           </div>
         </div>
+
+        <!-- Delete Confirm Modal -->
+        <div
+          class="modal fade"
+          id="deleteConfirmModal"
+          tabindex="-1"
+          aria-labelledby="certificateFormModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="certificateFormModalLabel">Delete</h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">
+                <p>
+                  The data will permentently data! recovery is not possible!
+                </p>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button
+                  type="button"
+                  id="deleteCertificate"
+                  class="btn btn-danger"
+                >
+                  DELETE
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Delete Confirm Modal End -->
 
         <!-- 
 
