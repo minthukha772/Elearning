@@ -5,11 +5,11 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public enum UserRole {
-    SUPER_ADMIN("super_admin"), // all these enums give error, for no constructor
-    ADMIN("admin"),
-    STUDENT("student"),
-    TEACHER("teacher"),
-    GUEST_USER("guest_user");
+    SUPER_ADMIN("ROLE_SUPER_ADMIN"), // all these enums give error, for no constructor
+    ADMIN("ROLE_ADMIN"),
+    STUDENT("ROLE_STUDENT"),
+    TEACHER("ROLE_TEACHER"),
+    GUEST_USER("ROLE_GUEST_USER");
 
     @Getter private String value;
 

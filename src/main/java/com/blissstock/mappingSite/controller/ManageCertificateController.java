@@ -2,12 +2,14 @@ package com.blissstock.mappingSite.controller;
 
 import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.exceptions.NotImageFileException;
+import com.blissstock.mappingSite.exceptions.UnauthorizedFileAccessException;
 import com.blissstock.mappingSite.model.FileInfo;
 import com.blissstock.mappingSite.service.StorageService;
 import com.blissstock.mappingSite.service.UserSessionService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import javassist.bytecode.analysis.ControlFlow.Catcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,8 +43,6 @@ public class ManageCertificateController {
     return "AT0007_manage_certificate";
   }
 
-  
-
   @PostMapping(
     value = { "/teacher/manage_certificate", "/admin/manage_certificate/{id}" }
   )
@@ -55,7 +55,7 @@ public class ManageCertificateController {
     Long uid = getUid(id);
     try {
       if (files.length > 0) {
-        storageService.storeCertificates(uid,files);
+        storageService.storeCertificates(uid, files);
       } else {
         model.addAttribute(
           "fileUploadError",
@@ -67,6 +67,9 @@ public class ManageCertificateController {
         "fileUploadError",
         "Only Jpg, Jpeg and Png are allowed"
       );
+    } catch (UnauthorizedFileAccessException e) {
+      e.printStackTrace();
+      //TODO express error message
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -77,7 +80,6 @@ public class ManageCertificateController {
     return "AT0007_manage_certificate";
   }
 
-  //TODO Implement DELETE REQUEST
 
   private List<FileInfo> loadImages(Long uid) {
     try {
@@ -90,6 +92,7 @@ public class ManageCertificateController {
               .fromMethodName(
                 FileController.class,
                 "getCertificates",
+                uid,
                 path.getFileName().toString()
               )
               .build()
@@ -103,7 +106,6 @@ public class ManageCertificateController {
       return new ArrayList<>();
     }
   }
-
 
   //To decide with user id to use
   //If user is teacher, use id from session

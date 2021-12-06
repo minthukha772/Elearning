@@ -3,7 +3,7 @@
   lang="en"
   xmlns:th="http://www.thymeleaf.org"
   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"
+  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity5"
 >
   <head>
     <meta charset="UTF-8" />
@@ -24,30 +24,44 @@
 
   <body style="background-color: #f0f0f0">
     <!-- TODO Add Teacher Navi -->
-    <div class="container">
+    <div th:replace="fragments/nav"></div>
+
+    <div class="container mt-5">
       <div class="card mb-3">
         <div class="card-header">Certificate Photo</div>
 
-        <div class="container" style="margin: auto">
-          <p>Empty! Please Upload Certificate Photo</p>
-        </div>
+        <div class="card-body">
+          <div th:if="${files==null or files.empty}">
+            <p>Empty! Please Upload Certificate Photo</p>
+          </div>
 
-        <div th:if="${files!=null and !files.empty}"></div>
-
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-          <div class="col" th:each="fileInfo, stats : ${files}">
-            <div class="card h-100">
-              <img
-                th:src="${fileInfo.url}"
-                class="card-img-top"
-                th:alt="${fileInfo.name}"
-              />
-              <div class="card-body">
-                <p class="card-title" th:text="${fileInfo.name}">Card title</p>
+          <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col" th:each="fileInfo, stats : ${files}">
+              <div class="card h-100">
+                <img
+                  th:src="${fileInfo.url}"
+                  class="card-img-top"
+                  th:alt="${fileInfo.name}"
+                />
+                <div class="card-body">
+                  <p class="card-title" th:text="${fileInfo.name}">
+                    Card title
+                  </p>
+                </div>
+                <div class="card-footer">
+                  <a
+                    th:href="${fileInfo.url}"
+                    class="btn btn-primary"
+                    target="_blank"
+                    >Open</a
+                  >
+                  <button class="delete btn btn-outline-danger" th:data-name="${fileInfo.name}">Delete</button>
+                </div>
               </div>
             </div>
           </div>
         </div>
+
         <!-- 
 
         <table class="table table-striped ">
@@ -85,16 +99,25 @@
         </table> -->
       </div>
 
-      <div th:if="${fileUploadError != null}" class="alert alert-danger alert-dismissible fade show" role="alert">
-        <span th:text=${fileUploadError}></span>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      <div
+        th:if="${fileUploadError != null}"
+        class="alert alert-danger alert-dismissible fade show"
+        role="alert"
+      >
+        <span th:text="${fileUploadError}"></span>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        ></button>
       </div>
 
       <div class="card">
         <h5 class="card-header">Upload Files</h5>
         <div class="card-body">
           <form
-            th:action="@{/manage_certificate}"
+            th:action="@{__${#httpServletRequest.requestURI}__}"
             method="post"
             enctype="multipart/form-data"
           >
@@ -132,6 +155,7 @@
       crossorigin="anonymous"
     ></script>
 
+    <div th:replace="fragments/footer"></div>
     <!-- the main fileinput plugin script JS file -->
 
     <script th:src="@{/js/AT0007_manage_certificate.js}"></script>

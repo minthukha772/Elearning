@@ -1,7 +1,10 @@
 package com.blissstock.mappingSite.service;
 
+import com.blissstock.mappingSite.entity.UserAccount;
+import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.exceptions.FileStorageException;
 import com.blissstock.mappingSite.exceptions.NotImageFileException;
+import com.blissstock.mappingSite.exceptions.UnauthorizedFileAccessException;
 import com.blissstock.mappingSite.validation.validators.ImageFileValidator;
 import java.io.File;
 import java.io.IOException;
@@ -10,6 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -25,6 +29,9 @@ public class StorageServiceImpl implements StorageService {
   private final Path profilepath = Paths.get(
     root + File.separator + "profiles"
   );
+
+  @Autowired
+  UserSessionService userSessionService;
 
   @Override
   public void init() {
@@ -44,8 +51,13 @@ public class StorageServiceImpl implements StorageService {
   }
 
   @Override
-  public void storeCertificates(Long uid, MultipartFile[] files) {
+  public void storeCertificates(Long uid, MultipartFile[] files)
+    throws UnauthorizedFileAccessException {
     //Checking Content Type
+    if (!checkAuthForTeacher(uid)) {
+      System.out.println("User "+uid+" is uploding certificates");
+      throw new UnauthorizedFileAccessException();
+    }
     ImageFileValidator fileValidator = new ImageFileValidator();
     for (MultipartFile file : files) {
       if (!fileValidator.isSupportedContentType(file.getContentType())) {
@@ -89,7 +101,11 @@ public class StorageServiceImpl implements StorageService {
   }
 
   @Override
-  public Stream<Path> loadAllCertificates(Long uid) {
+  public Stream<Path> loadAllCertificates(Long uid)
+    throws UnauthorizedFileAccessException {
+    if (!checkAuthForTeacher(uid)) {
+      throw new UnauthorizedFileAccessException();
+    }
     Path storeLocation = Paths.get(certificatePath + File.separator + uid);
     try {
       return Files
@@ -102,7 +118,11 @@ public class StorageServiceImpl implements StorageService {
   }
 
   @Override
-  public Resource loadCertificate(Long uid, String filename) {
+  public Resource loadCertificate(Long uid, String filename)
+    throws UnauthorizedFileAccessException {
+    if (!checkAuthForTeacher(uid)) {
+      throw new UnauthorizedFileAccessException();
+    }
     Path storeLocation = Paths.get(certificatePath + File.separator + uid);
     try {
       Path file = storeLocation.resolve(filename);
@@ -119,12 +139,38 @@ public class StorageServiceImpl implements StorageService {
   }
 
   @Override
-  public void deleteCertificate(Long uid, String filename) throws IOException {
-    // TODO Auto-generated method stub
+  public void deleteCertificate(Long uid, String filename)
+    throws IOException, UnauthorizedFileAccessException {
+
+    if (!checkAuthForTeacher(uid)) {
+      throw new UnauthorizedFileAccessException();
+    }
     Path storeLocation = Paths.get(certificatePath + File.separator + uid);
     Path file = storeLocation.resolve(filename);
     Files.delete(file);
-    
-    
+  }
+
+  @Override
+  public boolean checkAuthForTeacher(Long uid) {
+    UserAccount userAccount = userSessionService.getUserAccount();
+    UserRole userRole = UserRole.strToUserRole(userAccount.getRole());
+    if (
+      userRole != UserRole.ADMIN &&
+      userRole != UserRole.SUPER_ADMIN &&
+      userRole != UserRole.TEACHER
+    ) {
+      //  if user is not one of the following, it will return false;
+      //  Teacher, Admin, Super Admin
+      //
+      return false;
+    }
+    if (
+      userRole == UserRole.TEACHER &&
+      userAccount.getId() != uid
+    ) {
+      // This condition is to make sure, teacher is not accessing other teacher resources.
+      return false;
+    }
+    return true;
   }
 }
