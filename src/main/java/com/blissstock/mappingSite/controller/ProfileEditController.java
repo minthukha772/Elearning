@@ -31,15 +31,15 @@ public class ProfileEditController {
     path = {
       "/student/profile_edit",
       "/teacher/profile_edit",
-      "admin/profile_edit/{id}",
+      "admin/profile_edit/student/{id}",
+      "admin/profile_edit/teacher{id}",
     }
   )
   public String editProfileView(
     Model model,
     @PathVariable(name = "id", required = false) Long id
   ) {
-    Long email;
-    String role, postAction;
+    String role;
     System.out.println("id is " + id);
 
     if (id != null) {
@@ -66,16 +66,18 @@ public class ProfileEditController {
   }
 
   @PostMapping(
-    path = { "/student/profile_edit", "/admin/profile_edit/student" }
+    path = { "/student/profile_edit", "/admin/profile_edit/student/{id}" }
   )
   public String editStudentProfile(
     Model model,
     @Valid @ModelAttribute("userInfo") UserRegisterDTO userInfo,
     BindingResult bindingResult,
     @RequestParam(value = "action", required = true) String action,
-    HttpServletRequest httpServletRequest
+    HttpServletRequest httpServletRequest,
+    @PathVariable(name = "id", required = false) Long id
   ) {
     String role = "student";
+    Long uid = getUid(id);
     model.addAttribute("task", "profile_edit");
     model.addAttribute("role", role);
     model.addAttribute(
@@ -90,7 +92,7 @@ public class ProfileEditController {
     model.addAttribute("userInfo", userInfo);
     try {
       if (action.equals("submit")) {
-        userService.updateUser(userInfo);
+        userService.updateUser(userInfo, uid);
       }
       //TODO redirect to complete page
     } catch (Exception e) {
@@ -111,9 +113,11 @@ public class ProfileEditController {
     @Valid @ModelAttribute("userInfo") TeacherRegisterDTO userInfo,
     BindingResult bindingResult,
     @RequestParam(value = "action", required = true) String action,
-    HttpServletRequest httpServletRequest
+    HttpServletRequest httpServletRequest,
+    @PathVariable(name = "id", required = false) Long id
   ) {
     String role = "teacher";
+    Long uid = getUid(id);
     model.addAttribute("task", "profile_edit");
     model.addAttribute("role", role);
     model.addAttribute(
@@ -128,7 +132,7 @@ public class ProfileEditController {
     model.addAttribute("userInfo", userInfo);
     try {
       if (action.equals("submit")) {
-        userService.updateUser(userInfo);
+        userService.updateUser(userInfo, uid);
       }
       //TODO redirect to complete page
     } catch (Exception e) {
@@ -139,5 +143,18 @@ public class ProfileEditController {
     model.addAttribute("infoMap", userInfo.toMap());
     System.out.println(userInfo.toMap());
     return "ST0001_register";
+  }
+
+  private Long getUid(Long id) {
+    Long uid = 0L;
+    UserRole role = userSessionService.getRole();
+    if (role == UserRole.ADMIN || role == UserRole.SUPER_ADMIN) {
+      uid = id;
+    } else if (role == UserRole.TEACHER || role == UserRole.STUDENT) {
+      uid = userSessionService.getUserAccount().getId();
+    } else {
+      throw new RuntimeException("user authetication fail");
+    }
+    return uid;
   }
 }
