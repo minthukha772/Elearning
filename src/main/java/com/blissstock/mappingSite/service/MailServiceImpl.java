@@ -1,15 +1,14 @@
 package com.blissstock.mappingSite.service;
 
+import java.util.UUID;
+
 import com.blissstock.mappingSite.entity.UserAccount;
-import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.enums.TokenType;
 
-import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.MessageSource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
@@ -29,9 +28,9 @@ public class MailServiceImpl implements MailService {
   @Autowired
   private UserService userService;
 
-  @Autowired
+/*   @Autowired
   private MessageSource messages;
-
+ */
   private String email = "mappingsite0@gmail.com";
   private String fromName = "Mapping Site";
 

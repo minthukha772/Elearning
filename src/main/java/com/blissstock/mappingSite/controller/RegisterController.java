@@ -71,7 +71,7 @@ public class RegisterController {
     model.addAttribute("userInfo", userInfo);
     //
 
-    model.addAttribute("task", "register");
+    model.addAttribute("task", "Register");
     model.addAttribute("role", role);
     model.addAttribute("postAction", "/register/" + role);
 
@@ -88,7 +88,7 @@ public class RegisterController {
     Errors errors
   ) {
     String role = "student";
-    model.addAttribute("task", "register");
+    model.addAttribute("task", "Register");
     model.addAttribute("role", role);
     model.addAttribute("postAction", "/register/" + role);
 
@@ -132,7 +132,7 @@ public class RegisterController {
     Errors errors
   ) {
     String role = "teacher";
-    model.addAttribute("task", "register");
+    model.addAttribute("task", "Register");
     model.addAttribute("role", role);
     model.addAttribute("postAction", "/register/" + role);
 

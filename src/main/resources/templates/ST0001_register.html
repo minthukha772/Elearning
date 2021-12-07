@@ -26,13 +26,13 @@
     <div class="m-3">
       <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
         <ol class="breadcrumb">
-          <li class="breadcrumb-item">
+          <li class="breadcrumb-item" th:if="${task=='Register'}">
             <a href="#" data-bs-toggle="modal" data-bs-target="#reEnterEmail"
               >Email</a
             >
           </li>
           <!-- Make BreadCrumb Action For Back button -->
-          <li class="breadcrumb-item active" th:if="${infoMap==null}">Registration</li>
+          <li class="breadcrumb-item active" th:if="${infoMap==null}"><span th:text="${task}">Registration</span></li>
           <li class="breadcrumb-item" th:if="${infoMap!=null}"><a href="#" class="back">Registration</a></li>
           <!--  -->
           <li class="breadcrumb-item" th:classappend="${infoMap != null}?'active':''" aria-current="page">Confirmation</li>

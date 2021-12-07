@@ -65,11 +65,10 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public void updateUser(UserRegisterDTO userRegisterDTO) {
-    UserInfo existingUserInfo = userInfoRepository.findUserInfoByEmail(
-      userRegisterDTO.getEmail()
-    );
+  public void updateUser(UserRegisterDTO userRegisterDTO, Long id) {
+    UserInfo existingUserInfo = userInfoRepository.findById(id).get();
     System.out.println(existingUserInfo);
+    System.out.println(existingUserInfo.getUserAccount());
     if (existingUserInfo != null) {
       existingUserInfo =
         UserRegisterDTO.toUserInfo(userRegisterDTO, existingUserInfo);
@@ -77,7 +76,6 @@ public class UserServiceImpl implements UserService {
     userInfoRepository.save(existingUserInfo);
   }
 
- 
   @Override
   public UserAccount getUserAccountByEmail(String email) {
     return userAccountRepository.findByMail(email);

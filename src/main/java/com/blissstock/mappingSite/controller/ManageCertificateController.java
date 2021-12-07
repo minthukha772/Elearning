@@ -1,5 +1,10 @@
 package com.blissstock.mappingSite.controller;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.exceptions.NotImageFileException;
 import com.blissstock.mappingSite.exceptions.UnauthorizedFileAccessException;
@@ -7,13 +12,7 @@ import com.blissstock.mappingSite.model.FileInfo;
 import com.blissstock.mappingSite.service.StorageService;
 import com.blissstock.mappingSite.service.UserSessionService;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-import javassist.bytecode.analysis.ControlFlow.Catcher;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -75,7 +74,10 @@ public class ManageCertificateController {
       );
     } catch (UnauthorizedFileAccessException e) {
       e.printStackTrace();
-      //TODO express error message
+      model.addAttribute(
+        "fileUploadError",
+        "Unauthorized File Access"
+      );
     } catch (Exception e) {
       e.printStackTrace();
     }

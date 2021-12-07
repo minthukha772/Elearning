@@ -1,5 +1,9 @@
 package com.blissstock.mappingSite.controller;
 
+import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
+
 import com.blissstock.mappingSite.dto.PasswordDTO;
 import com.blissstock.mappingSite.entity.Token;
 import com.blissstock.mappingSite.entity.UserAccount;
@@ -8,12 +12,9 @@ import com.blissstock.mappingSite.enums.TokenType;
 import com.blissstock.mappingSite.exceptions.UserNotFoundException;
 import com.blissstock.mappingSite.service.MailServiceImpl;
 import com.blissstock.mappingSite.service.UserService;
-import java.util.UUID;
-import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.token.TokenService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

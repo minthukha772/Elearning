@@ -9,7 +9,7 @@ import com.blissstock.mappingSite.enums.TokenType;
 public interface UserService {
   public UserInfo addUser(UserRegisterDTO userRegisterDTO) throws Exception;
 
-  public void updateUser(UserRegisterDTO userRegisterDTO);
+  public void updateUser(UserRegisterDTO userRegisterDTO, Long id);
 
   public UserAccount getUserAccountByEmail(String email);
 

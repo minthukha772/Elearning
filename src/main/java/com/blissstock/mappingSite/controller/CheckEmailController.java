@@ -1,11 +1,11 @@
 package com.blissstock.mappingSite.controller;
 
+import javax.validation.Valid;
+
 import com.blissstock.mappingSite.dto.EmailCheckRegisterDTO;
 import com.blissstock.mappingSite.service.UserService;
-import com.blissstock.mappingSite.validation.validators.EmailValidator;
-import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;

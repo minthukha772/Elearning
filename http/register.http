@@ -52,3 +52,27 @@ curl 'http://localhost:8080/register/teacher' \
 
 
 ##################
+
+curl 'http://localhost:8080/teacher/profile_edit' \
+  -H 'Connection: keep-alive' \
+  -H 'Cache-Control: max-age=0' \
+  -H 'sec-ch-ua: " Not A;Brand";v="99", "Chromium";v="96", "Google Chrome";v="96"' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'sec-ch-ua-platform: "Linux"' \
+  -H 'Upgrade-Insecure-Requests: 1' \
+  -H 'Origin: http://localhost:8080' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36' \
+  -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9' \
+  -H 'Sec-Fetch-Site: same-origin' \
+  -H 'Sec-Fetch-Mode: navigate' \
+  -H 'Sec-Fetch-User: ?1' \
+  -H 'Sec-Fetch-Dest: document' \
+  -H 'Referer: http://localhost:8080/teacher/profile_edit' \
+  -H 'Accept-Language: en-GB,en;q=0.9,my-MM;q=0.8,my;q=0.7,en-US;q=0.6' \
+  -H 'Cookie: SESSION=MjU2NDQxNzAtYzI3OS00OWU1LTliODktYThjNmZiOTE0MTRh' \
+  --data-raw 'email=sai%40gmail.com&name=Sai&phone=%2B959259658621&gender=male&dob=2021-12-06&zipCode=0&city=City&division=Division&address=Address&education=Edu&nrc=Nrc&award=Award&selfDescription=Describe&acceptTerm=true&_acceptTerm=on&action=next' \
+  --compressed
+
+
+###########

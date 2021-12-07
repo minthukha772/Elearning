@@ -1,15 +1,14 @@
 package com.blissstock.mappingSite.dto;
 
-import com.blissstock.mappingSite.enums.PasswordResetType;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 import com.blissstock.mappingSite.validation.ConstrainMessage;
 
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 
 @Data
 @Getter
