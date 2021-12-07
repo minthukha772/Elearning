@@ -88,12 +88,12 @@ public class ProfileController {
         model.addAttribute("files", fileInfos);
 
         //post action
-        model.addAttribute("profilePost", role+"/profile-upload/"+userId);
+        model.addAttribute("profilePost", "/"+role+"/profile-upload/"+userId);
         return "CM0004_TeacherProfile";
     }
 
   //upload profile and payment
-  @PostMapping(value= "{role}/profile-upload/{userId}")
+  @PostMapping(value= "/{role}/profile-upload/{userId}")
   private String postProfile(Model model,
     @RequestParam("profile_pic") MultipartFile photo, 
     @RequestParam(value="action", required=true) String action,
@@ -123,14 +123,14 @@ public class ProfileController {
       }
     }
   }
-  // else if(action.equals("add_payment")){
-  //   List<PaymentAccount> payAccs=userInfo.getPaymentAccount();
-  //   System.out.println(payAccs);
-  //   for(PaymentAccount payAcc : payAccs){
-  //       payAccRepo.save(payAcc);
-  //       System.out.println(payAcc);
-  //     }
-  //   }
+  else if(action.equals("add_payment")){
+    List<PaymentAccount> payAccs=userInfo.getPaymentAccount();
+    System.out.println(payAccs);
+    for(PaymentAccount payAcc : payAccs){
+        payAccRepo.save(payAcc);
+        System.out.println(payAcc);
+      }
+    }
       
       return "redirect:/"+role+"/profile/"+userId;
   

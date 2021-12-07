@@ -71,7 +71,7 @@ public class AdminTopController {
         // model.addAttribute("trInfo", userInfo.toMapTeacher());
         // List<FileInfo> fileInfos = loadImages();
         // model.addAttribute("files", fileInfos);
-        model.addAttribute("postAction","/top/update/"+userId);;
+        model.addAttribute("postAction","/"+role+"/top/update/"+userId);;
             return "AD0001_AdminTop";
     }
     private FileInfo loadProfile(long userId) {
@@ -94,7 +94,7 @@ public class AdminTopController {
       }
   }
 
-  @PostMapping(value= "{role}/top/update/{userId}")
+  @PostMapping(value= "/{role}/top/update/{userId}")
   private String postProfile(Model model,
     @RequestParam("profile_pic") MultipartFile photo, 
     @RequestParam(value="action", required=true) String action,

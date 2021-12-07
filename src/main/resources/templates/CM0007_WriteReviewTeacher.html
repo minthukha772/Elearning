@@ -65,7 +65,6 @@
               <textarea class="form-control" id="review" rows="5" cols="40" placeholder="Write feedback here "  th:field=*{feedback} th:classappend="${#fields.hasErrors('feedback')}?'is-invalid':''"></textarea>
               <div class="invalid-feedback" th:if="${#fields.hasErrors('feedback')}" th:errors="*{feedback}">
               </div>
-              <input type="hidden" value="finished" th:field="*{reviewStatus}"> 
               </div>
               <div class="row">
                 <div class="buttons col-sm-12 text-center">                   

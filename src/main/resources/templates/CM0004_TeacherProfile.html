@@ -115,6 +115,201 @@
                       <div class="mb-2">
                         <i class="fa fa-camera fa-2x"></i>
                       </div>
+                      <button class="text-uppercase btn btn-outline-dark" type="button" name="action" value="submit"> Upload Profile Photo</button>
+                      </div>
+                    </div>
+                  </label>
+                  </div>
+                </div>
+              </div>
+    
+                <br>
+
+              <div id="profile">
+                <div class="table-responsive mb-3">
+                  <!-- <div class="d-flex justify-content-center">
+                    <img th:src="@{${imagePath}}" class="profile_img">
+                  </div> -->
+                  <table class="table table-borderless table-hover">
+                    <tr th:each="entry, stats : ${trInfo}">
+                      <td th:text="${entry.key}" class="text-end">100</td>
+                      <td>:</td>
+                      <td th:text="${entry.value}">John</td>
+                    </tr>
+                  </table>
+                </div>
+                
+              <button type="button" id="previewFormattedSchedules" class="sp-btn-size lsc-btn-adjust btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalcontainer">Add Payment Information</button>
+                <!-- MODAL -->
+             <div class="modal fade" id="modalcontainer" tabindex="-1" aria-labelledby="modalcontainer" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <h5 class="modal-title"></h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body"> 
+                        <fieldset>
+                          <legend>Payment</legend>
+          
+                          <div>
+                            <div class="row mb-3" >
+                              <h5>Primary Account</h5>
+                              <div class="col-sm-3">
+                                <label class="form-label" for="primaryServiceName"
+                                >Service</label
+                                >
+                                <select
+                                  class="form-select"
+                                  
+                                >
+                                  <option>Kpay</option>
+                                  <option>CBpay</option>
+                                  <option>Wave</option>
+                                  <option>KBZ</option>
+                                  <option>CB</option>
+                                  <option>AYA</option>
+                                </select>
+                              </div>
+                              
+                              <div class="col-sm-5">
+                                <label class="form-label" for="primaryAccountName"
+                                  >Account Name</label
+                                >
+                                <input
+                                  class="form-control"
+                                  id="primaryAccountName"
+                                  type="text"
+                                  placeholder="Account Name"
+                                  th:field="*{paymentAccount[__${0}__].accountName}"
+                                />
+                             
+                              </div>
+          
+                              <div class="col-sm-4">
+                                <label class="form-label" for="primaryAccountNumber"
+                                  >Account Number</label
+                                >
+                                <input
+                                  class="form-control"
+                                  id="primaryAccountNumber"
+                                  type="text"
+                                  placeholder="Account Number"
+                                  th:field="*{paymentAccount[__${0}__].accountNumber}"
+                                />                               
+                              </div>
+                              </div>
+                            </div>
+          
+                            <div class="row mb-3">
+                              <h5>Secondary Account</h5>
+                              <div class="col-sm-3">
+                                <label class="form-label" for="secondaryServiceName"
+                                  >Service</label
+                                >
+                                <select
+                                  class="form-select"
+                                >
+                                  <option>Kpay</option>
+                                  <option>CBpay</option>
+                                  <option>Wave</option>
+                                  <option>KBZ</option>
+                                  <option>CB</option>
+                                  <option>AYA</option>
+                                </select>
+                              </div>
+          
+                              <div class="col-sm-5">
+                                <label class="form-label" for="secondaryAccountName"
+                                  >Account Name</label
+                                >
+                                <input
+                                  class="form-control"
+                                  id="secondaryAccountName"
+                                  type="text"
+                                  placeholder="Account Name"
+                                  th:field="*{paymentAccount[__${1}__].accountName}"
+                                />
+                              </div>
+          
+                              <div class="col-sm-4">
+                                <label class="form-label" for="secondaryAccountNumber"
+                                  >Account Number</label
+                                >
+                                <input
+                                  class="form-control"
+                                  id="secondaryAccountNumber"
+                                  type="text"
+                                  placeholder="Account Number"
+                                  th:field="*{paymentAccount[__${1}__].accountNumber}"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </fieldset>
+                      
+
+                      <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                          <button type="submit" class="btn btn-primary"  name="action" value="add_payment">Save changes</button>
+                      </div>
+                    </div>
+                    </div>
+                  </div>
+
+                  <div th:if="${files!=null and !files.empty}"></div>
+
+                        <div class="row row-cols-1 row-cols-md-3 g-4">
+                          <div class="col" th:each="fileInfo, stats : ${files}">
+                            <div class="card h-100">
+                              <img
+                                th:src="${fileInfo.url}"
+                                class="card-img-top"
+                                th:alt="${fileInfo.name}"
+                              />
+                              <div class="card-body">
+                                <p class="card-title" th:text="${fileInfo.name}">Card title</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                </div>
+
+                <div class="row justify-content-between">
+                  <button class="btn btn-primary col-auto back">Change Password</button>
+
+                  <button class="btn btn-primary col-auto" id="submitButton" type="submit" name="action" value="next">
+                    Edit
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          <!-- Admin view -->
+          <div class="card-body"  th:if="${role} == 'admin' or ${role} == 'super admin'">
+            <div class="container">
+             <div class="profile-pic-wrapper mb-3">
+                <div class="pic-holder">
+                  <div class="d-flex justify-content-center">
+                  <!-- <img id="profilePic" class="pic" th:if="${pic64 == null}" th:src="${imagePath}" /> -->
+                  <img id="profilePic" class="pic img-thumbnail profile_img" th:src="${profile.url}"  th:alt="${profile.name}" />
+                  </div>
+                  <div class="d-flex justify-content-center">
+                    <input
+                    class="uploadProfileInput"
+                    type="file"
+                    name="profile_pic"
+                    id="newProfilePhoto"
+                    accept="image/*"
+                    style="display: none;"
+                    th:src="${profile.url}"
+                    th:alt="${profile.name}"
+                  />
+                  <label for="newProfilePhoto" class="upload-file-block">
+                    <div class="text-center">
+                      <div class="mb-2">
+                        <i class="fa fa-camera fa-2x"></i>
+                      </div>
                       <div class="text-uppercase" style="color: blue;">
                         Upload Profile Photo
                       </div>
@@ -248,12 +443,13 @@
                             </div>
                           </div>
                         </fieldset>
-                      </div>
+                      
 
                       <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                           <button type="submit" class="btn btn-primary"  name="action" value="add_payment">Save changes</button>
                       </div>
+                    </div>
                     </div>
                   </div>
 
@@ -275,213 +471,21 @@
                         </div>
                 </div>
 
-                <div class="row justify-content-between">
+                <div class="d-flex justify-content-between">
                   <button class="btn btn-primary col-auto back">Change Password</button>
-
-                  <button class="btn btn-primary col-auto" id="submitButton" type="submit" name="action" value="submit">
-                    Edit
+                  <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    Edit 
                   </button>
+                  <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                    <li><a class="dropdown-item" href="#" id="editButton" name="action" value="edit">Edit Profile</a></li>
+                    <li><a class="dropdown-item" href="#"  name="action" value="delete">Delete Account</a></li>
+                    <li><a class="dropdown-item" href="#" name="action" value="blacklist">Blacklist</a></li>
+                  </ul>
                 </div>
               </div>
             </div>
-          </div>
-          <!-- Admin view -->
-          <div class="card-body"  th:if="${role} == 'admin' or ${role} == 'super admin'">
-            <div class="container">
-             <div class="profile-pic-wrapper mb-3">
-                <div class="pic-holder">
-                  <div class="d-flex justify-content-center">
-                  <!-- <img id="profilePic" class="pic" th:if="${pic64 == null}" th:src="${imagePath}" /> -->
-                  <img id="profilePic" class="pic img-thumbnail profile_img" th:src="${profile.url}"  th:alt="${profile.name}" />
-                  </div>
-                  <div class="d-flex justify-content-center">
-                    <input
-                    class="uploadProfileInput"
-                    type="file"
-                    name="profile_pic"
-                    id="newProfilePhoto"
-                    accept="image/*"
-                    style="display: none;"
-                    th:src="${profile.url}"
-                    th:alt="${profile.name}"
-                  />
-                  <label for="newProfilePhoto" class="upload-file-block">
-                    <div class="text-center">
-                      <div class="mb-2">
-                        <i class="fa fa-camera fa-2x"></i>
-                      </div>
-                      <div class="text-uppercase" style="color: blue;">
-                        Upload Profile Photo
-                      </div>
-                    </div>
-                  </label>
-                  </div>
-                </div>
-              </div>
-    
-                <br>
 
-              <div id="profile">
-                <div class="table-responsive mb-3">
-                  <!-- <div class="d-flex justify-content-center">
-                    <img th:src="@{${imagePath}}" class="profile_img">
-                  </div> -->
-                  <table class="table table-borderless table-hover">
-                    <tr th:each="entry, stats : ${trInfo}">
-                      <td th:text="${entry.key}" class="text-end">100</td>
-                      <td>:</td>
-                      <td th:text="${entry.value}">John</td>
-                    </tr>
-                  </table>
-                </div>
-                <button type="button" id="previewFormattedSchedules" class="sp-btn-size lsc-btn-adjust btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalcontainer">Add Payment Information</button>
-                <!-- MODAL -->
-             <div class="modal fade" id="modalcontainer" tabindex="-1" aria-labelledby="modalcontainer" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-centered">
-                  <div class="modal-content">
-                      <div class="modal-header">
-                          <h5 class="modal-title"></h5>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                      </div>
-                      <div class="modal-body"> 
-                        <fieldset>
-                          <legend>Payment</legend>
-          
-                          <div>
-                            <div class="row mb-3" >
-                              <h5>Primary Account</h5>
-                              <div class="col-sm-3">
-                                <label class="form-label" for="primaryServiceName"
-                                >Service</label
-                                >
-                                <select
-                                  class="form-select"
-                                  
-                                >
-                                  <option>Kpay</option>
-                                  <option>CBpay</option>
-                                  <option>Wave</option>
-                                  <option>KBZ</option>
-                                  <option>CB</option>
-                                  <option>AYA</option>
-                                </select>
-                              </div>
-                              
-                              <div class="col-sm-5">
-                                <label class="form-label" for="primaryAccountName"
-                                  >Account Name</label
-                                >
-                                <input
-                                  class="form-control"
-                                  id="primaryAccountName"
-                                  type="text"
-                                  placeholder="Account Name"
-                                  th:field="*{paymentAccount[__${0}__].accountName}"
-                                />
-                             
-                              </div>
-          
-                              <div class="col-sm-4">
-                                <label class="form-label" for="primaryAccountNumber"
-                                  >Account Number</label
-                                >
-                                <input
-                                  class="form-control"
-                                  id="primaryAccountNumber"
-                                  type="text"
-                                  placeholder="Account Number"
-                                  th:field="*{paymentAccount[__${0}__].accountNumber}"
-                                />                               
-                              </div>
-                              </div>
-                            </div>
-          
-                            <div class="row mb-3">
-                              <h5>Secondary Account</h5>
-                              <div class="col-sm-3">
-                                <label class="form-label" for="secondaryServiceName"
-                                  >Service</label
-                                >
-                                <select
-                                  class="form-select"
-                                >
-                                  <option>Kpay</option>
-                                  <option>CBpay</option>
-                                  <option>Wave</option>
-                                  <option>KBZ</option>
-                                  <option>CB</option>
-                                  <option>AYA</option>
-                                </select>
-                              </div>
-          
-                              <div class="col-sm-5">
-                                <label class="form-label" for="secondaryAccountName"
-                                  >Account Name</label
-                                >
-                                <input
-                                  class="form-control"
-                                  id="secondaryAccountName"
-                                  type="text"
-                                  placeholder="Account Name"
-                                  th:field="*{paymentAccount[__${1}__].accountName}"
-                                />
-                              </div>
-          
-                              <div class="col-sm-4">
-                                <label class="form-label" for="secondaryAccountNumber"
-                                  >Account Number</label
-                                >
-                                <input
-                                  class="form-control"
-                                  id="secondaryAccountNumber"
-                                  type="text"
-                                  placeholder="Account Number"
-                                  th:field="*{paymentAccount[__${1}__].accountNumber}"
-                                />
-                              </div>
-                            </div>
-                          </div>
-                        </fieldset>
-                      
-
-                      <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                          <button type="submit" class="btn btn-primary"  name="action" value="add_payment">Save changes</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-              <div th:if="${files!=null and !files.empty}"></div>
-
-                <div class="row row-cols-1 row-cols-md-3 g-4">
-                  <div class="col" th:each="fileInfo, stats : ${files}">
-                    <div class="card h-100">
-                      <img
-                        th:src="${fileInfo.url}"
-                        class="card-img-top"
-                        th:alt="${fileInfo.name}"
-                      />
-                      <div class="card-body">
-                        <p class="card-title" th:text="${fileInfo.name}">Card title</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                  <div class="d-flex justify-content-between">
-                    <button class="btn btn-primary col-auto back">Change Password</button>
-                    <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                      Edit 
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                      <li><a class="dropdown-item" href="#" id="editButton" name="action" value="edit">Edit Profile</a></li>
-                      <li><a class="dropdown-item" href="#"  name="action" value="delete">Delete Account</a></li>
-                      <li><a class="dropdown-item" href="#" name="action" value="blacklist">Blacklist</a></li>
-                    </ul>
-                </div>
-             </div>
-          </div>
-      </div>
+         
     </div>
         </div>
         <!---End of Card-->

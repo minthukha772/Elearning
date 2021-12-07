@@ -2,9 +2,11 @@ package com.blissstock.mappingSite.controller;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Null;
 
 import com.blissstock.mappingSite.dto.StudentReviewDTO;
 import com.blissstock.mappingSite.entity.CourseInfo;
@@ -38,7 +40,7 @@ public class ReviewListController {
     //get student review 
     @Valid
     @GetMapping(value="/{role}/review-list/{courseId}/{userId}")
-    private String getReviewList(@PathVariable Long courseId, @PathVariable Long userId,@PathVariable String userName, @PathVariable String role, Model model) {  
+    private String getReviewList(@PathVariable Long courseId, @PathVariable Long userId, @PathVariable String role, Model model) {  
         CourseInfo courseInfo=courseInfoRepo.findById(courseId).orElse(null);
         UserInfo user=userRepo.findById(userId).orElse(null);
         //Display course name
@@ -61,10 +63,22 @@ public class ReviewListController {
 
         //Display review
         List<Review> reviews=courseInfo.getReview();
-        model.addAttribute("reviews", reviews);
+        List<Review> courseReviewList= new ArrayList<Review>(); 
+        for (Review courseReview:reviews){
+            if(courseReview.getReviewType()==0){
+                courseReviewList.add(courseReview); 
+                model.addAttribute("courseReviewList", courseReviewList);
+            }
+        }
 
         List<Review> stuReviews=user.getReview();
-        model.addAttribute("stuReviews", stuReviews);
+        List<Review> studentReviewList= new ArrayList<Review>();
+        for(Review studentReview:stuReviews) {
+            if(studentReview.getStar()==0){
+                studentReviewList.add(studentReview);
+                model.addAttribute("stuReviews", studentReviewList);
+            }
+        }
         // for(Review review : reviews){
         //     model.addAttribute("review", review);  
         // }

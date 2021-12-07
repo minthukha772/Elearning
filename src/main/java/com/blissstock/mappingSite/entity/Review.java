@@ -31,23 +31,20 @@ public class Review {
 	@Column(name = "review_id")
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Long reviewTestId;
+	private Long reviewId;
 	
     //@NotBlank(message="Please choose review type")
     @Column(name = "review_type")
-	private int reviewType;
-
+	private int reviewType=0;
+   
     // @Min(value = 1, message = "Please fill rating")
     // @Max(value = 5, message = "Please fill rating")
     @Column(name = "star")
-	private int star;
+	private int star=0;
 
     //@NotBlank(message="Please fill feedback")
 	@Column(name="feedback")
 	private String feedback;
-
-    @Column(name = "review_status", length = 15)
-	private String reviewStatus;
 
     @Column(name = "assigned_date")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
