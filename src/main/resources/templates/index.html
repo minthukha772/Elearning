@@ -28,14 +28,27 @@
   <body>
     <div th:replace="fragments/nav"></div>
 
-
-    <nav class="py-3 sticky-top container-fluid" style="background-color: #5eba7d" th:unless="${#authorization.expression('isAuthenticated()')}">
+    <nav
+      class="py-3 sticky-top container-fluid"
+      style="background-color: #5eba7d"
+      th:unless="${#authorization.expression('isAuthenticated()')}"
+    >
       <ul class="nav justify-content-center row gx-3 gy-2">
         <li class="nav-item col-auto text-center">
-          <a class="btn  btn-light btn-lg active " aria-current="page" th:href="@{/check_email/student}">Register as Student</a>
+          <a
+            class="btn btn-light btn-lg active"
+            aria-current="page"
+            th:href="@{/check_email/student}"
+            >Register as Student</a
+          >
         </li>
-        <li class="nav-item col-auto text-center" >
-          <a class="btn btn-light btn-lg active" aria-current="page" th:href="@{/check_email/teacher}">Register as Teacher</a>
+        <li class="nav-item col-auto text-center">
+          <a
+            class="btn btn-light btn-lg active"
+            aria-current="page"
+            th:href="@{/check_email/teacher}"
+            >Register as Teacher</a
+          >
         </li>
       </ul>
     </nav>
@@ -56,7 +69,7 @@
           data-bs-slide-to="1"
           aria-label="Slide 2"
         ></button>
-        <buttonsm
+        <button
           type="button"
           data-bs-target="#carouselIndicators"
           data-bs-slide-to="2"
@@ -180,80 +193,18 @@
 
           <div class="coursesSlider" id="liveCourseSlider">
             <div class="card">
-              <img th:src="@{/images/top-1.jpg}" class="card-img-top" alt="..." />
+              <img
+                th:src="@{/images/top-1.jpg}"
+                class="card-img-top"
+                alt="..."
+              />
               <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
-                </p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
+                <h5 class="card-title">Course Name</h5>
+                <p class="card-text">Teacher Name</p>
+                <p class="card-text">Price</p>
               </div>
-            </div>
-            <div class="card">
-              <img th:src="@{/images/top-1.jpg}" class="card-img-top" alt="..." />
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
-                </p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-              </div>
-            </div>
-            <div class="card">
-              <img th:src="@{/images/top-1.jpg}" class="card-img-top" alt="..." />
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
-                </p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-              </div>
-            </div>
-            <div class="card">
-              <img th:src="@{/images/top-1.jpg}" class="card-img-top" alt="..." />
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
-                </p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-              </div>
-            </div>
-            <div class="card">
-              <img th:src="@{/images/top-1.jpg}" class="card-img-top" alt="..." />
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
-                </p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-              </div>
-            </div>
-            <div class="card">
-              <img th:src="@{/images/top-1.jpg}" class="card-img-top" alt="..." />
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
-                </p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-              </div>
-            </div>
-            <div class="card">
-              <img th:src="@{/images/top-1.jpg}" class="card-img-top" alt="..." />
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
-                </p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
+              <div class="card-footer">
+                <a href="#" class="btn btn-primary d-block">See More</a>
               </div>
             </div>
           </div>
@@ -308,12 +259,11 @@
 
           <div class="col-sm-12 col-md-7 pt-sm-2">
             <form action="get">
-              <div class="row">
+              <div class="row g-2">
                 <div class="col-md-6 col-sm-12">
                   <input
                     type="date"
                     class="form-control"
-                    placeholder="Start Date"
                     aria-label="Start Date"
                     name="startDate"
                   />
@@ -322,7 +272,6 @@
                   <input
                     type="date"
                     class="form-control"
-                    placeholder="End Date"
                     aria-label="End Date"
                   />
                 </div>
