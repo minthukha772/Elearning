@@ -14,7 +14,6 @@ import com.blissstock.mappingSite.entity.Review;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
 import com.blissstock.mappingSite.repository.ReviewRepository;
-import com.blissstock.mappingSite.repository.ReviewTestRepository;
 import com.blissstock.mappingSite.repository.UserRepository;
 import com.blissstock.mappingSite.service.StudentReviewService;
 import com.blissstock.mappingSite.service.TeacherReviewService;

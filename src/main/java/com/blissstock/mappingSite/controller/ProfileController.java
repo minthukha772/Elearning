@@ -14,10 +14,12 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import com.blissstock.mappingSite.model.FileInfo;
+import com.blissstock.mappingSite.entity.BankInfo;
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.PaymentAccount;
 import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.entity.UserInfo;
+import com.blissstock.mappingSite.repository.BankInfoRepository;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
 import com.blissstock.mappingSite.repository.PaymentAccountRepository;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
@@ -59,27 +61,31 @@ public class ProfileController {
 
     @Autowired
     PaymentAccountRepository payAccRepo;
+
+    @Autowired
+    BankInfoRepository bankRepo;
+
     //Get profile
     @Valid
-    @GetMapping(value="{role}/profile/{userId}")
-    private String getProfile( @PathVariable Long userId, @PathVariable String role, Model model) {  
+    @GetMapping(value="{role}/profile/{userId}/{courseId}")
+    private String getProfile( @PathVariable Long userId,  @PathVariable Long courseId, @PathVariable String role, Model model) {  
         UserInfo userInfo=userRepo.findById(userId).orElse(null);
         model.addAttribute("userInfo", userInfo);
         model.addAttribute("role", role);
         UserAccount userAcc = userInfo.getUserAccount();
 
+        List<BankInfo> bankList = bankRepo.findAll();
+        model.addAttribute("bankList", bankList);
+
         if(userAcc.getRole().equals("student")){
           FileInfo profile = loadProfile(userId);
           model.addAttribute("profile", profile);
-          model.addAttribute("stuInfo", userInfo.toMapStudent());        
+          model.addAttribute("stuInfo", userInfo.toMapStudent());
+          model.addAttribute("profilePost", "/"+role+"/profile-upload/"+userId);        
             return "CM0004_StudentProfile";
         }
         model.addAttribute("trInfo", userInfo.toMapTeacher());
         //load profile picture
-        if(userAcc.getPhoto()==null){
-          String photoString=null;
-          model.addAttribute("pic64", photoString);
-        }
         FileInfo profile = loadProfile(userId);
         model.addAttribute("profile", profile);
 
@@ -88,20 +94,20 @@ public class ProfileController {
         model.addAttribute("files", fileInfos);
 
         //post action
-        model.addAttribute("profilePost", "/"+role+"/profile-upload/"+userId);
+        model.addAttribute("profilePost", "/"+role+"/profile-upload/"+userId+"/"+courseId);
         return "CM0004_TeacherProfile";
     }
 
   //upload profile and payment
-  @PostMapping(value= "/{role}/profile-upload/{userId}")
+  @PostMapping(value= "/{role}/profile-upload/{userId}/{courseId}")
   private String postProfile(Model model,
     @RequestParam("profile_pic") MultipartFile photo, 
     @RequestParam(value="action", required=true) String action,
     @PathVariable String role,
-    @PathVariable Long userId
+    @PathVariable Long userId,
+    @PathVariable Long courseId
   ) {
     UserInfo userInfo=userRepo.findById(userId).orElse(null);
-    UserAccount acc=userInfo.getUserAccount();
 
     if(action.equals("submit")){
         
@@ -115,24 +121,24 @@ public class ProfileController {
         storageService.storeProfile(photo,saveFileName);
 
         //insert photo 
-        acc.setPhoto(saveFileName);
-        userAccRepo.save(acc);
+        userInfo.setPhoto(saveFileName);
+        userRepo.save(userInfo);
       }else {
         model.addAttribute("photoTypeErr", "Files other than image file cannot be uploaded.");
         return "CM0004_TeacherProfile";
       }
     }
   }
-  else if(action.equals("add_payment")){
-    List<PaymentAccount> payAccs=userInfo.getPaymentAccount();
-    System.out.println(payAccs);
-    for(PaymentAccount payAcc : payAccs){
-        payAccRepo.save(payAcc);
-        System.out.println(payAcc);
-      }
-    }
+  // else if(action.equals("add_payment")){
+  //   List<PaymentAccount> payAccs=userInfo.getPaymentAccount();
+  //   System.out.println(payAccs);
+  //   for(PaymentAccount payAcc : payAccs){
+  //       payAccRepo.save(payAcc);
+  //       System.out.println(payAcc);
+  //     }
+  //  }
       
-      return "redirect:/"+role+"/profile/"+userId;
+      return "redirect:/student-review/"+courseId+"/"+userId;
   
 
   }
@@ -140,8 +146,16 @@ public class ProfileController {
   //Get profile
   private FileInfo loadProfile(long userId) {
     try {
-        UserAccount userAcc=userAccRepo.findById(userId).orElse(null);
-        Path path= storageService.loadProfile(userAcc.getPhoto());
+        UserInfo userInfo=userRepo.findById(userId).orElse(null);
+        if(userInfo.getPhoto()==null){
+          userInfo.setPhoto("profile1.jpg");
+          Path path= storageService.loadProfile(userInfo.getPhoto());
+          String name = path.getFileName().toString();
+          String url = "/images/profiles/profile1.jpg";
+
+        return new FileInfo(name, url);
+        }
+        Path path= storageService.loadProfile(userInfo.getPhoto());
         String name = path.getFileName().toString();
         String url = MvcUriComponentsBuilder
           .fromMethodName(

@@ -9,10 +9,8 @@ import com.blissstock.mappingSite.dto.StudentReviewDTO;
 import com.blissstock.mappingSite.dto.TeacherReviewDTO;
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.Review;
-import com.blissstock.mappingSite.entity.ReviewTest;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.repository.ReviewRepository;
-import com.blissstock.mappingSite.repository.ReviewTestRepository;
 import com.blissstock.mappingSite.service.TeacherReviewService;
 
 

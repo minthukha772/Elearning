@@ -27,9 +27,7 @@
               >Email</a
             >
           </li>
-          <li class="breadcrumb-item active">Registration</li>
-          <li class="breadcrumb-item" aria-current="page">Confirmation</li>
-          <li class="breadcrumb-item" aria-current="page">Completion</li>
+          <li class="breadcrumb-item active">Profile</li>
         </ol>
       </nav>
     </div>
@@ -84,8 +82,8 @@
                       </div>
                     </div>
                   </div>
-                </div>
-                <div class="row justify-content-between">
+                </div></br>
+                <div class="d-flex justify-content-center">
                   <button class="btn btn-primary col-auto" id="courses" type="button">Courses</button>
                 </div>
               </div>
@@ -96,7 +94,18 @@
              <div class="profile-pic-wrapper mb-3">
                 <div class="pic-holder">
                   <div class="d-flex justify-content-center">
-                  <!-- <img id="profilePic" class="pic" th:if="${pic64 == null}" th:src="${imagePath}" /> -->
+                    <label for="newProfilePhoto" class="upload-file-block">
+                      <div class="text-center">
+                        <div class="mb-2">
+                          <i class="fa fa-camera fa-2x"></i>
+                        </div>
+                        <div class="text-uppercase" style="color: blue;">
+                          Upload Profile Photo
+                        </div>
+                      </div>
+                    </label>
+                  </div>
+                  <div class="d-flex justify-content-center">
                   <img id="profilePic" class="pic img-thumbnail profile_img" th:src="${profile.url}"  th:alt="${profile.name}" />
                   </div>
                   <div class="d-flex justify-content-center">
@@ -110,16 +119,13 @@
                     th:src="${profile.url}"
                     th:alt="${profile.name}"
                   />
-                  <label for="newProfilePhoto" class="upload-file-block">
-                    <div class="text-center">
-                      <div class="mb-2">
-                        <i class="fa fa-camera fa-2x"></i>
-                      </div>
-                      <button class="text-uppercase btn btn-outline-dark" type="button" name="action" value="submit"> Upload Profile Photo</button>
-                      </div>
-                    </div>
-                  </label>
-                  </div>
+                  
+                  </div><br>
+                  <div class="d-flex justify-content-center">
+                  <button class="btn btn-primary col-auto" id="submitButton" type="submit" name="action" value="submit">
+                    Save Photo
+                  </button>
+                </div>
                 </div>
               </div>
     
@@ -127,9 +133,6 @@
 
               <div id="profile">
                 <div class="table-responsive mb-3">
-                  <!-- <div class="d-flex justify-content-center">
-                    <img th:src="@{${imagePath}}" class="profile_img">
-                  </div> -->
                   <table class="table table-borderless table-hover">
                     <tr th:each="entry, stats : ${trInfo}">
                       <td th:text="${entry.key}" class="text-end">100</td>
@@ -159,16 +162,8 @@
                                 <label class="form-label" for="primaryServiceName"
                                 >Service</label
                                 >
-                                <select
-                                  class="form-select"
-                                  
-                                >
-                                  <option>Kpay</option>
-                                  <option>CBpay</option>
-                                  <option>Wave</option>
-                                  <option>KBZ</option>
-                                  <option>CB</option>
-                                  <option>AYA</option>
+                                <select class="form-select" >
+                                  <option th:each="bank : ${bankList}" th:value="${bank.bankId}" th:text="${bank.bankName}"></option>
                                 </select>
                               </div>
                               
@@ -207,15 +202,8 @@
                                 <label class="form-label" for="secondaryServiceName"
                                   >Service</label
                                 >
-                                <select
-                                  class="form-select"
-                                >
-                                  <option>Kpay</option>
-                                  <option>CBpay</option>
-                                  <option>Wave</option>
-                                  <option>KBZ</option>
-                                  <option>CB</option>
-                                  <option>AYA</option>
+                                <select class="form-select" >
+                                  <option th:each="bank : ${bankList}" th:value="${bank.bankId}" th:text="${bank.bankName}"></option>
                                 </select>
                               </div>
           
@@ -284,14 +272,24 @@
                 </div>
               </div>
             </div>
-
           <!-- Admin view -->
-          <div class="card-body"  th:if="${role} == 'admin' or ${role} == 'super admin'">
+          <div class="card-body"  th:if="${role} == 'admin' or ${role} == 'super_admin'">
             <div class="container">
              <div class="profile-pic-wrapper mb-3">
                 <div class="pic-holder">
                   <div class="d-flex justify-content-center">
-                  <!-- <img id="profilePic" class="pic" th:if="${pic64 == null}" th:src="${imagePath}" /> -->
+                    <label for="newProfilePhoto" class="upload-file-block">
+                      <div class="text-center">
+                        <div class="mb-2">
+                          <i class="fa fa-camera fa-2x"></i>
+                        </div>
+                        <div class="text-uppercase" style="color: blue;">
+                          Upload Profile Photo
+                        </div>
+                      </div>
+                    </label>
+                  </div>
+                  <div class="d-flex justify-content-center">
                   <img id="profilePic" class="pic img-thumbnail profile_img" th:src="${profile.url}"  th:alt="${profile.name}" />
                   </div>
                   <div class="d-flex justify-content-center">
@@ -305,17 +303,13 @@
                     th:src="${profile.url}"
                     th:alt="${profile.name}"
                   />
-                  <label for="newProfilePhoto" class="upload-file-block">
-                    <div class="text-center">
-                      <div class="mb-2">
-                        <i class="fa fa-camera fa-2x"></i>
-                      </div>
-                      <div class="text-uppercase" style="color: blue;">
-                        Upload Profile Photo
-                      </div>
-                    </div>
-                  </label>
-                  </div>
+                  
+                  </div><br>
+                  <div class="d-flex justify-content-center">
+                  <button class="btn btn-primary col-auto" id="submitButton" type="submit" name="action" value="submit">
+                    Save Photo
+                  </button>
+                </div>
                 </div>
               </div>
     
@@ -355,16 +349,8 @@
                                 <label class="form-label" for="primaryServiceName"
                                 >Service</label
                                 >
-                                <select
-                                  class="form-select"
-                                  
-                                >
-                                  <option>Kpay</option>
-                                  <option>CBpay</option>
-                                  <option>Wave</option>
-                                  <option>KBZ</option>
-                                  <option>CB</option>
-                                  <option>AYA</option>
+                                <select class="form-select" >
+                                  <option th:each="bank : ${bankList}" th:value="${bank.bankId}" th:text="${bank.bankName}"></option>
                                 </select>
                               </div>
                               
@@ -403,15 +389,8 @@
                                 <label class="form-label" for="secondaryServiceName"
                                   >Service</label
                                 >
-                                <select
-                                  class="form-select"
-                                >
-                                  <option>Kpay</option>
-                                  <option>CBpay</option>
-                                  <option>Wave</option>
-                                  <option>KBZ</option>
-                                  <option>CB</option>
-                                  <option>AYA</option>
+                                <select class="form-select" >
+                                  <option th:each="bank : ${bankList}" th:value="${bank.bankId}" th:text="${bank.bankName}"></option>
                                 </select>
                               </div>
           
@@ -477,16 +456,15 @@
                     Edit 
                   </button>
                   <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                    <li><a class="dropdown-item" href="#" id="editButton" name="action" value="edit">Edit Profile</a></li>
+                    <li><a class="dropdown-item" href="#" id="editButton" name="action" value="next">Edit Profile</a></li>
                     <li><a class="dropdown-item" href="#"  name="action" value="delete">Delete Account</a></li>
                     <li><a class="dropdown-item" href="#" name="action" value="blacklist">Blacklist</a></li>
                   </ul>
                 </div>
               </div>
-            </div>
+          </div>
 
-         
-    </div>
+
         </div>
         <!---End of Card-->
       </div>

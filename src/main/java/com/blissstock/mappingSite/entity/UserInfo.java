@@ -46,6 +46,9 @@ public class UserInfo implements Profile {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long uid;
 
+  @Column(name="photo")
+	private String photo;
+  
   @Column(name = "user_name", length = 100)
   //@NotBlank(message = "Please enter your name")
   protected String userName;

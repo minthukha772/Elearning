@@ -46,6 +46,12 @@ public class PaymentAccount {
     @JoinColumn(name = "uid_fkey")
     @JsonIgnore
     private UserInfo userInfo;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "bank_id_fkey")
+    @JsonIgnore
+    private BankInfo bankInfo;
 	
+   
 }
 

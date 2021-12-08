@@ -9,7 +9,6 @@ import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.Review;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
-import com.blissstock.mappingSite.repository.ReviewTestRepository;
 import com.blissstock.mappingSite.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +19,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class ReviewListController {
-    @Autowired
-    ReviewTestRepository reviewTestRepo;
 
     @Autowired
     CourseInfoRepository courseInfoRepo;

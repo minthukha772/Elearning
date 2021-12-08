@@ -27,20 +27,14 @@
               >Email</a
             >
           </li>
-          <li class="breadcrumb-item active">Registration</li>
-          <li class="breadcrumb-item" aria-current="page">Confirmation</li>
-          <li class="breadcrumb-item" aria-current="page">Completion</li>
+          <li class="breadcrumb-item active">Profile</li>
+         
         </ol>
       </nav>
     </div>
 
     
-    <form
-      id="contactForm"
-      th:action="@{${postAction}}" 
-      th:object="${userInfo}"
-      method="post"
-   >
+    <form id="stuProfileForm" th:object="${userInfo}" method="post" th:action="@{${profilePost}}" enctype="multipart/form-data">
       <div class="container-custom">
         <div class="card">
           <div class="card-header">Personal Information</div>
@@ -51,7 +45,18 @@
               <div class="profile-pic-wrapper mb-3">
                 <div class="pic-holder">
                   <div class="d-flex justify-content-center">
-                  <!-- <img id="profilePic" class="pic" th:if="${pic64 == null}" th:src="${imagePath}" /> -->
+                    <label for="newProfilePhoto" class="upload-file-block">
+                      <div class="text-center">
+                        <div class="mb-2">
+                          <i class="fa fa-camera fa-2x"></i>
+                        </div>
+                        <div class="text-uppercase" style="color: blue;">
+                          Upload Profile Photo
+                        </div>
+                      </div>
+                    </label>
+                  </div>
+                  <div class="d-flex justify-content-center">
                   <img id="profilePic" class="pic img-thumbnail profile_img" th:src="${profile.url}"  th:alt="${profile.name}" />
                   </div>
                   <div class="d-flex justify-content-center">
@@ -65,21 +70,17 @@
                     th:src="${profile.url}"
                     th:alt="${profile.name}"
                   />
-                  <label for="newProfilePhoto" class="upload-file-block">
-                    <div class="text-center">
-                      <div class="mb-2">
-                        <i class="fa fa-camera fa-2x"></i>
-                      </div>
-                      <div class="text-uppercase" style="color: blue;">
-                        Upload Profile Photo
-                      </div>
-                    </div>
-                  </label>
-                  </div>
+                  
+                  </div><br>
+                  <div class="d-flex justify-content-center">
+                  <button class="btn btn-primary col-auto" id="submitButton" type="submit" name="action" value="submit">
+                    Save Photo
+                  </button>
+                </div>
                 </div>
               </div>
-    
-                <br>
+
+            <br>
               <div id="profile">
                 <div class="table-responsive mb-3">
                   <table class="table table-borderless table-hover">
@@ -91,11 +92,11 @@
                     </tr>
                   </table>
                 </div> 
-                  
+                <div class="row justify-content-between"> 
                 <button class="btn btn-primary col-auto back">Change Password</button>
 
-                <button class="btn btn-primary col-auto" id="submitButton" type="submit" name="action" value="submit">Edit</button>
-
+                <button class="btn btn-primary col-auto" id="submitButton" type="submit" name="action" value="next">Edit</button>
+              </div> 
               </div>
             </div>
           </div>
@@ -107,28 +108,8 @@
               <div class="profile-pic-wrapper mb-3">
                 <div class="pic-holder">
                   <div class="d-flex justify-content-center">
-                  <img id="profilePic" class="pic" th:if="${pic64 == null}" th:src="${imagePath}" />
-                  <img id="profilePic" class="pic" th:unless="${pic64 == null}" th:src="${pic64}" />
-                  </div>
-                  <div class="d-flex justify-content-center">
-                    <input
-                    class="uploadProfileInput"
-                    type="file"
-                    name="profile_pic"
-                    id="newProfilePhoto"
-                    accept="image/*"
-                    style="display: none;"
-                  />
-                  <label for="newProfilePhoto" class="upload-file-block">
-                    <div class="text-center">
-                      <div class="mb-2">
-                        <i class="fa fa-camera fa-2x"></i>
-                      </div>
-                      <div class="text-uppercase" style="color: blue;">
-                        Upload Profile Photo
-                      </div>
-                    </div>
-                  </label>
+                  <!-- <img id="profilePic" class="pic" th:if="${pic64 == null}" th:src="${imagePath}" /> -->
+                  <img id="profilePic" class="pic img-thumbnail profile_img" th:src="${profile.url}"  th:alt="${profile.name}" />
                   </div>
                 </div>
               </div>
@@ -145,10 +126,11 @@
                     </tr>
                   </table>
                 </div> 
-
-                <button class="btn btn-primary col-auto" id="submitButton" type="submit" name="action" value="submit">
+                <div class="d-flex justify-content-center">
+                <button class="btn btn-primary col-auto" id="submitButton" type="submit" name="action" value="next">
                  Add Review
                 </button>
+                </div>
 
               </div>
             </div>
@@ -160,8 +142,19 @@
               <div class="profile-pic-wrapper mb-3">
                 <div class="pic-holder">
                   <div class="d-flex justify-content-center">
-                  <img id="profilePic" class="pic" th:if="${pic64 == null}" th:src="${imagePath}" />
-                  <img id="profilePic" class="pic" th:unless="${pic64 == null}" th:src="${pic64}" />
+                    <label for="newProfilePhoto" class="upload-file-block">
+                      <div class="text-center">
+                        <div class="mb-2">
+                          <i class="fa fa-camera fa-2x"></i>
+                        </div>
+                        <div class="text-uppercase" style="color: blue;">
+                          Upload Profile Photo
+                        </div>
+                      </div>
+                    </label>
+                  </div>
+                  <div class="d-flex justify-content-center">
+                  <img id="profilePic" class="pic img-thumbnail profile_img" th:src="${profile.url}"  th:alt="${profile.name}" />
                   </div>
                   <div class="d-flex justify-content-center">
                     <input
@@ -171,18 +164,16 @@
                     id="newProfilePhoto"
                     accept="image/*"
                     style="display: none;"
+                    th:src="${profile.url}"
+                    th:alt="${profile.name}"
                   />
-                  <label for="newProfilePhoto" class="upload-file-block">
-                    <div class="text-center">
-                      <div class="mb-2">
-                        <i class="fa fa-camera fa-2x"></i>
-                      </div>
-                      <div class="text-uppercase" style="color: blue;">
-                        Upload Profile Photo
-                      </div>
-                    </div>
-                  </label>
-                  </div>
+                  
+                  </div><br>
+                  <div class="d-flex justify-content-center">
+                  <button class="btn btn-primary col-auto" id="submitButton" type="submit" name="action" value="next">
+                    Save Photo
+                  </button>
+                </div>
                 </div>
               </div>
     
