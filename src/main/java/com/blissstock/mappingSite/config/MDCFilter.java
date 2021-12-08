@@ -51,7 +51,7 @@ public class MDCFilter implements Filter {
       chain.doFilter(req, resp);
     } finally {
       if (authentication != null) {
-        MDC.remove("userName");
+        MDC.remove("email");
       }
     }
   }
