@@ -34,7 +34,7 @@ public class PasswordController {
   MailServiceImpl mailService;
   
 
-  @GetMapping("/token")
+/*   @GetMapping("/token")
   public String createToken(Model model) {
     String token = UUID.randomUUID().toString();
     UserAccount userAccount = userService.getUserAccountByEmail(
@@ -44,13 +44,13 @@ public class PasswordController {
     userService.createToken(userAccount, token, TokenType.VERIFICATION);
     return "redirect:/";
   }
-
-  @GetMapping("/verify_password")
+ */
+  @GetMapping("password/verify_password")
   public String verifyPassword(Model model, String token) {
     Token savedToken = userService.getToken(token, TokenType.VERIFICATION);
     if (savedToken == null) {
       System.out.println("invalid token");
-      return "redirect:/home?tokenError";
+      return "redirect:/login?tokenError";
     } else {
       UserAccount savedUserAccount = savedToken.getUserAccount();
       savedUserAccount.setMailVerified(true);
@@ -63,31 +63,32 @@ public class PasswordController {
     return "redirect:/home";
   }
 
-  @RequestMapping("/reset_password")
+  @RequestMapping("password/reset_password")
   public String resetPassword(
     HttpServletRequest request,
     @RequestParam("email") String userEmail
   )
-    throws UserNotFoundException {
+     {
     System.out.println(userEmail);
     UserAccount user = userService.getUserAccountByEmail(userEmail);
     if (user == null) {
-      throw new UserNotFoundException();
+     
+      return "redirect:/check_email/reset_password?email="+userEmail+"&error=true";
     }
-    String token = UUID.randomUUID().toString();
+  /*   String token = UUID.randomUUID().toString(); */
     String appUrl =
       request.getServerName() + // "localhost"
       ":" +
       request.getServerPort();
-    userService.createToken(user, token, TokenType.PASSWORD_RESET);
+  /*   userService.createToken(user, token, TokenType.PASSWORD_RESET); */
     mailService.sendResetPasswordMail(user, appUrl);
-    return "redirect:/login?resetSuccess";
+    return "redirect:/login?resetSuccess=true";
   }
 
-  @GetMapping(path = { "{role}/change_password", "/change_password" })
+  @GetMapping(path = { "{role}/change_password" })
   public String changePasswordView(
     Model model,
-    @PathVariable(name = "role", required = false) String role,
+    @PathVariable(name = "role", required = true) String role,
     String token
   ) {
     System.out.println(role);
@@ -142,7 +143,7 @@ public class PasswordController {
     return "CM0006_change_password_screen";
   }
 
-  @PostMapping("/change_password")
+  @PostMapping("{role}/change_password" )
   public String changePasswordPost(Model model, String token) {
     System.out.println(token);
 

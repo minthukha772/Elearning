@@ -82,7 +82,7 @@ public class MailServiceImpl implements MailService {
     String recipientAddress = userAccount.getMail();
     String subject = "Reset Password";
 
-    String confirmationUrl = appUrl + "/reset_password_verify?token=" + token;
+    String confirmationUrl = appUrl + "/password/verify_password?token=" + token;
     String message =
       "You have requested to reset password. Please click the following link to continue: ";
     String body = message + "\r\n" + confirmationUrl;

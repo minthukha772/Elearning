@@ -1,15 +1,19 @@
 package com.blissstock.mappingSite.service;
 
+import com.blissstock.mappingSite.dto.PasswordDTO;
 import com.blissstock.mappingSite.dto.UserRegisterDTO;
 import com.blissstock.mappingSite.entity.Token;
 import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.enums.TokenType;
 import com.blissstock.mappingSite.exceptions.UserAlreadyExistException;
+import com.blissstock.mappingSite.exceptions.UserNotFoundException;
 import com.blissstock.mappingSite.repository.TokenRepository;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
 import com.blissstock.mappingSite.repository.UserInfoRepository;
 import java.util.GregorianCalendar;
+import java.util.UUID;
+
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,6 +34,9 @@ public class UserServiceImpl implements UserService {
 
   @Autowired
   private PasswordEncoder passwordEncoder;
+
+  @Autowired
+  private MailService mailService;
 
   public UserServiceImpl(
     UserAccountRepository userAccountRepository,
@@ -131,4 +138,15 @@ public class UserServiceImpl implements UserService {
   public void updateToken(Token savedToken) {
     tokenRepository.save(savedToken);
   }
+
+  @Override
+  public void updatePassword(PasswordDTO passwordDTO, Long id) {
+    UserAccount userAccount = userAccountRepository.findById(id).get();
+    String newPassword = passwordEncoder.encode(passwordDTO.getPassword());
+    userAccount.setPassword(newPassword);
+    userAccountRepository.save(userAccount);
+
+    
+  }
+
 }

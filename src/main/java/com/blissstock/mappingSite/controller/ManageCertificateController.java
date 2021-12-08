@@ -128,7 +128,7 @@ public class ManageCertificateController {
       storageService.deleteCertificate(uid, name);
     } catch (IOException e) {
       e.printStackTrace();
-      return ResponseEntity.status(HttpStatus.OK).body("something went wrong");
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("something went wrong");
     } catch (UnauthorizedFileAccessException e) {
       e.printStackTrace();
       return ResponseEntity.status(HttpStatus.FORBIDDEN).body("forbidden");

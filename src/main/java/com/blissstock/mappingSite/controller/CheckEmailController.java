@@ -1,10 +1,8 @@
 package com.blissstock.mappingSite.controller;
 
-import javax.validation.Valid;
-
 import com.blissstock.mappingSite.dto.EmailCheckRegisterDTO;
 import com.blissstock.mappingSite.service.UserService;
-
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +19,7 @@ public class CheckEmailController {
   UserService userService;
 
   /// A Get Method For Email Check Before Register
-  @GetMapping(path = { "/check_email/{role}", "/check_email" })
+  @GetMapping(path = { "/check_email/register/{role}" })
   public String registerForm(
     @PathVariable(name = "role", required = false) String role,
     Model model,
@@ -33,7 +31,7 @@ public class CheckEmailController {
     // For Post Method Action
     model.addAttribute("postAction", "/check_email/register/");
 
-/*     if (email != null && !email.isBlank()) {
+    /*     if (email != null && !email.isBlank()) {
       EmailValidator emailValidator = new EmailValidator();
       boolean isValidEmail = emailValidator.validateEmail(email);
       if (isValidEmail) {
@@ -93,5 +91,38 @@ public class CheckEmailController {
     );
   }
 
+  /// A Get Method For Email Check Before Register
+  @GetMapping(path = { "/check_email/reset_password" })
+  public String passwordResetForm(Model model, String error, String email) {
+    // Tell Thymeleaf to render as Reister
+    model.addAttribute("action", "verify_password");
+    EmailCheckRegisterDTO dto = new EmailCheckRegisterDTO();
+    if(email!=null){
+      dto.setEmail(email);
+    }
+    // For Post Method Action
+    model.addAttribute("postAction", "/password/reset_password/");
+    model.addAttribute("emailCheck", dto);
+    
+    model.addAttribute("passwordResetError", error);
 
+    // render
+    return "ST0000_check_email";
+  }
+
+  @PostMapping(path = { "/check_email/reset_password" })
+  public String passwordReset(Model model, BindingResult bindingResult ) {
+    // Tell Thymeleaf to render as Reister
+    if (bindingResult.hasErrors()) {
+      model.addAttribute("action", "verify_password");
+
+      // For Post Method Action
+      model.addAttribute("postAction", "/check_email/reset_password/");
+      model.addAttribute("emailCheck", new EmailCheckRegisterDTO());
+  
+      // render
+      return "ST0000_check_email";
+    }
+    return "redirect:/password/reset_password";
+  }
 }
