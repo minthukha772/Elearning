@@ -15,6 +15,7 @@ import com.blissstock.mappingSite.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,7 +33,8 @@ public class PasswordController {
 
   @Autowired
   MailServiceImpl mailService;
-  
+
+
 
 /*   @GetMapping("/token")
   public String createToken(Model model) {
