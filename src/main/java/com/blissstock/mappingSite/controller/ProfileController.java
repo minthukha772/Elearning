@@ -81,7 +81,7 @@ public class ProfileController {
           FileInfo profile = loadProfile(userId);
           model.addAttribute("profile", profile);
           model.addAttribute("stuInfo", userInfo.toMapStudent());
-          model.addAttribute("profilePost", "/"+role+"/profile-upload/"+userId);        
+          model.addAttribute("profilePost", "/"+role+"/profile-upload/"+userId+"/"+courseId);        
             return "CM0004_StudentProfile";
         }
         model.addAttribute("trInfo", userInfo.toMapTeacher());
@@ -109,7 +109,7 @@ public class ProfileController {
   ) {
     UserInfo userInfo=userRepo.findById(userId).orElse(null);
 
-    if(action.equals("submit")){
+    if(action.equals("profile-upload")){
         
     if(!photo.isEmpty()) {
       if(CheckUploadFileType.checkType(photo)) {
@@ -129,16 +129,16 @@ public class ProfileController {
       }
     }
   }
-  // else if(action.equals("add_payment")){
-  //   List<PaymentAccount> payAccs=userInfo.getPaymentAccount();
-  //   System.out.println(payAccs);
-  //   for(PaymentAccount payAcc : payAccs){
-  //       payAccRepo.save(payAcc);
-  //       System.out.println(payAcc);
-  //     }
-  //  }
+  else if(action.equals("add_payment")){
+    List<PaymentAccount> payAccs=userInfo.getPaymentAccount();
+    System.out.println("action");
+    for(PaymentAccount payAcc : payAccs){
+        payAccRepo.save(payAcc);
+        System.out.println(payAcc);
+      }
+   }
       
-      return "redirect:/student-review/"+courseId+"/"+userId;
+      return "redirect:/"+role+"/profile/"+userId+"/"+courseId;
   
 
   }
