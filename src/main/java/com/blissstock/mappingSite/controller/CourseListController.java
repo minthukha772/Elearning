@@ -1,4 +1,4 @@
-package com.blissstock.mappingSite.controller;
+/* package com.blissstock.mappingSite.controller;
 
 import org.checkerframework.checker.guieffect.qual.UI;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -566,3 +566,4 @@ public class CourseListController {
         return "helloworld";
     }
 }
+ */
