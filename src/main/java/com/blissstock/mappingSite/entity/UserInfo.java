@@ -29,6 +29,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.servlet.FlashMapManager;
 
@@ -96,6 +97,7 @@ public class UserInfo implements Profile {
   @Column(name = "self_description")
   private String selfDescription;
 
+
   //mapping
   @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   UserAccount userAccount;
@@ -109,7 +111,7 @@ public class UserInfo implements Profile {
   private List<Certificate> certificateInfo = new ArrayList<>();
 
   @OneToMany(
-    fetch = FetchType.EAGER,
+    fetch = FetchType.LAZY,
     cascade = CascadeType.ALL,
     mappedBy = "userInfo"
   )

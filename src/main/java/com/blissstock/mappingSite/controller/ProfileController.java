@@ -103,6 +103,7 @@ public class ProfileController {
   private String postProfile(Model model,
     @RequestParam("profile_pic") MultipartFile photo, 
     @RequestParam(value="action", required=true) String action,
+    @Valid @ModelAttribute("userInfo") UserInfo userPayment,
     @PathVariable String role,
     @PathVariable Long userId,
     @PathVariable Long courseId
@@ -129,10 +130,16 @@ public class ProfileController {
       }
     }
   }
+  //upload payment info
   else if(action.equals("add_payment")){
-    List<PaymentAccount> payAccs=userInfo.getPaymentAccount();
-    System.out.println("action");
+    List<PaymentAccount> payAccs=userPayment.getPaymentAccount();
+
     for(PaymentAccount payAcc : payAccs){
+      payAcc.setUserInfo(userPayment);
+      
+      BankInfo bankInfo=bankRepo.findById(payAcc.getCheckedBank()).orElse(null);
+      System.out.println(payAcc.getCheckedBank());
+      payAcc.setBankInfo(bankInfo);
         payAccRepo.save(payAcc);
         System.out.println(payAcc);
       }

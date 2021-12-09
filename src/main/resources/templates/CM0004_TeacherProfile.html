@@ -33,7 +33,6 @@
     </div>
 
     <form id="trProfileForm" th:object="${userInfo}" method="post" th:action="@{${profilePost}}" enctype="multipart/form-data">
-
       <div class="container-custom">
         <div class="card">
           <div class="card-header">Personal Information</div>
@@ -90,6 +89,7 @@
 
           <!-- Teacher view -->
           <div class="card-body"  th:if="${role} == 'teacher'">
+            <input type="hidden" th:field="*{uid}">
             <div class="container">
              <div class="profile-pic-wrapper mb-3">
                 <div class="pic-holder">
@@ -162,8 +162,8 @@
                                 <label class="form-label" for="primaryServiceName"
                                 >Service</label
                                 >
-                                <select class="form-select" >
-                                  <option th:each="bank : ${bankList}" th:value="${bank.bankId}" th:text="${bank.bankName}"></option>
+                                <select class="form-select"  th:field="*{paymentAccount[__${0}__].checkedBank}">
+                                  <option th:each="bank : ${bankList}" th:value="${bank.bankId}" th:text="${bank.bankName}" ></option>
                                 </select>
                               </div>
                               
@@ -202,8 +202,8 @@
                                 <label class="form-label" for="secondaryServiceName"
                                   >Service</label
                                 >
-                                <select class="form-select" >
-                                  <option th:each="bank : ${bankList}" th:value="${bank.bankId}" th:text="${bank.bankName}"></option>
+                                <select class="form-select" th:field="*{paymentAccount[__${1}__].checkedBank}">
+                                  <option th:each="bank : ${bankList}" th:value="${bank.bankId}" th:text="${bank.bankName}" ></option>
                                 </select>
                               </div>
           
@@ -349,8 +349,8 @@
                                 <label class="form-label" for="primaryServiceName"
                                 >Service</label
                                 >
-                                <select class="form-select" >
-                                  <option th:each="bank : ${bankList}" th:value="${bank.bankId}" th:text="${bank.bankName}"></option>
+                                <select class="form-select"  th:field="*{paymentAccount[__${0}__].checkedBank}">
+                                  <option th:each="bank : ${bankList}" th:value="${bank.bankId}" th:text="${bank.bankName}" ></option>
                                 </select>
                               </div>
                               
@@ -389,8 +389,8 @@
                                 <label class="form-label" for="secondaryServiceName"
                                   >Service</label
                                 >
-                                <select class="form-select" >
-                                  <option th:each="bank : ${bankList}" th:value="${bank.bankId}" th:text="${bank.bankName}"></option>
+                                <select class="form-select"  th:field="*{paymentAccount[__${1}__].checkedBank}">
+                                  <option th:each="bank : ${bankList}" th:value="${bank.bankId}" th:text="${bank.bankName}" ></option>
                                 </select>
                               </div>
           
