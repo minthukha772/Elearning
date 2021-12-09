@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration>
+<configuration debug="true">
 
     <property name="LOGS" value="./logs" />
 
     <appender name="Console"
         class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
-            <pattern>%d{YYYY-MM-DD HH:mm:ss.SSS} %magenta([%thread]) %highlight(%-5level) %logger.%M %X{accessURL} %X{email}  - %msg%n</pattern>
+            <pattern>%d{YYYY-MM-DD HH:mm:ss.SSS} %magenta([%thread]) %highlight(%-5level) %logger.%M %X{accessURL} %X{userId}  - %msg%n</pattern>
         </layout>
     </appender> 
 
@@ -15,7 +15,7 @@
         <file>${LOGS}/spring-boot-logger.log</file>
         <encoder
             class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <Pattern>%d{YYYY-MM-DD HH:mm:ss.SSS} %magenta([%thread]) %highlight(%-5level) %logger.%M %X{accessURL} %X{email}  - %msg%n</Pattern>
+            <Pattern>%d{YYYY-MM-DD HH:mm:ss.SSS} %magenta([%thread]) %highlight(%-5level) %logger.%M %X{accessURL} %X{userId}  - %msg%n</Pattern>
         </encoder>
 
         <rollingPolicy
@@ -30,14 +30,14 @@
         </rollingPolicy>
     </appender>
     
-    <!-- LOG everything at INFO level -->
+    <!-- LOG everything at DEBUG level -->
     <root level="info">
         <appender-ref ref="RollingFile" />
         <appender-ref ref="Console" />
     </root>
 
-    <!-- LOG "com.baeldung*" at TRACE level -->
-    <logger name="com.baeldung" level="trace" additivity="false">
+    <!-- LOG "com.blissstock.mappingSite.*" at TRACE level -->
+    <logger name="com.blissstock.mappingSite" level="trace" additivity="false">
         <appender-ref ref="RollingFile" />
         <appender-ref ref="Console" />
     </logger>

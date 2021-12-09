@@ -8,8 +8,12 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+
+import com.blissstock.mappingSite.service.UserSessionService;
+
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -18,9 +22,9 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class MDCFilter implements Filter {
 
-    
-
-
+  @Autowired
+  UserSessionService userSessionService;
+   
   @Override
   public void init(FilterConfig filterConfig) throws ServletException {}
 
@@ -40,18 +44,16 @@ public class MDCFilter implements Filter {
     }
     
     //add login user email to the log
-    Authentication authentication = SecurityContextHolder
-      .getContext()
-      .getAuthentication();
+    Long id = userSessionService.getId();
 
-    if (authentication != null) {
-      MDC.put("email", authentication.getName());
+    if (id != 0L) {
+      MDC.put("userId", id+"");
     }
     try {
       chain.doFilter(req, resp);
     } finally {
-      if (authentication != null) {
-        MDC.remove("email");
+      if (id!=0L) {
+        MDC.remove("userId");
       }
     }
   }

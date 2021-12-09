@@ -1,20 +1,19 @@
 package com.blissstock.mappingSite.service;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
+import com.blissstock.mappingSite.entity.CustomUser;
 import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
-
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserSessionServiceImpl implements UserSessionService {
-
 
   @Autowired
   UserAccountRepository userAccountRepository;
@@ -45,6 +44,23 @@ public class UserSessionServiceImpl implements UserSessionService {
   }
 
   @Override
+  public Long getId() {
+    Long id = 0L;
+    Authentication auth = SecurityContextHolder
+      .getContext()
+      .getAuthentication();
+    if (auth != null) {
+      Object principal = auth.getPrincipal();
+      if (principal instanceof CustomUser) {
+        CustomUser customUser = (CustomUser) auth.getPrincipal();
+        id = customUser.getId();
+      }
+    }
+
+    return id;
+  }
+
+  @Override
   public boolean isAuthenticated() {
     Authentication auth = SecurityContextHolder
       .getContext()
@@ -55,17 +71,14 @@ public class UserSessionServiceImpl implements UserSessionService {
 
   @Override
   public Authentication getAuthentication() {
-
-    return SecurityContextHolder
-    .getContext()
-    .getAuthentication();
+    return SecurityContextHolder.getContext().getAuthentication();
   }
 
   @Override
   public UserAccount getUserAccount() {
     Authentication auth = SecurityContextHolder
-    .getContext()
-    .getAuthentication();
+      .getContext()
+      .getAuthentication();
     String email = auth.getName();
     return userAccountRepository.findByMail(email);
   }
