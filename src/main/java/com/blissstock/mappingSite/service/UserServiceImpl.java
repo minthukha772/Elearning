@@ -1,18 +1,20 @@
 package com.blissstock.mappingSite.service;
 
-import javax.transaction.Transactional;
-import javax.validation.Validation;
-import javax.validation.Validator;
-
+import com.blissstock.mappingSite.dto.PasswordDTO;
 import com.blissstock.mappingSite.dto.UserRegisterDTO;
+import com.blissstock.mappingSite.entity.Token;
 import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.entity.UserInfo;
-import com.blissstock.mappingSite.entity.VerificationToken;
+import com.blissstock.mappingSite.enums.TokenType;
 import com.blissstock.mappingSite.exceptions.UserAlreadyExistException;
+import com.blissstock.mappingSite.exceptions.UserNotFoundException;
 import com.blissstock.mappingSite.repository.TokenRepository;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
 import com.blissstock.mappingSite.repository.UserInfoRepository;
+import java.util.GregorianCalendar;
+import java.util.UUID;
 
+import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -30,10 +32,11 @@ public class UserServiceImpl implements UserService {
   @Autowired
   private final TokenRepository tokenRepository;
 
-  private Validator validator;
-
   @Autowired
   private PasswordEncoder passwordEncoder;
+
+  @Autowired
+  private MailService mailService;
 
   public UserServiceImpl(
     UserAccountRepository userAccountRepository,
@@ -43,13 +46,16 @@ public class UserServiceImpl implements UserService {
     this.userAccountRepository = userAccountRepository;
     this.userInfoRepository = userInfoRepository;
     this.tokenRepository = tokenRepository;
-    this.validator = Validation.buildDefaultValidatorFactory().getValidator();
+    //validator = Validation.buildDefaultValidatorFactory().getValidator();
   }
 
   public UserInfo addUser(UserRegisterDTO userRegisterDTO)
     throws UserAlreadyExistException {
     UserInfo userInfo = UserRegisterDTO.toUserInfo(userRegisterDTO);
-    UserAccount userAccount = UserAccount.fromRegisterDTO(userRegisterDTO);
+    UserAccount userAccount = UserRegisterDTO.toUserAccount(
+      userRegisterDTO,
+      GregorianCalendar.getInstance().getTime()
+    );
     //Encode Password
     userAccount.setPassword(passwordEncoder.encode(userAccount.getPassword()));
 
@@ -57,7 +63,7 @@ public class UserServiceImpl implements UserService {
       throw new UserAlreadyExistException();
     }
 
-   /*  UserAccount savedUserAccount = userAccountRepository.save(userAccount);
+    /*  UserAccount savedUserAccount = userAccountRepository.save(userAccount);
     userInfo.setUserAccount(savedUserAccount); */
     userInfo.setUserAccount(userAccount);
     UserInfo savedUserInfo = userInfoRepository.save(userInfo);
@@ -66,53 +72,81 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public void updateUser(UserRegisterDTO userRegisterDTO) {
-    UserInfo existingUserInfo = userInfoRepository.findUserInfoByEmail(userRegisterDTO.getEmail());
+  public void updateUser(UserRegisterDTO userRegisterDTO, Long id) {
+    UserInfo existingUserInfo = userInfoRepository.findById(id).get();
     System.out.println(existingUserInfo);
-    if(existingUserInfo!=null){
-      existingUserInfo = UserRegisterDTO.toUserInfo(userRegisterDTO,existingUserInfo);
+    System.out.println(existingUserInfo.getUserAccount());
+    if (existingUserInfo != null) {
+      existingUserInfo =
+        UserRegisterDTO.toUserInfo(userRegisterDTO, existingUserInfo);
     }
-     userInfoRepository.save(existingUserInfo);
-  }
-
-  @Override
-  public UserRegisterDTO getUserByEmail(String email) {
-    System.out.println("email " + email);
-    UserInfo userInfo = userInfoRepository.findUserInfoByEmail(email);
-    return UserRegisterDTO.fromUserInfo(userInfo);
+    userInfoRepository.save(existingUserInfo);
   }
 
   @Override
   public UserAccount getUserAccountByEmail(String email) {
-    return userAccountRepository.findById(email).get();
+    return userAccountRepository.findByMail(email);
   }
 
   @Override
   public boolean isUserAccountPresent(String email) {
-    return userAccountRepository.findById(email).isPresent();
+    return userAccountRepository.findByMail(email) != null;
   }
 
   @Override
-  public void createVerificationToken(UserAccount userAccount, String token) {
-    VerificationToken myToken = new VerificationToken(token, userAccount);
+  public void createToken(
+    UserAccount userAccount,
+    String token,
+    TokenType tokenType
+  ) {
+    Token myToken = new Token(
+      token,
+      userAccount,
+      tokenType,
+      System.currentTimeMillis()
+    );
     tokenRepository.save(myToken);
   }
 
   @Override
-  public VerificationToken getVerificationToken(String VerificationToken) {
-    return tokenRepository.findByToken(VerificationToken);
+  public Token getToken(String token, TokenType tokenType) {
+    //TODO fix bug
+    return tokenRepository.getToken(token, tokenType.getValue());
   }
 
   @Override
   public UserAccount getUserAccountByToken(String verificationToken) {
-    UserAccount userAccount = tokenRepository
+    return null;
+    //TODo fix bug
+    /* UserAccount userAccount = tokenRepository
       .findByToken(verificationToken)
-      .getUserAccount();
-    return userAccount;
+      .getUserAccount(); */
+    //return userAccount;
   }
 
   @Override
   public UserInfo getUserInfoByID(Long id) {
     return userInfoRepository.findById(id).get();
   }
+
+  @Override
+  public void updateUserAccount(UserAccount savedUserAccount) {
+    userAccountRepository.save(savedUserAccount);
+  }
+
+  @Override
+  public void updateToken(Token savedToken) {
+    tokenRepository.save(savedToken);
+  }
+
+  @Override
+  public void updatePassword(PasswordDTO passwordDTO, Long id) {
+    UserAccount userAccount = userAccountRepository.findById(id).get();
+    String newPassword = passwordEncoder.encode(passwordDTO.getPassword());
+    userAccount.setPassword(newPassword);
+    userAccountRepository.save(userAccount);
+
+    
+  }
+
 }

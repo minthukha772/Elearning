@@ -1,14 +1,13 @@
 package com.blissstock.mappingSite.controller;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-
 import com.blissstock.mappingSite.dto.TeacherRegisterDTO;
 import com.blissstock.mappingSite.dto.UserRegisterDTO;
 import com.blissstock.mappingSite.entity.UserInfo;
+import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.service.UserService;
 import com.blissstock.mappingSite.service.UserSessionService;
-
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,51 +31,53 @@ public class ProfileEditController {
     path = {
       "/student/profile_edit",
       "/teacher/profile_edit",
-      "admin/profile_edit/{id}",
+      "admin/profile_edit/student/{id}",
+      "admin/profile_edit/teacher{id}",
     }
   )
   public String editProfileView(
     Model model,
     @PathVariable(name = "id", required = false) Long id
   ) {
-    String email, role, postAction;
+    String role;
     System.out.println("id is " + id);
 
     if (id != null) {
       //Id only present on admin side
       UserInfo userInfo = userService.getUserInfoByID(id);
-      email = userInfo.getUserAccount().getMail();
-      role = userInfo.getUserAccount().getRole();
-      postAction = "/admin/profile_edit/" + role;
+      id = userInfo.getUserAccount().getId();
+      role = "admin";
     } else {
-      email = userSessionService.getEmail();
-      role = userSessionService.getRole().getValue();
-      postAction = "/" + role + "/profile_edit/";
+      id = userSessionService.getUserAccount().getId();
+      role =
+        userSessionService.getRole() == UserRole.TEACHER
+          ? "teacher"
+          : "student";
     }
-    System.out.println(postAction);
 
-    UserRegisterDTO userInfo;
-    userInfo = userService.getUserByEmail(email);
-    userInfo.setAcceptTerm(true);
-    model.addAttribute("userInfo", userInfo);
+    UserInfo userInfo = userService.getUserInfoByID(id);
+    UserRegisterDTO userRegisterDTO = UserRegisterDTO.fromUserInfo(userInfo);
+    userRegisterDTO.setAcceptTerm(true);
+    model.addAttribute("userInfo", userRegisterDTO);
     model.addAttribute("task", "profile_edit");
     model.addAttribute("role", role);
-    model.addAttribute("postAction", postAction);
 
     return "ST0001_register";
   }
 
   @PostMapping(
-    path = { "/student/profile_edit", "/admin/profile_edit/student" }
+    path = { "/student/profile_edit", "/admin/profile_edit/student/{id}" }
   )
   public String editStudentProfile(
     Model model,
     @Valid @ModelAttribute("userInfo") UserRegisterDTO userInfo,
     BindingResult bindingResult,
     @RequestParam(value = "action", required = true) String action,
-    HttpServletRequest httpServletRequest
+    HttpServletRequest httpServletRequest,
+    @PathVariable(name = "id", required = false) Long id
   ) {
     String role = "student";
+    Long uid = getUid(id);
     model.addAttribute("task", "profile_edit");
     model.addAttribute("role", role);
     model.addAttribute(
@@ -91,7 +92,7 @@ public class ProfileEditController {
     model.addAttribute("userInfo", userInfo);
     try {
       if (action.equals("submit")) {
-        userService.updateUser(userInfo);
+        userService.updateUser(userInfo, uid);
       }
       //TODO redirect to complete page
     } catch (Exception e) {
@@ -105,16 +106,18 @@ public class ProfileEditController {
   }
 
   @PostMapping(
-    path = { "/student/profile_edit", "/admin/profile_edit/teacher" }
+    path = { "/teacher/profile_edit", "/admin/profile_edit/teacher" }
   )
   public String editTeacherProfile(
     Model model,
     @Valid @ModelAttribute("userInfo") TeacherRegisterDTO userInfo,
     BindingResult bindingResult,
     @RequestParam(value = "action", required = true) String action,
-    HttpServletRequest httpServletRequest
+    HttpServletRequest httpServletRequest,
+    @PathVariable(name = "id", required = false) Long id
   ) {
     String role = "teacher";
+    Long uid = getUid(id);
     model.addAttribute("task", "profile_edit");
     model.addAttribute("role", role);
     model.addAttribute(
@@ -129,7 +132,7 @@ public class ProfileEditController {
     model.addAttribute("userInfo", userInfo);
     try {
       if (action.equals("submit")) {
-        userService.updateUser(userInfo);
+        userService.updateUser(userInfo, uid);
       }
       //TODO redirect to complete page
     } catch (Exception e) {
@@ -140,5 +143,18 @@ public class ProfileEditController {
     model.addAttribute("infoMap", userInfo.toMap());
     System.out.println(userInfo.toMap());
     return "ST0001_register";
+  }
+
+  private Long getUid(Long id) {
+    Long uid = 0L;
+    UserRole role = userSessionService.getRole();
+    if (role == UserRole.ADMIN || role == UserRole.SUPER_ADMIN) {
+      uid = id;
+    } else if (role == UserRole.TEACHER || role == UserRole.STUDENT) {
+      uid = userSessionService.getUserAccount().getId();
+    } else {
+      throw new RuntimeException("user authetication fail");
+    }
+    return uid;
   }
 }

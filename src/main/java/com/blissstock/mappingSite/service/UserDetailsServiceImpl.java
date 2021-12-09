@@ -1,5 +1,6 @@
 package com.blissstock.mappingSite.service;
 
+import com.blissstock.mappingSite.entity.CustomUser;
 import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
 import java.util.HashSet;
@@ -24,15 +25,17 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     throws UsernameNotFoundException {
     UserAccount user;
     try {
-      user = userAccountRepository.findById(email).get();
+      user = userAccountRepository.findByMail(email);
     } catch (Exception e) {
       throw new UsernameNotFoundException(e.getMessage());
     }
 
     Set<SimpleGrantedAuthority> grantedAuthorities = new HashSet<>();
     grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole()));
+    
 
-    return new org.springframework.security.core.userdetails.User(
+    return new CustomUser(
+      user.getId(),
       user.getMail(),
       user.getPassword(),
       grantedAuthorities

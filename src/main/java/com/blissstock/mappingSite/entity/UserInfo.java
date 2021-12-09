@@ -1,31 +1,27 @@
-  package com.blissstock.mappingSite.entity;
+package com.blissstock.mappingSite.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import org.springframework.format.annotation.DateTimeFormat;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
 @Setter
@@ -36,7 +32,6 @@ public class UserInfo {
 
   @Column(name = "uid")
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
   private Long uid;
 
   @Column(name = "photo")
@@ -47,7 +42,7 @@ public class UserInfo {
   private String userName;
 
   @NotBlank(message = "Please enter phone number.")
-  @Size(max = 20, min = 8, message = "Phone number should be under 11 digits")
+  @Size(max = 15, min = 6, message = "Invalid Phone Number")
   @Column(name = "phone_no")
   private String phoneNo;
 
@@ -90,7 +85,9 @@ public class UserInfo {
   private String selfDescription;
 
   //mapping
-  @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  @OneToOne(fetch = FetchType.EAGER)
+  @MapsId
+  @JoinColumn(name = "id")
   UserAccount userAccount;
 
   @OneToMany(
@@ -148,6 +145,4 @@ public class UserInfo {
   )
   @JsonIgnore
   private List<CourseInfo> courseInfo = new ArrayList<>();
-
-  
 }

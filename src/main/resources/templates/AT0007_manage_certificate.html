@@ -3,7 +3,7 @@
   lang="en"
   xmlns:th="http://www.thymeleaf.org"
   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"
+  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity5"
 >
   <head>
     <meta charset="UTF-8" />
@@ -17,37 +17,104 @@
       crossorigin="anonymous"
     />
 
-    <link rel="stylesheet" href="/css/ST0007_manage_certificates.css" />
+    <link rel="stylesheet" th:href="@{/css/ST0007_manage_certificates.css}" />
 
     <title>Manage Certificate</title>
   </head>
 
   <body style="background-color: #f0f0f0">
     <!-- TODO Add Teacher Navi -->
-    <div class="container">
+    <div th:replace="fragments/nav"></div>
+
+    <div class="container mt-5">
       <div class="card mb-3">
         <div class="card-header">Certificate Photo</div>
 
-        <div class="container" style="margin: auto">
-          <p>Empty! Please Upload Certificate Photo</p>
-        </div>
+        <div class="card-body">
+          <div th:if="${files==null or files.empty}">
+            <p>Empty! Please Upload Certificate Photo</p>
+          </div>
 
-        <div th:if="${files!=null and !files.empty}"></div>
-
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-          <div class="col" th:each="fileInfo, stats : ${files}">
-            <div class="card h-100">
-              <img
-                th:src="${fileInfo.url}"
-                class="card-img-top"
-                th:alt="${fileInfo.name}"
-              />
-              <div class="card-body">
-                <p class="card-title" th:text="${fileInfo.name}">Card title</p>
+          <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col" th:each="fileInfo, stats : ${files}">
+              <div class="card h-100">
+                <img
+                  th:src="${fileInfo.url}"
+                  class="card-img-top"
+                  th:alt="${fileInfo.name}"
+                />
+                <div class="card-body">
+                  <p class="card-title" th:text="${fileInfo.name}">
+                    Card title
+                  </p>
+                </div>
+                <div class="card-footer">
+                  <a
+                    th:href="${fileInfo.url}"
+                    class="btn btn-primary"
+                    target="_blank"
+                    >Open</a
+                  >
+                  <button
+                    class="btn btn-outline-danger"
+                    th:data-bs-name="${fileInfo.name}"
+                    data-bs-toggle="modal"
+                    data-bs-target="#deleteConfirmModal"
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
+
+        <!-- Delete Confirm Modal -->
+        <div
+          class="modal fade"
+          id="deleteConfirmModal"
+          tabindex="-1"
+          aria-labelledby="certificateFormModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="certificateFormModalLabel">Delete</h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">
+                <p>
+                  The data will permentently data! recovery is not possible!
+                </p>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button
+                  type="button"
+                  id="deleteCertificate"
+                  class="btn btn-danger"
+                >
+                  DELETE
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Delete Confirm Modal End -->
+
         <!-- 
 
         <table class="table table-striped ">
@@ -85,16 +152,25 @@
         </table> -->
       </div>
 
-      <div th:if="${fileUploadError != null}" class="alert alert-danger alert-dismissible fade show" role="alert">
-        <span th:text=${fileUploadError}></span>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      <div
+        th:if="${fileUploadError != null}"
+        class="alert alert-danger alert-dismissible fade show"
+        role="alert"
+      >
+        <span th:text="${fileUploadError}"></span>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        ></button>
       </div>
 
       <div class="card">
         <h5 class="card-header">Upload Files</h5>
         <div class="card-body">
           <form
-            th:action="@{/manage_certificate}"
+            th:action="@{__${#httpServletRequest.requestURI}__}"
             method="post"
             enctype="multipart/form-data"
           >
@@ -127,13 +203,16 @@
     ></script>
     <!-- JQuery -->
     <script
-      src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
-      integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI="
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
       crossorigin="anonymous"
     ></script>
 
+    <div th:replace="fragments/footer"></div>
     <!-- the main fileinput plugin script JS file -->
-
-    <script src="js/AT0007_manage_certificate.js"></script>
+    <script th:inline="javascript">
+      const uri = /*[[@{__${#httpServletRequest.requestURI}__}]]*/ "uri    ";
+    </script>
+    <script th:src="@{/js/AT0007_manage_certificate.js}"></script>
   </body>
 </html>

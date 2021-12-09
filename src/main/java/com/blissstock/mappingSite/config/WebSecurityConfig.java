@@ -1,4 +1,6 @@
 package com.blissstock.mappingSite.config;
+
+import com.blissstock.mappingSite.enums.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,7 +11,6 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 /**
  * SpringSecurityを利用するための設定クラス
@@ -31,18 +32,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     return bCryptPasswordEncoder;
   }
 
-  @Bean
-  public AuthenticationSuccessHandler myAuthenticationSuccessHandler() {
-    return new MySimpleUrlAuthenticationSuccessHandler();
-  }
-
   /**
    * 認可設定を無視するリクエストを設定
    * 静的リソース(image,javascript,css)を認可処理の対象から除外する
    */
   @Override
   public void configure(WebSecurity web) throws Exception {
-    web.ignoring().antMatchers("/images/**", "/css/**", "/javascript/**");
+    System.out.println("Ignoring");
+    web.ignoring().antMatchers("/images/**", "/css/**", "/js/**");
   }
 
   /**
@@ -52,23 +49,28 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http
-      .httpBasic()
-      .disable()
       .authorizeRequests()
       .antMatchers("/")
       .permitAll()
-    /*   .antMatchers("/register/**")
+      .antMatchers("/register/**","/login/**","/password/**","/home/**")
       .permitAll()
-      .antMatchers("/** /register/**")
+      .antMatchers("/check_email/**")
+      .permitAll()
+      .antMatchers("/log/**")//TODO:remove in production, for testing purpose only.
+      .permitAll()
+      .antMatchers("/images/**", "/css/**", "/js/**")
       .permitAll()
       .antMatchers("/student/**")
-      .hasAnyRole(UserRole.STUDENT.getValue())
+      .hasAnyAuthority(UserRole.STUDENT.getValue())
       .antMatchers("/teacher/**")
-      .hasAnyRole(UserRole.TEACHER.getValue())
+      .hasAnyAuthority(UserRole.TEACHER.getValue())
       .antMatchers("/admin/**")
-      .hasAnyRole(UserRole.ADMIN.getValue(), UserRole.SUPER_ADMIN.getValue())
+      .hasAnyAuthority(
+        UserRole.ADMIN.getValue(),
+        UserRole.SUPER_ADMIN.getValue()
+      )
       .anyRequest()
-      .authenticated() */
+      .authenticated()
       .and()
       .formLogin()
       .loginPage("/login") //ログインページはコントローラを経由しないのでViewNameとの紐付けが必要

@@ -3,15 +3,14 @@ package com.blissstock.mappingSite.controller;
 import com.blissstock.mappingSite.dto.TeacherRegisterDTO;
 import com.blissstock.mappingSite.dto.UserRegisterDTO;
 import com.blissstock.mappingSite.entity.UserInfo;
-import com.blissstock.mappingSite.event.OnRegistrationCompleteEvent;
 import com.blissstock.mappingSite.exceptions.UserAlreadyExistException;
+import com.blissstock.mappingSite.service.MailService;
 import com.blissstock.mappingSite.service.UserService;
 import com.blissstock.mappingSite.validation.validators.EmailValidator;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,7 +29,7 @@ public class RegisterController {
   UserService userService;
 
   @Autowired
-  ApplicationEventPublisher eventPublisher;
+  MailService mailService;
 
   @ExceptionHandler(value = ConstraintViolationException.class)
   public String exception(ConstraintViolationException exception) {
@@ -72,7 +71,7 @@ public class RegisterController {
     model.addAttribute("userInfo", userInfo);
     //
 
-    model.addAttribute("task", "register");
+    model.addAttribute("task", "Register");
     model.addAttribute("role", role);
     model.addAttribute("postAction", "/register/" + role);
 
@@ -80,7 +79,7 @@ public class RegisterController {
   }
 
   @PostMapping(path = "/register/student")
-  public String toSutdentRegisterConfirm(
+  public String studentRegisterConfirm(
     Model model,
     @Valid @ModelAttribute("userInfo") UserRegisterDTO userInfo,
     BindingResult bindingResult,
@@ -89,7 +88,7 @@ public class RegisterController {
     Errors errors
   ) {
     String role = "student";
-    model.addAttribute("task", "register");
+    model.addAttribute("task", "Register");
     model.addAttribute("role", role);
     model.addAttribute("postAction", "/register/" + role);
 
@@ -101,19 +100,17 @@ public class RegisterController {
       if (action.equals("submit")) {
         try {
           UserInfo savedUserInfo = userService.addUser(userInfo);
-          String appUrl = request.getContextPath();
-          eventPublisher.publishEvent(
-            new OnRegistrationCompleteEvent(
-              savedUserInfo,
-              request.getLocale(),
-              appUrl
-            )
-          );
+
+          String appUrl =
+            request.getServerName() + // "localhost"
+            ":" +
+            request.getServerPort(); //"8080"
+          mailService.sendVerificationMail(savedUserInfo.getUserAccount(), appUrl);
         } catch (UserAlreadyExistException e) {
-          System.out.println(e.getMessage());
+          e.printStackTrace();
           model.addAttribute("userExistError", true);
         } catch (Exception e) {
-          System.out.println(e);
+          e.printStackTrace();
         }
       }
     } catch (Exception e) {
@@ -125,17 +122,43 @@ public class RegisterController {
     return "ST0001_register.html";
   }
 
-  @PostMapping(path = "/register/teacher", params = "action=next")
-  public String toTeacherRegisterConfirm(
+  @PostMapping(path = "/register/teacher")
+  public String teacherRegisterConfirm(
     Model model,
-    @Valid @ModelAttribute("userInfo") UserRegisterDTO userInfo,
-    BindingResult bindingResult
+    @Valid @ModelAttribute("userInfo") TeacherRegisterDTO userInfo,
+    BindingResult bindingResult,
+    @RequestParam(value = "action", required = true) String action,
+    HttpServletRequest request,
+    Errors errors
   ) {
-    //System.out.println(userInfo);
-    model.addAttribute("role", "student");
+    String role = "teacher";
+    model.addAttribute("task", "Register");
+    model.addAttribute("role", role);
+    model.addAttribute("postAction", "/register/" + role);
 
     if (bindingResult.hasErrors()) {
       return "ST0001_register.html";
+    }
+
+    try {
+      if (action.equals("submit")) {
+        try {
+          UserInfo savedUserInfo = userService.addUser(userInfo);
+
+          String appUrl =
+            request.getServerName() + // "localhost"
+            ":" +
+            request.getServerPort(); //"8080"
+          mailService.sendVerificationMail(savedUserInfo.getUserAccount(), appUrl);
+        } catch (UserAlreadyExistException e) {
+          e.printStackTrace();
+          model.addAttribute("userExistError", true);
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+      }
+    } catch (Exception e) {
+      System.out.println(e);
     }
 
     //Information For Randering Confirm

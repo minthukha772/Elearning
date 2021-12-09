@@ -22,11 +22,9 @@ public class HomeRedirectController {
         return "redirect:/";
     }
     if(userRole == UserRole.ADMIN || userRole == UserRole.SUPER_ADMIN){
-        //TODO redirect to Admin Top Page
         return "redirect:/";
     }
     if(userRole == UserRole.STUDENT || userRole == UserRole.TEACHER){
-       //TODO redirect to Student/Teacher Top Page
        return "redirect:/";
     }
     return "redirect:/";
