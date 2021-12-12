@@ -1,34 +1,13 @@
 package com.blissstock.mappingSite.controller;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-
-
-import com.blissstock.mappingSite.dto.CourseTestingDTO;
-import com.blissstock.mappingSite.entity.CourseInfo;
-import com.blissstock.mappingSite.entity.CourseTesting;
-import com.blissstock.mappingSite.entity.LeaveInfo;
-//import com.blissstock.mappingSite.entity.UserInfo;
-import com.blissstock.mappingSite.repository.ContentRepository;
 import com.blissstock.mappingSite.repository.CourseRepository;
 import com.blissstock.mappingSite.repository.CourseTestingRepository;
 import com.blissstock.mappingSite.repository.CourseTimeRepository;
 import com.blissstock.mappingSite.repository.LeaveInfoRepository;
-import com.blissstock.mappingSite.repository.SyllabusRepository;
 import com.blissstock.mappingSite.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-//import org.springframework.web.bind.annotation.RequestMapping;
-//import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class CourseTestingController {
     
@@ -38,11 +17,11 @@ public class CourseTestingController {
     @Autowired
     CourseTimeRepository courseIimeRepo;
 
-    @Autowired
+/*     @Autowired
     SyllabusRepository syllabusRepo;
 
     @Autowired
-    ContentRepository contentRepo;
+    ContentRepository contentRepo; */
 
     @Autowired
     CourseTestingRepository courseTestRepo;
