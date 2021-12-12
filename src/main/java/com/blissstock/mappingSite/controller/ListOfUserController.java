@@ -17,7 +17,7 @@ import java.util.List;
 
 @Controller
 public class ListOfUserController {
-    
+ /*    
     @Autowired
     UserRepository userRepo;
     
@@ -84,5 +84,5 @@ public class ListOfUserController {
         System.out.println("Teacher List"+tAllRecord);
         // model.addAttribute("tAllTeacherList", tAllRecord);
         return "AT0003_ListofStudentsByT";
-    }
+    } */
 }
