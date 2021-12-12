@@ -2,7 +2,7 @@ package com.blissstock.mappingSite.service;
 
 import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.enums.UserRole;
-// import org.springframework.security.core.Authentication;
+import org.springframework.security.core.Authentication;
 
 public interface UserSessionService {
     public Authentication getAuthentication();
