@@ -11,7 +11,18 @@ $(function () {
 
     const modal = $(this);
     modal.find(".modal-title").text("Delete " + title);
-    modal.find("#deleteSyllabus").click((e) => {});
+    modal.find("#deleteSyllabus").click((e) => {
+      $.ajax({
+        type: "delete",
+        url: uri,
+        data: { id },
+      }).done(function () {
+        //reload page
+        window.location.href = uri;
+      }).fail(function () {
+        alert("Something went wrong");
+      });
+    });
 
     /* modal.find('.modal-body input').val(recipient) */
   });
@@ -21,10 +32,10 @@ $(function () {
 
     $("#contentContainer").empty();
     const modal = $(this);
-    
+
     previousAction = button.data("action");
-    if (button.data("action") == "new"){
-        modal.find(".modal-title").text("New");
+    if (button.data("action") == "new") {
+      modal.find(".modal-title").text("New");
     }
     if (button.data("action") == "modify") {
       // Extract info from data-* attributes
@@ -37,7 +48,7 @@ $(function () {
       const titleId = titleTag.data("id");
       console.log(titleText, titleId);
 
-      
+
       modal.find(".modal-title").text("Modify " + titleText);
       modal.find("input[name=syllabusId]").attr("value", titleId);
       modal.find("input[name=title]").attr("value", titleText);
@@ -46,7 +57,7 @@ $(function () {
         const contentText = $(value).text();
         const contentId = $(value).data("id");
         console.log(contentId, contentText);
-        renderContentInputs(contentId,contentText);
+        renderContentInputs(contentId, contentText);
       });
     }
 

@@ -3,23 +3,26 @@ package com.blissstock.mappingSite.controller;
 import com.blissstock.mappingSite.entity.Content;
 import com.blissstock.mappingSite.entity.Syllabus;
 import com.blissstock.mappingSite.enums.UserRole;
+import com.blissstock.mappingSite.exceptions.CourseNotFoundException;
 import com.blissstock.mappingSite.exceptions.InsuffientPermssionException;
 import com.blissstock.mappingSite.service.SyllabusService;
 import com.blissstock.mappingSite.service.UserSessionService;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Controller
 public class CourseSyllabusController {
@@ -30,16 +33,32 @@ public class CourseSyllabusController {
   @Autowired
   UserSessionService userSessionService;
 
+  private static Logger logger = LoggerFactory.getLogger(
+    CourseSyllabusController.class
+  );
+
+  @ExceptionHandler(CourseNotFoundException.class)
+  @ResponseStatus(HttpStatus.NOT_FOUND)
+  public ResponseEntity<Object> handleResourceNotFoundException() {
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("");
+  }
+
   @GetMapping(
-    path = { "/teacher/course_syllabus/{id}", "/admin/course_syllabus/{id}" }
+    path = {
+      "/teacher/course_syllabus/course_id/{id}",
+      "/admin/course_syllabus/course_id/{id}",
+    }
   )
   public String contextView(
     Model model,
     @PathVariable("id") long id,
     HttpServletRequest httpServletRequest
-  ) {
+  )
+    throws CourseNotFoundException {
     //TODO replace data from repository
     //For the purpose of display
+    logger.info("user requested syllabus of course_id: {}", id);
+
     List<Syllabus> syllabusList = syllabusService.getAllSyllabus(id);
 
     model.addAttribute(
@@ -54,29 +73,28 @@ public class CourseSyllabusController {
   }
 
   @PostMapping(
-    path = { "/teacher/course_syllabus/{id}", "/admin/course_syllabus/{id}" }
+    path = {
+      "/teacher/course_syllabus/course_id/{id}",
+      "/admin/course_syllabus/course_id/{id}",
+    }
   )
   public String addSyllabus(
     Model model,
     @ModelAttribute Syllabus syllabus,
+    @PathVariable(name = "id") Long id,
     HttpServletRequest httpServletRequest
   ) {
-    UserRole userRole = userSessionService.getRole();
 
-    System.out.println(syllabus.getSyllabusId());
-    System.out.println(syllabus.getTitle());
-    for(Content content: syllabus.getContent()){
-      System.out.println(content.getContentId());
-      System.out.println(content.getContent());
-    }
+    logger.info("user added syllabus {}",syllabus);
+
+
 
     try {
       //syllabusService.deleteSyllabus(id);
-      syllabusService.addSyllabus(syllabus);
-    } catch(InsuffientPermssionException e){
+      syllabusService.addSyllabus(syllabus,id);
+    } catch (InsuffientPermssionException e) {
       //
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       //
     }
 
@@ -92,21 +110,24 @@ public class CourseSyllabusController {
     return "redirect:" + httpServletRequest.getRequestURI();
   }
 
-  @PostMapping(
+  @DeleteMapping(
     path = {
-      "/teacher/course_syllabus/{id}/delete",
-      "/admin/course_syllabus/{id}/delete",
+      "/teacher/course_syllabus/course_id/{id}",
+      "/admin/course_syllabus/course_id/{id}",
     }
   )
-  public String deleteSyllabus(
+  public ResponseEntity<Object> deleteSyllabus(
     Model model,
-    @PathVariable("id") long id,
+    Long id,
     HttpServletRequest httpServletRequest
   ) {
-    UserRole userRole = userSessionService.getRole();
+    
     try {
       syllabusService.deleteSyllabus(id);
-    } catch (Exception e) {}
+    } catch (Exception e) {
+      e.printStackTrace();
+      return ResponseEntity.status(HttpStatus.OK).body("operation success");
+    }
 
     /* 
     if(userRole==UserRole.ADMIN){
@@ -117,6 +138,6 @@ public class CourseSyllabusController {
     }
      */
 
-    return "course_context";
+    return ResponseEntity.status(HttpStatus.OK).body("operation success");
   }
 }
