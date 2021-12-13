@@ -28,6 +28,7 @@ public class StudentReviewServiceImpl implements StudentReviewService {
     
     Review review = Review.fromReviewDTO(studentReviewDTO);
     //System.out.println(review.getFeedback());
+    review.setJoin(join);
     review.setCourseInfo(course);
     review.setUserInfo(userInfo);
 
