@@ -92,18 +92,6 @@ public class CourseInfo {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="courseInfo")
 	@JsonIgnore
 	private List<Test> test= new ArrayList<>();
-	
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="courseInfo")
-	@JsonIgnore
-	private List<LeaveInfo> leaveInfo= new ArrayList<>();
-
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="courseInfo")
-	@JsonIgnore
-	private List<Review> review= new ArrayList<>();
-
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="courseInfo")
-	@JsonIgnore
-	private List<PaymentReceive> paymentReceive= new ArrayList<>();
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="courseInfo")
 	@JsonIgnore

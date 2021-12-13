@@ -118,30 +118,6 @@ public class UserInfo implements Profile{
   private List<PaymentAccount> paymentAccount = new ArrayList<>();
 
   @OneToMany(
-    fetch = FetchType.LAZY,
-    cascade = CascadeType.ALL,
-    mappedBy = "userInfo"
-  )
-  @JsonIgnore
-  private List<LeaveInfo> leaveInfo = new ArrayList<>();
-
-  @OneToMany(
-    fetch = FetchType.LAZY,
-    cascade = CascadeType.ALL,
-    mappedBy = "userInfo"
-  )
-  @JsonIgnore
-  private List<Review> review = new ArrayList<>();
-
-  @OneToMany(
-    fetch = FetchType.LAZY,
-    cascade = CascadeType.ALL,
-    mappedBy = "userInfo"
-  )
-  @JsonIgnore
-  private List<PaymentReceive> paymentReceive = new ArrayList<>();
-
-  @OneToMany(
     fetch = FetchType.LAZY, 
     cascade = CascadeType.ALL, 
     mappedBy="userInfo"

@@ -58,7 +58,7 @@ public class LeaveInfo {
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "join_fkey")
     @JsonIgnore
-    private JoinCourseUser joinCourseUser;
+    private JoinCourseUser join;
 	
 }
 
