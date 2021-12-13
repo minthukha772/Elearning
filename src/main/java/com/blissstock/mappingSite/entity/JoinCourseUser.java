@@ -2,6 +2,7 @@ package com.blissstock.mappingSite.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -49,6 +50,30 @@ public class JoinCourseUser {
     @JoinColumn(name = "uid_fkey")
     @JsonIgnore
     private UserInfo userInfo;
+
+    @OneToMany(
+        fetch = FetchType.LAZY, 
+        cascade = CascadeType.ALL, 
+        mappedBy="join"
+        )
+    @JsonIgnore
+    private List<Review> review= new ArrayList<>();
+
+    @OneToMany(
+        fetch = FetchType.LAZY, 
+        cascade = CascadeType.ALL, 
+        mappedBy="join"
+        )
+    @JsonIgnore
+    private List<LeaveInfo> leaveInfo= new ArrayList<>();
+
+    @OneToMany(
+        fetch = FetchType.LAZY, 
+        cascade = CascadeType.ALL, 
+        mappedBy="join"
+        )
+    @JsonIgnore
+    private List<PaymentReceive> paymentReceive= new ArrayList<>();
 }
 
 

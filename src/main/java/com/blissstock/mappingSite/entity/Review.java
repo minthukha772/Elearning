@@ -51,15 +51,9 @@ public class Review {
 	private Date assignedDate;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "uid_fkey")
+    @JoinColumn(name = "join_fkey")
     @JsonIgnore
-    private UserInfo userInfo;
-    
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "courseId_fkey")
-    @JsonIgnore
-    private CourseInfo courseInfo;
-
+    private JoinCourseUser join;
 
     public static Review fromReviewDTO(StudentReviewDTO stuReviewDTO) {
         Review review = new Review();

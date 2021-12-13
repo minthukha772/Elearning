@@ -10,11 +10,13 @@ import javax.validation.Valid;
 import com.blissstock.mappingSite.dto.StudentReviewDTO;
 import com.blissstock.mappingSite.dto.TeacherReviewDTO;
 import com.blissstock.mappingSite.entity.CourseInfo;
+import com.blissstock.mappingSite.entity.JoinCourseUser;
 import com.blissstock.mappingSite.entity.PaymentReceive;
 import com.blissstock.mappingSite.entity.Review;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
+import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
 import com.blissstock.mappingSite.repository.ReviewRepository;
 import com.blissstock.mappingSite.repository.UserRepository;
 import com.blissstock.mappingSite.service.StudentReviewService;
@@ -44,6 +46,9 @@ public class ReviewController {
     CourseInfoRepository courseInfoRepo;
 
     @Autowired
+    JoinCourseUserRepository joinRepo;
+
+    @Autowired
     ReviewRepository reviewRepo;
 
     @Autowired
@@ -53,24 +58,25 @@ public class ReviewController {
     TeacherReviewService trReviewService;
     //get student review 
     @Valid
-    @GetMapping(value="/student-review/{courseId}/{userId}")
-    private String getStudentReviewForm(@PathVariable Long courseId, @PathVariable Long userId, Model model) {  
+    @GetMapping(value="/student-review/{joinId}")
+    private String getStudentReviewForm(@PathVariable Long joinId, Model model) {  
         System.out.println(UserRole.TEACHER);
         StudentReviewDTO stuReview = new StudentReviewDTO();
         model.addAttribute("review", stuReview);
-        model.addAttribute("postAction", "/update-student-review/"+courseId+"/"+userId);
+        model.addAttribute("postAction", "/update-student-review/"+joinId);
 	    
         return "CM0007_WriteReviewStudent";
 
 	}
 
-    @PostMapping(value="/update-student-review/{courseId}/{userId}")
-    private String postStudentReviewForm( @Valid @ModelAttribute("review") StudentReviewDTO stuReviewDTO, @PathVariable Long courseId, @PathVariable Long userId, BindingResult bindingResult, Model model, @RequestParam(value="action", required=true) String action) { 
+    @PostMapping(value="/update-student-review/{joinId}")
+    private String postStudentReviewForm( @Valid @ModelAttribute("review") StudentReviewDTO stuReviewDTO, @PathVariable Long joinId, BindingResult bindingResult, Model model, @RequestParam(value="action", required=true) String action) { 
         if(bindingResult.hasErrors()) {
 			return "CM0007_WriteReviewStudent";			
 		}
-        CourseInfo course = courseInfoRepo.findById(courseId).orElse(null);
-        UserInfo user = userRepo.findById(courseId).orElse(null);
+        UserInfo join=joinRepo.findById(joinId).orElse(null);
+        // CourseInfo course = courseInfoRepo.findById(courseId).orElse(null);
+        // UserInfo user = userRepo.findById(courseId).orElse(null);
         
         try{
             if(action.equals("submit")){

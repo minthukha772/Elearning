@@ -139,14 +139,6 @@ public class UserInfo implements Profile{
     mappedBy = "userInfo"
   )
   @JsonIgnore
-  private List<PriorityCourse> priorityCourse = new ArrayList<>();
-
-  @OneToMany(
-    fetch = FetchType.LAZY,
-    cascade = CascadeType.ALL,
-    mappedBy = "userInfo"
-  )
-  @JsonIgnore
   private List<PaymentReceive> paymentReceive = new ArrayList<>();
 
   @OneToMany(
