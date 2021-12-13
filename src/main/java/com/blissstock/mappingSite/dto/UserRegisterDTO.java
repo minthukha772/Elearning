@@ -121,7 +121,6 @@ public class UserRegisterDTO extends PasswordData implements Confirmable {
       TeacherRegisterDTO teacherRegisterDTO = (TeacherRegisterDTO) userRegisterDTO;
       userInfo.setNrc(teacherRegisterDTO.getNrc());
       userInfo.setSelfDescription(teacherRegisterDTO.getSelfDescription());
-      userInfo.setCertificate(teacherRegisterDTO.getAward());
     }
 
     return userInfo;
@@ -146,7 +145,7 @@ public class UserRegisterDTO extends PasswordData implements Confirmable {
     registerDTO.setEducation(userInfo.getEducation());
     registerDTO.setNrc(userInfo.getNrc());
     registerDTO.setSelfDescription(userInfo.getSelfDescription());
-    registerDTO.setAward(userInfo.getCertificate());
+
     return registerDTO;
   }
 

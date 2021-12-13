@@ -92,9 +92,6 @@ public class UserInfo implements Profile{
   @Column(name = "nrc", length = 30)
   private String nrc;
 
-  @Column(name = "certificate")
-  private String certificate;
-
   @Column(name = "self_description")
   private String selfDescription;
 
@@ -176,7 +173,6 @@ public class UserInfo implements Profile{
       TeacherRegisterDTO teacherRegisterDTO = (TeacherRegisterDTO) userRegisterDTO;
       userInfo.nrc = teacherRegisterDTO.getNrc();
       userInfo.selfDescription = teacherRegisterDTO.getSelfDescription();
-      userInfo.certificate = teacherRegisterDTO.getAward();
     }
 
     return userInfo;
@@ -205,7 +201,6 @@ public class UserInfo implements Profile{
     map.put("Gender", this.gender);
     map.put("Date of Birth", DateFormatter.format(this.birthDate));
     map.put("Education", this.education);
-    map.put("Certificate", this.certificate);
     map.put("SelfDescription", this.selfDescription);
     return map;
   }
