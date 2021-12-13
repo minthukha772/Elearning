@@ -31,6 +31,8 @@ import com.blissstock.mappingSite.utils.FileNameGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.UrlResource;
 import org.springframework.mail.MailSendException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -67,7 +69,7 @@ public class ProfileController {
 
     //Get profile
     @Valid
-    @GetMapping(value="{role}/profile/{userId}/{courseId}")
+    @GetMapping(value="/{role}/profile/{userId}/{courseId}")
     private String getProfile( @PathVariable Long userId,  @PathVariable Long courseId, @PathVariable String role, Model model) {  
         UserInfo userInfo=userRepo.findById(userId).orElse(null);
         model.addAttribute("userInfo", userInfo);
@@ -77,7 +79,7 @@ public class ProfileController {
         List<BankInfo> bankList = bankRepo.findAll();
         model.addAttribute("bankList", bankList);
 
-        if(userAcc.getRole().equals("student")){
+        if(userAcc.getRole().equals("STUDENT")){
           FileInfo profile = loadProfile(userId);
           model.addAttribute("profile", profile);
           model.addAttribute("stuInfo", userInfo.toMapStudent());
@@ -90,7 +92,7 @@ public class ProfileController {
         model.addAttribute("profile", profile);
 
         //load certificates
-        List<FileInfo> fileInfos = loadImages();
+        List<FileInfo> fileInfos = loadImages(userId);
         model.addAttribute("files", fileInfos);
 
         //post action
@@ -181,10 +183,10 @@ public class ProfileController {
   }
     
   //Get certificate  
-  private List<FileInfo> loadImages() {
+  private List<FileInfo> loadImages(Long uid) {
     try {
       return storageService
-        .loadAllCertificates()
+        .loadAllCertificates(uid)
         .map(
           path -> {
             String name = path.getFileName().toString();

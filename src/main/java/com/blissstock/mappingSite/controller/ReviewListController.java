@@ -6,6 +6,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import com.blissstock.mappingSite.entity.CourseInfo;
+import com.blissstock.mappingSite.entity.JoinCourseUser;
 import com.blissstock.mappingSite.entity.Review;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
@@ -36,7 +37,12 @@ public class ReviewListController {
         model.addAttribute("courseName", courseName);
 
         //Display teacher name
-        List<UserInfo> userInfoList=courseInfo.getUserInfo();
+        List<JoinCourseUser> joinList=courseInfo.getJoin();
+        List<UserInfo> userInfoList= new ArrayList<UserInfo>(); 
+        for(JoinCourseUser jUser:joinList){
+            userInfoList.add(jUser.getUserInfo());
+        }
+        
         for(UserInfo userInfo:userInfoList){
             String userRole =  userInfo.getUserAccount().getRole();
             if(userRole.equals("teacher")){

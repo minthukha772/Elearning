@@ -76,55 +76,5 @@ public class Review {
         review.assignedDate=GregorianCalendar.getInstance().getTime();
         return review;
       }
-    // public CourseInfo getCourseInfo() {
-    //     return this.courseInfo;
-    // }
 
-    // public void setCourseInfo(CourseInfo courseInfo) {
-    //     this.courseInfo = courseInfo;
-    // }
-
-
-    // public Long getReviewTestId() {
-    //     return this.reviewTestId;
-    // }
-
-    // public void setReviewId(Long reviewTestId) {
-    //     this.reviewTestId = reviewTestId;
-    // }
-
-    // public int getReviewType() {
-    //     return this.reviewType;
-    // }
-
-    // public void setReviewType(int reviewType) {
-    //     this.reviewType = reviewType;
-    // }
-
-    // public int getStar() {
-    //     return this.star;
-    // }
-
-    // public void setStar(int star) {
-    //     this.star = star;
-    // }
-
-    // public String getFeedback() {
-    //     return this.feedback;
-    // }
-
-    // public void setFeedback(String feedback) {
-    //     this.feedback = feedback;
-    // }
-
-    // public String getReviewStatus() {
-    //     return this.reviewStatus;
-    // }
-
-    // public void setReviewStatus(String reviewStatus) {
-    //     this.reviewStatus = reviewStatus;
-    // }
-	
 }
-
-

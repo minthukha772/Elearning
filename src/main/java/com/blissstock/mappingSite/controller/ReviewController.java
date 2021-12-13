@@ -10,8 +10,10 @@ import javax.validation.Valid;
 import com.blissstock.mappingSite.dto.StudentReviewDTO;
 import com.blissstock.mappingSite.dto.TeacherReviewDTO;
 import com.blissstock.mappingSite.entity.CourseInfo;
+import com.blissstock.mappingSite.entity.PaymentReceive;
 import com.blissstock.mappingSite.entity.Review;
 import com.blissstock.mappingSite.entity.UserInfo;
+import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
 import com.blissstock.mappingSite.repository.ReviewRepository;
 import com.blissstock.mappingSite.repository.UserRepository;
@@ -53,6 +55,7 @@ public class ReviewController {
     @Valid
     @GetMapping(value="/student-review/{courseId}/{userId}")
     private String getStudentReviewForm(@PathVariable Long courseId, @PathVariable Long userId, Model model) {  
+        System.out.println(UserRole.TEACHER);
         StudentReviewDTO stuReview = new StudentReviewDTO();
         model.addAttribute("review", stuReview);
         model.addAttribute("postAction", "/update-student-review/"+courseId+"/"+userId);
@@ -68,6 +71,7 @@ public class ReviewController {
 		}
         CourseInfo course = courseInfoRepo.findById(courseId).orElse(null);
         UserInfo user = userRepo.findById(courseId).orElse(null);
+        
         try{
             if(action.equals("submit")){
               stuReviewService.addReview(stuReviewDTO, course, user);

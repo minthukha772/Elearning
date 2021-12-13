@@ -13,10 +13,10 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -32,61 +32,62 @@ import lombok.Setter;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.servlet.FlashMapManager;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(name = "user_info")
-public class UserInfo implements Profile {
+public class UserInfo implements Profile{
 
   @Column(name = "uid")
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
   private Long uid;
 
-  @Column(name="photo")
-	private String photo;
-  
+  @Column(name = "photo")
+  private String photo;
+
   @Column(name = "user_name", length = 100)
-  //@NotBlank(message = "Please enter your name")
-  protected String userName;
+  @NotBlank(message = "Please enter your name")
+  private String userName;
 
-  //@NotBlank(message = "Please enter phone number.")
-  //@Size(max = 20, min = 8, message = "Phone number should be under 11 digits")
+  @NotBlank(message = "Please enter phone number.")
+  @Size(max = 15, min = 6, message = "Invalid Phone Number")
   @Column(name = "phone_no")
-  protected String phoneNo;
+  private String phoneNo;
 
-  //@NotBlank(message = "Please choose gender.")
+  @NotBlank(message = "Please choose gender.")
   @Column(name = "gender", length = 20)
-  protected String gender;
+  private String gender;
 
-  //@NotNull
+  @NotNull
   @DateTimeFormat(pattern = "yyyy-MM-dd")
   @Column(name = "birth_date")
-  protected Date birthDate;
+  private Date birthDate;
 
-  //@NotBlank(message = "Please enter postal code.")
+  @NotBlank(message = "Please enter postal code.")
   @Column(name = "postal_code")
-  protected String postalCode;
+  private String postalCode;
 
-  //@NotBlank(message = "Please enter city.")
+  @NotBlank(message = "Please enter city.")
   @Column(name = "city", length = 50)
-  protected String city;
+  private String city;
 
-  //@NotBlank(message = "Please enter division")
+  @NotBlank(message = "Please enter division")
   @Column(name = "division", length = 50)
-  protected String division;
+  private String division;
 
-  //@NotBlank(message = "Please enter address.")
+  @NotBlank(message = "Please enter address.")
   @Column(name = "address", length = 255)
-  protected String address;
+  private String address;
 
-  //@NotBlank(message = "Please fill education level.")
+  @NotBlank(message = "Please fill education level.")
   @Column(name = "education", length = 255)
-  protected String education;
+  private String education;
 
   @Column(name = "nrc", length = 30)
   private String nrc;
@@ -97,9 +98,10 @@ public class UserInfo implements Profile {
   @Column(name = "self_description")
   private String selfDescription;
 
-
   //mapping
-  @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  @OneToOne(fetch = FetchType.EAGER)
+  @MapsId
+  @JoinColumn(name = "id")
   UserAccount userAccount;
 
   @OneToMany(
@@ -150,13 +152,13 @@ public class UserInfo implements Profile {
   @JsonIgnore
   private List<PaymentReceive> paymentReceive = new ArrayList<>();
 
-  @ManyToMany(
-    fetch = FetchType.LAZY,
-    cascade = { CascadeType.MERGE },
-    mappedBy = "userInfo"
-  )
-  @JsonIgnore
-  private List<CourseInfo> courseInfo = new ArrayList<>();
+  @OneToMany(
+    fetch = FetchType.LAZY, 
+    cascade = CascadeType.ALL, 
+    mappedBy="userInfo"
+    )
+	@JsonIgnore
+	private List<JoinCourseUser> join= new ArrayList<>();
 
   public static UserInfo fromRegisterDTO(UserRegisterDTO userRegisterDTO) {
     UserInfo userInfo = new UserInfo();
