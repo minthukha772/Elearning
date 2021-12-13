@@ -78,7 +78,7 @@ public class RegisterController {
     return "ST0001_register.html";
   }
 
-  @PostMapping(path = "/register/student")
+  @PostMapping(path = "/register/student/{email}")
   public String studentRegisterConfirm(
     Model model,
     @Valid @ModelAttribute("userInfo") UserRegisterDTO userInfo,
@@ -122,7 +122,7 @@ public class RegisterController {
     return "ST0001_register.html";
   }
 
-  @PostMapping(path = "/register/teacher")
+  @PostMapping(path = "/register/teacher/{email}")
   public String teacherRegisterConfirm(
     Model model,
     @Valid @ModelAttribute("userInfo") TeacherRegisterDTO userInfo,
