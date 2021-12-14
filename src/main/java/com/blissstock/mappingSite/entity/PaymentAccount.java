@@ -1,4 +1,7 @@
 package com.blissstock.mappingSite.entity;
+import java.util.ArrayList;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,10 +11,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,6 +24,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "payment_account")
 public class PaymentAccount {
@@ -28,23 +34,27 @@ public class PaymentAccount {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long paymentAccountId;
 	
-    @Column(name = "payment_service_name", length = 255)
-    @NotBlank(message="Please fill payment service")
-	private String serviceName;
-
     @Column(name = "account_name", length = 255)
-    @NotBlank(message="Please fill bank account name")
+    //@NotBlank(message="Please fill bank account name")
 	private String accountName;
 
     @Column(name="account_number")
-    @NotBlank(message="Please fill bank account number.")
-    private int accountNumber;
+    //@NotBlank(message="Please fill bank account number.")
+    private Integer accountNumber;
     
+    @Transient
+	private Long checkedBank;
+
 	//mapping
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "uid_fkey")
     @JsonIgnore
     private UserInfo userInfo;
-	
-}
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "bank_id_fkey")
+    @JsonIgnore
+    private BankInfo bankInfo;
+	
+   
+}

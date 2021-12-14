@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/CM0004_Student Profile.css" />
+    <title>Mapping Site</title>
+  </head>
+
+  <body style="background-color: #f0f0f0">
+    <div th:replace="fragments/adminnav"></div>
+    <!-- guest user navi bar -->
+
+
+    <div class="m-3">
+      <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="#" data-bs-toggle="modal" data-bs-target="#reEnterEmail"
+              >Email</a
+            >
+          </li>
+          <li class="breadcrumb-item active">Registration</li>
+          <li class="breadcrumb-item" aria-current="page">Confirmation</li>
+          <li class="breadcrumb-item" aria-current="page">Completion</li>
+        </ol>
+      </nav>
+    </div>
+
+
+    <!-- <form
+      id="contactForm"
+      th:action="@{${postAction}}"
+      data-th-action="@{/student/edit}"
+      th:object="${userInfo}"
+      method="post"
+   > -->
+      <div class="container-custom">
+        <div class="card" style="background-color: #DEE2E6" id="adminProfile">
+          <div class="card-header">Personal Information</div>
+          <div class="card-body">
+            <div class="container">
+        
+              <div id="profile">
+                <div class="table-responsive mb-3">
+                  <div class="d-flex justify-content-center">
+                    <img id="profilePic" class="pic img-thumbnail profile_img" th:src="${profile.url}"  th:alt="${profile.name}" />
+                  </div>
+                  <table class="table table-borderless table-hover">
+                    <!-- <tr th:each="entry, stats : ${stuInfo}">
+                      <td th:text="${entry.key}" class="text-end">100</td>
+                      <td>:</td>
+                      <td th:text="${entry.value}">John</td>
+                    </tr> -->
+                      <tr>
+                        <td class="text-end">User Name</td>
+                        <td>:</td>
+                        <td th:text="${userInfo.userName}"></td>
+                      </tr>
+                      <tr>
+                        <td class="text-end">Email</td>
+                        <td>:</td>
+                        <td th:text="${userAcc.mail}"></td>
+                      </tr>
+                  </table>
+                </div> 
+                <div class="row justify-content-between">
+                  <button class="btn btn-primary col-auto" id="submitButton" type="submit" name="action" value="submit" onclick="show('update-admin')">
+                    Update
+                  </button>
+                  <button class="btn btn-primary col-auto back">Change Password</button>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!---End of Card--> 
+        <div class="visually-hidden">
+        <div id="update-admin">
+        <form
+        id="adminProfile"
+        th:action="@{${postAction}}" 
+        th:object="${userInfo}"
+        method="post"
+        >
+        <div class="card" style="background-color: #DEE2E6">
+          <div class="card-header">Personal Information</div>
+          <div class="card-body">
+            <div class="container">
+
+              <div id="profile">
+
+                  <div class="profile-pic-wrapper mb-3">
+                    <div class="pic-holder">
+                      <div class="d-flex justify-content-center">
+                      <!-- <img id="profilePic" class="pic" th:if="${pic64 == null}" th:src="${imagePath}" /> -->
+                      <img id="profilePic" class="pic img-thumbnail profile_img" th:src="${profile.url}"  th:alt="${profile.name}" />
+                      </div>
+                      <div class="d-flex justify-content-center">
+                        <input
+                        class="uploadProfileInput"
+                        type="file"
+                        name="profile_pic"
+                        id="newProfilePhoto"
+                        accept="image/*"
+                        style="display: none;"
+                        th:src="${profile.url}"
+                        th:alt="${profile.name}"
+                      />
+                      <label for="newProfilePhoto" class="upload-file-block">
+                        <div class="text-center">
+                          <div class="mb-2">
+                            <i class="fa fa-camera fa-2x"></i>
+                          </div>
+                          <div class="text-uppercase" style="color: blue;">
+                            Upload Profile Photo
+                          </div>
+                        </div>
+                      </label>
+                      </div>
+                    </div>
+                  </div>
+
+
+                  <div class="mb-3">
+                    <label class="form-label" for="name">User Name</label>
+                    <input th:field="*{userName}" class="form-control" id="name" type="text" placeholder="Name"/>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label" for="name">Email</label>
+                    <input th:field="*{userAccount.mail}" class="form-control" id="name" type="text" placeholder="Name"/>
+                  </div>
+                </div> 
+                <div class="row justify-content-between">
+                  <button class="btn btn-primary col-auto" id="submitButton" type="submit" name="action" value="submit">
+                    Update
+                  </button>
+                  <button class="btn btn-primary col-auto back">Change Password</button>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End of Card -->
+      </form>
+      </div> 
+    </div> 
+      </div>
+      <!-- End of Container -->
+    <!-- </form> -->
+    
+    <script>
+      function show(param_div_id) {
+          document.getElementById('adminProfile').innerHTML = document.getElementById(param_div_id).innerHTML;
+      }
+    </script>
+    <script src="/js/photoPlaceHolder.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
+      integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI="
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import ch.qos.logback.classic.Logger;
+
 @Controller
 public class ProfileEditController {
 
@@ -27,12 +29,13 @@ public class ProfileEditController {
   @Autowired
   UserService userService;
 
+
   @GetMapping(
     path = {
       "/student/profile_edit",
       "/teacher/profile_edit",
       "admin/profile_edit/student/{id}",
-      "admin/profile_edit/teacher{id}",
+      "admin/profile_edit/teacher/{id}",
     }
   )
   public String editProfileView(

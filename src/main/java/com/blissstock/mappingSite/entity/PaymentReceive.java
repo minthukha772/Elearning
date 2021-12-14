@@ -44,16 +44,10 @@ public class PaymentReceive {
 	@Column(name="payment_receive_date")
 	private Date paymentReceiveDate;
 
-	//mapping
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "uid_fkey")
+    @JoinColumn(name = "join_fkey")
     @JsonIgnore
-    private UserInfo userInfo;
-
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "courseId_fkey")
-    @JsonIgnore
-    private CourseInfo courseInfo;
+    private JoinCourseUser join;
 	
 }
 

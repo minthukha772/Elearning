@@ -11,18 +11,17 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Data
 @Getter
@@ -36,42 +35,41 @@ public class CourseInfo {
   private Long courseId;
 
   @Column(name = "course_name", length = 100)
-  @NotBlank(message = "Please enter course name")
+  //@NotBlank(message="Please enter course name")
   private String courseName;
 
   @Column(name = "class_type", length = 20)
-  @NotBlank(message = "Please enter class type")
+  ///@NotBlank(message="Please enter class type")
   private String classType;
 
   @Column(name = "category", length = 100)
-  @NotBlank(message = "Please choose category")
+  //@NotBlank(message="Please choose category")
   private String category;
 
   @Column(name = "level", length = 15)
-  @NotBlank(message = "Please choose course level")
+  //@NotBlank(message="Please choose course level")
   private String level;
 
   @Column(name = "about_course", length = 250)
-  @NotBlank(message = "Please enter about course")
+  //@NotBlank(message="Please enter about course")
   private String aboutCourse;
 
-  @NotNull
+  @Column(name = "student_num", length = 20)
+  private int stuNum;
+
+  //@NotNull
   @DateTimeFormat(pattern = "yyyy-MM-dd")
   @Column(name = "start_date")
   private Date startDate;
 
-  @NotNull
+  //@NotNull
   @DateTimeFormat(pattern = "yyyy-MM-dd")
   @Column(name = "end_date")
   private Date endDate;
 
-  @NotBlank(message = "Please enter course fees")
+  //@NotBlank(message="Please enter course fees")
   @Column(name = "course_fees")
   private int fees;
-
-  @NotBlank(message = "Please enter class link")
-  @Column(name = "class_link")
-  private String classLink;
 
   @Column(name = "isCourseApproved", nullable = false)
   private boolean isCourseApproved = false;
@@ -87,13 +85,17 @@ public class CourseInfo {
 
   @OneToMany(
     fetch = FetchType.LAZY,
-    cascade = CascadeType.MERGE,
+    cascade = CascadeType.ALL,
     mappedBy = "courseInfo"
   )
   @JsonIgnore
   private List<Syllabus> syllabus = new ArrayList<>();
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "courseInfo")
+  @OneToMany(
+    fetch = FetchType.LAZY,
+    cascade = CascadeType.ALL,
+    mappedBy = "courseInfo"
+  )
   @JsonIgnore
   private List<Test> test = new ArrayList<>();
 
@@ -103,37 +105,5 @@ public class CourseInfo {
     mappedBy = "courseInfo"
   )
   @JsonIgnore
-  private List<LeaveInfo> leaveInfo = new ArrayList<>();
-
-  @OneToMany(
-    fetch = FetchType.LAZY,
-    cascade = CascadeType.ALL,
-    mappedBy = "courseInfo"
-  )
-  @JsonIgnore
-  private List<Review> review = new ArrayList<>();
-
-  @OneToMany(
-    fetch = FetchType.LAZY,
-    cascade = CascadeType.ALL,
-    mappedBy = "courseInfo"
-  )
-  @JsonIgnore
-  private List<PriorityCourse> priorityCourse = new ArrayList<>();
-
-  @OneToMany(
-    fetch = FetchType.LAZY,
-    cascade = CascadeType.ALL,
-    mappedBy = "courseInfo"
-  )
-  @JsonIgnore
-  private List<PaymentReceive> paymentReceive = new ArrayList<>();
-
-  @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(
-    name = "join_course_user",
-    joinColumns = { @JoinColumn(name = "course_id") },
-    inverseJoinColumns = { @JoinColumn(name = "uid") }
-  )
-  private List<UserInfo> userInfo = new ArrayList<>();
+  private List<JoinCourseUser> join = new ArrayList<>();
 }
