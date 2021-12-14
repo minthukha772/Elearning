@@ -29,26 +29,7 @@
     <script type="text/javascript" src="js/date.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
 
-    <!-- <script type="text/javascript">
-        $(document).ready(function() {
 
-            $("#live").prop("checked", true);
-
-        });
-    </script> -->
-    <!-- <script type="text/javascript">
-        function yesnoCheck() {
-            if (document.getElementById('yesCheck').checked) {
-                document.getElementById('iflive').style.display = 'block';
-                document.getElementById('ifvideo').style.display = 'none';
-            } else {
-                document.getElementById('iflive').style.display = 'none';
-                document.getElementById('ifvideo').style.display = 'block';
-            }
-
-        }
-    </script> -->
-    <!-- Script Session end-->
 </head>
 
 <body>
@@ -74,15 +55,6 @@
                             </div>
                         </div>
 
-                        <!--<div class="form-group row">
-                        <div class="col-lg-1"></div>
-                        <label for="reason" class="col-lg-3 col-form-label">Course Name</label>
-
-                        <div class="col-lg-6">
-                            <input type="text" class="form-control" id="inputCourseName" placeholder="Enter Course Name(For example : Japanese Basic)" th:field="*{courseName}" th:classappend="${#fields.hasErrors('courseName')}?'is-invalid':''">
-                        </div>
-                        <div class="invalid-feedback" th:if="${#fields.hasErrors('courseName')}" th:errors="*{name}">This field is required.</div>
-                    </div>-->
 
 
                         <div class="form-group row">
@@ -90,8 +62,7 @@
                             <label for="reason" class="col-lg-3 col-form-label">Course Name</label>
 
                             <div class="col-lg-6">
-                                <!-- <input type="text" class="form-control" id="inputCourseName" placeholder="Enter Course Name(For example : Japanese Basic)" th:field="*{courseName}" required>-->
-                                <!--<label th:field="*{courseName}"></label>-->
+
                                 <input type="text" class="form-control" id="inputCourseName" th:field="*{courseName}" style="border: none transparent;" readonly></input>
                             </div>
                         </div>
@@ -102,13 +73,6 @@
                             <label for="category" class="col-lg-3 col-form-label">Course Category</label>
 
                             <div class="col-lg-6">
-                                <!-- <select name="category" id="category" th:field="*{category}">
-                               <option value="" selected="selected" >Select Category</option>
-                                <option value="1">Japanese</option>
-                                <option value="2">English</option>
-                                <option value="3">Python</option>
-                                <option value="4">Java</option>
-                            </select>-->
                                 <input type="text" class="form-control" th:field="*{category}" style="border: none transparent;" readonly></input>
                             </div>
                         </div>
@@ -142,6 +106,7 @@
                             </div>
                         </div>
 
+
                         <div class="form-group row">
                             <div class="col-lg-1"></div>
                             <label for="level" class="col-lg-3 col-form-label">Course Title</label>
@@ -162,12 +127,7 @@
                             </div>
                         </div>
 
-                        <!--<div class="mb-3">
-                        <label class="form-label" for="about">About Course</label>
-                        <textarea class="form-control" id="about" class="form-control" placeholder="Enter detail about your course here." th:field="*{aboutCourse}" th:classappend="${#fields.hasErrors('aboutCourse')}?'is-invalid':''"></textarea>
-                        <div class="invalid-feedback" th:if="${#fields.hasErrors('aboutCourse')}" th:errors="*{aboutCourse}"></div>
-                    </div>
-                -->
+
                         <div class="form-group row">
                             <div class="col-lg-1"></div>
                             <label for="fee" class="col-lg-3 col-form-label">Course Fee (Kyats)</label>
@@ -193,14 +153,15 @@
 
                     <div th:if="${classActiveLive}">
                         <div th:object="${course}">
-                            <!-- <div class="form-group row">
-                            <div class="col-lg-1"></div>
-                            <label for="fee" class="col-lg-3 col-form-label">Student Number</label>
+                            <div class="form-group row">
+                                <div class="col-lg-1"></div>
+                                <label for="level" class="col-lg-3 col-form-label">Student Numbers</label>
 
-                            <div class="col-lg-6">
-                                <input type="number" class="form-control" id="inputCourseFee" placeholder="Enter Student Number" th:field="*{stuNum}" style="border: none transparent;" readonly>
+                                <div class="col-lg-6">
+                                    <!-- <input type="text" class="form-control" id="inputCourseLevel" placeholder="Enter Course Level(For example : Japanese Basic)" th:field="*{level}" required>-->
+                                    <input type="text" class="form-control" id="inputCourseName" th:field="*{stuNum}" style="border: none transparent;" readonly></input>
+                                </div>
                             </div>
-                        </div> -->
 
                             <div class="form-group row">
                                 <div class="col-lg-1"></div>
@@ -250,24 +211,19 @@
 
 
 
-                    <div class="col-lg-8 text-center">
-                        <div class="col-lg-3">
+                    <div class="col-lg-12 text-center">
+                        <div class="col-lg-6">
                             <!--<button type="submit" class="btn-reset">Reset</button>-->
                             <button id="btnBack" type="reset" class="btn btn-spacing btn-secondary center-block" Style="width: 100px;" OnClick="history.go(-1)">Back</button>
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-lg-6">
                             <!--<button type="submit" class="btn-reset">Save Changes</button>-->
                             <button id="btnConfirm" class="btn btn-spacing btn-primary center-block" Style="width: 150px;" OnClick="btnConfirm_Click">Confirm</button>
 
                         </div>
                     </div>
-                    <!--<input type="hidden" value="approve" th:field="*{isCourseApproved}">-->
+                    <div class="form-group row"></div>
 
-
-                    <!--div class="form-group row text-center">
-                        <button type="submit" class="btn">お問い合わせする</button>
-                    </div-->
-                    <!--<div id="log"></div>-->
                 </form>
             </div>
         </div>
@@ -338,53 +294,6 @@
         });
     </script>
 
-    <script>
-        $(document).ready(function() {
-            var max_fields = 10; //maximum input boxes allowed
-            var wrapper = $(".input_fields_wrap"); //Fields wrapper
-            var add_button = $(".add_field_button"); //Add button ID
-            var x = 1; //initlal text box count
-
-            var max_fields1 = 10; //maximum input boxes allowed
-            var wrapper1 = $(".input_fields_wrap1"); //Fields wrapper
-            var add_button1 = $(".add_field_button1"); //Add button ID
-            var y = 1; //initlal text box count
-
-
-            $(add_button).click(function(e) { //on add input button click
-                e.preventDefault();
-                $(wrapper).append('<div><input type="text" name="mytext[]" placeholder="add title"/><a href="#" class="remove_field">remove</a></div>'); //add input box
-                if (x > 1) { //max input box allowed
-
-                    //text box increment
-                    $(wrapper).append('<div><input type="text" name="mytext[]" placeholder="add title"/><a href="#" class="remove_field">remove</a></div>'); //add input box
-                    x++;
-                }
-            });
-            $(add_button1).click(function(e) { //on add input button click
-                e.preventDefault();
-                if (y < max_fields1) { //max input box allowed
-
-                    //text box increment
-                    $(wrapper).append('<div><input type="text" name="mytext[]" placeholder="add content"/><a href="#" class="remove_field">remove</a></div>'); //add input box
-                    y++;
-                }
-            });
-
-            $(wrapper).on("click", ".remove_field", function(e) { //user click on remove text
-
-                e.preventDefault();
-                $(this).parent('div').remove();
-                x--;
-            })
-            $(wrapper1).on("click", ".remove_field", function(e) { //user click on remove text
-
-                e.preventDefault();
-                $(this).parent('div').remove();
-                y--;
-            })
-        });
-    </script>
 
 </body>
 

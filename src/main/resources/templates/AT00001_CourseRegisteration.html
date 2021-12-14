@@ -144,15 +144,6 @@
                                 </div>
                             </div>
 
-                            <!--<div class="form-group row">
-                        <div class="col-lg-1"></div>
-                        <label for="reason" class="col-lg-3 col-form-label">Course Name</label>
-
-                        <div class="col-lg-6">
-                            <input type="text" class="form-control" id="inputCourseName" placeholder="Enter Course Name(For example : Japanese Basic)" th:field="*{courseName}" th:classappend="${#fields.hasErrors('courseName')}?'is-invalid':''">
-                        </div>
-                        <div class="invalid-feedback" th:if="${#fields.hasErrors('courseName')}" th:errors="*{name}">This field is required.</div>
-                    </div>-->
                             <div class="form-group row">
                                 <div class="col-lg-1"></div>
                                 <label for="classtype" class="col-lg-3 col-form-label">Class Type</label>
@@ -218,6 +209,8 @@
                                 <textarea th:field="*{aboutCourse}" class="form-control" th:classappend="${#fields.hasErrors('aboutCourse')}?'is-invalid':''" id="cabout" type="text" placeholder="Enter detail about your course here."></textarea>
                                 <div class="invalid-feedback" th:if="${#fields.hasErrors('aboutCourse')}" th:errors="*{aboutCourse}">This field is required.</div>
                             </div>
+
+
                             <div class="mb-3">
                                 <label class="form-label" for="vlevel">Course Title</label>
 
@@ -246,18 +239,15 @@
                         </div>
 
                         <div id="iflive" style="display: none;">
+
                             <div th:object="${course}">
-                                <!-- <div class="mb-3">
-                            <label class="form-label" for="stunum">Student Number</label>
+                                <div class="mb-3">
+                                    <label class="form-label" for="stunum">Student Numbers</label>
 
-                            <input th:field="*{stuNum}" class="form-control"
-                                th:classappend="${#fields.hasErrors('stuNum')}?'is-invalid':''" id="stunum" type="text"
-                                placeholder="Enter Student Number" />
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('stuNum')}" th:errors="*{stuNum}">
-                                This field is required.</div>
-                        </div> -->
-
-
+                                    <input th:field="*{stuNum}" class="form-control" th:classappend="${#fields.hasErrors('stuNum')}?'is-invalid':''" id="stunum" type="text" placeholder="Enter the number of students">
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('stuNum')}" th:errors="*{stuNum}">This field is required.</div>
+                                </div>
+                                <div class="form-group row"></div>
                                 <div class="form-group row">
                                     <div class="col-lg-1"></div>
                                     <label for="about" class="col-lg-2 col-form-label">Start Date</label>
@@ -441,94 +431,20 @@
 
 
                             <div class="input_fields_wrap">
-                                <!-- <div class="form-group row">
-                                <div class="col-lg-1"></div>
-                                <button class="add_field_button">Add Title</button>
-                                <button class="add_field_button1">Add Content</button>
+                            </div>
+                        </div>
 
-                            </div> -->
-                                <!--<div class="form-group row">
-                            <div class="col-lg-1"></div>
-                            <label for="title" class="col-lg-3 col-form-label">Title</label>
 
+                        <div class="col-lg-12 text-center">
                             <div class="col-lg-6">
-
-                                <input type="text" class="form-control" name="mytext[]" placeholder="Enter Course Title">
-
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <div class="col-lg-2"></div>
-                            <label for="content" class="col-lg-3 col-form-label">Content</label>
-
-                            <div class="col-lg-6 input_fields_wrap1">
-                                <input type="text" class="form-control" name="mytext[]" placeholder="Enter Course Content">
-                            </div>
-                        </div>-->
-                            </div>
-                        </div>
-
-                        <!--<div class="form-group row">
-                        <div class="col-lg-1"></div>
-                        <label for="about" class="col-lg-3 col-form-label">Video Link</label>
-
-                        <div class="col-lg-6">
-                            <textarea class="form-control" id="inputAboutCourse" placeholder="Enter your course video link here." th:field="*{classLink}" required></textarea>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <div class="col-lg-1"></div>
-                        <label for="fee" class="col-lg-3 col-form-label">Course Fee (Kyats)</label>
-
-                        <div class="col-lg-6">
-                            <input type="number" class="form-control" id="inputCourseFee" placeholder="Enter your course fee here.(Kyats)" th:field="*{fees}" required>
-                        </div>
-                    </div>-->
-
-                        <!--<div class="form-group row">
-                        <div class="col-lg-1"></div>
-                        <label for="date" class="col-lg-2 col-form-label">Start Date</label>
-
-                        <div class="col-lg-3">
-                            <input id="datepicker9" class="form-control" placeholder="yyyy-mm-dd" th:field="*{startDate}">
-
-                        </div>
-
-
-                        <label for="date" class="col-lg-2 col-form-label">End Date</label>
-
-                        <div class="col-lg-3">
-                            <input id="datepicker10" class="form-control" placeholder="yyyy-mm-dd" th:field="*{endDate}">
-
-                        </div>
-                        <div class="col-lg-1"></div>
-
-                    </div>
-
--->
-
-
-
-                        <div class="col-lg-8 text-center">
-                            <div class="col-lg-3">
-                                <!--<button type="submit" class="btn-reset">Reset</button>-->
                                 <button id="btnReset" type="reset" class="btn btn-spacing btn-secondary center-block" Style="width: 100px;" OnClick="btnClear_Click">Reset</button>
                             </div>
-                            <div class="col-lg-3">
-                                <!--<button type="submit" class="btn-reset">Save Changes</button>-->
+                            <div class="col-lg-6">
                                 <button id="btnReg" class="btn btn-spacing btn-primary center-block" Style="width: 150px;" OnClick="btnRegister_Click">Register</button>
 
                             </div>
                         </div>
-                        <!--<input type="hidden" value="approve" th:field="*{isCourseApproved}">-->
-
-
-                        <!--div class="form-group row text-center">
-                        <button type="submit" class="btn">お問い合わせする</button>
-                    </div-->
-                        <!--<div id="log"></div>-->
+                        <div class="form-group row"></div>
                     </form>
                 </div>
             </div>
@@ -537,8 +453,7 @@
     </div>
 
 
-    <!-- JavaScript Libraries -->
-    <!--script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script-->
+
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
     <script src="main.js"></script>
@@ -550,6 +465,73 @@
             pickTime: false
         });
     </script>
+    <script>
+        $("#time2").timepicker()({
+            pickTime: false
+        });
+    </script>
+    <script>
+        $("#time3").timepicker()({
+            pickTime: false
+        });
+    </script>
+    <script>
+        $("#time4").timepicker()({
+            pickTime: false
+        });
+    </script>
+    <script>
+        $("#time5").timepicker()({
+            pickTime: false
+        });
+    </script>
+    <script>
+        $("#time6").timepicker()({
+            pickTime: false
+        });
+    </script>
+    <script>
+        $("#time7").timepicker()({
+            pickTime: false
+        });
+    </script>
+    <script>
+        $("#time8").timepicker()({
+            pickTime: false
+        });
+    </script>
+    <script>
+        $("#time9").timepicker()({
+            pickTime: false
+        });
+    </script>
+    <script>
+        $("#time10").timepicker()({
+            pickTime: false
+        });
+    </script>
+    <script>
+        $("#time11").timepicker()({
+            pickTime: false
+        });
+    </script>
+    <script>
+        $("#time12").timepicker()({
+            pickTime: false
+        });
+    </script>
+    <script>
+        $("#time13").timepicker()({
+            pickTime: false
+        });
+    </script>
+    <script>
+        $("#time14").timepicker()({
+            pickTime: false
+        });
+    </script>
+
+
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js" type="text/javascript"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" type="text/javascript"></script>
@@ -591,54 +573,6 @@
             }
         });
     </script>
-
-    <!-- <script>
-        $(document).ready(function () {
-            var max_fields = 10; //maximum input boxes allowed
-            var wrapper = $(".input_fields_wrap"); //Fields wrapper
-            var add_button = $(".add_field_button"); //Add button ID
-            var x = 1; //initlal text box count
-
-            var max_fields1 = 10; //maximum input boxes allowed
-            var wrapper1 = $(".input_fields_wrap1"); //Fields wrapper
-            var add_button1 = $(".add_field_button1"); //Add button ID
-            var y = 1; //initlal text box count
-
-
-            $(add_button).click(function (e) { //on add input button click
-                e.preventDefault();
-                $(wrapper).append('<div><input type="text" name="mytext[]" placeholder="add title"/><a href="#" class="remove_field">remove</a></div>'); //add input box
-                if (x > 1) { //max input box allowed
-
-                    //text box increment
-                    $(wrapper).append('<div><input type="text" name="mytext[]" placeholder="add title"/><a href="#" class="remove_field">remove</a></div>'); //add input box
-                    x++;
-                }
-            });
-            $(add_button1).click(function (e) { //on add input button click
-                e.preventDefault();
-                if (y < max_fields1) { //max input box allowed
-
-                    //text box increment
-                    $(wrapper).append('<div><input type="text" name="mytext[]" placeholder="add content"/><a href="#" class="remove_field">remove</a></div>'); //add input box
-                    y++;
-                }
-            });
-
-            $(wrapper).on("click", ".remove_field", function (e) { //user click on remove text
-
-                e.preventDefault();
-                $(this).parent('div').remove();
-                x--;
-            })
-            $(wrapper1).on("click", ".remove_field", function (e) { //user click on remove text
-
-                e.preventDefault();
-                $(this).parent('div').remove();
-                y--;
-            })
-        });
-    </script> -->
 
 </body>
 
