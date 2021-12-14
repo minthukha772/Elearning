@@ -45,7 +45,6 @@ public class SyllabusServiceImpl implements SyllabusService {
       throw new CourseNotFoundException(id);
     }
 
-    // TODO Add Security
 
     if (syllabus.getSyllabusId() != 0L) {
       //Remove existing all content

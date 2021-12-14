@@ -55,7 +55,6 @@ public class CourseSyllabusController {
     HttpServletRequest httpServletRequest
   )
     throws CourseNotFoundException {
-    //TODO replace data from repository
     //For the purpose of display
     logger.info("user requested syllabus of course_id: {}", id);
 
