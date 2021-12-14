@@ -6,6 +6,6 @@ import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.UserInfo;
 
 public interface TeacherReviewService {
-  public void addReview(TeacherReviewDTO trReviewDTO, CourseInfo course, UserInfo userInfo);
+  public void addReview(TeacherReviewDTO trReviewDTO, Long courseId, Long userId);
   //public UserRegisterDTO getUserByID(Long id);
 }
