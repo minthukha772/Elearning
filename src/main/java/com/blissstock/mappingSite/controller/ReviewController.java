@@ -58,29 +58,24 @@ public class ReviewController {
     TeacherReviewService trReviewService;
     //get student review 
     @Valid
-    @GetMapping(value="/student-review/{joinId}")
-    private String getStudentReviewForm(@PathVariable Long joinId, Model model) {  
-        System.out.println(UserRole.TEACHER);
+    @GetMapping(value="/student-review/{courseId}/{userId}")
+    private String getStudentReviewForm(@PathVariable Long courseId,@PathVariable Long userId, Model model) {  
         StudentReviewDTO stuReview = new StudentReviewDTO();
         model.addAttribute("review", stuReview);
-        model.addAttribute("postAction", "/update-student-review/"+joinId);
+        model.addAttribute("postAction", "/update-student-review/"+courseId+"/"+userId);
 	    
         return "CM0007_WriteReviewStudent";
 
 	}
 
-    @PostMapping(value="/update-student-review/{joinId}")
-    private String postStudentReviewForm( @Valid @ModelAttribute("review") StudentReviewDTO stuReviewDTO, @PathVariable Long joinId, BindingResult bindingResult, Model model, @RequestParam(value="action", required=true) String action) { 
+    @PostMapping(value="/update-student-review/{courseId}/{uid}")
+    private String postStudentReviewForm( @Valid @ModelAttribute("review") StudentReviewDTO stuReviewDTO, @PathVariable Long courseId, @PathVariable Long userId, BindingResult bindingResult, Model model, @RequestParam(value="action", required=true) String action) { 
         if(bindingResult.hasErrors()) {
 			return "CM0007_WriteReviewStudent";			
-		}
-        UserInfo join=joinRepo.findById(joinId).orElse(null);
-        // CourseInfo course = courseInfoRepo.findById(courseId).orElse(null);
-        // UserInfo user = userRepo.findById(courseId).orElse(null);
-        
+		}   
         try{
             if(action.equals("submit")){
-              stuReviewService.addReview(stuReviewDTO, course, user);
+              stuReviewService.addReview(stuReviewDTO, courseId, userId);
             }
           }catch(Exception e){
             System.out.println(e);
@@ -108,12 +103,11 @@ public class ReviewController {
     private String postTeacherReviewForm( @Valid @ModelAttribute("review") TeacherReviewDTO trReviewDTO, BindingResult bindingResult,@PathVariable Long courseId, @PathVariable Long userId, Model model, @RequestParam(value="action", required=true) String action) { 
         if(bindingResult.hasErrors()) {
 			return "CM0007_WriteReviewTeacher";			
-		}
-        CourseInfo course = courseInfoRepo.findById(courseId).orElse(null); 
-        UserInfo user = userRepo.findById(courseId).orElse(null);
+		}  
         try{
             if(action.equals("submit")){
-              trReviewService.addReview(trReviewDTO, course, user);
+              System.out.println(trReviewDTO.getReviewType());
+              trReviewService.addReview(trReviewDTO, courseId, userId);
             }
           }catch(Exception e){
             System.out.println(e);
