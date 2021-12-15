@@ -3,6 +3,9 @@ package com.blissstock.mappingSite.controller;
 import com.blissstock.mappingSite.dto.EmailCheckRegisterDTO;
 import com.blissstock.mappingSite.service.UserService;
 import javax.validation.Valid;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +18,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class CheckEmailController {
 
+  private static final Logger logger = LoggerFactory.getLogger(CheckEmailController.class);
+
   @Autowired
   UserService userService;
 
@@ -25,6 +30,7 @@ public class CheckEmailController {
     Model model,
     String email
   ) {
+    logger.info("Role is {}, email is {}",role,email);
     // Tell Thymeleaf to render as Reister
     model.addAttribute("action", "register");
 
@@ -43,6 +49,7 @@ public class CheckEmailController {
     if (role == null || !role.equals("teacher")) {
       role = "student";
     }
+    logger.debug("Role is {}", role);
     EmailCheckRegisterDTO emailCheckRegisterDTO = new EmailCheckRegisterDTO();
     emailCheckRegisterDTO.setEmail(email);
     emailCheckRegisterDTO.setRole(role);

@@ -56,6 +56,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
       .permitAll()
       .antMatchers("/check_email/**")
       .permitAll()
+      .antMatchers("/log/**")//TODO:remove in production, for testing purpose only.
+      .permitAll()
       .antMatchers("/images/**", "/css/**", "/js/**")
       .permitAll()
       .antMatchers("/student/**")

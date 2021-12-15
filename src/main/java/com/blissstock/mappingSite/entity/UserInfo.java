@@ -101,6 +101,14 @@ public class UserInfo implements Profile{
   @JoinColumn(name = "id")
   UserAccount userAccount;
 
+/*   @OneToMany(
+    fetch = FetchType.LAZY,
+    cascade = CascadeType.ALL,
+    mappedBy = "userInfo"
+  )
+  @JsonIgnore
+  private List<Certificate> certificateInfo = new ArrayList<>(); */
+
   @OneToMany(
     fetch = FetchType.LAZY,
     cascade = CascadeType.ALL,

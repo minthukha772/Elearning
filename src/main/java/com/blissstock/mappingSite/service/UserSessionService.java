@@ -10,5 +10,6 @@ public interface UserSessionService {
     public UserRole getRole();
     public String getEmail();
     public boolean isAuthenticated();
+    public Long getId();
 
 }
