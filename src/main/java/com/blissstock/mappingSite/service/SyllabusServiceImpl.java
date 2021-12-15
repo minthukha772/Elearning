@@ -1,14 +1,14 @@
-package com.blissstock.mappingSite.exceptions;
+package com.blissstock.mappingSite.service;
 
 import com.blissstock.mappingSite.entity.Content;
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.Syllabus;
+import com.blissstock.mappingSite.exceptions.CourseNotFoundException;
+import com.blissstock.mappingSite.exceptions.SyllabusNotFoundException;
 import com.blissstock.mappingSite.repository.ContentRepository;
 import com.blissstock.mappingSite.repository.CourseRepository;
 import com.blissstock.mappingSite.repository.SyllabusRepository;
-import com.blissstock.mappingSite.service.SyllabusService;
-import com.blissstock.mappingSite.service.UserSessionService;
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -45,7 +45,6 @@ public class SyllabusServiceImpl implements SyllabusService {
       throw new CourseNotFoundException(id);
     }
 
-    // TODO Add Security
 
     if (syllabus.getSyllabusId() != 0L) {
       //Remove existing all content

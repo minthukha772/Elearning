@@ -1,8 +1,13 @@
 package com.blissstock.mappingSite.entity;
 
+import com.blissstock.mappingSite.dto.TeacherRegisterDTO;
+import com.blissstock.mappingSite.dto.UserRegisterDTO;
+import com.blissstock.mappingSite.interfaces.Profile;
+import com.blissstock.mappingSite.utils.DateFormatter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,6 +23,15 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.servlet.FlashMapManager;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,7 +42,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @NoArgsConstructor
 @Entity
 @Table(name = "user_info")
-public class UserInfo {
+public class UserInfo implements Profile{
 
   @Column(name = "uid")
   @Id
@@ -78,9 +92,6 @@ public class UserInfo {
   @Column(name = "nrc", length = 30)
   private String nrc;
 
-  @Column(name = "certificate")
-  private String certificate;
-
   @Column(name = "self_description")
   private String selfDescription;
 
@@ -90,13 +101,13 @@ public class UserInfo {
   @JoinColumn(name = "id")
   UserAccount userAccount;
 
-  @OneToMany(
+/*   @OneToMany(
     fetch = FetchType.LAZY,
     cascade = CascadeType.ALL,
     mappedBy = "userInfo"
   )
   @JsonIgnore
-  private List<Certificate> certificateInfo = new ArrayList<>();
+  private List<Certificate> certificateInfo = new ArrayList<>(); */
 
   @OneToMany(
     fetch = FetchType.LAZY,
@@ -107,42 +118,60 @@ public class UserInfo {
   private List<PaymentAccount> paymentAccount = new ArrayList<>();
 
   @OneToMany(
-    fetch = FetchType.LAZY,
-    cascade = CascadeType.ALL,
-    mappedBy = "userInfo"
-  )
-  @JsonIgnore
-  private List<LeaveInfo> leaveInfo = new ArrayList<>();
+    fetch = FetchType.LAZY, 
+    cascade = CascadeType.ALL, 
+    mappedBy="userInfo"
+    )
+	@JsonIgnore
+	private List<JoinCourseUser> join= new ArrayList<>();
 
-  @OneToMany(
-    fetch = FetchType.LAZY,
-    cascade = CascadeType.ALL,
-    mappedBy = "userInfo"
-  )
-  @JsonIgnore
-  private List<Review> review = new ArrayList<>();
+  public static UserInfo fromRegisterDTO(UserRegisterDTO userRegisterDTO) {
+    UserInfo userInfo = new UserInfo();
+    userInfo.userName = userRegisterDTO.getName();
+    userInfo.phoneNo = userRegisterDTO.getPhone();
+    userInfo.gender = userRegisterDTO.getGender();
+    userInfo.birthDate = userRegisterDTO.getDob();
+    userInfo.postalCode = userRegisterDTO.getZipCode() + "";
+    userInfo.city = userRegisterDTO.getCity();
+    userInfo.division = userRegisterDTO.getDivision();
+    userInfo.address = userRegisterDTO.getAddress();
+    userInfo.education = userRegisterDTO.getName();
 
-  @OneToMany(
-    fetch = FetchType.LAZY,
-    cascade = CascadeType.ALL,
-    mappedBy = "userInfo"
-  )
-  @JsonIgnore
-  private List<PriorityCourse> priorityCourse = new ArrayList<>();
+    if (userRegisterDTO instanceof TeacherRegisterDTO) {
+      TeacherRegisterDTO teacherRegisterDTO = (TeacherRegisterDTO) userRegisterDTO;
+      userInfo.nrc = teacherRegisterDTO.getNrc();
+      userInfo.selfDescription = teacherRegisterDTO.getSelfDescription();
+    }
 
-  @OneToMany(
-    fetch = FetchType.LAZY,
-    cascade = CascadeType.ALL,
-    mappedBy = "userInfo"
-  )
-  @JsonIgnore
-  private List<PaymentReceive> paymentReceive = new ArrayList<>();
+    return userInfo;
+  }
+  @Override
+  public LinkedHashMap<String, String> toMapStudent() {
+    LinkedHashMap<String, String> map = new LinkedHashMap<>();
+    //map.put("Email", this.email);
+    map.put("Name", this.userName);
+    map.put("Phone Number", this.phoneNo);
+    map.put("Gender", this.gender);
+    map.put("Date of Birth", DateFormatter.format(this.birthDate));
+    map.put("Zip Code", this.postalCode + "");
+    map.put("City", this.city);
+    map.put("Division", this.division);
+    map.put("Address", this.address);
+    map.put("Education", this.education);
+    return map;
+  }
 
-  @ManyToMany(
-    fetch = FetchType.LAZY,
-    cascade = { CascadeType.MERGE },
-    mappedBy = "userInfo"
-  )
-  @JsonIgnore
-  private List<CourseInfo> courseInfo = new ArrayList<>();
+  @Override
+  public LinkedHashMap<String, String> toMapTeacher() {
+    LinkedHashMap<String, String> map = new LinkedHashMap<>();
+    //map.put("Email", this.email);
+    map.put("Name", this.userName);
+    map.put("Gender", this.gender);
+    map.put("Date of Birth", DateFormatter.format(this.birthDate));
+    map.put("Education", this.education);
+    map.put("SelfDescription", this.selfDescription);
+    return map;
+  }
+
+ 
 }

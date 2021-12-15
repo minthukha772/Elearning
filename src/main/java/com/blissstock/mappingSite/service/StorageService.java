@@ -1,8 +1,9 @@
 package com.blissstock.mappingSite.service;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.stream.Stream;
+
+import java.io.IOException;
 
 import com.blissstock.mappingSite.exceptions.UnauthorizedFileAccessException;
 
@@ -13,6 +14,12 @@ public interface StorageService {
 
 	void init();
 
+	void storeProfile(MultipartFile file,String fileName);
+
+	Path loadProfile(String filename);
+
+	Resource loadAsResource(String filename);
+	
 	public Resource loadCertificate(Long uid, String filename) throws UnauthorizedFileAccessException;
 
 	void storeCertificates(Long uid, MultipartFile[] files) throws UnauthorizedFileAccessException;
