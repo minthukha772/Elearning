@@ -70,7 +70,8 @@ public class CheckEmailController {
       BindingResult bindingResult) {
     logger.info("POST Resquest");
     if (bindingResult.hasErrors()) {
-      logger.warn("Invalid Form Field error {},count", bindingResult.getFieldError());
+      logger.warn("Invalid Form Field error {},  error count:{}", bindingResult.getFieldError(),
+          bindingResult.getFieldErrorCount());
       model.addAttribute("action", "register");
 
       /*
@@ -131,6 +132,7 @@ public class CheckEmailController {
     logger.info("POST Request");
     // Tell Thymeleaf to render as Reister
     if (bindingResult.hasErrors()) {
+      logger.info("Request password method :{}", bindingResult.getFieldError());
       model.addAttribute("action", "verify_password");
 
       // For Post Method Action
