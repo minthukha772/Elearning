@@ -1,4 +1,4 @@
-package com.blissstock.mappingSite.controller;
+/* package com.blissstock.mappingSite.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -107,3 +107,4 @@ public class ReviewListController {
             return "CM0009_ReviewList";
 	}
 }
+ */

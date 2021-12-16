@@ -13,6 +13,7 @@ import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,6 +22,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
+@Data
 @Table(name = "content")
 public class Content {
 	
@@ -35,7 +37,7 @@ public class Content {
 
 	//mapping
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "syllabusId_fkey")
+    @JoinColumn(name = "syllabus_id")
     @JsonIgnore
     private Syllabus syllabus;
 	

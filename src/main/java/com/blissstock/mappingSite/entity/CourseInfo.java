@@ -1,8 +1,9 @@
 package com.blissstock.mappingSite.entity;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,92 +11,99 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import org.springframework.format.annotation.DateTimeFormat;
-
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-@Getter
-@Setter
+import org.springframework.format.annotation.DateTimeFormat;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Data
+@Getter
+@Setter
 @Table(name = "course_info")
 public class CourseInfo {
-	
-	@Column(name = "course_id")
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Long courseId;
-	
-	@Column(name = "course_name", length = 100)
-	//@NotBlank(message="Please enter course name")
-	private String courseName;
 
-    @Column(name = "class_type", length = 20)
-	///@NotBlank(message="Please enter class type")
-	private String classType;
+  @Column(name = "course_id")
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long courseId;
 
-    @Column(name = "category", length = 100)
-	//@NotBlank(message="Please choose category")
-	private String category;
+  @Column(name = "course_name", length = 100)
+  //@NotBlank(message="Please enter course name")
+  private String courseName;
 
-    @Column(name = "level", length = 15)
-	//@NotBlank(message="Please choose course level")
-	private String level;
+  @Column(name = "class_type", length = 20)
+  ///@NotBlank(message="Please enter class type")
+  private String classType;
 
-    @Column(name = "about_course", length = 250)
-	//@NotBlank(message="Please enter about course")
-	private String aboutCourse;
-	
-	
-	@Column(name = "student_num", length = 20)
-	private int stuNum;
+  @Column(name = "category", length = 100)
+  //@NotBlank(message="Please choose category")
+  private String category;
 
-    //@NotNull
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@Column(name="start_date")
-	private Date startDate;
+  @Column(name = "level", length = 15)
+  //@NotBlank(message="Please choose course level")
+  private String level;
 
-    //@NotNull
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@Column(name="end_date")
-	private Date endDate;
+  @Column(name = "about_course", length = 250)
+  //@NotBlank(message="Please enter about course")
+  private String aboutCourse;
 
-    //@NotBlank(message="Please enter course fees")
-	@Column(name="course_fees")
-	private int fees;
-	
-    @Column(name= "isCourseApproved", nullable = false)
-	private boolean isCourseApproved = false;
+  @Column(name = "student_num", length = 20)
+  private int stuNum;
 
-	//mapping
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="courseInfo")
-	@JsonIgnore
-	private List<CourseTime> courseTime= new ArrayList<>();
+  //@NotNull
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
+  @Column(name = "start_date")
+  private Date startDate;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="courseInfo")
-	@JsonIgnore
-	private List<Syllabus> syllabus= new ArrayList<>();
+  //@NotNull
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
+  @Column(name = "end_date")
+  private Date endDate;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="courseInfo")
-	@JsonIgnore
-	private List<Test> test= new ArrayList<>();
+  //@NotBlank(message="Please enter course fees")
+  @Column(name = "course_fees")
+  private int fees;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="courseInfo")
-	@JsonIgnore
-	private List<JoinCourseUser> join= new ArrayList<>();
-  
+  @Column(name = "isCourseApproved", nullable = false)
+  private boolean isCourseApproved = false;
+
+  //mapping
+  @OneToMany(
+    fetch = FetchType.LAZY,
+    cascade = CascadeType.ALL,
+    mappedBy = "courseInfo"
+  )
+  @JsonIgnore
+  private List<CourseTime> courseTime = new ArrayList<>();
+
+  @OneToMany(
+    fetch = FetchType.LAZY,
+    cascade = CascadeType.ALL,
+    mappedBy = "courseInfo"
+  )
+  @JsonIgnore
+  private List<Syllabus> syllabus = new ArrayList<>();
+
+  @OneToMany(
+    fetch = FetchType.LAZY,
+    cascade = CascadeType.ALL,
+    mappedBy = "courseInfo"
+  )
+  @JsonIgnore
+  private List<Test> test = new ArrayList<>();
+
+  @OneToMany(
+    fetch = FetchType.LAZY,
+    cascade = CascadeType.ALL,
+    mappedBy = "courseInfo"
+  )
+  @JsonIgnore
+  private List<JoinCourseUser> join = new ArrayList<>();
 }
-
