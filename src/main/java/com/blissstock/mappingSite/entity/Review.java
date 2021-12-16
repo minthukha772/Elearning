@@ -42,6 +42,9 @@ public class Review {
     @Column(name = "star")
 	private int star=0;
 
+    @Column(name="review_type")
+	private int reviewType=0;
+
     //@NotBlank(message="Please fill feedback")
 	@Column(name="feedback")
 	private String feedback;
@@ -73,6 +76,7 @@ public class Review {
         Review review = new Review();
         review.reviewType= trReviewDTO.getReviewType();
         review.feedback= trReviewDTO.getFeedback();
+        review.reviewType= trReviewDTO.getReviewType();
         review.assignedDate=GregorianCalendar.getInstance().getTime();
         return review;
       }
