@@ -92,7 +92,7 @@ public class UserInfo implements Profile{
   //mapping
   @OneToOne(fetch = FetchType.EAGER)
   @MapsId
-  @JoinColumn(name = "id")
+  @JoinColumn(name = "account_id")
   UserAccount userAccount;
 
 /*   @OneToMany(

@@ -32,10 +32,6 @@ public class Review {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long reviewId;
-	
-    //@NotBlank(message="Please choose review type")
-    @Column(name = "review_type")
-	private int reviewType=0;
    
     // @Min(value = 1, message = "Please fill rating")
     // @Max(value = 5, message = "Please fill rating")
