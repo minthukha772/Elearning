@@ -104,7 +104,6 @@ public class ManageCertificateController {
               )
               .build()
               .toString();
-
             return new FileInfo(name, url);
           }
         )

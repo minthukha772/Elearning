@@ -39,7 +39,7 @@ public class Review {
 	private int star=0;
 
     @Column(name="review_type")
-	private int reviewType=0;
+	private int reviewType;
 
     //@NotBlank(message="Please fill feedback")
 	@Column(name="feedback")

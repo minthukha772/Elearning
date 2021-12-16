@@ -39,7 +39,7 @@ public class UserAccount {
 	@Column(name = "password", length = 64)
 	private String password;
   
-	@Column(name = "role", length = 15)
+	@Column(name = "role", length = 25)
 	private String role;
   
 	@Column(name = "account_status", length = 10)

@@ -25,6 +25,8 @@ import com.blissstock.mappingSite.repository.PaymentAccountRepository;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
 import com.blissstock.mappingSite.repository.UserRepository;
 import com.blissstock.mappingSite.service.StorageService;
+import com.blissstock.mappingSite.service.UserService;
+import com.blissstock.mappingSite.service.UserSessionService;
 import com.blissstock.mappingSite.utils.CheckUploadFileType;
 import com.blissstock.mappingSite.utils.FileNameGenerator;
 
@@ -44,6 +46,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
+
 
 @Controller
 public class ProfileController {
@@ -54,7 +58,12 @@ public class ProfileController {
 	public ProfileController(StorageService storageService) {
 		this.storageService = storageService;
 	}
-    
+    @Autowired
+    UserSessionService userSessionService;
+
+    @Autowired
+    UserService userService;
+
     @Autowired
     UserRepository userRepo;
 
@@ -69,8 +78,12 @@ public class ProfileController {
 
     //Get profile
     @Valid
-    @GetMapping(value="/{role}/profile/{userId}/{courseId}")
-    private String getProfile( @PathVariable Long userId,  @PathVariable Long courseId, @PathVariable String role, Model model) {  
+    @GetMapping(value={"/teacher/profile/{userId}/{courseId}",
+                      "/student/profile/{userId}/{courseId}",
+                      "/admin/profile/{userId}/{courseId}",
+  })
+    private String getProfile( @PathVariable Long userId,  @PathVariable Long courseId, Model model) {  
+        String role = userSessionService.getUserAccount().getRole();
         UserInfo userInfo=userRepo.findById(userId).orElse(null);
         model.addAttribute("userInfo", userInfo);
         model.addAttribute("role", role);
@@ -93,6 +106,7 @@ public class ProfileController {
 
         //load certificates
         List<FileInfo> fileInfos = loadImages(userId);
+        //System.out.println(fileInfos);
         model.addAttribute("files", fileInfos);
 
         //post action
@@ -198,7 +212,6 @@ public class ProfileController {
               )
               .build()
               .toString();
-
             return new FileInfo(name, url);
           }
         )

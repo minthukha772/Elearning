@@ -21,6 +21,8 @@ import com.blissstock.mappingSite.repository.ReviewRepository;
 import com.blissstock.mappingSite.repository.UserRepository;
 import com.blissstock.mappingSite.service.StudentReviewService;
 import com.blissstock.mappingSite.service.TeacherReviewService;
+import com.blissstock.mappingSite.service.UserService;
+import com.blissstock.mappingSite.service.UserSessionService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -39,12 +41,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 
 public class ReviewController {
-    @Autowired
-    UserRepository userRepo;
-    
-    @Autowired
-    CourseInfoRepository courseInfoRepo;
 
+    @Autowired
+    UserSessionService userSessionService;
+
+    @Autowired
+    UserService userService;
+    
     @Autowired
     JoinCourseUserRepository joinRepo;
 
@@ -58,17 +61,27 @@ public class ReviewController {
     TeacherReviewService trReviewService;
     //get student review 
     @Valid
-    @GetMapping(value="/student-review/{courseId}/{userId}")
-    private String getStudentReviewForm(@PathVariable Long courseId,@PathVariable Long userId, Model model) {  
-        StudentReviewDTO stuReview = new StudentReviewDTO();
-        model.addAttribute("review", stuReview);
-        model.addAttribute("postAction", "/update-student-review/"+courseId+"/"+userId);
-	    
+    @GetMapping(value={"/student/student-review/{courseId}","/admin/edit-student-review/{courseId}/{reviewId}"})
+    private String getStudentReviewForm(@PathVariable Long courseId,@PathVariable Long reviewId, Model model) {  
+        Long userId;
+        if(userSessionService.getRole() == UserRole.ADMIN){
+          Review review=reviewRepo.findById(reviewId).orElse(null);
+          JoinCourseUser joinCourseUser=review.getJoin();
+          userId=joinCourseUser.getUserInfo().getUid(); 
+          model.addAttribute("review", review);
+          model.addAttribute("postAction", "/admin/update-student-review/"+courseId+"/"+userId);    
+       }else{
+          StudentReviewDTO stuReview = new StudentReviewDTO();
+          userId = userSessionService.getUserAccount().getId();
+          model.addAttribute("review", stuReview);
+          model.addAttribute("postAction", "/student/update-student-review/"+courseId+"/"+userId);
+       }
+        
         return "CM0007_WriteReviewStudent";
 
 	}
 
-    @PostMapping(value="/update-student-review/{courseId}/{uid}")
+    @PostMapping(value={"/student/update-student-review/{courseId}/{userId}","/admin/update-student-review/{courseId}/{userId}"})
     private String postStudentReviewForm( @Valid @ModelAttribute("review") StudentReviewDTO stuReviewDTO, @PathVariable Long courseId, @PathVariable Long userId, BindingResult bindingResult, Model model, @RequestParam(value="action", required=true) String action) { 
         if(bindingResult.hasErrors()) {
 			return "CM0007_WriteReviewStudent";			
@@ -84,22 +97,22 @@ public class ReviewController {
         return "CM0007_WriteReviewStudent";
 	}
     
-    @Valid
-    @GetMapping(value="/edit-student-review/{reviewId}")
-    private String editStudentReviewForm(@PathVariable Long reviewId, Model model, final RedirectAttributes redirectAttributes) {  
-        Review review=reviewRepo.findById(reviewId).orElse(null);
-        model.addAttribute("review", review);
-	    return "CM0007_WriteReviewStudent";
-	}
+  //   @Valid
+  //   @GetMapping(value="/admin/edit-student-review/{reviewId}")
+  //   private String editStudentReviewForm(@PathVariable Long reviewId, Model model, final RedirectAttributes redirectAttributes) {  
+  //       Review review=reviewRepo.findById(reviewId).orElse(null);
+  //       model.addAttribute("review", review);
+	//     return "CM0007_WriteReviewStudent";
+	// }
     //get teacher review 
-    @GetMapping(value="/teacher-review/{courseId}/{userId}")
+    @GetMapping(value="/teacher/teacher-review/{courseId}/{userId}")
     private String getTeacherReviewForm(@PathVariable Long courseId, @PathVariable Long userId, Model model) {
         TeacherReviewDTO trReview = new TeacherReviewDTO();
         model.addAttribute("review", trReview);
-        model.addAttribute("postAction", "/update-teacher-review/"+courseId+"/"+userId);
+        model.addAttribute("postAction", "/teacher/update-teacher-review/"+courseId+"/"+userId);
 	    return "CM0007_WriteReviewTeacher";
 	}
-    @PostMapping(value="/update-teacher-review/{courseId}/{userId}")
+    @PostMapping(value="/teacher/update-teacher-review/{courseId}/{userId}")
     private String postTeacherReviewForm( @Valid @ModelAttribute("review") TeacherReviewDTO trReviewDTO, BindingResult bindingResult,@PathVariable Long courseId, @PathVariable Long userId, Model model, @RequestParam(value="action", required=true) String action) { 
         if(bindingResult.hasErrors()) {
 			return "CM0007_WriteReviewTeacher";			
@@ -125,7 +138,7 @@ public class ReviewController {
 
      //edit teacher review
      @Valid
-     @GetMapping(value="/edit-teacher-review/{reviewId}")
+     @GetMapping(value="/admin/edit-teacher-review/{reviewId}")
      private String editTeacherReviewForm(@PathVariable Long reviewId, Model model, final RedirectAttributes redirectAttributes) {  
          Review review=reviewRepo.findById(reviewId).orElse(null);
          model.addAttribute("review", review);

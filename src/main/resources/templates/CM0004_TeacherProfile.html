@@ -37,7 +37,7 @@
         <div class="card">
           <div class="card-header">Personal Information</div>
           <!-- Student view -->
-          <div class="card-body"  th:if="${role} == 'student'">
+          <div class="card-body" sec:authorize="hasAuthority('ROLE_STUDENT')">
             <div class="container">
              <div class="profile-pic-wrapper mb-3">
                 <div class="pic-holder">
@@ -88,7 +88,7 @@
               </div>
 
           <!-- Teacher view -->
-          <div class="card-body"  th:if="${role} == 'teacher'">
+          <div class="card-body" sec:authorize="hasAuthority('ROLE_TEACHER')">
             <input type="hidden" th:field="*{uid}">
             <div class="container">
              <div class="profile-pic-wrapper mb-3">
@@ -273,7 +273,7 @@
               </div>
             </div>
           <!-- Admin view -->
-          <div class="card-body"  th:if="${role} == 'admin' or ${role} == 'super_admin'">
+          <div class="card-body"  sec:authorize="hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SUPER_ADMIN')">
             <div class="container">
              <div class="profile-pic-wrapper mb-3">
                 <div class="pic-holder">
