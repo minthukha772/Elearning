@@ -33,7 +33,7 @@ import lombok.Setter;
 @Setter
 @Data
 @EqualsAndHashCode(callSuper = true)
-//@PasswordMatch
+@PasswordMatch
 // @PasswordMatch only work with PasswordData classees
 public class UserRegisterDTO extends PasswordData implements Confirmable {
 

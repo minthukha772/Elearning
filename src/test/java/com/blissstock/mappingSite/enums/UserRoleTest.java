@@ -10,40 +10,40 @@ public class UserRoleTest {
   @Test
   @Tag("SuperAdmin")
   public void superAdminTest() {
-    assertThat(UserRole.SUPER_ADMIN.getValue()).isEqualTo("super admin");
+    assertThat(UserRole.SUPER_ADMIN.getValue()).isEqualTo("ROLE_SUPER_ADMIN");
   }
 
   @Test
   @Tag("Admin")
   public void adminTest() {
-    assertThat(UserRole.ADMIN.getValue()).isEqualTo("admin");
+    assertThat(UserRole.ADMIN.getValue()).isEqualTo("ROLE_ADMIN");
   }
 
   @Test
   @Tag("Student")
   public void studentTest() {
-    assertThat(UserRole.STUDENT.getValue()).isEqualTo("student");
+    assertThat(UserRole.STUDENT.getValue()).isEqualTo("ROLE_STUDENT");
   }
 
   @Test
   @Tag("Teacher")
   public void teacherTest() {
-    assertThat(UserRole.TEACHER.getValue()).isEqualTo("teacher");
+    assertThat(UserRole.TEACHER.getValue()).isEqualTo("ROLE_TEACHER");
   }
 
   @Test
   @Tag("StrToUser")
   public void strToUserTest() {
     assertThat(UserRole.SUPER_ADMIN)
-      .isEqualTo(UserRole.strToUserRole("super admin"));
-    assertThat(UserRole.ADMIN).isEqualTo(UserRole.strToUserRole("admin"));
-    assertThat(UserRole.TEACHER).isEqualTo(UserRole.strToUserRole("teacher"));
-    assertThat(UserRole.STUDENT).isEqualTo(UserRole.strToUserRole("student"));
+      .isEqualTo(UserRole.strToUserRole("ROLE_SUPER_ADMIN"));
+    assertThat(UserRole.ADMIN).isEqualTo(UserRole.strToUserRole("ROLE_ADMIN"));
+    assertThat(UserRole.TEACHER).isEqualTo(UserRole.strToUserRole("ROLE_TEACHER"));
+    assertThat(UserRole.STUDENT).isEqualTo(UserRole.strToUserRole("ROLE_STUDENT"));
     assertThat(UserRole.GUEST_USER)
-      .isEqualTo(UserRole.strToUserRole("guest user"));
+      .isEqualTo(UserRole.strToUserRole("ROLE_GUEST_USER"));
     assertThat(UserRole.GUEST_USER)
-      .isEqualTo(UserRole.strToUserRole("guest user"));
+      .isEqualTo(UserRole.strToUserRole("ROLE_GUEST_USER"));
     assertThat(UserRole.GUEST_USER)
-      .isEqualTo(UserRole.strToUserRole("guest user"));
+      .isEqualTo(UserRole.strToUserRole("ROLE_GUEST_USER"));
   }
 }
