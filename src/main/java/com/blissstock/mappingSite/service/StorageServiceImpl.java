@@ -55,69 +55,76 @@ public class StorageServiceImpl implements StorageService {
   }
 
   @Override
-	public void storeProfile(MultipartFile file,String fileName) {
-		try {
-			if (file.isEmpty()) {
-				throw new StorageException("Failed to store empty file " + fileName);
-			}
-			if (fileName.contains("..")) {
-				// This is a security check
-				throw new StorageException(
-						"Cannot store file with relative path outside current directory "
-								+ fileName);
-			}
-			try (InputStream inputStream = file.getInputStream()) {
-				Files.copy(inputStream, this.profilepath.resolve(fileName),
-					StandardCopyOption.REPLACE_EXISTING);
-			}
-		}
-		catch (IOException e) {
-			throw new StorageException("Failed to store file " + fileName, e);
-		}
-	}
-
-  @Override 
-  public Path loadProfile(String filename) { 
-    
-    return profilepath.resolve(filename); 
+  public void storeProfile(MultipartFile file, String fileName) {
+    try {
+      if (file.isEmpty()) {
+        throw new StorageException("Failed to store empty file " + fileName);
+      }
+      if (fileName.contains("..")) {
+        // This is a security check
+        throw new StorageException(
+          "Cannot store file with relative path outside current directory " +
+          fileName
+        );
+      }
+      try (InputStream inputStream = file.getInputStream()) {
+        Files.copy(
+          inputStream,
+          this.profilepath.resolve(fileName),
+          StandardCopyOption.REPLACE_EXISTING
+        );
+      }
+    } catch (IOException e) {
+      throw new StorageException("Failed to store file " + fileName, e);
+    }
   }
-	  
-	  @Override public Resource loadAsResource(String filename) { 
-      try { 
-        Path file = loadProfile(filename); Resource resource = new UrlResource(file.toUri()); 
-        if(resource.exists() || resource.isReadable()) { 
-          return resource; 
-        } else {
-	      
-          throw new StorageFileNotFoundException( "Could not read file: " + filename);
-	      } 
-      } catch (MalformedURLException e) { 
-        throw new StorageFileNotFoundException("Could not read file: " + filename, e); 
-      } 
-    }
 
-    @Override
-    public Resource loadCertificate(Long uid, String filename)
-      throws UnauthorizedFileAccessException {
-      if (!checkAuthForTeacher(uid)) {
-        throw new UnauthorizedFileAccessException();
+  @Override
+  public Path loadProfile(String filename) {
+    return profilepath.resolve(filename);
+  }
+
+  @Override
+  public Resource loadAsResource(String filename) {
+    try {
+      Path file = loadProfile(filename);
+      Resource resource = new UrlResource(file.toUri());
+      if (resource.exists() || resource.isReadable()) {
+        return resource;
+      } else {
+        throw new StorageFileNotFoundException(
+          "Could not read file: " + filename
+        );
       }
-      Path storeLocation = Paths.get(certificatePath + File.separator + uid);
-      try {
-        Path file = storeLocation.resolve(filename);
-        Resource resource = new UrlResource(file.toUri());
-  
-        if (resource.exists() || resource.isReadable()) {
-          return resource;
-        } else {
-          throw new RuntimeException("Could not read the file!");
-        }
-      } catch (MalformedURLException e) {
-        throw new RuntimeException("Error: " + e.getMessage());
-      }
+    } catch (MalformedURLException e) {
+      throw new StorageFileNotFoundException(
+        "Could not read file: " + filename,
+        e
+      );
     }
-  
-   
+  }
+
+  @Override
+  public Resource loadCertificate(Long uid, String filename)
+    throws UnauthorizedFileAccessException {
+    if (!checkAuthForTeacher(uid)) {
+      throw new UnauthorizedFileAccessException();
+    }
+    Path storeLocation = Paths.get(certificatePath + File.separator + uid);
+    try {
+      Path file = storeLocation.resolve(filename);
+      Resource resource = new UrlResource(file.toUri());
+
+      if (resource.exists() || resource.isReadable()) {
+        return resource;
+      } else {
+        throw new RuntimeException("Could not read the file!");
+      }
+    } catch (MalformedURLException e) {
+      throw new RuntimeException("Error: " + e.getMessage());
+    }
+  }
+
   @Override
   public void storeCertificates(Long uid, MultipartFile[] files)
     throws UnauthorizedFileAccessException {
@@ -185,8 +192,6 @@ public class StorageServiceImpl implements StorageService {
     }
   }
 
-
-    
   public void deleteCertificate(Long uid, String filename)
     throws IOException, UnauthorizedFileAccessException {
     if (!checkAuthForTeacher(uid)) {
@@ -217,23 +222,5 @@ public class StorageServiceImpl implements StorageService {
       return false;
     }
     return true;
-  }
-
-  @Override
-  public void storeProfile(MultipartFile file, String fileName) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public Path loadProfile(String filename) {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public Resource loadAsResource(String filename) {
-    // TODO Auto-generated method stub
-    return null;
   }
 }

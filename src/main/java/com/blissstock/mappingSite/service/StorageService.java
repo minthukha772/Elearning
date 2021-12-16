@@ -1,11 +1,9 @@
 package com.blissstock.mappingSite.service;
 
+import com.blissstock.mappingSite.exceptions.UnauthorizedFileAccessException;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.stream.Stream;
-
-import com.blissstock.mappingSite.exceptions.UnauthorizedFileAccessException;
-
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,4 +25,8 @@ public interface StorageService {
     throws IOException, UnauthorizedFileAccessException;
 
   public boolean checkAuthForTeacher(Long uid);
+
+  public Path loadProfile(String filename);
+
+  public void storeProfile(MultipartFile file, String fileName);
 }

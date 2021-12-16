@@ -1,4 +1,4 @@
-package com.blissstock.mappingSite.controller;
+/* package com.blissstock.mappingSite.controller;
 
 import javax.validation.Valid;
 
@@ -158,3 +158,4 @@ public class ReviewController {
     return "CM0007_WriteReviewTeacher";
   }
 }
+ */
