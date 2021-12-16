@@ -33,6 +33,7 @@ public class FileController {
       .body(file);
   }
 
+
   @Autowired
   UserSessionService userSessionService;
 
@@ -42,7 +43,6 @@ public class FileController {
     @PathVariable Long uid,
     @PathVariable String filename
   ) {
-    
     System.out.println(filename);
     Resource file;
     try {
@@ -53,7 +53,7 @@ public class FileController {
     }
     return ResponseEntity
       .ok()
-/*       .header(
+      /*       .header(
         HttpHeaders.CONTENT_DISPOSITION,
         "attachment; filename=\"" + file.getFilename() + "\""
       ) */

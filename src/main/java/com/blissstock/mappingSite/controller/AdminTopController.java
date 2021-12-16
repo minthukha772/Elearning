@@ -58,7 +58,7 @@ public class AdminTopController {
         UserInfo userInfo=userRepo.findById(userId).orElse(null);
         UserAccount userAcc = userInfo.getUserAccount();
          //load profile picture
-         if(userInfo.getPhoto()==null){
+         if(userAcc.getPhoto()==null){
           String photoString=null;
           model.addAttribute("pic64", photoString);
         }
@@ -71,13 +71,13 @@ public class AdminTopController {
         // model.addAttribute("trInfo", userInfo.toMapTeacher());
         // List<FileInfo> fileInfos = loadImages();
         // model.addAttribute("files", fileInfos);
-        model.addAttribute("postAction","/"+role+"/top/update/"+userId);;
+        model.addAttribute("postAction","/top/update/"+userId);;
             return "AD0001_AdminTop";
     }
     private FileInfo loadProfile(long userId) {
       try {
-          UserInfo userInfo=userRepo.findById(userId).orElse(null);
-          Path path= storageService.loadProfile(userInfo.getPhoto());
+          UserAccount userAcc=userAccRepo.findById(userId).orElse(null);
+          Path path= storageService.loadProfile(userAcc.getPhoto());
           String name = path.getFileName().toString();
           String url = MvcUriComponentsBuilder
             .fromMethodName(
@@ -94,7 +94,7 @@ public class AdminTopController {
       }
   }
 
-  @PostMapping(value= "/{role}/top/update/{userId}")
+  @PostMapping(value= "{role}/top/update/{userId}")
   private String postProfile(Model model,
     @RequestParam("profile_pic") MultipartFile photo, 
     @RequestParam(value="action", required=true) String action,
@@ -114,8 +114,8 @@ public class AdminTopController {
         storageService.storeProfile(photo,saveFileName);
 
         //insert photo 
-        userInfo.setPhoto(saveFileName);
-        userRepo.save(userInfo);
+        acc.setPhoto(saveFileName);
+        userAccRepo.save(acc);
       }else {
         model.addAttribute("photoTypeErr", "Files other than image file cannot be uploaded.");
         return "CM0004_TeacherProfile";

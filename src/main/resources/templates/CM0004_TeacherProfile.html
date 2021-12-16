@@ -27,12 +27,22 @@
               >Email</a
             >
           </li>
+<<<<<<< HEAD
           <li class="breadcrumb-item active">Profile</li>
+=======
+          <li class="breadcrumb-item active">Registration</li>
+          <li class="breadcrumb-item" aria-current="page">Confirmation</li>
+          <li class="breadcrumb-item" aria-current="page">Completion</li>
+>>>>>>> main
         </ol>
       </nav>
     </div>
 
     <form id="trProfileForm" th:object="${userInfo}" method="post" th:action="@{${profilePost}}" enctype="multipart/form-data">
+<<<<<<< HEAD
+=======
+
+>>>>>>> main
       <div class="container-custom">
         <div class="card">
           <div class="card-header">Personal Information</div>
@@ -81,19 +91,28 @@
                       </div>
                     </div>
                   </div>
+<<<<<<< HEAD
                 </div></br>
                 <div class="d-flex justify-content-center">
+=======
+                </div>
+                <div class="row justify-content-between">
+>>>>>>> main
                   <button class="btn btn-primary col-auto" id="courses" type="button">Courses</button>
                 </div>
               </div>
 
           <!-- Teacher view -->
           <div class="card-body"  th:if="${role} == 'teacher'">
+<<<<<<< HEAD
             <input type="hidden" th:field="*{uid}">
+=======
+>>>>>>> main
             <div class="container">
              <div class="profile-pic-wrapper mb-3">
                 <div class="pic-holder">
                   <div class="d-flex justify-content-center">
+<<<<<<< HEAD
                     <label for="newProfilePhoto" class="upload-file-block">
                       <div class="text-center">
                         <div class="mb-2">
@@ -106,6 +125,9 @@
                     </label>
                   </div>
                   <div class="d-flex justify-content-center">
+=======
+                  <!-- <img id="profilePic" class="pic" th:if="${pic64 == null}" th:src="${imagePath}" /> -->
+>>>>>>> main
                   <img id="profilePic" class="pic img-thumbnail profile_img" th:src="${profile.url}"  th:alt="${profile.name}" />
                   </div>
                   <div class="d-flex justify-content-center">
@@ -119,6 +141,7 @@
                     th:src="${profile.url}"
                     th:alt="${profile.name}"
                   />
+<<<<<<< HEAD
                   
                   </div><br>
                   <div class="d-flex justify-content-center">
@@ -126,6 +149,18 @@
                     Save Photo
                   </button>
                 </div>
+=======
+                  <label for="newProfilePhoto" class="upload-file-block">
+                    <div class="text-center">
+                      <div class="mb-2">
+                        <i class="fa fa-camera fa-2x"></i>
+                      </div>
+                      <button class="text-uppercase btn btn-outline-dark" type="button" name="action" value="submit"> Upload Profile Photo</button>
+                      </div>
+                    </div>
+                  </label>
+                  </div>
+>>>>>>> main
                 </div>
               </div>
     
@@ -133,6 +168,12 @@
 
               <div id="profile">
                 <div class="table-responsive mb-3">
+<<<<<<< HEAD
+=======
+                  <!-- <div class="d-flex justify-content-center">
+                    <img th:src="@{${imagePath}}" class="profile_img">
+                  </div> -->
+>>>>>>> main
                   <table class="table table-borderless table-hover">
                     <tr th:each="entry, stats : ${trInfo}">
                       <td th:text="${entry.key}" class="text-end">100</td>
@@ -162,8 +203,21 @@
                                 <label class="form-label" for="primaryServiceName"
                                 >Service</label
                                 >
+<<<<<<< HEAD
                                 <select class="form-select"  th:field="*{paymentAccount[__${0}__].checkedBank}">
                                   <option th:each="bank : ${bankList}" th:value="${bank.bankId}" th:text="${bank.bankName}" ></option>
+=======
+                                <select
+                                  class="form-select"
+                                  
+                                >
+                                  <option>Kpay</option>
+                                  <option>CBpay</option>
+                                  <option>Wave</option>
+                                  <option>KBZ</option>
+                                  <option>CB</option>
+                                  <option>AYA</option>
+>>>>>>> main
                                 </select>
                               </div>
                               
@@ -202,8 +256,20 @@
                                 <label class="form-label" for="secondaryServiceName"
                                   >Service</label
                                 >
+<<<<<<< HEAD
                                 <select class="form-select" th:field="*{paymentAccount[__${1}__].checkedBank}">
                                   <option th:each="bank : ${bankList}" th:value="${bank.bankId}" th:text="${bank.bankName}" ></option>
+=======
+                                <select
+                                  class="form-select"
+                                >
+                                  <option>Kpay</option>
+                                  <option>CBpay</option>
+                                  <option>Wave</option>
+                                  <option>KBZ</option>
+                                  <option>CB</option>
+                                  <option>AYA</option>
+>>>>>>> main
                                 </select>
                               </div>
           
@@ -272,12 +338,19 @@
                 </div>
               </div>
             </div>
+<<<<<<< HEAD
           <!-- Admin view -->
           <div class="card-body"  th:if="${role} == 'admin' or ${role} == 'super_admin'">
+=======
+
+          <!-- Admin view -->
+          <div class="card-body"  th:if="${role} == 'admin' or ${role} == 'super admin'">
+>>>>>>> main
             <div class="container">
              <div class="profile-pic-wrapper mb-3">
                 <div class="pic-holder">
                   <div class="d-flex justify-content-center">
+<<<<<<< HEAD
                     <label for="newProfilePhoto" class="upload-file-block">
                       <div class="text-center">
                         <div class="mb-2">
@@ -290,6 +363,9 @@
                     </label>
                   </div>
                   <div class="d-flex justify-content-center">
+=======
+                  <!-- <img id="profilePic" class="pic" th:if="${pic64 == null}" th:src="${imagePath}" /> -->
+>>>>>>> main
                   <img id="profilePic" class="pic img-thumbnail profile_img" th:src="${profile.url}"  th:alt="${profile.name}" />
                   </div>
                   <div class="d-flex justify-content-center">
@@ -303,6 +379,7 @@
                     th:src="${profile.url}"
                     th:alt="${profile.name}"
                   />
+<<<<<<< HEAD
                   
                   </div><br>
                   <div class="d-flex justify-content-center">
@@ -310,6 +387,19 @@
                     Save Photo
                   </button>
                 </div>
+=======
+                  <label for="newProfilePhoto" class="upload-file-block">
+                    <div class="text-center">
+                      <div class="mb-2">
+                        <i class="fa fa-camera fa-2x"></i>
+                      </div>
+                      <div class="text-uppercase" style="color: blue;">
+                        Upload Profile Photo
+                      </div>
+                    </div>
+                  </label>
+                  </div>
+>>>>>>> main
                 </div>
               </div>
     
@@ -349,8 +439,21 @@
                                 <label class="form-label" for="primaryServiceName"
                                 >Service</label
                                 >
+<<<<<<< HEAD
                                 <select class="form-select"  th:field="*{paymentAccount[__${0}__].checkedBank}">
                                   <option th:each="bank : ${bankList}" th:value="${bank.bankId}" th:text="${bank.bankName}" ></option>
+=======
+                                <select
+                                  class="form-select"
+                                  
+                                >
+                                  <option>Kpay</option>
+                                  <option>CBpay</option>
+                                  <option>Wave</option>
+                                  <option>KBZ</option>
+                                  <option>CB</option>
+                                  <option>AYA</option>
+>>>>>>> main
                                 </select>
                               </div>
                               
@@ -389,8 +492,20 @@
                                 <label class="form-label" for="secondaryServiceName"
                                   >Service</label
                                 >
+<<<<<<< HEAD
                                 <select class="form-select"  th:field="*{paymentAccount[__${1}__].checkedBank}">
                                   <option th:each="bank : ${bankList}" th:value="${bank.bankId}" th:text="${bank.bankName}" ></option>
+=======
+                                <select
+                                  class="form-select"
+                                >
+                                  <option>Kpay</option>
+                                  <option>CBpay</option>
+                                  <option>Wave</option>
+                                  <option>KBZ</option>
+                                  <option>CB</option>
+                                  <option>AYA</option>
+>>>>>>> main
                                 </select>
                               </div>
           
@@ -456,15 +571,26 @@
                     Edit 
                   </button>
                   <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+<<<<<<< HEAD
                     <li><a class="dropdown-item" href="#" id="editButton" name="action" value="next">Edit Profile</a></li>
+=======
+                    <li><a class="dropdown-item" href="#" id="editButton" name="action" value="edit">Edit Profile</a></li>
+>>>>>>> main
                     <li><a class="dropdown-item" href="#"  name="action" value="delete">Delete Account</a></li>
                     <li><a class="dropdown-item" href="#" name="action" value="blacklist">Blacklist</a></li>
                   </ul>
                 </div>
               </div>
+<<<<<<< HEAD
           </div>
 
 
+=======
+            </div>
+
+         
+    </div>
+>>>>>>> main
         </div>
         <!---End of Card-->
       </div>

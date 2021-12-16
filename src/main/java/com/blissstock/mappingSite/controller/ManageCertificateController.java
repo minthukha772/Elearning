@@ -146,7 +146,7 @@ public class ManageCertificateController {
     if (role == UserRole.ADMIN || role == UserRole.SUPER_ADMIN) {
       uid = id;
     } else if (role == UserRole.TEACHER) {
-      uid = userSessionService.getUserAccount().getId();
+      uid = userSessionService.getUserAccount().getAccountId();
     } else {
       throw new RuntimeException("user authetication fail");
     }

@@ -1,0 +1,51 @@
+body {
+    background-color: #efefef;
+}
+
+.card-position {
+    margin-top: 5%;
+}
+
+.left {
+    padding: 3% 0 3% 3%;
+    background-color: #DAE8EF;
+ 
+}
+
+.right {
+    padding: 3%;
+    background-color: #fff;
+    line-height: 50px;
+}
+
+option {
+    background-color: grey;
+}
+
+.second-section {
+    background-color: #fff;
+    margin-top: 3%;
+    padding: 3%;
+}
+
+.third-section {
+    background-color: #000;
+    color: #fff;
+    margin-top: 3%;
+    padding: 2% 3% 2% 3%;
+    text-align: center;
+}
+
+.forth-section {
+    background-color: #fff;
+    padding: 3%;
+    height: 500px;
+}
+
+table {
+    width: 100%;
+}
+
+th {
+    font-size: 20px;
+}

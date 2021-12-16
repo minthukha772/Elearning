@@ -1,22 +1,11 @@
 package com.blissstock.mappingSite.entity;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -37,21 +26,27 @@ public class CourseTime {
     @NotBlank(message="Please choose days")
 	private String courseDays;
 
-    @Column(name = "course_start_time", columnDefinition= "TIMESTAMP WITH TIME ZONE")
+    @Column(name = "course_start_time")
     @NotNull
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date courseStartTime;
+    // @Temporal(TemporalType.TIMESTAMP)
+    private String courseStartTime;
 
-    @Column(name = "course_end_time", columnDefinition= "TIMESTAMP WITH TIME ZONE")
+    @Column(name = "course_end_time")
     @NotNull
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date courseEndTime;
+    // @Temporal(TemporalType.TIMESTAMP)
+    private String courseEndTime;
 	
 	//mapping
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "courseId_fkey")
     @JsonIgnore
     private CourseInfo courseInfo;
+    
+    public CourseTime(String courseDays, String courseStartTime, String courseEndTime){
+    	this.courseDays = courseDays;
+    	this.courseStartTime = courseStartTime;
+    	this.courseEndTime = courseEndTime;
+    }
 	
 }
 

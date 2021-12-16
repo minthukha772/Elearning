@@ -16,9 +16,11 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
@@ -121,7 +123,7 @@ public class StorageServiceImpl implements StorageService {
     throws UnauthorizedFileAccessException {
     //Checking Content Type
     if (!checkAuthForTeacher(uid)) {
-      System.out.println("User "+uid+" is uploding certificates");
+      System.out.println("User " + uid + " is uploding certificates");
       throw new UnauthorizedFileAccessException();
     }
     ImageFileValidator fileValidator = new ImageFileValidator();
@@ -187,14 +189,13 @@ public class StorageServiceImpl implements StorageService {
     
   public void deleteCertificate(Long uid, String filename)
     throws IOException, UnauthorizedFileAccessException {
-
     if (!checkAuthForTeacher(uid)) {
       throw new UnauthorizedFileAccessException();
     }
     Path storeLocation = Paths.get(certificatePath + File.separator + uid);
     Path file = storeLocation.resolve(filename);
     Files.delete(file);
-    System.out.println(filename+" is deleted");
+    System.out.println(filename + " is deleted");
   }
 
   @Override
@@ -211,13 +212,28 @@ public class StorageServiceImpl implements StorageService {
       //
       return false;
     }
-    if (
-      userRole == UserRole.TEACHER &&
-      userAccount.getId() != uid
-    ) {
+    if (userRole == UserRole.TEACHER && userAccount.getAccountId() != uid) {
       // This condition is to make sure, teacher is not accessing other teacher resources.
       return false;
     }
     return true;
+  }
+
+  @Override
+  public void storeProfile(MultipartFile file, String fileName) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public Path loadProfile(String filename) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public Resource loadAsResource(String filename) {
+    // TODO Auto-generated method stub
+    return null;
   }
 }

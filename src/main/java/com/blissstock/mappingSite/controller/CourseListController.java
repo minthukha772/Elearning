@@ -1,4 +1,4 @@
-/* package com.blissstock.mappingSite.controller;
+package com.blissstock.mappingSite.controller;
 
 import org.checkerframework.checker.guieffect.qual.UI;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +26,8 @@ import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.repository.CourseRepository;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
-import com.blissstock.mappingSite.repository.UserInfoRepository;
-import com.blissstock.mappingSite.service.CourseListService;
+import com.blissstock.mappingSite.repository.UserInfoRepositoryTwo;
+
 
 
 
@@ -39,13 +39,10 @@ public class CourseListController {
     private CourseRepository courseRepo;
 
     @Autowired
-    private CourseListService courseListService;
-
-    @Autowired
     private UserAccountRepository userAccountRepo;
 
     @Autowired
-    private UserInfoRepository userInfoRepo;
+    private UserInfoRepositoryTwo userInfoRepo;
     
     @RequestMapping("/guest-course-list")
     private String getCourseListGuest(Model model){
@@ -80,7 +77,11 @@ public class CourseListController {
     }
 
     @RequestMapping("/teacher-course-list")
-    private String getCourseListTeacher(){
+    private String getCourseListTeacher(@RequestParam("tId") Long tId, Model model){
+        UserInfo userInfo = userInfoRepo.findById(tId).get();
+        List<CourseInfo> courseList = userInfo.getCourseInfo();
+        model.addAttribute("userInfo", userInfo);
+        model.addAttribute("courseList", courseList);
         return "CM0002_CourseListTeacher";
     }
 
@@ -429,10 +430,11 @@ public class CourseListController {
 
     @PostMapping("/userAndCourse")
     private String userAndCourse(@ModelAttribute("uid") Long uid, @ModelAttribute("courseId") Long courseId){
-        List<CourseInfo> courseInfoList = new ArrayList<>();
-        List<UserInfo> userInfoList = new ArrayList<>();
+        
         CourseInfo courseInfo = courseRepo.findById(courseId).get();
         UserInfo userInfo = userInfoRepo.findById(uid).get();
+        List<CourseInfo> courseInfoList = userInfo.getCourseInfo();
+        List<UserInfo> userInfoList = courseInfo.getUserInfo();
         courseInfoList.add(courseInfo);
         userInfoList.add(userInfo);
         userInfo.setCourseInfo(courseInfoList);
@@ -565,5 +567,31 @@ public class CourseListController {
         
         return "helloworld";
     }
+
+    @GetMapping("/guest-course-details")
+    private String courseDetails(@RequestParam("cid") Long cid, Model model){
+        CourseInfo courseInfo = courseRepo.findById(cid).get();
+        List<CourseTime> courseTimeList = courseInfo.getCourseTime();
+        List<UserAccount> userAccountList = userAccountRepo.findByRole("teacher");
+        List<UserInfo> userInfoList = new ArrayList<>();
+        for(UserAccount userAccount : userAccountList){
+            UserInfo userInfo = userInfoRepo.findByUserAccount(userAccount);
+            userInfoList.add(userInfo);
+        }
+        model.addAttribute("courseInfo", courseInfo);
+        model.addAttribute("courseTimeList", courseTimeList);
+        model.addAttribute("userInfoList", userInfoList);
+        return "CM0003_CourseDetails";
+    }
+
+    @GetMapping("/teacher-course-details")
+    private String teacherCourseDetails(){
+        return "CM0003_CourseDetailsTeacher";
+    }
+
+    @GetMapping("/admin-course-details")
+    private String adminCourseDetails(){
+        return "CM0003_CourseDetailsAdmin";
+    }
+
 }
- */
