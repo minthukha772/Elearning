@@ -53,8 +53,8 @@ public class AdminTopController {
     @Autowired
     UserAccountRepository userAccRepo;
 
-    @GetMapping(value="{role}/top/{userId}")
-    private String getAdminTopScreen( @PathVariable String role, @PathVariable Long userId, Model model) {  
+    @GetMapping(value="admin/top/{userId}")
+    private String getAdminTopScreen( @PathVariable Long userId, Model model) {  
         UserInfo userInfo=userRepo.findById(userId).orElse(null);
         UserAccount userAcc = userInfo.getUserAccount();
          //load profile picture
@@ -71,7 +71,7 @@ public class AdminTopController {
         // model.addAttribute("trInfo", userInfo.toMapTeacher());
         // List<FileInfo> fileInfos = loadImages();
         // model.addAttribute("files", fileInfos);
-        model.addAttribute("postAction","/"+role+"/top/update/"+userId);;
+        model.addAttribute("postAction","/admin/top/update/"+userId);;
             return "AD0001_AdminTop";
     }
     private FileInfo loadProfile(long userId) {
@@ -94,7 +94,7 @@ public class AdminTopController {
       }
   }
 
-  @PostMapping(value= "/{role}/top/update/{userId}")
+  @PostMapping(value= "/admin/top/update/{userId}")
   private String postProfile(Model model,
     @RequestParam("profile_pic") MultipartFile photo, 
     @RequestParam(value="action", required=true) String action,
