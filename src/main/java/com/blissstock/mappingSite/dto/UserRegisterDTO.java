@@ -10,14 +10,17 @@ import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import com.blissstock.mappingSite.entity.UserAccount;
+import com.blissstock.mappingSite.entity.UserInfo;
+import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.interfaces.Confirmable;
+import com.blissstock.mappingSite.interfaces.Profile;
 import com.blissstock.mappingSite.utils.DateFormatter;
 import com.blissstock.mappingSite.validation.ConstrainMessage;
 import com.blissstock.mappingSite.validation.constrains.PasswordData;
 import com.blissstock.mappingSite.validation.constrains.PasswordMatch;
 import com.blissstock.mappingSite.validation.constrains.ValidEmail;
 
-// import org.hibernate.boot.model.relational.Database;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Data;
@@ -29,10 +32,10 @@ import lombok.Setter;
 @Setter
 @Data
 @EqualsAndHashCode(callSuper = true)
-@PasswordMatch
+//@PasswordMatch
 // @PasswordMatch only work with PasswordData classees
 public class UserRegisterDTO extends PasswordData implements Confirmable {
-    
+
   
 
   @ValidEmail
@@ -83,8 +86,8 @@ public class UserRegisterDTO extends PasswordData implements Confirmable {
   @AssertTrue(message = ConstrainMessage.TERM_CONSTRAIN_MESSAGE)
   private boolean acceptTerm;
 
-@Override
-public LinkedHashMap<String, String> toMap() {
+  @Override
+  public LinkedHashMap<String, String> toMap() {
     LinkedHashMap<String, String> map = new LinkedHashMap<>();
     map.put("Email", this.email);
     map.put("Name", this.name);
@@ -97,12 +100,84 @@ public LinkedHashMap<String, String> toMap() {
     map.put("Address", this.address);
     map.put("Education", this.education);
     return map;
-}
+  }
 
+  //This Funcation has side use with
+  public static UserInfo toUserInfo(
+    UserRegisterDTO userRegisterDTO,
+    UserInfo userInfo
+  ) {
+    userInfo.setUserName(userRegisterDTO.getName());
+    userInfo.setPhoneNo(userRegisterDTO.getPhone());
+    userInfo.setGender(userRegisterDTO.getGender());
+    userInfo.setBirthDate(userRegisterDTO.getDob());
+    userInfo.setPostalCode(userRegisterDTO.getZipCode() + "");
+    userInfo.setCity(userRegisterDTO.getCity());
+    userInfo.setDivision(userRegisterDTO.getDivision());
+    userInfo.setAddress(userRegisterDTO.getAddress());
+    userInfo.setEducation(userRegisterDTO.getEducation());
+
+    if (userRegisterDTO instanceof TeacherRegisterDTO) {
+      TeacherRegisterDTO teacherRegisterDTO = (TeacherRegisterDTO) userRegisterDTO;
+      userInfo.setNrc(teacherRegisterDTO.getNrc());
+      userInfo.setSelfDescription(teacherRegisterDTO.getSelfDescription());
+    }
+
+    return userInfo;
+  }
+
+  public static UserInfo toUserInfo(UserRegisterDTO userRegisterDTO) {
+    return toUserInfo(userRegisterDTO, new UserInfo());
+  }
+
+  public static UserRegisterDTO fromUserInfo(UserInfo userInfo) {
+    TeacherRegisterDTO registerDTO = new TeacherRegisterDTO();
+    registerDTO.setEmail(userInfo.getUserAccount().getMail());
+    registerDTO.setName(userInfo.getUserName());
+    registerDTO.setPhone(userInfo.getPhoneNo());
+    registerDTO.setPhone(userInfo.getPhoneNo());
+    registerDTO.setGender(userInfo.getGender());
+    registerDTO.setDob(userInfo.getBirthDate());
+    registerDTO.setZipCode(Integer.parseInt(userInfo.getPostalCode()));
+    registerDTO.setCity(userInfo.getCity());
+    registerDTO.setDivision(userInfo.getDivision());
+    registerDTO.setAddress(userInfo.getAddress());
+    registerDTO.setEducation(userInfo.getEducation());
+    registerDTO.setNrc(userInfo.getNrc());
+    registerDTO.setSelfDescription(userInfo.getSelfDescription());
+
+    return registerDTO;
+  }
+
+  public static UserAccount toUserAccount(
+    UserRegisterDTO userRegisterDTO,
+    Date registeredDate
+  ) {
+    UserAccount userAccount = new UserAccount();
+    userAccount.setMail(userRegisterDTO.getEmail());
+    userAccount.setPassword(userRegisterDTO.getPassword());
+    userAccount.setRole(
+      userRegisterDTO instanceof TeacherRegisterDTO
+        ? UserRole.TEACHER.getValue()
+        : UserRole.STUDENT.getValue()
+    );
+    if (registeredDate != null) {
+      userAccount.setRegisteredDate(registeredDate);
+    }
+
+    return userAccount;
+  }
+
+  public static UserAccount toUserAccount(
+    UserRegisterDTO userRegisterDTO
+  ) {
+    return toUserAccount(userRegisterDTO,null);
+  }
+
+  //Constructors
 
   public UserRegisterDTO() {
   }
-
 
   public UserRegisterDTO(String email, String name, String password, String confirmPassword, String gender, String phone, Date dob, int zipCode, String city, String division, String address, String education, boolean acceptTerm) {
     this.email = email;
@@ -119,7 +194,6 @@ public LinkedHashMap<String, String> toMap() {
     this.education = education;
     this.acceptTerm = acceptTerm;
   }
-
 
   public String getEmail() {
     return this.email;

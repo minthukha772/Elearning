@@ -1,22 +1,31 @@
 package com.blissstock.mappingSite.entity;
 import java.util.Date;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PastOrPresent;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import org.springframework.format.annotation.DateTimeFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-
+@NoArgsConstructor
 @Entity
 @Table(name = "leave_info")
 public class LeaveInfo {
@@ -26,23 +35,18 @@ public class LeaveInfo {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long leaveId;
 	
-    //@NotNull
-    @DateTimeFormat(pattern = "MM-dd-yyyy")
-	@Column(name="leave_start_date")
-	private Date leaveStartDate;
-
-    //@NotNull
-    @DateTimeFormat(pattern = "MM-dd-yyyy")
-	@Column(name="leave_end_date")
-	private Date leaveEndDate;
+    @NotNull
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@Column(name="leave_date")
+	private Date leaveDate;
 
     @Column(name = "leave_start_time", columnDefinition= "TIMESTAMP WITH TIME ZONE")
-    //@NotNull
+    @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     private Date leaveStartTime;
 
     @Column(name = "leave_end_time", columnDefinition= "TIMESTAMP WITH TIME ZONE")
-    //@NotNull
+    @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     private Date leaveEndTime;
 	
@@ -52,14 +56,23 @@ public class LeaveInfo {
 
 	//mapping
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "uid_fkey")
+    @JoinColumn(name = "join_fkey")
     @JsonIgnore
-    private UserInfo userInfo;
+    private JoinCourseUser join;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "courseId_fkey")
-    @JsonIgnore
-    private CourseInfo courseInfo;
+    //Constructors
+
+    public LeaveInfo() {
+    }
+
+    public LeaveInfo(Long leaveId, Date leaveDate, Date leaveStartTime, Date leaveEndTime, String reason, JoinCourseUser join) {
+        this.leaveId = leaveId;
+        this.leaveDate = leaveDate;
+        this.leaveStartTime = leaveStartTime;
+        this.leaveEndTime = leaveEndTime;
+        this.reason = reason;
+        this.join = join;
+    }
 
     public Long getLeaveId() {
         return this.leaveId;
@@ -69,7 +82,13 @@ public class LeaveInfo {
         this.leaveId = leaveId;
     }
 
+    public Date getLeaveDate() {
+        return this.leaveDate;
+    }
 
+    public void setLeaveDate(Date leaveDate) {
+        this.leaveDate = leaveDate;
+    }
 
     public Date getLeaveStartTime() {
         return this.leaveStartTime;
@@ -95,52 +114,14 @@ public class LeaveInfo {
         this.reason = reason;
     }
 
-    public UserInfo getUserInfo() {
-        return this.userInfo;
+    public JoinCourseUser getJoin() {
+        return this.join;
     }
 
-    public void setUserInfo(UserInfo userInfo) {
-        this.userInfo = userInfo;
+    public void setJoin(JoinCourseUser join) {
+        this.join = join;
     }
 
-    public CourseInfo getCourseInfo() {
-        return this.courseInfo;
-    }
-
-    public void setCourseInfo(CourseInfo courseInfo) {
-        this.courseInfo = courseInfo;
-    }
-
-    public Date getLeaveStartDate() {
-        return this.leaveStartDate;
-    }
-
-    public void setLeaveStartDate(Date leaveStartDate) {
-        this.leaveStartDate = leaveStartDate;
-    }
-
-    public Date getLeaveEndDate() {
-        return this.leaveEndDate;
-    }
-
-    public void setLeaveEndDate(Date leaveEndDate) {
-        this.leaveEndDate = leaveEndDate;
-    }
-
-
-    public LeaveInfo(Long leaveId, Date leaveStartDate, Date leaveEndDate, Date leaveStartTime, Date leaveEndTime, String reason, UserInfo userInfo, CourseInfo courseInfo) {
-        this.leaveId = leaveId;
-        this.leaveStartDate = leaveStartDate;
-        this.leaveEndDate = leaveEndDate;
-        this.leaveStartTime = leaveStartTime;
-        this.leaveEndTime = leaveEndTime;
-        this.reason = reason;
-        this.userInfo = userInfo;
-        this.courseInfo = courseInfo;
-    }
-
-
-    public LeaveInfo() {
-    }
-
+	
 }
+

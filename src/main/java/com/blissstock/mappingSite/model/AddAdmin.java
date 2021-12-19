@@ -1,4 +1,4 @@
-package com.blissstock.mappingSite.entity;
+package com.blissstock.mappingSite.model;
 
 public class AddAdmin {
     String userName;

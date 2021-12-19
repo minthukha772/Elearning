@@ -39,5 +39,41 @@ public class Test {
     @JsonIgnore
     private CourseInfo courseInfo;
 	
+    //Constructors
+
+    public Test() {
+    }
+
+    public Test(Long testId, String testLink, CourseInfo courseInfo) {
+        this.testId = testId;
+        this.testLink = testLink;
+        this.courseInfo = courseInfo;
+    }
+
+    public Long getTestId() {
+        return this.testId;
+    }
+
+    public void setTestId(Long testId) {
+        this.testId = testId;
+    }
+
+    public String getTestLink() {
+        return this.testLink;
+    }
+
+    public void setTestLink(String testLink) {
+        this.testLink = testLink;
+    }
+
+    public CourseInfo getCourseInfo() {
+        return this.courseInfo;
+    }
+
+    public void setCourseInfo(CourseInfo courseInfo) {
+        this.courseInfo = courseInfo;
+    }
+
+
 }
 

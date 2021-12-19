@@ -1,6 +1,5 @@
 package com.blissstock.mappingSite.dto;
 
-
 import java.util.LinkedHashMap;
 
 import javax.validation.constraints.NotBlank;
@@ -14,6 +13,7 @@ import lombok.Setter;
 
 @Data
 public class TeacherRegisterDTO extends UserRegisterDTO{
+  
   @NotBlank(message = "This field is required")
   private String nrc;
 
@@ -55,6 +55,8 @@ public class TeacherRegisterDTO extends UserRegisterDTO{
   private String secondaryAccountNumber; */
 
 
+  //Constructors
+
   public TeacherRegisterDTO() {
   }
 
@@ -88,5 +90,5 @@ public class TeacherRegisterDTO extends UserRegisterDTO{
     this.selfDescription = selfDescription;
   }
 
-  
+
 }

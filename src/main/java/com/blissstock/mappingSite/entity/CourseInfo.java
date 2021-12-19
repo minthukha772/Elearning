@@ -1,8 +1,9 @@
 package com.blissstock.mappingSite.entity;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,288 +11,248 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
+@Data
+@Getter
+@Setter
 @Table(name = "course_info")
 public class CourseInfo {
-	
-	@Column(name = "course_id")
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Long courseId;
-	
-	@Column(name = "course_name", length = 100)
-	@NotBlank(message="Please enter course name")
-	private String courseName;
 
-    @Column(name = "class_type", length = 20)
-	@NotBlank(message="Please enter class type")
-	private String classType;
+  @Column(name = "course_id")
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long courseId;
 
-    @Column(name = "category", length = 100)
-	@NotBlank(message="Please choose category")
-	private String category;
+  @Column(name = "course_name", length = 100)
+  //@NotBlank(message="Please enter course name")
+  private String courseName;
 
-    @Column(name = "level", length = 15)
-	@NotBlank(message="Please choose course level")
-	private String level;
+  @Column(name = "class_type", length = 20)
+  ///@NotBlank(message="Please enter class type")
+  private String classType;
 
-    @Column(name = "about_course", length = 250)
-	@NotBlank(message="Please enter about course")
-	private String aboutCourse;
-	
-    @NotNull
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@Column(name="start_date")
-	private Date startDate;
+  @Column(name = "category", length = 100)
+  //@NotBlank(message="Please choose category")
+  private String category;
 
-    @NotNull
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@Column(name="end_date")
-	private Date endDate;
+  @Column(name = "level", length = 15)
+  //@NotBlank(message="Please choose course level")
+  private String level;
 
-    @NotBlank(message="Please enter course fees")
-	@Column(name="course_fees")
-	private int fees;
+  @Column(name = "about_course", length = 250)
+  //@NotBlank(message="Please enter about course")
+  private String aboutCourse;
 
-    @NotBlank(message="Please enter class link")
-    @Column(name = "class_link")
-	private String classLink;
-	
-    @Column(name= "isCourseApproved", nullable = false)
-	private boolean isCourseApproved = false;
+  @Column(name = "student_num", length = 20)
+  private int stuNum;
 
-	//mapping
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="courseInfo")
-	@JsonIgnore
-	private List<CourseTime> courseTime= new ArrayList<>();
+  //@NotNull
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
+  @Column(name = "start_date")
+  private Date startDate;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="courseInfo")
-	@JsonIgnore
-	private List<Syllabus> syllabus= new ArrayList<>();
+  //@NotNull
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
+  @Column(name = "end_date")
+  private Date endDate;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="courseInfo")
-	@JsonIgnore
-	private List<Test> test= new ArrayList<>();
-	
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="courseInfo")
-	@JsonIgnore
-	private List<LeaveInfo> leaveInfo= new ArrayList<>();
+  //@NotBlank(message="Please enter course fees")
+  @Column(name = "course_fees")
+  private int fees;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="courseInfo")
-	@JsonIgnore
-	private List<Review> review= new ArrayList<>();
+  @Column(name = "isCourseApproved", nullable = false)
+  private boolean isCourseApproved = false;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="courseInfo")
-	@JsonIgnore
-	private List<PriorityCourse> priorityCourse= new ArrayList<>();
+  //mapping
+  @OneToMany(
+    fetch = FetchType.LAZY,
+    cascade = CascadeType.ALL,
+    mappedBy = "courseInfo"
+  )
+  @JsonIgnore
+  private List<CourseTime> courseTime = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="courseInfo")
-	@JsonIgnore
-	private List<PaymentReceive> paymentReceive= new ArrayList<>();
+  @OneToMany(
+    fetch = FetchType.LAZY,
+    cascade = CascadeType.ALL,
+    mappedBy = "courseInfo"
+  )
+  @JsonIgnore
+  private List<Syllabus> syllabus = new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
-		@JoinTable(
-				name = "join_course_user", 
-				joinColumns = {@JoinColumn(name = "course_id")} ,
-				inverseJoinColumns = {@JoinColumn(name = "uid")}
-				) 
-		private List<UserInfo> userInfo = new ArrayList<>();
+  @OneToMany(
+    fetch = FetchType.LAZY,
+    cascade = CascadeType.ALL,
+    mappedBy = "courseInfo"
+  )
+  @JsonIgnore
+  private List<Test> test = new ArrayList<>();
 
-	
-	//Constructors
+  @OneToMany(
+    fetch = FetchType.LAZY,
+    cascade = CascadeType.ALL,
+    mappedBy = "courseInfo"
+  )
+  @JsonIgnore
+  private List<JoinCourseUser> join = new ArrayList<>();
 
-	public CourseInfo() {
-	}
+  //Constructors
 
-	public CourseInfo(Long courseId, String courseName, String classType, String category, String level, String aboutCourse, Date startDate, Date endDate, int fees, String classLink, boolean isCourseApproved, List<CourseTime> courseTime, List<Syllabus> syllabus, List<Test> test, List<LeaveInfo> leaveInfo, List<Review> review, List<PriorityCourse> priorityCourse, List<PaymentReceive> paymentReceive, List<UserInfo> userInfo) {
-		this.courseId = courseId;
-		this.courseName = courseName;
-		this.classType = classType;
-		this.category = category;
-		this.level = level;
-		this.aboutCourse = aboutCourse;
-		this.startDate = startDate;
-		this.endDate = endDate;
-		this.fees = fees;
-		this.classLink = classLink;
-		this.isCourseApproved = isCourseApproved;
-		this.courseTime = courseTime;
-		this.syllabus = syllabus;
-		this.test = test;
-		this.leaveInfo = leaveInfo;
-		this.review = review;
-		this.priorityCourse = priorityCourse;
-		this.paymentReceive = paymentReceive;
-		this.userInfo = userInfo;
-	}
+  public CourseInfo() {
+  }
 
-	public Long getCourseId() {
-		return this.courseId;
-	}
+  public CourseInfo(Long courseId, String courseName, String classType, String category, String level, String aboutCourse, int stuNum, Date startDate, Date endDate, int fees, boolean isCourseApproved, List<CourseTime> courseTime, List<Syllabus> syllabus, List<Test> test, List<JoinCourseUser> join) {
+    this.courseId = courseId;
+    this.courseName = courseName;
+    this.classType = classType;
+    this.category = category;
+    this.level = level;
+    this.aboutCourse = aboutCourse;
+    this.stuNum = stuNum;
+    this.startDate = startDate;
+    this.endDate = endDate;
+    this.fees = fees;
+    this.isCourseApproved = isCourseApproved;
+    this.courseTime = courseTime;
+    this.syllabus = syllabus;
+    this.test = test;
+    this.join = join;
+  }
 
-	public void setCourseId(Long courseId) {
-		this.courseId = courseId;
-	}
+  public Long getCourseId() {
+    return this.courseId;
+  }
 
-	public String getCourseName() {
-		return this.courseName;
-	}
+  public void setCourseId(Long courseId) {
+    this.courseId = courseId;
+  }
 
-	public void setCourseName(String courseName) {
-		this.courseName = courseName;
-	}
+  public String getCourseName() {
+    return this.courseName;
+  }
 
-	public String getClassType() {
-		return this.classType;
-	}
+  public void setCourseName(String courseName) {
+    this.courseName = courseName;
+  }
 
-	public void setClassType(String classType) {
-		this.classType = classType;
-	}
+  public String getClassType() {
+    return this.classType;
+  }
 
-	public String getCategory() {
-		return this.category;
-	}
+  public void setClassType(String classType) {
+    this.classType = classType;
+  }
 
-	public void setCategory(String category) {
-		this.category = category;
-	}
+  public String getCategory() {
+    return this.category;
+  }
 
-	public String getLevel() {
-		return this.level;
-	}
+  public void setCategory(String category) {
+    this.category = category;
+  }
 
-	public void setLevel(String level) {
-		this.level = level;
-	}
+  public String getLevel() {
+    return this.level;
+  }
 
-	public String getAboutCourse() {
-		return this.aboutCourse;
-	}
+  public void setLevel(String level) {
+    this.level = level;
+  }
 
-	public void setAboutCourse(String aboutCourse) {
-		this.aboutCourse = aboutCourse;
-	}
+  public String getAboutCourse() {
+    return this.aboutCourse;
+  }
 
-	public Date getStartDate() {
-		return this.startDate;
-	}
+  public void setAboutCourse(String aboutCourse) {
+    this.aboutCourse = aboutCourse;
+  }
 
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
-	}
+  public int getStuNum() {
+    return this.stuNum;
+  }
 
-	public Date getEndDate() {
-		return this.endDate;
-	}
+  public void setStuNum(int stuNum) {
+    this.stuNum = stuNum;
+  }
 
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
-	}
+  public Date getStartDate() {
+    return this.startDate;
+  }
 
-	public int getFees() {
-		return this.fees;
-	}
+  public void setStartDate(Date startDate) {
+    this.startDate = startDate;
+  }
 
-	public void setFees(int fees) {
-		this.fees = fees;
-	}
+  public Date getEndDate() {
+    return this.endDate;
+  }
 
-	public String getClassLink() {
-		return this.classLink;
-	}
+  public void setEndDate(Date endDate) {
+    this.endDate = endDate;
+  }
 
-	public void setClassLink(String classLink) {
-		this.classLink = classLink;
-	}
+  public int getFees() {
+    return this.fees;
+  }
 
-	public boolean isIsCourseApproved() {
-		return this.isCourseApproved;
-	}
+  public void setFees(int fees) {
+    this.fees = fees;
+  }
 
-	public boolean getIsCourseApproved() {
-		return this.isCourseApproved;
-	}
+  public boolean isIsCourseApproved() {
+    return this.isCourseApproved;
+  }
 
-	public void setIsCourseApproved(boolean isCourseApproved) {
-		this.isCourseApproved = isCourseApproved;
-	}
+  public boolean getIsCourseApproved() {
+    return this.isCourseApproved;
+  }
 
-	public List<CourseTime> getCourseTime() {
-		return this.courseTime;
-	}
+  public void setIsCourseApproved(boolean isCourseApproved) {
+    this.isCourseApproved = isCourseApproved;
+  }
 
-	public void setCourseTime(List<CourseTime> courseTime) {
-		this.courseTime = courseTime;
-	}
+  public List<CourseTime> getCourseTime() {
+    return this.courseTime;
+  }
 
-	public List<Syllabus> getSyllabus() {
-		return this.syllabus;
-	}
+  public void setCourseTime(List<CourseTime> courseTime) {
+    this.courseTime = courseTime;
+  }
 
-	public void setSyllabus(List<Syllabus> syllabus) {
-		this.syllabus = syllabus;
-	}
+  public List<Syllabus> getSyllabus() {
+    return this.syllabus;
+  }
 
-	public List<Test> getTest() {
-		return this.test;
-	}
+  public void setSyllabus(List<Syllabus> syllabus) {
+    this.syllabus = syllabus;
+  }
 
-	public void setTest(List<Test> test) {
-		this.test = test;
-	}
+  public List<Test> getTest() {
+    return this.test;
+  }
 
-	public List<LeaveInfo> getLeaveInfo() {
-		return this.leaveInfo;
-	}
+  public void setTest(List<Test> test) {
+    this.test = test;
+  }
 
-	public void setLeaveInfo(List<LeaveInfo> leaveInfo) {
-		this.leaveInfo = leaveInfo;
-	}
+  public List<JoinCourseUser> getJoin() {
+    return this.join;
+  }
 
-	public List<Review> getReview() {
-		return this.review;
-	}
+  public void setJoin(List<JoinCourseUser> join) {
+    this.join = join;
+  }
 
-	public void setReview(List<Review> review) {
-		this.review = review;
-	}
-
-	public List<PriorityCourse> getPriorityCourse() {
-		return this.priorityCourse;
-	}
-
-	public void setPriorityCourse(List<PriorityCourse> priorityCourse) {
-		this.priorityCourse = priorityCourse;
-	}
-
-	public List<PaymentReceive> getPaymentReceive() {
-		return this.paymentReceive;
-	}
-
-	public void setPaymentReceive(List<PaymentReceive> paymentReceive) {
-		this.paymentReceive = paymentReceive;
-	}
-
-	public List<UserInfo> getUserInfo() {
-		return this.userInfo;
-	}
-
-	public void setUserInfo(List<UserInfo> userInfo) {
-		this.userInfo = userInfo;
-	}
 
 }
-

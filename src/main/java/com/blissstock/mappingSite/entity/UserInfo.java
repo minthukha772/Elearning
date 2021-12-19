@@ -1,27 +1,37 @@
-  package com.blissstock.mappingSite.entity;
+package com.blissstock.mappingSite.entity;
 
 import com.blissstock.mappingSite.dto.TeacherRegisterDTO;
 import com.blissstock.mappingSite.dto.UserRegisterDTO;
+import com.blissstock.mappingSite.interfaces.Profile;
+import com.blissstock.mappingSite.utils.DateFormatter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.servlet.FlashMapManager;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -32,11 +42,10 @@ import org.springframework.format.annotation.DateTimeFormat;
 @NoArgsConstructor
 @Entity
 @Table(name = "user_info")
-public class UserInfo {
+public class UserInfo implements Profile{
 
   @Column(name = "uid")
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
   private Long uid;
 
   @Column(name = "photo")
@@ -47,7 +56,7 @@ public class UserInfo {
   private String userName;
 
   @NotBlank(message = "Please enter phone number.")
-  @Size(max = 20, min = 8, message = "Phone number should be under 11 digits")
+  @Size(max = 15, min = 6, message = "Invalid Phone Number")
   @Column(name = "phone_no")
   private String phoneNo;
 
@@ -83,23 +92,22 @@ public class UserInfo {
   @Column(name = "nrc", length = 30)
   private String nrc;
 
-  @Column(name = "certificate")
-  private String certificate;
-
   @Column(name = "self_description")
   private String selfDescription;
 
   //mapping
-  @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  @OneToOne(fetch = FetchType.EAGER)
+  @MapsId
+  @JoinColumn(name = "id")
   UserAccount userAccount;
 
-  @OneToMany(
+/*   @OneToMany(
     fetch = FetchType.LAZY,
     cascade = CascadeType.ALL,
     mappedBy = "userInfo"
   )
   @JsonIgnore
-  private List<Certificate> certificateInfo = new ArrayList<>();
+  private List<Certificate> certificateInfo = new ArrayList<>(); */
 
   @OneToMany(
     fetch = FetchType.LAZY,
@@ -110,44 +118,12 @@ public class UserInfo {
   private List<PaymentAccount> paymentAccount = new ArrayList<>();
 
   @OneToMany(
-    fetch = FetchType.LAZY,
-    cascade = CascadeType.ALL,
-    mappedBy = "userInfo"
-  )
-  @JsonIgnore
-  private List<LeaveInfo> leaveInfo = new ArrayList<>();
-
-  @OneToMany(
-    fetch = FetchType.LAZY,
-    cascade = CascadeType.ALL,
-    mappedBy = "userInfo"
-  )
-  @JsonIgnore
-  private List<Review> review = new ArrayList<>();
-
-  @OneToMany(
-    fetch = FetchType.LAZY,
-    cascade = CascadeType.ALL,
-    mappedBy = "userInfo"
-  )
-  @JsonIgnore
-  private List<PriorityCourse> priorityCourse = new ArrayList<>();
-
-  @OneToMany(
-    fetch = FetchType.LAZY,
-    cascade = CascadeType.ALL,
-    mappedBy = "userInfo"
-  )
-  @JsonIgnore
-  private List<PaymentReceive> paymentReceive = new ArrayList<>();
-
-  @ManyToMany(
-    fetch = FetchType.LAZY,
-    cascade = { CascadeType.MERGE },
-    mappedBy = "userInfo"
-  )
-  @JsonIgnore
-  private List<CourseInfo> courseInfo = new ArrayList<>();
+    fetch = FetchType.LAZY, 
+    cascade = CascadeType.ALL, 
+    mappedBy="userInfo"
+    )
+	@JsonIgnore
+	private List<JoinCourseUser> join= new ArrayList<>();
 
   public static UserInfo fromRegisterDTO(UserRegisterDTO userRegisterDTO) {
     UserInfo userInfo = new UserInfo();
@@ -165,27 +141,44 @@ public class UserInfo {
       TeacherRegisterDTO teacherRegisterDTO = (TeacherRegisterDTO) userRegisterDTO;
       userInfo.nrc = teacherRegisterDTO.getNrc();
       userInfo.selfDescription = teacherRegisterDTO.getSelfDescription();
-      userInfo.certificate = teacherRegisterDTO.getAward();
     }
 
     return userInfo;
   }
+  @Override
+  public LinkedHashMap<String, String> toMapStudent() {
+    LinkedHashMap<String, String> map = new LinkedHashMap<>();
+    //map.put("Email", this.email);
+    map.put("Name", this.userName);
+    map.put("Phone Number", this.phoneNo);
+    map.put("Gender", this.gender);
+    map.put("Date of Birth", DateFormatter.format(this.birthDate));
+    map.put("Zip Code", this.postalCode + "");
+    map.put("City", this.city);
+    map.put("Division", this.division);
+    map.put("Address", this.address);
+    map.put("Education", this.education);
+    return map;
+  }
 
-  // @ManyToMany(fetch = FetchType.LAZY)
-	// 	@JoinTable(
-	// 			name = "join_user_course", 
-	// 			joinColumns = {@JoinColumn(name = "uid")} ,
-	// 			inverseJoinColumns = {@JoinColumn(name = "course_id")}
-	// 			) 
-	// 	private List<CourseInfo> courseInfo = new ArrayList<>();
+  @Override
+  public LinkedHashMap<String, String> toMapTeacher() {
+    LinkedHashMap<String, String> map = new LinkedHashMap<>();
+    //map.put("Email", this.email);
+    map.put("Name", this.userName);
+    map.put("Gender", this.gender);
+    map.put("Date of Birth", DateFormatter.format(this.birthDate));
+    map.put("Education", this.education);
+    map.put("SelfDescription", this.selfDescription);
+    return map;
+  }
 
   //Constructors
-
 
   public UserInfo() {
   }
 
-  public UserInfo(Long uid, String photo, String userName, String phoneNo, String gender, Date birthDate, String postalCode, String city, String division, String address, String education, String nrc, String certificate, String selfDescription, UserAccount userAccount, List<Certificate> certificateInfo, List<PaymentAccount> paymentAccount, List<LeaveInfo> leaveInfo, List<Review> review, List<PriorityCourse> priorityCourse, List<PaymentReceive> paymentReceive, List<CourseInfo> courseInfo) {
+  public UserInfo(Long uid, String photo, String userName, String phoneNo, String gender, Date birthDate, String postalCode, String city, String division, String address, String education, String nrc, String selfDescription, UserAccount userAccount, List<PaymentAccount> paymentAccount, List<JoinCourseUser> join) {
     this.uid = uid;
     this.photo = photo;
     this.userName = userName;
@@ -198,18 +191,11 @@ public class UserInfo {
     this.address = address;
     this.education = education;
     this.nrc = nrc;
-    this.certificate = certificate;
     this.selfDescription = selfDescription;
     this.userAccount = userAccount;
-    this.certificateInfo = certificateInfo;
     this.paymentAccount = paymentAccount;
-    this.leaveInfo = leaveInfo;
-    this.review = review;
-    this.priorityCourse = priorityCourse;
-    this.paymentReceive = paymentReceive;
-    this.courseInfo = courseInfo;
+    this.join = join;
   }
-    
 
   public Long getUid() {
     return this.uid;
@@ -307,14 +293,6 @@ public class UserInfo {
     this.nrc = nrc;
   }
 
-  public String getCertificate() {
-    return this.certificate;
-  }
-
-  public void setCertificate(String certificate) {
-    this.certificate = certificate;
-  }
-
   public String getSelfDescription() {
     return this.selfDescription;
   }
@@ -331,14 +309,6 @@ public class UserInfo {
     this.userAccount = userAccount;
   }
 
-  public List<Certificate> getCertificateInfo() {
-    return this.certificateInfo;
-  }
-
-  public void setCertificateInfo(List<Certificate> certificateInfo) {
-    this.certificateInfo = certificateInfo;
-  }
-
   public List<PaymentAccount> getPaymentAccount() {
     return this.paymentAccount;
   }
@@ -347,44 +317,13 @@ public class UserInfo {
     this.paymentAccount = paymentAccount;
   }
 
-  public List<LeaveInfo> getLeaveInfo() {
-    return this.leaveInfo;
+  public List<JoinCourseUser> getJoin() {
+    return this.join;
   }
 
-  public void setLeaveInfo(List<LeaveInfo> leaveInfo) {
-    this.leaveInfo = leaveInfo;
+  public void setJoin(List<JoinCourseUser> join) {
+    this.join = join;
   }
 
-  public List<Review> getReview() {
-    return this.review;
-  }
-
-  public void setReview(List<Review> review) {
-    this.review = review;
-  }
-
-  public List<PriorityCourse> getPriorityCourse() {
-    return this.priorityCourse;
-  }
-
-  public void setPriorityCourse(List<PriorityCourse> priorityCourse) {
-    this.priorityCourse = priorityCourse;
-  }
-
-  public List<PaymentReceive> getPaymentReceive() {
-    return this.paymentReceive;
-  }
-
-  public void setPaymentReceive(List<PaymentReceive> paymentReceive) {
-    this.paymentReceive = paymentReceive;
-  }
-
-  public List<CourseInfo> getCourseInfo() {
-    return this.courseInfo;
-  }
-
-  public void setCourseInfo(List<CourseInfo> courseInfo) {
-    this.courseInfo = courseInfo;
-  }
-  
+ 
 }
