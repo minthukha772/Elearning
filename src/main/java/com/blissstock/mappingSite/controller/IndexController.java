@@ -21,13 +21,22 @@ public class IndexController {
 
     @GetMapping("/")
     private String getCourses(Model model) {
-        logger.info("GET request");
-        List<CourseInfo> liveList = courseRepo.findByClassType("live");
+        try {
+            logger.info("GET request");
 
-        List<CourseInfo> recordedList = courseRepo.findByClassType("recorded");
-        model.addAttribute("liveCourse", liveList);
-        model.addAttribute("recordedCourse", recordedList);
-        System.out.print(liveList.toString());
+            List<CourseInfo> liveList = courseRepo.findByClassType("Live");
+
+            List<CourseInfo> videoList = courseRepo.findByClassType("Video");
+            model.addAttribute("liveCourse", liveList);
+            // TODO change to video list
+            model.addAttribute("recordedCourse", liveList);
+
+            System.out.print(liveList.toString());
+        } catch (Exception e) {
+            logger.info("Exception at index controller :: {}", e.toString());
+            System.out.print(e.toString());
+        }
+
         return "index.html";
     }
 

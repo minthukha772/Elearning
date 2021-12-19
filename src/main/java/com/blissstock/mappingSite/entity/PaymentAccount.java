@@ -1,4 +1,5 @@
 package com.blissstock.mappingSite.entity;
+
 import java.util.ArrayList;
 
 import javax.persistence.CascadeType;
@@ -15,7 +16,6 @@ import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,24 +28,24 @@ import lombok.Setter;
 @Entity
 @Table(name = "payment_account")
 public class PaymentAccount {
-	
-	@Column(name = "payment_account_id")
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Long paymentAccountId;
-	
+
+    @Column(name = "payment_account_id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long paymentAccountId;
+
     @Column(name = "account_name", length = 255)
-    //@NotBlank(message="Please fill bank account name")
-	private String accountName;
+    // @NotBlank(message="Please fill bank account name")
+    private String accountName;
 
-    @Column(name="account_number")
-    //@NotBlank(message="Please fill bank account number.")
+    @Column(name = "account_number")
+    // @NotBlank(message="Please fill bank account number.")
     private Integer accountNumber;
-    
-    @Transient
-	private Long checkedBank;
 
-	//mapping
+    @Transient
+    private Long checkedBank;
+
+    // mapping
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "uid_fkey")
     @JsonIgnore
@@ -55,6 +55,5 @@ public class PaymentAccount {
     @JoinColumn(name = "bank_id_fkey")
     @JsonIgnore
     private BankInfo bankInfo;
-	
-   
+
 }
