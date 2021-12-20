@@ -1,170 +1,178 @@
-// package com.blissstock.mappingSite.controller;
+package com.blissstock.mappingSite.controller;
 
-// import java.util.UUID;
+import java.util.UUID;
 
-// import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 
-// import com.blissstock.mappingSite.dto.PasswordDTO;
-// import com.blissstock.mappingSite.entity.Token;
-// import com.blissstock.mappingSite.entity.UserAccount;
-// import com.blissstock.mappingSite.enums.PasswordResetType;
-// import com.blissstock.mappingSite.enums.TokenType;
-// import com.blissstock.mappingSite.exceptions.UserNotFoundException;
-// import com.blissstock.mappingSite.service.MailServiceImpl;
-// import com.blissstock.mappingSite.service.UserService;
+import com.blissstock.mappingSite.dto.PasswordDTO;
+import com.blissstock.mappingSite.entity.Token;
+import com.blissstock.mappingSite.entity.UserAccount;
+import com.blissstock.mappingSite.enums.PasswordResetType;
+import com.blissstock.mappingSite.enums.TokenType;
+import com.blissstock.mappingSite.exceptions.UserNotFoundException;
+import com.blissstock.mappingSite.service.MailServiceImpl;
+import com.blissstock.mappingSite.service.UserService;
 
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.http.HttpStatus;
-// import org.springframework.security.crypto.password.PasswordEncoder;
-// import org.springframework.stereotype.Controller;
-// import org.springframework.ui.Model;
-// import org.springframework.web.bind.annotation.GetMapping;
-// import org.springframework.web.bind.annotation.PathVariable;
-// import org.springframework.web.bind.annotation.PostMapping;
-// import org.springframework.web.bind.annotation.RequestMapping;
-// import org.springframework.web.bind.annotation.RequestParam;
-// import org.springframework.web.server.ResponseStatusException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.server.ResponseStatusException;
 
-// @Controller
-// public class PasswordController {
+@Controller
+public class PasswordController {
 
-//   @Autowired
-//   UserService userService;
+  @Autowired
+  UserService userService;
 
-//   @Autowired
-//   MailServiceImpl mailService;
+  @Autowired
+  MailServiceImpl mailService;
 
 
+  @Autowired
+  private PasswordEncoder passwordEncoder;
+  
+  @GetMapping("/password/encrypt")
+  public String encrpty(Model model, String pass){
+    String password = passwordEncoder.encode(pass);
+    System.out.println(password);
+    return "redirect:/";
+  }
+/*   @GetMapping("/token")
+  public String createToken(Model model) {
+    String token = UUID.randomUUID().toString();
+    UserAccount userAccount = userService.getUserAccountByEmail(
+      "lycuzmarki@gmail.com"
+    );
+    System.out.println(userAccount);
+    userService.createToken(userAccount, token, TokenType.VERIFICATION);
+    return "redirect:/";
+  }
+ */
+  @GetMapping("password/verify_password")
+  public String verifyPassword(Model model, String token) {
+    Token savedToken = userService.getToken(token, TokenType.VERIFICATION);
+    if (savedToken == null) {
+      System.out.println("invalid token");
+      return "redirect:/login?tokenError";
+    } else {
+      UserAccount savedUserAccount = savedToken.getUserAccount();
+      savedUserAccount.setMailVerified(true);
+      userService.updateUserAccount(savedUserAccount);
+      savedToken.setUsed(true);
+      userService.updateToken(savedToken);
+    }
 
-// /*   @GetMapping("/token")
-//   public String createToken(Model model) {
-//     String token = UUID.randomUUID().toString();
-//     UserAccount userAccount = userService.getUserAccountByEmail(
-//       "lycuzmarki@gmail.com"
-//     );
-//     System.out.println(userAccount);
-//     userService.createToken(userAccount, token, TokenType.VERIFICATION);
-//     return "redirect:/";
-//   }
-//  */
-//   @GetMapping("password/verify_password")
-//   public String verifyPassword(Model model, String token) {
-//     Token savedToken = userService.getToken(token, TokenType.VERIFICATION);
-//     if (savedToken == null) {
-//       System.out.println("invalid token");
-//       return "redirect:/login?tokenError";
-//     } else {
-//       UserAccount savedUserAccount = savedToken.getUserAccount();
-//       savedUserAccount.setIsMailVerified(true);
-//       userService.updateUserAccount(savedUserAccount);
-//       savedToken.setIsUsed(true);
-//       userService.updateToken(savedToken);
-//     }
+    System.out.println(token);
+    return "redirect:/home";
+  }
 
-//     System.out.println(token);
-//     return "redirect:/home";
-//   }
-
-//   @RequestMapping("password/reset_password")
-//   public String resetPassword(
-//     HttpServletRequest request,
-//     @RequestParam("email") String userEmail
-//   )
-//      {
-//     System.out.println(userEmail);
-//     UserAccount user = userService.getUserAccountByEmail(userEmail);
-//     if (user == null) {
+  @RequestMapping("password/reset_password")
+  public String resetPassword(
+    HttpServletRequest request,
+    @RequestParam("email") String userEmail
+  )
+     {
+    System.out.println(userEmail);
+    UserAccount user = userService.getUserAccountByEmail(userEmail);
+    if (user == null) {
      
-//       return "redirect:/check_email/reset_password?email="+userEmail+"&error=true";
-//     }
-//   /*   String token = UUID.randomUUID().toString(); */
-//     String appUrl =
-//       request.getServerName() + // "localhost"
-//       ":" +
-//       request.getServerPort();
-//   /*   userService.createToken(user, token, TokenType.PASSWORD_RESET); */
-//     mailService.sendResetPasswordMail(user, appUrl);
-//     return "redirect:/login?resetSuccess=true";
-//   }
+      return "redirect:/check_email/reset_password?email="+userEmail+"&error=true";
+    }
+  /*   String token = UUID.randomUUID().toString(); */
+    String appUrl =
+      request.getServerName() + // "localhost"
+      ":" +
+      request.getServerPort();
+  /*   userService.createToken(user, token, TokenType.PASSWORD_RESET); */
+    mailService.sendResetPasswordMail(user, appUrl);
+    return "redirect:/login?resetSuccess=true";
+  }
 
-//   @GetMapping(path = { "{role}/change_password" })
-//   public String changePasswordView(
-//     Model model,
-//     @PathVariable(name = "role", required = true) String role,
-//     String token
-//   ) {
-//     System.out.println(role);
-//     //Role being null meaning user is trying to reset password
-//     if (
-//       role != null &&
-//       !(
-//         role.equals("student") || role.equals("teacher") || role.equals("admin")
-//       )
-//     ) {
-//       throw new ResponseStatusException(
-//         HttpStatus.NOT_FOUND,
-//         "entity not found"
-//       );
-//     }
+  @GetMapping(path = { "{role}/change_password" })
+  public String changePasswordView(
+    Model model,
+    @PathVariable(name = "role", required = true) String role,
+    String token
+  ) {
+    System.out.println(role);
+    //Role being null meaning user is trying to reset password
+    if (
+      role != null &&
+      !(
+        role.equals("student") || role.equals("teacher") || role.equals("admin")
+      )
+    ) {
+      throw new ResponseStatusException(
+        HttpStatus.NOT_FOUND,
+        "entity not found"
+      );
+    }
 
-//     PasswordDTO passwordDTO = new PasswordDTO();
-//     String title = "";
+    PasswordDTO passwordDTO = new PasswordDTO();
+    String title = "";
    
 
-//     if (  role == null) {
-//       //This is the password reset case by token
-//       passwordDTO.setType(PasswordResetType.TOKEN.name());
-//       title = "Reset Password";
-//       boolean isTokenValid = true;
+    if (  role == null) {
+      //This is the password reset case by token
+      passwordDTO.setType(PasswordResetType.TOKEN.name());
+      title = "Reset Password";
+      boolean isTokenValid = true;
 
-//       if(token == null){
-//         isTokenValid = false;
-//       }else{
-//         Token savedToken = userService.getToken(token, TokenType.PASSWORD_RESET);
-//         if(savedToken == null){
-//           isTokenValid = false;
-//         }else{
-//           //If token is valid, set it as old password for futher use.
-//           passwordDTO.setOldPassword(token);
-//         }
-//       }
+      if(token == null){
+        isTokenValid = false;
+      }else{
+        Token savedToken = userService.getToken(token, TokenType.PASSWORD_RESET);
+        if(savedToken == null){
+          isTokenValid = false;
+        }else{
+          //If token is valid, set it as old password for futher use.
+          passwordDTO.setOldPassword(token);
+        }
+      }
 
 
-//       if(!isTokenValid){
-//         model.addAttribute("error", "Invalid Token");
-//       }
-//     } else {
-//       //This is the password reset case by old password
-//       passwordDTO.setType(PasswordResetType.OLD_PASSWORD.name());
-//       title = "Change Password";
-//     }
+      if(!isTokenValid){
+        model.addAttribute("error", "Invalid Token");
+      }
+    } else {
+      //This is the password reset case by old password
+      passwordDTO.setType(PasswordResetType.OLD_PASSWORD.name());
+      title = "Change Password";
+    }
 
-//     model.addAttribute("title", title);
-//     model.addAttribute("passwordDTO", passwordDTO);
+    model.addAttribute("title", title);
+    model.addAttribute("passwordDTO", passwordDTO);
 
-//     return "CM0006_change_password_screen";
-//   }
+    return "CM0006_change_password_screen";
+  }
 
-//   @PostMapping("{role}/change_password" )
-//   public String changePasswordPost(Model model, String token) {
-//     System.out.println(token);
+  @PostMapping("{role}/change_password" )
+  public String changePasswordPost(Model model, String token) {
+    System.out.println(token);
 
-//     PasswordDTO passwordDTO = new PasswordDTO();
-//     String title = "";
+    PasswordDTO passwordDTO = new PasswordDTO();
+    String title = "";
 
-//     if (token != null) {
-//       //This is the password reset case by token
-//       passwordDTO.setType(PasswordResetType.TOKEN.name());
-//       title = "Reset Password";
-//     } else {
-//       //This is the password reset case by old password
-//       passwordDTO.setType(PasswordResetType.OLD_PASSWORD.name());
-//       title = "Change Password";
-//     }
+    if (token != null) {
+      //This is the password reset case by token
+      passwordDTO.setType(PasswordResetType.TOKEN.name());
+      title = "Reset Password";
+    } else {
+      //This is the password reset case by old password
+      passwordDTO.setType(PasswordResetType.OLD_PASSWORD.name());
+      title = "Change Password";
+    }
 
-//     model.addAttribute("title", title);
-//     model.addAttribute("passwordDTO", passwordDTO);
+    model.addAttribute("title", title);
+    model.addAttribute("passwordDTO", passwordDTO);
 
-//     return "CM0006_change_password_screen";
-//   }
-// }
+    return "CM0006_change_password_screen";
+  }
+}

@@ -52,40 +52,31 @@ public class UserInfo implements Profile{
   private String photo;
 
   @Column(name = "user_name", length = 100)
-  @NotBlank(message = "Please enter your name")
   private String userName;
 
-  @NotBlank(message = "Please enter phone number.")
   @Size(max = 15, min = 6, message = "Invalid Phone Number")
   @Column(name = "phone_no")
   private String phoneNo;
 
-  @NotBlank(message = "Please choose gender.")
   @Column(name = "gender", length = 20)
   private String gender;
 
-  @NotNull
   @DateTimeFormat(pattern = "yyyy-MM-dd")
   @Column(name = "birth_date")
   private Date birthDate;
 
-  @NotBlank(message = "Please enter postal code.")
   @Column(name = "postal_code")
   private String postalCode;
 
-  @NotBlank(message = "Please enter city.")
   @Column(name = "city", length = 50)
   private String city;
 
-  @NotBlank(message = "Please enter division")
   @Column(name = "division", length = 50)
   private String division;
 
-  @NotBlank(message = "Please enter address.")
   @Column(name = "address", length = 255)
   private String address;
 
-  @NotBlank(message = "Please fill education level.")
   @Column(name = "education", length = 255)
   private String education;
 
@@ -171,158 +162,6 @@ public class UserInfo implements Profile{
     map.put("Education", this.education);
     map.put("SelfDescription", this.selfDescription);
     return map;
-  }
-
-  //Constructors
-
-  public UserInfo() {
-  }
-
-  public UserInfo(Long uid, String photo, String userName, String phoneNo, String gender, Date birthDate, String postalCode, String city, String division, String address, String education, String nrc, String selfDescription, UserAccount userAccount, List<PaymentAccount> paymentAccount, List<JoinCourseUser> join) {
-    this.uid = uid;
-    this.photo = photo;
-    this.userName = userName;
-    this.phoneNo = phoneNo;
-    this.gender = gender;
-    this.birthDate = birthDate;
-    this.postalCode = postalCode;
-    this.city = city;
-    this.division = division;
-    this.address = address;
-    this.education = education;
-    this.nrc = nrc;
-    this.selfDescription = selfDescription;
-    this.userAccount = userAccount;
-    this.paymentAccount = paymentAccount;
-    this.join = join;
-  }
-
-  public Long getUid() {
-    return this.uid;
-  }
-
-  public void setUid(Long uid) {
-    this.uid = uid;
-  }
-
-  public String getPhoto() {
-    return this.photo;
-  }
-
-  public void setPhoto(String photo) {
-    this.photo = photo;
-  }
-
-  public String getUserName() {
-    return this.userName;
-  }
-
-  public void setUserName(String userName) {
-    this.userName = userName;
-  }
-
-  public String getPhoneNo() {
-    return this.phoneNo;
-  }
-
-  public void setPhoneNo(String phoneNo) {
-    this.phoneNo = phoneNo;
-  }
-
-  public String getGender() {
-    return this.gender;
-  }
-
-  public void setGender(String gender) {
-    this.gender = gender;
-  }
-
-  public Date getBirthDate() {
-    return this.birthDate;
-  }
-
-  public void setBirthDate(Date birthDate) {
-    this.birthDate = birthDate;
-  }
-
-  public String getPostalCode() {
-    return this.postalCode;
-  }
-
-  public void setPostalCode(String postalCode) {
-    this.postalCode = postalCode;
-  }
-
-  public String getCity() {
-    return this.city;
-  }
-
-  public void setCity(String city) {
-    this.city = city;
-  }
-
-  public String getDivision() {
-    return this.division;
-  }
-
-  public void setDivision(String division) {
-    this.division = division;
-  }
-
-  public String getAddress() {
-    return this.address;
-  }
-
-  public void setAddress(String address) {
-    this.address = address;
-  }
-
-  public String getEducation() {
-    return this.education;
-  }
-
-  public void setEducation(String education) {
-    this.education = education;
-  }
-
-  public String getNrc() {
-    return this.nrc;
-  }
-
-  public void setNrc(String nrc) {
-    this.nrc = nrc;
-  }
-
-  public String getSelfDescription() {
-    return this.selfDescription;
-  }
-
-  public void setSelfDescription(String selfDescription) {
-    this.selfDescription = selfDescription;
-  }
-
-  public UserAccount getUserAccount() {
-    return this.userAccount;
-  }
-
-  public void setUserAccount(UserAccount userAccount) {
-    this.userAccount = userAccount;
-  }
-
-  public List<PaymentAccount> getPaymentAccount() {
-    return this.paymentAccount;
-  }
-
-  public void setPaymentAccount(List<PaymentAccount> paymentAccount) {
-    this.paymentAccount = paymentAccount;
-  }
-
-  public List<JoinCourseUser> getJoin() {
-    return this.join;
-  }
-
-  public void setJoin(List<JoinCourseUser> join) {
-    this.join = join;
   }
 
  

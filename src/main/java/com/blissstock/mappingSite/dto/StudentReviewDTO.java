@@ -35,41 +35,4 @@ public class StudentReviewDTO implements StudentReview{
 		
 		return map;
 	  }
-	  
-	  //Constructors
-
-	public StudentReviewDTO() {
-	}
-
-	public StudentReviewDTO(Long reviewId, int star, String feedback) {
-		this.reviewId = reviewId;
-		this.star = star;
-		this.feedback = feedback;
-	}
-
-	public Long getReviewId() {
-		return this.reviewId;
-	}
-
-	public void setReviewId(Long reviewId) {
-		this.reviewId = reviewId;
-	}
-
-	public int getStar() {
-		return this.star;
-	}
-
-	public void setStar(int star) {
-		this.star = star;
-	}
-
-	public String getFeedback() {
-		return this.feedback;
-	}
-
-	public void setFeedback(String feedback) {
-		this.feedback = feedback;
-	}
-
-
 }

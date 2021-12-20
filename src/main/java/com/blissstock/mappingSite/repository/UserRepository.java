@@ -47,4 +47,6 @@ public interface UserRepository extends JpaRepository<UserInfo, Long> {
     @Param("userName") String userName,
     @Param("accountId") Long accountId);
     
+
+    
 }

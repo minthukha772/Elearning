@@ -49,16 +49,4 @@ public class CustomUser extends User {
     super(username, password, true, true, true, true, authorities);
     this.id = id;
   }
-
-  //Constructors
-
-  public Long getId() {
-    return this.id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-
 }

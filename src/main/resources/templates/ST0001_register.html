@@ -1,239 +1,423 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4">
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="/css/ST0001_register.css" />
+    <title>Register</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
-  <link rel="stylesheet" href="/css/ST0001_register.css" />
-  <title>Register</title>
-</head>
+  <body style="background-color: #f0f0f0">
+    <!-- guest user navi bar -->
+    <div th:replace="fragments/nav"></div>
 
-<body style="background-color: #f0f0f0">
-  <!-- guest user navi bar -->
-  <div th:replace="fragments/nav"></div>
+    <div class="m-3">
+      <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item" th:if="${task=='Register'}">
+            <a href="#" data-bs-toggle="modal" data-bs-target="#reEnterEmail"
+              >Email</a
+            >
+          </li>
+          <!-- Make BreadCrumb Action For Back button -->
+          <li class="breadcrumb-item active" th:if="${infoMap==null}"><span th:text="${task}">Registration</span></li>
+          <li class="breadcrumb-item" th:if="${infoMap!=null}"><a href="#" class="back">Registration</a></li>
+          <!--  -->
+          <li class="breadcrumb-item" th:classappend="${infoMap != null}?'active':''" aria-current="page">Confirmation</li>
+          <li class="breadcrumb-item" aria-current="page">Completion</li>
+        </ol>
+      </nav>
+    </div>
 
-  <div class="m-3">
-    <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item" th:if="${task=='Register'}">
-          <a href="#" data-bs-toggle="modal" data-bs-target="#reEnterEmail">Email</a>
-        </li>
-        <!-- Make BreadCrumb Action For Back button -->
-        <li class="breadcrumb-item active" th:if="${infoMap==null}"><span th:text="${task}">Registration</span></li>
-        <li class="breadcrumb-item" th:if="${infoMap!=null}"><a href="#" class="back">Registration</a></li>
-        <!--  -->
-        <li class="breadcrumb-item" th:classappend="${infoMap != null}?'active':''" aria-current="page">Confirmation
-        </li>
-        <li class="breadcrumb-item" aria-current="page">Completion</li>
-      </ol>
-    </nav>
-  </div>
+    <!-- Email Return Modal -->
+    <div
+      class="modal fade"
+      id="reEnterEmail"
+      tabindex="-1"
+      aria-labelledby="reEnterEmailLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="reEnterEmailLabel">Discard Changes</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            All the filled information will be lost. Do you willing to continue?
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
 
-  <!-- Email Return Modal -->
-  <div class="modal fade" id="reEnterEmail" tabindex="-1" aria-labelledby="reEnterEmailLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="reEnterEmailLabel">Discard Changes</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          All the filled information will be lost. Do you willing to continue?
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-            Close
-          </button>
-
-          <a class="btn btn-danger" th:href="@{/check_email/{role}(email=${userInfo.email},role=${role})}">Discard</a>
+            <a
+              class="btn btn-danger"
+              th:href="@{/check_email/{role}(email=${userInfo.email},role=${role})}"
+              >Discard</a
+            >
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <form id="contactForm" th:action="@{__${#httpServletRequest.requestURI}__}" data-th-action="@{/student/edit}"
-    th:object="${userInfo}" method="post">
-    <div class="container-custom">
-      <div class="card">
-        <div class="card-header">Personal Information</div>
-        <div class="card-body">
-          <div class="container">
-            <!--   -->
+    <form
+      id="contactForm"
+      th:action="@{__${#httpServletRequest.requestURI}__}"
+      data-th-action="@{/student/edit}"
+      th:object="${userInfo}"
+      method="post"
+    >
+      <div class="container-custom">
+        <div class="card">
+          <div class="card-header">Personal Information</div>
+          <div class="card-body">
+            <div class="container">
+              <!--   -->
 
-            <!-- Hide the whole if infoMap is not null -->
-            <div id="register" th:classappend="${infoMap == null}?'':'visually-hidden'">
-              <div class="mb-3">
-                <label class="form-label" for="emailAddress">
-                  Email Address</label>
-                <input th:field="*{email}" class="form-control-plaintext" id="email" type="email"
-                  placeholder="e.g. john@gmail.com" data-sb-validations="required,email" readonly />
-                <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">
-                  This field is required.
+              <!-- Hide the whole if infoMap is not null -->
+              <div
+                id="register"
+                th:classappend="${infoMap == null}?'':'visually-hidden'"
+              >
+                <div class="mb-3">
+                  <label class="form-label" for="emailAddress">
+                    Email Address</label
+                  >
+                  <input
+                    th:field="*{email}"
+                    class="form-control-plaintext"
+                    id="email"
+                    type="email"
+                    placeholder="e.g. john@gmail.com"
+                    data-sb-validations="required,email"
+                    readonly
+                  />
+                  <div
+                    class="invalid-feedback"
+                    th:if="${#fields.hasErrors('email')}"
+                    th:errors="*{email}"
+                  >
+                    This field is required.
+                  </div>
                 </div>
-              </div>
-              <div class="mb-3">
-                <label class="form-label" for="name">Name</label>
+                <div class="mb-3">
+                  <label class="form-label" for="name">Name</label>
 
-                <input th:field="*{name}" class="form-control"
-                  th:classappend="${#fields.hasErrors('name')}?'is-invalid':''" id="name" type="text"
-                  placeholder="Johny Hardy" />
-                <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
-              </div>
+                  <input
+                    th:field="*{name}"
+                    class="form-control"
+                    th:classappend="${#fields.hasErrors('name')}?'is-invalid':''"
+                    id="name"
+                    type="text"
+                    placeholder="Johny Hardy"
+                  />
+                  <div
+                    class="invalid-feedback"
+                    th:if="${#fields.hasErrors('name')}"
+                    th:errors="*{name}"
+                  ></div>
+                </div>
 
-              <!-- Profile Edit Do not need Password Related information -->
-              <div th:if="${task=='register'}">
+                <!-- Profile Edit Do not need Password Related information -->
+                <div th:if="${task=='register'}">
+                  <div class="mb-2">
+                    <span class="badge bg-info">Notice</span> Password must be
+                    at least 8 characters long, and contains at least one digit,
+                    one alphabet. <br />
+                    <span class="badge bg-info">Notice</span>We recommend
+                    <span class="badge bg-danger">not</span> to reuse the email
+                    address as the password.
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label" for="password">Password</label>
+                    <span th:text="*{password}" class="invisible"></span>
+                    <input
+                      th:field="*{password}"
+                      th:attr="data-value=*{password}"
+                      class="form-control"
+                      th:classappend="${#fields.hasErrors('password')}?'is-invalid':''"
+                      id="password"
+                      type="password"
+                      autocomplete="new-password"
+                      placeholder="ExamplePassword001"
+                    />
+                    <div
+                      class="invalid-feedback"
+                      th:if="${#fields.hasErrors('password')}"
+                      th:errors="*{password}"
+                    ></div>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label" for="confirmPassword"
+                      >Confirm Password</label
+                    >
+                    <input
+                      th:field="*{confirmPassword}"
+                      th:attr="data-value=*{password}"
+                      class="form-control"
+                      th:classappend="${#fields.hasErrors('confirmPassword')}?'is-invalid':''"
+                      id="confirmPassword"
+                      type="password"
+                      autocomplete="new-password"
+                      placeholder="ExamplePassword001"
+                    />
+                    <div
+                      class="invalid-feedback"
+                      th:if="${#fields.hasErrors('confirmPassword')}"
+                      th:errors="*{confirmPassword}"
+                    ></div>
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label" for="phone">Phone Number</label>
+                  <input
+                    th:field="*{phone}"
+                    class="form-control"
+                    th:classappend="${#fields.hasErrors('phone')}?'is-invalid':''"
+                    id="phone"
+                    type="text"
+                    placeholder="Phone Number"
+                  />
+                  <div
+                    class="invalid-feedback"
+                    th:if="${#fields.hasErrors('phone')}"
+                    th:errors="*{phone}"
+                  >
+                    This field is required.
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label d-block">Gender</label>
+                  <div class="form-check form-check-inline">
+                    <input
+                      th:field="*{gender}"
+                      class="form-check-input"
+                      id="male"
+                      value="male"
+                      type="radio"
+                      name="gender"
+                    />
+                    <label class="form-check-label" for="male">Male</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input
+                      th:field="*{gender}"
+                      class="form-check-input"
+                      id="female"
+                      value="female"
+                      type="radio"
+                      name="gender"
+                    />
+                    <label class="form-check-label" for="female">Female</label>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label" for="dob">Date of birth</label>
+                  <input
+                    th:field="*{dob}"
+                    class="form-control"
+                    th:classappend="${#fields.hasErrors('dob')}?'is-invalid':''"
+                    id="dateOfBirth"
+                    type="date"
+                    placeholder="Date of birth"
+                  />
+                  <div
+                    class="invalid-feedback"
+                    th:if="${#fields.hasErrors('dob')}"
+                    th:errors="*{dob}"
+                  >
+                    This field is required. ed.
+                  </div>
+                </div>
                 <div class="mb-2">
-                  <span class="badge bg-info">Notice</span> Password must be
-                  at least 8 characters long, and contains at least one digit,
-                  one alphabet. <br />
-                  <span class="badge bg-info">Notice</span>We recommend
-                  <span class="badge bg-danger">not</span> to reuse the email
-                  address as the password.
+                  <span class="badge bg-info">Notice</span> For customer who
+                  doesn't have zipCode, please fill with zero.
+                  <br />
+                  <span class="badge bg-info">Notice</span> Example of ZipCode:
+                  05061, 10011, 1164
+                </div>
+                <div class="mb-3 row g-3">
+                  <div class="col-sm-3">
+                    <label class="form-label" for="zipCode">Zip Code</label>
+                    <input
+                      th:field="*{zipCode}"
+                      class="form-control"
+                      th:classappend="${#fields.hasErrors('zipCode')}?'is-invalid':''"
+                      id="zipCode"
+                      type="number"
+                      placeholder="Zip Code"
+                    />
+                    <div
+                      class="invalid-feedback"
+                      th:if="${#fields.hasErrors('zipCode')}"
+                      th:errors="*{zipCode}"
+                    >
+                      This field is required.
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <label class="form-label" for="city">City</label>
+                    <input
+                      th:field="*{city}"
+                      class="form-control"
+                      th:classappend="${#fields.hasErrors('city')}?'is-invalid':''"
+                      id="city"
+                      type="text"
+                      placeholder="City"
+                    />
+                    <div
+                      class="invalid-feedback"
+                      th:if="${#fields.hasErrors('city')}"
+                      th:errors="*{city}"
+                    >
+                      This field is required.
+                    </div>
+                  </div>
+                  <div class="col-sm-5">
+                    <label class="form-label" for="division">Division</label>
+                    <input
+                      th:field="*{division}"
+                      class="form-control"
+                      th:classappend="${#fields.hasErrors('division')}?'is-invalid':''"
+                      id="division"
+                      type="text"
+                      placeholder="Division"
+                    />
+                    <div
+                      class="invalid-feedback"
+                      th:if="${#fields.hasErrors('division')}"
+                      th:errors="*{division}"
+                    >
+                      This field is required.
+                    </div>
+                  </div>
                 </div>
 
                 <div class="mb-3">
-                  <label class="form-label" for="password">Password</label>
-                  <span th:text="*{password}" class="invisible"></span>
-                  <input th:field="*{password}" th:attr="data-value=*{password}" class="form-control"
-                    th:classappend="${#fields.hasErrors('password')}?'is-invalid':''" id="password" type="password"
-                    autocomplete="new-password" placeholder="ExamplePassword001" />
-                  <div class="invalid-feedback" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
-                </div>
-                <div class="mb-3">
-                  <label class="form-label" for="confirmPassword">Confirm Password</label>
-                  <input th:field="*{confirmPassword}" th:attr="data-value=*{password}" class="form-control"
-                    th:classappend="${#fields.hasErrors('confirmPassword')}?'is-invalid':''" id="confirmPassword"
-                    type="password" autocomplete="new-password" placeholder="ExamplePassword001" />
-                  <div class="invalid-feedback" th:if="${#fields.hasErrors('confirmPassword')}"
-                    th:errors="*{confirmPassword}"></div>
-                </div>
-              </div>
-
-              <div class="mb-3">
-                <label class="form-label" for="phone">Phone Number</label>
-                <input th:field="*{phone}" class="form-control"
-                  th:classappend="${#fields.hasErrors('phone')}?'is-invalid':''" id="phone" type="text"
-                  placeholder="Phone Number" />
-                <div class="invalid-feedback" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">
-                  This field is required.
-                </div>
-              </div>
-              <div class="mb-3">
-                <label class="form-label d-block">Gender</label>
-                <div class="form-check form-check-inline">
-                  <input th:field="*{gender}" class="form-check-input" id="male" value="male" type="radio"
-                    name="gender" />
-                  <label class="form-check-label" for="male">Male</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input th:field="*{gender}" class="form-check-input" id="female" value="female" type="radio"
-                    name="gender" />
-                  <label class="form-check-label" for="female">Female</label>
-                </div>
-              </div>
-              <div class="mb-3">
-                <label class="form-label" for="dob">Date of birth</label>
-                <input th:field="*{dob}" class="form-control"
-                  th:classappend="${#fields.hasErrors('dob')}?'is-invalid':''" id="dateOfBirth" type="date"
-                  placeholder="Date of birth" />
-                <div class="invalid-feedback" th:if="${#fields.hasErrors('dob')}" th:errors="*{dob}">
-                  This field is required. ed.
-                </div>
-              </div>
-              <div class="mb-2">
-                <span class="badge bg-info">Notice</span> For customer who
-                doesn't have zipCode, please fill with zero.
-                <br />
-                <span class="badge bg-info">Notice</span> Example of ZipCode:
-                05061, 10011, 1164
-              </div>
-              <div class="mb-3 row g-3">
-                <div class="col-sm-3">
-                  <label class="form-label" for="zipCode">Zip Code</label>
-                  <input th:field="*{zipCode}" class="form-control"
-                    th:classappend="${#fields.hasErrors('zipCode')}?'is-invalid':''" id="zipCode" type="number"
-                    placeholder="Zip Code" />
-                  <div class="invalid-feedback" th:if="${#fields.hasErrors('zipCode')}" th:errors="*{zipCode}">
-                    This field is required.
-                  </div>
-                </div>
-                <div class="col-sm-4">
-                  <label class="form-label" for="city">City</label>
-                  <input th:field="*{city}" class="form-control"
-                    th:classappend="${#fields.hasErrors('city')}?'is-invalid':''" id="city" type="text"
-                    placeholder="City" />
-                  <div class="invalid-feedback" th:if="${#fields.hasErrors('city')}" th:errors="*{city}">
-                    This field is required.
-                  </div>
-                </div>
-                <div class="col-sm-5">
-                  <label class="form-label" for="division">Division</label>
-                  <input th:field="*{division}" class="form-control"
-                    th:classappend="${#fields.hasErrors('division')}?'is-invalid':''" id="division" type="text"
-                    placeholder="Division" />
-                  <div class="invalid-feedback" th:if="${#fields.hasErrors('division')}" th:errors="*{division}">
-                    This field is required.
-                  </div>
-                </div>
-              </div>
-
-              <div class="mb-3">
-                <label class="form-label" for="address">Address</label>
-                <textarea th:field="*{address}" class="form-control"
-                  th:classappend="${#fields.hasErrors('address')}?'is-invalid':''" id="address" type="text"
-                  placeholder="Address"></textarea>
-                <div class="invalid-feedback" th:if="${#fields.hasErrors('address')}" th:errors="*{address}">
-                  This field is required.
-                </div>
-              </div>
-              <div class="mb-3">
-                <label class="form-label" for="education">Education</label>
-                <input th:field="*{education}" class="form-control"
-                  th:classappend="${#fields.hasErrors('education')}?'is-invalid':''" id="education" type="text"
-                  placeholder="Education" />
-                <div class="invalid-feedback" th:if="${#fields.hasErrors('education')}" th:errors="*{education}">
-                  This field is required.
-                </div>
-              </div>
-
-              <!-- Visible only on teacher registeration -->
-              <div th:if="${role == 'teacher'}">
-                <div class="mb-3">
-                  <label class="form-label" for="nrc">NRC</label>
-                  <input th:field="*{nrc}" class="form-control"
-                    th:classappend="${#fields.hasErrors('nrc')}?'is-invalid':''" id="nrc" type="text"
-                    placeholder="NRC" />
-                  <div class="invalid-feedback" th:if="${#fields.hasErrors('nrc')}" th:errors="*{nrc}">
+                  <label class="form-label" for="address">Address</label>
+                  <textarea
+                    th:field="*{address}"
+                    class="form-control"
+                    th:classappend="${#fields.hasErrors('address')}?'is-invalid':''"
+                    id="address"
+                    type="text"
+                    placeholder="Address"
+                  ></textarea>
+                  <div
+                    class="invalid-feedback"
+                    th:if="${#fields.hasErrors('address')}"
+                    th:errors="*{address}"
+                  >
                     This field is required.
                   </div>
                 </div>
                 <div class="mb-3">
-                  <label class="form-label" for="award">Award &amp; Certification</label>
-                  <input th:field="*{award}" class="form-control"
-                    th:classappend="${#fields.hasErrors('award')}?'is-invalid':''" id="awardCertification" type="text"
-                    placeholder="Award &amp; Certification" />
-                  <div class="invalid-feedback" th:if="${#fields.hasErrors('award')}" th:errors="*{award}">
-                    This field is required. on is required.
+                  <label class="form-label" for="education">Education</label>
+                  <input
+                    th:field="*{education}"
+                    class="form-control"
+                    th:classappend="${#fields.hasErrors('education')}?'is-invalid':''"
+                    id="education"
+                    type="text"
+                    placeholder="Education"
+                  />
+                  <div
+                    class="invalid-feedback"
+                    th:if="${#fields.hasErrors('education')}"
+                    th:errors="*{education}"
+                  >
+                    This field is required.
                   </div>
                 </div>
 
-                <div class="mb-3">
-                  <label class="form-label" for="selfDescription">Describe about yourself</label>
-                  <textarea th:field="*{selfDescription}" class="form-control"
-                    th:classappend="${#fields.hasErrors('selfDescription')}?'is-invalid':''" id="describeAboutYourself"
-                    type="text" placeholder="Describe about yourself"></textarea>
-                  <div class="invalid-feedback" th:if="${#fields.hasErrors('selfDescription')}"
-                    th:errors="*{selfDescription}">
-                    This field is required. is required.
+                <!-- Visible only on teacher registeration -->
+                <div th:if="${role == 'teacher'}">
+                  <div class="mb-3">
+                    <label class="form-label" for="nrc">NRC</label>
+                    <input
+                      th:field="*{nrc}"
+                      class="form-control"
+                      th:classappend="${#fields.hasErrors('nrc')}?'is-invalid':''"
+                      id="nrc"
+                      type="text"
+                      placeholder="NRC"
+                    />
+                    <div
+                      class="invalid-feedback"
+                      th:if="${#fields.hasErrors('nrc')}"
+                      th:errors="*{nrc}"
+                    >
+                      This field is required.
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label" for="award"
+                      >Award &amp; Certification</label
+                    >
+                    <input
+                      th:field="*{award}"
+                      class="form-control"
+                      th:classappend="${#fields.hasErrors('award')}?'is-invalid':''"
+                      id="awardCertification"
+                      type="text"
+                      placeholder="Award &amp; Certification"
+                    />
+                    <div
+                      class="invalid-feedback"
+                      th:if="${#fields.hasErrors('award')}"
+                      th:errors="*{award}"
+                    >
+                      This field is required. on is required.
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label" for="selfDescription"
+                      >Describe about yourself</label
+                    >
+                    <textarea
+                      th:field="*{selfDescription}"
+                      class="form-control"
+                      th:classappend="${#fields.hasErrors('selfDescription')}?'is-invalid':''"
+                      id="describeAboutYourself"
+                      type="text"
+                      placeholder="Describe about yourself"
+                    ></textarea>
+                    <div
+                      class="invalid-feedback"
+                      th:if="${#fields.hasErrors('selfDescription')}"
+                      th:errors="*{selfDescription}"
+                    >
+                      This field is required. is required.
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <!-- <fieldset>
+                <!-- <fieldset>
                   <legend>Payment</legend>
   
                   <div>
@@ -361,63 +545,91 @@
                   </div>
                 </fieldset> -->
 
-              <!-- Profile Edit Do not need Password Related information -->
-              <div th:classappend="${task=='register'}?'':'visually-hidden'">
-                <div class="mb-3">
-                  <label class="form-label d-block"></label>
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" id="iAgreeToTermCondition" type="checkbox" th:field="*{acceptTerm}"
-                      th:classappend="${#fields.hasErrors('acceptTerm')}?'is-invalid':''" name="" />
-                    <label class="form-check-label" for="acceptTerm">I agree to Term &amp; Condition</label>
-                    <div class="invalid-feedback" for="iAgreeToTermCondition" th:if="${#fields.hasErrors('acceptTerm')}"
-                      th:errors="*{acceptTerm}">
-                      This field is required.
+                <!-- Profile Edit Do not need Password Related information -->
+                <div th:classappend="${task=='register'}?'':'visually-hidden'">
+                  <div class="mb-3">
+                    <label class="form-label d-block"></label>
+                    <div class="form-check form-check-inline">
+                      <input
+                        class="form-check-input"
+                        id="iAgreeToTermCondition"
+                        type="checkbox"
+                        th:field="*{acceptTerm}"
+                        th:classappend="${#fields.hasErrors('acceptTerm')}?'is-invalid':''"
+                        name=""
+                      />
+                      <label class="form-check-label" for="acceptTerm"
+                        >I agree to Term &amp; Condition</label
+                      >
+                      <div
+                        class="invalid-feedback"
+                        for="iAgreeToTermCondition"
+                        th:if="${#fields.hasErrors('acceptTerm')}"
+                        th:errors="*{acceptTerm}"
+                      >
+                        This field is required.
+                      </div>
                     </div>
                   </div>
                 </div>
+
+                <div class="row justify-content-end">
+                  <button
+                    class="btn btn-primary col-auto"
+                    id="nextButton"
+                    name="action"
+                    type="submit"
+                    value="next"
+                  >
+                    Next
+                  </button>
+                </div>
               </div>
 
-              <div class="row justify-content-end">
-                <button class="btn btn-primary col-auto" id="nextButton" name="action" type="submit" value="next">
-                  Next
-                </button>
-              </div>
-            </div>
+              <div id="confirm" th:if="${infoMap != null}">
+                <div class="table-responsive mb-3">
+                  <table class="table table-borderless table-hover">
+                    <tr th:each="entry, stats : ${infoMap}">
+                      <!-- <td th:text="${stats.index + 1}">1</td> -->
+                      <td th:text="${entry.key}" class="text-end">100</td>
+                      <td>:</td>
+                      <td th:text="${entry.value}">John</td>
+                    </tr>
+                  </table>
+                </div>
+                <div class="row justify-content-between">
+                  <button class="btn btn-primary col-auto back">Back</button>
 
-            <div id="confirm" th:if="${infoMap != null}">
-              <div class="table-responsive mb-3">
-                <table class="table table-borderless table-hover">
-                  <tr th:each="entry, stats : ${infoMap}">
-                    <!-- <td th:text="${stats.index + 1}">1</td> -->
-                    <td th:text="${entry.key}" class="text-end">100</td>
-                    <td>:</td>
-                    <td th:text="${entry.value}">John</td>
-                  </tr>
-                </table>
-              </div>
-              <div class="row justify-content-between">
-                <button class="btn btn-primary col-auto back">Back</button>
-
-                <button class="btn btn-primary col-auto" id="submitButton" type="submit" name="action" value="submit">
-                  Submit
-                </button>
+                  <button
+                    class="btn btn-primary col-auto"
+                    id="submitButton"
+                    type="submit"
+                    name="action"
+                    value="submit"
+                  >
+                    Submit
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
+        <!---End of Card-->
       </div>
-      <!---End of Card-->
-    </div>
-    <!-- End of Container -->
-  </form>
+      <!-- End of Container -->
+    </form>
 
-  <div th:replace="fragments/footer"></div>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-    crossorigin="anonymous"></script>
-  <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
-    integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
-  <script th:src="@{/js/ST0001_register.js}"></script>
-</body>
-
+    <div th:replace="fragments/footer"></div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
+      integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI="
+      crossorigin="anonymous"
+    ></script>
+    <script th:src="@{/js/ST0001_register.js}"></script>
+  </body>
 </html>
