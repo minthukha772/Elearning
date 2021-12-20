@@ -75,7 +75,7 @@ public class Content {
 	public void setSyllabus(Syllabus syllabus) {
 		this.syllabus = syllabus;
 	}
-
+	
 
 }
 

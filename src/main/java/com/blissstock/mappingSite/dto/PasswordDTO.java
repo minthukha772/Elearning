@@ -37,4 +37,49 @@ public class PasswordDTO {
     message = ConstrainMessage.PASSWORD_LENGTH_CONSTRAIN_MESSAGE
   )
   private String confirmPassword;
+
+  //Constructors
+
+  public PasswordDTO() {
+  }
+
+  public PasswordDTO(String oldPassword, String type, String password, String confirmPassword) {
+    this.oldPassword = oldPassword;
+    this.type = type;
+    this.password = password;
+    this.confirmPassword = confirmPassword;
+  }
+
+  public String getOldPassword() {
+    return this.oldPassword;
+  }
+
+  public void setOldPassword(String oldPassword) {
+    this.oldPassword = oldPassword;
+  }
+
+  public String getType() {
+    return this.type;
+  }
+
+  public void setType(String type) {
+    this.type = type;
+  }
+
+  public String getPassword() {
+    return this.password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
+  }
+
+  public String getConfirmPassword() {
+    return this.confirmPassword;
+  }
+
+  public void setConfirmPassword(String confirmPassword) {
+    this.confirmPassword = confirmPassword;
+  }
+
 }

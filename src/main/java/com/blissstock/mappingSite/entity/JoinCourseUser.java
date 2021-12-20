@@ -74,6 +74,70 @@ public class JoinCourseUser {
         )
     @JsonIgnore
     private List<PaymentReceive> paymentReceive= new ArrayList<>();
+
+    //Constructors
+
+    public JoinCourseUser() {
+    }
+
+    public JoinCourseUser(Long joinId, CourseInfo courseInfo, UserInfo userInfo, List<Review> review, List<LeaveInfo> leaveInfo, List<PaymentReceive> paymentReceive) {
+        this.joinId = joinId;
+        this.courseInfo = courseInfo;
+        this.userInfo = userInfo;
+        this.review = review;
+        this.leaveInfo = leaveInfo;
+        this.paymentReceive = paymentReceive;
+    }
+
+    public Long getJoinId() {
+        return this.joinId;
+    }
+
+    public void setJoinId(Long joinId) {
+        this.joinId = joinId;
+    }
+
+    public CourseInfo getCourseInfo() {
+        return this.courseInfo;
+    }
+
+    public void setCourseInfo(CourseInfo courseInfo) {
+        this.courseInfo = courseInfo;
+    }
+
+    public UserInfo getUserInfo() {
+        return this.userInfo;
+    }
+
+    public void setUserInfo(UserInfo userInfo) {
+        this.userInfo = userInfo;
+    }
+
+    public List<Review> getReview() {
+        return this.review;
+    }
+
+    public void setReview(List<Review> review) {
+        this.review = review;
+    }
+
+    public List<LeaveInfo> getLeaveInfo() {
+        return this.leaveInfo;
+    }
+
+    public void setLeaveInfo(List<LeaveInfo> leaveInfo) {
+        this.leaveInfo = leaveInfo;
+    }
+
+    public List<PaymentReceive> getPaymentReceive() {
+        return this.paymentReceive;
+    }
+
+    public void setPaymentReceive(List<PaymentReceive> paymentReceive) {
+        this.paymentReceive = paymentReceive;
+    }
+
+
 }
 
 

@@ -22,4 +22,32 @@ public class BankInfo {
   @Column(name = "bank_name", length = 255)
   //@NotBlank(message="Please fill payment service")
   private String bankName;
+
+  //Constructors
+
+  public BankInfo() {
+  }
+
+  public BankInfo(Long bankId, String bankName) {
+    this.bankId = bankId;
+    this.bankName = bankName;
+  }
+
+  public Long getBankId() {
+    return this.bankId;
+  }
+
+  public void setBankId(Long bankId) {
+    this.bankId = bankId;
+  }
+
+  public String getBankName() {
+    return this.bankName;
+  }
+
+  public void setBankName(String bankName) {
+    this.bankName = bankName;
+  }
+
+
 }

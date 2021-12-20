@@ -106,6 +106,7 @@ public class CourseTime {
         this.courseInfo = courseInfo;
     }
 
+    
 
 }
 

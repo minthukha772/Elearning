@@ -22,4 +22,12 @@ public enum UserRole {
         return UserRole.GUEST_USER;
     }
 
+    UserRole(String value) {
+        this.value = value;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
   }

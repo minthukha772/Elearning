@@ -38,4 +38,50 @@ public class TeacherReviewDTO implements TeacherReview{
 		
 		return map;
 	  }
+
+	//Constructors
+
+	public TeacherReviewDTO() {
+	}
+
+	public TeacherReviewDTO(Long reviewId, int reviewType, String feedback, String reviewStatus) {
+		this.reviewId = reviewId;
+		this.reviewType = reviewType;
+		this.feedback = feedback;
+		this.reviewStatus = reviewStatus;
+	}
+
+	public Long getReviewId() {
+		return this.reviewId;
+	}
+
+	public void setReviewId(Long reviewId) {
+		this.reviewId = reviewId;
+	}
+
+	public int getReviewType() {
+		return this.reviewType;
+	}
+
+	public void setReviewType(int reviewType) {
+		this.reviewType = reviewType;
+	}
+
+	public String getFeedback() {
+		return this.feedback;
+	}
+
+	public void setFeedback(String feedback) {
+		this.feedback = feedback;
+	}
+
+	public String getReviewStatus() {
+		return this.reviewStatus;
+	}
+
+	public void setReviewStatus(String reviewStatus) {
+		this.reviewStatus = reviewStatus;
+	}
+
+
 }

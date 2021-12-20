@@ -54,6 +54,40 @@ public class TeacherRegisterDTO extends UserRegisterDTO{
   @NotBlank(message = "This field is required")
   private String secondaryAccountNumber; */
 
+  //Constructors
+
+  public TeacherRegisterDTO() {
+  }
+
+  public TeacherRegisterDTO(String nrc, String award, String selfDescription) {
+    this.nrc = nrc;
+    this.award = award;
+    this.selfDescription = selfDescription;
+  }
+
+  public String getNrc() {
+    return this.nrc;
+  }
+
+  public void setNrc(String nrc) {
+    this.nrc = nrc;
+  }
+
+  public String getAward() {
+    return this.award;
+  }
+
+  public void setAward(String award) {
+    this.award = award;
+  }
+
+  public String getSelfDescription() {
+    return this.selfDescription;
+  }
+
+  public void setSelfDescription(String selfDescription) {
+    this.selfDescription = selfDescription;
+  }
 
 
 }

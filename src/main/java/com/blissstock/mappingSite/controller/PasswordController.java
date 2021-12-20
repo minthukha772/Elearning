@@ -63,9 +63,9 @@ public class PasswordController {
       return "redirect:/login?tokenError";
     } else {
       UserAccount savedUserAccount = savedToken.getUserAccount();
-      savedUserAccount.setMailVerified(true);
+      savedUserAccount.setIsMailVerified(true);
       userService.updateUserAccount(savedUserAccount);
-      savedToken.setUsed(true);
+      savedToken.setIsUsed(true);
       userService.updateToken(savedToken);
     }
 

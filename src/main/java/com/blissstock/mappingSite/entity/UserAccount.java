@@ -61,6 +61,72 @@ public class UserAccount {
 		this.accountStatus = accountStatus;
 		this.registeredDate = registeredDate;
 	}
+
+	//Constructors
+
+	public UserAccount() {
+	}
+
+	public Long getId() {
+		return this.id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getMail() {
+		return this.mail;
+	}
+
+	public void setMail(String mail) {
+		this.mail = mail;
+	}
+
+	public boolean isIsMailVerified() {
+		return this.isMailVerified;
+	}
+
+	public boolean getIsMailVerified() {
+		return this.isMailVerified;
+	}
+
+	public void setIsMailVerified(boolean isMailVerified) {
+		this.isMailVerified = isMailVerified;
+	}
+
+	public String getPassword() {
+		return this.password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getRole() {
+		return this.role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	public String getAccountStatus() {
+		return this.accountStatus;
+	}
+
+	public void setAccountStatus(String accountStatus) {
+		this.accountStatus = accountStatus;
+	}
+
+	public Date getRegisteredDate() {
+		return this.registeredDate;
+	}
+
+	public void setRegisteredDate(Date registeredDate) {
+		this.registeredDate = registeredDate;
+	}
+
 	
 }
 
