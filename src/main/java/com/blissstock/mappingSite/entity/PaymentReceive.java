@@ -49,59 +49,7 @@ public class PaymentReceive {
     @JsonIgnore
     private JoinCourseUser join;
 	
-	//Constructors
-
-	public PaymentReceive() {
-	}
-
-	public PaymentReceive(Long paymentReceiveId, String slip, String paymentStatus, Date paymentReceiveDate, JoinCourseUser join) {
-		this.paymentReceiveId = paymentReceiveId;
-		this.slip = slip;
-		this.paymentStatus = paymentStatus;
-		this.paymentReceiveDate = paymentReceiveDate;
-		this.join = join;
-	}
-
-	public Long getPaymentReceiveId() {
-		return this.paymentReceiveId;
-	}
-
-	public void setPaymentReceiveId(Long paymentReceiveId) {
-		this.paymentReceiveId = paymentReceiveId;
-	}
-
-	public String getSlip() {
-		return this.slip;
-	}
-
-	public void setSlip(String slip) {
-		this.slip = slip;
-	}
-
-	public String getPaymentStatus() {
-		return this.paymentStatus;
-	}
-
-	public void setPaymentStatus(String paymentStatus) {
-		this.paymentStatus = paymentStatus;
-	}
-
-	public Date getPaymentReceiveDate() {
-		return this.paymentReceiveDate;
-	}
-
-	public void setPaymentReceiveDate(Date paymentReceiveDate) {
-		this.paymentReceiveDate = paymentReceiveDate;
-	}
-
-	public JoinCourseUser getJoin() {
-		return this.join;
-	}
-
-	public void setJoin(JoinCourseUser join) {
-		this.join = join;
-	}
-
+	
 
 }
 

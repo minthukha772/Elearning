@@ -13,15 +13,6 @@ public class FileInfo {
     private String name;
     private String url;
 
-    //Constructors
-
-    public FileInfo() {
-    }
-
-    public FileInfo(String name, String url) {
-        this.name = name;
-        this.url = url;
-    }
 
     public String getName() {
         return this.name;

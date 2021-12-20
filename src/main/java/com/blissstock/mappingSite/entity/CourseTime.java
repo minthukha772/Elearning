@@ -53,60 +53,6 @@ public class CourseTime {
     @JsonIgnore
     private CourseInfo courseInfo;
 	
-    //Constructors
-
-    public CourseTime() {
-    }
-
-    public CourseTime(Long courseTimeId, String courseDays, Date courseStartTime, Date courseEndTime, CourseInfo courseInfo) {
-        this.courseTimeId = courseTimeId;
-        this.courseDays = courseDays;
-        this.courseStartTime = courseStartTime;
-        this.courseEndTime = courseEndTime;
-        this.courseInfo = courseInfo;
-    }
-
-    public Long getCourseTimeId() {
-        return this.courseTimeId;
-    }
-
-    public void setCourseTimeId(Long courseTimeId) {
-        this.courseTimeId = courseTimeId;
-    }
-
-    public String getCourseDays() {
-        return this.courseDays;
-    }
-
-    public void setCourseDays(String courseDays) {
-        this.courseDays = courseDays;
-    }
-
-    public Date getCourseStartTime() {
-        return this.courseStartTime;
-    }
-
-    public void setCourseStartTime(Date courseStartTime) {
-        this.courseStartTime = courseStartTime;
-    }
-
-    public Date getCourseEndTime() {
-        return this.courseEndTime;
-    }
-
-    public void setCourseEndTime(Date courseEndTime) {
-        this.courseEndTime = courseEndTime;
-    }
-
-    public CourseInfo getCourseInfo() {
-        return this.courseInfo;
-    }
-
-    public void setCourseInfo(CourseInfo courseInfo) {
-        this.courseInfo = courseInfo;
-    }
-
-    
 
 }
 

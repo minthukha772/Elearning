@@ -70,67 +70,6 @@ public class Review {
         return review;
       }
 
-    //Constructors
-
-    public Review() {
-    }
-
-    public Review(Long reviewId, int star, int reviewType, String feedback, Date assignedDate, JoinCourseUser join) {
-        this.reviewId = reviewId;
-        this.star = star;
-        this.reviewType = reviewType;
-        this.feedback = feedback;
-        this.assignedDate = assignedDate;
-        this.join = join;
-    }
-
-    public Long getReviewId() {
-        return this.reviewId;
-    }
-
-    public void setReviewId(Long reviewId) {
-        this.reviewId = reviewId;
-    }
-
-    public int getStar() {
-        return this.star;
-    }
-
-    public void setStar(int star) {
-        this.star = star;
-    }
-
-    public int getReviewType() {
-        return this.reviewType;
-    }
-
-    public void setReviewType(int reviewType) {
-        this.reviewType = reviewType;
-    }
-
-    public String getFeedback() {
-        return this.feedback;
-    }
-
-    public void setFeedback(String feedback) {
-        this.feedback = feedback;
-    }
-
-    public Date getAssignedDate() {
-        return this.assignedDate;
-    }
-
-    public void setAssignedDate(Date assignedDate) {
-        this.assignedDate = assignedDate;
-    }
-
-    public JoinCourseUser getJoin() {
-        return this.join;
-    }
-
-    public void setJoin(JoinCourseUser join) {
-        this.join = join;
-    }
 
 
 }
