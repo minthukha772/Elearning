@@ -19,6 +19,7 @@ import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.PaymentAccount;
 import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.entity.UserInfo;
+import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.repository.BankInfoRepository;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
 import com.blissstock.mappingSite.repository.PaymentAccountRepository;
@@ -42,6 +43,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
@@ -83,8 +85,8 @@ public class ProfileController {
                       "/admin/profile/{userId}/{courseId}",
   })
     private String getProfile( @PathVariable Long userId,  @PathVariable Long courseId, Model model) {  
-        String role = userSessionService.getUserAccount().getRole();
-        UserInfo userInfo=userRepo.findById(userId).orElse(null);
+        String role = userSessionService.getRole() == UserRole.TEACHER ? "teacher" : userSessionService.getRole() == UserRole.STUDENT ? "student" : "admin";
+        UserInfo userInfo=userRepo.findById(userId).orElse(null);      
         model.addAttribute("userInfo", userInfo);
         model.addAttribute("role", role);
         UserAccount userAcc = userInfo.getUserAccount();
@@ -92,7 +94,7 @@ public class ProfileController {
         List<BankInfo> bankList = bankRepo.findAll();
         model.addAttribute("bankList", bankList);
 
-        if(userAcc.getRole().equals("STUDENT")){
+        if(userAcc.getRole().equals("ROLE_STUDENT")){
           FileInfo profile = loadProfile(userId);
           model.addAttribute("profile", profile);
           model.addAttribute("stuInfo", userInfo.toMapStudent());
@@ -110,22 +112,25 @@ public class ProfileController {
         model.addAttribute("files", fileInfos);
 
         //post action
+        
         model.addAttribute("profilePost", "/"+role+"/profile-upload/"+userId+"/"+courseId);
         return "CM0004_TeacherProfile";
     }
 
   //upload profile and payment
-  @PostMapping(value= "/{role}/profile-upload/{userId}/{courseId}")
+  @PostMapping(value= {"/student/profile-upload/{userId}/{courseId}",
+                      "/teacher/profile-upload/{userId}/{courseId}",
+                      "/admin/profile-upload/{userId}/{courseId}"
+})
   private String postProfile(Model model,
     @RequestParam("profile_pic") MultipartFile photo, 
     @RequestParam(value="action", required=true) String action,
     @Valid @ModelAttribute("userInfo") UserInfo userPayment,
-    @PathVariable String role,
+    @Valid @ModelAttribute("profile") FileInfo profile,
     @PathVariable Long userId,
     @PathVariable Long courseId
   ) {
-    UserInfo userInfo=userRepo.findById(userId).orElse(null);
-
+    String role = userSessionService.getRole() == UserRole.TEACHER ? "teacher" : userSessionService.getRole() == UserRole.STUDENT ? "student" : "admin";
     if(action.equals("profile-upload")){
         
     if(!photo.isEmpty()) {
@@ -138,8 +143,8 @@ public class ProfileController {
         storageService.storeProfile(photo,saveFileName);
 
         //insert photo 
-        userInfo.setPhoto(saveFileName);
-        userRepo.save(userInfo);
+        
+        userRepo.save(userPayment);
       }else {
         model.addAttribute("photoTypeErr", "Files other than image file cannot be uploaded.");
         return "CM0004_TeacherProfile";
@@ -154,19 +159,19 @@ public class ProfileController {
       payAcc.setUserInfo(userPayment);
       
       BankInfo bankInfo=bankRepo.findById(payAcc.getCheckedBank()).orElse(null);
-      System.out.println(payAcc.getCheckedBank());
       payAcc.setBankInfo(bankInfo);
         payAccRepo.save(payAcc);
         System.out.println(payAcc);
       }
    }
-      
+
+   
       return "redirect:/"+role+"/profile/"+userId+"/"+courseId;
   
 
   }
 
-  //Get profile
+  //Get profile photo
   private FileInfo loadProfile(long userId) {
     try {
         UserInfo userInfo=userRepo.findById(userId).orElse(null);
@@ -197,29 +202,30 @@ public class ProfileController {
   }
     
   //Get certificate  
-  private List<FileInfo> loadImages(Long uid) {
-    try {
-      return storageService
-        .loadAllCertificates(uid)
-        .map(
-          path -> {
-            String name = path.getFileName().toString();
-            String url = MvcUriComponentsBuilder
-              .fromMethodName(
-                FileController.class,
-                "getCertificates",
-                path.getFileName().toString()
-              )
-              .build()
-              .toString();
-            return new FileInfo(name, url);
-          }
-        )
-        .collect(Collectors.toList());
-    } catch (Exception e) {
-      return new ArrayList<>();
+    private List<FileInfo> loadImages(Long uid) {
+      try {
+        return storageService
+          .loadAllCertificates(uid)
+          .map(
+            path -> {
+              String name = path.getFileName().toString();
+              String url = MvcUriComponentsBuilder
+                .fromMethodName(
+                  FileController.class,
+                  "getCertificates",
+                  uid,
+                  path.getFileName().toString()
+                )
+                .build()
+                .toString();
+              return new FileInfo(name, url);
+            }
+          )
+          .collect(Collectors.toList());
+      } catch (Exception e) {
+        return new ArrayList<>();
+      }
     }
     
   }
 
-}

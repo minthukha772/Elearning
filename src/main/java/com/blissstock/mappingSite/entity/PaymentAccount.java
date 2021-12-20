@@ -51,7 +51,7 @@ public class PaymentAccount {
     @JsonIgnore
     private UserInfo userInfo;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "bank_id_fkey")
     @JsonIgnore
     private BankInfo bankInfo;
