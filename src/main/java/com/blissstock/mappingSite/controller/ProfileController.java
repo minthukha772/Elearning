@@ -80,11 +80,11 @@ public class ProfileController {
 
     //Get profile
     @Valid
-    @GetMapping(value={"/teacher/profile/{userId}/{courseId}",
-                      "/student/profile/{userId}/{courseId}",
-                      "/admin/profile/{userId}/{courseId}",
+    @GetMapping(value={"/teacher/profile/{userId}",
+                      "/student/profile/{userId}",
+                      "/admin/profile/{userId}"
   })
-    private String getProfile( @PathVariable Long userId,  @PathVariable Long courseId, Model model) {  
+    private String getProfile( @PathVariable Long userId, Model model) {  
         String role = userSessionService.getRole() == UserRole.TEACHER ? "teacher" : userSessionService.getRole() == UserRole.STUDENT ? "student" : "admin";
         UserInfo userInfo=userRepo.findById(userId).orElse(null);      
         model.addAttribute("userInfo", userInfo);
@@ -98,7 +98,7 @@ public class ProfileController {
           FileInfo profile = loadProfile(userId);
           model.addAttribute("profile", profile);
           model.addAttribute("stuInfo", userInfo.toMapStudent());
-          model.addAttribute("profilePost", "/"+role+"/profile-upload/"+userId+"/"+courseId);        
+          model.addAttribute("profilePost", "/"+role+"/profile-upload/"+userId);        
             return "CM0004_StudentProfile";
         }
         model.addAttribute("trInfo", userInfo.toMapTeacher());
@@ -113,22 +113,21 @@ public class ProfileController {
 
         //post action
         
-        model.addAttribute("profilePost", "/"+role+"/profile-upload/"+userId+"/"+courseId);
+        model.addAttribute("profilePost", "/"+role+"/profile-upload/"+userId);
         return "CM0004_TeacherProfile";
     }
 
   //upload profile and payment
-  @PostMapping(value= {"/student/profile-upload/{userId}/{courseId}",
-                      "/teacher/profile-upload/{userId}/{courseId}",
-                      "/admin/profile-upload/{userId}/{courseId}"
+  @PostMapping(value= {"/student/profile-upload/{userId}",
+                      "/teacher/profile-upload/{userId}",
+                      "/admin/profile-upload/{userId}"
 })
   private String postProfile(Model model,
     @RequestParam("profile_pic") MultipartFile photo, 
     @RequestParam(value="action", required=true) String action,
     @Valid @ModelAttribute("userInfo") UserInfo userPayment,
     @Valid @ModelAttribute("profile") FileInfo profile,
-    @PathVariable Long userId,
-    @PathVariable Long courseId
+    @PathVariable Long userId
   ) {
     String role = userSessionService.getRole() == UserRole.TEACHER ? "teacher" : userSessionService.getRole() == UserRole.STUDENT ? "student" : "admin";
     if(action.equals("profile-upload")){
@@ -166,7 +165,7 @@ public class ProfileController {
    }
 
    
-      return "redirect:/"+role+"/profile/"+userId+"/"+courseId;
+      return "redirect:/"+role+"/profile/"+userId;
   
 
   }
