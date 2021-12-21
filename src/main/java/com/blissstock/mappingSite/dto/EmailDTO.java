@@ -17,4 +17,6 @@ public class EmailDTO {
     @ValidEmail 
     @NotBlank
     private String email;
+
+
 }

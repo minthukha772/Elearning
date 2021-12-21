@@ -16,6 +16,7 @@ import com.blissstock.mappingSite.entity.ReviewTest;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
 import com.blissstock.mappingSite.repository.ReviewRepository;
+import com.blissstock.mappingSite.repository.UserInfoRepository;
 import com.blissstock.mappingSite.service.StudentReviewService;
 
 
@@ -29,6 +30,9 @@ public class StudentReviewServiceImpl implements StudentReviewService {
 
   @Autowired
   private ReviewRepository reviewRepo;
+
+  @Autowired
+  private UserInfoRepository userRepo;
 
   
   @Autowired

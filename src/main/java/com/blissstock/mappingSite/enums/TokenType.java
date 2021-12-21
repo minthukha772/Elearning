@@ -10,4 +10,7 @@ public enum TokenType {
 
     
     @Getter private String value;
+
+   
+
 }

@@ -44,6 +44,7 @@ public class FileController {
     @PathVariable String filename
   ) {
     System.out.println(filename);
+    System.out.println(uid);
     Resource file;
     try {
       file = storageService.loadCertificate(uid, filename);

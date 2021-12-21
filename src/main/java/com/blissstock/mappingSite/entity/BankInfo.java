@@ -22,4 +22,5 @@ public class BankInfo {
   @Column(name = "bank_name", length = 255)
   //@NotBlank(message="Please fill payment service")
   private String bankName;
+
 }

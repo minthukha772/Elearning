@@ -107,9 +107,9 @@ public class StorageServiceImpl implements StorageService {
   @Override
   public Resource loadCertificate(Long uid, String filename)
     throws UnauthorizedFileAccessException {
-    if (!checkAuthForTeacher(uid)) {
-      throw new UnauthorizedFileAccessException();
-    }
+    // if (!checkAuthForTeacher(uid)) {
+    //   throw new UnauthorizedFileAccessException();
+    // }
     Path storeLocation = Paths.get(certificatePath + File.separator + uid);
     try {
       Path file = storeLocation.resolve(filename);
@@ -139,8 +139,8 @@ public class StorageServiceImpl implements StorageService {
         throw new NotImageFileException();
       }
     }
-
     Path storeLocation = Paths.get(certificatePath + File.separator + uid);
+
     if (!Files.exists(storeLocation)) {
       try {
         Files.createDirectories(storeLocation);
@@ -178,9 +178,9 @@ public class StorageServiceImpl implements StorageService {
   @Override
   public Stream<Path> loadAllCertificates(Long uid)
     throws UnauthorizedFileAccessException {
-    if (!checkAuthForTeacher(uid)) {
-      throw new UnauthorizedFileAccessException();
-    }
+    // if (!checkAuthForTeacher(uid)) {
+    //   throw new UnauthorizedFileAccessException();
+    // }
     Path storeLocation = Paths.get(certificatePath + File.separator + uid);
     try {
       return Files

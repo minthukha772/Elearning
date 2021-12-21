@@ -20,6 +20,8 @@ import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,6 +30,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Data
 @Table(name = "syllabus")
@@ -58,4 +61,5 @@ public class Syllabus {
   )
   @JsonIgnore
   private List<Content> content = new ArrayList<>();
+  
 }

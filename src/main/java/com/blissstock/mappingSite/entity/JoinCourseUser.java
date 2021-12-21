@@ -74,6 +74,9 @@ public class JoinCourseUser {
         )
     @JsonIgnore
     private List<PaymentReceive> paymentReceive= new ArrayList<>();
+
+   
+
 }
 
 

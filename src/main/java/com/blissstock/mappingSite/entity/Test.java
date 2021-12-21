@@ -45,5 +45,7 @@ public class Test {
     @JsonIgnore
     private CourseInfo courseInfo;
 	
+
+
 }
 

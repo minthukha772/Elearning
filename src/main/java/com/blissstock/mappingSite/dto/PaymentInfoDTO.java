@@ -18,4 +18,6 @@ public class PaymentInfoDTO {
     private String serviceName;
     private String accountName;
     private String accountNumber;
+
+   
 }

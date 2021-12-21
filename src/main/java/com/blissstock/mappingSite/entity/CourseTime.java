@@ -48,5 +48,6 @@ public class CourseTime {
     	this.courseEndTime = courseEndTime;
     }
 	
+
 }
 

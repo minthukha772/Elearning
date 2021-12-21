@@ -175,4 +175,135 @@ public class UserRegisterDTO extends PasswordData implements Confirmable {
   ) {
     return toUserAccount(userRegisterDTO,null);
   }
+
+  //Constructors
+
+  public UserRegisterDTO() {
+  }
+
+  public UserRegisterDTO(String email, String name, String password, String confirmPassword, String gender, String phone, Date dob, int zipCode, String city, String division, String address, String education, boolean acceptTerm) {
+    this.email = email;
+    this.name = name;
+    this.password = password;
+    this.confirmPassword = confirmPassword;
+    this.gender = gender;
+    this.phone = phone;
+    this.dob = dob;
+    this.zipCode = zipCode;
+    this.city = city;
+    this.division = division;
+    this.address = address;
+    this.education = education;
+    this.acceptTerm = acceptTerm;
+  }
+
+  public String getEmail() {
+    return this.email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  public String getName() {
+    return this.name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getPassword() {
+    return this.password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
+  }
+
+  public String getConfirmPassword() {
+    return this.confirmPassword;
+  }
+
+  public void setConfirmPassword(String confirmPassword) {
+    this.confirmPassword = confirmPassword;
+  }
+
+  public String getGender() {
+    return this.gender;
+  }
+
+  public void setGender(String gender) {
+    this.gender = gender;
+  }
+
+  public String getPhone() {
+    return this.phone;
+  }
+
+  public void setPhone(String phone) {
+    this.phone = phone;
+  }
+
+  public Date getDob() {
+    return this.dob;
+  }
+
+  public void setDob(Date dob) {
+    this.dob = dob;
+  }
+
+  public int getZipCode() {
+    return this.zipCode;
+  }
+
+  public void setZipCode(int zipCode) {
+    this.zipCode = zipCode;
+  }
+
+  public String getCity() {
+    return this.city;
+  }
+
+  public void setCity(String city) {
+    this.city = city;
+  }
+
+  public String getDivision() {
+    return this.division;
+  }
+
+  public void setDivision(String division) {
+    this.division = division;
+  }
+
+  public String getAddress() {
+    return this.address;
+  }
+
+  public void setAddress(String address) {
+    this.address = address;
+  }
+
+  public String getEducation() {
+    return this.education;
+  }
+
+  public void setEducation(String education) {
+    this.education = education;
+  }
+
+  public boolean isAcceptTerm() {
+    return this.acceptTerm;
+  }
+
+  public boolean getAcceptTerm() {
+    return this.acceptTerm;
+  }
+
+  public void setAcceptTerm(boolean acceptTerm) {
+    this.acceptTerm = acceptTerm;
+  }
+
+
 }

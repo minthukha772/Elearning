@@ -58,8 +58,8 @@ public class UserAccount {
 	@NotBlank(message="Please enter password.")
 	@Column(name = "password",length = 64)
 	private String password;
-	
-	@Column(name = "role", length = 15)
+  
+	@Column(name = "role", length = 25)
 	private String role;
 	
 	@Column(name = "account_status", length = 10)
@@ -87,6 +87,6 @@ public class UserAccount {
 		this.registeredDate = registeredDate;
 		this.userInfo = userInfo;
 	}
-	
+
 }
 

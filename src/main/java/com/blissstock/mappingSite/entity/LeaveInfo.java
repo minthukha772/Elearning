@@ -33,6 +33,37 @@ public class LeaveInfo {
   private Long leaveId;
 
   @NotNull
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
+  @Column(name = "leave_date")
+  private Date leaveDate;
+
+  @Column(
+    name = "leave_start_time",
+    columnDefinition = "TIMESTAMP WITH TIME ZONE"
+  )
+  @NotNull
+  @Temporal(TemporalType.TIMESTAMP)
+  private Date leaveStartTime;
+
+  @Column(
+    name = "leave_end_time",
+    columnDefinition = "TIMESTAMP WITH TIME ZONE"
+  )
+  @NotNull
+  @Temporal(TemporalType.TIMESTAMP)
+  private Date leaveEndTime;
+
+  @NotBlank(message = "Please fill reason")
+  @Column(name = "reason")
+  private String reason;
+
+  //mapping
+  @ManyToOne(fetch = FetchType.EAGER, optional = false)
+  @JoinColumn(name = "join_fkey")
+  @JsonIgnore
+  private JoinCourseUser join;
+
+  @NotNull
   @DateTimeFormat(pattern = "MM-dd-yyyy")
   //@Temporal(TemporalType.DATE)
   @Column(name = "leave_start_date")
@@ -48,26 +79,6 @@ public class LeaveInfo {
     name = "leave_start_time",
     columnDefinition = "timestamp with time zone not null"
   )
-  @NotNull
-  //@Temporal(TemporalType.TIME)
-  //@Temporal(TemporalType.TIMESTAMP), columnDefinition= "TIMESTAMP WITH TIME ZONE"
-  @Temporal(TemporalType.TIMESTAMP)
-  private Date leaveStartTime;
-
-  @Column(
-    name = "leave_end_time",
-    columnDefinition = "timestamp with time zone not null"
-  )
-  @NotNull
-  // @Temporal(TemporalType.TIME)
-  //@Temporal(TemporalType.TIMESTAMP)
-  @Temporal(TemporalType.TIMESTAMP)
-  private Date leaveEndTime;
-
-  @NotBlank(message = "Please fill reason")
-  @Column(name = "reason")
-  private String reason;
-
   //mapping
   @ManyToOne(fetch = FetchType.EAGER, optional = false)
   @JoinColumn(name = "uid_fkey")

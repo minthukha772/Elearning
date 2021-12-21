@@ -46,40 +46,31 @@ public class UserInfo implements Profile{
   private String photo;
 
   @Column(name = "user_name", length = 100)
-  @NotBlank(message = "Please enter your name")
   private String userName;
 
-  @NotBlank(message = "Please enter phone number.")
   @Size(max = 15, min = 6, message = "Invalid Phone Number")
   @Column(name = "phone_no")
   private String phoneNo;
 
-  @NotBlank(message = "Please choose gender.")
   @Column(name = "gender", length = 20)
   private String gender;
 
-  @NotNull
   @DateTimeFormat(pattern = "yyyy-MM-dd")
   @Column(name = "birth_date")
   private Date birthDate;
 
-  @NotBlank(message = "Please enter postal code.")
   @Column(name = "postal_code")
   private String postalCode;
 
-  @NotBlank(message = "Please enter city.")
   @Column(name = "city", length = 50)
   private String city;
 
-  @NotBlank(message = "Please enter division")
   @Column(name = "division", length = 50)
   private String division;
 
-  @NotBlank(message = "Please enter address.")
   @Column(name = "address", length = 255)
   private String address;
 
-  @NotBlank(message = "Please fill education level.")
   @Column(name = "education", length = 255)
   private String education;
 
@@ -167,5 +158,6 @@ public class UserInfo implements Profile{
     return map;
   }
 
+ 
  
 }

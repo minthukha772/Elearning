@@ -59,4 +59,7 @@ public class Token {
   private UserAccount userAccount;
 
   private Date expiryDate;
+
+
+
 }
