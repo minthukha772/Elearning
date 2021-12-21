@@ -3,18 +3,44 @@ package com.blissstock.mappingSite.controller;
 
 import java.util.List;
 
+import com.blissstock.mappingSite.entity.CourseInfo;
+import com.blissstock.mappingSite.repository.CourseRepository;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/")
 public class IndexController {
-    
-}   
-  
+    private static final Logger logger = LoggerFactory.getLogger(CheckEmailController.class);
+
+    @Autowired
+    private CourseRepository courseRepo;
+
+    @GetMapping("/")
+    private String getCourses(Model model) {
+        try {
+            logger.info("GET request");
+
+            List<CourseInfo> liveList = courseRepo.findByClassType("Live");
+
+            List<CourseInfo> videoList = courseRepo.findByClassType("Video");
+            model.addAttribute("liveCourse", liveList);
+            // TODO change to video list
+            model.addAttribute("recordedCourse", liveList);
+
+            System.out.print(liveList.toString());
+        } catch (Exception e) {
+            logger.info("Exception at index controller :: {}", e.toString());
+            System.out.print(e.toString());
+        }
+
+        return "index.html";
+    }
+
+}

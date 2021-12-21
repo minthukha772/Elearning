@@ -8,6 +8,9 @@ import com.blissstock.mappingSite.service.UserService;
 import com.blissstock.mappingSite.service.UserSessionService;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,35 +21,29 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import ch.qos.logback.classic.Logger;
-
 @Controller
 public class ProfileEditController {
-
+  private static final Logger logger = LoggerFactory.getLogger(ProfileEditController.class);
   @Autowired
   UserSessionService userSessionService;
 
   @Autowired
   UserService userService;
 
-
-  @GetMapping(
-    path = {
+  @GetMapping(path = {
       "/student/profile_edit",
       "/teacher/profile_edit",
       "admin/profile_edit/student/{id}",
       "admin/profile_edit/teacher/{id}",
-    }
-  )
+  })
   public String editProfileView(
-    Model model,
-    @PathVariable(name = "id", required = false) Long id
-  ) {
+      Model model,
+      @PathVariable(name = "id", required = false) Long id) {
     String role;
     System.out.println("id is " + id);
 
     if (id != null) {
-      //Id only present on admin side
+      // Id only present on admin side
       UserInfo userInfo = userService.getUserInfoByID(id);
       id = userInfo.getUserAccount().getAccountId();
       role = "admin";
@@ -57,7 +54,7 @@ public class ProfileEditController {
           ? "teacher"
           : "student";
     }
-
+    logger.info("Role is {}", role);
     UserInfo userInfo = userService.getUserInfoByID(id);
     UserRegisterDTO userRegisterDTO = UserRegisterDTO.fromUserInfo(userInfo);
     userRegisterDTO.setAcceptTerm(true);
@@ -68,27 +65,26 @@ public class ProfileEditController {
     return "ST0001_register";
   }
 
-  @PostMapping(
-    path = { "/student/profile_edit", "/admin/profile_edit/student/{id}" }
-  )
+  @PostMapping(path = { "/student/profile_edit", "/admin/profile_edit/student/{id}" })
   public String editStudentProfile(
-    Model model,
-    @Valid @ModelAttribute("userInfo") UserRegisterDTO userInfo,
-    BindingResult bindingResult,
-    @RequestParam(value = "action", required = true) String action,
-    HttpServletRequest httpServletRequest,
-    @PathVariable(name = "id", required = false) Long id
-  ) {
+      Model model,
+      @Valid @ModelAttribute("userInfo") UserRegisterDTO userInfo,
+      BindingResult bindingResult,
+      @RequestParam(value = "action", required = true) String action,
+      HttpServletRequest httpServletRequest,
+      @PathVariable(name = "id", required = false) Long id) {
+    logger.info("POST Request");
     String role = "student";
     Long uid = getUid(id);
     model.addAttribute("task", "profile_edit");
     model.addAttribute("role", role);
     model.addAttribute(
-      "postAction",
-      httpServletRequest.getRequestURL().toString()
-    );
+        "postAction",
+        httpServletRequest.getRequestURL().toString());
 
     if (bindingResult.hasErrors()) {
+      logger.warn("Invalid Form Field error {},  error count:{}", bindingResult.getFieldError(),
+          bindingResult.getFieldErrorCount());
       return "ST0001_register";
     }
 
@@ -97,38 +93,38 @@ public class ProfileEditController {
       if (action.equals("submit")) {
         userService.updateUser(userInfo, uid);
       }
-      //TODO redirect to complete page
+      // TODO redirect to complete page
     } catch (Exception e) {
+      logger.info(" Form Submition error :{}", e.getMessage());
       System.out.println(e);
     }
 
-    //Information For Randering Confirm
+    // Information For Randering Confirm
     model.addAttribute("infoMap", userInfo.toMap());
     System.out.println(userInfo.toMap());
     return "ST0001_register";
   }
 
-  @PostMapping(
-    path = { "/teacher/profile_edit", "/admin/profile_edit/teacher" }
-  )
+  @PostMapping(path = { "/teacher/profile_edit", "/admin/profile_edit/teacher" })
   public String editTeacherProfile(
-    Model model,
-    @Valid @ModelAttribute("userInfo") TeacherRegisterDTO userInfo,
-    BindingResult bindingResult,
-    @RequestParam(value = "action", required = true) String action,
-    HttpServletRequest httpServletRequest,
-    @PathVariable(name = "id", required = false) Long id
-  ) {
+      Model model,
+      @Valid @ModelAttribute("userInfo") TeacherRegisterDTO userInfo,
+      BindingResult bindingResult,
+      @RequestParam(value = "action", required = true) String action,
+      HttpServletRequest httpServletRequest,
+      @PathVariable(name = "id", required = false) Long id) {
+    logger.info("POST Request");
     String role = "teacher";
     Long uid = getUid(id);
     model.addAttribute("task", "profile_edit");
     model.addAttribute("role", role);
     model.addAttribute(
-      "postAction",
-      httpServletRequest.getRequestURL().toString()
-    );
+        "postAction",
+        httpServletRequest.getRequestURL().toString());
 
     if (bindingResult.hasErrors()) {
+      logger.warn("Invalid Form Field error {},  error count:{}", bindingResult.getFieldError(),
+          bindingResult.getFieldErrorCount());
       return "ST0001_register";
     }
 
@@ -137,12 +133,13 @@ public class ProfileEditController {
       if (action.equals("submit")) {
         userService.updateUser(userInfo, uid);
       }
-      //TODO redirect to complete page
+      // TODO redirect to complete page
     } catch (Exception e) {
+      logger.info(" Form Submition error :{}", e.getMessage());
       System.out.println(e);
     }
 
-    //Information For Randering Confirm
+    // Information For Randering Confirm
     model.addAttribute("infoMap", userInfo.toMap());
     System.out.println(userInfo.toMap());
     return "ST0001_register";
@@ -156,6 +153,8 @@ public class ProfileEditController {
     } else if (role == UserRole.TEACHER || role == UserRole.STUDENT) {
       uid = userSessionService.getUserAccount().getAccountId();
     } else {
+      logger.warn("User Authentication Fail");
+      ;
       throw new RuntimeException("user authetication fail");
     }
     return uid;

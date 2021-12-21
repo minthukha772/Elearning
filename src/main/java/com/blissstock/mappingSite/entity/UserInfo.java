@@ -1,10 +1,14 @@
 package com.blissstock.mappingSite.entity;
 
+import com.blissstock.mappingSite.dto.TeacherRegisterDTO;
+import com.blissstock.mappingSite.dto.UserRegisterDTO;
+import com.blissstock.mappingSite.interfaces.Profile;
+import com.blissstock.mappingSite.utils.DateFormatter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,25 +22,17 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import com.blissstock.mappingSite.dto.TeacherRegisterDTO;
-import com.blissstock.mappingSite.dto.UserRegisterDTO;
-import com.blissstock.mappingSite.interfaces.Profile;
-import com.blissstock.mappingSite.utils.DateFormatter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import org.springframework.format.annotation.DateTimeFormat;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
 @Table(name = "user_info")
-public class UserInfo implements Profile{
+public class UserInfo implements Profile {
 
   @Column(name = "uid")
   @Id
@@ -95,7 +91,7 @@ public class UserInfo implements Profile{
   @JoinColumn(name = "account_id")
   UserAccount userAccount;
 
-/*   @OneToMany(
+  /*   @OneToMany(
     fetch = FetchType.LAZY,
     cascade = CascadeType.ALL,
     mappedBy = "userInfo"
@@ -112,12 +108,12 @@ public class UserInfo implements Profile{
   private List<PaymentAccount> paymentAccount = new ArrayList<>();
 
   @OneToMany(
-    fetch = FetchType.LAZY, 
-    cascade = CascadeType.ALL, 
-    mappedBy="userInfo"
-    )
-	@JsonIgnore
-	private List<JoinCourseUser> join= new ArrayList<>();
+    fetch = FetchType.LAZY,
+    cascade = CascadeType.ALL,
+    mappedBy = "userInfo"
+  )
+  @JsonIgnore
+  private List<JoinCourseUser> join = new ArrayList<>();
 
   public static UserInfo fromRegisterDTO(UserRegisterDTO userRegisterDTO) {
     UserInfo userInfo = new UserInfo();
@@ -139,10 +135,11 @@ public class UserInfo implements Profile{
 
     return userInfo;
   }
+
   @Override
   public LinkedHashMap<String, String> toMapStudent() {
     LinkedHashMap<String, String> map = new LinkedHashMap<>();
-    //map.put("Email", this.email);
+    // map.put("Email", this.email);
     map.put("Name", this.userName);
     map.put("Phone Number", this.phoneNo);
     map.put("Gender", this.gender);
@@ -158,7 +155,7 @@ public class UserInfo implements Profile{
   @Override
   public LinkedHashMap<String, String> toMapTeacher() {
     LinkedHashMap<String, String> map = new LinkedHashMap<>();
-    //map.put("Email", this.email);
+    // map.put("Email", this.email);
     map.put("Name", this.userName);
     map.put("Gender", this.gender);
     map.put("Date of Birth", DateFormatter.format(this.birthDate));
@@ -166,6 +163,4 @@ public class UserInfo implements Profile{
     map.put("SelfDescription", this.selfDescription);
     return map;
   }
-
- 
 }
