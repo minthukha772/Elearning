@@ -1,4 +1,4 @@
-package com.blissstock.mappingSite.controller;
+/* package com.blissstock.mappingSite.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,70 +20,77 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class ReviewListController {
-    @Autowired
-    ReviewTestRepository reviewTestRepo;
 
-    @Autowired
-    CourseInfoRepository courseInfoRepo;
+  @Autowired
+  ReviewTestRepository reviewTestRepo;
 
-    @Autowired
-    UserRepository userRepo;
-    //get student review 
-    @Valid
-    @GetMapping(value="/{role}/review-list/{courseId}/{userId}")
-    private String getReviewList(@PathVariable Long courseId, @PathVariable Long userId, @PathVariable String role, Model model) {  
-        CourseInfo courseInfo=courseInfoRepo.findById(courseId).orElse(null);
-        UserInfo user=userRepo.findById(userId).orElse(null);
-        //Display course name
-        String courseName=courseInfo.getCourseName();
-        model.addAttribute("courseName", courseName);
+  @Autowired
+  CourseInfoRepository courseInfoRepo;
 
-        //Display teacher name
-        List<UserInfo> userInfoList=courseInfo.getUserInfo();
-        for(UserInfo userInfo:userInfoList){
-            String userRole =  userInfo.getUserAccount().getRole();
-            if(userRole.equals("teacher")){
-                String trName=userInfo.getUserName();
-                model.addAttribute("trName", trName);
-            } 
-            else if(userRole.equals("student")){
-                String stuName=userInfo.getUserName();
-                model.addAttribute("stuName", stuName);
-            }
-        }
+  @Autowired
+  UserRepository userRepo;
 
-        //Display review
-        List<Review> reviews=courseInfo.getReview();
-        List<Review> courseReviewList= new ArrayList<Review>(); 
-        for (Review courseReview:reviews){
-            if(courseReview.getReviewType()==0){
-                courseReviewList.add(courseReview); 
-                model.addAttribute("courseReviewList", courseReviewList);
-            }
-        }
+  //get student review
+  @Valid
+  @GetMapping(value = "/{role}/review-list/{courseId}/{userId}")
+  private String getReviewList(
+    @PathVariable Long courseId,
+    @PathVariable Long userId,
+    @PathVariable String role,
+    Model model
+  ) {
+    CourseInfo courseInfo = courseInfoRepo.findById(courseId).orElse(null);
+    UserInfo user = userRepo.findById(userId).orElse(null);
+    //Display course name
+    String courseName = courseInfo.getCourseName();
+    model.addAttribute("courseName", courseName);
 
-        List<Review> stuReviews=user.getReview();
-        List<Review> studentReviewList= new ArrayList<Review>();
-        for(Review studentReview:stuReviews) {
-            if(studentReview.getStar()==0){
-                studentReviewList.add(studentReview);
-                model.addAttribute("stuReviews", studentReviewList);
-            }
-        }
-        // for(Review review : reviews){
-        //     model.addAttribute("review", review);  
-        // }
-        // UserInfo userInfo=userRepo.findByUserName(userName);
-        // //Long userId=userInfo.getUid();
-        // UserAccount account=userInfo.getUserAccount();
-        // String role = account.getRole();
+    //Display teacher name
+    List<UserInfo> userInfoList = courseInfo.getUserInfo();
+    for (UserInfo userInfo : userInfoList) {
+      String userRole = userInfo.getUserAccount().getRole();
+      if (userRole.equals("teacher")) {
+        String trName = userInfo.getUserName();
+        model.addAttribute("trName", trName);
+      } else if (userRole.equals("student")) {
+        String stuName = userInfo.getUserName();
+        model.addAttribute("stuName", stuName);
+      }
+    }
 
-        if(role.equals("teacher")){
-            return "CM0009_ReviewList";
-        } else if (role.equals("admin")){
-            return "CM0009_ReviewListAdmin";
-        }
+    //Display review
+    List<Review> reviews = courseInfo.getReview();
+    List<Review> courseReviewList = new ArrayList<Review>();
+    for (Review courseReview : reviews) {
+      if (courseReview.getReviewType() == 0) {
+        courseReviewList.add(courseReview);
+        model.addAttribute("courseReviewList", courseReviewList);
+      }
+    }
 
-            return "CM0009_ReviewListStudent";
-	}
+    List<Review> stuReviews = user.getReview();
+    List<Review> studentReviewList = new ArrayList<Review>();
+    for (Review studentReview : stuReviews) {
+      if (studentReview.getStar() == 0) {
+        studentReviewList.add(studentReview);
+        model.addAttribute("stuReviews", studentReviewList);
+      }
+    }
+    // for(Review review : reviews){
+    //     model.addAttribute("review", review);
+    // }
+    // UserInfo userInfo=userRepo.findByUserName(userName);
+    // //Long userId=userInfo.getUid();
+    // UserAccount account=userInfo.getUserAccount();
+    // String role = account.getRole();
+
+    if (role.equals("teacher")) {
+      return "CM0009_ReviewList";
+    } else if (role.equals("admin")) {
+      return "CM0009_ReviewListAdmin";
+    }
+
+    return "CM0009_ReviewListStudent";
+  }
 }
+ */

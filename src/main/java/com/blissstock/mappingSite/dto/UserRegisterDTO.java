@@ -16,6 +16,7 @@ import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.interfaces.Confirmable;
+import com.blissstock.mappingSite.interfaces.Profile;
 import com.blissstock.mappingSite.utils.DateFormatter;
 import com.blissstock.mappingSite.validation.ConstrainMessage;
 import com.blissstock.mappingSite.validation.constrains.PasswordData;
@@ -49,39 +50,27 @@ public class UserRegisterDTO extends PasswordData implements Confirmable {
     regexp = "^(?=.*?[A-Za-z])(?=.*?[0-9]).{8,}$",
     message = ConstrainMessage.PASSWORD_CONSTRAIN_MESSAGE
   )
-  @Size(
-    min = 8,
-    max = 32,
-    message = ConstrainMessage.PASSWORD_LENGTH_CONSTRAIN_MESSAGE
-  )
+  @Size(min = 8, max = 32, message = ConstrainMessage.PASSWORD_LENGTH_CONSTRAIN_MESSAGE)
   private String password;
 
   @Pattern(
     regexp = "^(?=.*?[A-Za-z])(?=.*?[0-9]).{8,}$",
     message = ConstrainMessage.PASSWORD_CONSTRAIN_MESSAGE
   )
-  @Size(
-    min = 8,
-    max = 32,
-    message = ConstrainMessage.PASSWORD_LENGTH_CONSTRAIN_MESSAGE
-  )
+  @Size(min = 8, max = 32, message = ConstrainMessage.PASSWORD_LENGTH_CONSTRAIN_MESSAGE)
   private String confirmPassword;
 
   @NotBlank(message = ConstrainMessage.EMPTY_CONSTRAIN_MESSAGE)
   private String gender = "male";
 
   @NotBlank(message = ConstrainMessage.EMPTY_CONSTRAIN_MESSAGE)
-  @Size(max = 15, min = 6, message = "Invalid Phone Number")
   private String phone;
 
   @DateTimeFormat(pattern = "yyyy-MM-dd")
-  @Past
+  @Past  
   private Date dob = new Date();
 
-  @Max(
-    value = 99999,
-    message = ConstrainMessage.INVALID_FORMAT_CONSTRAIN_MESSAGE
-  )
+  @Max(value = 99999, message = ConstrainMessage.INVALID_FORMAT_CONSTRAIN_MESSAGE)
   private int zipCode;
 
   @NotBlank(message = ConstrainMessage.EMPTY_CONSTRAIN_MESSAGE)
@@ -134,7 +123,6 @@ public class UserRegisterDTO extends PasswordData implements Confirmable {
       TeacherRegisterDTO teacherRegisterDTO = (TeacherRegisterDTO) userRegisterDTO;
       userInfo.setNrc(teacherRegisterDTO.getNrc());
       userInfo.setSelfDescription(teacherRegisterDTO.getSelfDescription());
-      userInfo.setCertificate(teacherRegisterDTO.getAward());
     }
 
     return userInfo;
@@ -159,7 +147,7 @@ public class UserRegisterDTO extends PasswordData implements Confirmable {
     registerDTO.setEducation(userInfo.getEducation());
     registerDTO.setNrc(userInfo.getNrc());
     registerDTO.setSelfDescription(userInfo.getSelfDescription());
-    registerDTO.setAward(userInfo.getCertificate());
+
     return registerDTO;
   }
 

@@ -1,4 +1,4 @@
-package com.blissstock.mappingSite.controller;
+/* package com.blissstock.mappingSite.controller;
 
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.PaymentAccount;
@@ -191,3 +191,4 @@ public class ProfileController {
     }
   }
 }
+ */

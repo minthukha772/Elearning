@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -39,6 +40,7 @@ public class RegisterController {
   }
 
   //Redirect to email_check
+  
   @GetMapping("/register")
   public String registerForm() {
     return "redirect:/email_check/register/";
@@ -46,6 +48,7 @@ public class RegisterController {
 
   //Handle User GET Request
   @Valid
+  @PreAuthorize("isAnonymous()")
   @GetMapping("/register/{role}/{email}")
   public String registerForm(
     @PathVariable(name = "role", required = false) String role,
@@ -78,7 +81,7 @@ public class RegisterController {
     return "ST0001_register.html";
   }
 
-  @PostMapping(path = "/register/student")
+  @PostMapping(path = "/register/student/{email}")
   public String studentRegisterConfirm(
     Model model,
     @Valid @ModelAttribute("userInfo") UserRegisterDTO userInfo,
@@ -122,7 +125,7 @@ public class RegisterController {
     return "ST0001_register.html";
   }
 
-  @PostMapping(path = "/register/teacher")
+  @PostMapping(path = "/register/teacher/{email}")
   public String teacherRegisterConfirm(
     Model model,
     @Valid @ModelAttribute("userInfo") TeacherRegisterDTO userInfo,

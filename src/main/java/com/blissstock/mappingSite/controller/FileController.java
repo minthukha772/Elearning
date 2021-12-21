@@ -1,12 +1,12 @@
 package com.blissstock.mappingSite.controller;
 
-import com.blissstock.mappingSite.exceptions.UnauthorizedFileAccessException;
 import com.blissstock.mappingSite.service.StorageService;
-import com.blissstock.mappingSite.service.UserSessionService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import com.blissstock.mappingSite.exceptions.UnauthorizedFileAccessException;
+import com.blissstock.mappingSite.service.UserSessionService;
+
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -19,7 +19,7 @@ public class FileController {
 
   @Autowired
   StorageService storageService;
-
+  
   @GetMapping("/files/profiles/{filename:.+}")
   @ResponseBody
   public ResponseEntity<Resource> getProfile(@PathVariable String filename) {
@@ -32,6 +32,7 @@ public class FileController {
       )
       .body(file);
   }
+
 
   @Autowired
   UserSessionService userSessionService;

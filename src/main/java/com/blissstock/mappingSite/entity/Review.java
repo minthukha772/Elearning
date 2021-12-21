@@ -32,15 +32,14 @@ public class Review {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long reviewId;
-	
-    //@NotBlank(message="Please choose review type")
-    @Column(name = "review_type")
-	private int reviewType=0;
    
     // @Min(value = 1, message = "Please fill rating")
     // @Max(value = 5, message = "Please fill rating")
     @Column(name = "star")
 	private int star=0;
+
+    @Column(name="review_type")
+	private int reviewType=0;
 
     //@NotBlank(message="Please fill feedback")
 	@Column(name="feedback")
@@ -51,7 +50,7 @@ public class Review {
 	private Date assignedDate;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "uid_fkey")
+    @JoinColumn(name = "join_fkey")
     @JsonIgnore
     private UserInfo userInfo;
     
@@ -73,6 +72,7 @@ public class Review {
         Review review = new Review();
         review.reviewType= trReviewDTO.getReviewType();
         review.feedback= trReviewDTO.getFeedback();
+        review.reviewType= trReviewDTO.getReviewType();
         review.assignedDate=GregorianCalendar.getInstance().getTime();
         return review;
       }

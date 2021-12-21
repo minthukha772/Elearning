@@ -35,6 +35,14 @@ dependencies {
 	implementation 'com.github.javafaker:javafaker:1.0.2'
 	testImplementation 'org.assertj:assertj-core:3.21.0'
 	implementation 'org.springframework.session:spring-session-jdbc'
+	// [https://mvnrepository.com/artifact/ch.qos.logback/logback-core](https://mvnrepository.com/artifact/ch.qos.logback/logback-core)
+	implementation 'ch.qos.logback:logback-core:1.2.7'
+
+	// [https://mvnrepository.com/artifact/ch.qos.logback/logback-classic](https://mvnrepository.com/artifact/ch.qos.logback/logback-classic)
+	testImplementation 'ch.qos.logback:logback-classic:1.2.7'
+
+	// [https://mvnrepository.com/artifact/org.slf4j/slf4j-api](https://mvnrepository.com/artifact/org.slf4j/slf4j-api)
+	implementation 'org.slf4j:slf4j-api:1.7.32'
 
 
 

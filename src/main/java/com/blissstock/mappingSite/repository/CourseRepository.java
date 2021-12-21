@@ -20,7 +20,7 @@ public interface CourseRepository extends JpaRepository<CourseInfo, Long> {
     // @Query(value=query, nativeQuery = true)
     List<CourseInfo> findByCourseName(String courseName);
     List<CourseInfo> findByStartDate(Date startDate);
-    List<CourseInfo> findByUserInfo(UserInfo userInfo);
+    //List<CourseInfo> findByUserInfo(UserInfo userInfo);
     List<CourseInfo> findByLevel(String level);
     List<CourseInfo> findByCategory(String category);
     List<CourseInfo> findByClassType(String classType);

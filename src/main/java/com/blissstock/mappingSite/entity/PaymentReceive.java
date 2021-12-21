@@ -1,16 +1,23 @@
 package com.blissstock.mappingSite.entity;
 import java.util.Date;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
@@ -40,9 +47,8 @@ public class PaymentReceive {
         @Column(name = "payment_error_status", length = 50)
         private String paymentErrStatus;
 
-	//mapping
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "uid_fkey")
+    @JoinColumn(name = "join_fkey")
     @JsonIgnore
     private UserInfo userInfo;
 
