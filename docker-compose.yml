@@ -1,6 +1,6 @@
 version: '3.8'
 
-services:  
+services:
   postgres:
     image: postgres:14.0-alpine
     environment:
@@ -9,13 +9,13 @@ services:
       PGDATA: ${PGDATA}
       POSTGRES_DB: ${POSTGRES_DB}
     volumes:
-       - db-data:${PGDATA}
+      - db-data:${PGDATA}
     ports:
       - "5432:5432"
     restart: unless-stopped
-  
+
   pgadmin:
-    depends_on: 
+    depends_on:
       - postgres
     image: dpage/pgadmin4
     environment:
@@ -30,5 +30,5 @@ services:
     restart: unless-stopped
 
 volumes:
-    db-data:
-    pgadmin-data:
+  db-data: null
+  pgadmin-data: null

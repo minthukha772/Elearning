@@ -29,8 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class RegisterController {
 
   private static final Logger logger = LoggerFactory.getLogger(
-    RegisterController.class
-  );
+      RegisterController.class);
 
   @Autowired
   UserService userService;
@@ -45,38 +44,36 @@ public class RegisterController {
     return "redirect:/email_check/register/";
   }
 
-  //Redirect to email_check
+  // Redirect to email_check
 
   @GetMapping("/register")
   public String registerForm() {
     return "redirect:/email_check/register/";
   }
 
-  //Handle User GET Request
+  // Handle User GET Request
   @Valid
   @PreAuthorize("isAnonymous()")
   @GetMapping("/register/{role}/{email}")
   public String registerForm(
-    @PathVariable(name = "role", required = false) String role,
-    @PathVariable(name = "email") String email,
-    Model model
-  ) {
+      @PathVariable(name = "role", required = false) String role,
+      @PathVariable(name = "email") String email,
+      Model model) {
     logger.info("GET Request");
-    //if email is not validate throw ConstraintViolationException exception
+    // if email is not validate throw ConstraintViolationException exception
     if (!new EmailValidator().validateEmail(email)) {
       throw new ConstraintViolationException("Invalid Email", null);
     }
 
-    //set role to student unless it is equal to teacher
+    // set role to student unless it is equal to teacher
     if (role == null || !role.equals("teacher")) {
       role = "student";
     }
 
-    //Initialize UserInfo
+    // Initialize UserInfo
     UserRegisterDTO userInfo;
 
-    userInfo =
-      role.equals("student") ? new UserRegisterDTO() : new TeacherRegisterDTO();
+    userInfo = role.equals("student") ? new UserRegisterDTO() : new TeacherRegisterDTO();
     userInfo.setEmail(email);
     model.addAttribute("userInfo", userInfo);
     //
@@ -90,13 +87,12 @@ public class RegisterController {
 
   @PostMapping(path = "/register/student/{dummyEmail}")
   public String studentRegisterConfirm(
-    Model model,
-    @Valid @ModelAttribute("userInfo") UserRegisterDTO userInfo,
-    BindingResult bindingResult,
-    @RequestParam(value = "action", required = true) String action,
-    HttpServletRequest request,
-    Errors errors
-  ) {
+      Model model,
+      @Valid @ModelAttribute("userInfo") UserRegisterDTO userInfo,
+      BindingResult bindingResult,
+      @RequestParam(value = "action", required = true) String action,
+      HttpServletRequest request,
+      Errors errors) {
     logger.info("POST Request, action: {}", action);
     String role = "student";
     model.addAttribute("task", "Register");
@@ -108,20 +104,18 @@ public class RegisterController {
       return "ST0001_register.html";
     }
 
-    logger.trace("Entered User Info: {}",userInfo.toString());
+    logger.trace("Entered User Info: {}", userInfo.toString());
 
     if (action.equals("submit")) {
       try {
         UserInfo savedUserInfo = userService.addUser(userInfo);
 
-        String appUrl =
-          request.getServerName() + // "localhost"
-          ":" +
-          request.getServerPort(); //"8080"
+        String appUrl = request.getServerName() + // "localhost"
+            ":" +
+            request.getServerPort(); // "8080"
         mailService.sendVerificationMail(
-          savedUserInfo.getUserAccount(),
-          appUrl
-        );
+            savedUserInfo.getUserAccount(),
+            appUrl);
         return "redirect:/register/student/complete";
       } catch (UserAlreadyExistException e) {
         e.printStackTrace();
@@ -131,20 +125,19 @@ public class RegisterController {
       }
     }
 
-    //Information For Randering Confirm
+    // Information For Randering Confirm
     model.addAttribute("infoMap", userInfo.toMap());
     return "ST0001_register.html";
   }
 
   @PostMapping(path = "/register/teacher/{dummyEmail}")
   public String teacherRegisterConfirm(
-    Model model,
-    @Valid @ModelAttribute("userInfo") TeacherRegisterDTO userInfo,
-    BindingResult bindingResult,
-    @RequestParam(value = "action", required = true) String action,
-    HttpServletRequest request,
-    Errors errors
-  ) {
+      Model model,
+      @Valid @ModelAttribute("userInfo") TeacherRegisterDTO userInfo,
+      BindingResult bindingResult,
+      @RequestParam(value = "action", required = true) String action,
+      HttpServletRequest request,
+      Errors errors) {
     String role = "teacher";
     model.addAttribute("task", "Register");
     model.addAttribute("role", role);
@@ -159,14 +152,12 @@ public class RegisterController {
         try {
           UserInfo savedUserInfo = userService.addUser(userInfo);
 
-          String appUrl =
-            request.getServerName() + // "localhost"
-            ":" +
-            request.getServerPort(); //"8080"
+          String appUrl = request.getServerName() + // "localhost"
+              ":" +
+              request.getServerPort(); // "8080"
           mailService.sendVerificationMail(
-            savedUserInfo.getUserAccount(),
-            appUrl
-          );
+              savedUserInfo.getUserAccount(),
+              appUrl);
           return "redirect:/register/teacher/complete";
         } catch (UserAlreadyExistException e) {
           e.printStackTrace();
@@ -179,7 +170,7 @@ public class RegisterController {
       System.out.println(e);
     }
 
-    //Information For Randering Confirm
+    // Information For Randering Confirm
     model.addAttribute("infoMap", userInfo.toMap());
     return "ST0001_register.html";
   }

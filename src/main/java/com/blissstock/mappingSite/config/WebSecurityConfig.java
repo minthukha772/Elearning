@@ -15,17 +15,18 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 /**
  * SpringSecurityを利用するための設定クラス
  * ログイン処理でのパラメータ、画面遷移や認証処理でのデータアクセス先を設定する
+ * 
  * @author aoi
  *
  */
 @Configuration
-//@EnableWebSecurity
+// @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Autowired
   private UserDetailsService userDetailsService;
 
-  //フォームの値と比較するDBから取得したパスワードは暗号化されているのでフォームの値も暗号化するために利用
+  // フォームの値と比較するDBから取得したパスワードは暗号化されているのでフォームの値も暗号化するために利用
   @Bean
   public BCryptPasswordEncoder passwordEncoder() {
     BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
@@ -49,42 +50,42 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http
-      .authorizeRequests()
-      .antMatchers("/")
-      .permitAll()
-      .antMatchers("/register/**","/login/**","/password/**","/home/**")
-      .permitAll()
-      .antMatchers("/check_email/**")
-      .permitAll()
-      .antMatchers("/log/**")//TODO:remove in production, for testing purpose only.
-      .permitAll()
-      .antMatchers("/images/**", "/css/**", "/js/**")
-      .permitAll()
-      .antMatchers("/student/**")
-      .hasAnyAuthority(UserRole.STUDENT.getValue())
-      .antMatchers("/teacher/**")
-      .hasAnyAuthority(UserRole.TEACHER.getValue())
-      .antMatchers("/admin/**")
-      .hasAnyAuthority(
-        UserRole.ADMIN.getValue(),
-        UserRole.SUPER_ADMIN.getValue()
-      )
-      .anyRequest()
-      .authenticated() 
-      .and()
-      .formLogin()
-      .loginPage("/login") //ログインページはコントローラを経由しないのでViewNameとの紐付けが必要
-      .loginProcessingUrl("/sign_in") //フォームのSubmitURL、このURLへリクエストが送られると認証処理が実行される
-      .usernameParameter("email") //リクエストパラメータのname属性を明示
-      .passwordParameter("password")
-      .successForwardUrl("/home")
-      .failureUrl("/login?error") //ログインURL失敗した時実行する
-      .permitAll()
-      .and()
-      .logout()
-      .logoutUrl("/logout")
-      .logoutSuccessUrl("/login?logout")
-      .permitAll();
+        .authorizeRequests()
+        .antMatchers("/")
+        .permitAll()
+        .antMatchers("/register/**", "/login/**", "/password/**", "/home/**", "/verify_password/**")
+
+        .permitAll()
+        .antMatchers("/check_email/**")
+        .permitAll()
+        .antMatchers("/log/**")// TODO:remove in production, for testing purpose only.
+        .permitAll()
+        .antMatchers("/images/**", "/css/**", "/js/**")
+        .permitAll()
+        .antMatchers("/student/**")
+        .hasAnyAuthority(UserRole.STUDENT.getValue())
+        .antMatchers("/teacher/**")
+        .hasAnyAuthority(UserRole.TEACHER.getValue())
+        .antMatchers("/admin/**")
+        .hasAnyAuthority(
+            UserRole.ADMIN.getValue(),
+            UserRole.SUPER_ADMIN.getValue())
+        .anyRequest()
+        .authenticated()
+        .and()
+        .formLogin()
+        .loginPage("/login") // ログインページはコントローラを経由しないのでViewNameとの紐付けが必要
+        .loginProcessingUrl("/sign_in") // フォームのSubmitURL、このURLへリクエストが送られると認証処理が実行される
+        .usernameParameter("email") // リクエストパラメータのname属性を明示
+        .passwordParameter("password")
+        .successForwardUrl("/home")
+        .failureUrl("/login?error") // ログインURL失敗した時実行する
+        .permitAll()
+        .and()
+        .logout()
+        .logoutUrl("/logout")
+        .logoutSuccessUrl("/login?logout")
+        .permitAll();
 
     http.csrf().disable();
   }
@@ -92,14 +93,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   /**
    * 認証時に利用するデータソースを定義する設定メソッド
    * ここではDBから取得したユーザ情報をuserDetailsServiceへセットすることで認証時の比較情報としている
+   * 
    * @param auth
    * @throws Exception
    */
   @Autowired
   public void configure(AuthenticationManagerBuilder auth) throws Exception {
     auth
-      .userDetailsService(userDetailsService)
-      .passwordEncoder(passwordEncoder());
+        .userDetailsService(userDetailsService)
+        .passwordEncoder(passwordEncoder());
   }
 
   @Bean

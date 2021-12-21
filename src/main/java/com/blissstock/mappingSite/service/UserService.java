@@ -1,5 +1,7 @@
 package com.blissstock.mappingSite.service;
 
+import java.util.Optional;
+
 import com.blissstock.mappingSite.dto.PasswordDTO;
 import com.blissstock.mappingSite.dto.UserRegisterDTO;
 import com.blissstock.mappingSite.entity.Token;
@@ -19,16 +21,16 @@ public interface UserService {
 
   public boolean isUserAccountPresent(String email);
 
-  public UserAccount getUserAccountByToken(String verificationToken);
+  public Optional<UserAccount> getUserAccountByToken(String verificationToken);
 
   void createToken(UserAccount userAccount, String token, TokenType tokenType);
+
   Token getToken(String VerificationToken, TokenType tokenType);
 
   public void updateUserAccount(UserAccount savedUserAccount);
 
   public void updateToken(Token savedToken);
 
-  public void updatePassword(PasswordDTO passwordDTO,Long id);
-
+  public void updatePassword(PasswordDTO passwordDTO, Long id);
 
 }
