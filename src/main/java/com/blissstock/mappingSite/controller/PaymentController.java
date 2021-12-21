@@ -65,8 +65,9 @@ public class PaymentController {
     @RequestParam("image") MultipartFile multipartFile) throws IOException {
       CourseInfo course = courseRepo.findById(courseId).orElse(null);
         UserInfo user = userRepo.findById(userId).orElse(null);
-        inputSlip.setCourseInfo(course);
-        inputSlip.setUserInfo(user);
+        //TODO Set Join
+ /*        inputSlip.setCourseInfo(course);
+        inputSlip.setUserInfo(user); */
   inputSlip.setPaymentStatus("Pending");
  
          
@@ -162,7 +163,8 @@ public class PaymentController {
  private String updatePaymentError(@RequestParam("paymentReceiveId") Long paymentReceiveId,@RequestParam("paymentErrStatus") String paymentErrStatus, @Valid @ModelAttribute("error") PaymentReceive paymentInfo, HttpServletRequest request, BindingResult result, Model model){
   
   PaymentReceive errorReason= paymentRepo.findById(paymentReceiveId).orElse(null);
-  errorReason.setPaymentErrStatus(paymentErrStatus);
+  //TODO inspect here
+  //errorReason.setPaymentErrStatus(paymentErrStatus);
   errorReason.setPaymentStatus("Error");;
   paymentRepo.save(errorReason);
   return "AdminPaymentCheckError";
