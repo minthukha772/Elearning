@@ -12,6 +12,8 @@ import com.blissstock.mappingSite.model.FileInfo;
 import com.blissstock.mappingSite.service.StorageService;
 import com.blissstock.mappingSite.service.UserSessionService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +30,10 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 @Controller
 public class ManageCertificateController {
 
+  private static final Logger logger = LoggerFactory.getLogger(
+    ManageCertificateController.class
+  );
+
   @Autowired
   StorageService storageService;
 
@@ -41,8 +47,12 @@ public class ManageCertificateController {
     Model model,
     @PathVariable(name = "id", required = false) Long id
   ) {
+    logger.info("GET Request, request id {}",id);
+
     Long uid = getUid(id);
+    logger.info("User {}'s data is being processed ",uid);
     List<FileInfo> fileInfos = loadImages(uid);
+    logger.info("{} photo has been retrieved",fileInfos.size());
     model.addAttribute("files", fileInfos);
 
     return "AT0007_manage_certificate";
@@ -56,7 +66,8 @@ public class ManageCertificateController {
     Model model,
     @PathVariable(name = "id", required = false) Long id
   ) {
-    System.out.println(files.length);
+    logger.info("POST Request, request id {}",id);
+    logger.info("{} photo has been uploaded",files.length);
     Long uid = getUid(id);
     try {
       if (files.length > 0) {
@@ -68,6 +79,7 @@ public class ManageCertificateController {
         );
       }
     } catch (NotImageFileException e) {
+      e.printStackTrace();
       model.addAttribute(
         "fileUploadError",
         "Only Jpg, Jpeg and Png are allowed"
@@ -120,7 +132,7 @@ public class ManageCertificateController {
     String name,
     @PathVariable(name = "id", required = false) Long id
   ) {
-    System.out.println("Delete requested for file name: " + name);
+    logger.info("DELETE Requested, file name {}",name);
     Long uid = getUid(id);
     //return ResponseEntity.badRequest().body("something went wrong");
     try {

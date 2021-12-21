@@ -70,7 +70,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         UserRole.SUPER_ADMIN.getValue()
       )
       .anyRequest()
-      .authenticated()
+      .authenticated() 
       .and()
       .formLogin()
       .loginPage("/login") //ログインページはコントローラを経由しないのでViewNameとの紐付けが必要

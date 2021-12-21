@@ -1,11 +1,5 @@
 package com.blissstock.mappingSite.service;
 
-import com.blissstock.mappingSite.entity.UserAccount;
-import com.blissstock.mappingSite.enums.UserRole;
-import com.blissstock.mappingSite.exceptions.FileStorageException;
-import com.blissstock.mappingSite.exceptions.NotImageFileException;
-import com.blissstock.mappingSite.exceptions.UnauthorizedFileAccessException;
-import com.blissstock.mappingSite.validation.validators.ImageFileValidator;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,16 +9,28 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.stream.Stream;
+
+import com.blissstock.mappingSite.entity.UserAccount;
+import com.blissstock.mappingSite.enums.UserRole;
+import com.blissstock.mappingSite.exceptions.FileStorageException;
+import com.blissstock.mappingSite.exceptions.NotImageFileException;
+import com.blissstock.mappingSite.exceptions.UnauthorizedFileAccessException;
+import com.blissstock.mappingSite.validation.validators.ImageFileValidator;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class StorageServiceImpl implements StorageService {
+
+  private static final Logger logger = LoggerFactory.getLogger(
+    StorageServiceImpl.class
+  );
 
   private final Path root = Paths.get("uploads");
   private final Path certificatePath = Paths.get(
@@ -129,13 +135,16 @@ public class StorageServiceImpl implements StorageService {
   public void storeCertificates(Long uid, MultipartFile[] files)
     throws UnauthorizedFileAccessException {
     //Checking Content Type
+    logger.info("files with size: {} is being stored",files.length);
     if (!checkAuthForTeacher(uid)) {
-      System.out.println("User " + uid + " is uploding certificates");
+      logger.info("User " + uid + " is uploding certificates");
+      logger.error("unauthorize file access");
       throw new UnauthorizedFileAccessException();
     }
     ImageFileValidator fileValidator = new ImageFileValidator();
     for (MultipartFile file : files) {
       if (!fileValidator.isSupportedContentType(file.getContentType())) {
+        logger.error("not file exception, {}",file.getName());
         throw new NotImageFileException();
       }
     }
@@ -146,10 +155,11 @@ public class StorageServiceImpl implements StorageService {
         Files.createDirectories(storeLocation);
       } catch (IOException e) {
         e.printStackTrace();
+        logger.error("Could not initialize folder for upload!");
         throw new RuntimeException("Could not initialize folder for upload!");
       }
     }
-    System.out.println(storeLocation.toAbsolutePath());
+    
     for (MultipartFile file : files) {
       try {
         try {
@@ -171,7 +181,7 @@ public class StorageServiceImpl implements StorageService {
           ". Please try again!"
         );
       }
-      System.out.println("Operation Successful");
+      logger.info("User {} has stored {} files",uid,files.length);
     }
   }
 
@@ -181,6 +191,7 @@ public class StorageServiceImpl implements StorageService {
     // if (!checkAuthForTeacher(uid)) {
     //   throw new UnauthorizedFileAccessException();
     // }
+    logger.info("Certificates of user {} has been requested", uid);
     Path storeLocation = Paths.get(certificatePath + File.separator + uid);
     try {
       return Files
@@ -188,8 +199,10 @@ public class StorageServiceImpl implements StorageService {
         .filter(path -> !path.equals(storeLocation))
         .map(storeLocation::relativize);
     } catch (IOException e) {
+      e.printStackTrace();
       throw new RuntimeException("Could not load the files!");
     }
+
   }
 
   public void deleteCertificate(Long uid, String filename)
@@ -197,10 +210,11 @@ public class StorageServiceImpl implements StorageService {
     if (!checkAuthForTeacher(uid)) {
       throw new UnauthorizedFileAccessException();
     }
+    logger.info("Certificates of {} has been requested to delete", uid);
     Path storeLocation = Paths.get(certificatePath + File.separator + uid);
     Path file = storeLocation.resolve(filename);
     Files.delete(file);
-    System.out.println(filename + " is deleted");
+    logger.info("User {} deleted file {}",uid,filename);
   }
 
   @Override

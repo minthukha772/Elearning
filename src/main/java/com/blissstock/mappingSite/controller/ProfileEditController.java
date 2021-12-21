@@ -59,6 +59,8 @@ public class ProfileEditController {
     }
 
     UserInfo userInfo = userService.getUserInfoByID(id);
+    
+    
     UserRegisterDTO userRegisterDTO = UserRegisterDTO.fromUserInfo(userInfo);
     userRegisterDTO.setAcceptTerm(true);
     model.addAttribute("userInfo", userRegisterDTO);

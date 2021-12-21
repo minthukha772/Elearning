@@ -10,6 +10,8 @@ import com.blissstock.mappingSite.validation.validators.EmailValidator;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -26,6 +28,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class RegisterController {
 
+  private static final Logger logger = LoggerFactory.getLogger(
+    RegisterController.class
+  );
+
   @Autowired
   UserService userService;
 
@@ -40,7 +46,7 @@ public class RegisterController {
   }
 
   //Redirect to email_check
-  
+
   @GetMapping("/register")
   public String registerForm() {
     return "redirect:/email_check/register/";
@@ -55,6 +61,7 @@ public class RegisterController {
     @PathVariable(name = "email") String email,
     Model model
   ) {
+    logger.info("GET Request");
     //if email is not validate throw ConstraintViolationException exception
     if (!new EmailValidator().validateEmail(email)) {
       throw new ConstraintViolationException("Invalid Email", null);
@@ -81,7 +88,7 @@ public class RegisterController {
     return "ST0001_register.html";
   }
 
-  @PostMapping(path = "/register/student/{email}")
+  @PostMapping(path = "/register/student/{dummyEmail}")
   public String studentRegisterConfirm(
     Model model,
     @Valid @ModelAttribute("userInfo") UserRegisterDTO userInfo,
@@ -90,34 +97,38 @@ public class RegisterController {
     HttpServletRequest request,
     Errors errors
   ) {
+    logger.info("POST Request, action: {}", action);
     String role = "student";
     model.addAttribute("task", "Register");
     model.addAttribute("role", role);
     model.addAttribute("postAction", "/register/" + role);
 
     if (bindingResult.hasErrors()) {
+      logger.info("Validation Error: ", bindingResult.getFieldError());
       return "ST0001_register.html";
     }
 
-    try {
-      if (action.equals("submit")) {
-        try {
-          UserInfo savedUserInfo = userService.addUser(userInfo);
+    logger.trace("Entered User Info: {}",userInfo.toString());
 
-          String appUrl =
-            request.getServerName() + // "localhost"
-            ":" +
-            request.getServerPort(); //"8080"
-          mailService.sendVerificationMail(savedUserInfo.getUserAccount(), appUrl);
-        } catch (UserAlreadyExistException e) {
-          e.printStackTrace();
-          model.addAttribute("userExistError", true);
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
+    if (action.equals("submit")) {
+      try {
+        UserInfo savedUserInfo = userService.addUser(userInfo);
+
+        String appUrl =
+          request.getServerName() + // "localhost"
+          ":" +
+          request.getServerPort(); //"8080"
+        mailService.sendVerificationMail(
+          savedUserInfo.getUserAccount(),
+          appUrl
+        );
+        return "redirect:/register/student/complete";
+      } catch (UserAlreadyExistException e) {
+        e.printStackTrace();
+        model.addAttribute("userExistError", true);
+      } catch (Exception e) {
+        e.printStackTrace();
       }
-    } catch (Exception e) {
-      System.out.println(e);
     }
 
     //Information For Randering Confirm
@@ -125,7 +136,7 @@ public class RegisterController {
     return "ST0001_register.html";
   }
 
-  @PostMapping(path = "/register/teacher/{email}")
+  @PostMapping(path = "/register/teacher/{dummyEmail}")
   public String teacherRegisterConfirm(
     Model model,
     @Valid @ModelAttribute("userInfo") TeacherRegisterDTO userInfo,
@@ -152,7 +163,11 @@ public class RegisterController {
             request.getServerName() + // "localhost"
             ":" +
             request.getServerPort(); //"8080"
-          mailService.sendVerificationMail(savedUserInfo.getUserAccount(), appUrl);
+          mailService.sendVerificationMail(
+            savedUserInfo.getUserAccount(),
+            appUrl
+          );
+          return "redirect:/register/teacher/complete";
         } catch (UserAlreadyExistException e) {
           e.printStackTrace();
           model.addAttribute("userExistError", true);

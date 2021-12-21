@@ -55,7 +55,7 @@ public class Syllabus {
   private CourseInfo courseInfo;
 
   @OneToMany(
-    fetch = FetchType.EAGER,
+    fetch = FetchType.LAZY,
     cascade = CascadeType.ALL,
     mappedBy = "syllabus"
   )
