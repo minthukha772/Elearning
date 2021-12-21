@@ -49,7 +49,4 @@ public class StudentReviewServiceImpl implements StudentReviewService {
 
   }
 }
-<<<<<<< HEAD
  */
-=======
->>>>>>> origin/Check_user_log
