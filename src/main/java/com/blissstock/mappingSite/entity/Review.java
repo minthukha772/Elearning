@@ -3,17 +3,14 @@ package com.blissstock.mappingSite.entity;
 import com.blissstock.mappingSite.dto.StudentReviewDTO;
 import com.blissstock.mappingSite.dto.TeacherReviewDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -52,12 +49,7 @@ public class Review {
   @ManyToOne(fetch = FetchType.EAGER, optional = false)
   @JoinColumn(name = "join_fkey")
   @JsonIgnore
-  private UserInfo userInfo;
-
-  @ManyToOne(fetch = FetchType.EAGER, optional = false)
-  @JoinColumn(name = "courseId_fkey")
-  @JsonIgnore
-  private CourseInfo courseInfo;
+  private JoinCourseUser join;
 
   public static Review fromReviewDTO(StudentReviewDTO stuReviewDTO) {
     Review review = new Review();
@@ -69,58 +61,9 @@ public class Review {
 
   public static Review fromTrReviewDTO(TeacherReviewDTO trReviewDTO) {
     Review review = new Review();
-    review.reviewType = trReviewDTO.getReviewType();
     review.feedback = trReviewDTO.getFeedback();
     review.reviewType = trReviewDTO.getReviewType();
     review.assignedDate = GregorianCalendar.getInstance().getTime();
     return review;
   }
-  // public CourseInfo getCourseInfo() {
-  //     return this.courseInfo;
-  // }
-
-  // public void setCourseInfo(CourseInfo courseInfo) {
-  //     this.courseInfo = courseInfo;
-  // }
-
-  // public Long getReviewTestId() {
-  //     return this.reviewTestId;
-  // }
-
-  // public void setReviewId(Long reviewTestId) {
-  //     this.reviewTestId = reviewTestId;
-  // }
-
-  // public int getReviewType() {
-  //     return this.reviewType;
-  // }
-
-  // public void setReviewType(int reviewType) {
-  //     this.reviewType = reviewType;
-  // }
-
-  // public int getStar() {
-  //     return this.star;
-  // }
-
-  // public void setStar(int star) {
-  //     this.star = star;
-  // }
-
-  // public String getFeedback() {
-  //     return this.feedback;
-  // }
-
-  // public void setFeedback(String feedback) {
-  //     this.feedback = feedback;
-  // }
-
-  // public String getReviewStatus() {
-  //     return this.reviewStatus;
-  // }
-
-  // public void setReviewStatus(String reviewStatus) {
-  //     this.reviewStatus = reviewStatus;
-  // }
-
 }
