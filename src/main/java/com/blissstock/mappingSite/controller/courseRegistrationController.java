@@ -1,4 +1,4 @@
-/* package com.blissstock.mappingSite.controller;
+package com.blissstock.mappingSite.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ public class courseRegistrationController {
     private List<CourseTime> ctList = new ArrayList<>(); 
     
 
-    @RequestMapping("/course-registration")
+    @RequestMapping("/teacher/course-registration")
     private String courseRegistration(Model model ){
         CourseInfo courseInfo = new CourseInfo();
        
@@ -140,7 +140,7 @@ public class courseRegistrationController {
     @PostMapping("/save-course-register")
     private String saveCourseRegister(@ModelAttribute("course") CourseInfo course){
         
-        course.setIsCourseApproved("true");
+        //course.setIsCourseApproved("true");
         courseRepo.save(course);
         System.out.println("HoeHoe" + ctList);
         for(CourseTime courseTime : ctList){
@@ -152,4 +152,4 @@ public class courseRegistrationController {
     }
 
     
-} */
+}
