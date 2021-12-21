@@ -6,10 +6,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import com.blissstock.mappingSite.dto.StuPaymentDTO;
+import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.PaymentReceive;
-import com.blissstock.mappingSite.entity.PaymentTesting;
-import com.blissstock.mappingSite.repository.CourseTestingRepository;
-import com.blissstock.mappingSite.repository.TpaymentRepository;
+//import com.blissstock.mappingSite.entity.PaymentTesting;
+import com.blissstock.mappingSite.entity.UserInfo;
+import com.blissstock.mappingSite.repository.CourseInfoRepository;
+import com.blissstock.mappingSite.repository.CourseRepository;
+import com.blissstock.mappingSite.repository.PaymentRepository;
+//import com.blissstock.mappingSite.repository.CourseTestingRepository;
+//import com.blissstock.mappingSite.repository.TpaymentRepository;
 import com.blissstock.mappingSite.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,36 +38,42 @@ public class PaymentController {
     UserRepository userRepo;
 
     @Autowired
-    CourseTestingRepository courseTestRepo;
+    PaymentRepository paymentRepo;
 
     @Autowired
-    TpaymentRepository paymentRepo;
+    CourseRepository courseRepo;
+
 
     /*get student payment screen */
     @Valid
-    @GetMapping(value="/payment-upload/{courseName}/{fees}/{userName}")
-    private String getPaymentUploadForm(@PathVariable String courseName, @PathVariable String fees, @PathVariable String userName, Model model) {
+    @GetMapping(value="/payment-upload/{courseId}/{userId}")
+    private String getPaymentUploadForm(@PathVariable Long courseId, @PathVariable Long userId,Model model) {
 		//StuPaymentDTO payment = new StuPaymentDTO();
-    PaymentTesting payment = new PaymentTesting();
+    PaymentReceive payment = new PaymentReceive();
         model.addAttribute("payment", payment);
+        model.addAttribute("postAct", "/update-payment-slip/"+courseId+"/"+userId);
         return "AS0001_StudentPayment";
     }
 
     /*student upload payment ss and go to payment success screen */
     /*save ss in image folder and will appear in admin payment check screen */
-    @PostMapping(value = "/payment-success")
-    public String savePhoto(PaymentTesting inputSlip,Model model,
+    @PostMapping(value = "/update-payment-slip/{courseId}/{userId}")
+    public String savePhoto(@ModelAttribute("payment") PaymentReceive inputSlip,Model model, @PathVariable Long courseId, @PathVariable Long userId,
     @Valid 
     BindingResult bindingResult,
     HttpServletRequest request,
     @RequestParam("image") MultipartFile multipartFile) throws IOException {
+      CourseInfo course = courseRepo.findById(courseId).orElse(null);
+        UserInfo user = userRepo.findById(userId).orElse(null);
+        inputSlip.setCourseInfo(course);
+        inputSlip.setUserInfo(user);
   inputSlip.setPaymentStatus("Pending");
  
          
         String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
         inputSlip.setSlip(fileName);
          
-        PaymentTesting saveSlip = paymentRepo.save(inputSlip);
+        PaymentReceive saveSlip = paymentRepo.save(inputSlip);
  
         String uploadDir = "slips/" + saveSlip.getPaymentReceiveId();
  
@@ -105,10 +116,18 @@ public class PaymentController {
     }
     */
 
+    @GetMapping(value="/edit-payment-slip/{paymentReceiveId}")
+    private String stuGetPaymentSlip(@PathVariable Long paymentReceiveId,Model model) {
+      PaymentReceive paymentInfo= paymentRepo.findById(paymentReceiveId).orElse(null);
+      //PaymentTesting payment = new PaymentTesting();
+      model.addAttribute("payment", paymentInfo);
+      model.addAttribute("error", paymentInfo);
+      return "AS0001_StudentPayment";
+	}
     /*get admin payment check screen */
     @GetMapping(value="/admin-check-stupayment/{paymentReceiveId}")
     private String adminGetStudentPaymentSlip(@PathVariable Long paymentReceiveId,Model model) {
-        PaymentTesting paymentInfo= paymentRepo.findById(paymentReceiveId).orElse(null);
+        PaymentReceive paymentInfo= paymentRepo.findById(paymentReceiveId).orElse(null);
         model.addAttribute("payment", paymentInfo);
         model.addAttribute("error", paymentInfo);
 	return "AS0001_AdminPaymentCheck";
@@ -131,8 +150,8 @@ public class PaymentController {
  BindingResult bindingResult,
  HttpServletRequest request){*/
   /*private String updatePaymentStatus(@RequestParam("paymentReceiveId") Long paymentReceiveId, @Valid @ModelAttribute("payment") PaymentTesting paymentInfo, BindingResult result, Model model,RedirectAttributes redirectAttr) { */
-    private String updatePaymentStatus(@RequestParam("paymentReceiveId") Long paymentReceiveId, @Valid @ModelAttribute("payment") PaymentTesting paymentInfo, HttpServletRequest request, BindingResult result, Model model) {
-    PaymentTesting payment= paymentRepo.findById(paymentReceiveId).orElse(null);
+    private String updatePaymentStatus(@RequestParam("paymentReceiveId") Long paymentReceiveId, @Valid @ModelAttribute("payment") PaymentReceive paymentInfo, HttpServletRequest request, BindingResult result, Model model) {
+    PaymentReceive payment= paymentRepo.findById(paymentReceiveId).orElse(null);
     payment.setPaymentStatus("Complete");
     paymentRepo.save(payment);
     return "AdminPaymentCheckSuccess";
@@ -140,9 +159,9 @@ public class PaymentController {
 
  /*admin click request to reupload button and modal appear and go to payment error screen . payment status-> error */
  @PostMapping("/payment-error-reason") 
- private String updatePaymentError(@RequestParam("paymentReceiveId") Long paymentReceiveId,@RequestParam("paymentErrStatus") String paymentErrStatus, @Valid @ModelAttribute("error") PaymentTesting paymentInfo, HttpServletRequest request, BindingResult result, Model model){
+ private String updatePaymentError(@RequestParam("paymentReceiveId") Long paymentReceiveId,@RequestParam("paymentErrStatus") String paymentErrStatus, @Valid @ModelAttribute("error") PaymentReceive paymentInfo, HttpServletRequest request, BindingResult result, Model model){
   
-  PaymentTesting errorReason= paymentRepo.findById(paymentReceiveId).orElse(null);
+  PaymentReceive errorReason= paymentRepo.findById(paymentReceiveId).orElse(null);
   errorReason.setPaymentErrStatus(paymentErrStatus);
   errorReason.setPaymentStatus("Error");;
   paymentRepo.save(errorReason);
