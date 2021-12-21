@@ -75,10 +75,7 @@ public class LeaveInfo {
   @Column(name = "leave_end_date")
   private Date leaveEndDate;
 
-  @Column(
-    name = "leave_start_time",
-    columnDefinition = "timestamp with time zone not null"
-  )
+
   //mapping
   @ManyToOne(fetch = FetchType.EAGER, optional = false)
   @JoinColumn(name = "uid_fkey")

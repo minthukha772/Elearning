@@ -1,4 +1,4 @@
-package com.blissstock.mappingSite.config;
+/* package com.blissstock.mappingSite.config;
 
 import org.springframework.boot.web.server.ErrorPage;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
@@ -20,3 +20,4 @@ public class WebConfig implements WebServerFactoryCustomizer<ConfigurableServlet
         new ErrorPage(HttpStatus.INTERNAL_SERVER_ERROR, "/500"));
     }
 }
+ */

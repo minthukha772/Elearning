@@ -1,4 +1,4 @@
-package com.blissstock.mappingSite.controller;
+/* package com.blissstock.mappingSite.controller;
 
 import com.blissstock.mappingSite.entity.AddAdmin;
 import com.blissstock.mappingSite.entity.CourseInfo;
@@ -115,3 +115,4 @@ public class ListOfUserController {
     return "AT0003_ListofStudentsByT";
   }
 }
+ */
