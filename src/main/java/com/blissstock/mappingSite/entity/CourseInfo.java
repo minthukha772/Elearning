@@ -56,6 +56,14 @@ public class CourseInfo {
   //@NotBlank(message="Please enter about course")
   private String aboutCourse;
 
+  // @Column(name = "course_title", length = 250)
+	// // @NotBlank(message="Please enter course title")
+	// private String title;
+
+	// @Column(name = "course_content", length = 500)
+	// // @NotBlank(message="Please enter course content")
+	// private String content;
+
   @Column(name = "student_num", length = 20)
   private int stuNum;
 
@@ -113,5 +121,17 @@ public class CourseInfo {
   @JoinColumn(name = "uid_fkey")
   @JsonIgnore
   private UserInfo userInfo;
+
+  public void setIsCourseApproved(Boolean isCourseApproved) {
+		this.isCourseApproved = isCourseApproved;
+	}
+
+  // public String getTitle() {
+	// 	return this.title;
+	// }
+
+	// public void setTitle(String title) {
+	// 	this.title = title;
+	// }
 
 }
