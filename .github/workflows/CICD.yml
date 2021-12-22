@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
 
 env:
-  WORKDIR: "/home/phyo_sithukyaw_p15/MappingSiteProject"
+  WORKDIR: "/home/mappingsiteadmin/project"
 
 jobs:
   build:
@@ -57,7 +57,7 @@ jobs:
           connect_timeout: 10s
           script: |
             cd $WORKDIR
-            sudo git clone https://github.com/SaiHormKham-BlissStock/MappingSite.git
+            sudo git clone https://phy0sithukyaw:${{ secrets.DC_TOKEN }}@github.com/SaiHormKham-BlissStock/MappingSite.git
       
           
         
