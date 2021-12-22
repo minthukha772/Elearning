@@ -21,7 +21,7 @@ jobs:
           connect_timeout: 10s
           script: |
             cd
-            sudo systemctl stop mapping-site.service
+            sudo systemctl stop mappingsite.service
             
       - name: Stop Pgadmin & Postgres containers
         uses: cross-the-world/ssh-pipeline@master
@@ -95,7 +95,7 @@ jobs:
           connect_timeout: 10s
           script: |
             cd
-            sudo systemctl start mapping-site.service
+            sudo systemctl start mappingsite.service
 
       
           
