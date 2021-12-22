@@ -66,7 +66,7 @@ public class MailCheckController {
         System.out.println("Invalid token");
         String header3 = "Invalid token";
         String header5 = "";
-        String paragraph = "The verification mail is invalid.Please cheeck the mail again.";
+        String paragraph = "The verification mail is invalid! Please check the mail again.";
         model.addAttribute("status", "invalid");
         model.addAttribute("header3", header3);
         model.addAttribute("header5", header5);
