@@ -24,25 +24,7 @@
                 <!--  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button> -->
-                <div class="d-flex" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">My Course</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Explore</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Profile</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#" style="color: red;">Log Out</a>
-                        </li>
-                    </ul>
-                </div>
+
             </div>
         </nav>
 
@@ -62,16 +44,28 @@
         <li class="breadcrumb-item active" aria-current="page" th:text="${header3}">Payment Complete</li> -->
             </ol>
         </nav>
-
-        <h3 class="text-center" th:text="${header3}">
-            <!-- <span class="badge bg-secondary">New</span> -->
-        </h3>
+        <!--TODO: refactor code -->
+        <div th:if="${status == 'success'}" class="alert alert-success" role="alert">
+            <h3 class="text-center" th:text="${header3}">
+                <!-- <span class="badge bg-secondary">New</span> -->
+            </h3>
+        </div>
+        <div th:if="${status == 'alreadyverified'}" class="alert alert-info" role="alert">
+            <h3 class="text-center" th:text="${header3}">
+                <!-- <span class="badge bg-secondary">New</span> -->
+            </h3>
+        </div>
+        <div th:if="${status == 'invalid'}" class="alert alert-warning" role="alert">
+            <h3 class="text-center" th:text="${header3}">
+                <!-- <span class="badge bg-secondary">New</span> -->
+            </h3>
+        </div>
         <div class="card mx-auto shadow-sm rounded bg-body" style="max-width: 540px;">
             <!-- <h5 class="card-header">Featured</h5> -->
             <div class="card-body">
                 <h5 class="card-title text-center" th:text="${header5}"></h5>
                 <p class="card-text text-center" th:text="${paragraph}"></p>
-                <a href="/test" class="btn btn-primary" style="float: right;background-color: #5227CC;">Go Back</a>
+                <a href="/login" class="btn btn-primary" style="float: right;background-color: #5227CC;">Login</a>
             </div>
         </div>
     </div>

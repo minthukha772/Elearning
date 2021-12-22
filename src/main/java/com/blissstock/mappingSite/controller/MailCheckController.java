@@ -33,20 +33,45 @@ public class MailCheckController {
             System.out.println("get token callsed");
             UserAccount userAccount = userService.getUserAccountByToken(token);
             System.out.println(userAccount.toString());
+
             if (userAccount.isMailVerified()) {
                 System.out.println("user  has already been verified");
-                return "index.html";
+                String header3 = "Mail has already been verified ";
+                String header5 = "";
+                String paragraph = "Please login with email and password to continue.";
+                model.addAttribute("status", "alreadyverified");
+                model.addAttribute("header3", header3);
+                model.addAttribute("header5", header5);
+                model.addAttribute("paragraph", paragraph);
+                return "MailVerify.html";
             } else {
+
                 System.out.println("mail verified");
                 userAccount.setMailVerified(true);
                 userService.updateUserAccount(userAccount);
-                return "mail_Verify.html";
+
+                String header3 = "Mail verification success ";
+                String header5 = "Acknowledgement!";
+                String paragraph = "You have successfully verified mail! Please login to start using the service.";
+                model.addAttribute("status", "success");
+                model.addAttribute("header3", header3);
+                model.addAttribute("header5", header5);
+                model.addAttribute("paragraph", paragraph);
+                return "MailVerify.html";
             }
 
         } catch (Exception e) {
             System.out.println(e.toString());
         }
-        return "index.html";
+        System.out.println("Invalid token");
+        String header3 = "Invalid token";
+        String header5 = "";
+        String paragraph = "The verification mail is invalid.Please cheeck the mail again.";
+        model.addAttribute("status", "invalid");
+        model.addAttribute("header3", header3);
+        model.addAttribute("header5", header5);
+        model.addAttribute("paragraph", paragraph);
+        return "MailVerify.html";
 
         // System.out.println(token);
         // System.out.println(userAccount.toString());
