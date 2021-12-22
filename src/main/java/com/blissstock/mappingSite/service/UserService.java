@@ -21,7 +21,7 @@ public interface UserService {
 
   public boolean isUserAccountPresent(String email);
 
-  public Optional<UserAccount> getUserAccountByToken(String verificationToken);
+  public UserAccount getUserAccountByToken(String verificationToken);
 
   void createToken(UserAccount userAccount, String token, TokenType tokenType);
 

@@ -15,6 +15,7 @@ import java.util.Optional;
 
 import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.repository.TokenRepository;
+import com.blissstock.mappingSite.repository.UserRepository;
 
 @Controller
 @RequestMapping("/")
@@ -29,21 +30,26 @@ public class MailCheckController {
         System.out.println("mail verify called" + token);
 
         try {
-            System.out.println("get token callse");
-            Optional<UserAccount> userAccount = userService.getUserAccountByToken(token);
-
-            if (userAccount == null) {
+            System.out.println("get token callsed");
+            UserAccount userAccount = userService.getUserAccountByToken(token);
+            System.out.println(userAccount.toString());
+            if (userAccount.isMailVerified()) {
+                System.out.println("user  has already been verified");
                 return "index.html";
+            } else {
+                System.out.println("mail verified");
+                userAccount.setMailVerified(true);
+                userService.updateUserAccount(userAccount);
+                return "mail_Verify.html";
             }
-            System.out.println(userAccount.get().toString());
 
         } catch (Exception e) {
             System.out.println(e.toString());
         }
+        return "index.html";
 
         // System.out.println(token);
         // System.out.println(userAccount.toString());
-        return "mail_verify.html";
 
     }
 }

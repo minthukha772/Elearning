@@ -27,6 +27,8 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 
   @Autowired
+  UserRepository userRepo;
+  @Autowired
   private final UserAccountRepository userAccountRepository;
 
   @Autowired
@@ -115,29 +117,23 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public Optional<UserAccount> getUserAccountByToken(String verificationToken) {
-
-    Long uid = tokenRepository.findByToken(verificationToken, "VERIFICATION");
-    // TODo fix bug
-    System.out.println("id is " + uid);
-
-    if (uid == null) {
-      System.out.println("uid is null");
-      return null;
-    }
+  public UserAccount getUserAccountByToken(String verificationToken) {
     try {
+      System.out.println("get account by token called");
+      Long uid = tokenRepository.findByToken(verificationToken, "VERIFICATION");
 
-      Optional<UserAccount> userAccount = userAccountRepository
-          .findById(uid);
+      System.out.println("id is " + uid);
 
-      if (userAccount.isPresent()) {
-
-        System.out.println(userAccount.isPresent());
-        System.out.println("get user by token called");
-        System.out.println(userAccount.get().toString());
-
-        return userAccount;
+      if (uid == null) {
+        System.out.println("uid is null");
+        return null;
       }
+
+      UserInfo userInfo = userRepo.findById(uid).orElse(null);
+      UserAccount userAccount = userInfo.getUserAccount();
+
+      return userAccount;
+
     } catch (Exception e) {
       System.out.println(e.toString());
     }
