@@ -48,6 +48,8 @@ jobs:
             rm -rf *
             
       - name: Clone new packages
+        env:
+          TOKEN: ${{ secrets.DC_TOKEN }}
         uses: cross-the-world/ssh-pipeline@master
         with:
           host: ${{ secrets.DC_HOST }}
@@ -57,7 +59,7 @@ jobs:
           connect_timeout: 10s
           script: |
             cd $WORKDIR
-            git clone https://phy0sithukyaw:${{ secrets.DC_TOKEN }}@github.com/SaiHormKham-BlissStock/MappingSite.git
+            git clone https://phy0sithukyaw:$TOKEN@github.com/SaiHormKham-BlissStock/MappingSite.git
       
           
         
