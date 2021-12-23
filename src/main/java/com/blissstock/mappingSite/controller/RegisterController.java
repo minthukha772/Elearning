@@ -71,12 +71,12 @@ public class RegisterController {
     logger.info("GET Request");
     UserRole userRole = userSessionService.getRole();
     if (
-      userRole != UserRole.GUEST_USER ||
-      userRole != UserRole.ADMIN ||
+      userRole != UserRole.GUEST_USER &&
+      userRole != UserRole.ADMIN &&
       userRole != UserRole.SUPER_ADMIN
     ) {
       logger.info("redirect to home");
-      return "redirect/home";
+      return "redirect:/home";
     }
     //if email is not validate throw ConstraintViolationException exception
     if (!new EmailValidator().validateEmail(email)) {

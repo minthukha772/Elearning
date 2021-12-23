@@ -39,12 +39,12 @@ public class CheckEmailController {
     logger.info("Role is {}, email is {}",role,email);
     UserRole userRole = userSessionService.getRole();
     if (
-      userRole != UserRole.GUEST_USER ||
-      userRole != UserRole.ADMIN ||
+      userRole != UserRole.GUEST_USER &&
+      userRole != UserRole.ADMIN &&
       userRole != UserRole.SUPER_ADMIN
     ) {
       logger.info("redirect to home");
-      return "redirect/home";
+      return "redirect:/home";
     }
     // Tell Thymeleaf to render as Reister
     model.addAttribute("action", "register");
