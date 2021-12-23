@@ -89,6 +89,7 @@
 
           <!-- Teacher view -->
           <div class="card-body" sec:authorize="hasAuthority('ROLE_TEACHER')">
+
             <input type="hidden" th:field="*{uid}">
             <div class="container">
              <div class="profile-pic-wrapper mb-3" th:object="${profile}">
@@ -272,8 +273,15 @@
                 </div>
               </div>
             </div>
+
           <!-- Admin view -->
+
           <div class="card-body"  sec:authorize="hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SUPER_ADMIN')">
+
+
+          <!-- Admin view -->
+          <div class="card-body"  th:if="${role} == 'admin' or ${role} == 'super admin'">
+
             <div class="container">
             <form id="trProfileForm" th:object="${profilePic}" method="post" th:action="@{${profilePost}}" enctype="multipart/form-data">
              <div class="profile-pic-wrapper mb-3">

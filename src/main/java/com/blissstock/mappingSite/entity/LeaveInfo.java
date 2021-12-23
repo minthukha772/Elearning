@@ -1,6 +1,7 @@
 package com.blissstock.mappingSite.entity;
-import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,18 +15,14 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
+@Data
 @Getter
 @Setter
-@NoArgsConstructor
 @Entity
 @Table(name = "leave_info")
 public class LeaveInfo {
@@ -63,4 +60,6 @@ public class LeaveInfo {
    
 	
 }
+
+ 
 

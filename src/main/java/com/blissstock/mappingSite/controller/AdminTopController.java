@@ -62,7 +62,7 @@ public class AdminTopController {
         UserInfo userInfo=userRepo.findById(userId).orElse(null);
         UserAccount userAcc = userInfo.getUserAccount();
          //load profile picture
-         if(userInfo.getPhoto()==null){
+         if(userAcc.getPhoto()==null){
           String photoString=null;
           model.addAttribute("pic64", photoString);
         }
@@ -126,8 +126,8 @@ public class AdminTopController {
         storageService.storeProfile(photo,saveFileName);
 
         //insert photo 
-        userInfo.setPhoto(saveFileName);
-        userRepo.save(userInfo);
+        acc.setPhoto(saveFileName);
+        userAccRepo.save(acc);
       }else {
         model.addAttribute("photoTypeErr", "Files other than image file cannot be uploaded.");
         return "CM0004_TeacherProfile";

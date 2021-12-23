@@ -14,6 +14,11 @@ import com.blissstock.mappingSite.entity.JoinCourseUser;
 import com.blissstock.mappingSite.entity.Review;
 import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
 import com.blissstock.mappingSite.repository.ReviewRepository;
+import com.blissstock.mappingSite.entity.ReviewTest;
+import com.blissstock.mappingSite.entity.UserInfo;
+import com.blissstock.mappingSite.repository.ReviewRepository;
+import com.blissstock.mappingSite.repository.ReviewTestRepository;
+import com.blissstock.mappingSite.service.TeacherReviewService;
 
 
 import org.springframework.beans.factory.annotation.Autowired;

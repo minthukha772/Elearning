@@ -25,8 +25,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Controller
 public class ManageCertificateController {
+
+  private static final Logger logger = LoggerFactory.getLogger(ManageCertificateController.class);
 
   @Autowired
   StorageService storageService;
@@ -41,6 +46,11 @@ public class ManageCertificateController {
     Model model,
     @PathVariable(name = "id", required = false) Long id
   ) {
+
+    //log
+    logger.info("GET mapping");
+    logger.info("ID is {}", id);
+
     Long uid = getUid(id);
     List<FileInfo> fileInfos = loadImages(uid);
     model.addAttribute("files", fileInfos);
@@ -56,6 +66,12 @@ public class ManageCertificateController {
     Model model,
     @PathVariable(name = "id", required = false) Long id
   ) {
+
+    //log
+    logger.info("POST mapping");
+    logger.info("Files -> {}", files);
+    logger.info("ID is {}", id);
+
     System.out.println(files.length);
     Long uid = getUid(id);
     try {
@@ -120,6 +136,11 @@ public class ManageCertificateController {
     String name,
     @PathVariable(name = "id", required = false) Long id
   ) {
+
+    //log
+    logger.info("DELETE mapping");
+    logger.info("name is {} and ID is {}", name, id);
+
     System.out.println("Delete requested for file name: " + name);
     Long uid = getUid(id);
     //return ResponseEntity.badRequest().body("something went wrong");
@@ -145,7 +166,7 @@ public class ManageCertificateController {
     if (role == UserRole.ADMIN || role == UserRole.SUPER_ADMIN) {
       uid = id;
     } else if (role == UserRole.TEACHER) {
-      uid = userSessionService.getUserAccount().getId();
+      uid = userSessionService.getUserAccount().getAccountId();
     } else {
       throw new RuntimeException("user authetication fail");
     }

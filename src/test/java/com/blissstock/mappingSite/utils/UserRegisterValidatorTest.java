@@ -37,7 +37,7 @@ public class UserRegisterValidatorTest {
     userTemplate.setPassword(faker.bothify("????####"));
     userTemplate.setConfirmPassword(userTemplate.getPassword());
     userTemplate.setGender("Male");
-    userTemplate.setPhone(faker.phoneNumber().phoneNumber());
+    userTemplate.setPhone(faker.number().numberBetween(10000000, 99999999999L)+"");
     userTemplate.setDob(faker.date().birthday(13, 60));
     userTemplate.setZipCode(faker.number().numberBetween(0, 99999));
     userTemplate.setCity(faker.address().city());
