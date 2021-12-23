@@ -3,13 +3,17 @@ package com.blissstock.mappingSite.controller;
 import com.blissstock.mappingSite.dto.TeacherRegisterDTO;
 import com.blissstock.mappingSite.dto.UserRegisterDTO;
 import com.blissstock.mappingSite.entity.UserInfo;
+import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.exceptions.UserAlreadyExistException;
 import com.blissstock.mappingSite.service.MailService;
 import com.blissstock.mappingSite.service.UserService;
+import com.blissstock.mappingSite.service.UserSessionService;
 import com.blissstock.mappingSite.validation.validators.EmailValidator;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
+
+import org.hibernate.annotations.common.util.impl.Log_.logger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +38,9 @@ public class RegisterController {
 
   @Autowired
   UserService userService;
+
+  @Autowired
+  UserSessionService userSessionService;
 
   @Autowired
   MailService mailService;
@@ -62,6 +69,15 @@ public class RegisterController {
     Model model
   ) {
     logger.info("GET Request");
+    UserRole userRole = userSessionService.getRole();
+    if (
+      userRole != UserRole.GUEST_USER ||
+      userRole != UserRole.ADMIN ||
+      userRole != UserRole.SUPER_ADMIN
+    ) {
+      logger.info("redirect to home");
+      return "redirect/home";
+    }
     //if email is not validate throw ConstraintViolationException exception
     if (!new EmailValidator().validateEmail(email)) {
       throw new ConstraintViolationException("Invalid Email", null);
@@ -108,7 +124,7 @@ public class RegisterController {
       return "ST0001_register.html";
     }
 
-    logger.trace("Entered User Info: {}",userInfo.toString());
+    logger.trace("Entered User Info: {}", userInfo.toString());
 
     if (action.equals("submit")) {
       try {
