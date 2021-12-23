@@ -1,25 +1,12 @@
 package com.blissstock.mappingSite.controller;
 
-<<<<<<< HEAD
 import org.springframework.ui.Model;
 import java.util.*;
 import com.blissstock.mappingSite.entity.CourseInfo;
-=======
-
-import java.util.List;
-
-import com.blissstock.mappingSite.entity.CourseInfo;
-import com.blissstock.mappingSite.repository.CourseRepository;
-
->>>>>>> e3ddc02530232fdac29a31f539222426c8a3c104
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-<<<<<<< HEAD
-=======
-import org.springframework.ui.Model;
->>>>>>> e3ddc02530232fdac29a31f539222426c8a3c104
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.blissstock.mappingSite.repository.CourseRepository;

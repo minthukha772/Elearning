@@ -14,14 +14,11 @@ import com.blissstock.mappingSite.exceptions.UserAlreadyExistException;
 import com.blissstock.mappingSite.repository.TokenRepository;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
 import com.blissstock.mappingSite.repository.UserInfoRepository;
-<<<<<<< HEAD
 import com.blissstock.mappingSite.repository.UserRepository;
 
 import java.util.GregorianCalendar;
 import java.util.Optional;
 import java.util.UUID;
-=======
->>>>>>> e3ddc02530232fdac29a31f539222426c8a3c104
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,11 +82,7 @@ public class UserServiceImpl implements UserService {
      */
     userInfo.setUserAccount(userAccount);
     UserInfo savedUserInfo = userInfoRepository.save(userInfo);
-<<<<<<< HEAD
     // userAccountRepository.save(entity);
-=======
-    logger.info("User {}, has successfully register with email {}", userAccount.getAccountId(), userAccount.getMail());
->>>>>>> e3ddc02530232fdac29a31f539222426c8a3c104
     return savedUserInfo;
   }
 
@@ -116,7 +109,6 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public void createToken(
-<<<<<<< HEAD
       UserAccount userAccount,
       String token,
       TokenType tokenType) {
@@ -125,36 +117,17 @@ public class UserServiceImpl implements UserService {
         userAccount,
         tokenType,
         System.currentTimeMillis());
-=======
-    UserAccount userAccount,
-    String token,
-    TokenType tokenType
-  ) {
-    
-    Token myToken = new Token(
-      token,
-      userAccount,
-      tokenType,
-      System.currentTimeMillis()
-    );
-    logger.info("token {} created",myToken);
->>>>>>> e3ddc02530232fdac29a31f539222426c8a3c104
     tokenRepository.save(myToken);
   }
 
   @Override
   public Token getToken(String token, TokenType tokenType) {
-<<<<<<< HEAD
     System.out.println("get token called");
     // TODO fix bug
     Token token1 = tokenRepository.getToken(token, tokenType.getValue());
 
     System.out.println("token is " + token1.toString());
     return token1;
-=======
-    // TODO fix bug
-    return tokenRepository.getToken(token, tokenType.getValue());
->>>>>>> e3ddc02530232fdac29a31f539222426c8a3c104
   }
 
   @Override
@@ -179,16 +152,6 @@ public class UserServiceImpl implements UserService {
       System.out.println(e.toString());
     }
     return null;
-<<<<<<< HEAD
-=======
-    // TODo fix bug
-    /*
-     * UserAccount userAccount = tokenRepository
-     * .findByToken(verificationToken)
-     * .getUserAccount();
-     */
-    // return userAccount;
->>>>>>> e3ddc02530232fdac29a31f539222426c8a3c104
   }
 
   @Override
