@@ -17,8 +17,8 @@ public class TeacherRegisterDTO extends UserRegisterDTO{
   @NotBlank(message = "This field is required")
   private String nrc;
 
-  @NotBlank(message = "This field is required")
-  private String award;
+/*   @NotBlank(message = "This field is required")
+  private String award; */
 
   @NotBlank(message = "This field is required")
   private String selfDescription;
@@ -27,7 +27,7 @@ public class TeacherRegisterDTO extends UserRegisterDTO{
   public LinkedHashMap<String,String> toMap(){
     LinkedHashMap<String,String> map = super.toMap();
     map.put("NRC",this.nrc);
-    map.put("award",this.award);
+    //map.put("award",this.award);
     map.put("Self Description",this.selfDescription);
     return map;
   }
@@ -61,7 +61,7 @@ public class TeacherRegisterDTO extends UserRegisterDTO{
 
   public TeacherRegisterDTO(String nrc, String award, String selfDescription) {
     this.nrc = nrc;
-    this.award = award;
+    //this.award = award;
     this.selfDescription = selfDescription;
   }
 
@@ -73,13 +73,13 @@ public class TeacherRegisterDTO extends UserRegisterDTO{
     this.nrc = nrc;
   }
 
-  public String getAward() {
+  /* public String getAward() {
     return this.award;
   }
 
   public void setAward(String award) {
     this.award = award;
-  }
+  } */
 
   public String getSelfDescription() {
     return this.selfDescription;

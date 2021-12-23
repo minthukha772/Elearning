@@ -1,5 +1,9 @@
 package com.blissstock.mappingSite.service;
 
+import java.util.GregorianCalendar;
+
+import javax.transaction.Transactional;
+
 import com.blissstock.mappingSite.dto.PasswordDTO;
 import com.blissstock.mappingSite.dto.UserRegisterDTO;
 import com.blissstock.mappingSite.entity.Token;
@@ -7,14 +11,12 @@ import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.enums.TokenType;
 import com.blissstock.mappingSite.exceptions.UserAlreadyExistException;
-import com.blissstock.mappingSite.exceptions.UserNotFoundException;
 import com.blissstock.mappingSite.repository.TokenRepository;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
 import com.blissstock.mappingSite.repository.UserInfoRepository;
-import java.util.GregorianCalendar;
-import java.util.UUID;
 
-import javax.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,10 @@ import org.springframework.stereotype.Service;
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
+
+  private static final Logger logger = LoggerFactory.getLogger(
+    UserServiceImpl.class
+  );
 
   @Autowired
   private final UserAccountRepository userAccountRepository;
@@ -99,12 +105,14 @@ public class UserServiceImpl implements UserService {
     String token,
     TokenType tokenType
   ) {
+    
     Token myToken = new Token(
       token,
       userAccount,
       tokenType,
       System.currentTimeMillis()
     );
+    logger.info("token {} created",myToken);
     tokenRepository.save(myToken);
   }
 

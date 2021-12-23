@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import ch.qos.logback.classic.Logger;
+
 
 @Controller
 public class ProfileEditController {
@@ -91,6 +91,7 @@ public class ProfileEditController {
     );
 
     if (bindingResult.hasErrors()) {
+      System.out.println(bindingResult.getFieldError());
       return "ST0001_register";
     }
 
@@ -131,6 +132,7 @@ public class ProfileEditController {
     );
 
     if (bindingResult.hasErrors()) {
+      System.out.println(bindingResult.getFieldError());
       return "ST0001_register";
     }
 

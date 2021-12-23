@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css"
+    />
+    <link rel="stylesheet" href="/css/CM0004_Student Profile.css" />
+    <title>Mapping Site</title>
+  </head>
+
+  <body style="background-color: #f0f0f0">
+    <!-- guest user navi bar -->
+    <div th:replace="fragments/nav"></div>
+
+    <div class="container-custom mt-5">
+      <!-- Successfully -->
+      <div th:if="${message!=null}">
+        <div
+          class="alert alert-dismissible fade show"
+          th:classappend="${message.isError?'alert-danger':'alert-success'}"
+          role="alert"
+        >
+          <strong>Successful! </strong>
+          <span th:text="${message.text}"></span>
+          You have edited your profile successfully
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="alert"
+            aria-label="Close"
+          ></button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <div class="profile-pic-wrapper mb-3">
+            <div class="pic-holder">
+              <div class="d-flex justify-content-center">
+                <div th:if="${profilePic ==null }">
+                  <img
+                    th:src="@{/images/profile.png}"
+                    class="rounded-circle pic img-thumbnail profile_img"
+                    width="150"
+                    height="150"
+                  />
+                </div>
+                <!-- TODO Come back for profile Upload -->
+              </div>
+            </div>
+          </div>
+
+          <div th:if="${infoMap != null}">
+            <div class="table-responsive mb-3">
+              <table class="table table-borderless table-hover">
+                <tr th:each="entry, stats : ${infoMap}">
+                  <!-- <td th:text="${stats.index + 1}">1</td> -->
+                  <td th:text="${entry.key}" class="text-end">100</td>
+                  <td>:</td>
+                  <td th:text="${entry.value}">John</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+          <div
+            th:if="${certificateFiles!=null and !certificateFiles.empty and role=='ROLE_TEACHER'}"
+          >
+            <h5>Award & Certificate</h5>
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+              <div class="col" th:each="fileInfo, stats : ${certificateFiles}">
+                <!-- <div class="card h-100"> -->
+
+                <a
+                  data-fancybox="gallery"
+                  th:href="${fileInfo.url}"
+                  th:data-caption="${fileInfo.name}"
+                >
+                  <img
+                    th:src="${fileInfo.url}"
+                    class="card-img-top"
+                    th:alt="${fileInfo.name}"
+                  />
+                </a>
+
+                <!-- </div> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- If Role is ROLE_TEACHER -->
+      <div
+        class="d-flex justify-content-between"
+        th:if="${role=='ROLE_TEACHER'}"
+      >
+        <div></div>
+        <div>
+          <!-- TODO redirect to Course List -->
+          <a class="btn btn-primary mt-3 text-end" href="#">Browse Course</a>
+        </div>
+      </div>
+    </div>
+
+    <div th:replace="fragments/footer"></div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
+      integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI="
+      crossorigin="anonymous"
+    ></script>
+    <script src="/js/photoPlaceHolder.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+  </body>
+</html>
