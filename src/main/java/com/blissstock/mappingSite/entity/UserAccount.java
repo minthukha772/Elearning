@@ -1,17 +1,23 @@
 package com.blissstock.mappingSite.entity;
 import java.util.Date;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
-import javax.validation.constraints.Size;
 
-import org.hibernate.validator.constraints.Length;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -62,71 +68,4 @@ public class UserAccount {
 		this.registeredDate = registeredDate;
 	}
 
-	//Constructors
-
-	public UserAccount() {
-	}
-
-	public Long getId() {
-		return this.id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getMail() {
-		return this.mail;
-	}
-
-	public void setMail(String mail) {
-		this.mail = mail;
-	}
-
-	public boolean isIsMailVerified() {
-		return this.isMailVerified;
-	}
-
-	public boolean getIsMailVerified() {
-		return this.isMailVerified;
-	}
-
-	public void setIsMailVerified(boolean isMailVerified) {
-		this.isMailVerified = isMailVerified;
-	}
-
-	public String getPassword() {
-		return this.password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getRole() {
-		return this.role;
-	}
-
-	public void setRole(String role) {
-		this.role = role;
-	}
-
-	public String getAccountStatus() {
-		return this.accountStatus;
-	}
-
-	public void setAccountStatus(String accountStatus) {
-		this.accountStatus = accountStatus;
-	}
-
-	public Date getRegisteredDate() {
-		return this.registeredDate;
-	}
-
-	public void setRegisteredDate(Date registeredDate) {
-		this.registeredDate = registeredDate;
-	}
-
-	
 }
-

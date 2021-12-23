@@ -33,6 +33,7 @@ public class FileController {
       .body(file);
   }
 
+
   @Autowired
   UserSessionService userSessionService;
 
@@ -52,7 +53,7 @@ public class FileController {
     }
     return ResponseEntity
       .ok()
-/*       .header(
+      /*       .header(
         HttpHeaders.CONTENT_DISPOSITION,
         "attachment; filename=\"" + file.getFilename() + "\""
       ) */

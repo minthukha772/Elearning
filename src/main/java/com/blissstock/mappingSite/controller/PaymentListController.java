@@ -37,9 +37,6 @@ public class PaymentListController {
     @Autowired
     PaymentRepository paymentRepo;
     
-    @Autowired
-    JoinCourseUserRepository joinCourseUserRepo;
-    
     
     @RequestMapping("/admin/payment-list")
     public String PaymentList(Model model)

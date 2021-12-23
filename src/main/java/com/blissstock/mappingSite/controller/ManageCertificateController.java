@@ -12,6 +12,8 @@ import com.blissstock.mappingSite.model.FileInfo;
 import com.blissstock.mappingSite.service.StorageService;
 import com.blissstock.mappingSite.service.UserSessionService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,8 +27,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Controller
 public class ManageCertificateController {
+
+  private static final Logger logger = LoggerFactory.getLogger(ManageCertificateController.class);
 
   @Autowired
   StorageService storageService;
@@ -41,8 +48,15 @@ public class ManageCertificateController {
     Model model,
     @PathVariable(name = "id", required = false) Long id
   ) {
+
+    //log
+    logger.info("GET mapping");
+    logger.info("ID is {}", id);
+
     Long uid = getUid(id);
+    logger.info("User {}'s data is being processed ",uid);
     List<FileInfo> fileInfos = loadImages(uid);
+    logger.info("{} photo has been retrieved",fileInfos.size());
     model.addAttribute("files", fileInfos);
 
     return "AT0007_manage_certificate";
@@ -56,6 +70,12 @@ public class ManageCertificateController {
     Model model,
     @PathVariable(name = "id", required = false) Long id
   ) {
+
+    //log
+    logger.info("POST mapping");
+    logger.info("Files -> {}", files);
+    logger.info("ID is {}", id);
+
     System.out.println(files.length);
     Long uid = getUid(id);
     try {
@@ -68,6 +88,7 @@ public class ManageCertificateController {
         );
       }
     } catch (NotImageFileException e) {
+      e.printStackTrace();
       model.addAttribute(
         "fileUploadError",
         "Only Jpg, Jpeg and Png are allowed"
@@ -120,6 +141,11 @@ public class ManageCertificateController {
     String name,
     @PathVariable(name = "id", required = false) Long id
   ) {
+
+    //log
+    logger.info("DELETE mapping");
+    logger.info("name is {} and ID is {}", name, id);
+
     System.out.println("Delete requested for file name: " + name);
     Long uid = getUid(id);
     //return ResponseEntity.badRequest().body("something went wrong");

@@ -5,14 +5,15 @@ import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.CourseTime;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.entity.JoinCourseUser;
+import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
+import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
 import com.blissstock.mappingSite.repository.UserRepository;
-import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
-
+import java.util.ArrayList;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,10 +21,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.util.ArrayList;
-import java.util.List;
-
-@Controller
 public class ListOfUserController {
 
     private static final Logger logger = LoggerFactory.getLogger(ListOfUserController.class);
@@ -127,4 +124,5 @@ public class ListOfUserController {
         // model.addAttribute("tAllTeacherList", tAllRecord);
         return "AT0003_ListofStudentsByT";
     }
-}
+  }
+

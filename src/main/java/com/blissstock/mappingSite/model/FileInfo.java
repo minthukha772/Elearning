@@ -1,27 +1,20 @@
 package com.blissstock.mappingSite.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class FileInfo {
     private String name;
     private String url;
 
-    //Constructors
-
-    public FileInfo() {
-    }
-
-    public FileInfo(String name, String url) {
-        this.name = name;
-        this.url = url;
-    }
 
     public String getName() {
         return this.name;

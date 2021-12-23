@@ -15,7 +15,7 @@ public class UserAccountTests
     public void StudentTypeTest(){
         UserRegisterDTO userRegisterDTO = new UserRegisterDTO();
         UserAccount userAccount= UserRegisterDTO.toUserAccount(userRegisterDTO);
-        assertThat(userAccount.getRole()).isEqualTo("student");
+        assertThat(userAccount.getRole()).isEqualTo("ROLE_STUDENT");
 
     }
 
@@ -24,7 +24,7 @@ public class UserAccountTests
     public void TeacherTypeTest(){
         UserRegisterDTO userRegisterDTO = new TeacherRegisterDTO();
         UserAccount userAccount= UserRegisterDTO.toUserAccount(userRegisterDTO);
-        assertThat(userAccount.getRole()).isEqualTo("teacher");
+        assertThat(userAccount.getRole()).isEqualTo("ROLE_TEACHER");
 
     }
 }

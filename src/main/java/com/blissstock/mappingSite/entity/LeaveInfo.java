@@ -1,6 +1,7 @@
 package com.blissstock.mappingSite.entity;
-import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,23 +15,26 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
+@Data
 @Getter
 @Setter
-@NoArgsConstructor
 @Entity
 @Table(name = "leave_info")
 public class LeaveInfo {
 	
-	@Column(name = "leave_id")
+	public LeaveInfo(Object object, Date leaveDate2, Date leaveStartTime2, Date leaveEndTime2, String reason2,
+            JoinCourseUser join2) {
+    }
+
+    public LeaveInfo() {
+    }
+
+    @Column(name = "leave_id")
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long leaveId;
@@ -60,68 +64,9 @@ public class LeaveInfo {
     @JsonIgnore
     private JoinCourseUser join;
 
-    //Constructors
-
-    public LeaveInfo() {
-    }
-
-    public LeaveInfo(Long leaveId, Date leaveDate, Date leaveStartTime, Date leaveEndTime, String reason, JoinCourseUser join) {
-        this.leaveId = leaveId;
-        this.leaveDate = leaveDate;
-        this.leaveStartTime = leaveStartTime;
-        this.leaveEndTime = leaveEndTime;
-        this.reason = reason;
-        this.join = join;
-    }
-
-    public Long getLeaveId() {
-        return this.leaveId;
-    }
-
-    public void setLeaveId(Long leaveId) {
-        this.leaveId = leaveId;
-    }
-
-    public Date getLeaveDate() {
-        return this.leaveDate;
-    }
-
-    public void setLeaveDate(Date leaveDate) {
-        this.leaveDate = leaveDate;
-    }
-
-    public Date getLeaveStartTime() {
-        return this.leaveStartTime;
-    }
-
-    public void setLeaveStartTime(Date leaveStartTime) {
-        this.leaveStartTime = leaveStartTime;
-    }
-
-    public Date getLeaveEndTime() {
-        return this.leaveEndTime;
-    }
-
-    public void setLeaveEndTime(Date leaveEndTime) {
-        this.leaveEndTime = leaveEndTime;
-    }
-
-    public String getReason() {
-        return this.reason;
-    }
-
-    public void setReason(String reason) {
-        this.reason = reason;
-    }
-
-    public JoinCourseUser getJoin() {
-        return this.join;
-    }
-
-    public void setJoin(JoinCourseUser join) {
-        this.join = join;
-    }
-
+   
 	
 }
+
+ 
 

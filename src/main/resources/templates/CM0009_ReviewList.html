@@ -42,7 +42,7 @@
                                         <div class="media-body order-2 order-lg-1">
                                             <div class="d-flex align-items-center justify-content-between mt-1">
                                                 <p class="font-italic text-muted mb-0 small" th:text="${#dates.format(review.assignedDate, 'yyyy-MM-dd')}"></p>
-                                                <a th:href="@{'/admin/edit-student-review/'+${courseId}+'/'+${review.reviewId}}">Edit</a>
+                                                <a th:href="@{'/admin/edit-student-review/'+${review.reviewId}}">Edit</a>
                                             </div>                                           
                                             <h5 class="mt-0 font-weight-bold mb-2">[[${stuName}]]</h5>
                                             <div class="d-flex align-items-center justify-content-between mt-1">
@@ -62,7 +62,7 @@
                                         <div class="media-body order-2 order-lg-1">
                                             <div class="d-flex align-items-center justify-content-between mt-1">
                                                 <p class="font-italic text-muted mb-0 small" th:text="${#dates.format(review.assignedDate, 'yyyy-MM-dd')}"></p>
-                                                <a th:href="@{'/admin/edit-teacher-review/'+${courseId}+'/'+${review.reviewId}}">Edit</a>
+                                                <a th:href="@{'/admin/edit-teacher-review/'+${review.reviewId}}">Edit</a>
                                             </div>
                                             <span th:if="${review.reviewType == 1}">Concerns</span>
                                             <span th:if="${review.reviewType == 2}">Compliment</span>
@@ -113,7 +113,7 @@
                                             <div class="d-flex align-items-center justify-content-between mt-1">
                                                 <h6 class="font-weight-bold my-2" th:text="${review.feedback}"></h6>
                                                 <ul class="list-inline small">
-                                                    <li class="list-inline-item m-0"><i class="fa fa-star text-success" th:each="i : ${#numbers.sequence(1, review.star)}"></i></li>
+                                                    <li class="list-inline-item m-0"><i class="fa fa-star text-warning" th:each="i : ${#numbers.sequence(1, review.star)}"></i></li>
                                                     <li class="list-inline-item m-0"><i class="fa fa-star-o text-gray" th:each="i : ${#numbers.sequence(1, 5-review.star)}" ></i></li>
                                                 </ul>
                                             </div>
@@ -179,11 +179,7 @@
         </div>
     </div> 
 
-    <footer>
-      <div class="row justify-content-center" id="copy-right-footer">
-          <p>&copy; Copyright <strong>Bliss Stock</strong>. All Rights Reserved</p>
-      </div>
-  </footer>
+    <div th:replace="fragments/footer"></div>
   <script  type="text/javascript">
       $('#myTab a').on('click', function (e) {
             e.preventDefault()

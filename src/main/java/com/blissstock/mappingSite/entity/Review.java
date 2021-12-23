@@ -1,14 +1,17 @@
 package com.blissstock.mappingSite.entity;
 
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import com.blissstock.mappingSite.dto.StudentReviewDTO;
 import com.blissstock.mappingSite.dto.TeacherReviewDTO;
@@ -20,6 +23,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -70,67 +74,6 @@ public class Review {
         return review;
       }
 
-    //Constructors
-
-    public Review() {
-    }
-
-    public Review(Long reviewId, int star, int reviewType, String feedback, Date assignedDate, JoinCourseUser join) {
-        this.reviewId = reviewId;
-        this.star = star;
-        this.reviewType = reviewType;
-        this.feedback = feedback;
-        this.assignedDate = assignedDate;
-        this.join = join;
-    }
-
-    public Long getReviewId() {
-        return this.reviewId;
-    }
-
-    public void setReviewId(Long reviewId) {
-        this.reviewId = reviewId;
-    }
-
-    public int getStar() {
-        return this.star;
-    }
-
-    public void setStar(int star) {
-        this.star = star;
-    }
-
-    public int getReviewType() {
-        return this.reviewType;
-    }
-
-    public void setReviewType(int reviewType) {
-        this.reviewType = reviewType;
-    }
-
-    public String getFeedback() {
-        return this.feedback;
-    }
-
-    public void setFeedback(String feedback) {
-        this.feedback = feedback;
-    }
-
-    public Date getAssignedDate() {
-        return this.assignedDate;
-    }
-
-    public void setAssignedDate(Date assignedDate) {
-        this.assignedDate = assignedDate;
-    }
-
-    public JoinCourseUser getJoin() {
-        return this.join;
-    }
-
-    public void setJoin(JoinCourseUser join) {
-        this.join = join;
-    }
 
 
 }

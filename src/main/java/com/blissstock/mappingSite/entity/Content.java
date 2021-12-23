@@ -20,7 +20,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @Entity
 @Data
 @Table(name = "content")

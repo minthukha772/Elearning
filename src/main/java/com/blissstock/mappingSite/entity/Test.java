@@ -1,5 +1,11 @@
 package com.blissstock.mappingSite.entity;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -39,40 +45,6 @@ public class Test {
     @JsonIgnore
     private CourseInfo courseInfo;
 	
-    //Constructors
-
-    public Test() {
-    }
-
-    public Test(Long testId, String testLink, CourseInfo courseInfo) {
-        this.testId = testId;
-        this.testLink = testLink;
-        this.courseInfo = courseInfo;
-    }
-
-    public Long getTestId() {
-        return this.testId;
-    }
-
-    public void setTestId(Long testId) {
-        this.testId = testId;
-    }
-
-    public String getTestLink() {
-        return this.testLink;
-    }
-
-    public void setTestLink(String testLink) {
-        this.testLink = testLink;
-    }
-
-    public CourseInfo getCourseInfo() {
-        return this.courseInfo;
-    }
-
-    public void setCourseInfo(CourseInfo courseInfo) {
-        this.courseInfo = courseInfo;
-    }
 
 
 }

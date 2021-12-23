@@ -7,7 +7,7 @@
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
+            <a class="nav-link active" aria-current="page" th:href="@{/home}">Home</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">My Course</a>
@@ -19,7 +19,7 @@
             <a class="nav-link" th:href="@{/teacher/profile/1/1}">Profile</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#" style="color: red;">Log out</a>
+            <a class="nav-link" th:href="@{/logout}" style="color: red;">Log out</a>
           </li>
         </ul>
       </div>
