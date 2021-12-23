@@ -83,7 +83,8 @@ public class PaymentController {
         
         //PaymentTesting saveSlip = new PaymentTesting(null, inputSlip.getSlip(),  inputSlip.getPaymentStatus(), inputSlip.getPaymentReceiveDate());
    //paymentRepo.save(saveSlip);
-        return "StuPaymentSuccess";
+        //return "StuPaymentSuccess";
+        return "CM0001_CompleteScreen";
         //return new RedirectView("/users", true);
     }
 
