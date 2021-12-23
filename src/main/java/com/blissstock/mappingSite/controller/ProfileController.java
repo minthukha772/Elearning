@@ -6,6 +6,7 @@ import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.model.FileInfo;
+import com.blissstock.mappingSite.model.Message;
 import com.blissstock.mappingSite.repository.BankInfoRepository;
 import com.blissstock.mappingSite.repository.PaymentAccountRepository;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
@@ -124,6 +125,7 @@ public class ProfileController {
     model.addAttribute("isEditable", false);
     model.addAttribute("role", role.getValue());
     model.addAttribute("infoMap", userInfo.toMap(true));
+    model.addAttribute("id", id);
 
     return "CM0004_Profile";
   }
@@ -135,11 +137,33 @@ public class ProfileController {
   )
   private String viewProfile(
     Model model,
-    @PathVariable(required = false) Long id
+    @PathVariable(required = false) Long id,
+    String message,
+    String error
   ) {
     logger.info("GET Requested");
 
     long uid = getUid(id);
+
+    //##################################################//
+    //Display Message//
+    if (error != null) {
+      logger.debug("Error Message: {}", error);
+      Message messageInfo = new Message();
+      messageInfo.setError(true);
+      messageInfo.setText(Message.ERROR);
+      model.addAttribute("message", messageInfo);
+    } else if (message != null) {
+      logger.debug("Message: {}", message);
+      Message messageInfo = new Message();
+      messageInfo.setError(false);
+      if (message.equals("profileEdit")) {
+        messageInfo.setText(Message.PROFILE_EDIT_SUCCESSFULLY);
+      }
+      model.addAttribute("message", messageInfo);
+    }
+
+    //############################################
 
     //##################################################//
     //Load User Information//
@@ -189,6 +213,7 @@ public class ProfileController {
     model.addAttribute("isEditable", true);
     model.addAttribute("role", role.getValue());
     model.addAttribute("infoMap", userInfo.toMap(false));
+    model.addAttribute("id", uid);
 
     return "CM0004_Profile";
   }
