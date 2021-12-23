@@ -1,8 +1,4 @@
-/* package com.blissstock.mappingSite.service;
 package com.blissstock.mappingSite.service;
-
-package com.blissstock.mappingSite.service;
-
 import java.util.List;
 import javax.transaction.Transactional;
 import javax.validation.Validation;
@@ -30,13 +26,10 @@ public class StudentReviewServiceImpl implements StudentReviewService {
   @Autowired
   private ReviewRepository reviewRepo;
 
-<<<<<<< HEAD
   @Autowired
   private UserInfoRepository userRepo;
 
   
-=======
->>>>>>> de9d4e27d27b5edff44f1328c1783237d3565af7
   @Autowired
   private JoinCourseUserRepository joinRepo;
 
@@ -55,17 +48,15 @@ public class StudentReviewServiceImpl implements StudentReviewService {
     Validator validator = factory.getValidator();
     validator.validate(review).forEach(e -> System.out.println(e.getMessage()));
 
-<<<<<<< HEAD
+
   
 
-  // @Override
   // public UserRegisterDTO getUserByID(Long id) {
   //   //TODO to Implement
   //   return new UserRegisterDTO();
   // }
   }
-=======
   }
-}
- */
->>>>>>> de9d4e27d27b5edff44f1328c1783237d3565af7
+
+
+

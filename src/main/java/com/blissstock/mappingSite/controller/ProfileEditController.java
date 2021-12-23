@@ -45,10 +45,10 @@ public class ProfileEditController {
     if (id != null) {
       // Id only present on admin side
       UserInfo userInfo = userService.getUserInfoByID(id);
-      id = userInfo.getUserAccount().getAccountId();
+      id = userInfo.getUserAccount().getId();
       role = "admin";
     } else {
-      id = userSessionService.getUserAccount().getAccountId();
+      id = userSessionService.getUserAccount().getId();
       role =
         userSessionService.getRole() == UserRole.TEACHER
           ? "teacher"
@@ -151,7 +151,7 @@ public class ProfileEditController {
     if (role == UserRole.ADMIN || role == UserRole.SUPER_ADMIN) {
       uid = id;
     } else if (role == UserRole.TEACHER || role == UserRole.STUDENT) {
-      uid = userSessionService.getUserAccount().getAccountId();
+      uid = userSessionService.getUserAccount().getId();
     } else {
       logger.warn("User Authentication Fail");
       ;
