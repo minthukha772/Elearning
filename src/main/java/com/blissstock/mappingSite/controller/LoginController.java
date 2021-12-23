@@ -2,12 +2,16 @@ package com.blissstock.mappingSite.controller;
 
 import com.blissstock.mappingSite.dto.LoginDTO;
 import com.blissstock.mappingSite.entity.UserAccount;
+import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.exceptions.UserNotFoundException;
 import com.blissstock.mappingSite.service.MailService;
 import com.blissstock.mappingSite.service.UserService;
 import com.blissstock.mappingSite.service.UserSessionService;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +24,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Controller
 public class LoginController {
+
+  private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
   @Autowired
   UserSessionService userSessionService;
@@ -32,6 +41,8 @@ public class LoginController {
   @Autowired
   MailService mailService;
 
+  private static Logger logger= LoggerFactory.getLogger(LoginController.class);
+
   @GetMapping("/login")
   public String loginView(
     Model model,
@@ -41,17 +52,30 @@ public class LoginController {
     String resetSuccess,
     String tokenError
   ) {
-    /*     if(userSessionService.isAuthenticated()){
+    UserRole userRole = userSessionService.getRole();
+    if (
+      userRole != UserRole.GUEST_USER &&
+      userRole != UserRole.ADMIN &&
+      userRole != UserRole.SUPER_ADMIN
+    ) {
+      logger.info("redirect to home");
       return "redirect:/home";
     }
-     */
     if (resetSuccess != null) {
       message =
         "A password reset link has been sent to your email. Please check your email to continue.";
     }
+
+    //log
+    logger.info("resetSuccess is {}", resetSuccess);
+
     if(tokenError !=null){
       error = "invalid token";
     }
+
+    //log
+    logger.info("tokenError is {}", tokenError);
+
     if (error != null) {
       if (error.isBlank()) {
         model.addAttribute("error", "Your email and password is invalid.");
@@ -59,6 +83,10 @@ public class LoginController {
         model.addAttribute("error", error);
       }
     }
+
+    //log
+    logger.info("error is {}", error);
+
     if (logout != null) {
       model.addAttribute("message", "You have been logged out successfully");
     }
@@ -66,6 +94,11 @@ public class LoginController {
       model.addAttribute("message", message);
     }
     model.addAttribute("userInfo", new LoginDTO());
+
+    //log
+    logger.info("message is {}", message);
+    logger.info("another attempt");
+
     return "CM0005_login.html";
   }
   /*   @PostMapping(value = "/login/reset_password")
