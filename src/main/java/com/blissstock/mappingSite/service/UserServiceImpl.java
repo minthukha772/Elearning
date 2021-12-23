@@ -112,8 +112,12 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public Token getToken(String token, TokenType tokenType) {
+    System.out.println("get token called");
     // TODO fix bug
-    return tokenRepository.getToken(token, tokenType.getValue());
+    Token token1 = tokenRepository.getToken(token, tokenType.getValue());
+
+    System.out.println("token is " + token1.toString());
+    return token1;
   }
 
   @Override

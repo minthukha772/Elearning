@@ -55,7 +55,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .permitAll()
         .antMatchers("/register/**", "/login/**", "/password/**", "/home/**", "/verify_password/**")
         .permitAll()
-        .antMatchers("/verify_password/**")
+        .antMatchers("/verify_password/**", "/course-list-guest/**", "/**/change_password", "/change_password")
         .permitAll()
         .antMatchers("/check_email/**")
         .permitAll()

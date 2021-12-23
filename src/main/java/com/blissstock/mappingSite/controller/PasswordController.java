@@ -32,8 +32,7 @@ import org.springframework.web.server.ResponseStatusException;
 public class PasswordController {
 
   private static final Logger logger = LoggerFactory.getLogger(
-    PasswordController.class
-  );
+      PasswordController.class);
 
   @Autowired
   UserService userService;
@@ -44,28 +43,31 @@ public class PasswordController {
   @Autowired
   private PasswordEncoder passwordEncoder;
 
-  /*   @GetMapping("/password/encrypt")
-  public String encrpty(Model model, String pass) {
-    String password = passwordEncoder.encode(pass);
-    System.out.println(password);
-    return "redirect:/";
-  }
- */
-  /*   @GetMapping("/token")
-  public String createToken(Model model) {
-    String token = UUID.randomUUID().toString();
-    UserAccount userAccount = userService.getUserAccountByEmail(
-      "lycuzmarki@gmail.com"
-    );
-    System.out.println(userAccount);
-    userService.createToken(userAccount, token, TokenType.VERIFICATION);
-    return "redirect:/";
-  }
- */
+  /*
+   * @GetMapping("/password/encrypt")
+   * public String encrpty(Model model, String pass) {
+   * String password = passwordEncoder.encode(pass);
+   * System.out.println(password);
+   * return "redirect:/";
+   * }
+   */
+  /*
+   * @GetMapping("/token")
+   * public String createToken(Model model) {
+   * String token = UUID.randomUUID().toString();
+   * UserAccount userAccount = userService.getUserAccountByEmail(
+   * "lycuzmarki@gmail.com"
+   * );
+   * System.out.println(userAccount);
+   * userService.createToken(userAccount, token, TokenType.VERIFICATION);
+   * return "redirect:/";
+   * }
+   */
   @GetMapping("password/verify_password")
   public String verifyPassword(Model model, String token) {
     logger.info("GET requested");
-    Token savedToken = userService.getToken(token, TokenType.VERIFICATION);
+
+    Token savedToken = userService.getToken(token, TokenType.PASSWORD_RESET);
     if (savedToken == null) {
       System.out.println("invalid token");
       return "redirect:/login?tokenError";
@@ -83,53 +85,43 @@ public class PasswordController {
 
   @RequestMapping("password/reset_password")
   public String resetPassword(
-    HttpServletRequest request,
-    @RequestParam("email") String userEmail
-  ) {
+      HttpServletRequest request,
+      @RequestParam("email") String userEmail) {
     logger.info("POST requested, email {}", userEmail);
     UserAccount user = userService.getUserAccountByEmail(userEmail);
     if (user == null) {
-      return (
-        "redirect:/check_email/reset_password?email=" +
-        userEmail +
-        "&error=true"
-      );
+      return ("redirect:/check_email/reset_password?email=" +
+          userEmail +
+          "&error=true");
     }
-    /*   String token = UUID.randomUUID().toString(); */
-    String appUrl =
-      request.getServerName() + // "localhost"
-      ":" +
-      request.getServerPort();
-    /*   userService.createToken(user, token, TokenType.PASSWORD_RESET); */
+    /* String token = UUID.randomUUID().toString(); */
+    String appUrl = request.getServerName() + // "localhost"
+        ":" +
+        request.getServerPort();
+    /* userService.createToken(user, token, TokenType.PASSWORD_RESET); */
     mailService.sendResetPasswordMail(user, appUrl);
     return "redirect:/login?resetSuccess=true";
   }
 
   @GetMapping(path = { "{role}/change_password" })
   public String changePasswordView(
-    Model model,
-    @PathVariable(name = "role", required = true) String role,
-    String token
-  ) {
-    //Role being null meaning user is trying to reset password
+      Model model,
+      @PathVariable(name = "role", required = true) String role,
+      String token) {
+    // Role being null meaning user is trying to reset password
     logger.info("GET requested, role {}", role);
-    if (
-      role != null &&
-      !(
-        role.equals("student") || role.equals("teacher") || role.equals("admin")
-      )
-    ) {
+    if (role != null &&
+        !(role.equals("student") || role.equals("teacher") || role.equals("admin"))) {
       throw new ResponseStatusException(
-        HttpStatus.NOT_FOUND,
-        "entity not found"
-      );
+          HttpStatus.NOT_FOUND,
+          "entity not found");
     }
 
     PasswordDTO passwordDTO = new PasswordDTO();
     String title = "";
 
     if (role == null) {
-      //This is the password reset case by token
+      // This is the password reset case by token
       passwordDTO.setType(PasswordResetType.TOKEN.name());
       title = "Reset Password";
       boolean isTokenValid = true;
@@ -138,13 +130,12 @@ public class PasswordController {
         isTokenValid = false;
       } else {
         Token savedToken = userService.getToken(
-          token,
-          TokenType.PASSWORD_RESET
-        );
+            token,
+            TokenType.PASSWORD_RESET);
         if (savedToken == null) {
           isTokenValid = false;
         } else {
-          //If token is valid, set it as old password for futher use.
+          // If token is valid, set it as old password for futher use.
           passwordDTO.setOldPassword(token);
         }
       }
@@ -153,7 +144,7 @@ public class PasswordController {
         model.addAttribute("error", "Invalid Token");
       }
     } else {
-      //This is the password reset case by old password
+      // This is the password reset case by old password
       passwordDTO.setType(PasswordResetType.OLD_PASSWORD.name());
       title = "Change Password";
     }
@@ -167,19 +158,18 @@ public class PasswordController {
 
   @PostMapping("{role}/change_password")
   public String changePasswordPost(
-    Model model,
-    @Valid @ModelAttribute("passwordDTO") PasswordDTO passwordDTO,
-    BindingResult bindingResult
-  ) {
+      Model model,
+      @Valid @ModelAttribute("passwordDTO") PasswordDTO passwordDTO,
+      BindingResult bindingResult) {
     logger.info("POST request, {}");
 
     String title = "";
 
-    if(bindingResult.hasErrors()){
-      logger.warn("validation error, {}",bindingResult.getFieldError());
+    if (bindingResult.hasErrors()) {
+      logger.warn("validation error, {}", bindingResult.getFieldError());
     }
 
-    logger.trace("PasswordDTO : ",passwordDTO);
+    logger.trace("PasswordDTO : ", passwordDTO);
 
     model.addAttribute("title", title);
     model.addAttribute("passwordDTO", passwordDTO);
