@@ -19,6 +19,7 @@ import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
 import com.blissstock.mappingSite.repository.UserRepository;
 import com.blissstock.mappingSite.service.StorageService;
+import com.blissstock.mappingSite.service.UserSessionService;
 import com.blissstock.mappingSite.utils.CheckUploadFileType;
 import com.blissstock.mappingSite.utils.FileNameGenerator;
 
@@ -46,15 +47,18 @@ public class AdminTopController {
 	public AdminTopController(StorageService storageService) {
 		this.storageService = storageService;
 	}
-
+    @Autowired
+    UserSessionService userSessionService;
+    
     @Autowired
     UserRepository userRepo;
 
     @Autowired
     UserAccountRepository userAccRepo;
 
-    @GetMapping(value="admin/top/{userId}")
-    private String getAdminTopScreen( @PathVariable Long userId, Model model) {  
+    @GetMapping(value="/admin/top")
+    private String getAdminTopScreen( Model model) {  
+        Long userId = userSessionService.getUserAccount().getId();
         UserInfo userInfo=userRepo.findById(userId).orElse(null);
         UserAccount userAcc = userInfo.getUserAccount();
          //load profile picture
@@ -77,6 +81,14 @@ public class AdminTopController {
     private FileInfo loadProfile(long userId) {
       try {
           UserInfo userInfo=userRepo.findById(userId).orElse(null);
+          if(userInfo.getPhoto()==null){
+            userInfo.setPhoto("profile1.jpg");
+            Path path= storageService.loadProfile(userInfo.getPhoto());
+            String name = path.getFileName().toString();
+            String url = "/images/profiles/profile1.jpg";
+  
+          return new FileInfo(name, url);
+          }
           Path path= storageService.loadProfile(userInfo.getPhoto());
           String name = path.getFileName().toString();
           String url = MvcUriComponentsBuilder

@@ -60,10 +60,10 @@ public class ReviewController {
     @Valid
     @GetMapping(value="/student/student-review/{courseId}")
     private String getStudentReviewForm(@PathVariable Long courseId, Model model) {  
-        Long userId;
+
         if(userSessionService.getRole() == UserRole.STUDENT){
           StudentReviewDTO stuReview = new StudentReviewDTO();
-          userId = userSessionService.getUserAccount().getId();
+          Long userId = userSessionService.getUserAccount().getId();
           model.addAttribute("review", stuReview);
           model.addAttribute("postAction", "/student/update-student-review/"+courseId+"/"+userId);
        }
@@ -85,19 +85,19 @@ public class ReviewController {
             System.out.println(e);
           }
         model.addAttribute("infoMap", stuReviewDTO.toMapReview());
-        return "CM0007_WriteReviewStudent";
+        return "redirect:/student/Review/Complete";
 	}
     
     @Valid
     @GetMapping(value="/admin/edit-student-review/{reviewId}")
-    private String editStudentReviewForm(@PathVariable Long reviewId, Model model, final RedirectAttributes redirectAttributes) {  
+    private String editStudentReviewForm(@PathVariable Long reviewId, Model model, final RedirectAttributes redirectAttributes) {         
         Review review=reviewRepo.findById(reviewId).orElse(null);
         model.addAttribute("review", review);
         if(userSessionService.getRole() == UserRole.ADMIN){
           model.addAttribute("review", review);
           model.addAttribute("postAction", "/admin/update-student-review/"+reviewId);    
        }
-	    return "CM0007_WriteReviewStudent";
+	    return "redirect:/admin/Review/Complete";
 	}
   
   @PostMapping(value="/admin/update-student-review/{reviewId}")
@@ -120,12 +120,12 @@ public class ReviewController {
 	}
     
     //get teacher review 
-    @GetMapping(value="/teacher/teacher-review/{courseId}/{userId}")
+    @GetMapping(value="/teacher/teacher-review/{courseId}/{userId}")//userId will be studentId
     private String getTeacherReviewForm(@PathVariable Long courseId, @PathVariable Long userId, Model model) {
         TeacherReviewDTO trReview = new TeacherReviewDTO();
         model.addAttribute("review", trReview);
         model.addAttribute("postAction", "/teacher/update-teacher-review/"+courseId+"/"+userId);
-	    return "CM0007_WriteReviewTeacher";
+	    return "redirect:/teacher/Review/Complete";
 	}
     @PostMapping(value="/teacher/update-teacher-review/{courseId}/{userId}")
     private String postTeacherReviewForm( @Valid @ModelAttribute("review") TeacherReviewDTO trReviewDTO, BindingResult bindingResult,@PathVariable Long courseId, @PathVariable Long userId, Model model, @RequestParam(value="action", required=true) String action) { 
@@ -173,7 +173,7 @@ public class ReviewController {
              System.out.println(e);
            }
          model.addAttribute("infoMap", trReviewDTO.toMapTrReview());
-         return "CM0007_WriteReviewTeacher";
+         return "redirect:/admin/Review/Complete";
    }
    
    }

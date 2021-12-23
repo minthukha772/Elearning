@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class CompleteScreenController {
@@ -71,7 +72,7 @@ public class CompleteScreenController {
         return "CM0001_CompleteScreen";
     }
     
-    @RequestMapping("/Review/Complete")
+    @RequestMapping(value={"/student/Review/Complete","/teacher/Review/Complete"})
     public String ReviewComplete(Model model) {
         String header3 = "Review Complete";
         String header5 = "Congratulation!";
@@ -86,7 +87,7 @@ public class CompleteScreenController {
         return "CM0001_CompleteScreen";
     }
     
-    @RequestMapping("/Admin/Review/Complete")
+    @RequestMapping("/admin/Review/Complete")
     public String ReviewCompleteByAdmin(Model model) {
         String header3 = "Review Complete";
         String header5 = "Thank you for your feedback!";
