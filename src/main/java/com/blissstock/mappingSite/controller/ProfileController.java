@@ -75,6 +75,9 @@ public class ProfileController {
   private String browseProfile(Model model, @PathVariable Long id) {
     logger.info("GET Requested");
     logger.info("Getting userinfo: {} from database", id);
+
+    //##################################################//
+    //Load User Information//
     Optional<UserInfo> optionalUserInfo = userRepo.findById(id);
     //If request id does not exist
     if (!optionalUserInfo.isPresent()) {
@@ -82,6 +85,11 @@ public class ProfileController {
       return "redirect:/404";
     }
     UserInfo userInfo = optionalUserInfo.get();
+    //##################################################//
+
+    //##################################################//
+    // Check Role
+
     UserRole role = UserRole.strToUserRole(userInfo.getUserAccount().getRole());
     logger.debug("requested user role is {}", role.getValue());
 
@@ -90,47 +98,97 @@ public class ProfileController {
       return "redirect:/404";
     }
 
+    //##################################################//
+
+    //##################################################//
+    //Load Profile
+    try {
+      FileInfo profilePic = loadProfile(id);
+      model.addAttribute("profilePic", profilePic);
+    } catch (Exception e) {
+      e.printStackTrace();
+      logger.info("unable to get profile {}", id);
+    }
+    //##################################################//
+
+    //##################################################//
+    //Load Certificate
     if (role == UserRole.TEACHER) {
       //load certificates
       List<FileInfo> certificateFiles = loadImages(id);
       logger.info("User have certificates: {}", certificateFiles.size());
       model.addAttribute("certificateFiles", certificateFiles);
     }
+    //##################################################//
 
+    model.addAttribute("isEditable", false);
     model.addAttribute("role", role.getValue());
     model.addAttribute("infoMap", userInfo.toMap(true));
 
     return "CM0004_Profile";
   }
 
-  @GetMapping(value = { "/student/profile/", "/teacher/browse/profile" })
-  private String viewProfile(Model model, @PathVariable Long id) {
+  @GetMapping(
+    value = {
+      "/student/profile/", "/teacher/profile", "/admin/browse/profile/{id}",
+    }
+  )
+  private String viewProfile(
+    Model model,
+    @PathVariable(required = false) Long id
+  ) {
     logger.info("GET Requested");
-    logger.info("Getting userinfo: {} from database", id);
-    Optional<UserInfo> optionalUserInfo = userRepo.findById(id);
-    //If request id does not exist
+
+    long uid = getUid(id);
+
+    //##################################################//
+    //Load User Information//
+    Optional<UserInfo> optionalUserInfo = userRepo.findById(uid);
+    //If request uid does not exist
     if (!optionalUserInfo.isPresent()) {
-      logger.info("User {} does not exist", id);
+      logger.info("User {} does not exist", uid);
       return "redirect:/404";
     }
     UserInfo userInfo = optionalUserInfo.get();
+    //##################################################//
+
+    //##################################################//
+    // Check Role
+
     UserRole role = UserRole.strToUserRole(userInfo.getUserAccount().getRole());
     logger.debug("requested user role is {}", role.getValue());
 
     if (role == UserRole.ADMIN || role == UserRole.SUPER_ADMIN) {
-      logger.info("User does not have sufficient auth to access uid:{}", id);
+      logger.info("User does not have sufficient auth to access uuid:{}", uid);
       return "redirect:/404";
     }
 
+    //##################################################//
+
+    //##################################################//
+    //Load Profile
+    try {
+      FileInfo profilePic = loadProfile(uid);
+      model.addAttribute("profilePic", profilePic);
+    } catch (Exception e) {
+      e.printStackTrace();
+      logger.info("unable to get profile {}", uid);
+    }
+
+    //##################################################//
+
+    //##################################################//
+    //Load Certificate
     if (role == UserRole.TEACHER) {
       //load certificates
-      List<FileInfo> certificateFiles = loadImages(id);
+      List<FileInfo> certificateFiles = loadImages(uid);
       logger.info("User have certificates: {}", certificateFiles.size());
       model.addAttribute("certificateFiles", certificateFiles);
     }
-
+    //##################################################//
+    model.addAttribute("isEditable", true);
     model.addAttribute("role", role.getValue());
-    model.addAttribute("infoMap", userInfo.toMap(true));
+    model.addAttribute("infoMap", userInfo.toMap(false));
 
     return "CM0004_Profile";
   }
@@ -260,6 +318,19 @@ public class ProfileController {
     }
 
     return "redirect:/" + role + "/profile/" + userId;
+  }
+
+  private Long getUid(Long id) {
+    Long uid = 0L;
+    UserRole role = userSessionService.getRole();
+    if (role == UserRole.ADMIN || role == UserRole.SUPER_ADMIN) {
+      uid = id;
+    } else if (role == UserRole.TEACHER || role == UserRole.STUDENT) {
+      uid = userSessionService.getUserAccount().getAccountId();
+    } else {
+      throw new RuntimeException("user authetication fail");
+    }
+    return uid;
   }
 
   //Get profile photo
