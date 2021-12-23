@@ -24,8 +24,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Controller
 public class LoginController {
+
+  private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
   @Autowired
   UserSessionService userSessionService;
@@ -60,9 +65,17 @@ public class LoginController {
       message =
         "A password reset link has been sent to your email. Please check your email to continue.";
     }
+
+    //log
+    logger.info("resetSuccess is {}", resetSuccess);
+
     if(tokenError !=null){
       error = "invalid token";
     }
+
+    //log
+    logger.info("tokenError is {}", tokenError);
+
     if (error != null) {
       if (error.isBlank()) {
         model.addAttribute("error", "Your email and password is invalid.");
@@ -70,6 +83,10 @@ public class LoginController {
         model.addAttribute("error", error);
       }
     }
+
+    //log
+    logger.info("error is {}", error);
+
     if (logout != null) {
       model.addAttribute("message", "You have been logged out successfully");
     }
@@ -77,6 +94,11 @@ public class LoginController {
       model.addAttribute("message", message);
     }
     model.addAttribute("userInfo", new LoginDTO());
+
+    //log
+    logger.info("message is {}", message);
+    logger.info("another attempt");
+
     return "CM0005_login.html";
   }
   /*   @PostMapping(value = "/login/reset_password")

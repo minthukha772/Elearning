@@ -44,36 +44,38 @@ public class UserServiceImpl implements UserService {
   @Autowired
   private MailService mailService;
 
+
   public UserServiceImpl(
-    UserAccountRepository userAccountRepository,
-    UserInfoRepository userInfoRepository,
-    TokenRepository tokenRepository
-  ) {
+      UserAccountRepository userAccountRepository,
+      UserInfoRepository userInfoRepository,
+      TokenRepository tokenRepository) {
     this.userAccountRepository = userAccountRepository;
     this.userInfoRepository = userInfoRepository;
     this.tokenRepository = tokenRepository;
-    //validator = Validation.buildDefaultValidatorFactory().getValidator();
+    // validator = Validation.buildDefaultValidatorFactory().getValidator();
   }
 
   public UserInfo addUser(UserRegisterDTO userRegisterDTO)
-    throws UserAlreadyExistException {
+      throws UserAlreadyExistException {
     UserInfo userInfo = UserRegisterDTO.toUserInfo(userRegisterDTO);
     UserAccount userAccount = UserRegisterDTO.toUserAccount(
-      userRegisterDTO,
-      GregorianCalendar.getInstance().getTime()
-    );
-    //Encode Password
+        userRegisterDTO,
+        GregorianCalendar.getInstance().getTime());
+    // Encode Password
     userAccount.setPassword(passwordEncoder.encode(userAccount.getPassword()));
 
     if (this.isUserAccountPresent(userAccount.getMail())) {
+      logger.warn("User with {} email already exists", userAccount.getMail());
       throw new UserAlreadyExistException();
     }
 
-    /*  UserAccount savedUserAccount = userAccountRepository.save(userAccount);
-    userInfo.setUserAccount(savedUserAccount); */
+    /*
+     * UserAccount savedUserAccount = userAccountRepository.save(userAccount);
+     * userInfo.setUserAccount(savedUserAccount);
+     */
     userInfo.setUserAccount(userAccount);
     UserInfo savedUserInfo = userInfoRepository.save(userInfo);
-    //userAccountRepository.save(entity);
+    logger.info("User {}, has successfully register with email {}", userAccount.getAccountId(), userAccount.getMail());
     return savedUserInfo;
   }
 
@@ -83,8 +85,7 @@ public class UserServiceImpl implements UserService {
     System.out.println(existingUserInfo);
     System.out.println(existingUserInfo.getUserAccount());
     if (existingUserInfo != null) {
-      existingUserInfo =
-        UserRegisterDTO.toUserInfo(userRegisterDTO, existingUserInfo);
+      existingUserInfo = UserRegisterDTO.toUserInfo(userRegisterDTO, existingUserInfo);
     }
     userInfoRepository.save(existingUserInfo);
   }
@@ -118,18 +119,20 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public Token getToken(String token, TokenType tokenType) {
-    //TODO fix bug
+    // TODO fix bug
     return tokenRepository.getToken(token, tokenType.getValue());
   }
 
   @Override
   public UserAccount getUserAccountByToken(String verificationToken) {
     return null;
-    //TODo fix bug
-    /* UserAccount userAccount = tokenRepository
-      .findByToken(verificationToken)
-      .getUserAccount(); */
-    //return userAccount;
+    // TODo fix bug
+    /*
+     * UserAccount userAccount = tokenRepository
+     * .findByToken(verificationToken)
+     * .getUserAccount();
+     */
+    // return userAccount;
   }
 
   @Override
@@ -154,7 +157,6 @@ public class UserServiceImpl implements UserService {
     userAccount.setPassword(newPassword);
     userAccountRepository.save(userAccount);
 
-    
   }
 
 }
