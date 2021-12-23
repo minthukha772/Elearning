@@ -4,7 +4,6 @@ import javax.validation.Valid;
 
 import com.blissstock.mappingSite.dto.StudentReviewDTO;
 import com.blissstock.mappingSite.dto.TeacherReviewDTO;
-import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.Review;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.enums.UserRole;
@@ -16,7 +15,6 @@ import com.blissstock.mappingSite.service.TeacherReviewService;
 import com.blissstock.mappingSite.service.UserService;
 import com.blissstock.mappingSite.service.UserSessionService;
 
-import org.hibernate.annotations.SourceType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

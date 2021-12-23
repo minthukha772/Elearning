@@ -56,6 +56,8 @@ public class ProfileEditController {
     }
     logger.info("Role is {}", role);
     UserInfo userInfo = userService.getUserInfoByID(id);
+    
+    
     UserRegisterDTO userRegisterDTO = UserRegisterDTO.fromUserInfo(userInfo);
     userRegisterDTO.setAcceptTerm(true);
     model.addAttribute("userInfo", userRegisterDTO);
@@ -91,12 +93,22 @@ public class ProfileEditController {
     model.addAttribute("userInfo", userInfo);
     try {
       if (action.equals("submit")) {
+        logger.info("update userinfo {}",uid);
         userService.updateUser(userInfo, uid);
+        if(userSessionService.getRole() == UserRole.STUDENT){
+          return "redirect:/student/profile/?message=profileEdit";
+        }else{
+          return "redirect:/admin/browse/profile/"+uid+"?message=profileEdit";
+        }
       }
-      // TODO redirect to complete page
+     
     } catch (Exception e) {
-      logger.info(" Form Submition error :{}", e.getMessage());
-      System.out.println(e);
+      e.printStackTrace();
+      if(userSessionService.getRole() == UserRole.STUDENT){
+        return "redirect:/student/profile/?message=profileEdit";
+      }else{
+        return "redirect:/admin/browse/profile/"+uid+"?message=profileEdit";
+      }
     }
 
     // Information For Randering Confirm
@@ -131,12 +143,25 @@ public class ProfileEditController {
     model.addAttribute("userInfo", userInfo);
     try {
       if (action.equals("submit")) {
+        logger.info("update userinfo {}",uid);
         userService.updateUser(userInfo, uid);
+        if(userSessionService.getRole() == UserRole.TEACHER){
+          return "redirect:/teacher/profile/?message=profileEdit";
+        }else{
+          return "redirect:/admin/browse/profile/"+uid+"?message=profileEdit";
+        }
+        
       }
-      // TODO redirect to complete page
+ 
+      
     } catch (Exception e) {
-      logger.info(" Form Submition error :{}", e.getMessage());
-      System.out.println(e);
+      e.printStackTrace();
+      if(userSessionService.getRole() == UserRole.TEACHER){
+        return "redirect:/teacher/profile/?error=profileEdit";
+      }else{
+        return "redirect:/admin/browse/profile/"+uid+"?error=profileEdit";
+      }
+      
     }
 
     // Information For Randering Confirm

@@ -12,6 +12,8 @@ import com.blissstock.mappingSite.model.FileInfo;
 import com.blissstock.mappingSite.service.StorageService;
 import com.blissstock.mappingSite.service.UserSessionService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,7 +54,9 @@ public class ManageCertificateController {
     logger.info("ID is {}", id);
 
     Long uid = getUid(id);
+    logger.info("User {}'s data is being processed ",uid);
     List<FileInfo> fileInfos = loadImages(uid);
+    logger.info("{} photo has been retrieved",fileInfos.size());
     model.addAttribute("files", fileInfos);
 
     return "AT0007_manage_certificate";
@@ -84,6 +88,7 @@ public class ManageCertificateController {
         );
       }
     } catch (NotImageFileException e) {
+      e.printStackTrace();
       model.addAttribute(
         "fileUploadError",
         "Only Jpg, Jpeg and Png are allowed"

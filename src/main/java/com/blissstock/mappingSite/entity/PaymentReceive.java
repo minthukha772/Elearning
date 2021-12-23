@@ -1,6 +1,7 @@
 package com.blissstock.mappingSite.entity;
-import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,6 +20,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
 @Setter
@@ -26,7 +28,6 @@ import lombok.Setter;
 @Entity
 @Table(name = "payment_receive")
 public class PaymentReceive {
-	
 	@Column(name = "payment_receive_id")
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)

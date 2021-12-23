@@ -1,33 +1,42 @@
 package com.blissstock.mappingSite.entity;
 
+import com.blissstock.mappingSite.dto.TeacherRegisterDTO;
+import com.blissstock.mappingSite.dto.UserRegisterDTO;
+import com.blissstock.mappingSite.enums.UserRole;
+import com.blissstock.mappingSite.interfaces.Profile;
+import com.blissstock.mappingSite.utils.DateFormatter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import com.blissstock.mappingSite.dto.TeacherRegisterDTO;
-import com.blissstock.mappingSite.dto.UserRegisterDTO;
-import com.blissstock.mappingSite.interfaces.Profile;
-import com.blissstock.mappingSite.utils.DateFormatter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import org.springframework.format.annotation.DateTimeFormat;
-
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.servlet.FlashMapManager;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
 @Setter
@@ -83,6 +92,14 @@ public class UserInfo implements Profile{
   @MapsId
   @JoinColumn(name = "id")
   UserAccount userAccount;
+
+/*   @OneToMany(
+    fetch = FetchType.LAZY,
+    cascade = CascadeType.ALL,
+    mappedBy = "userInfo"
+  )
+  @JsonIgnore
+  private List<Certificate> certificateInfo = new ArrayList<>(); */
 
   @OneToMany(
     fetch = FetchType.LAZY,
@@ -148,6 +165,27 @@ public class UserInfo implements Profile{
     return map;
   }
 
- 
+  @Override
+  public LinkedHashMap<String, String> toMap(boolean isSensitive) {
+    LinkedHashMap<String, String> map = new LinkedHashMap<>();
+    UserRole role = UserRole.strToUserRole(this.userAccount.getRole());
+    map.put("Name", this.userName);
+    if (!isSensitive) {
+      map.put("Phone Number", this.phoneNo);
+    }
+    map.put("Gender", this.gender);
+    if (!isSensitive) {
+      map.put("Date of Birth", DateFormatter.format(this.birthDate));
+      map.put("Zip Code", this.postalCode + "");
+      map.put("City", this.city);
+      map.put("Division", this.division);
+      map.put("Address", this.address);
+    }
+    map.put("Education", this.education);
+    if (role == UserRole.TEACHER) {
+      map.put("Self Description", this.selfDescription);
+    }
+    return map;
+  }
  
 }

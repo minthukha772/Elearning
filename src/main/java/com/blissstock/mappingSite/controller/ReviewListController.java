@@ -8,11 +8,9 @@ import javax.validation.Valid;
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.JoinCourseUser;
 import com.blissstock.mappingSite.entity.Review;
-import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
-import com.blissstock.mappingSite.repository.ReviewTestRepository;
 import com.blissstock.mappingSite.repository.UserRepository;
 import com.blissstock.mappingSite.service.UserService;
 import com.blissstock.mappingSite.service.UserSessionService;
@@ -45,7 +43,7 @@ public class ReviewListController {
     })
     private String getReviewList(@PathVariable Long courseId, Model model) {  
         model.addAttribute("courseId",courseId);
-        Long userId = userSessionService.getUserAccount().getId();
+        Long userId = userSessionService.getUserAccount().getAccountId();
         
         CourseInfo courseInfo=courseInfoRepo.findById(courseId).orElse(null);
         UserInfo user=userRepo.findById(userId).orElse(null);

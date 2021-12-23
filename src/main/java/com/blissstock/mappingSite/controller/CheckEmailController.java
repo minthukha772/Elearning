@@ -1,8 +1,11 @@
 package com.blissstock.mappingSite.controller;
 
-import com.blissstock.mappingSite.dto.EmailCheckRegisterDTO;
-import com.blissstock.mappingSite.service.UserService;
 import javax.validation.Valid;
+
+import com.blissstock.mappingSite.dto.EmailCheckRegisterDTO;
+import com.blissstock.mappingSite.enums.UserRole;
+import com.blissstock.mappingSite.service.UserService;
+import com.blissstock.mappingSite.service.UserSessionService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,14 +26,27 @@ public class CheckEmailController {
   @Autowired
   UserService userService;
 
+  @Autowired
+  UserSessionService userSessionService;
+
   /// A Get Method For Email Check Before Register
   @GetMapping(path = { "/check_email/register/{role}" })
   public String registerForm(
-      @PathVariable(name = "role", required = false) String role,
-      Model model,
-      String email) {
+    @PathVariable(name = "role", required = false) String role,
+    Model model,
+    String email
+  ) {
     logger.info("GET Request");
-    logger.info("Role is {}, email is {}", role, email);
+    logger.info("Role is {}, email is {}",role,email);
+    UserRole userRole = userSessionService.getRole();
+    if (
+      userRole != UserRole.GUEST_USER &&
+      userRole != UserRole.ADMIN &&
+      userRole != UserRole.SUPER_ADMIN
+    ) {
+      logger.info("redirect to home");
+      return "redirect:/home";
+    }
     // Tell Thymeleaf to render as Reister
     model.addAttribute("action", "register");
 

@@ -23,7 +23,7 @@ public class CompleteScreenController {
     
     // TODO Change NavBars
     
-    @RequestMapping("/Student/Register/Complete")
+    @RequestMapping("/register/student/complete")
     public String StudentRegisterComplete(Model model) {
         String header3 = "Student Register Complete";
         String header5 = "Congratulation!";
@@ -56,7 +56,7 @@ public class CompleteScreenController {
         return "CM0001_CompleteScreen";
     }
     
-    @RequestMapping("/Teacher/Register/Complete")
+    @RequestMapping("/register/teacher/complete")
     public String TeacherRegisterComplete(Model model) {
         String header3 = "Teacher Register Complete";
         String header5 = "Congratulation!";

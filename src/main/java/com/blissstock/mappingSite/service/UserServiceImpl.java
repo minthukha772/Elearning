@@ -1,5 +1,9 @@
 package com.blissstock.mappingSite.service;
 
+import java.util.GregorianCalendar;
+
+import javax.transaction.Transactional;
+
 import com.blissstock.mappingSite.dto.PasswordDTO;
 import com.blissstock.mappingSite.dto.UserRegisterDTO;
 import com.blissstock.mappingSite.entity.Token;
@@ -7,16 +11,20 @@ import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.enums.TokenType;
 import com.blissstock.mappingSite.exceptions.UserAlreadyExistException;
-import com.blissstock.mappingSite.exceptions.UserNotFoundException;
 import com.blissstock.mappingSite.repository.TokenRepository;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
 import com.blissstock.mappingSite.repository.UserInfoRepository;
+<<<<<<< HEAD
+import com.blissstock.mappingSite.repository.UserRepository;
+
 import java.util.GregorianCalendar;
+import java.util.Optional;
 import java.util.UUID;
+=======
+>>>>>>> e3ddc02530232fdac29a31f539222426c8a3c104
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,6 +32,13 @@ import org.springframework.stereotype.Service;
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
+
+  private static final Logger logger = LoggerFactory.getLogger(
+    UserServiceImpl.class
+  );
+
+  @Autowired
+  UserRepository userRepo;
   @Autowired
   private final UserAccountRepository userAccountRepository;
 
@@ -39,7 +54,6 @@ public class UserServiceImpl implements UserService {
   @Autowired
   private MailService mailService;
 
-  private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
   public UserServiceImpl(
       UserAccountRepository userAccountRepository,
@@ -71,7 +85,11 @@ public class UserServiceImpl implements UserService {
      */
     userInfo.setUserAccount(userAccount);
     UserInfo savedUserInfo = userInfoRepository.save(userInfo);
-    logger.info("User {}, has successfully register with email {}", userAccount.getId(), userAccount.getMail());
+<<<<<<< HEAD
+    // userAccountRepository.save(entity);
+=======
+    logger.info("User {}, has successfully register with email {}", userAccount.getAccountId(), userAccount.getMail());
+>>>>>>> e3ddc02530232fdac29a31f539222426c8a3c104
     return savedUserInfo;
   }
 
@@ -98,6 +116,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public void createToken(
+<<<<<<< HEAD
       UserAccount userAccount,
       String token,
       TokenType tokenType) {
@@ -106,18 +125,62 @@ public class UserServiceImpl implements UserService {
         userAccount,
         tokenType,
         System.currentTimeMillis());
+=======
+    UserAccount userAccount,
+    String token,
+    TokenType tokenType
+  ) {
+    
+    Token myToken = new Token(
+      token,
+      userAccount,
+      tokenType,
+      System.currentTimeMillis()
+    );
+    logger.info("token {} created",myToken);
+>>>>>>> e3ddc02530232fdac29a31f539222426c8a3c104
     tokenRepository.save(myToken);
   }
 
   @Override
   public Token getToken(String token, TokenType tokenType) {
+<<<<<<< HEAD
+    System.out.println("get token called");
+    // TODO fix bug
+    Token token1 = tokenRepository.getToken(token, tokenType.getValue());
+
+    System.out.println("token is " + token1.toString());
+    return token1;
+=======
     // TODO fix bug
     return tokenRepository.getToken(token, tokenType.getValue());
+>>>>>>> e3ddc02530232fdac29a31f539222426c8a3c104
   }
 
   @Override
   public UserAccount getUserAccountByToken(String verificationToken) {
+    try {
+      System.out.println("get account by token called");
+      Long uid = tokenRepository.findByToken(verificationToken, "VERIFICATION");
+
+      System.out.println("id is " + uid);
+
+      if (uid == null) {
+        System.out.println("uid is null");
+        return null;
+      }
+
+      UserInfo userInfo = userRepo.findById(uid).orElse(null);
+      UserAccount userAccount = userInfo.getUserAccount();
+
+      return userAccount;
+
+    } catch (Exception e) {
+      System.out.println(e.toString());
+    }
     return null;
+<<<<<<< HEAD
+=======
     // TODo fix bug
     /*
      * UserAccount userAccount = tokenRepository
@@ -125,6 +188,7 @@ public class UserServiceImpl implements UserService {
      * .getUserAccount();
      */
     // return userAccount;
+>>>>>>> e3ddc02530232fdac29a31f539222426c8a3c104
   }
 
   @Override

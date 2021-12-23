@@ -2,12 +2,16 @@ package com.blissstock.mappingSite.controller;
 
 import com.blissstock.mappingSite.dto.LoginDTO;
 import com.blissstock.mappingSite.entity.UserAccount;
+import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.exceptions.UserNotFoundException;
 import com.blissstock.mappingSite.service.MailService;
 import com.blissstock.mappingSite.service.UserService;
 import com.blissstock.mappingSite.service.UserSessionService;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +41,8 @@ public class LoginController {
   @Autowired
   MailService mailService;
 
+  private static Logger logger= LoggerFactory.getLogger(LoginController.class);
+
   @GetMapping("/login")
   public String loginView(
     Model model,
@@ -46,10 +52,15 @@ public class LoginController {
     String resetSuccess,
     String tokenError
   ) {
-    /*     if(userSessionService.isAuthenticated()){
+    UserRole userRole = userSessionService.getRole();
+    if (
+      userRole != UserRole.GUEST_USER &&
+      userRole != UserRole.ADMIN &&
+      userRole != UserRole.SUPER_ADMIN
+    ) {
+      logger.info("redirect to home");
       return "redirect:/home";
     }
-     */
     if (resetSuccess != null) {
       message =
         "A password reset link has been sent to your email. Please check your email to continue.";

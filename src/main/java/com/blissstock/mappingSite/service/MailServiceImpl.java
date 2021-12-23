@@ -18,8 +18,7 @@ import org.springframework.stereotype.Service;
 public class MailServiceImpl implements MailService {
 
   private static final Logger logger = LoggerFactory.getLogger(
-    MailServiceImpl.class
-  );
+      MailServiceImpl.class);
 
   @Autowired
   @Qualifier("gmail")
@@ -28,35 +27,36 @@ public class MailServiceImpl implements MailService {
   @Autowired
   private UserService userService;
 
-/*   @Autowired
-  private MessageSource messages;
- */
+  /*
+   * @Autowired
+   * private MessageSource messages;
+   */
   private String email = "mappingsite0@gmail.com";
   private String fromName = "Mapping Site";
 
   public void sendMail(
-    String subject,
-    String toAddresses,
-    String ccAddresses,
-    String bccAddresses,
-    String body
-  ) {
+      String subject,
+      String toAddresses,
+      String ccAddresses,
+      String bccAddresses,
+      String body) {
     MimeMessagePreparator preparator = mimeMessage -> {
       MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
       message.setTo(toAddresses.split("[,;]"));
       message.setFrom(email, fromName);
       message.setSubject(subject);
-      if (!ccAddresses.isBlank()) message.setCc(ccAddresses.split("[;,]"));
-      if (!bccAddresses.isBlank()) message.setBcc(bccAddresses.split("[;,]"));
+      if (!ccAddresses.isBlank())
+        message.setCc(ccAddresses.split("[;,]"));
+      if (!bccAddresses.isBlank())
+        message.setBcc(bccAddresses.split("[;,]"));
       message.setText(body, false);
     };
     mailSender.send(preparator);
     logger.info(
-      "Email sent successfully To {},{} with Subject {}",
-      toAddresses,
-      ccAddresses,
-      subject
-    );
+        "Email sent successfully To {},{} with Subject {}",
+        toAddresses,
+        ccAddresses,
+        subject);
   }
 
   public void sendVerificationMail(UserAccount userAccount, String appUrl) {
@@ -66,9 +66,8 @@ public class MailServiceImpl implements MailService {
     String recipientAddress = userAccount.getMail();
     String subject = "Registration Confirmation";
 
-    String confirmationUrl = appUrl + "/verify_password?token=" + token;
-    String message =
-      "Congratulations, your account has been successfully created. Please go to the following link to confirm the account";
+    String confirmationUrl = appUrl + "/verify_password/" + token;
+    String message = "Congratulations, your account has been successfully created. Please go to the following link to confirm the account";
     String body = message + "\r\n" + confirmationUrl;
     System.out.println(confirmationUrl.toString());
     sendMail(subject, recipientAddress, "", "", body);
@@ -83,11 +82,10 @@ public class MailServiceImpl implements MailService {
     String subject = "Reset Password";
 
     String confirmationUrl = appUrl + "/password/verify_password?token=" + token;
-    String message =
-      "You have requested to reset password. Please click the following link to continue: ";
+    String message = "You have requested to reset password. Please click the following link to continue: ";
     String body = message + "\r\n" + confirmationUrl;
     System.out.println(confirmationUrl.toString());
     sendMail(subject, recipientAddress, "", "", body);
-    
+
   }
 }

@@ -3,9 +3,11 @@ package com.blissstock.mappingSite.controller;
 import com.blissstock.mappingSite.dto.TeacherRegisterDTO;
 import com.blissstock.mappingSite.dto.UserRegisterDTO;
 import com.blissstock.mappingSite.entity.UserInfo;
+import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.exceptions.UserAlreadyExistException;
 import com.blissstock.mappingSite.service.MailService;
 import com.blissstock.mappingSite.service.UserService;
+import com.blissstock.mappingSite.service.UserSessionService;
 import com.blissstock.mappingSite.validation.validators.EmailValidator;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
@@ -28,9 +30,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class RegisterController {
-  private static final Logger logger = LoggerFactory.getLogger(RegisterController.class);
+
+  private static final Logger logger = LoggerFactory.getLogger(
+      RegisterController.class);
+
   @Autowired
   UserService userService;
+
+  @Autowired
+  UserSessionService userSessionService;
 
   @Autowired
   MailService mailService;
@@ -45,12 +53,11 @@ public class RegisterController {
 
   // Redirect to email_check
 
-  @GetMapping("/register")
-  public String registerForm() {
-    logger.info("GET Request");
-    return "redirect:/email_check/register/";
-  }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> e3ddc02530232fdac29a31f539222426c8a3c104
   // Handle User GET Request
   @Valid
   @PreAuthorize("isAnonymous()")
@@ -59,7 +66,21 @@ public class RegisterController {
       @PathVariable(name = "role", required = false) String role,
       @PathVariable(name = "email") String email,
       Model model) {
+    logger.info("GET Request");
+<<<<<<< HEAD
     // if email is not validate throw ConstraintViolationException exception
+=======
+    UserRole userRole = userSessionService.getRole();
+    if (
+      userRole != UserRole.GUEST_USER &&
+      userRole != UserRole.ADMIN &&
+      userRole != UserRole.SUPER_ADMIN
+    ) {
+      logger.info("redirect to home");
+      return "redirect:/home";
+    }
+    //if email is not validate throw ConstraintViolationException exception
+>>>>>>> e3ddc02530232fdac29a31f539222426c8a3c104
     if (!new EmailValidator().validateEmail(email)) {
       logger.info("Invalidate email in register Form");
       throw new ConstraintViolationException("Invalid Email", null);
@@ -86,7 +107,7 @@ public class RegisterController {
     return "ST0001_register.html";
   }
 
-  @PostMapping(path = "/register/student/{email}")
+  @PostMapping(path = "/register/student/{dummyEmail}")
   public String studentRegisterConfirm(
       Model model,
       @Valid @ModelAttribute("userInfo") UserRegisterDTO userInfo,
@@ -94,7 +115,7 @@ public class RegisterController {
       @RequestParam(value = "action", required = true) String action,
       HttpServletRequest request,
       Errors errors) {
-    logger.info("POST Request");
+    logger.info("POST Request, action: {}", action);
     String role = "student";
     model.addAttribute("task", "Register");
     model.addAttribute("role", role);
@@ -106,6 +127,11 @@ public class RegisterController {
       return "ST0001_register.html";
     }
 
+<<<<<<< HEAD
+    logger.trace("Entered User Info: {}", userInfo.toString());
+
+=======
+>>>>>>> e3ddc02530232fdac29a31f539222426c8a3c104
     if (action.equals("submit")) {
       logger.info("User action : submit");
       try {
@@ -114,7 +140,14 @@ public class RegisterController {
         String appUrl = request.getServerName() + // "localhost"
             ":" +
             request.getServerPort(); // "8080"
+<<<<<<< HEAD
+        mailService.sendVerificationMail(
+            savedUserInfo.getUserAccount(),
+            appUrl);
+=======
         mailService.sendVerificationMail(savedUserInfo.getUserAccount(), appUrl);
+>>>>>>> e3ddc02530232fdac29a31f539222426c8a3c104
+        return "redirect:/register/student/complete";
       } catch (UserAlreadyExistException e) {
         logger.info("User Already Exit Expeption :{}", e.getMessage());
         e.printStackTrace();
@@ -130,7 +163,7 @@ public class RegisterController {
     return "ST0001_register.html";
   }
 
-  @PostMapping(path = "/register/teacher/{email}")
+  @PostMapping(path = "/register/teacher/{dummyEmail}")
   public String teacherRegisterConfirm(
       Model model,
       @Valid @ModelAttribute("userInfo") TeacherRegisterDTO userInfo,
@@ -138,7 +171,10 @@ public class RegisterController {
       @RequestParam(value = "action", required = true) String action,
       HttpServletRequest request,
       Errors errors) {
+<<<<<<< HEAD
+=======
     logger.info("POST Request");
+>>>>>>> e3ddc02530232fdac29a31f539222426c8a3c104
     String role = "teacher";
     model.addAttribute("task", "Register");
     model.addAttribute("role", role);
@@ -151,14 +187,30 @@ public class RegisterController {
     }
 
     if (action.equals("submit")) {
+      logger.info("User action : submit");
       try {
-        logger.info("User action: submit");
         UserInfo savedUserInfo = userService.addUser(userInfo);
 
+<<<<<<< HEAD
+          String appUrl = request.getServerName() + // "localhost"
+              ":" +
+              request.getServerPort(); // "8080"
+          mailService.sendVerificationMail(
+              savedUserInfo.getUserAccount(),
+              appUrl);
+          return "redirect:/register/teacher/complete";
+        } catch (UserAlreadyExistException e) {
+          e.printStackTrace();
+          model.addAttribute("userExistError", true);
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+=======
         String appUrl = request.getServerName() + // "localhost"
             ":" +
             request.getServerPort(); // "8080"
         mailService.sendVerificationMail(savedUserInfo.getUserAccount(), appUrl);
+        return "redirect:/register/teacher/complete";
       } catch (UserAlreadyExistException e) {
         logger.info("User Already Exit Expeption :{}", e.getMessage());
         e.printStackTrace();
@@ -166,6 +218,7 @@ public class RegisterController {
       } catch (Exception e) {
         logger.warn("Form submition error: {}", e.getMessage());
         e.printStackTrace();
+>>>>>>> e3ddc02530232fdac29a31f539222426c8a3c104
       }
     }
 

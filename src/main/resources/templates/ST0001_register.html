@@ -33,7 +33,7 @@
           </li>
           <!-- Make BreadCrumb Action For Back button -->
           <li class="breadcrumb-item active" th:if="${infoMap==null}"><span th:text="${task}">Registration</span></li>
-          <li class="breadcrumb-item" th:if="${infoMap!=null}"><a href="#" class="back">Registration</a></li>
+          <li class="breadcrumb-item" th:if="${infoMap!=null}"><a href="#" class="back">Profile Edit</a></li>
           <!--  -->
           <li class="breadcrumb-item" th:classappend="${infoMap != null}?'active':''" aria-current="page">Confirmation</li>
           <li class="breadcrumb-item" aria-current="page">Completion</li>
@@ -74,7 +74,7 @@
 
             <a
               class="btn btn-danger"
-              th:href="@{/check_email/{role}(email=${userInfo.email},role=${role})}"
+              th:href="@{/check_email/register/{role}(email=${userInfo.email},role=${role})}"
               >Discard</a
             >
           </div>
@@ -141,7 +141,7 @@
                 </div>
 
                 <!-- Profile Edit Do not need Password Related information -->
-                <div th:if="${task=='register'}">
+                <div th:if="${task=='Register'}">
                   <div class="mb-2">
                     <span class="badge bg-info">Notice</span> Password must be
                     at least 8 characters long, and contains at least one digit,
@@ -374,7 +374,7 @@
                       This field is required.
                     </div>
                   </div>
-                  <div class="mb-3">
+                 <!--  <div class="mb-3">
                     <label class="form-label" for="award"
                       >Award &amp; Certification</label
                     >
@@ -393,7 +393,7 @@
                     >
                       This field is required. on is required.
                     </div>
-                  </div>
+                  </div> -->
 
                   <div class="mb-3">
                     <label class="form-label" for="selfDescription"
@@ -546,7 +546,7 @@
                 </fieldset> -->
 
                 <!-- Profile Edit Do not need Password Related information -->
-                <div th:classappend="${task=='register'}?'':'visually-hidden'">
+                <div th:classappend="${task=='Register'}?'':'visually-hidden'">
                   <div class="mb-3">
                     <label class="form-label d-block"></label>
                     <div class="form-check form-check-inline">
