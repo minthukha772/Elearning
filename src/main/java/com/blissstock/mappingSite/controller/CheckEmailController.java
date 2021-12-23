@@ -46,7 +46,7 @@ public class CheckEmailController {
     } */
 
     // Initialize Form
-    if (role == null || !role.equals("teacher")) {
+    if (role == null || !role.equals("teacher") || !role.equals("admin")) {
       role = "student";
     }
     logger.debug("Role is {}", role);

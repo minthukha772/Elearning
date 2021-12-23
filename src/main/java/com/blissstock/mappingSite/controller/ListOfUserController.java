@@ -2,6 +2,7 @@ package com.blissstock.mappingSite.controller;
 
 import com.blissstock.mappingSite.model.AddAdmin;
 import com.blissstock.mappingSite.entity.CourseInfo;
+import com.blissstock.mappingSite.entity.CourseTime;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.entity.JoinCourseUser;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
@@ -15,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -40,7 +42,7 @@ public class ListOfUserController {
     
     long courseID = 50004;
     
-    @RequestMapping("/TeacherList")
+    @RequestMapping("/admin/teacher-list")
     public String ListOfTeacher(Model model)
     {
         List<UserInfo> tAllRecord = userRepo.findByUserRoleI("ROLE_TEACHER");
@@ -49,7 +51,7 @@ public class ListOfUserController {
         model.addAttribute("tAllTeacherList", tAllRecord);
         return "AT0003_ListofTeachersScreen";
     }
-    @RequestMapping(value = "/StudentList",method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/student-list",method = RequestMethod.GET)
     public String ListOfStudent(Model model)
     {
         System.out.println("Student Console");
@@ -65,10 +67,10 @@ public class ListOfUserController {
         return "AT0003_ListofStudentsScreen";
     }
     
-    @RequestMapping("/AdminList")
+    @RequestMapping("/admin/admin-list")
     public String ListOfAdmin(Model model)
     {
-        String adminRole = "Admin";
+        String adminRole = "ROLE_ADMIN";
         System.out.println(adminRole);
         AddAdmin newAdmin = new AddAdmin();
         
@@ -84,14 +86,15 @@ public class ListOfUserController {
         return "AT0003_ListofAdminsScreen";
     }
     
-    @RequestMapping(value = "/StudentListByT",method = RequestMethod.GET)
-    public String ListOfStudentByTeacher(Model model)
+    // @RequestMapping(value = "/teacher/course-list/{courseId}/student-list",method = RequestMethod.GET)
+    @RequestMapping(value = "/teacher/student-list/{courseId}",method = RequestMethod.GET)
+    public String ListOfStudentByTeacher(@PathVariable Long courseId,Model model)
     {
-        Long courseID = (long) 50004;
+        // Long courseId = (long) 50004;
         
-        CourseInfo course = courseInfoRepo.findById(courseID).get();
+        CourseInfo course = courseInfoRepo.findById(courseId).get();
 
-        logger.info("Course ID {}","Course Info {}",courseID,course);
+        logger.info("Course ID {}","Course Info {}",courseId,course);
 
         List<JoinCourseUser> joinCourseUser = course.getJoin();
         // List<UserInfo> userList = new ArrayList<>();
@@ -106,12 +109,17 @@ public class ListOfUserController {
         
         // System.out.println("Course Joined"+course.getUserInfo());
         // List<UserInfo> userList=course.getUserInfo();
-        logger.info("Course ID {}","Student List {}",courseID,userList);
+        logger.info("Course ID {}","Student List {}",courseId,userList);
 
         System.out.println("User List"+userList);
         // List<UserInfo> stAllRecord = userRepo.findByCourseI();
         // System.out.println(stAllRecord);
+        UserInfo teacherInfo = course.getUserInfo();
+        String teacherName = teacherInfo.getUserName();
+        List<CourseTime> courseTimeList = course.getCourseTime();
         model.addAttribute("courseInfo", course);
+        model.addAttribute("teacherName", teacherName);
+        model.addAttribute("courseTimeList", courseTimeList);
         model.addAttribute("allStudentList", userList);
         
         List<UserInfo> tAllRecord = userRepo.findByUserRoleI("ROLE_TEACHER");

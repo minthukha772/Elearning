@@ -61,7 +61,7 @@ public class RegisterController {
     }
 
     //set role to student unless it is equal to teacher
-    if (role == null || !role.equals("teacher")) {
+    if (role == null || !role.equals("teacher") || !role.equals("admin")) {
       role = "student";
     }
 
@@ -69,7 +69,7 @@ public class RegisterController {
     UserRegisterDTO userInfo;
 
     userInfo =
-      role.equals("student") ? new UserRegisterDTO() : new TeacherRegisterDTO();
+      role.equals("teacher") ? new TeacherRegisterDTO() : new UserRegisterDTO();
     userInfo.setEmail(email);
     model.addAttribute("userInfo", userInfo);
     //
@@ -168,4 +168,49 @@ public class RegisterController {
     model.addAttribute("infoMap", userInfo.toMap());
     return "ST0001_register.html";
   }
+
+  @PostMapping(path = "/register/admin/{email}")
+  public String adminRegisterConfirm(
+    Model model,
+    @Valid @ModelAttribute("userInfo") UserRegisterDTO userInfo,
+    BindingResult bindingResult,
+    @RequestParam(value = "action", required = true) String action,
+    HttpServletRequest request,
+    Errors errors
+  ) {
+    String role = "admin";
+    model.addAttribute("task", "Register");
+    model.addAttribute("role", role);
+    model.addAttribute("postAction", "/register/" + role);
+
+    if (bindingResult.hasErrors()) {
+      return "ST0001_register.html";
+    }
+
+    try {
+      if (action.equals("submit")) {
+        try {
+          UserInfo savedUserInfo = userService.addUser(userInfo);
+
+          String appUrl =
+            request.getServerName() + // "localhost"
+            ":" +
+            request.getServerPort(); //"8080"
+          mailService.sendVerificationMail(savedUserInfo.getUserAccount(), appUrl);
+        } catch (UserAlreadyExistException e) {
+          e.printStackTrace();
+          model.addAttribute("userExistError", true);
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+      }
+    } catch (Exception e) {
+      System.out.println(e);
+    }
+
+    //Information For Randering Confirm
+    model.addAttribute("infoMap", userInfo.toMap());
+    return "ST0001_register.html";
+  }
+
 }

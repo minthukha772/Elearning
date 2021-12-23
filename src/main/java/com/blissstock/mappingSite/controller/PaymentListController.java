@@ -41,7 +41,7 @@ public class PaymentListController {
     JoinCourseUserRepository joinCourseUserRepo;
     
     
-    @RequestMapping("/PaymentList")
+    @RequestMapping("/admin/payment-list")
     public String PaymentList(Model model)
     {
         List<PaymentReceive> viewPayment = paymentRepo.findAll();

@@ -90,9 +90,9 @@
         .openbtn {
             font-size: 20px;
             cursor: pointer;
-            background-color: black;
+            background-color: #5227CC;
             color: #f1f1f1;
-            padding: 16px 15px;
+            padding: 8px 8px;
             border: none;
         }
 
@@ -139,7 +139,7 @@
             text-decoration: none;
         }
 
-        .sidebar ul li a:active {
+        .sidebar ul li a.active-link {
             color: #5227CC;
             background-color: transparent;
             text-decoration: none;
@@ -424,40 +424,49 @@
 
 <body>
     <div style="position: relative;">
-        <div id="mySidebar" class="sidebar" style="float:left;">
-
+        <!-- <div id="mySidebar" class="sidebar" style="float:left;">
+                                                                        
             <div class="text">
                 Menu
             </div>
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
             <ul class="main_side">
-                <li class="active"><a href="#">Profile</a></li>
+                <li><a th:href="@{/admin/profile}">Profile</a></li>
                 <li> <a href="#" id="1">User List <span class="fas fa-caret-down"></span> </a>
                     <ul class="item-show-1">
-                        <li><a href="/StudentList">Student List</a></li>
-                        <li><a href="#">Teacher List</a></li>
+                        <li><a th:href="@{/student-list}">Student List</a></li>
+                        <li><a th:href="@{/teacher-list}">Teacher List</a></li>
+                        <li><a th:href="@{/admin-list}"  class="active-link">Admin List</a></li>
                     </ul>
                 </li>
-                <li class="active"><a href="#">Payment Record</a></li>
-                <li> <a href="#" id="2">Course <span class="fas fa-caret-down"></span> </a>
+                <li><a th:href="@{/payment-list}">Payment Record</a></li>
+                <li> <a id="2">Course <span class="fas fa-caret-down"></span> </a>
                     <ul class="item-show-2">
-                        <li><a href="#">Course List</a></li>
+                        <li><a th:href="@{/course-list}">Course List</a></li>
                     </ul>
                 </li>
-                <li><a href="#">Review List</a></li>
-                <li><a href="#">Absence List</a></li>
-                <li><a href="#">Log Out</a></li>
+                <li><a th:href="@{/review-list}">Review List</a></li>
+                <li><a th:href="@{/absence-list}">Absence List</a></li>
+                <li><a th:href="@{/}">Log Out</a></li>
             </ul>
-        </div>
+        </div> -->
 
-        <div id="main" style="margin-left: 250px;">
-            <span class="fas fa-bars openbtn" id="sidebutton" onclick="openNav()"
-                style="display: none;float: left;"></span>
-            <header class="header navbar-light bg-light" id="header">
-                <a class="navbar-brand" href="#" style="float: left;left: 0;top: 0;">Mapping Site</a>
-                <div class="header_img"> <img src="https://i.imgur.com/hczKIze.jpg" alt="profile"
-                        onclick="location.href='/test'"> </div>
-            </header>
+        <div id="main">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+                    <div style="justify-content: space-between;">
+                        <!-- <button class="openbtn" onclick="openNav()">☰</button> -->
+                        <a class="navbar-brand" href="#">Mapping Site</a>
+                    </div>
+                  
+                  <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                  </button> -->
+                  <div class="header_img">
+                    <img src="images/admin_profile.jpg" th:src="@{/images/admin_profile.jpg}" alt="people-profile" onclick="location.href='/profile'">
+                </div>
+                </div>
+              </nav>
 
             
          

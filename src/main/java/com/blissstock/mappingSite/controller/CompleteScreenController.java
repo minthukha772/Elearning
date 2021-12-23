@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class CompleteScreenController {
-
+    
     private static final Logger logger = LoggerFactory.getLogger(CompleteScreenController.class);
     
     @RequestMapping("/card")
@@ -22,7 +22,7 @@ public class CompleteScreenController {
     
     // TODO Change NavBars
     
-    @RequestMapping("/Student/Register/Complete")
+    @RequestMapping("/student/register/complete")
     public String StudentRegisterComplete(Model model) {
         String header3 = "Student Register Complete";
         String header5 = "Congratulation!";
@@ -35,10 +35,12 @@ public class CompleteScreenController {
         breadcrumbList.add("Register");
         breadcrumbList.add("Complete");
         model.addAttribute("breadcrumbList",breadcrumbList);
+        String nav_type = "fragments/guestnav";
+        model.addAttribute("nav_type",nav_type);
         return "CM0001_CompleteScreen";
     }
     
-    @RequestMapping("/Admin/StudentList/Register/Complete")
+    @RequestMapping("/admin/student-list/register/complete")
     public String StudentRegisterCompleteByAdmin(Model model) {
         String header3 = "Student Register Complete";
         String header5 = "Congratulation!";
@@ -52,10 +54,12 @@ public class CompleteScreenController {
         breadcrumbList.add("Register");
         breadcrumbList.add("Complete");
         model.addAttribute("breadcrumbList",breadcrumbList);
+        String nav_type = "fragments/adminnav";
+        model.addAttribute("nav_type",nav_type);
         return "CM0001_CompleteScreen";
     }
     
-    @RequestMapping("/Teacher/Register/Complete")
+    @RequestMapping("/teacher/register/complete")
     public String TeacherRegisterComplete(Model model) {
         String header3 = "Teacher Register Complete";
         String header5 = "Congratulation!";
@@ -68,10 +72,12 @@ public class CompleteScreenController {
         breadcrumbList.add("Register");
         breadcrumbList.add("Complete");
         model.addAttribute("breadcrumbList",breadcrumbList);
+        String nav_type = "fragments/guestnav";
+        model.addAttribute("nav_type",nav_type);
         return "CM0001_CompleteScreen";
     }
     
-    @RequestMapping("/Review/Complete")
+    @RequestMapping("/review/complete")
     public String ReviewComplete(Model model) {
         String header3 = "Review Complete";
         String header5 = "Congratulation!";
@@ -83,10 +89,12 @@ public class CompleteScreenController {
         breadcrumbList.add("Review");
         breadcrumbList.add("Complete");
         model.addAttribute("breadcrumbList",breadcrumbList);
+        String nav_type = "fragments/usernav";
+        model.addAttribute("nav_type",nav_type);
         return "CM0001_CompleteScreen";
     }
     
-    @RequestMapping("/Admin/Review/Complete")
+    @RequestMapping("/admin/review/complete")
     public String ReviewCompleteByAdmin(Model model) {
         String header3 = "Review Complete";
         String header5 = "Thank you for your feedback!";
@@ -99,10 +107,12 @@ public class CompleteScreenController {
         breadcrumbList.add("Review");
         breadcrumbList.add("Complete");
         model.addAttribute("breadcrumbList",breadcrumbList);
+        String nav_type = "fragments/adminnav";
+        model.addAttribute("nav_type",nav_type);
         return "CM0001_CompleteScreen";
     }
     
-    @RequestMapping("/Payment/Complete")
+    @RequestMapping("/payment/complete")
     public String PaymentComplete(Model model) {
         String header3 = "Payment Complete";
         String header5 = "Acknowledgement!";
@@ -114,10 +124,12 @@ public class CompleteScreenController {
         breadcrumbList.add("Payment");
         breadcrumbList.add("Complete");
         model.addAttribute("breadcrumbList",breadcrumbList);
+        String nav_type = "fragments/usernav";
+        model.addAttribute("nav_type",nav_type);
         return "CM0001_CompleteScreen";
     }
     
-    @RequestMapping("/TakeALeave/Complete")
+    @RequestMapping(value = {"/leave/complete","/leave/complete"})
     public String TakeALeaveComplete(Model model) {
         String header3 = "Requesting a Leave Complete";
         String header5 = "Acknowledgement!";
@@ -129,10 +141,12 @@ public class CompleteScreenController {
         breadcrumbList.add("TakeALeave");
         breadcrumbList.add("Complete");
         model.addAttribute("breadcrumbList",breadcrumbList);
+        String nav_type = "fragments/usernav";
+        model.addAttribute("nav_type",nav_type);
         return "CM0001_CompleteScreen";
     }
     
-    @RequestMapping("/UploadCourse/Complete")
+    @RequestMapping("/course-upload/complete")
     public String UploadCourseComplete(Model model) {
         String header3 = "Course Upload Complete";
         String header5 = "Acknowledgement!";
@@ -144,10 +158,12 @@ public class CompleteScreenController {
         breadcrumbList.add("UploadCourse");
         breadcrumbList.add("Complete");
         model.addAttribute("breadcrumbList",breadcrumbList);
+        String nav_type = "fragments/usernav";
+        model.addAttribute("nav_type",nav_type);
         return "CM0001_CompleteScreen";
     }
     
-    @RequestMapping("/Admin/UploadCourse/Complete")
+    @RequestMapping("/admin/course-upload/complete")
     public String UploadCourseCompleteByAdmin(Model model) {
         String header3 = "Course Upload Complete";
         String header5 = "Acknowledgement!";
@@ -160,6 +176,8 @@ public class CompleteScreenController {
         breadcrumbList.add("UploadCourse");
         breadcrumbList.add("Complete");
         model.addAttribute("breadcrumbList",breadcrumbList);
+        String nav_type = "fragments/adminnav";
+        model.addAttribute("nav_type",nav_type);
         return "CM0001_CompleteScreen";
     }
     
@@ -181,5 +199,5 @@ public class CompleteScreenController {
                 // return "redirect:complete#registercomplete";
                 // }
                 
-            }
+}
             
