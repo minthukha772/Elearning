@@ -31,46 +31,49 @@ import lombok.Setter;
 @Entity
 @Table(name = "review")
 public class Review {
+	
+	@Column(name = "review_id")
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private Long reviewId;
+   
+    // @Min(value = 1, message = "Please fill rating")
+    // @Max(value = 5, message = "Please fill rating")
+    @Column(name = "star")
+	private int star=0;
 
-  @Column(name = "review_id")
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private Long reviewId;
+    @Column(name="review_type")
+	private int reviewType;
 
-  // @Min(value = 1, message = "Please fill rating")
-  // @Max(value = 5, message = "Please fill rating")
-  @Column(name = "star")
-  private int star = 0;
+    //@NotBlank(message="Please fill feedback")
+	@Column(name="feedback")
+	private String feedback;
 
-  @Column(name = "review_type")
-  private int reviewType;
+    @Column(name = "assigned_date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date assignedDate;
 
-  //@NotBlank(message="Please fill feedback")
-  @Column(name = "feedback")
-  private String feedback;
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "join_fkey")
+    @JsonIgnore
+    private JoinCourseUser join;
 
-  @Column(name = "assigned_date")
-  @DateTimeFormat(pattern = "yyyy-MM-dd")
-  private Date assignedDate;
+    public static Review fromReviewDTO(StudentReviewDTO stuReviewDTO) {
+        Review review = new Review();
+        review.star= stuReviewDTO.getStar();
+        review.feedback= stuReviewDTO.getFeedback();
+        review.assignedDate=GregorianCalendar.getInstance().getTime();
+        return review;
+      }
 
-  @ManyToOne(fetch = FetchType.EAGER, optional = false)
-  @JoinColumn(name = "join_fkey")
-  @JsonIgnore
-  private JoinCourseUser join;
+      public static Review fromTrReviewDTO(TeacherReviewDTO trReviewDTO) {
+        Review review = new Review();
+        review.feedback= trReviewDTO.getFeedback();
+        review.reviewType= trReviewDTO.getReviewType();
+        review.assignedDate=GregorianCalendar.getInstance().getTime();
+        return review;
+      }
 
-  public static Review fromReviewDTO(StudentReviewDTO stuReviewDTO) {
-    Review review = new Review();
-    review.star = stuReviewDTO.getStar();
-    review.feedback = stuReviewDTO.getFeedback();
-    review.assignedDate = GregorianCalendar.getInstance().getTime();
-    return review;
-  }
 
-  public static Review fromTrReviewDTO(TeacherReviewDTO trReviewDTO) {
-    Review review = new Review();
-    review.feedback = trReviewDTO.getFeedback();
-    review.reviewType = trReviewDTO.getReviewType();
-    review.assignedDate = GregorianCalendar.getInstance().getTime();
-    return review;
-  }
+
 }

@@ -14,6 +14,11 @@ import com.blissstock.mappingSite.exceptions.UserAlreadyExistException;
 import com.blissstock.mappingSite.repository.TokenRepository;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
 import com.blissstock.mappingSite.repository.UserInfoRepository;
+import com.blissstock.mappingSite.repository.UserRepository;
+
+import java.util.GregorianCalendar;
+import java.util.Optional;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +34,8 @@ public class UserServiceImpl implements UserService {
     UserServiceImpl.class
   );
 
+  @Autowired
+  UserRepository userRepo;
   @Autowired
   private final UserAccountRepository userAccountRepository;
 
@@ -75,7 +82,7 @@ public class UserServiceImpl implements UserService {
      */
     userInfo.setUserAccount(userAccount);
     UserInfo savedUserInfo = userInfoRepository.save(userInfo);
-    logger.info("User {}, has successfully register with email {}", userAccount.getAccountId(), userAccount.getMail());
+    // userAccountRepository.save(entity);
     return savedUserInfo;
   }
 
@@ -102,37 +109,49 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public void createToken(
-    UserAccount userAccount,
-    String token,
-    TokenType tokenType
-  ) {
-    
+      UserAccount userAccount,
+      String token,
+      TokenType tokenType) {
     Token myToken = new Token(
-      token,
-      userAccount,
-      tokenType,
-      System.currentTimeMillis()
-    );
-    logger.info("token {} created",myToken);
+        token,
+        userAccount,
+        tokenType,
+        System.currentTimeMillis());
     tokenRepository.save(myToken);
   }
 
   @Override
   public Token getToken(String token, TokenType tokenType) {
+    System.out.println("get token called");
     // TODO fix bug
-    return tokenRepository.getToken(token, tokenType.getValue());
+    Token token1 = tokenRepository.getToken(token, tokenType.getValue());
+
+    System.out.println("token is " + token1.toString());
+    return token1;
   }
 
   @Override
   public UserAccount getUserAccountByToken(String verificationToken) {
+    try {
+      System.out.println("get account by token called");
+      Long uid = tokenRepository.findByToken(verificationToken, "VERIFICATION");
+
+      System.out.println("id is " + uid);
+
+      if (uid == null) {
+        System.out.println("uid is null");
+        return null;
+      }
+
+      UserInfo userInfo = userRepo.findById(uid).orElse(null);
+      UserAccount userAccount = userInfo.getUserAccount();
+
+      return userAccount;
+
+    } catch (Exception e) {
+      System.out.println(e.toString());
+    }
     return null;
-    // TODo fix bug
-    /*
-     * UserAccount userAccount = tokenRepository
-     * .findByToken(verificationToken)
-     * .getUserAccount();
-     */
-    // return userAccount;
   }
 
   @Override

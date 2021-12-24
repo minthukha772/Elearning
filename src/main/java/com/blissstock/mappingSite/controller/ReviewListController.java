@@ -43,7 +43,7 @@ public class ReviewListController {
     })
     private String getReviewList(@PathVariable Long courseId, Model model) {  
         model.addAttribute("courseId",courseId);
-        Long userId = userSessionService.getUserAccount().getAccountId();
+        Long userId = userSessionService.getUserAccount().getId();
         
         CourseInfo courseInfo=courseInfoRepo.findById(courseId).orElse(null);
         UserInfo user=userRepo.findById(userId).orElse(null);

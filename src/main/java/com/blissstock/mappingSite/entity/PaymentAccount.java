@@ -23,31 +23,32 @@ import lombok.Setter;
 @Entity
 @Table(name = "payment_account")
 public class PaymentAccount {
+	
+	@Column(name = "payment_account_id")
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private Long paymentAccountId;
+	
+    @Column(name = "account_name", length = 255)
+    //@NotBlank(message="Please fill bank account name")
+	private String accountName;
 
-  @Column(name = "payment_account_id")
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private Long paymentAccountId;
+    @Column(name="account_number")
+    //@NotBlank(message="Please fill bank account number.")
+    private Integer accountNumber;
+    
+    @Transient
+	private Long checkedBank;
 
-  @Column(name = "account_name", length = 255)
-  // @NotBlank(message="Please fill bank account name")
-  private String accountName;
+	//mapping
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "uid_fkey")
+    @JsonIgnore
+    private UserInfo userInfo;
 
-  @Column(name = "account_number")
-  // @NotBlank(message="Please fill bank account number.")
-  private Integer accountNumber;
-
-  @Transient
-  private Long checkedBank;
-
-  // mapping
-  @ManyToOne(fetch = FetchType.EAGER, optional = false)
-  @JoinColumn(name = "uid_fkey")
-  @JsonIgnore
-  private UserInfo userInfo;
-
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "bank_id_fkey")
-  @JsonIgnore
-  private BankInfo bankInfo;
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "bank_id_fkey")
+    @JsonIgnore
+    private BankInfo bankInfo;
+	
 }

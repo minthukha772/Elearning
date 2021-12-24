@@ -1,4 +1,4 @@
-/* package com.blissstock.mappingSite.controller;
+package com.blissstock.mappingSite.controller;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,6 +19,7 @@ import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
 import com.blissstock.mappingSite.repository.UserRepository;
 import com.blissstock.mappingSite.service.StorageService;
+import com.blissstock.mappingSite.service.UserSessionService;
 import com.blissstock.mappingSite.utils.CheckUploadFileType;
 import com.blissstock.mappingSite.utils.FileNameGenerator;
 
@@ -46,19 +47,22 @@ public class AdminTopController {
 	public AdminTopController(StorageService storageService) {
 		this.storageService = storageService;
 	}
-
+    @Autowired
+    UserSessionService userSessionService;
+    
     @Autowired
     UserRepository userRepo;
 
     @Autowired
     UserAccountRepository userAccRepo;
 
-    @GetMapping(value="admin/top/{userId}")
-    private String getAdminTopScreen( @PathVariable Long userId, Model model) {  
+    @GetMapping(value="/admin/top")
+    private String getAdminTopScreen( Model model) {  
+        Long userId = userSessionService.getUserAccount().getId();
         UserInfo userInfo=userRepo.findById(userId).orElse(null);
         UserAccount userAcc = userInfo.getUserAccount();
          //load profile picture
-         if(userAcc.getPhoto()==null){
+         if(userInfo.getPhoto()==null){
           String photoString=null;
           model.addAttribute("pic64", photoString);
         }
@@ -76,8 +80,16 @@ public class AdminTopController {
     }
     private FileInfo loadProfile(long userId) {
       try {
-          UserAccount userAcc=userAccRepo.findById(userId).orElse(null);
-          Path path= storageService.loadProfile(userAcc.getPhoto());
+          UserInfo userInfo=userRepo.findById(userId).orElse(null);
+          if(userInfo.getPhoto()==null){
+            userInfo.setPhoto("profile1.jpg");
+            Path path= storageService.loadProfile(userInfo.getPhoto());
+            String name = path.getFileName().toString();
+            String url = "/images/profiles/profile1.jpg";
+  
+          return new FileInfo(name, url);
+          }
+          Path path= storageService.loadProfile(userInfo.getPhoto());
           String name = path.getFileName().toString();
           String url = MvcUriComponentsBuilder
             .fromMethodName(
@@ -94,11 +106,8 @@ public class AdminTopController {
       }
   }
 
-<<<<<<< HEAD
-  @PostMapping(value= "{role}/top/update/{userId}")
-=======
+
   @PostMapping(value= "/admin/top/update/{userId}")
->>>>>>> data-model-update
   private String postProfile(Model model,
     @RequestParam("profile_pic") MultipartFile photo, 
     @RequestParam(value="action", required=true) String action,
@@ -118,8 +127,8 @@ public class AdminTopController {
         storageService.storeProfile(photo,saveFileName);
 
         //insert photo 
-        acc.setPhoto(saveFileName);
-        userAccRepo.save(acc);
+        userInfo.setPhoto(saveFileName);
+        userRepo.save(userInfo);
       }else {
         model.addAttribute("photoTypeErr", "Files other than image file cannot be uploaded.");
         return "CM0004_TeacherProfile";
@@ -143,4 +152,3 @@ public class AdminTopController {
 
  
 }
- */
