@@ -1,0 +1,19 @@
+
+
+
+<div th:unless="${#authorization.expression('isAuthenticated()')}">
+    <div th:replace="fragments/guestnav-home"></div>
+</div>
+
+<div th:if="${#authorization.expression('hasRole(''ROLE_TEACHER'')')}">
+    <div th:replace="fragments/usernav"></div>
+</div>
+
+<div th:if="${#authorization.expression('hasRole(''ROLE_STUDENT'')')}">
+    <div th:replace="fragments/usernav"></div>
+</div>
+
+<div th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+    <div th:replace="fragments/adminnav"></div>
+</div>
+
