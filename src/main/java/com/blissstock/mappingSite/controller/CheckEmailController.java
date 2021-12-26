@@ -1,12 +1,11 @@
 package com.blissstock.mappingSite.controller;
 
-import javax.validation.Valid;
-
 import com.blissstock.mappingSite.dto.EmailCheckRegisterDTO;
+import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.service.UserService;
 import com.blissstock.mappingSite.service.UserSessionService;
-
+import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class CheckEmailController {
 
-  private static final Logger logger = LoggerFactory.getLogger(CheckEmailController.class);
+  private static final Logger logger = LoggerFactory.getLogger(
+    CheckEmailController.class
+  );
 
   @Autowired
   UserService userService;
@@ -37,7 +38,7 @@ public class CheckEmailController {
     String email
   ) {
     logger.info("GET Request");
-    logger.info("Role is {}, email is {}",role,email);
+    logger.info("Role is {}, email is {}", role, email);
     UserRole userRole = userSessionService.getRole();
     if (
       userRole != UserRole.GUEST_USER &&
@@ -79,15 +80,19 @@ public class CheckEmailController {
   }
 
   /// A Post Method for email check before Register
-  @PostMapping("/check_email/register")
+  @PostMapping("/check_email/register/")
   public String register(
-      Model model,
-      @Valid @ModelAttribute("emailCheck") EmailCheckRegisterDTO emailRegister,
-      BindingResult bindingResult) {
+    Model model,
+    @Valid @ModelAttribute("emailCheck") EmailCheckRegisterDTO emailRegister,
+    BindingResult bindingResult
+  ) {
     logger.info("POST Resquest");
     if (bindingResult.hasErrors()) {
-      logger.warn("Invalid Form Field error {},  error count:{}", bindingResult.getFieldError(),
-          bindingResult.getFieldErrorCount());
+      logger.warn(
+        "Invalid Form Field error {},  error count:{}",
+        bindingResult.getFieldError(),
+        bindingResult.getFieldErrorCount()
+      );
       model.addAttribute("action", "register");
 
       /*
@@ -97,30 +102,48 @@ public class CheckEmailController {
       // render
       return "ST0000_check_email.html";
     }
-    if (userService.getUserAccountByEmail(emailRegister.getEmail()) != null) {
-      logger.warn("user with {} email already exists", emailRegister.getEmail());
-      // User already exists
-      model.addAttribute("action", "register");
-      /*
-       * // For Rendering the title
-       * model.addAttribute("role", emailRegister.getRole());
-       */
-      // For displaying error message
-      model.addAttribute("error", true);
+    try {
+      UserAccount userAccount = userService.getUserAccountByEmail(
+        emailRegister.getEmail()
+      );
+      logger.debug("userAccount: ", userAccount);
+      if (userService.getUserAccountByEmail(emailRegister.getEmail()) != null) {
+        logger.warn(
+          "user with {} email already exists",
+          emailRegister.getEmail()
+        );
+        // User already exists
+        model.addAttribute("action", "register");
+        /*
+         * // For Rendering the title
+         * model.addAttribute("role", emailRegister.getRole());
+         */
+        model.addAttribute("error", true);
+        // render
+        return "ST0000_check_email.html";
+        // For displaying error message
 
-      // render
-      return "ST0000_check_email.html";
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
     }
+
     // Redirect to Register
     // Two Valid Address:
     // 1. /register/student/email@gmail.com
     // 2. /register/teacher/email@gmail.com
-    logger.info("Valided role is {}, email is {}", emailRegister.getRole(), emailRegister.getEmail());
-    return ("redirect:/register/" +
-        emailRegister.getRole() +
-        "/" +
-        emailRegister.getEmail() +
-        "/");
+    logger.info(
+      "Valided role is {}, email is {}",
+      emailRegister.getRole(),
+      emailRegister.getEmail()
+    );
+    return (
+      "redirect:/register/" +
+      emailRegister.getRole() +
+      "/" +
+      emailRegister.getEmail() +
+      "/"
+    );
   }
 
   /// A Get Method For Email Check Before Register

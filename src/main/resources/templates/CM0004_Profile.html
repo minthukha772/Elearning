@@ -80,9 +80,9 @@
             </div>
           </div>
 
-          <div th:if="${isEditable}">
-            <div class="d-flex justify-content-between">
-              <h5>Personal Info</h5>
+          <div class="d-flex justify-content-between">
+            <h5>Personal Info</h5>
+            <div th:if="${isEditable}">
               <div sec:authorize="hasAuthority('ROLE_TEACHER')">
                 <a class="btn btn-link" th:href="@{/teacher/profile_edit}"
                   >Edit</a
@@ -118,32 +118,32 @@
             </div>
           </div>
 
-          <div
-            th:if="${certificateFiles!=null and !certificateFiles.empty and role=='ROLE_TEACHER'}"
-          >
-            <div class="d-flex justify-content-between">
-              <h5>Award & Certificates</h5>
+          <!-- Award and Certificates: Start -->
 
-              <div th:if="${isEditable}">
-                <div sec:authorize="hasAuthority('ROLE_TEACHER')">
-                  <a
-                    class="btn btn-link"
-                    th:href="@{/teacher/manage_certificate}"
-                    >Edit</a
-                  >
-                </div>
-                <div
-                  sec:authorize="hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SUPER_ADMIN')"
+          <div class="d-flex justify-content-between">
+            <h5>Award & Certificates</h5>
+
+            <div th:if="${isEditable}">
+              <div sec:authorize="hasAuthority('ROLE_TEACHER')">
+                <a class="btn btn-link" th:href="@{/teacher/manage_certificate}"
+                  >Edit</a
                 >
-                  <a
-                    class="btn btn-link"
-                    th:href="@{/admin/profile_edit/{id}(id=${id})}"
-                    >Edit</a
-                  >
-                </div>
+              </div>
+              <div
+                sec:authorize="hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SUPER_ADMIN')"
+              >
+                <a
+                  class="btn btn-link"
+                  th:href="@{/admin/profile_edit/{id}(id=${id})}"
+                  >Edit</a
+                >
               </div>
             </div>
-            <div class="row row-cols-1 row-cols-md-3 g-4">
+          </div>
+          <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div
+              th:if="${certificateFiles!=null and !certificateFiles.empty and role=='ROLE_TEACHER'}"
+            >
               <div class="col" th:each="fileInfo, stats : ${certificateFiles}">
                 <!-- <div class="card h-100"> -->
 
@@ -163,12 +163,69 @@
               </div>
             </div>
           </div>
+
+          <!-- Award and Certificates: End -->
+
+          <!-- Payment: Start -->
+          <div th:if="${role=='ROLE_TEACHER'}">
+            <div class="d-flex justify-content-between mt-3">
+              <h5>Payment Information</h5>
+
+              <div th:if="${isPaymentEditable}">
+                <button
+                  type="button"
+                  class="sp-btn-size lsc-btn-adjust btn btn-link"
+                  data-bs-toggle="modal"
+                  data-bs-target="#modalcontainer"
+                >
+                  Edit
+                </button>
+                <div
+                  sec:authorize="hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SUPER_ADMIN')"
+                >
+                  <!-- Model caller -->
+                </div>
+              </div>
+            </div>
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+              <div th:if="${paymentAccounts!=null and !paymentAccounts.empty}">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Service</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">Number</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      class="col"
+                      th:each="paymentAccount, stats : ${paymentAccounts}"
+                    >
+                      <!-- <div class="card h-100"> -->
+                      
+                      <th scope="row" th:text="${stats.index}">1</th>
+                      <td th:text="${paymentAccount.bankInfo.bankName}"></td>
+                      <td th:text="${paymentAccount.accountName}"></td>
+                      <td th:text="${paymentAccount.accountNumber}"></td>
+                      
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Payment: End -->
         </div>
+        <!-- Card Body: End -->
       </div>
+      <!-- Card: End -->
 
       <div
         class="mt-3"
-        sec:authorize="hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SUPER_ADMIN') or hasAuthority('ROLE_TEACHER')"
+        sec:authorize="hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SUPER_ADMIN')"
       >
         <div class="card">
           <div class="card-header">User Account Control</div>
@@ -202,6 +259,159 @@
       </div>
     </div>
 
+    <!-- Modals:Start -->
+    <div
+      class="modal fade"
+      id="modalcontainer"
+      tabindex="-1"
+      aria-labelledby="modalcontainer"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Payment Info</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form
+              id="paymentPost"
+              method="post"
+              th:action="@{__${#httpServletRequest.requestURI}__edit/payment/}"
+              th:object="${paymentInfoDTO}"
+            >
+              <input
+                type="hidden"
+                th:field="*{primaryAccount.paymentAccountId}"
+              />
+              <input
+                type="hidden"
+                th:field="*{secondaryAccount.paymentAccountId}"
+              />
+              <div class="mb-3" id="paymentAlert">
+                <div class="alert alert-danger" role="alert">
+                  Please fill all fields to continue.
+                </div>
+              </div>
+              <div class="mb-3">
+                <span class="badge bg-info">Notice</span> If you only have a
+                primary payment account. Please fill the secondary payment info
+                the same as primary payment info <br />
+              </div>
+              <div class="row mb-3">
+                <h5>Primary Account</h5>
+                <div class="col-sm-3">
+                  <label class="form-label" for="primaryServiceName"
+                    >Service</label
+                  >
+                  <select
+                    class="form-select"
+                    th:field="*{primaryAccount.checkedBank}"
+                  >
+                    <option
+                      th:each="bank : ${bankList}"
+                      th:value="${bank.bankId}"
+                      th:text="${bank.bankName}"
+                    ></option>
+                  </select>
+                </div>
+
+                <div class="col-sm-5">
+                  <label class="form-label" for="primaryAccountName"
+                    >Account Name</label
+                  >
+                  <input
+                    class="form-control"
+                    id="primaryAccountName"
+                    type="text"
+                    placeholder="Account Name"
+                    th:field="*{primaryAccount.accountName}"
+                  />
+                </div>
+
+                <div class="col-sm-4">
+                  <label class="form-label" for="primaryAccountNumber"
+                    >Account Number</label
+                  >
+                  <input
+                    class="form-control"
+                    id="primaryAccountNumber"
+                    type="text"
+                    placeholder="Account Number"
+                    th:field="*{primaryAccount.accountNumber}"
+                  />
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <h5>Secondary Account</h5>
+                <div class="col-sm-3">
+                  <label class="form-label" for="secondaryServiceName"
+                    >Service</label
+                  >
+                  <select
+                    class="form-select"
+                    th:field="*{secondaryAccount.checkedBank}"
+                  >
+                    <option
+                      th:each="bank : ${bankList}"
+                      th:value="${bank.bankId}"
+                      th:text="${bank.bankName}"
+                    ></option>
+                  </select>
+                </div>
+
+                <div class="col-sm-5">
+                  <label class="form-label" for="secondaryAccountName"
+                    >Account Name</label
+                  >
+                  <input
+                    class="form-control"
+                    id="secondaryAccountName"
+                    type="text"
+                    placeholder="Account Name"
+                    th:field="*{secondaryAccount.accountName}"
+                  />
+                </div>
+
+                <div class="col-sm-4">
+                  <label class="form-label" for="secondaryAccountNumber"
+                    >Account Number</label
+                  >
+                  <input
+                    class="form-control"
+                    id="secondaryAccountNumber"
+                    type="text"
+                    placeholder="Account Number"
+                    th:field="*{secondaryAccount.accountNumber}"
+                  />
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-primary" id="submitPayment">
+              Save changes
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modals:End -->
+
     <div th:replace="fragments/footer"></div>
 
     <script
@@ -215,6 +425,7 @@
       crossorigin="anonymous"
     ></script>
     <script src="/js/photoPlaceHolder.js"></script>
+    <script src="/js/CM0004_profile.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
   </body>
 </html>
