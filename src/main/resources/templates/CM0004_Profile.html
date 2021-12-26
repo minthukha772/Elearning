@@ -81,13 +81,15 @@
           </div>
 
           <div th:if="${isEditable}">
-            <div
-              class="d-flex justify-content-between"
-              th:if="${role=='ROLE_TEACHER'}"
-            >
+            <div class="d-flex justify-content-between">
               <h5>Personal Info</h5>
               <div sec:authorize="hasAuthority('ROLE_TEACHER')">
                 <a class="btn btn-link" th:href="@{/teacher/profile_edit}"
+                  >Edit</a
+                >
+              </div>
+              <div sec:authorize="hasAuthority('ROLE_STUDENT')">
+                <a class="btn btn-link" th:href="@{/student/profile_edit}"
                   >Edit</a
                 >
               </div>
@@ -183,7 +185,6 @@
               <p>Delete User Account</p>
               <button class="btn btn-danger">Delete Account</button>
             </div>
-            
           </div>
         </div>
       </div>
