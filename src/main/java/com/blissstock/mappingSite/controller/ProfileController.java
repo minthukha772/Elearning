@@ -12,6 +12,8 @@ import com.blissstock.mappingSite.service.PaymentInfoService;
 import com.blissstock.mappingSite.service.StorageService;
 import com.blissstock.mappingSite.service.UserService;
 import com.blissstock.mappingSite.service.UserSessionService;
+import com.blissstock.mappingSite.utils.CheckUploadFileType;
+import com.blissstock.mappingSite.utils.FileNameGenerator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,10 +23,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 @Controller
@@ -146,7 +151,7 @@ public class ProfileController {
     model.addAttribute("id", uid);
 
     //Setting isEditable
-    boolean isEditable = isEditable(uid);
+    boolean isEditable = isEditable(id);
     model.addAttribute("isEditable", isEditable);
 
     //##################################################//
@@ -238,13 +243,14 @@ public class ProfileController {
       if (paymentAccounts.size() == 2) {
         paymentInfoDTO.setPrimaryAccount(paymentAccounts.get(0));
         paymentInfoDTO.setSecondaryAccount(paymentAccounts.get(1));
-        if(userSessionService.getRole() == UserRole.TEACHER){
+        if (userSessionService.getRole() == UserRole.TEACHER) {
           isPaymentEditable = false;
           /* The teacher can only edit payment information one */
         }
       }
       model.addAttribute("paymentInfoDTO", paymentInfoDTO);
-      model.addAttribute("isPaymentEditable", isPaymentEditable);
+      //model.addAttribute("isPaymentEditable", isPaymentEditable);
+       model.addAttribute("isPaymentEditable", true); 
     }
     //##################################################//
 
@@ -387,7 +393,6 @@ public class ProfileController {
     value = {
       "/teacher/profile/edit/payment",
       "/admin/browse/profile/{id}/edit/payment",
-      "/teacher/browse/profile/{id}/edit/payment",
     }
   )
   public String editPayment(
@@ -419,6 +424,48 @@ public class ProfileController {
     }
   }
 
+  @PostMapping(
+    value = {
+      "/student/profile/edit/profile-pic/",
+      "/teacher/profile/edit/profile-pic/",
+      "/admin/browse/profile/{id}/edit/profile-pic/",
+    }
+  )
+  public String editProfilePicture(
+    Model model,
+    @RequestParam("profilePic") MultipartFile photo,
+    @PathVariable(required = false) Long id,
+    HttpServletRequest httpServletRequest
+  ) {
+    logger.info("Post Requested");
+    logger.info("Payment Edit Info {}", photo);
+
+    Long uid = getUid(id);
+
+    String redirectAddress =
+      "redirect:" +
+      httpServletRequest.getRequestURI().replace("/edit/profile-pic", "");
+    logger.debug("Redirect Addresss {}", redirectAddress);
+
+    if (!photo.isEmpty() && CheckUploadFileType.checkType(photo)) {
+      //get original photo name and generate a new file name
+      String originalFileName = StringUtils.cleanPath(
+        photo.getOriginalFilename()
+      );
+      String saveFileName = FileNameGenerator.renameFileName(
+        originalFileName,
+        uid.toString()
+      );
+
+      //upload photo
+      storageService.storeProfile(photo, saveFileName);
+      logger.info("profile photo {} stored", saveFileName);
+      return redirectAddress + "?message=paymentInfo";
+    }
+
+    return redirectAddress + "?error";
+  }
+
   private boolean isEditable(Long id) {
     UserRole role = userSessionService.getRole();
     if (role == UserRole.ADMIN || role == UserRole.SUPER_ADMIN) {
@@ -434,7 +481,10 @@ public class ProfileController {
         "userSessionService.getId() == id : {}",
         userSessionService.getId().equals(id)
       );
-      return userSessionService.getId().equals(id);
+      if (id != null) {
+        return false;
+      }
+      return userSessionService.getId().equals(getUid(id));
     }
     return false;
   }
@@ -455,10 +505,10 @@ public class ProfileController {
   }
 
   //Get profile photo
-  private FileInfo loadProfile(long userId) {
+  private FileInfo loadProfile(long uid) {
     /* try {
-      UserAccount userAcc = userAccRepo.findById(userId).orElse(null);
-      Path path = storageService.loadProfile(userAcc.getPhoto());
+     
+      Path path = storageService.loadProfile(uid);
       String name = path.getFileName().toString();
       String url = MvcUriComponentsBuilder
         .fromMethodName(
@@ -472,8 +522,8 @@ public class ProfileController {
       return new FileInfo(name, url);
     } catch (Exception e) {
       return null;
-    } */
-    //TODO fix bugs
+    }
+    //TODO fix bugs */
     return null;
   }
 

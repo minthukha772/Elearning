@@ -2,6 +2,8 @@ $(function () {
 
     $("#paymentAlert").hide();
 
+
+
     $("#submitPayment").click((e) => {
         console.log("submit payment button clicked");
         const paymentPost = $('#paymentPost');
