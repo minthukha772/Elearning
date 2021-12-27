@@ -249,8 +249,8 @@ public class ProfileController {
         }
       }
       model.addAttribute("paymentInfoDTO", paymentInfoDTO);
-      //model.addAttribute("isPaymentEditable", isPaymentEditable);
-       model.addAttribute("isPaymentEditable", true); 
+      model.addAttribute("isPaymentEditable", isPaymentEditable);
+      // model.addAttribute("isPaymentEditable", true); 
     }
     //##################################################//
 
