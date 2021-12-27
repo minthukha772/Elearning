@@ -169,6 +169,7 @@ public class PasswordController {
     logger.info("POST request, {}", passwordDTO);
 
     String title = "Change Password";
+    model.addAttribute("type", "OLD_PASSWORD");
     model.addAttribute("title", title);
     model.addAttribute("passwordDTO", passwordDTO);
 
@@ -206,8 +207,9 @@ public class PasswordController {
       userService.updateUserAccount(userAccount);
       model.addAttribute("success", "Password Change Success");
       model.addAttribute("message", "Plesase login with new passowrd to continue");
-      model.addAttribute("title", "Login");
+      // model.addAttribute("title", "Login");
       return "CM0006_change_password_screen";
+      // return "CM0005_login.html";
     } else {
       logger.info(" Password and stored password do not match");
 

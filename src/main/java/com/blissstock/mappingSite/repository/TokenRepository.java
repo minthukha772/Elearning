@@ -8,18 +8,23 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TokenRepository extends CrudRepository<Token, Long> {
-  @Query(
-    nativeQuery = true,
-    value = "SELECT * FROM Token WHERE token=:token and token_type=:tokenType and is_used=false Limit 1"
-  )
+  @Query(nativeQuery = true, value = "SELECT * FROM Token WHERE token=:token and token_type=:tokenType and is_used=false Limit 1")
   Token getToken(
-    @Param("token") String token,
-    @Param("tokenType") String tokenType
-  );/* , @Param("type") String type);
-   */
-  /*     @Query("SELECT t FROM Token t WHERE t.token=:token and t.type=type")
-    Token findByTokenAndType(String token, String type); */
+      @Param("token") String token,
+      @Param("tokenType") String tokenType);
 
-  //Token findByToken(String token);
+  @Query(nativeQuery = true, value = "SELECT user_account FROM Token WHERE token=:token and token_type=:tokenType and is_used=false Limit 1")
+  Long findByToken(@Param("token") String token,
+      @Param("tokenType") String tokenType);
 
 }
+
+/*
+ * , @Param("type") String type);
+ */
+/*
+ * @Query("SELECT t FROM Token t WHERE t.token=:token and t.type=type")
+ * Token findByTokenAndType(String token, String type);
+ */
+
+// Token findByToken(String token);
