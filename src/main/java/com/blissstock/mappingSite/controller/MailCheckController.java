@@ -28,10 +28,10 @@ public class MailCheckController {
     public String mailVerify(
             @RequestParam(value = "token", required = true) String token, Model model) {
         System.out.println("mail verify called" + token);
-
+        final String tokenType = "VERIFICATION";
         try {
             System.out.println("get token callsed");
-            UserAccount userAccount = userService.getUserAccountByToken(token);
+            UserAccount userAccount = userService.getUserAccountByToken(token, tokenType);
             System.out.println(userAccount.toString());
 
             if (userAccount.isMailVerified()) {
@@ -47,6 +47,7 @@ public class MailCheckController {
             } else {
 
                 System.out.println("mail verified");
+                userService.setAsUsedToken(token);
                 userAccount.setMailVerified(true);
                 userService.updateUserAccount(userAccount);
 

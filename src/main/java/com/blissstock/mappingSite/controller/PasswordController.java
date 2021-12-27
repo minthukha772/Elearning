@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import com.blissstock.mappingSite.dto.PasswordDTO;
 import com.blissstock.mappingSite.entity.Token;
 import com.blissstock.mappingSite.entity.UserAccount;
+import com.blissstock.mappingSite.entity.VerificationToken;
 import com.blissstock.mappingSite.enums.PasswordResetType;
 import com.blissstock.mappingSite.enums.TokenType;
 import com.blissstock.mappingSite.service.MailServiceImpl;
@@ -69,22 +70,92 @@ public class PasswordController {
    * }
    */
   @GetMapping("password/verify_password")
-  public String verifyPassword(Model model, String token) {
+  public String verifyPassword(Model model, @RequestParam(value = "token", required = true) String token) {
     logger.info("GET requested");
-    Token savedToken = userService.getToken(token, TokenType.VERIFICATION);
-    if (savedToken == null) {
-      // //System.out.println("invalid token");
-      return "redirect:/login?tokenError";
+    logger.info("Reset password by token called");
+    model.addAttribute("title", "Change");
+    if (token == null) {
+      model.addAttribute("error", "The password reset mail is invalid! Please check the mail again.");
+      return "CM006_reset_password_screen";
+
+    }
+    UserAccount userAccount = userService.getUserAccountByToken(token,
+        "PASSWORD_RESET");
+    if (userAccount == null) {
+      System.out.println("Invalid token");
+      String header3 = "Invalid token";
+      String header5 = "";
+      String paragraph = "The password reset mail is invalid! Please check the mail again.";
+      model.addAttribute("status", "invalid");
+      model.addAttribute("header3", header3);
+      model.addAttribute("header5", header5);
+      model.addAttribute("paragraph", paragraph);
+      return "MailVerify.html";
     } else {
-      UserAccount savedUserAccount = savedToken.getUserAccount();
-      savedUserAccount.setMailVerified(true);
-      userService.updateUserAccount(savedUserAccount);
-      savedToken.setUsed(true);
-      userService.updateToken(savedToken);
+      PasswordDTO passwordDTO = new PasswordDTO();
+      model.addAttribute("passwordDTO", passwordDTO);
+      passwordDTO.setOldPassword(token);
+      model.addAttribute("token", token);
+      return "CM006_reset_password_screen";
+
     }
 
+    // Token savedToken = userService.getToken(token, TokenType.VERIFICATION);
+    // if (savedToken == null) {
+    // // //System.out.println("invalid token");
+    // return "redirect:/login?tokenError";
+    // } else {
+    // UserAccount savedUserAccount = savedToken.getUserAccount();
+    // savedUserAccount.setMailVerified(true);
+    // userService.updateUserAccount(savedUserAccount);
+    // savedToken.setUsed(true);
+    // userService.updateToken(savedToken);
+    // }
+
     // //System.out.println(token);
-    return "redirect:/home";
+    // return "redirect:/home";
+  }
+
+  @PostMapping("password/verify_password")
+  public String changePassoword(Model model, @Valid @ModelAttribute("passwordDTO") PasswordDTO passwordDTO,
+      @ModelAttribute("token") String token,
+      BindingResult bindingResult) {
+    logger.info("Post Method");
+    model.addAttribute("title", "Change");
+    System.out.println(passwordDTO.toString());
+    System.out.println(token);
+    model.addAttribute("passwordDTO", passwordDTO);
+    // System.out.println(passwordDTO.toString());
+    if (bindingResult.hasErrors()) {
+      logger.warn("validation error, {}", bindingResult.getFieldError());
+
+      model.addAttribute("error", bindingResult.getFieldError().getDefaultMessage());
+      return "CM006_reset_password_screen";
+    }
+    logger.info("passwrod binding is success");
+
+    if (!passwordDTO.getPassword().equals(passwordDTO.getConfirmPassword())) {
+      logger.info("Password and coniform password do not match");
+
+      model.addAttribute("error", "password and confirm password should match");
+      return "CM006_reset_password_screen";
+    } else {
+      UserAccount userAccount = userService.getUserAccountByToken(token, "PASSWORD_RESET");
+      if (userAccount == null) {
+
+        model.addAttribute("error", "The password reset mail is invalid! Please check the mail again.");
+        return "CM006_reset_password_screen";
+
+      }
+      userAccount.setPassword(passwordEncoder.encode(passwordDTO.getPassword()));
+      userService.updateUserAccount(userAccount);
+      // todo used token bug
+      // userService.setAsUsedToken(token);
+      model.addAttribute("success", "Password Change Success");
+      model.addAttribute("message", "Plesase login with new passowrd to continue");
+      return "CM006_reset_password_screen";
+    }
+
   }
 
   @RequestMapping("password/reset_password")
@@ -193,9 +264,8 @@ public class PasswordController {
       return "CM0006_change_password_screen";
     }
     // get user email
-    String userMail = userSessionService.getUserAccount().getMail();
-    System.out.println("user email is " + userMail);
-    UserAccount userAccount = userService.getUserAccountByEmail(userMail);
+
+    UserAccount userAccount = userSessionService.getUserAccount();
     // System.out.println("stored psw is " + userAccount.getPassword());
     // System.out.println(userAccount.getPassword());
     // System.out.println(passwordEncoder.encode(passwordDTO.getOldPassword()));
@@ -203,10 +273,12 @@ public class PasswordController {
 
     if (passwordEncoder.matches(passwordDTO.getOldPassword(), userAccount.getPassword())) {
 
-      userAccount.setPassword(passwordEncoder.encode(passwordDTO.getOldPassword()));
+      userAccount.setPassword(passwordEncoder.encode(passwordDTO.getPassword()));
       userService.updateUserAccount(userAccount);
+
       model.addAttribute("success", "Password Change Success");
       model.addAttribute("message", "Plesase login with new passowrd to continue");
+      // todo navigate to complete screen;
       // model.addAttribute("title", "Login");
       return "CM0006_change_password_screen";
       // return "CM0005_login.html";

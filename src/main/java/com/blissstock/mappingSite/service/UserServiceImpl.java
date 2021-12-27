@@ -31,8 +31,7 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 
   private static final Logger logger = LoggerFactory.getLogger(
-    UserServiceImpl.class
-  );
+      UserServiceImpl.class);
 
   @Autowired
   UserRepository userRepo;
@@ -50,7 +49,6 @@ public class UserServiceImpl implements UserService {
 
   @Autowired
   private MailService mailService;
-
 
   public UserServiceImpl(
       UserAccountRepository userAccountRepository,
@@ -131,10 +129,10 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public UserAccount getUserAccountByToken(String verificationToken) {
+  public UserAccount getUserAccountByToken(String verificationToken, String tokenType) {
     try {
       System.out.println("get account by token called");
-      Long uid = tokenRepository.findByToken(verificationToken, "VERIFICATION");
+      Long uid = tokenRepository.findByToken(verificationToken, tokenType);
 
       System.out.println("id is " + uid);
 
@@ -175,6 +173,12 @@ public class UserServiceImpl implements UserService {
     String newPassword = passwordEncoder.encode(passwordDTO.getPassword());
     userAccount.setPassword(newPassword);
     userAccountRepository.save(userAccount);
+
+  }
+
+  @Override
+  public void setAsUsedToken(String token) {
+    tokenRepository.setAsUsedtoken(token);
 
   }
 
