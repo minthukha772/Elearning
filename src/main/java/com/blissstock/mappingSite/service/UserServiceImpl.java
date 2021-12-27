@@ -14,6 +14,11 @@ import com.blissstock.mappingSite.exceptions.UserAlreadyExistException;
 import com.blissstock.mappingSite.repository.TokenRepository;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
 import com.blissstock.mappingSite.repository.UserInfoRepository;
+import com.blissstock.mappingSite.repository.UserRepository;
+
+import java.util.GregorianCalendar;
+import java.util.Optional;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +35,8 @@ public class UserServiceImpl implements UserService {
   );
 
   @Autowired
+  UserRepository userRepo;
+  @Autowired
   private final UserAccountRepository userAccountRepository;
 
   @Autowired
@@ -44,36 +51,38 @@ public class UserServiceImpl implements UserService {
   @Autowired
   private MailService mailService;
 
+
   public UserServiceImpl(
-    UserAccountRepository userAccountRepository,
-    UserInfoRepository userInfoRepository,
-    TokenRepository tokenRepository
-  ) {
+      UserAccountRepository userAccountRepository,
+      UserInfoRepository userInfoRepository,
+      TokenRepository tokenRepository) {
     this.userAccountRepository = userAccountRepository;
     this.userInfoRepository = userInfoRepository;
     this.tokenRepository = tokenRepository;
-    //validator = Validation.buildDefaultValidatorFactory().getValidator();
+    // validator = Validation.buildDefaultValidatorFactory().getValidator();
   }
 
   public UserInfo addUser(UserRegisterDTO userRegisterDTO)
-    throws UserAlreadyExistException {
+      throws UserAlreadyExistException {
     UserInfo userInfo = UserRegisterDTO.toUserInfo(userRegisterDTO);
     UserAccount userAccount = UserRegisterDTO.toUserAccount(
-      userRegisterDTO,
-      GregorianCalendar.getInstance().getTime()
-    );
-    //Encode Password
+        userRegisterDTO,
+        GregorianCalendar.getInstance().getTime());
+    // Encode Password
     userAccount.setPassword(passwordEncoder.encode(userAccount.getPassword()));
 
     if (this.isUserAccountPresent(userAccount.getMail())) {
+      logger.warn("User with {} email already exists", userAccount.getMail());
       throw new UserAlreadyExistException();
     }
 
-    /*  UserAccount savedUserAccount = userAccountRepository.save(userAccount);
-    userInfo.setUserAccount(savedUserAccount); */
+    /*
+     * UserAccount savedUserAccount = userAccountRepository.save(userAccount);
+     * userInfo.setUserAccount(savedUserAccount);
+     */
     userInfo.setUserAccount(userAccount);
     UserInfo savedUserInfo = userInfoRepository.save(userInfo);
-    //userAccountRepository.save(entity);
+    // userAccountRepository.save(entity);
     return savedUserInfo;
   }
 
@@ -83,8 +92,7 @@ public class UserServiceImpl implements UserService {
     System.out.println(existingUserInfo);
     System.out.println(existingUserInfo.getUserAccount());
     if (existingUserInfo != null) {
-      existingUserInfo =
-        UserRegisterDTO.toUserInfo(userRegisterDTO, existingUserInfo);
+      existingUserInfo = UserRegisterDTO.toUserInfo(userRegisterDTO, existingUserInfo);
     }
     userInfoRepository.save(existingUserInfo);
   }
@@ -101,35 +109,49 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public void createToken(
-    UserAccount userAccount,
-    String token,
-    TokenType tokenType
-  ) {
-    
+      UserAccount userAccount,
+      String token,
+      TokenType tokenType) {
     Token myToken = new Token(
-      token,
-      userAccount,
-      tokenType,
-      System.currentTimeMillis()
-    );
-    logger.info("token {} created",myToken);
+        token,
+        userAccount,
+        tokenType,
+        System.currentTimeMillis());
     tokenRepository.save(myToken);
   }
 
   @Override
   public Token getToken(String token, TokenType tokenType) {
-    //TODO fix bug
-    return tokenRepository.getToken(token, tokenType.getValue());
+    System.out.println("get token called");
+    // TODO fix bug
+    Token token1 = tokenRepository.getToken(token, tokenType.getValue());
+
+    System.out.println("token is " + token1.toString());
+    return token1;
   }
 
   @Override
   public UserAccount getUserAccountByToken(String verificationToken) {
+    try {
+      System.out.println("get account by token called");
+      Long uid = tokenRepository.findByToken(verificationToken, "VERIFICATION");
+
+      System.out.println("id is " + uid);
+
+      if (uid == null) {
+        System.out.println("uid is null");
+        return null;
+      }
+
+      UserInfo userInfo = userRepo.findById(uid).orElse(null);
+      UserAccount userAccount = userInfo.getUserAccount();
+
+      return userAccount;
+
+    } catch (Exception e) {
+      System.out.println(e.toString());
+    }
     return null;
-    //TODo fix bug
-    /* UserAccount userAccount = tokenRepository
-      .findByToken(verificationToken)
-      .getUserAccount(); */
-    //return userAccount;
   }
 
   @Override
@@ -154,7 +176,6 @@ public class UserServiceImpl implements UserService {
     userAccount.setPassword(newPassword);
     userAccountRepository.save(userAccount);
 
-    
   }
 
 }

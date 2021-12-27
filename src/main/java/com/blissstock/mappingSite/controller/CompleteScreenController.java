@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class CompleteScreenController {
@@ -22,7 +21,6 @@ public class CompleteScreenController {
     }
 
     // TODO Change NavBars
-
     @RequestMapping("/student/register/complete")
     public String StudentRegisterComplete(Model model) {
         String header3 = "Student Register Complete";
