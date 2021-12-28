@@ -32,11 +32,14 @@ public class StorageServiceImpl implements StorageService {
     StorageServiceImpl.class
   );
 
-  private final Path root = Paths.get("uploads");
-  private final Path certificatePath = Paths.get(
+  private static final Path root = Paths.get("uploads");
+  public static final Path CERTIFICATEPATH = Paths.get(
     root + File.separator + "certificates"
   );
-  private final Path profilepath = Paths.get(
+  public static final Path PROFILEPATH = Paths.get(
+    root + File.separator + "profiles"
+  );
+  public static final Path SLIPPATH = Paths.get(
     root + File.separator + "profiles"
   );
 
@@ -49,11 +52,14 @@ public class StorageServiceImpl implements StorageService {
       if (!Files.exists(root)) {
         Files.createDirectory(root);
       }
-      if (!Files.exists(certificatePath)) {
-        Files.createDirectory(certificatePath);
+      if (!Files.exists(CERTIFICATEPATH)) {
+        Files.createDirectory(CERTIFICATEPATH);
       }
-      if (!Files.exists(profilepath)) {
-        Files.createDirectory(profilepath);
+      if (!Files.exists(PROFILEPATH)) {
+        Files.createDirectory(PROFILEPATH);
+      }
+      if (!Files.exists(SLIPPATH)) {
+        Files.createDirectory(SLIPPATH);
       }
     } catch (IOException e) {
       throw new RuntimeException("Could not initialize folder for upload!");
@@ -76,7 +82,7 @@ public class StorageServiceImpl implements StorageService {
       try (InputStream inputStream = file.getInputStream()) {
         Files.copy(
           inputStream,
-          this.profilepath.resolve(fileName),
+          this.PROFILEPATH.resolve(fileName),
           StandardCopyOption.REPLACE_EXISTING
         );
       }
@@ -87,7 +93,7 @@ public class StorageServiceImpl implements StorageService {
 
   @Override
   public Path loadProfile(String filename) {
-    return profilepath.resolve(filename);
+    return PROFILEPATH.resolve(filename);
   }
 
   @Override
@@ -116,7 +122,7 @@ public class StorageServiceImpl implements StorageService {
     // if (!checkAuthForTeacher(uid)) {
     //   throw new UnauthorizedFileAccessException();
     // }
-    Path storeLocation = Paths.get(certificatePath + File.separator + uid);
+    Path storeLocation = Paths.get(CERTIFICATEPATH + File.separator + uid);
     try {
       Path file = storeLocation.resolve(filename);
       Resource resource = new UrlResource(file.toUri());
@@ -132,23 +138,23 @@ public class StorageServiceImpl implements StorageService {
   }
 
   @Override
-  public void storeCertificates(Long uid, MultipartFile[] files)
+  public void store(Long uid, MultipartFile file, Path path)
     throws UnauthorizedFileAccessException {
     //Checking Content Type
-    logger.info("files with size: {} is being stored",files.length);
+    // logger.info("files with size: {} is being stored",files.length);
     if (!checkAuthForTeacher(uid)) {
       logger.info("User " + uid + " is uploding certificates");
       logger.error("unauthorize file access");
       throw new UnauthorizedFileAccessException();
     }
     ImageFileValidator fileValidator = new ImageFileValidator();
-    for (MultipartFile file : files) {
+    // for (MultipartFile file : files) {
       if (!fileValidator.isSupportedContentType(file.getContentType())) {
         logger.error("not file exception, {}",file.getName());
         throw new NotImageFileException();
       }
-    }
-    Path storeLocation = Paths.get(certificatePath + File.separator + uid);
+    // }
+    Path storeLocation = Paths.get(path + File.separator + uid);
 
     if (!Files.exists(storeLocation)) {
       try {
@@ -160,7 +166,7 @@ public class StorageServiceImpl implements StorageService {
       }
     }
     
-    for (MultipartFile file : files) {
+    // for (MultipartFile file : files) {
       try {
         try {
           Files.copy(
@@ -181,9 +187,9 @@ public class StorageServiceImpl implements StorageService {
           ". Please try again!"
         );
       }
-      logger.info("User {} has stored {} files",uid,files.length);
+      // logger.info("User {} has stored {} files",uid,files.length);
     }
-  }
+  // }
 
   @Override
   public Stream<Path> loadAllCertificates(Long uid)
@@ -192,7 +198,7 @@ public class StorageServiceImpl implements StorageService {
     //   throw new UnauthorizedFileAccessException();
     // }
     logger.info("Certificates of user {} has been requested", uid);
-    Path storeLocation = Paths.get(certificatePath + File.separator + uid);
+    Path storeLocation = Paths.get(CERTIFICATEPATH + File.separator + uid);
     try {
       return Files
         .walk(storeLocation, 1)
@@ -211,7 +217,7 @@ public class StorageServiceImpl implements StorageService {
       throw new UnauthorizedFileAccessException();
     }
     logger.info("Certificates of {} has been requested to delete", uid);
-    Path storeLocation = Paths.get(certificatePath + File.separator + uid);
+    Path storeLocation = Paths.get(CERTIFICATEPATH + File.separator + uid);
     Path file = storeLocation.resolve(filename);
     Files.delete(file);
     logger.info("User {} deleted file {}",uid,filename);

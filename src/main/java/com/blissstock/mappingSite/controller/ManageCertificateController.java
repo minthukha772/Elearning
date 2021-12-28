@@ -10,6 +10,7 @@ import com.blissstock.mappingSite.exceptions.NotImageFileException;
 import com.blissstock.mappingSite.exceptions.UnauthorizedFileAccessException;
 import com.blissstock.mappingSite.model.FileInfo;
 import com.blissstock.mappingSite.service.StorageService;
+import com.blissstock.mappingSite.service.StorageServiceImpl;
 import com.blissstock.mappingSite.service.UserSessionService;
 
 import org.slf4j.Logger;
@@ -66,27 +67,27 @@ public class ManageCertificateController {
     value = { "/teacher/manage_certificate", "/admin/manage_certificate/{id}" }
   )
   public String uploadFiles(
-    @RequestParam("files") MultipartFile[] files,
+    @RequestParam("files") MultipartFile file,
     Model model,
     @PathVariable(name = "id", required = false) Long id
   ) {
 
     //log
     logger.info("POST mapping");
-    logger.info("Files -> {}", files);
+    logger.info("Files -> {}", file);
     logger.info("ID is {}", id);
 
-    System.out.println(files.length);
+    // System.out.println(files.length);
     Long uid = getUid(id);
     try {
-      if (files.length > 0) {
-        storageService.storeCertificates(uid, files);
-      } else {
-        model.addAttribute(
-          "fileUploadError",
-          "Please Select at least one file"
-        );
-      }
+      // if (files.length > 0) {
+        storageService.store(uid, file, StorageServiceImpl.CERTIFICATEPATH);
+      // } else {
+      //   model.addAttribute(
+      //     "fileUploadError",
+      //     "Please Select at least one file"
+      //   );
+      // }
     } catch (NotImageFileException e) {
       e.printStackTrace();
       model.addAttribute(

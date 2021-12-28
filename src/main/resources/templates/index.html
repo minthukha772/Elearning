@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-<<<<<<< HEAD
 
-<<<<<<< HEAD
-<head>
+<!-- <head>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -35,7 +33,7 @@
     </ul>
   </nav>
 
-=======
+
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -56,9 +54,8 @@
       type="text/css"
       href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"
     />
-    <link rel="stylesheet" href="css/index.css" />
-=======
->>>>>>> origin/Check_user_log
+    <link rel="stylesheet" href="css/index.css" /> -->
+
 
 <head>
   <meta charset="UTF-8" />
@@ -74,7 +71,7 @@
 </head>
 
 <body>
-  <div th:replace="fragments/usernav"></div>
+  <div th:replace="fragments/adminnav"></div>
 
   <nav class="py-3 sticky-top container-fluid" style="background-color: #5eba7d"
     th:unless="${#authorization.expression('isAuthenticated()')}">
@@ -92,7 +89,7 @@
     </ul>
   </nav>
 
->>>>>>> e3ddc02530232fdac29a31f539222426c8a3c104
+
   <div id="carouselIndicators" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-indicators">
       <button type="button" data-bs-target="#carouselIndicators" data-bs-slide-to="0" class="active" aria-current="true"
@@ -294,8 +291,4 @@
   <script src="js/index.js"></script>
 </body>
 
-<<<<<<< HEAD
 </html>
-=======
-</html>
->>>>>>> e3ddc02530232fdac29a31f539222426c8a3c104
