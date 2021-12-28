@@ -179,7 +179,6 @@ public class UserServiceImpl implements UserService {
   @Override
   public void setAsUsedToken(String token) {
     tokenRepository.setAsUsedtoken(token);
-
   }
 
 }
