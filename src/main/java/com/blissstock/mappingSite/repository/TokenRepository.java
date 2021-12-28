@@ -1,6 +1,8 @@
 package com.blissstock.mappingSite.repository;
 
 import com.blissstock.mappingSite.entity.Token;
+
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -17,8 +19,9 @@ public interface TokenRepository extends CrudRepository<Token, Long> {
         Long findByToken(@Param("token") String token,
                         @Param("tokenType") String tokenType);
 
-        @Query(nativeQuery = true, value = "update token set is_used=true where token=:token")
-        Token setAsUsedtoken(
+        @Modifying
+        @Query(nativeQuery = true, value = "update token set is_used=true WHERE token=:token")
+        void setAsUsedtoken(
                         @Param("token") String token);
 
 }

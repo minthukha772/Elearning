@@ -149,8 +149,7 @@ public class PasswordController {
       }
       userAccount.setPassword(passwordEncoder.encode(passwordDTO.getPassword()));
       userService.updateUserAccount(userAccount);
-      // todo used token bug
-      // userService.setAsUsedToken(token);
+      userService.setAsUsedToken(token);
       model.addAttribute("success", "Password Change Success");
       model.addAttribute("message", "Plesase login with new passowrd to continue");
       return "CM006_reset_password_screen";
