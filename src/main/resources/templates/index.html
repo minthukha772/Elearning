@@ -71,7 +71,7 @@
 </head>
 
 <body>
-  <div th:replace="fragments/adminnav"></div>
+  <div th:replace="fragments/guestnav"></div>
 
   <nav class="py-3 sticky-top container-fluid" style="background-color: #5eba7d"
     th:unless="${#authorization.expression('isAuthenticated()')}">
