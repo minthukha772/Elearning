@@ -40,7 +40,7 @@ public class StorageServiceImpl implements StorageService {
     root + File.separator + "profiles"
   );
   public static final Path SLIPPATH = Paths.get(
-    root + File.separator + "profiles"
+    root + File.separator + "slip"
   );
 
   @Autowired
