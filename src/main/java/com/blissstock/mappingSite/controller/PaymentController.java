@@ -46,7 +46,8 @@ public class PaymentController {
 
     /*get student payment screen */
     @Valid
-    @GetMapping(value="/payment-upload/{courseId}/{userId}")
+    @GetMapping(value="/payment-upload/{joinId}")
+    // @GetMapping(value="/payment-upload/{courseId}/{userId}")
     private String getPaymentUploadForm(@PathVariable Long courseId, @PathVariable Long userId,Model model) {
 		//StuPaymentDTO payment = new StuPaymentDTO();
     PaymentReceive payment = new PaymentReceive();
