@@ -86,7 +86,6 @@ public class CourseListController {
     private String getCourseListTeacher(Model model, Principal principal){
         UserAccount userAccount = userAccountRepo.findByMail(principal.getName());
 
-        System.out.println("Thiha sout yuu" + principal.getName());
         UserInfo userInfo = userInfoRepo.findByUserAccount(userAccount);
         List<JoinCourseUser> joinCourseList = joinCourseUserRepo.findByUserInfo(userInfo);
         List<CourseInfo> courseList = new ArrayList<>();
