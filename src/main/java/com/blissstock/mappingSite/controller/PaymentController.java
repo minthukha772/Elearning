@@ -46,7 +46,7 @@ public class PaymentController {
 
     /*get student payment screen */
     @Valid
-    @GetMapping(value="/payment-upload/{courseId}/{userId}")
+    @GetMapping(value="student/payment-upload/{courseId}/{userId}")
     private String getPaymentUploadForm(@PathVariable Long courseId, @PathVariable Long userId,Model model) {
 		//StuPaymentDTO payment = new StuPaymentDTO();
     PaymentReceive payment = new PaymentReceive();
@@ -57,7 +57,7 @@ public class PaymentController {
 
     /*student upload payment ss and go to payment success screen */
     /*save ss in image folder and will appear in admin payment check screen */
-    @PostMapping(value = "/update-payment-slip/{courseId}/{userId}")
+    @PostMapping(value = "student/update-payment-slip/{courseId}/{userId}")
     public String savePhoto(@ModelAttribute("payment") PaymentReceive inputSlip,Model model, @PathVariable Long courseId, @PathVariable Long userId,
     @Valid 
     BindingResult bindingResult,

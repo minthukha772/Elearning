@@ -49,14 +49,13 @@ public class PasswordController {
   @Autowired
   private PasswordEncoder passwordEncoder;
 
-  /*
-   * @GetMapping("/password/encrypt")
-   * public String encrpty(Model model, String pass) {
-   * String password = passwordEncoder.encode(pass);
-   * ////system.out.println(password);
-   * return "redirect:/";
-   * }
-   */
+  
+    @GetMapping("/password/encrypt")
+    public String encrpty(Model model, String pass) {
+    String password = passwordEncoder.encode(pass);
+    System.out.println(password);
+     return "redirect:/";
+    }
   /*
    * @GetMapping("/token")
    * public String createToken(Model model) {

@@ -22,7 +22,7 @@ public class HomeRedirectController {
         return "redirect:/";
     }
     if(userRole == UserRole.ADMIN || userRole == UserRole.SUPER_ADMIN){
-        return "redirect:/admin/top";
+        return "redirect:/admin/top/";
     }
     if(userRole == UserRole.STUDENT ){
        return "redirect:/student";

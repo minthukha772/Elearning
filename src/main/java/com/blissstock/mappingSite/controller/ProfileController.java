@@ -208,7 +208,7 @@ public class ProfileController {
   )
   private String postProfile(
     Model model,
-    @RequestParam("profile_pic") MultipartFile photo,
+    // @RequestParam("profile_pic") MultipartFile photo,
     @RequestParam(value = "action", required = true) String action,
     @Valid @ModelAttribute("userInfo") UserInfo userPayment,
     @Valid @ModelAttribute("profile") FileInfo profile,
@@ -218,30 +218,30 @@ public class ProfileController {
       ? "teacher"
       : userSessionService.getRole() == UserRole.STUDENT ? "student" : "admin";
     if (action.equals("profile-upload")) {
-      if (!photo.isEmpty()) {
-        if (CheckUploadFileType.checkType(photo)) {
-          //get original photo name and generate a new file name
-          String originalFileName = StringUtils.cleanPath(
-            photo.getOriginalFilename()
-          );
-          String saveFileName = FileNameGenerator.getRandomFileName(
-            originalFileName
-          );
+      // if (!photo.isEmpty()) {
+      //   if (CheckUploadFileType.checkType(photo)) {
+      //     //get original photo name and generate a new file name
+      //     String originalFileName = StringUtils.cleanPath(
+      //       photo.getOriginalFilename()
+      //     );
+      //     String saveFileName = FileNameGenerator.getRandomFileName(
+      //       originalFileName
+      //     );
 
-          //upload photo
-          storageService.storeProfile(photo, saveFileName);
+      //     //upload photo
+      //     storageService.storeProfile(photo, saveFileName);
 
-          //insert photo
+      //     //insert photo
 
-          userRepo.save(userPayment);
-        } else {
-          model.addAttribute(
-            "photoTypeErr",
-            "Files other than image file cannot be uploaded."
-          );
-          return "CM0004_TeacherProfile";
-        }
-      }
+      //     userRepo.save(userPayment);
+      //   } else {
+      //     model.addAttribute(
+      //       "photoTypeErr",
+      //       "Files other than image file cannot be uploaded."
+      //     );
+      //     return "CM0004_TeacherProfile";
+      //   }
+      // }
     }
     //upload payment info
     else if (action.equals("add_payment")) {

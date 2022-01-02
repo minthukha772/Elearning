@@ -32,7 +32,7 @@ public class TakeALeaveController {
 	LeaveInfoRepository leaveRepo;
 	
 	@Valid
-	@RequestMapping("/TakeALeave")
+	@RequestMapping("/student/TakeALeave")
 	public String TakeALeave(@RequestParam(value = "record_date", defaultValue="Japanese N3") String course, @RequestParam(value = "user_name",defaultValue = "Nani") String name, Model model) {
 		LeaveInfo leaveInfo = new LeaveInfo();
 

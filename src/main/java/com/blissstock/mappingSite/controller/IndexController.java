@@ -14,7 +14,7 @@ import com.blissstock.mappingSite.repository.CourseRepository;
 @Controller
 @RequestMapping("/")
 public class IndexController {
-    private static final Logger logger = LoggerFactory.getLogger(CheckEmailController.class);
+    private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
 
     @Autowired
     private CourseRepository courseRepo;

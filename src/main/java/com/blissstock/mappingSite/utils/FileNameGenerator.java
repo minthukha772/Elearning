@@ -18,4 +18,8 @@ public class FileNameGenerator {
 	public static String getRandomFileName(String name) {
 		return System.currentTimeMillis()+getFileExtension(name);
 	}
+
+	public static String renameFileName(String originalName, String newName) {
+		return newName+getFileExtension(originalName);
+	}
 }
