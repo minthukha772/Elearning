@@ -120,7 +120,7 @@ public class CheckEmailController {
       UserRole userRole = userSessionService.getRole();
       if (userRole.equals(UserRole.SUPER_ADMIN)) {
         model.addAttribute("email", emailRegister.getEmail());
-        model.addAttribute("postAction", "/register/admin/{dummyEmail}");
+        model.addAttribute("postAction", "/newadmin");
         model.addAttribute("message", "Do you want to register new admin with mail: "
             + emailRegister.getEmail());
         System.out.println("emailis " + emailRegister.getEmail());

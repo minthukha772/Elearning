@@ -38,25 +38,17 @@ import lombok.Setter;
 // @PasswordMatch only work with PasswordData classees
 public class UserRegisterDTO extends PasswordData implements Confirmable {
 
-  
-
   @ValidEmail
   private String email;
 
   @NotBlank(message = ConstrainMessage.EMPTY_CONSTRAIN_MESSAGE)
   private String name;
 
-  @Pattern(
-    regexp = "^(?=.*?[A-Za-z])(?=.*?[0-9]).{8,}$",
-    message = ConstrainMessage.PASSWORD_CONSTRAIN_MESSAGE
-  )
+  @Pattern(regexp = "^(?=.*?[A-Za-z])(?=.*?[0-9]).{8,}$", message = ConstrainMessage.PASSWORD_CONSTRAIN_MESSAGE)
   @Size(min = 8, max = 32, message = ConstrainMessage.PASSWORD_LENGTH_CONSTRAIN_MESSAGE)
   private String password;
 
-  @Pattern(
-    regexp = "^(?=.*?[A-Za-z])(?=.*?[0-9]).{8,}$",
-    message = ConstrainMessage.PASSWORD_CONSTRAIN_MESSAGE
-  )
+  @Pattern(regexp = "^(?=.*?[A-Za-z])(?=.*?[0-9]).{8,}$", message = ConstrainMessage.PASSWORD_CONSTRAIN_MESSAGE)
   @Size(min = 8, max = 32, message = ConstrainMessage.PASSWORD_LENGTH_CONSTRAIN_MESSAGE)
   private String confirmPassword;
 
@@ -67,7 +59,7 @@ public class UserRegisterDTO extends PasswordData implements Confirmable {
   private String phone;
 
   @DateTimeFormat(pattern = "yyyy-MM-dd")
-  @Past  
+  @Past
   private Date dob = new Date();
 
   @Max(value = 99999, message = ConstrainMessage.INVALID_FORMAT_CONSTRAIN_MESSAGE)
@@ -88,6 +80,11 @@ public class UserRegisterDTO extends PasswordData implements Confirmable {
   @AssertTrue(message = ConstrainMessage.TERM_CONSTRAIN_MESSAGE)
   private boolean acceptTerm;
 
+  // zmt
+  @NotBlank(message = ConstrainMessage.EMPTY_CONSTRAIN_MESSAGE)
+  private String role;
+  private Boolean isMailVerified = false;
+
   @Override
   public LinkedHashMap<String, String> toMap() {
     LinkedHashMap<String, String> map = new LinkedHashMap<>();
@@ -104,11 +101,10 @@ public class UserRegisterDTO extends PasswordData implements Confirmable {
     return map;
   }
 
-  //This Funcation has side use with
+  // This Funcation has side use with
   public static UserInfo toUserInfo(
-    UserRegisterDTO userRegisterDTO,
-    UserInfo userInfo
-  ) {
+      UserRegisterDTO userRegisterDTO,
+      UserInfo userInfo) {
     userInfo.setUserName(userRegisterDTO.getName());
     userInfo.setPhoneNo(userRegisterDTO.getPhone());
     userInfo.setGender(userRegisterDTO.getGender());
@@ -151,18 +147,26 @@ public class UserRegisterDTO extends PasswordData implements Confirmable {
     return registerDTO;
   }
 
+  // todo find changing to static to non brick the System
   public static UserAccount toUserAccount(
-    UserRegisterDTO userRegisterDTO,
-    Date registeredDate
-  ) {
+      UserRegisterDTO userRegisterDTO,
+      Date registeredDate) {
     UserAccount userAccount = new UserAccount();
     userAccount.setMail(userRegisterDTO.getEmail());
     userAccount.setPassword(userRegisterDTO.getPassword());
+    // get uer role
+    String userRole;
+    if (userRegisterDTO instanceof TeacherRegisterDTO) {
+      userRole = UserRole.TEACHER.getValue();
+    } else {
+      userRole = UserRole.STUDENT.getValue();
+    }
+    if (userRegisterDTO.getRole().equals("admin")) {
+      userRole = UserRole.ADMIN.getValue();
+    }
+    userAccount.setMailVerified(userRegisterDTO.getMailVerified());
     userAccount.setRole(
-      userRegisterDTO instanceof TeacherRegisterDTO
-        ? UserRole.TEACHER.getValue()
-        : UserRole.STUDENT.getValue()
-    );
+        userRole);
     if (registeredDate != null) {
       userAccount.setRegisteredDate(registeredDate);
     }
@@ -170,18 +174,19 @@ public class UserRegisterDTO extends PasswordData implements Confirmable {
     return userAccount;
   }
 
-  public static UserAccount toUserAccount(
-    UserRegisterDTO userRegisterDTO
-  ) {
-    return toUserAccount(userRegisterDTO,null);
+  public UserAccount toUserAccount(
+      UserRegisterDTO userRegisterDTO) {
+    return toUserAccount(userRegisterDTO, null);
   }
 
-  //Constructors
+  // Constructors
 
   public UserRegisterDTO() {
   }
 
-  public UserRegisterDTO(String email, String name, String password, String confirmPassword, String gender, String phone, Date dob, int zipCode, String city, String division, String address, String education, boolean acceptTerm) {
+  public UserRegisterDTO(String email, String name, String password, String confirmPassword, String gender,
+      String phone, Date dob, int zipCode, String city, String division, String address, String education,
+      boolean acceptTerm) {
     this.email = email;
     this.name = name;
     this.password = password;
@@ -305,5 +310,20 @@ public class UserRegisterDTO extends PasswordData implements Confirmable {
     this.acceptTerm = acceptTerm;
   }
 
+  public String getRole() {
+    return this.role;
+  }
+
+  public void setRole(String role) {
+    this.role = role;
+  }
+
+  public boolean getMailVerified() {
+    return this.isMailVerified;
+  }
+
+  public void setRole(Boolean isMailVerified) {
+    this.isMailVerified = isMailVerified;
+  }
 
 }

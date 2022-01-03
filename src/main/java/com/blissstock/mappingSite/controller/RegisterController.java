@@ -57,47 +57,47 @@ public class RegisterController {
     return "redirect:/email_check/register/";
   }
 
-  // @GetMapping("/hello")
-  // public String AdminRegister(Model model) {
-  // System.out.println("add new admin called");
-  // String email = "188tmz199+5@gmail.com";
-  // logger.info("new adim reigister");
-  // System.out.println("new admin email is :" + email);
-  // System.out.println("new emial is :" + email);
-  // if (email != null) {
-  // UserRole userRole = userSessionService.getRole();
-  // if (userRole.equals(UserRole.SUPER_ADMIN)) {
-  // UserAccount userAccount = new UserAccount();
-  // userAccount.setMail(email);
-  // userAccount.setRole(UserRole.ADMIN.getValue());
-  // userAccount.setMailVerified(true);
+  @PostMapping(path = "/newadmin")
+  public String AdminRegister(Model model, @ModelAttribute("email") String email) {
+    System.out.println("emai in newadmin is " + email);
 
-  // UserInfo userInfo = new UserInfo();
-  // userInfo.setUserName("Admin");
+    logger.info("new adim reigister");
+    if (email != null) {
+      UserRole userRole = userSessionService.getRole();
+      if (userRole.equals(UserRole.SUPER_ADMIN)) {
+        try {
+          UserRegisterDTO user = new UserRegisterDTO();
 
-  // UserRegisterDTO user = UserRegisterDTO.fromUserInfo(userInfo);
-  // userInfo = userAccount.getUserInfo();
-  // try {
-  // userService.addUser(user);
-  // } catch (Exception e) {
-  // logger.info("Register admin :{}", e.toString());
-  // }
-  // }
-  // // UserInfo userInfo=new UserInfo();
-  // // userInfo.setUserAccount(userAccount);
-  // }
-  // model.addAttribute("email" + "188tmz199@gmail.com");
+          user.setEmail(email);
+          user.setConfirmPassword("admin@test");
+          user.setPassword("admin@test");
+          user.setRole("admin");
+          user.setIsMailVerified(true);
+          // UserAccount userAccount = new UserAccount();
+          // user.setMail(email);
+          // user.setRole(UserRole.ADMIN.getValue());
+          // user.setMailVerified(true);
+          // user.setPassword("admin");
+          // System.out.println(userAccount.toString());
+          // System.out.println(userAccount.getMail());
 
-  // return "confirmation";
+          // userInfo = userAccount.getUserInfo();
+          // userInfo.setUserName("Admin");
+          // System.out.println(userInfo.getUserName());
+          // UserRegisterDTO user = UserRegisterDTO.fromUserInfo(userInfo);
+          System.out.println(user.toString());
+          userService.addUser(user);
+        } catch (Exception e) {
+          logger.info("Register admin :{}", e.toString());
+        }
+      }
 
-  // }
-  @PostMapping(path = "/register/admin/{dummyEmail}")
-  public String adminRegister(Model model) {
-    model.addAttribute("email", "188tmz199+5@gmail.com");
+    }
+    model.addAttribute("email" + "188tmz199@gmail.com");
+
     return "confirmation";
-
-    // Information For Randering Confirm
-
+    // UserInfo userInfo=new UserInfo();
+    // userInfo.setUserAccount(userAccount);
   }
 
   // Handle User GET Request
