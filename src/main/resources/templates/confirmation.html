@@ -22,7 +22,7 @@
 
     <body>
       <!-- Hello -->
-      <div id="registercomplete">
+      <div id="#">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
           <div class="container-fluid">
             <a class="navbar-brand" href="#">MappingSite</a>
@@ -59,19 +59,19 @@
           style="max-width: 540px"
         >
           <!-- <h5 class="card-header">Featured</h5> -->
-          <div class="card-body">
+     <div class="card-body">
             <p class="card-text text-center" th:text="${message}">
               Do you want to register new admin with mail : sample@gmaill.com
             </p>
             <form
               id="confirmation"
               th:action="@{__${#httpServletRequest.requestURI}__}"
-              th:object="${email}"
+              th:object="${mail}"
               method="post"
             >
-            <input th:field="*{email}" type="hidden" th:value="*{email}" />
+            <input th:field="${mail}" type="hidden" th:value="${mail}" />
               <div style="justify-content: center; display: inline">
-                
+                <text th:text="${postAction}"></text>
                 <button
                   class="btn btn-primary btn-lg"
                   id="submitButton"
@@ -86,7 +86,7 @@
                 >
               </div>
             </form>
-          </div>
+          </div> 
         </div>
       </div>
       <!-- Hello -->
