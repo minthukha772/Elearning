@@ -58,13 +58,16 @@ public class RegisterController {
   }
 
   @PostMapping(path = "/newadmin")
-  public String AdminRegister(Model model, @ModelAttribute("email") String email) {
+  public String AdminRegister(HttpServletRequest request,
+      Model model,
+      @ModelAttribute("email") String email) {
     System.out.println("emai in newadmin is " + email);
 
     logger.info("new adim reigister");
     if (email != null) {
       UserRole userRole = userSessionService.getRole();
       if (userRole.equals(UserRole.SUPER_ADMIN)) {
+
         try {
           UserRegisterDTO user = new UserRegisterDTO();
 
@@ -86,7 +89,22 @@ public class RegisterController {
           // System.out.println(userInfo.getUserName());
           // UserRegisterDTO user = UserRegisterDTO.fromUserInfo(userInfo);
           System.out.println(user.toString());
+          // save new admin to db
           userService.addUser(user);
+          String appUrl = request.getServerName() + // "localhost"
+              ":" +
+              request.getServerPort();
+
+          // sleap for 1sec
+          try {
+            Thread.sleep(1000);
+          } catch (InterruptedException e) {
+            logger.info(e.toString());
+            Thread.currentThread().interrupt();
+          }
+          UserAccount userAccount = userService.getUserAccountByEmail(email);
+          mailService.sendResetPasswordMail(userAccount, appUrl);
+
         } catch (Exception e) {
           logger.info("Register admin :{}", e.toString());
         }
