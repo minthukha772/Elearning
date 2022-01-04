@@ -15,7 +15,9 @@ public interface StorageService {
   public Resource loadCertificate(Long uid, String filename)
     throws UnauthorizedFileAccessException;
 
-  void storeCertificates(Long uid, MultipartFile[] files)
+    public void storeProfile(MultipartFile file, String fileName);
+
+  void store(Long uid, MultipartFile files, Path path)
     throws UnauthorizedFileAccessException;
 
   Stream<Path> loadAllCertificates(Long uid)
@@ -27,6 +29,4 @@ public interface StorageService {
   public boolean checkAuthForTeacher(Long uid);
 
   public Path loadProfile(String filename);
-
-  public void storeProfile(MultipartFile file, String fileName);
 }

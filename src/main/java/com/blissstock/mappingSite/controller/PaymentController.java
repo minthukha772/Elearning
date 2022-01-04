@@ -1,15 +1,16 @@
 package com.blissstock.mappingSite.controller;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import com.blissstock.mappingSite.entity.JoinCourseUser;
+import com.blissstock.mappingSite.dto.StuPaymentDTO;
+import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.PaymentReceive;
+import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.repository.CourseRepository;
-import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
 import com.blissstock.mappingSite.repository.PaymentRepository;
 //import com.blissstock.mappingSite.repository.CourseTestingRepository;
 //import com.blissstock.mappingSite.repository.TpaymentRepository;
@@ -39,12 +40,11 @@ public class PaymentController {
     @Autowired
     CourseRepository courseRepo;
 
-    @Autowired
-    private JoinCourseUserRepository joinRepo;
 
     /*get student payment screen */
     @Valid
-    @GetMapping(value="/payment-upload/{courseId}/{userId}")
+    @GetMapping(value="/payment-upload/{joinId}")
+    // @GetMapping(value="/payment-upload/{courseId}/{userId}")
     private String getPaymentUploadForm(@PathVariable Long courseId, @PathVariable Long userId,Model model) {
 		//StuPaymentDTO payment = new StuPaymentDTO();
     PaymentReceive payment = new PaymentReceive();
@@ -61,12 +61,11 @@ public class PaymentController {
     BindingResult bindingResult,
     HttpServletRequest request,
     @RequestParam("image") MultipartFile multipartFile) throws IOException {
-
-        List<JoinCourseUser> joins = joinRepo.findByCourseUser(courseId, userId);
-        for (JoinCourseUser join : joins) {
-        inputSlip.setJoin(join);
-        joinRepo.save(join);
-    }
+      CourseInfo course = courseRepo.findById(courseId).orElse(null);
+        UserInfo user = userRepo.findById(userId).orElse(null);
+        //TODO Set Join
+ /*        inputSlip.setCourseInfo(course);
+        inputSlip.setUserInfo(user); */
   inputSlip.setPaymentStatus("Pending");
  
          
@@ -82,7 +81,8 @@ public class PaymentController {
         
         //PaymentTesting saveSlip = new PaymentTesting(null, inputSlip.getSlip(),  inputSlip.getPaymentStatus(), inputSlip.getPaymentReceiveDate());
    //paymentRepo.save(saveSlip);
-        return "StuPaymentSuccess";
+        //return "StuPaymentSuccess";
+        return "CM0001_CompleteScreen";
         //return new RedirectView("/users", true);
     }
 
@@ -162,7 +162,8 @@ public class PaymentController {
  private String updatePaymentError(@RequestParam("paymentReceiveId") Long paymentReceiveId,@RequestParam("paymentErrStatus") String paymentErrStatus, @Valid @ModelAttribute("error") PaymentReceive paymentInfo, HttpServletRequest request, BindingResult result, Model model){
   
   PaymentReceive errorReason= paymentRepo.findById(paymentReceiveId).orElse(null);
-  errorReason.setPaymentStatus(paymentErrStatus);
+  //TODO inspect here
+  //errorReason.setPaymentErrStatus(paymentErrStatus);
   errorReason.setPaymentStatus("Error");;
   paymentRepo.save(errorReason);
   return "AdminPaymentCheckError";

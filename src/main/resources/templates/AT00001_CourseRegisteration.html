@@ -136,7 +136,7 @@
             <div class="row form-row">
                 <div class="col-lg-2"></div>
                 <div class="col-lg-8 form-col">
-                    <form th:action="@{/courseregister-confirm}" method="post">
+                    <form th:action="@{/teacher/courseregister-confirm}" method="post">
                         <div th:object="${course}">
                             <div class="row form-sec-header">
                                 <div class="col-lg-12 text-center">
@@ -211,21 +211,21 @@
                             </div>
 
 
-                            <div class="mb-3">
+                            <!-- <div class="mb-3">
                                 <label class="form-label" for="vlevel">Course Title</label>
 
                                 <input th:field="*{title}" class="form-control" th:classappend="${#fields.hasErrors('title')}?'is-invalid':''" id="clevel" type="text" placeholder="Enter Course Title" />
                                 <div class="invalid-feedback" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">This field is required.</div>
-                            </div>
-                            <div class="mb-3">
+                            </div> -->
+                            <!-- <div class="mb-3">
                                 <label class="form-label" for="vabout">Course Content</label>
 
                                 <textarea th:field="*{content}" class="form-control" th:classappend="${#fields.hasErrors('content')}?'is-invalid':''" id="cabout" type="text" placeholder="Enter course contents here."></textarea>
                                 <div class="invalid-feedback" th:if="${#fields.hasErrors('content')}" th:errors="*{content}">This field is required.</div>
-                            </div>
+                            </div> -->
 
 
-                            <div id="ifvideo" style="display: block;">
+                            <!-- <div id="ifvideo" style="display: block;">
                                 <div class="mb-3">
                                     <label class="form-label" for="vlink">Video Link</label>
 
@@ -233,7 +233,7 @@
                                     <div class="invalid-feedback" th:if="${#fields.hasErrors('classLink')}" th:errors="*{classLink}">This field is required.</div>
                                 </div>
 
-                            </div>
+                            </div> -->
 
 
                         </div>

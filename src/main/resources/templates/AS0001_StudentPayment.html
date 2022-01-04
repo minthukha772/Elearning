@@ -494,10 +494,10 @@
                     </div>
                     <div class="form-group row">
                         <div class="col-lg-1"></div>
-                        <label for="coursename" class="col-lg-3 col-form-label">Japanese N5</label>
+                        <label for="coursename" class="col-lg-3 col-form-label" th:field="*{courseName}"></label>
 
                         <div class="col-lg-6">
-                            <label for="coursename" class="col-form-label">150000 Kyats</label>
+                            <label for="coursename" class="col-form-label" th:field="*{fees}"></label>
                         </div>
                         <!--div class="col-lg-3">
                             <input type="email" class="form-control" id="inputEmail" placeholder="姓" required>
@@ -508,7 +508,7 @@
                         <label for="coursename" class="col-lg-3 col-form-label">Total</label>
 
                         <div class="col-lg-6">
-                            <label for="coursename" class="col-form-label">150000 Kyats</label>
+                            <label for="coursename" class="col-form-label" th:field="*{fees}"></label>
                         </div>
                         <!--div class="col-lg-3">
                             <input type="email" class="form-control" id="inputEmail" placeholder="姓" required>
@@ -680,13 +680,13 @@
                         <input type="file" id="img" name="img" accept="image/*">
                         <div class="invalid-feedback" th:if="${#fields.hasErrors('slip')}" th:errors="*{slip}">This field is required.</div>
                     </div>-->
-                    <div class="form-group row">
-                        <img th:src="@{${payment.slipImagePath}}" /></div>
+                    <!-- <div class="form-group row">
+                        <img th:src="@{${payment.slipImagePath}}" /></div> -->
 
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <input type="text" class="form-control rounded-left" th:field="*{paymentErrStatus}" style="border: none transparent;" readonly>
 
-                    </div>
+                    </div> -->
 
                     <div class="form-group row">
                         <div class="col-lg-12 text-center">
