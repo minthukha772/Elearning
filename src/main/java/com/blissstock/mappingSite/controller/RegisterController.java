@@ -104,10 +104,12 @@ public class RegisterController {
           }
           UserAccount userAccount = userService.getUserAccountByEmail(email);
           mailService.sendResetPasswordMail(userAccount, appUrl);
-
+          return "redirect:/admin/register/complete";
         } catch (Exception e) {
           logger.info("Register admin :{}", e.toString());
         }
+      } else {
+        return "redirect:/error/404";
       }
 
     }

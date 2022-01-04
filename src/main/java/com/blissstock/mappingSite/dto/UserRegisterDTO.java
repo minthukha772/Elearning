@@ -174,7 +174,7 @@ public class UserRegisterDTO extends PasswordData implements Confirmable {
     return userAccount;
   }
 
-  public UserAccount toUserAccount(
+  public static UserAccount toUserAccount(
       UserRegisterDTO userRegisterDTO) {
     return toUserAccount(userRegisterDTO, null);
   }

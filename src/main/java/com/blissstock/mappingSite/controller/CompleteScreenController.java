@@ -20,6 +20,24 @@ public class CompleteScreenController {
         return "card";
     }
 
+    @RequestMapping("/admin/register/complete")
+    public String AdminRegisterComplete(Model model) {
+        String header3 = "Admin Register Complete";
+        String header5 = "Congratulation!";
+        String paragraph = "Successfully Registered A new Admin";
+        model.addAttribute("header3", header3);
+        model.addAttribute("header5", header5);
+        model.addAttribute("paragraph", paragraph);
+        List<String> breadcrumbList = new ArrayList<>();
+        breadcrumbList.add("Admin");
+        breadcrumbList.add("Register");
+        breadcrumbList.add("Complete");
+        model.addAttribute("breadcrumbList", breadcrumbList);
+        String nav_type = "fragments/guestnav";
+        model.addAttribute("nav_type", nav_type);
+        return "CM0001_CompleteScreen";
+    }
+
     // TODO Change NavBars
     @RequestMapping("/student/register/complete")
     public String StudentRegisterComplete(Model model) {

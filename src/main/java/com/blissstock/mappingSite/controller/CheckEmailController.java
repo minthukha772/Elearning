@@ -52,26 +52,31 @@ public class CheckEmailController {
      */
 
     // Initialize Form
-    if (role == null || !role.equals("teacher")) {
+
+    EmailCheckRegisterDTO emailCheckRegisterDTO = new EmailCheckRegisterDTO();
+
+    if (role.equals("admin")) {
+      UserRole userRole = userSessionService.getRole();
+      if (userRole.equals(UserRole.SUPER_ADMIN)) {
+
+        logger.info("User is super admin");
+        System.out.println("user is super admin");
+        // Initialize Form
+
+        logger.info("Get Method");
+
+        emailCheckRegisterDTO.setEmail(email);
+        emailCheckRegisterDTO.setRole("admin");
+        model.addAttribute("emailCheck", emailCheckRegisterDTO);
+        return "ST0000_check_email";
+
+      } else {
+        return "error/404";
+      }
+    }
+    if (role == null || !role.equals("teacher") || !role.equals("admin")) {
       role = "student";
     }
-    EmailCheckRegisterDTO emailCheckRegisterDTO = new EmailCheckRegisterDTO();
-    UserRole userRole = userSessionService.getRole();
-    if (userRole.equals(UserRole.SUPER_ADMIN)) {
-
-      logger.info("User is super admin");
-      System.out.println("user is super admin");
-      // Initialize Form
-
-      logger.info("Get Method");
-
-      emailCheckRegisterDTO.setEmail(email);
-      emailCheckRegisterDTO.setRole("admin");
-      model.addAttribute("emailCheck", emailCheckRegisterDTO);
-      return "ST0000_check_email";
-
-    }
-
     logger.debug("Role is {}", role);
 
     emailCheckRegisterDTO.setEmail(email);
@@ -125,7 +130,7 @@ public class CheckEmailController {
             + emailRegister.getEmail());
         System.out.println("emailis " + emailRegister.getEmail());
       } else {
-        return "403";
+        return "redirect:/error/404";
       }
       return ("confirmation");
     }
