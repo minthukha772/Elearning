@@ -183,6 +183,7 @@ public class ProfileController {
     try {
       userInfo = userService.getUserInfoByID(uid);
     } catch (Exception e) {
+      e.printStackTrace();
       logger.info("User {} does not exist", uid);
       return "redirect:/404";
     }
