@@ -81,7 +81,7 @@ public class ManageCertificateController {
     Long uid = getUid(id);
     try {
       // if (files.length > 0) {
-        storageService.store(uid, file, StorageServiceImpl.CERTIFICATEPATH);
+        storageService.store(uid, file, StorageServiceImpl.CERTIFICATE_PATH,false);
       // } else {
       //   model.addAttribute(
       //     "fileUploadError",

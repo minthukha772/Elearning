@@ -65,11 +65,25 @@
                   <div class="profile-pic-wrapper">
                     <div class="pic-holder">
                       <!-- uploaded pic shown here -->
-                      <img
+                      <div th:unless="${profilePic == null }">
+                        <img
+                          th:classappend="${isEditable?'uploadProfileInput':''}"
+                          th:src="${profilePic.url}"
+                          id="profilePic"
+                          class="pic"
+                          th:alt="${profilePic.name}"
+                          height="150"
+                          width="150"
+                        />
+                      </div>
+                      <div th:if="${profilePic == null }">
+                        <img
                         id="profilePic"
                         class="pic"
                         th:src="@{/images/profile.png}"
                       />
+                      </div>
+                      
                       <div th:if="${isEditable}">
                         <label for="newProfilePhoto" class="upload-file-block">
                           <div class="text-center">
@@ -104,16 +118,7 @@
                     /> -->
                   </div>
 
-                  <div th:unless="${profilePic == null }">
-                    <img
-                      th:classappend="${isEditable?'uploadProfileInput':''}"
-                      th:src="${fileInfo.url}"
-                      class="card-img-top"
-                      th:alt="${fileInfo.name}"
-                      height="150"
-                      width="150"
-                    />
-                  </div>
+                  
                   <!-- TODO Come back for profile Upload -->
                 </div>
               </div>

@@ -178,4 +178,10 @@ public class UserServiceImpl implements UserService {
 
   }
 
+  @Override
+  public void updateUserInfo(UserInfo userInfo) {
+    userInfoRepository.save(userInfo);
+    
+  }
+
 }

@@ -5,11 +5,13 @@ import com.blissstock.mappingSite.entity.BankInfo;
 import com.blissstock.mappingSite.entity.PaymentAccount;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.enums.UserRole;
+import com.blissstock.mappingSite.exceptions.UnauthorizedFileAccessException;
 import com.blissstock.mappingSite.exceptions.UserNotFoundException;
 import com.blissstock.mappingSite.model.FileInfo;
 import com.blissstock.mappingSite.model.Message;
 import com.blissstock.mappingSite.service.PaymentInfoService;
 import com.blissstock.mappingSite.service.StorageService;
+import com.blissstock.mappingSite.service.StorageServiceImpl;
 import com.blissstock.mappingSite.service.UserService;
 import com.blissstock.mappingSite.service.UserSessionService;
 import com.blissstock.mappingSite.utils.CheckUploadFileType;
@@ -205,7 +207,7 @@ public class ProfileController {
     //##################################################//
     //Load Profile
     try {
-      FileInfo profilePic = loadProfile(uid);
+      FileInfo profilePic = storageService.loadProfileAsFileInfo(userInfo);
       model.addAttribute("profilePic", profilePic);
     } catch (Exception e) {
       e.printStackTrace();
@@ -218,7 +220,7 @@ public class ProfileController {
     //Load Certificate
     if (role == UserRole.TEACHER) {
       //load certificates
-      List<FileInfo> certificateFiles = loadCertificates(uid);
+      List<FileInfo> certificateFiles = storageService.loadCertificatesAsFileInfo(uid);
       logger.info("User have certificates: {}", certificateFiles.size());
       model.addAttribute("certificateFiles", certificateFiles);
     }
@@ -453,14 +455,19 @@ public class ProfileController {
       String originalFileName = StringUtils.cleanPath(
         photo.getOriginalFilename()
       );
-      String saveFileName = FileNameGenerator.renameFileName(
-        originalFileName,
-        uid.toString()
-      );
 
       //upload photo
-      storageService.storeProfile(photo, saveFileName);
-      logger.info("profile photo {} stored", saveFileName);
+      try {
+       
+        storageService.store(uid, photo, StorageServiceImpl.PROFILE_PATH, true);
+        UserInfo userInfo = userService.getUserInfoByID(uid);
+        userInfo.setPhoto(originalFileName);
+        userService.updateUserInfo(userInfo);
+      } catch (UnauthorizedFileAccessException e) {
+        e.printStackTrace();
+      }
+      
+      logger.info("profile photo {} stored", originalFileName);
       return redirectAddress + "?message=paymentInfo";
     }
 
@@ -505,52 +512,5 @@ public class ProfileController {
     return uid;
   }
 
-  //Get profile photo
-  private FileInfo loadProfile(long uid) {
-    /* try {
-     
-      Path path = storageService.loadProfile(uid);
-      String name = path.getFileName().toString();
-      String url = MvcUriComponentsBuilder
-        .fromMethodName(
-          FileController.class,
-          "getProfile",
-          path.getFileName().toString()
-        )
-        .build()
-        .toString();
 
-      return new FileInfo(name, url);
-    } catch (Exception e) {
-      return null;
-    }
-    //TODO fix bugs */
-    return null;
-  }
-
-  //Get certificate
-  private List<FileInfo> loadCertificates(Long uid) {
-    try {
-      return storageService
-        .loadAllCertificates(uid)
-        .map(
-          path -> {
-            String name = path.getFileName().toString();
-            String url = MvcUriComponentsBuilder
-              .fromMethodName(
-                FileController.class,
-                "getCertificates",
-                uid,
-                path.getFileName().toString()
-              )
-              .build()
-              .toString();
-            return new FileInfo(name, url);
-          }
-        )
-        .collect(Collectors.toList());
-    } catch (Exception e) {
-      return new ArrayList<>();
-    }
-  }
 }

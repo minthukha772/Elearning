@@ -1,41 +1,25 @@
 package com.blissstock.mappingSite.controller;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import java.util.List;
-
-import javax.annotation.Resource;
-import javax.validation.Valid;
-import com.blissstock.mappingSite.model.FileInfo;
 import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.entity.UserInfo;
+import com.blissstock.mappingSite.exceptions.UnauthorizedFileAccessException;
+import com.blissstock.mappingSite.model.FileInfo;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
 import com.blissstock.mappingSite.repository.UserRepository;
 import com.blissstock.mappingSite.service.StorageService;
+import com.blissstock.mappingSite.service.StorageServiceImpl;
 import com.blissstock.mappingSite.service.UserSessionService;
 import com.blissstock.mappingSite.utils.CheckUploadFileType;
-import com.blissstock.mappingSite.utils.FileNameGenerator;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.UrlResource;
-import org.springframework.mail.MailSendException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 
 @Controller
@@ -66,7 +50,7 @@ public class AdminTopController {
           String photoString=null;
           model.addAttribute("pic64", photoString);
         }
-        FileInfo profile = loadProfile(userId);
+        FileInfo profile = storageService.loadProfileAsFileInfo(userInfo);
         model.addAttribute("profile", profile);
         
         model.addAttribute("userInfo", userInfo);
@@ -78,33 +62,8 @@ public class AdminTopController {
         model.addAttribute("postAction","/admin/top/update/"+userId);;
             return "AD0001_AdminTop";
     }
-    private FileInfo loadProfile(long userId) {
-      try {
-          UserInfo userInfo=userRepo.findById(userId).orElse(null);
-          if(userInfo.getPhoto()==null){
-            userInfo.setPhoto("profile1.jpg");
-            Path path= storageService.loadProfile(userInfo.getPhoto());
-            String name = path.getFileName().toString();
-            String url = "/images/profiles/profile1.jpg";
-  
-          return new FileInfo(name, url);
-          }
-          Path path= storageService.loadProfile(userInfo.getPhoto());
-          String name = path.getFileName().toString();
-          String url = MvcUriComponentsBuilder
-            .fromMethodName(
-              FileController.class,
-              "getProfile",
-              path.getFileName().toString()
-            )
-            .build()
-            .toString();
-  
-          return new FileInfo(name, url);
-      } catch (Exception e) {
-        return null;
-      }
-  }
+
+    
 
 
   @PostMapping(value= "/admin/top/update/{userId}")
@@ -121,14 +80,18 @@ public class AdminTopController {
       if(CheckUploadFileType.checkType(photo)) {
         //get original photo name and generate a new file name
           String originalFileName =StringUtils.cleanPath(photo.getOriginalFilename());
-          String saveFileName = FileNameGenerator.getRandomFileName(originalFileName);
- 
         //upload photo 
-        storageService.storeProfile(photo,saveFileName);
+        try {
+          storageService.store(userId, photo, StorageServiceImpl.PROFILE_PATH, true);
+          userInfo.setPhoto(originalFileName);
+          userRepo.save(userInfo);
+        } catch (UnauthorizedFileAccessException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
 
         //insert photo 
-        userInfo.setPhoto(saveFileName);
-        userRepo.save(userInfo);
+       
       }else {
         model.addAttribute("photoTypeErr", "Files other than image file cannot be uploaded.");
         return "CM0004_TeacherProfile";
