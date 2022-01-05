@@ -8,7 +8,6 @@ import javax.validation.Valid;
 import com.blissstock.mappingSite.dto.PasswordDTO;
 import com.blissstock.mappingSite.entity.Token;
 import com.blissstock.mappingSite.entity.UserAccount;
-import com.blissstock.mappingSite.entity.VerificationToken;
 import com.blissstock.mappingSite.enums.PasswordResetType;
 import com.blissstock.mappingSite.enums.TokenType;
 import com.blissstock.mappingSite.service.MailServiceImpl;

@@ -67,11 +67,11 @@
                       <td>:</td>
                       <td th:text="${entry.value}">John</td>
                     </tr> -->
-                      <tr>
-                        <td class="text-end">User Name</td>
-                        <td>:</td>
-                        <td th:text="${userInfo.userName}"></td>
-                      </tr>
+                    <tr>
+                      <td class="text-end">User Name</td>
+                      <td>:</td>
+                      <td th:text="${userInfo.userName}"></td>
+                    </tr>
                       <tr>
                         <td class="text-end">Email</td>
                         <td>:</td>
@@ -169,7 +169,43 @@
       
         </div>
         <!-- End of Card -->
-      
+        <div class="row">
+          <div class="col-lg-2 mt-3">
+            <div class = "new-class mb-3">
+              <a href="#" class="btn btn-squared-default-plain btn-success">
+                <i class="fa fa-plus-circle fa-5x"></i>
+                <br />
+                Create
+                <br />
+                New Class
+              </a>
+            </div>
+          </div>
+  <div class="col-lg-10 mt-3">
+      <div class="row">
+          <div class="col-md-12">
+              <div class="card">
+                  <div class="card-body">
+                      <h6 class="card-title">Timeline</h6>
+                      <div id="content">
+                          <ul class="timeline">
+                              <li class="event" data-date="12:30 - 1:00pm">
+                                  <h3>Registration</h3>
+                              </li>
+                              <li class="event" data-date="2:30 - 4:00pm">
+                                  <h3>Opening Ceremony</h3>
+                              </li>
+                              <li class="event" data-date="5:00 - 8:00pm">
+                                  <h3>Main Event</h3>
+                              </li>
+                          </ul>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
       </div> 
     </div> 
       <!-- End of Container -->

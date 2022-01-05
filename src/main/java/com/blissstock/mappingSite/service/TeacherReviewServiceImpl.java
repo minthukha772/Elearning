@@ -16,11 +16,9 @@ import com.blissstock.mappingSite.entity.Review;
 import com.blissstock.mappingSite.repository.CourseRepository;
 import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
 import com.blissstock.mappingSite.repository.ReviewRepository;
-import com.blissstock.mappingSite.entity.ReviewTest;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.exceptions.CourseNotFoundException;
 import com.blissstock.mappingSite.repository.ReviewRepository;
-import com.blissstock.mappingSite.repository.ReviewTestRepository;
 import com.blissstock.mappingSite.service.TeacherReviewService;
 
 import org.slf4j.Logger;

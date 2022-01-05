@@ -107,6 +107,14 @@ public class UserInfo implements Profile {
   @JsonIgnore
   private List<JoinCourseUser> join = new ArrayList<>();
 
+  @OneToMany(
+    fetch = FetchType.LAZY,
+    cascade = CascadeType.ALL,
+    mappedBy = "userInfo"
+  )
+  @JsonIgnore
+  private List<CourseInfo> courseInfo = new ArrayList<>();
+
   public static UserInfo fromRegisterDTO(UserRegisterDTO userRegisterDTO) {
     UserInfo userInfo = new UserInfo();
     userInfo.userName = userRegisterDTO.getName();

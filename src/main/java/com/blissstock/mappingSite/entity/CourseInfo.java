@@ -48,6 +48,9 @@ public class CourseInfo {
   //@NotBlank(message="Please choose category")
   private String category;
 
+  @Column(name = "class_link")
+	private String classLink;
+
   @Column(name = "level", length = 15)
   //@NotBlank(message="Please choose course level")
   private String level;
@@ -56,8 +59,11 @@ public class CourseInfo {
   //@NotBlank(message="Please enter about course")
   private String aboutCourse;
 
-  @Column(name = "student_num", length = 20)
-  private int stuNum;
+  @Column(name = "prerequisite")
+	private String prerequisite;
+
+  @Column(name = "max_stu")
+  private Integer maxStu;
 
   //@NotNull
   @DateTimeFormat(pattern = "yyyy-MM-dd")
