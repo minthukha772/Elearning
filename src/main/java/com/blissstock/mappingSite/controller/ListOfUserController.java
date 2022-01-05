@@ -82,6 +82,9 @@ public class ListOfUserController {
         // System.out.println("Previous Path Info "+req.getRequestURL());
         return "AT0003_ListofAdminsScreen";
     }
+
+
+  
     
     // @RequestMapping(value = "/teacher/course-list/{courseId}/student-list",method = RequestMethod.GET)
     @RequestMapping(value = "/teacher/student-list/{courseId}",method = RequestMethod.GET)
