@@ -9,7 +9,9 @@ import com.blissstock.mappingSite.dto.UserRegisterDTO;
 import com.blissstock.mappingSite.entity.Token;
 import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.entity.UserInfo;
+import com.blissstock.mappingSite.enums.AccountStatus;
 import com.blissstock.mappingSite.enums.TokenType;
+import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.exceptions.UserAlreadyExistException;
 import com.blissstock.mappingSite.repository.TokenRepository;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
@@ -70,6 +72,12 @@ public class UserServiceImpl implements UserService {
         GregorianCalendar.getInstance().getTime());
     // Encode Password
     userAccount.setPassword(passwordEncoder.encode(userAccount.getPassword()));
+    // Set Status
+    if(userAccount.getRole().equals(UserRole.STUDENT.getValue())){
+      userAccount.setAccountStatus(AccountStatus.REGISTERED.getValue());
+    }else if(userAccount.getRole().equals(UserRole.TEACHER.getValue())){
+      userAccount.setAccountStatus(AccountStatus.REQUESTED.getValue());
+    }
 
     if (this.isUserAccountPresent(userAccount.getMail())) {
       logger.warn("User with {} email already exists", userAccount.getMail());

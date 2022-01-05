@@ -13,26 +13,27 @@ import com.blissstock.mappingSite.exceptions.UserNotFoundException;
 public interface UserService {
   public UserInfo addUser(UserRegisterDTO userRegisterDTO) throws Exception;
 
-  public void updateUser(UserRegisterDTO userRegisterDTO, Long id);
+  void createToken(UserAccount userAccount, String token, TokenType tokenType);
 
-  public void updateUserInfo(UserInfo userInfo);
 
   public UserAccount getUserAccountByEmail(String email);
 
   public UserInfo getUserInfoByID(Long id);
 
-  public boolean isUserAccountPresent(String email);
-
   public UserAccount getUserAccountByToken(String verificationToken);
-
-  void createToken(UserAccount userAccount, String token, TokenType tokenType);
-
-  Token getToken(String VerificationToken, TokenType tokenType);
+  
+  public Token getToken(String VerificationToken, TokenType tokenType);
+  
+  public boolean isUserAccountPresent(String email);
 
   public void updateUserAccount(UserAccount savedUserAccount);
 
   public void updateToken(Token savedToken);
 
   public void updatePassword(PasswordDTO passwordDTO, Long id);
+
+  public void updateUser(UserRegisterDTO userRegisterDTO, Long id);
+
+  public void updateUserInfo(UserInfo userInfo);
 
 }
