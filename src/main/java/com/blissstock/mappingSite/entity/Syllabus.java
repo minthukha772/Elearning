@@ -57,8 +57,6 @@ public class Syllabus {
   
   //Constructors
 
-  public Syllabus() {
-  }
 
   public Syllabus(Long syllabusId, String title, CourseInfo courseInfo, List<Content> content) {
     this.syllabusId = syllabusId;

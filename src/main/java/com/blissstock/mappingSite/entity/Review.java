@@ -72,17 +72,6 @@ public class Review {
 
     //Constructors
 
-    public Review() {
-    }
-
-    public Review(Long reviewId, int star, int reviewType, String feedback, Date assignedDate, JoinCourseUser join) {
-        this.reviewId = reviewId;
-        this.star = star;
-        this.reviewType = reviewType;
-        this.feedback = feedback;
-        this.assignedDate = assignedDate;
-        this.join = join;
-    }
 
     public Long getReviewId() {
         return this.reviewId;

@@ -116,28 +116,6 @@ public class CourseInfo {
 
   //Constructors
 
-  public CourseInfo() {
-  }
-
-  public CourseInfo(Long courseId, String courseName, String classType, String category, String level, String aboutCourse, int stuNum, Date startDate, Date endDate, int fees, boolean isCourseApproved, List<CourseTime> courseTime, List<Syllabus> syllabus, List<Test> test, List<JoinCourseUser> join, UserInfo userInfo) {
-    this.courseId = courseId;
-    this.courseName = courseName;
-    this.classType = classType;
-    this.category = category;
-    this.level = level;
-    this.aboutCourse = aboutCourse;
-    this.stuNum = stuNum;
-    this.startDate = startDate;
-    this.endDate = endDate;
-    this.fees = fees;
-    this.isCourseApproved = isCourseApproved;
-    this.courseTime = courseTime;
-    this.syllabus = syllabus;
-    this.test = test;
-    this.join = join;
-    this.userInfo = userInfo;
-  }
-
   public Long getCourseId() {
     return this.courseId;
   }

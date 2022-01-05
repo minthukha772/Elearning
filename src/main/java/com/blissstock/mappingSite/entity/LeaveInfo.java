@@ -62,9 +62,6 @@ public class LeaveInfo {
 
     //Constructors
 
-    public LeaveInfo() {
-    }
-
     public LeaveInfo(Long leaveId, Date leaveDate, Date leaveStartTime, Date leaveEndTime, String reason, JoinCourseUser join) {
         this.leaveId = leaveId;
         this.leaveDate = leaveDate;

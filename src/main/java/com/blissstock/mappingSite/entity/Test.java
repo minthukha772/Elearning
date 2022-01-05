@@ -41,9 +41,6 @@ public class Test {
 	
     //Constructors
 
-    public Test() {
-    }
-
     public Test(Long testId, String testLink, CourseInfo courseInfo) {
         this.testId = testId;
         this.testLink = testLink;

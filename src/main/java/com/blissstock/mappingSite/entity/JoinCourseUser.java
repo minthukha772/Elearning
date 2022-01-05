@@ -77,18 +77,6 @@ public class JoinCourseUser {
 
     //Constructors
 
-    public JoinCourseUser() {
-    }
-
-    public JoinCourseUser(Long joinId, CourseInfo courseInfo, UserInfo userInfo, List<Review> review, List<LeaveInfo> leaveInfo, List<PaymentReceive> paymentReceive) {
-        this.joinId = joinId;
-        this.courseInfo = courseInfo;
-        this.userInfo = userInfo;
-        this.review = review;
-        this.leaveInfo = leaveInfo;
-        this.paymentReceive = paymentReceive;
-    }
-
     public Long getJoinId() {
         return this.joinId;
     }

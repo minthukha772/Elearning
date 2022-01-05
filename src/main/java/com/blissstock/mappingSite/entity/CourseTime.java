@@ -55,8 +55,6 @@ public class CourseTime {
 	
     //Constructors
 
-    public CourseTime() {
-    }
 
     public CourseTime(Long courseTimeId, String courseDays, Date courseStartTime, Date courseEndTime, CourseInfo courseInfo) {
         this.courseTimeId = courseTimeId;

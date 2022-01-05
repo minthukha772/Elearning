@@ -25,14 +25,7 @@ public class BankInfo {
 
   //Constructors
 
-  public BankInfo() {
-  }
-
-  public BankInfo(Long bankId, String bankName) {
-    this.bankId = bankId;
-    this.bankName = bankName;
-  }
-
+ 
   public Long getBankId() {
     return this.bankId;
   }

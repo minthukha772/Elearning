@@ -51,8 +51,6 @@ public class PaymentReceive {
 	
 	//Constructors
 
-	public PaymentReceive() {
-	}
 
 	public PaymentReceive(Long paymentReceiveId, String slip, String paymentStatus, Date paymentReceiveDate, JoinCourseUser join) {
 		this.paymentReceiveId = paymentReceiveId;

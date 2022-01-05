@@ -62,18 +62,6 @@ public class Token {
 
   //Constructors
 
-  public Token() {
-  }
-
-  public Token(Long id, String token, String tokenType, Long created, boolean isUsed, UserAccount userAccount, Date expiryDate) {
-    this.id = id;
-    this.token = token;
-    this.tokenType = tokenType;
-    this.created = created;
-    this.isUsed = isUsed;
-    this.userAccount = userAccount;
-    this.expiryDate = expiryDate;
-  }
 
   public Long getId() {
     return this.id;

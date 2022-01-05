@@ -21,14 +21,6 @@ public class PaymentInfoDTO {
 
     //Constructors
 
-    public PaymentInfoDTO() {
-    }
-
-    public PaymentInfoDTO(String serviceName, String accountName, String accountNumber) {
-        this.serviceName = serviceName;
-        this.accountName = accountName;
-        this.accountNumber = accountNumber;
-    }
 
     public String getServiceName() {
         return this.serviceName;

@@ -58,18 +58,6 @@ public class PaymentAccount {
 	
     //Constructors
 
-    public PaymentAccount() {
-    }
-
-    public PaymentAccount(Long paymentAccountId, String accountName, Integer accountNumber, Long checkedBank, UserInfo userInfo, BankInfo bankInfo) {
-        this.paymentAccountId = paymentAccountId;
-        this.accountName = accountName;
-        this.accountNumber = accountNumber;
-        this.checkedBank = checkedBank;
-        this.userInfo = userInfo;
-        this.bankInfo = bankInfo;
-    }
-
     public Long getPaymentAccountId() {
         return this.paymentAccountId;
     }

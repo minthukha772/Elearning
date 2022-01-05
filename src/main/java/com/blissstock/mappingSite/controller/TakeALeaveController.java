@@ -51,7 +51,7 @@ public class TakeALeaveController {
     LeaveInfoRepository leaveRepo;
 
 	@Valid
-    @GetMapping(value={"/student/leave/{courseId}","/admin/leave/{courseId}"})
+    @GetMapping(value={"/student/leave/{courseId}","/teacher/leave/{courseId}","/admin/leave/{courseId}"})
     private String getTakeALeaveForm(@PathVariable Long courseId,@RequestParam(value = "record_date", defaultValue="Japanese N3") String course, @RequestParam(value = "user_name",defaultValue = "Nani") String name,Model model) {
 		  LeaveInfo leaveInfo = new LeaveInfo();
 		  model.addAttribute("course",course);

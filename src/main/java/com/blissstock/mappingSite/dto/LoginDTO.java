@@ -20,14 +20,6 @@ public class LoginDTO {
 
     //Constructors
 
-    public LoginDTO() {
-    }
-
-    public LoginDTO(String email, String password) {
-        this.email = email;
-        this.password = password;
-    }
-
     public String getEmail() {
         return this.email;
     }

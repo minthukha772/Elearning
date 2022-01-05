@@ -43,9 +43,6 @@ public class Content {
 	
 	//Constructors
 
-	public Content() {
-	}
-
 	public Content(Long contentId, String content, Syllabus syllabus) {
 		this.contentId = contentId;
 		this.content = content;

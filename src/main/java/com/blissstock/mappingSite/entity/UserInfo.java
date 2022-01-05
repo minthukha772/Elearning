@@ -166,8 +166,6 @@ public class UserInfo implements Profile{
 
   //Constructors
 
-  public UserInfo() {
-  }
 
   public UserInfo(Long uid, String photo, String userName, String phoneNo, String gender, Date birthDate, String postalCode, String city, String division, String address, String education, String nrc, String selfDescription, UserAccount userAccount, List<PaymentAccount> paymentAccount, List<JoinCourseUser> join) {
     this.uid = uid;

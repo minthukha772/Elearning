@@ -64,8 +64,6 @@ public class UserAccount {
 
 	//Constructors
 
-	public UserAccount() {
-	}
 
 	public Long getId() {
 		return this.id;
