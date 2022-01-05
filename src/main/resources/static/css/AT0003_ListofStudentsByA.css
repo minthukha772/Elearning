@@ -62,9 +62,9 @@ body {
 .openbtn {
     font-size: 20px;
     cursor: pointer;
-    background-color: #5227CC;
+    background-color: black;
     color: #f1f1f1;
-    padding: 8px 8px;
+    padding: 16px 15px;
     border: none;
 }
 
@@ -111,7 +111,7 @@ body {
     text-decoration: none;
 }
 
-.sidebar ul li a.active-link {
+.sidebar ul li a:active {
     color: #5227CC;
     background-color: transparent;
     text-decoration: none;

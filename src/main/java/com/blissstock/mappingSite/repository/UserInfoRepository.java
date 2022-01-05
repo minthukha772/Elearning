@@ -16,7 +16,7 @@ public interface UserInfoRepository extends CrudRepository<UserInfo, Long> {
 
   @Query(
     nativeQuery = true,
-    value = "select * from user_info where user_name=:userName and user_account_account_id=:accountId"
+    value = "select * from user_info where user_name=:userName and id=:accountId"
   )
   UserInfo findByNameAndAccount(
     @Param("userName") String userName,

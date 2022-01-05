@@ -4,15 +4,11 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.Optional;
 
-import java.util.List;
-
-import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+
 import com.blissstock.mappingSite.model.FileInfo;
 import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.entity.UserInfo;
@@ -23,6 +19,8 @@ import com.blissstock.mappingSite.service.UserSessionService;
 import com.blissstock.mappingSite.utils.CheckUploadFileType;
 import com.blissstock.mappingSite.utils.FileNameGenerator;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.UrlResource;
 import org.springframework.mail.MailSendException;
@@ -40,6 +38,11 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 
 @Controller
 public class AdminTopController {
+
+  private static Logger logger = LoggerFactory.getLogger(
+    ProfileController.class
+  );
+  
   @Autowired
   StorageService storageService;
 
@@ -56,16 +59,21 @@ public class AdminTopController {
     @Autowired
     UserAccountRepository userAccRepo;
 
-    @GetMapping(value="/admin/top")
+    @GetMapping(value="/admin/top/")
     private String getAdminTopScreen( Model model) {  
-        Long userId = userSessionService.getUserAccount().getId();
+        Long userId = userSessionService.getUserAccount().getAccountId();
         UserInfo userInfo=userRepo.findById(userId).orElse(null);
         UserAccount userAcc = userInfo.getUserAccount();
+
+        logger.info("GET Requested");
+        logger.info("Getting admininfo: {} from database", userId);
+        Optional<UserInfo> optionalUserInfo = userRepo.findById(userId);
+        //If request id does not exist
+        if (!optionalUserInfo.isPresent()) {
+          logger.info("User {} does not exist", userId);
+          return "redirect:/404";
+        }        
          //load profile picture
-         if(userInfo.getPhoto()==null){
-          String photoString=null;
-          model.addAttribute("pic64", photoString);
-        }
         FileInfo profile = loadProfile(userId);
         model.addAttribute("profile", profile);
         
@@ -75,80 +83,127 @@ public class AdminTopController {
         // model.addAttribute("trInfo", userInfo.toMapTeacher());
         // List<FileInfo> fileInfos = loadImages();
         // model.addAttribute("files", fileInfos);
-        model.addAttribute("postAction","/admin/top/update/"+userId);;
+        // model.addAttribute("postAction","/admin/top/update");
             return "AD0001_AdminTop";
+            
     }
-    private FileInfo loadProfile(long userId) {
-      try {
-          UserInfo userInfo=userRepo.findById(userId).orElse(null);
-          if(userInfo.getPhoto()==null){
-            userInfo.setPhoto("profile1.jpg");
-            Path path= storageService.loadProfile(userInfo.getPhoto());
-            String name = path.getFileName().toString();
-            String url = "/images/profiles/profile1.jpg";
-  
-          return new FileInfo(name, url);
-          }
-          Path path= storageService.loadProfile(userInfo.getPhoto());
-          String name = path.getFileName().toString();
-          String url = MvcUriComponentsBuilder
-            .fromMethodName(
-              FileController.class,
-              "getProfile",
-              path.getFileName().toString()
-            )
-            .build()
-            .toString();
-  
-          return new FileInfo(name, url);
-      } catch (Exception e) {
-        return null;
-      }
+    //Get profile photo
+  private FileInfo loadProfile(long userId) {
+    try {
+      UserInfo userInfo = userRepo.findById(userId).orElse(null);
+      Path path = storageService.loadProfile(userInfo.getPhoto());
+      String name = path.getFileName().toString();
+      String url = MvcUriComponentsBuilder
+        .fromMethodName(
+          FileController.class,
+          "getProfile",
+          path.getFileName().toString()
+        )
+        .build()
+        .toString();
+
+      return new FileInfo(name, url);
+    } catch (Exception e) {
+      return null;
+    }
   }
 
-
-  @PostMapping(value= "/admin/top/update/{userId}")
-  private String postProfile(Model model,
-    @RequestParam("profile_pic") MultipartFile photo, 
-    @RequestParam(value="action", required=true) String action,
-    @PathVariable String role,
-    @PathVariable Long userId
-  ) {
-    UserInfo userInfo=userRepo.findById(userId).orElse(null);
-    UserAccount acc=userInfo.getUserAccount();
+//   @PostMapping(value= "/admin/top/update")
+//   private String postProfile(Model model,
+//     @RequestParam("profile_pic") MultipartFile photo, 
+//     @RequestParam(value="action", required=true) String action
+//   ) {
+//     UserInfo userInfo=userRepo.findById(userId).orElse(null);
+//     UserAccount acc=userInfo.getUserAccount();
         
-    if(!photo.isEmpty()) {
-      if(CheckUploadFileType.checkType(photo)) {
-        //get original photo name and generate a new file name
-          String originalFileName =StringUtils.cleanPath(photo.getOriginalFilename());
-          String saveFileName = FileNameGenerator.getRandomFileName(originalFileName);
+//     if(!photo.isEmpty()) {
+//       if(CheckUploadFileType.checkType(photo)) {
+//         //get original photo name and generate a new file name
+//           String originalFileName =StringUtils.cleanPath(photo.getOriginalFilename());
+//           String saveFileName = FileNameGenerator.getRandomFileName(originalFileName);
  
-        //upload photo 
-        storageService.storeProfile(photo,saveFileName);
+//         //upload photo 
+//         storageService.storeProfile(photo,saveFileName);
 
-        //insert photo 
-        userInfo.setPhoto(saveFileName);
-        userRepo.save(userInfo);
-      }else {
-        model.addAttribute("photoTypeErr", "Files other than image file cannot be uploaded.");
-        return "CM0004_TeacherProfile";
-      }
-    }
-    userInfo.setUserName(userInfo.getUserName());
-    userRepo.save(userInfo);
-  // else if(action.equals("add_payment")){
-  //   List<PaymentAccount> payAccs=userInfo.getPaymentAccount();
-  //   System.out.println(payAccs);
-  //   for(PaymentAccount payAcc : payAccs){
-  //       payAccRepo.save(payAcc);
-  //       System.out.println(payAcc);
-  //     }
-  //   }
+//         //insert photo 
+//         userInfo.setPhoto(saveFileName);
+//         userRepo.save(userInfo);
+//       }else {
+//         model.addAttribute("photoTypeErr", "Files other than image file cannot be uploaded.");
+//         return "CM0004_TeacherProfile";
+//       }
+//     }
+//     userInfo.setUserName(userInfo.getUserName());
+//     userRepo.save(userInfo);
+//   // else if(action.equals("add_payment")){
+//   //   List<PaymentAccount> payAccs=userInfo.getPaymentAccount();
+//   //   System.out.println(payAccs);
+//   //   for(PaymentAccount payAcc : payAccs){
+//   //       payAccRepo.save(payAcc);
+//   //       System.out.println(payAcc);
+//   //     }
+//   //   }
       
-      return "redirect:/"+role+"/top/"+userId;
-  
+//       return "AD0001_AdminTop";
+//  }
+ 
+ @PostMapping(value = "/admin/top/edit/")
+public String editProfilePicture(
+  Model model,
+  @RequestParam("profile_pic") MultipartFile photo,
+  @Valid @ModelAttribute("userAcc") UserAccount mailEdit,
+  @PathVariable(required = false) Long id,
+  @RequestParam(value="action", required=true) String action,
+  HttpServletRequest httpServletRequest
+) {
+  logger.info("Post Requested");
+  logger.info("Payment Edit Info {}", photo);
 
+  Long uid = userSessionService.getUserAccount().getAccountId();
+  UserInfo userInfo=userRepo.findById(uid).orElse(null);
+  UserAccount userAcc=userAccRepo.findById(uid).orElse(null);
+
+  String redirectAddress =
+    "redirect:" +
+    httpServletRequest.getRequestURI().replace("/edit/", "");
+  logger.debug("Redirect Addresss {}", redirectAddress);
+
+  if(action.equals("pic-edit")){
+  if (!photo.isEmpty() && CheckUploadFileType.checkType(photo)) {
+    //get original photo name and generate a new file name
+    String originalFileName = StringUtils.cleanPath(
+      photo.getOriginalFilename()
+    );
+    String saveFileName = FileNameGenerator.renameFileName(
+      originalFileName,
+      uid.toString()
+    );
+
+    //upload photo
+    storageService.storeProfile(photo, saveFileName);
+    //insert photo 
+    userInfo.setPhoto(saveFileName);
+    userRepo.save(userInfo);
+
+    logger.info("profile photo {} stored", saveFileName);
+    return redirectAddress+"/";
+  }
+}
+else if(action.equals("edit")){
+
+    UserInfo nameEdit=mailEdit.getUserInfo();
+    //System.out.println(nameEdit.getPhoto());
+    userInfo.setUserName(nameEdit.getUserName());  
+    userAcc.setMail(mailEdit.getMail());
+    System.out.println(mailEdit.getMail());
+    userRepo.save(userInfo);
+    userAccRepo.save(userAcc);
+
+    //logger.info("profile photo {} stored", saveFileName);
+    return redirectAddress+"/";
   }
 
+  return redirectAddress + "?error";
+}
  
 }

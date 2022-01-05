@@ -31,49 +31,46 @@ import lombok.Setter;
 @Entity
 @Table(name = "review")
 public class Review {
-	
-	@Column(name = "review_id")
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Long reviewId;
-   
-    // @Min(value = 1, message = "Please fill rating")
-    // @Max(value = 5, message = "Please fill rating")
-    @Column(name = "star")
-	private int star=0;
 
-    @Column(name="review_type")
-	private int reviewType;
+  @Column(name = "review_id")
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long reviewId;
 
-    //@NotBlank(message="Please fill feedback")
-	@Column(name="feedback")
-	private String feedback;
+  // @Min(value = 1, message = "Please fill rating")
+  // @Max(value = 5, message = "Please fill rating")
+  @Column(name = "star")
+  private int star = 0;
 
-    @Column(name = "assigned_date")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date assignedDate;
+  @Column(name = "review_type")
+  private int reviewType;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "join_fkey")
-    @JsonIgnore
-    private JoinCourseUser join;
+  //@NotBlank(message="Please fill feedback")
+  @Column(name = "feedback")
+  private String feedback;
 
-    public static Review fromReviewDTO(StudentReviewDTO stuReviewDTO) {
-        Review review = new Review();
-        review.star= stuReviewDTO.getStar();
-        review.feedback= stuReviewDTO.getFeedback();
-        review.assignedDate=GregorianCalendar.getInstance().getTime();
-        return review;
-      }
+  @Column(name = "assigned_date")
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
+  private Date assignedDate;
 
-      public static Review fromTrReviewDTO(TeacherReviewDTO trReviewDTO) {
-        Review review = new Review();
-        review.feedback= trReviewDTO.getFeedback();
-        review.reviewType= trReviewDTO.getReviewType();
-        review.assignedDate=GregorianCalendar.getInstance().getTime();
-        return review;
-      }
+  @ManyToOne(fetch = FetchType.EAGER, optional = false)
+  @JoinColumn(name = "join_fkey")
+  @JsonIgnore
+  private JoinCourseUser join;
 
+  public static Review fromReviewDTO(StudentReviewDTO stuReviewDTO) {
+    Review review = new Review();
+    review.star = stuReviewDTO.getStar();
+    review.feedback = stuReviewDTO.getFeedback();
+    review.assignedDate = GregorianCalendar.getInstance().getTime();
+    return review;
+  }
 
-
+  public static Review fromTrReviewDTO(TeacherReviewDTO trReviewDTO) {
+    Review review = new Review();
+    review.feedback = trReviewDTO.getFeedback();
+    review.reviewType = trReviewDTO.getReviewType();
+    review.assignedDate = GregorianCalendar.getInstance().getTime();
+    return review;
+  }
 }

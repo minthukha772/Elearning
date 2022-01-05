@@ -11,11 +11,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.blissstock.mappingSite.repository.CourseRepository;
 
-
 @Controller
 @RequestMapping("/")
 public class IndexController {
-    private static final Logger logger = LoggerFactory.getLogger(CheckEmailController.class);
+    private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
 
     @Autowired
     private CourseRepository courseRepo;
@@ -29,8 +28,8 @@ public class IndexController {
 
             List<CourseInfo> videoList = courseRepo.findByClassType("Video");
             model.addAttribute("liveCourse", liveList);
-            // TODO change to video list
-            model.addAttribute("recordedCourse", liveList);
+           
+            model.addAttribute("recordedCourse", videoList);
 
             System.out.print(liveList.toString());
         } catch (Exception e) {

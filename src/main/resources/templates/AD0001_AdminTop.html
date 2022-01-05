@@ -11,7 +11,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css"
+    />
     <link rel="stylesheet" href="/css/CM0004_Student Profile.css" />
     
     <title>Mapping Site</title>
@@ -33,14 +40,6 @@
       </nav>
     </div>
 
-
-    <!-- <form
-      id="contactForm"
-      th:action="@{${postAction}}"
-      data-th-action="@{/student/edit}"
-      th:object="${userInfo}"
-      method="post"
-   > -->
       <div class="container-custom">
         <div class="card" style="background-color: #DEE2E6" id="adminProfile">
           <div class="card-header">Personal Information</div>
@@ -49,8 +48,18 @@
         
               <div id="profile">
                 <div class="table-responsive mb-3">
-                  <div class="d-flex justify-content-center">
-                    <img id="profilePic" class="pic img-thumbnail profile_img" th:src="${profile.url}"  th:alt="${profile.name}" />
+                  <div class="profile-pic-wrapper">
+                    <div class="pic-holder">
+                      <div class="d-flex justify-content-center">
+                        <div class="profile-pic-wrapper">
+                          <div class="pic-holder">
+                            <!-- profile pic shown here -->
+                            <img id="profilePic"
+                            class="pic" th:src="${profile.url}"  th:alt="${profile.name}" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                   <table class="table table-borderless table-hover">
                     <!-- <tr th:each="entry, stats : ${stuInfo}">
@@ -58,11 +67,11 @@
                       <td>:</td>
                       <td th:text="${entry.value}">John</td>
                     </tr> -->
-                      <tr>
-                        <td class="text-end">User Name</td>
-                        <td>:</td>
-                        <td th:text="${userInfo.userName}"></td>
-                      </tr>
+                    <tr>
+                      <td class="text-end">User Name</td>
+                      <td>:</td>
+                      <td th:text="${userInfo.userName}"></td>
+                    </tr>
                       <tr>
                         <td class="text-end">Email</td>
                         <td>:</td>
@@ -71,7 +80,7 @@
                   </table>
                 </div> 
                 <div class="row justify-content-between">
-                  <button class="btn btn-primary col-auto" id="submitButton" type="submit" name="action" value="submit" onclick="show('update-admin')">
+                  <button class="btn btn-primary col-auto" id="submitButton" onclick="show('update-admin')">
                     Update
                   </button>
                   <button class="btn btn-primary col-auto back">Change Password</button>
@@ -84,73 +93,119 @@
         <!---End of Card--> 
         <div class="visually-hidden">
         <div id="update-admin">
-        <form
-        id="adminProfile"
-        th:action="@{${postAction}}" 
-        th:object="${userInfo}"
-        method="post"
-        >
+       
         <div class="card" style="background-color: #DEE2E6">
           <div class="card-header">Personal Information</div>
           <div class="card-body">
             <div class="container">
-
+              <form
+              id="adminProfile"
+              th:action="@{__${#httpServletRequest.requestURI}__edit/}"
+              th:object="${userAcc}"
+              method="post"
+               enctype="multipart/form-data"
+              >
               <div id="profile">
+                <div class="profile-pic-wrapper">
+                  <div class="pic-holder">
+                    <div class="d-flex justify-content-center">
+                      <div class="profile-pic-wrapper">
+                        <div class="pic-holder">
+                          <!-- uploaded pic shown here -->
+                          <img id="profilePic"
+                          class="pic" th:src="${profile.url}"  th:alt="${profile.name}" />
 
-                  <div class="profile-pic-wrapper mb-3">
-                    <div class="pic-holder">
-                      <div class="d-flex justify-content-center">
-                      <!-- <img id="profilePic" class="pic" th:if="${pic64 == null}" th:src="${imagePath}" /> -->
-                      <img id="profilePic" class="pic img-thumbnail profile_img" th:src="${profile.url}"  th:alt="${profile.name}" />
-                      </div>
-                      <div class="d-flex justify-content-center">
-                        <input
-                        class="uploadProfileInput"
-                        type="file"
-                        name="profile_pic"
-                        id="newProfilePhoto"
-                        accept="image/*"
-                        style="display: none;"
-                        th:src="${profile.url}"
-                        th:alt="${profile.name}"
-                      />
-                      <label for="newProfilePhoto" class="upload-file-block">
-                        <div class="text-center">
-                          <div class="mb-2">
-                            <i class="fa fa-camera fa-2x"></i>
-                          </div>
-                          <div class="text-uppercase" style="color: blue;">
-                            Upload Profile Photo
-                          </div>
+                            <label for="newProfilePhoto" class="upload-file-block">
+                              <div class="text-center">
+                                <div class="mb-2">
+                                  <i class="fa fa-camera fa-2x"></i>
+                                </div>
+                                <div class="text-uppercase">
+                                  Update <br />
+                                  Profile Photo
+                                </div>
+                              </div>
+                            </label>
+                            <input
+                            class="uploadProfileInput"
+                            type="file"
+                            name="profile_pic"
+                            id="newProfilePhoto"
+                            accept="image/*"
+                            style="display: none;"
+                            th:src="${profile.url}"
+                            th:alt="${profile.name}"
+                          />
+
                         </div>
-                      </label>
                       </div>
+                      <!-- TODO Come back for profile Upload -->
                     </div>
                   </div>
-
-
+                </div>
+                  <div class="text-center">
+                    <button class="btn btn-primary mb-3"  type="submit" name="action" value="pic-edit">Save</button>
+                  </div>
                   <div class="mb-3">
                     <label class="form-label" for="name">User Name</label>
-                    <input th:field="*{userName}" class="form-control" id="name" type="text" placeholder="Name"/>
+                    <input th:field="*{userInfo.userName}" class="form-control" id="name" type="text" placeholder="Name"/>
                   </div>
                   <div class="mb-3">
                     <label class="form-label" for="name">Email</label>
-                    <input th:field="*{userAccount.mail}" class="form-control" id="name" type="text" placeholder="Name"/>
+                    <input th:field="*{mail}" class="form-control" type="text" placeholder="Name"/>
                   </div>
-                </div> 
                 <div class="row justify-content-between">
-                  <button class="btn btn-primary col-auto" id="submitButton" type="submit" name="action" value="submit">
+                  <button class="btn btn-primary col-auto" type="submit" name="action" value="edit">
                     Update
                   </button>
                   <button class="btn btn-primary col-auto back">Change Password</button>
-
                 </div>
+              </div>
+            </form>  
+              </div>
               </div>
             </div>
           </div>
+      
         </div>
         <!-- End of Card -->
-      </form>
+        <div class="row">
+          <div class="col-lg-2 mt-3">
+            <div class = "new-class mb-3">
+              <a href="#" class="btn btn-squared-default-plain btn-success">
+                <i class="fa fa-plus-circle fa-5x"></i>
+                <br />
+                Create
+                <br />
+                New Class
+              </a>
+            </div>
+          </div>
+  <div class="col-lg-10 mt-3">
+      <div class="row">
+          <div class="col-md-12">
+              <div class="card">
+                  <div class="card-body">
+                      <h6 class="card-title">Timeline</h6>
+                      <div id="content">
+                          <ul class="timeline">
+                              <li class="event" data-date="12:30 - 1:00pm">
+                                  <h3>Registration</h3>
+                              </li>
+                              <li class="event" data-date="2:30 - 4:00pm">
+                                  <h3>Opening Ceremony</h3>
+                              </li>
+                              <li class="event" data-date="5:00 - 8:00pm">
+                                  <h3>Main Event</h3>
+                              </li>
+                          </ul>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
       </div> 
     </div> 
       <!-- End of Container -->
@@ -161,17 +216,17 @@
           document.getElementById('adminProfile').innerHTML = document.getElementById(param_div_id).innerHTML;
       }
     </script>
-    <script src="/js/photoPlaceHolder.js"></script>
-    
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
-      integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI="
-      crossorigin="anonymous"
-    ></script>
+     <script
+     src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+     crossorigin="anonymous"
+   ></script>
+   <script
+     src="https://code.jquery.com/jquery-3.6.0.min.js"
+     integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+     crossorigin="anonymous"
+   ></script>
+   <script src="/js/photoPlaceHolder.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
   </body>
 </html>

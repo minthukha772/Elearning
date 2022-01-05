@@ -33,7 +33,7 @@
           </li>
           <!-- Make BreadCrumb Action For Back button -->
           <li class="breadcrumb-item active" th:if="${infoMap==null}"><span th:text="${task}">Registration</span></li>
-          <li class="breadcrumb-item" th:if="${infoMap!=null}"><a href="#" class="back" th:text="${task}">Profile Edit</a></li>
+          <li class="breadcrumb-item" th:if="${infoMap!=null}"><a href="#" class="back">Profile Edit</a></li>
           <!--  -->
           <li class="breadcrumb-item" th:classappend="${infoMap != null}?'active':''" aria-current="page">Confirmation</li>
           <li class="breadcrumb-item" aria-current="page">Completion</li>

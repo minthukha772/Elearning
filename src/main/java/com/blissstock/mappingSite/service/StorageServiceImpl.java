@@ -237,7 +237,7 @@ public class StorageServiceImpl implements StorageService {
       //
       return false;
     }
-    if (userRole == UserRole.TEACHER && userAccount.getId() != uid) {
+    if (userRole == UserRole.TEACHER && userAccount.getAccountId() != uid) {
       // This condition is to make sure, teacher is not accessing other teacher resources.
       return false;
     }

@@ -21,7 +21,7 @@ public interface UserService {
 
   public boolean isUserAccountPresent(String email);
 
-  public UserAccount getUserAccountByToken(String verificationToken);
+  public UserAccount getUserAccountByToken(String verificationToken, String tokenType);
 
   void createToken(UserAccount userAccount, String token, TokenType tokenType);
 
@@ -32,5 +32,7 @@ public interface UserService {
   public void updateToken(Token savedToken);
 
   public void updatePassword(PasswordDTO passwordDTO, Long id);
+
+  public void setAsUsedToken(String token);
 
 }
