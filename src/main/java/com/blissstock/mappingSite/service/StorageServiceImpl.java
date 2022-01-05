@@ -295,6 +295,9 @@ public class StorageServiceImpl implements StorageService {
   public FileInfo loadProfileAsFileInfo(UserInfo userInfo) {
     
     String name = userInfo.getPhoto();
+    if(name == null || name.isEmpty()){
+      return null;
+    }
     String url = MvcUriComponentsBuilder
       .fromMethodName(
         FileController.class,

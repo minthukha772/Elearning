@@ -32,7 +32,7 @@ public class FileController {
     @PathVariable Long uid,
     @PathVariable String filename
   ) {
-    System.out.println(uid);
+    
     Resource file = null;
     try {
      

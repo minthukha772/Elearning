@@ -78,12 +78,12 @@
                       </div>
                       <div th:if="${profilePic == null }">
                         <img
-                        id="profilePic"
-                        class="pic"
-                        th:src="@{/images/profile.png}"
-                      />
+                          id="profilePic"
+                          class="pic"
+                          th:src="@{/images/profile.png}"
+                        />
                       </div>
-                      
+
                       <div th:if="${isEditable}">
                         <label for="newProfilePhoto" class="upload-file-block">
                           <div class="text-center">
@@ -118,17 +118,16 @@
                     /> -->
                   </div>
 
-                  
                   <!-- TODO Come back for profile Upload -->
                 </div>
               </div>
             </div>
-            <div class="text-center">
-              <button id="photoSubmit" class="btn btn-primary mb-3">Save</button>
+            <div class="text-center" th:if="${isEditable}">
+              <button id="photoSubmit" class="btn btn-primary mb-3">
+                Save
+              </button>
             </div>
           </form>
-
-         
 
           <div class="d-flex justify-content-between">
             <h5>Personal Info</h5>
@@ -170,7 +169,10 @@
 
           <!-- Award and Certificates: Start -->
 
-          <div class="d-flex justify-content-between">
+          <div
+            class="d-flex justify-content-between"
+            th:if="${role=='ROLE_TEACHER'}"
+          >
             <h5>Award & Certificates</h5>
 
             <div th:if="${isEditable}">
@@ -190,27 +192,30 @@
               </div>
             </div>
           </div>
-          <div class="row row-cols-1 row-cols-md-3 g-4">
+
+          <div
+            th:if="${certificateFiles!=null and !certificateFiles.empty and role=='ROLE_TEACHER'}"
+            class="row text-center text-lg-start"
+          >
             <div
-              th:if="${certificateFiles!=null and !certificateFiles.empty and role=='ROLE_TEACHER'}"
+              th:each="fileInfo, stats : ${certificateFiles}"
+              class="col-lg-3 col-md-4 col-6"
             >
-              <div class="col" th:each="fileInfo, stats : ${certificateFiles}">
-                <!-- <div class="card h-100"> -->
+              <!-- <div class="card h-100"> -->
+              <a
+                class="d-block mb-4 h-100"
+                data-fancybox="gallery"
+                th:href="${fileInfo.url}"
+                th:data-caption="${fileInfo.name}"
+              >
+                <img
+                  th:src="${fileInfo.url}"
+                  class="img-fluid img-thumbnail"
+                  th:alt="${fileInfo.name}"
+                />
+              </a>
 
-                <a
-                  data-fancybox="gallery"
-                  th:href="${fileInfo.url}"
-                  th:data-caption="${fileInfo.name}"
-                >
-                  <img
-                    th:src="${fileInfo.url}"
-                    class="card-img-top"
-                    th:alt="${fileInfo.name}"
-                  />
-                </a>
-
-                <!-- </div> -->
-              </div>
+              <!-- </div> -->
             </div>
           </div>
 
@@ -238,7 +243,9 @@
               </div>
             </div>
 
-            <div th:if="${paymentAccounts!=null and !paymentAccounts.empty and isEditable}">
+            <div
+              th:if="${paymentAccounts!=null and !paymentAccounts.empty and isEditable}"
+            >
               <table class="table table-striped">
                 <thead>
                   <tr>
@@ -273,7 +280,7 @@
 
       <div
         class="mt-3"
-        sec:authorize="hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SUPER_ADMIN') or hasAuthority('ROLE_TEACHER')" 
+        sec:authorize="hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SUPER_ADMIN') or hasAuthority('ROLE_TEACHER')"
       >
         <div class="card">
           <div class="card-header">User Account Control</div>
