@@ -20,7 +20,7 @@ public interface UserService {
 
   public UserInfo getUserInfoByID(Long id);
 
-  public UserAccount getUserAccountByToken(String verificationToken);
+  public UserAccount getUserAccountByToken(String token, String verificationToken);
   
   public Token getToken(String VerificationToken, TokenType tokenType);
   
@@ -35,5 +35,7 @@ public interface UserService {
   public void updateUser(UserRegisterDTO userRegisterDTO, Long id);
 
   public void updateUserInfo(UserInfo userInfo);
+
+  public void setAsUsedToken(String token);
 
 }

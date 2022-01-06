@@ -27,7 +27,7 @@ public class UserAccountControlServiceImpl implements UserAccountControlService 
 
     @Override
     public void suspendUser(UserAccount userAccount) {
-        logger.info("suspend user {}", userAccount.getId());
+        logger.info("suspend user {}", userAccount.getAccountId());
         userAccount.setAccountStatus(AccountStatus.SUSPENDED.getValue());
         userService.updateUserAccount(userAccount);
 
@@ -40,7 +40,7 @@ public class UserAccountControlServiceImpl implements UserAccountControlService 
 
     @Override
     public void deleteUser(UserAccount userAccount) {
-       UserInfo userInfo = userInfoRepository.findById(userAccount.getId()).get();
+       UserInfo userInfo = userInfoRepository.findById(userAccount.getAccountId()).get();
        deleteUser(userInfo);
     }
 
@@ -54,7 +54,7 @@ public class UserAccountControlServiceImpl implements UserAccountControlService 
 
     @Override
     public void approveTeacher(UserAccount userAccount) {
-        logger.info("approve [user] {}", userAccount.getId());
+        logger.info("approve [user] {}", userAccount.getAccountId());
         userAccount.setAccountStatus(AccountStatus.SUSPENDED.getValue());
         userService.updateUserAccount(userAccount);
 

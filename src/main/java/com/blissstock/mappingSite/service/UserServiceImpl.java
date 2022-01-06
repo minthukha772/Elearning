@@ -189,6 +189,7 @@ public class UserServiceImpl implements UserService {
     userInfoRepository.save(userInfo);
   }
     
+  @Override
   public void setAsUsedToken(String token) {
     tokenRepository.setAsUsedtoken(token);
   }

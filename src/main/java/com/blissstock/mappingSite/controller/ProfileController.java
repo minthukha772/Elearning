@@ -336,7 +336,7 @@ public class ProfileController {
     } else if (id != null) {
       uid = id;
     } else if (role == UserRole.TEACHER || role == UserRole.STUDENT) {
-      uid = userSessionService.getUserAccount().getId();
+      uid = userSessionService.getUserAccount().getAccountId();
     } else {
       throw new RuntimeException("user authetication fail");
     }
