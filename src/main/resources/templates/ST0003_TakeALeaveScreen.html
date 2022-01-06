@@ -130,7 +130,7 @@
     <div class="card mx-auto completecard">
       <h3 class="card-header" style="border-radius: 10px 10px 0 0;">Take A Leave</h3>
       <div class="card-body">
-        <form id="inquiry-form" method="post" action="/leave-confirm" th:object="${leave}">
+        <form id="inquiry-form" method="post" th:action="@{${postAction}}" th:object="${leave}">
           <div class="row form-sec-header">
             <div class="col-lg-12 text-center">
               <p></p>
@@ -203,9 +203,14 @@
                 
                 <div class="col-lg-6">
                   <textarea class="form-control" id="inputEmail" placeholder="reason" th:field="*{reason}" name="reason" required></textarea>
+
+                  <!-- <input type="hidden" id="LeaveID" th:field="*{leaveId}"> -->
+
                 </div>
               </div>
               
+
+
               <div class="form-group row mb-3">
                 <div class="col-lg-3"></div>
                 

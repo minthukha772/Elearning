@@ -130,7 +130,7 @@
         <div class="card mx-auto completecard">
             <h3 class="card-header" style="border-radius: 10px 10px 0 0;">Take A Leave Confirm</h3>
             <div class="card-body">
-                <form th:object="${leave}" method="post" action="/save-leave-request">
+                <form th:object="${leave}" method="post" th:action="@{${postAction}}">
                     <div class="row form-sec-header">
                         <div class="col-lg-12 text-center">
                             <p></p>
@@ -209,6 +209,7 @@
 
                         <div class="col-lg-6 ">
                             <textarea class="form-control " id="inputEmail " placeholder="reason " th:field="*{reason} " readonly></textarea>
+                            <!-- <input type="hidden" id="LeaveID" th:field="*{leaveId}"> -->
                         </div>
                     </div>
 
@@ -222,7 +223,7 @@
 
                             </div>
                             <div class="col-lg-4 ">
-                                <button id="btnReg " type="submit " class="btn btn-spacing btn-primary center-block " Style="width: 150px; " OnClick="btnRegister_Click ">Submit</button>
+                                <button id="btnReg " type="submit " class="btn btn-spacing btn-primary center-block " Style="width: 150px; " name="action" OnClick="btnRegister_Click ">Submit</button>
 
 
                             </div>
