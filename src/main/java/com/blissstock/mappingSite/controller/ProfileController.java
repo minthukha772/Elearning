@@ -12,6 +12,7 @@ import com.blissstock.mappingSite.model.Message;
 import com.blissstock.mappingSite.service.PaymentInfoService;
 import com.blissstock.mappingSite.service.StorageService;
 import com.blissstock.mappingSite.service.StorageServiceImpl;
+import com.blissstock.mappingSite.service.UserAccountControlService;
 import com.blissstock.mappingSite.service.UserService;
 import com.blissstock.mappingSite.service.UserSessionService;
 import com.blissstock.mappingSite.utils.CheckUploadFileType;
@@ -23,9 +24,12 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -51,6 +55,9 @@ public class ProfileController {
 
   @Autowired
   UserSessionService userSessionService;
+
+  @Autowired
+  UserAccountControlService userAccountControlService;
 
   @Autowired
   UserService userService;
@@ -272,6 +279,30 @@ public class ProfileController {
     }
 
     return redirectAddress + "?error";
+  }
+
+  @DeleteMapping("/admin/profile/delete")
+  public ResponseEntity<Object> deleteUser(
+    Model model,
+    Long uid,
+    HttpServletRequest httpServletRequest
+  ) {
+    logger.info("DELETE Request for user {}",uid);
+    try {
+      UserInfo userInfo = userService.getUserInfoByID(uid);
+      if(userInfo == null){
+        throw new UserNotFoundException();
+      }
+      userAccountControlService.deleteUser(userInfo);
+    } catch (UserNotFoundException e) {
+      e.printStackTrace();
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User Not Found");
+    } catch (Exception e){
+      e.printStackTrace();
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
+    }
+
+    return ResponseEntity.status(HttpStatus.OK).body("operation success");
   }
 
   private boolean isEditable(Long id) {

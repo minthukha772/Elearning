@@ -238,7 +238,7 @@
                 <div
                   sec:authorize="hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SUPER_ADMIN')"
                 >
-                  <!-- Model caller -->
+                  <!-- Modal caller -->
                 </div>
               </div>
             </div>
@@ -280,22 +280,41 @@
 
       <div
         class="mt-3"
-        sec:authorize="hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SUPER_ADMIN') or hasAuthority('ROLE_TEACHER')"
+        sec:authorize="hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SUPER_ADMIN')"
       >
         <div class="card">
           <div class="card-header">User Account Control</div>
           <div class="card-body">
             <div class="d-flex justify-content-between mb-3">
               <p>Suspend User For A While</p>
-              <button class="btn btn-primary">Suspend</button>
+              <button
+              class="btn btn-danger"
+              data-bs-action="Suspend"
+              data-bs-toggle="modal"
+              data-bs-target="#actionConfirmationModal"
+            >Suspend
+              </button>
             </div>
             <div class="d-flex justify-content-between mb-3">
               <p>Re-activate User</p>
-              <button class="btn btn-danger">Re-activate</button>
+              
+              <button
+              class="btn btn-primary"
+              data-bs-action="Re-activate"
+              data-bs-toggle="modal"
+              data-bs-target="#actionConfirmationModal"
+            >Re-activate
+              </button>
             </div>
             <div class="d-flex justify-content-between mb-3">
               <p>Delete User Account</p>
-              <button class="btn btn-danger">Delete Account</button>
+              <button
+              class="btn btn-danger"
+              data-bs-action="Delete"
+              data-bs-toggle="modal"
+              data-bs-target="#actionConfirmationModal"
+            >Delete Account
+              </button>
             </div>
           </div>
         </div>
@@ -468,9 +487,58 @@
 
     <!-- Modals:End -->
 
+
+    
+
+     <!-- Action Confirm Modal -->
+     <div
+     class="modal fade"
+     id="actionConfirmationModal"
+     tabindex="-1"
+     aria-hidden="true"
+   >
+     <div class="modal-dialog">
+       <div class="modal-content">
+         <div class="modal-header">
+           <h5 class="modal-title" id="certificateFormModalLabel">Delete User</h5>
+           <button
+             type="button"
+             class="btn-close"
+             data-bs-dismiss="modal"
+             aria-label="Close"
+           ></button>
+         </div>
+         <div class="modal-body">
+           <p>
+            Are you sure to continue the operation?
+           </p>
+         </div>
+         <div class="modal-footer">
+           <button
+             type="button"
+             class="btn btn-secondary"
+             data-bs-dismiss="modal"
+           >
+             Close
+           </button>
+           <button
+             type="button"
+             id="actionBtn"
+             class="btn btn-danger"
+           >
+             DELETE
+           </button>
+         </div>
+       </div>
+     </div>
+   </div>
+
+   <!-- Delete Confirm Modal End -->
+
     <div th:replace="fragments/footer"></div>
     <script th:inline="javascript">
       const isEditable = /*[[${isEditable}]]*/ false;
+      const uid = /*[[${id}]]*/ false;
     </script>
 
     <script
