@@ -145,6 +145,7 @@ public class RegisterController {
     HttpServletRequest request,
     Errors errors
   ) {
+    logger.info("POST Request, action: {}", action);
     String role = "teacher";
     model.addAttribute("task", "Register");
     model.addAttribute("role", role);
