@@ -1,5 +1,10 @@
 package com.blissstock.mappingSite.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import com.blissstock.mappingSite.dto.PaymentInfoDTO;
 import com.blissstock.mappingSite.entity.BankInfo;
 import com.blissstock.mappingSite.entity.PaymentAccount;
@@ -16,11 +21,7 @@ import com.blissstock.mappingSite.service.UserAccountControlService;
 import com.blissstock.mappingSite.service.UserService;
 import com.blissstock.mappingSite.service.UserSessionService;
 import com.blissstock.mappingSite.utils.CheckUploadFileType;
-import com.blissstock.mappingSite.utils.FileNameGenerator;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 @Controller
 public class ProfileController {

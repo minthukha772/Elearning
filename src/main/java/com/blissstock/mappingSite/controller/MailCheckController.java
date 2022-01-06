@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.ui.Model;
 import antlr.Token;
 
@@ -23,15 +24,14 @@ public class MailCheckController {
     @Autowired
     UserService userService;
 
-    @GetMapping(path = { "/verify_password/{token}" })
+    @GetMapping(path = { "/verify_password" })
     public String mailVerify(
-            @PathVariable(name = "token", required = false) String token,
-            Model model) {
+            @RequestParam(value = "token", required = true) String token, Model model) {
         System.out.println("mail verify called" + token);
-
+        final String tokenType = "VERIFICATION";
         try {
             System.out.println("get token callsed");
-            UserAccount userAccount = userService.getUserAccountByToken(token);
+            UserAccount userAccount = userService.getUserAccountByToken(token, tokenType);
             System.out.println(userAccount.toString());
 
             if (userAccount.isMailVerified()) {
@@ -47,9 +47,10 @@ public class MailCheckController {
             } else {
 
                 System.out.println("mail verified");
+
                 userAccount.setMailVerified(true);
                 userService.updateUserAccount(userAccount);
-
+                userService.setAsUsedToken(token);
                 String header3 = "Mail verification success ";
                 String header5 = "Acknowledgement!";
                 String paragraph = "You have successfully verified mail! Please login to start using the service.";

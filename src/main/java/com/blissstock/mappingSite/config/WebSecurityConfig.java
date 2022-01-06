@@ -67,7 +67,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .hasAnyAuthority(UserRole.STUDENT.getValue())
         .antMatchers("/teacher/**")
         .hasAnyAuthority(UserRole.TEACHER.getValue())
-        .antMatchers("/admin/**")
+        .antMatchers("/admin/**")      
         .hasAnyAuthority(
             UserRole.ADMIN.getValue(),
             UserRole.SUPER_ADMIN.getValue())

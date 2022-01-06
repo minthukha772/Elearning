@@ -37,8 +37,11 @@ public class PaymentListController {
     @Autowired
     PaymentRepository paymentRepo;
     
+    @Autowired
+    JoinCourseUserRepository joinCourseUserRepo;
     
-    @RequestMapping("/admin/payment-list")
+    
+    @RequestMapping("/PaymentList")
     public String PaymentList(Model model)
     {
         List<PaymentReceive> viewPayment = paymentRepo.findAll();

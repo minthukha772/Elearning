@@ -54,27 +54,24 @@ public class CheckEmailController {
     // For Post Method Action
     model.addAttribute("postAction", "/check_email/register/");
 
-    /*
-     * if (email != null && !email.isBlank()) {
-     * EmailValidator emailValidator = new EmailValidator();
-     * boolean isValidEmail = emailValidator.validateEmail(email);
-     * if (isValidEmail) {
-     * model.addAttribute("email", email);
-     * }
-     * }
-     */
+    /*     if (email != null && !email.isBlank()) {
+      EmailValidator emailValidator = new EmailValidator();
+      boolean isValidEmail = emailValidator.validateEmail(email);
+      if (isValidEmail) {
+        model.addAttribute("email", email);
+      }
+    } */
 
     // Initialize Form
-    if (role == null || !role.equals("teacher") || !role.equals("admin")) {
+    if (role == null || !role.equals("teacher")) {
       role = "student";
     }
-    logger.debug("Role is {}, ", role);
-
+    logger.debug("Role is {}", role);
     EmailCheckRegisterDTO emailCheckRegisterDTO = new EmailCheckRegisterDTO();
     emailCheckRegisterDTO.setEmail(email);
     emailCheckRegisterDTO.setRole(role);
     model.addAttribute("emailCheck", emailCheckRegisterDTO);
-    logger.debug("email  checked {}", email);
+
     // render
     return "ST0000_check_email";
   }
@@ -94,11 +91,9 @@ public class CheckEmailController {
         bindingResult.getFieldErrorCount()
       );
       model.addAttribute("action", "register");
-
-      /*
-       * // For Rendering the title
-       * model.addAttribute("role", emailRegister.getRole());
-       */
+      /* // For Rendering the title
+      model.addAttribute("role", emailRegister.getRole());
+ */
       // render
       return "ST0000_check_email.html";
     }
@@ -149,17 +144,16 @@ public class CheckEmailController {
   /// A Get Method For Email Check Before Register
   @GetMapping(path = { "/check_email/reset_password" })
   public String passwordResetForm(Model model, String error, String email) {
-    logger.info("GET Request");
     // Tell Thymeleaf to render as Reister
     model.addAttribute("action", "verify_password");
     EmailCheckRegisterDTO dto = new EmailCheckRegisterDTO();
-    if (email != null) {
+    if(email!=null){
       dto.setEmail(email);
     }
     // For Post Method Action
     model.addAttribute("postAction", "/password/reset_password/");
     model.addAttribute("emailCheck", dto);
-
+    
     model.addAttribute("passwordResetError", error);
 
     // render
@@ -167,17 +161,15 @@ public class CheckEmailController {
   }
 
   @PostMapping(path = { "/check_email/reset_password" })
-  public String passwordReset(Model model, BindingResult bindingResult) {
-    logger.info("POST Request");
+  public String passwordReset(Model model, BindingResult bindingResult ) {
     // Tell Thymeleaf to render as Reister
     if (bindingResult.hasErrors()) {
-      logger.info("Request password method :{}", bindingResult.getFieldError());
       model.addAttribute("action", "verify_password");
 
       // For Post Method Action
       model.addAttribute("postAction", "/check_email/reset_password/");
       model.addAttribute("emailCheck", new EmailCheckRegisterDTO());
-
+  
       // render
       return "ST0000_check_email";
     }

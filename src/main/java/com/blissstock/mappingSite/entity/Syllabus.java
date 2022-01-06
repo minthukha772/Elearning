@@ -16,8 +16,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+//import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -48,7 +50,7 @@ public class Syllabus {
     fetch = FetchType.EAGER,
     optional = false
   )
-  @JoinColumn(name = "course_id")
+  @JoinColumn(name = "courseId_fkey")
   @JsonIgnore
   private CourseInfo courseInfo;
 

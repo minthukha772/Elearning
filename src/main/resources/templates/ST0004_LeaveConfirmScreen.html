@@ -115,7 +115,33 @@
 
     <!-- Hello -->
     <div class="wrapper">
-        <div th:replace="fragments/usernav"></div>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">MappingSite</a>
+                <!--  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button> -->
+                <div class="d-flex" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">My Course</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Explore</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" style="color: red;">Log Out</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
 
         <nav aria-label="breadcrumb" class="bg-light" style="padding: 0 10px;">
             <ol class="breadcrumb">
@@ -160,25 +186,25 @@
 
                     <div class="form-group row mb-3">
                         <div class="col-lg-1"></div>
-                        <label for="about" class="col-lg-2 col-form-label">Date</label>
+                        <label for="about" class="col-lg-2 col-form-label">From Date</label>
 
                         <div class="col-lg-3">
                             <!--<input id="datepicker9" class="form-control" placeholder="yyyy-mm-dd" th:field="*{leaveStartDate}" readonly>-->
                             <!--<input type="date" id="date9" class="form-control" placeholder="yyyy-mm-dd" style="border: none transparent;" th:field="*{leaveStartDate}" readonly>-->
                             <!--<label class="form-control" th:field="*{leaveStartDate}"></label>-->
-                            <input class="form-control" placeholder="yyyy-mm-dd" th:field="*{leaveDate}" style="border: none transparent;" readonly>
+                            <input class="form-control" placeholder="yyyy-mm-dd" th:field="*{leaveStartDate}" style="border: none transparent;" readonly>
 
                         </div>
-                        <!-- <label for="date" class="col-lg-2 col-form-label">To Date</label> -->
+                        <label for="date" class="col-lg-2 col-form-label">To Date</label>
 
-                        <!-- <div class="col-lg-3"> -->
+                        <div class="col-lg-3">
                             <!--<label class="form-control" th:field="*{leaveEndDate}"></label>-->
-                            <!-- <input class="form-control" placeholder="yyyy-mm-dd" th:field="*{leaveEndDate}" style="border: none transparent;" readonly> -->
+                            <input class="form-control" placeholder="yyyy-mm-dd" th:field="*{leaveEndDate}" style="border: none transparent;" readonly>
                             <!--<input id=" datepicker10 " class="form-control " placeholder="yyyy-mm-dd " th:field="*{leaveEndDate}" readonly>-->
                             <!--<input type="date " id="date10 " class="form-control " placeholder="yyyy-mm-dd " style="border: none transparent; " th:field="*{leaveEndDate} " readonly>-->
 
 
-                        <!-- </div> -->
+                        </div>
 
                     </div>
 
@@ -243,7 +269,46 @@
     <!-- Hello -->
 
     <!-- footer -->
-    <div th:replace="fragments/footer"></div>
+    <section class="footer-link ">
+        <div class="container text-center text-md-start mt-5 ">
+            <!-- Grid row -->
+            <div class="row mt-3 ">
+                <!-- Grid column -->
+                <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4 ">
+                    <!-- Content -->
+                    <h6 class="text-uppercase fw-bold mb-4 footerhead ">
+                        Address
+                    </h6>
+                    <p class="footertext ">
+                        Building “16/6” Bawzin Street, Thuwanna Lann Sone Bus Stop, Thingangyun Township .
+                    </p>
+                </div>
+                <!-- Grid column -->
+
+                <!-- Grid column -->
+                <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4 ">
+                    <!-- Links -->
+                    <h6 class="text-uppercase fw-bold mb-4 footerhead ">
+                        Contact Us
+                    </h6>
+                    <p class="footertext "><i class="fas fa-envelope me-3 "></i>Email : someone@bliss-stock.com</p>
+                    <p class="footertext "><i class="fas fa-phone me-3 "></i>Phone: +959 259 123 123</p>
+                </div>
+                <!-- Grid column -->
+
+
+            </div>
+            <!-- Grid row -->
+        </div>
+    </section>
+
+    <section class="footer-social ">
+        <div class="container ">
+            <div class="row index-social-link text-center ">
+                <p class="copy-c ">&copy; Copyright <strong>Bliss Stock</strong>. All Rights Reserved</p>
+            </div>
+        </div>
+    </section>
 
     <a href="# " class="back-to-top "><i class="fa fa-chevron-up "></i></a>
     <!-- Footer -->
