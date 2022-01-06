@@ -63,29 +63,29 @@ public class LeaveInfo {
   @JsonIgnore
   private JoinCourseUser join;
 
-  @NotNull
-  @DateTimeFormat(pattern = "MM-dd-yyyy")
-  //@Temporal(TemporalType.DATE)
-  @Column(name = "leave_start_date")
-  private Date leaveStartDate;
+  // @NotNull
+  // @DateTimeFormat(pattern = "MM-dd-yyyy")
+  // //@Temporal(TemporalType.DATE)
+  // @Column(name = "leave_start_date")
+  // private Date leaveStartDate;
 
-  @NotNull
-  @DateTimeFormat(pattern = "MM-dd-yyyy")
-  //@Temporal(TemporalType.DATE)
-  @Column(name = "leave_end_date")
-  private Date leaveEndDate;
+  // @NotNull
+  // @DateTimeFormat(pattern = "MM-dd-yyyy")
+  // //@Temporal(TemporalType.DATE)
+  // @Column(name = "leave_end_date")
+  // private Date leaveEndDate;
 
 
   //mapping
-  @ManyToOne(fetch = FetchType.EAGER, optional = false)
-  @JoinColumn(name = "uid_fkey")
-  @JsonIgnore
-  private UserInfo userInfo;
+  // @ManyToOne(fetch = FetchType.EAGER, optional = false)
+  // @JoinColumn(name = "uid_fkey")
+  // @JsonIgnore
+  // private UserInfo userInfo;
 
-  @ManyToOne(fetch = FetchType.EAGER, optional = false)
-  @JoinColumn(name = "courseId_fkey")
-  @JsonIgnore
-  private CourseInfo courseInfo;
+  // @ManyToOne(fetch = FetchType.EAGER, optional = false)
+  // @JoinColumn(name = "courseId_fkey")
+  // @JsonIgnore
+  // private CourseInfo courseInfo;
 
   public Long getLeaveId() {
     return this.leaveId;
@@ -119,56 +119,60 @@ public class LeaveInfo {
     this.reason = reason;
   }
 
-  public UserInfo getUserInfo() {
-    return this.userInfo;
-  }
+  // public UserInfo getUserInfo() {
+  //   return this.userInfo;
+  // }
 
-  public void setUserInfo(UserInfo userInfo) {
-    this.userInfo = userInfo;
-  }
+  // public void setUserInfo(UserInfo userInfo) {
+  //   this.userInfo = userInfo;
+  // }
 
-  public CourseInfo getCourseInfo() {
-    return this.courseInfo;
-  }
+  // public CourseInfo getCourseInfo() {
+  //   return this.courseInfo;
+  // }
 
-  public void setCourseInfo(CourseInfo courseInfo) {
-    this.courseInfo = courseInfo;
-  }
+  // public void setCourseInfo(CourseInfo courseInfo) {
+  //   this.courseInfo = courseInfo;
+  // }
 
-  public Date getLeaveStartDate() {
-    return this.leaveStartDate;
-  }
+  // public Date getLeaveStartDate() {
+  //   return this.leaveStartDate;
+  // }
 
-  public void setLeaveStartDate(Date leaveStartDate) {
-    this.leaveStartDate = leaveStartDate;
-  }
+  // public void setLeaveStartDate(Date leaveStartDate) {
+  //   this.leaveStartDate = leaveStartDate;
+  // }
 
-  public Date getLeaveEndDate() {
-    return this.leaveEndDate;
-  }
+  // public Date getLeaveEndDate() {
+  //   return this.leaveEndDate;
+  // }
 
-  public void setLeaveEndDate(Date leaveEndDate) {
-    this.leaveEndDate = leaveEndDate;
-  }
+  // public void setLeaveEndDate(Date leaveEndDate) {
+  //   this.leaveEndDate = leaveEndDate;
+  // }
 
   public LeaveInfo(
     Long leaveId,
-    Date leaveStartDate,
-    Date leaveEndDate,
+    Date leaveDate,
+    // Date leaveStartDate,
+    // Date leaveEndDate,
     Date leaveStartTime,
     Date leaveEndTime,
     String reason,
-    UserInfo userInfo,
-    CourseInfo courseInfo
+    // UserInfo userInfo,
+    // CourseInfo courseInfo,
+    JoinCourseUser join
   ) {
     this.leaveId = leaveId;
-    this.leaveStartDate = leaveStartDate;
-    this.leaveEndDate = leaveEndDate;
+    this.leaveDate = leaveDate;
+    // this.leaveStartDate = leaveStartDate;
+    // this.leaveEndDate = leaveEndDate;
     this.leaveStartTime = leaveStartTime;
     this.leaveEndTime = leaveEndTime;
     this.reason = reason;
-    this.userInfo = userInfo;
-    this.courseInfo = courseInfo;
+    // this.userInfo = userInfo;
+    // this.courseInfo = courseInfo;
+    this.join = join;
   }
 
   public LeaveInfo() {}
