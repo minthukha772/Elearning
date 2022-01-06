@@ -23,6 +23,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -30,6 +32,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
 @Setter
+@Data
 @NoArgsConstructor
 @Entity
 @Table(name = "user_info")
@@ -77,33 +80,28 @@ public class UserInfo implements Profile {
   @Column(name = "self_description")
   private String selfDescription;
 
-  //mapping
+  // mapping
   @OneToOne(fetch = FetchType.EAGER)
   @MapsId
   @JoinColumn(name = "account_id")
   UserAccount userAccount;
 
-  /*   @OneToMany(
-    fetch = FetchType.LAZY,
-    cascade = CascadeType.ALL,
-    mappedBy = "userInfo"
-  )
-  @JsonIgnore
-  private List<Certificate> certificateInfo = new ArrayList<>(); */
+  /*
+   * @OneToMany(
+   * fetch = FetchType.LAZY,
+   * cascade = CascadeType.ALL,
+   * mappedBy = "userInfo"
+   * )
+   * 
+   * @JsonIgnore
+   * private List<Certificate> certificateInfo = new ArrayList<>();
+   */
 
-  @OneToMany(
-    fetch = FetchType.EAGER,
-    cascade = CascadeType.ALL,
-    mappedBy = "userInfo"
-  )
+  @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "userInfo")
   @JsonIgnore
   private List<PaymentAccount> paymentAccount = new ArrayList<>();
 
-  @OneToMany(
-    fetch = FetchType.LAZY,
-    cascade = CascadeType.ALL,
-    mappedBy = "userInfo"
-  )
+  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "userInfo")
   @JsonIgnore
   private List<JoinCourseUser> join = new ArrayList<>();
 

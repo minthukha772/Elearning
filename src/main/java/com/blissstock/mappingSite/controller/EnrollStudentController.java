@@ -17,7 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import javassist.bytecode.stackmap.BasicBlock.Catch;
 
@@ -58,6 +60,7 @@ public class EnrollStudentController {
                         model.addAttribute("level", course.getLevel());
 
                         List<UserInfo> userInfo = userInfoRepository.findStudentsToEnroll(id.toString());
+
                         System.out.println(userInfo.get(0).getUserName());
                         System.out.println(userInfo.toString());
                         model.addAttribute("students", userInfo);
@@ -77,6 +80,22 @@ public class EnrollStudentController {
             return "redirect:/error/404";
         }
 
+    }
+
+    @GetMapping("/admin/enrollStudent/course/{cid}/enroll/{uid}")
+    public String enorllStudent(Model model, @PathVariable(name = "cid", required = true) Long cid,
+            @PathVariable(name = "uid", required = true) Long uid) {
+        System.out.println("uid and cid is :" + uid + " " + cid);
+
+        UserRole userRole = userSessionService.getRole();
+        if (userRole.equals(UserRole.SUPER_ADMIN) || userRole.equals(UserRole.ADMIN)) {
+
+            model.addAttribute("success", "true");
+            return "redirect:/admin/enrollStudent/course/" + cid;
+
+        } else {
+            return "redirect:/error/404";
+        }
     }
 
 }
