@@ -40,12 +40,15 @@ public class UserAccountControlServiceImpl implements UserAccountControlService 
 
     @Override
     public void deleteUser(UserAccount userAccount) {
-       userAccountRepository.delete(userAccount);
+       UserInfo userInfo = userInfoRepository.findById(userAccount.getId()).get();
+       deleteUser(userInfo);
     }
 
     @Override
     public void deleteUser(UserInfo userInfo) {
+        logger.info("delete user {}", userInfo.getUid());
         userInfoRepository.delete(userInfo);
+        userAccountRepository.delete(userInfo.getUserAccount());
 
     }
 
