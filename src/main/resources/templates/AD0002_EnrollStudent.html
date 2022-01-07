@@ -247,9 +247,9 @@
 
 
         function Enrollstudent(uid) {
-
+            console.log(window.location.href + "/enroll/" + uid);
             if (confirm("Do you want to enroll this student?")) {
-
+                console.log(window.location.href + "/enroll/" + uid, "_self");
                 window.open(window.location.href + "/enroll/" + uid, "_self")
 
             } else {

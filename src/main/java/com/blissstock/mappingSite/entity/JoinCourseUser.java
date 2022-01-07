@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -32,7 +33,7 @@ public class JoinCourseUser {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long joinId;
 
-  //mapping
+  // mapping
   @ManyToOne(fetch = FetchType.EAGER, optional = false)
   @JoinColumn(name = "courseId_fkey")
   @JsonIgnore
@@ -43,27 +44,15 @@ public class JoinCourseUser {
   @JsonIgnore
   private UserInfo userInfo;
 
-  @OneToMany(
-    fetch = FetchType.LAZY,
-    cascade = CascadeType.ALL,
-    mappedBy = "join"
-  )
+  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "join")
   @JsonIgnore
   private List<Review> review = new ArrayList<>();
 
-  @OneToMany(
-    fetch = FetchType.LAZY,
-    cascade = CascadeType.ALL,
-    mappedBy = "join"
-  )
+  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "join")
   @JsonIgnore
   private List<LeaveInfo> leaveInfo = new ArrayList<>();
 
-  @OneToMany(
-    fetch = FetchType.LAZY,
-    cascade = CascadeType.ALL,
-    mappedBy = "join"
-  )
+  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "join")
   @JsonIgnore
   private List<PaymentReceive> paymentReceive = new ArrayList<>();
 }

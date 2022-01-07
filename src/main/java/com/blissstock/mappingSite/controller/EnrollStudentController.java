@@ -3,12 +3,17 @@ package com.blissstock.mappingSite.controller;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.Lob;
+
+import com.blissstock.mappingSite.dto.JoinCourseDTO;
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.enums.UserRole;
+import com.blissstock.mappingSite.exceptions.UserAlreadyExistException;
 import com.blissstock.mappingSite.repository.CourseRepository;
 import com.blissstock.mappingSite.repository.CourseTimeRepository;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
 import com.blissstock.mappingSite.repository.UserInfoRepository;
+import com.blissstock.mappingSite.service.JoinCourseService;
 import com.blissstock.mappingSite.service.UserSessionService;
 import com.blissstock.mappingSite.entity.UserInfo;
 import org.slf4j.Logger;
@@ -34,6 +39,8 @@ public class EnrollStudentController {
 
     @Autowired
     private UserInfoRepository userInfoRepository;
+    @Autowired
+    private JoinCourseService joinCourseService;
 
     @Autowired
     private CourseRepository courseRepo;
@@ -83,13 +90,23 @@ public class EnrollStudentController {
     }
 
     @GetMapping("/admin/enrollStudent/course/{cid}/enroll/{uid}")
-    public String enorllStudent(Model model, @PathVariable(name = "cid", required = true) Long cid,
-            @PathVariable(name = "uid", required = true) Long uid) {
+    public String enorllStudent(Model model, @PathVariable(name = "cid", required = false) Long cid,
+            @PathVariable(name = "uid", required = false) Long uid) {
         System.out.println("uid and cid is :" + uid + " " + cid);
 
         UserRole userRole = userSessionService.getRole();
         if (userRole.equals(UserRole.SUPER_ADMIN) || userRole.equals(UserRole.ADMIN)) {
+            JoinCourseDTO joinCourseDTO = new JoinCourseDTO();
+            joinCourseDTO.setUid(uid);
+            joinCourseDTO.setCourseId(cid);
 
+            try {
+                joinCourseService.enrollStudent(joinCourseDTO);
+            } catch (Exception e) {
+                logger.info(e.toString());
+                model.addAttribute("error", "User has already been enrolled");
+                return "redirect:/admin/enrollStudent/course/" + cid;
+            }
             model.addAttribute("success", "true");
             return "redirect:/admin/enrollStudent/course/" + cid;
 
