@@ -10,7 +10,7 @@ import com.blissstock.mappingSite.dto.StuPaymentDTO;
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.PaymentReceive;
 import com.blissstock.mappingSite.entity.UserInfo;
-import com.blissstock.mappingSite.repository.CourseRepository;
+import com.blissstock.mappingSite.repository.CourseInfoRepository;
 import com.blissstock.mappingSite.repository.PaymentRepository;
 //import com.blissstock.mappingSite.repository.CourseTestingRepository;
 //import com.blissstock.mappingSite.repository.TpaymentRepository;
@@ -38,7 +38,7 @@ public class PaymentController {
     PaymentRepository paymentRepo;
 
     @Autowired
-    CourseRepository courseRepo;
+    CourseInfoRepository courseRepo;
 
 
     /*get student payment screen */

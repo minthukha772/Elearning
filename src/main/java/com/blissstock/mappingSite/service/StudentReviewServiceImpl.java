@@ -12,7 +12,7 @@ import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.JoinCourseUser;
 import com.blissstock.mappingSite.entity.Review;
 import com.blissstock.mappingSite.exceptions.CourseNotFoundException;
-import com.blissstock.mappingSite.repository.CourseRepository;
+import com.blissstock.mappingSite.repository.CourseInfoRepository;
 import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
 import com.blissstock.mappingSite.repository.ReviewRepository;
 import com.blissstock.mappingSite.repository.UserInfoRepository;
@@ -34,7 +34,7 @@ public class StudentReviewServiceImpl implements StudentReviewService {
   private ReviewRepository reviewRepo;
 
   @Autowired
-  private CourseRepository courseRepo;
+  private CourseInfoRepository courseRepo;
 
   
   @Autowired
