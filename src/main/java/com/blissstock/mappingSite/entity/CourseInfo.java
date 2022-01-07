@@ -120,4 +120,16 @@ public class CourseInfo {
   @JsonIgnore
   private UserInfo userInfo;
 
+  public void setIsCourseApproved(Boolean isCourseApproved) {
+		this.isCourseApproved = isCourseApproved;
+	}
+
+  // public String getTitle() {
+	// 	return this.title;
+	// }
+
+	// public void setTitle(String title) {
+	// 	this.title = title;
+	// }
+
 }

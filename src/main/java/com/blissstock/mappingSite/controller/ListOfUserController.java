@@ -31,6 +31,24 @@ public class ListOfUserController {
   @Autowired
   UserAccountRepository userAccountRepo;
 
+        model.addAttribute("aAllAdminList", aAllRecord);
+        model.addAttribute("adminRegister",newAdmin);
+        model.addAttribute("adminRole", adminRole);
+        // System.out.println(servletContext.getContextPath());
+        // System.out.println("Previous Path Info "+req.getRequestURL());
+        return "AT0003_ListofAdminsScreen";
+    }
+
+
+  
+    
+    // @RequestMapping(value = "/teacher/course-list/{courseId}/student-list",method = RequestMethod.GET)
+    @RequestMapping(value = "/teacher/student-list/{courseId}",method = RequestMethod.GET)
+    public String ListOfStudentByTeacher(@PathVariable Long courseId,Model model)
+    {
+        // Long courseId = (long) 50004;
+        
+        CourseInfo course = courseInfoRepo.findById(courseId).get();
   @Autowired
   CourseInfoRepository courseInfoRepo;
 
