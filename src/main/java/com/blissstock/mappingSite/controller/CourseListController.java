@@ -44,14 +44,14 @@ public class CourseListController {
     @Autowired
     private UserInfoRepositoryTwo userInfoRepo;
     
-    @RequestMapping("/course-list-guest")
+    @GetMapping("/guest/explore")
     private String getCourseListGuest(Model model){
 
         List<CourseInfo> allList = courseRepo.findAll();
-        System.out.print("Here is : " + allList.get(0).getAboutCourse());
+        //System.out.print("Here is : " + allList.get(0).getAboutCourse());
         model.addAttribute("courseList", allList);
         return "CM0002_CourseListGuest";
-    }
+    }   
 
     // @GetMapping("/course-list-guest/{id}")
     // private String courseDetails(@PathVariable("id") Long courseId){
