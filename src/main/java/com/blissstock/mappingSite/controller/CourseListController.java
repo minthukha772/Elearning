@@ -26,16 +26,17 @@ public class CourseListController {
 
     @GetMapping("/guest/explore")
     private String getCourseListGuest(Model model, String courseName, String teacherName, LocalDate startDate,
-            LocalDate endDate) {
+            LocalDate endDate) {    
         logger.info("GET request");
         CourseInfoDTO courseInfoDTO = new CourseInfoDTO(courseName, teacherName, startDate, endDate);
         logger.debug("couresInfoDto {} ", courseInfoDTO);
+        model.addAttribute("courseInfoDTO", courseInfoDTO);
 
         List<CourseInfo> allList = courseService.getCourseList(courseInfoDTO);
         // System.out.print("Here is : " + allList.get(0).getAboutCourse());
         model.addAttribute("courseList", allList);
         //model.addAttribute("courseList", new ArrayList<>());
-        return "CM0002_CourseListGuest";
+        return "CM0002_CourseList";
     }
 
     // @GetMapping("/course-list-guest/{id}")
@@ -49,7 +50,7 @@ public class CourseListController {
     private String getCourseList() {
 
         // List<CourseInfo> allList = courseRepo.findAll();
-        return "CM0002_CourseListGuest";
+        return "CM0002_CourseList";
         // model.addAttribute("courseList", allList);
         // return "CM0002_CourseListGuest";
     }
