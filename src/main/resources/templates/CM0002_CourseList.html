@@ -25,7 +25,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
     <div th:replace="/fragments/nav"></div>
 
     <!-- Advance Search -->
-    <div class="container-fluid" style="background-color: #5eba7d">
+    <div class="container-fluid mb-3" style="background-color: #5eba7d">
       <h2 class="pt-3 mb-3 text-white">Explore Courses</h2>
 
       <form
@@ -94,15 +94,25 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
       </form>
     </div>
     <!-- End : Advance Search -->
-
-    <div class="row">
-      <!-- Filter -->
-      <div class="col">
-
-      </div>
-      <!-- End: Filter -->
-      <div class="col">
-
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Filter -->
+        <div class="col-auto">
+          <div class="card">
+            <div class="card-header">Reduce Result by:</div>
+            <ul class="list-group list-group-flush filterContainer">
+              
+            </ul>
+            <div class="card-body">
+              <button class="btn btn-primary" type="submit" id="filterBtn">Apply</button>
+            </div>
+            
+          </div>
+        </div>
+        <!-- End: Filter -->
+        <div class="col-auto" id="courseList">
+          
+        </div>
       </div>
     </div>
 
@@ -113,13 +123,11 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
       crossorigin="anonymous"
     ></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script
-      type="text/javascript"
-      src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"
-    ></script>
+
     <script th:inline="javascript">
       const courseList = /*[[${courseList}]]*/ false;
-      console.log(courseList);
+      
     </script>
+    <script th:src="@{/js/CM0002_CourseList.js}" ></script>
   </body>
 </html>
