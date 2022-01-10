@@ -39,40 +39,37 @@ public class ReviewListController {
     @Valid
     @GetMapping(value={"/teacher/review-list/{courseId}",
     "/student/review-list/{courseId}",
-    "/admin/review-list/{courseId}" 
+    "/admin/review-list/{courseId}/{id}" 
     })
-    private String getReviewList(@PathVariable Long courseId, Model model) {  
-        model.addAttribute("courseId",courseId);
-        Long userId = userSessionService.getUserAccount().getAccountId();
-        
+    private String getReviewList(@PathVariable Long courseId,@PathVariable(name = "id", required = false) Long id, Model model) {  
+        Long userId = id==null ? userSessionService.getUserAccount().getAccountId(): id;
+
+         
         CourseInfo courseInfo=courseInfoRepo.findById(courseId).orElse(null);
         UserInfo user=userRepo.findById(userId).orElse(null);
         //Display course name
         String courseName=courseInfo.getCourseName();
         model.addAttribute("courseName", courseName);
 
-        //Add user name and review to list
+
+        //Get review list and teahcer name of course
         List<JoinCourseUser> joinList=courseInfo.getJoin();
-        List<UserInfo> userInfoList= new ArrayList<UserInfo>(); 
-        List<Review> reviewList=new ArrayList<Review>(); 
+        List<Review> reviewList=new ArrayList<Review>();
         for(JoinCourseUser join:joinList){
-            userInfoList.add(join.getUserInfo());
             reviewList.addAll(join.getReview());
-        }
-        //Display user names
-        for(UserInfo userInfo:userInfoList){
-            String userRole =  userInfo.getUserAccount().getRole();
-            if(userRole.equals(UserRole.TEACHER)){
-                String trName=userInfo.getUserName();
-                model.addAttribute("trName", trName);
+            UserInfo joinUser= join.getUserInfo();
+            if(joinUser.getUserAccount().getRole().equals("ROLE_TEACHER")){
+                model.addAttribute("trName", joinUser.getUserName());
             } 
-            else if(userRole.equals(UserRole.STUDENT)){
-                String stuName=userInfo.getUserName();
-                model.addAttribute("stuName", stuName);
-            }
+            else if(joinUser.getUserAccount().getAccountId().equals(userId)){
+                if(joinUser.getUserAccount().getRole().equals("ROLE_STUDENT")){
+                    model.addAttribute("stuRegistered", true);
+                }
+            } 
+            
         }
 
-        //Display reviews        
+        //Display course reviews        
         //List<Review> reviews=courseInfo.getReview();
         List<Review> courseReviewList= new ArrayList<Review>(); 
         for (Review courseReview:reviewList){
@@ -81,13 +78,16 @@ public class ReviewListController {
                 model.addAttribute("courseReviewList", courseReviewList);
             }
         }
+
+        
         //Display student reviews
         List<JoinCourseUser> joinUserList=user.getJoin();
         List<Review> stuReviews=new ArrayList<Review>(); 
         for(JoinCourseUser join:joinUserList){
+            if(join.getCourseInfo().getCourseId().equals(courseId)){
             stuReviews.addAll(join.getReview());
+            }
         }
-        //List<Review> stuReviews=user.getReview();
         List<Review> studentReviewList= new ArrayList<Review>();
         for(Review studentReview:stuReviews) {
             if(studentReview.getStar()==0){
@@ -95,13 +95,6 @@ public class ReviewListController {
                 model.addAttribute("stuReviews", studentReviewList);
             }
         }
-        // for(Review review : reviews){
-        //     model.addAttribute("review", review);  
-        // }
-        // UserInfo userInfo=userRepo.findByUserName(userName);
-        // //Long userId=userInfo.getUid();
-        // UserAccount account=userInfo.getUserAccount();
-        // String role = account.getRole();
 
             return "CM0009_ReviewList";
 	}

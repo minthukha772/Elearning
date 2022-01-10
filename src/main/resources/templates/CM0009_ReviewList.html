@@ -13,7 +13,8 @@
   </head>
 <body>
     <div th:replace="fragments/usernav"></div>
-    <div sec:authorize="hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SUPER_ADMIN')">
+
+        <div sec:authorize="!hasAuthority('ROLE_TEACHER')" th:if="${stuRegistered!=null}">
         <div class="container py-5">
             <div class="row">
                 <div class="col-lg-8 mx-auto">
@@ -23,98 +24,35 @@
                         <li class="list-group-item">
                             <!-- Custom content-->
                             <div class="course-info">
-                            <h5 class="font-weight-bold">[[${courseName}]]</h5>
+                            <h5 class="font-weight-bold mt-3">[[${courseName}]]</h5>
                             <p class="font-weight-light">[[${trName}]]</p>
                             </div>
                         </li>
-                        <ul class="nav nav-tabs" id="myTab">
-                            <li class="nav-item">
-                                <a href="#course" class="nav-link active" data-bs-toggle="tab" style="color: #7749F8;">Course Review</a>
+                        <ul class="nav nav-tabs nav-fill" id="myTab">
+                            <li class="nav-item tab-item">
+                                <a href="#course" class="nav-link active" data-bs-toggle="tab">Course Review</a>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item tab-item">
                                 <a href="#teacher" class="nav-link" data-bs-toggle="tab">Review from Teacher</a>
                             </li>
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane fade show active" id="course">
-                                <li class="list-group-item" th:each="review:${courseReviewList}">
-                                    <div class="media align-items-lg-center flex-column flex-lg-row p-3">
-                                        <div class="media-body order-2 order-lg-1">
-                                            <div class="d-flex align-items-center justify-content-between mt-1">
-                                                <p class="font-italic text-muted mb-0 small" th:text="${#dates.format(review.assignedDate, 'yyyy-MM-dd')}"></p>
-                                                <a th:href="@{'/admin/edit-student-review/'+${review.reviewId}}">Edit</a>
-                                            </div>                                           
-                                            <h5 class="mt-0 font-weight-bold mb-2">[[${stuName}]]</h5>
-                                            <div class="d-flex align-items-center justify-content-between mt-1">
-                                                <h6 class="font-weight-bold my-2" th:text="${review.feedback}"></h6>
-                                                <ul class="list-inline small">
-                                                    <li class="list-inline-item m-0"><i class="fa fa-star text-success" th:each="i : ${#numbers.sequence(1, review.star)}"></i></li>
-                                                    <li class="list-inline-item m-0"><i class="fa fa-star-o text-gray" th:each="i : ${#numbers.sequence(1, 5-review.star)}" ></i></li>
-                                                </ul>
-                                            </div>
-                                         </div>
-                                    </div> <!-- End -->
-                                </li> <!-- End --> 
-                            </div>
-                            <div class="tab-pane fade" id="teacher">
-                                <li class="list-group-item" th:each="review:${stuReviews}">
+                                <li class="list-group-item" th:each="review:${courseReviewList}"  >
                                     <div class="media align-items-lg-center flex-column flex-lg-row p-3" >
-                                        <div class="media-body order-2 order-lg-1">
+                                        <div class="media-body order-2 order-lg-1" >
                                             <div class="d-flex align-items-center justify-content-between mt-1">
-                                                <p class="font-italic text-muted mb-0 small" th:text="${#dates.format(review.assignedDate, 'yyyy-MM-dd')}"></p>
-                                                <a th:href="@{'/admin/edit-teacher-review/'+${review.reviewId}}">Edit</a>
-                                            </div>
-                                            <span th:if="${review.reviewType == 1}">Concerns</span>
-                                            <span th:if="${review.reviewType == 2}">Compliment</span>
-                                            <h5 class="mt-0 font-weight-bold mb-2">[[${trName}]]</h5>
-                                            <div class="d-flex align-items-center justify-content-between mt-1">
-                                                <h6 class="font-weight-bold my-2" th:text="${review.feedback}"></h6>
-                                            </div>
-                                         </div>
-                                    </div> <!-- End -->
-                                </li> <!-- End --> 
-                            </div>
-                        </div>
-                       
-                        
-                </div>
-            </div>
-        </div>
-    </div>
-        <div sec:authorize="hasAuthority('ROLE_STUDENT')">
-        <div class="container py-5">
-            <div class="row">
-                <div class="col-lg-8 mx-auto">
-                    <!-- List group-->
-                    <ul class="list-group shadow">
-                        <!-- list group item-->
-                        <li class="list-group-item">
-                            <!-- Custom content-->
-                            <div class="course-info">
-                            <h5 class="font-weight-bold">[[${courseName}]]</h5>
-                            <p class="font-weight-light">[[${trName}]]</p>
-                            </div>
-                        </li>
-                        <ul class="nav nav-tabs" id="myTab">
-                            <li class="nav-item">
-                                <a href="#course" class="nav-link active" data-bs-toggle="tab" style="color: #7749F8;">Course Review</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#teacher" class="nav-link" data-bs-toggle="tab">Review from Teacher</a>
-                            </li>
-                        </ul>
-                        <div class="tab-content">
-                            <div class="tab-pane fade show active" id="course">
-                                <li class="list-group-item" th:each="review:${courseReviewList}">
-                                    <div class="media align-items-lg-center flex-column flex-lg-row p-3" >
-                                        <div class="media-body order-2 order-lg-1">
                                             <p class="font-italic text-muted mb-0 small" th:text="${#dates.format(review.assignedDate, 'yyyy-MM-dd')}"></p>
-                                            <h5 class="mt-0 font-weight-bold mb-2">[[${stuName}]]</h5>
+                                            <div sec:authorize="hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SUPER_ADMIN')">
+                                            <a th:href="@{'/admin/edit-student-review/'+${review.reviewId}}">Edit</a>
+                                            </div>
+                                            </div>
+                                            <h5 class="mt-0 font-weight-bold mb-2" th:text="${review.join.userInfo.userName}"></h5>
                                             <div class="d-flex align-items-center justify-content-between mt-1">
-                                                <h6 class="font-weight-bold my-2" th:text="${review.feedback}"></h6>
+                                                <h6 class="font-weight-bold my-2 col-md-10" th:text="${review.feedback}"></h6>
                                                 <ul class="list-inline small">
                                                     <li class="list-inline-item m-0"><i class="fa fa-star text-warning" th:each="i : ${#numbers.sequence(1, review.star)}"></i></li>
-                                                    <li class="list-inline-item m-0"><i class="fa fa-star-o text-gray" th:each="i : ${#numbers.sequence(1, 5-review.star)}" ></i></li>
+                                                    <li class="list-inline-item m-0 gray-star"><i class="fa fa-star-o text-gray" th:unless="${review.star} == 5" th:each="i : ${#numbers.sequence(1, 5-review.star)}" ></i></li>
                                                 </ul>
                                             </div>
                                          </div>
@@ -122,13 +60,20 @@
                                 </li> <!-- End --> 
                             </div>
                             <div class="tab-pane fade" id="teacher">
+                                <div th:if="${stuReviews==null}">
+                                    <div class="mb-4 p-3 text-center" >
+                                        <span class="letterpress">There is no current comments from teacher</span>
+                                    </div>
+
+                                    </div> <!-- End -->
+                                </div>
                                 <li class="list-group-item" th:each="review:${stuReviews}">
                                     <div class="media align-items-lg-center flex-column flex-lg-row p-3" >
                                         <div class="media-body order-2 order-lg-1">
                                             <p class="font-italic text-muted mb-0 small" th:text="${#dates.format(review.assignedDate, 'yyyy-MM-dd')}"></p>
-                                            <span th:if="${review.reviewType == 1}">Concerns</span>
-                                            <span th:if="${review.reviewType == 2}">Compliment</span>
                                             <h5 class="mt-0 font-weight-bold mb-2">[[${trName}]]</h5>
+                                            <span th:if="${review.reviewType == 1}" style="color: #DC3545;">Concerns</span>
+                                            <span th:if="${review.reviewType == 2}" style="color: #28A745;">Compliment</span>
                                             <div class="d-flex align-items-center justify-content-between mt-1">
                                                 <h6 class="font-weight-bold my-2" th:text="${review.feedback}"></h6>
                                             </div>
@@ -136,14 +81,12 @@
                                     </div> <!-- End -->
                                 </li> <!-- End --> 
                             </div>
-                        </div>
-                       
-                        
+                        </div>  
                 </div>
             </div>
         </div>
     </div>
-    <div sec:authorize="hasAuthority('ROLE_TEACHER')">
+    <div sec:authorize="hasAuthority('ROLE_TEACHER') or hasAuthority('ROLE_STUDENT')" th:if="${stuRegistered==null}">
         <div class="container py-5">
             <div class="row">
                 <div class="col-lg-8 mx-auto">
@@ -153,27 +96,29 @@
                         <li class="list-group-item">
                             <!-- Custom content-->
                             <div class="course-info">
-                            <h5 class="font-weight-bold">[[${courseName}]]</h5>
+                            <h5 class="font-weight-bold mt-3">[[${courseName}]]</h5>
                             <p class="font-weight-light">[[${trName}]]</p>
                             </div>
-                            <h5 style="color: #7749F8;">Course Review</h5>
-                            <hr style="width:25%;">  
+                            <h5 style="color: #7749F8;" class="mt-5">Course Review</h5>
+                            <hr style="width:140px; ">  
                         </li>
-                        <li class="list-group-item" th:each="review:${reviews}">
+                        <li class="list-group-item" th:each="review:${courseReviewList}"  >
                             <div class="media align-items-lg-center flex-column flex-lg-row p-3" >
-                                <div class="media-body order-2 order-lg-1">
-                                    <p class="font-italic text-muted mb-0 small" th:text="${#dates.format(review.assignedDate, 'yyyy-MMM-dd')}"></p>
-                                    <h5 class="mt-0 font-weight-bold mb-2">[[${trName}]]</h5>
+                                <div class="media-body order-2 order-lg-1" >
+                                    
+                                    <p class="font-italic text-muted mb-0 small" th:text="${#dates.format(review.assignedDate, 'yyyy-MM-dd')}"></p>
+                                    </div>
+                                    <h5 class="mt-0 font-weight-bold mb-2" th:text="${review.join.userInfo.userName}"></h5>
                                     <div class="d-flex align-items-center justify-content-between mt-1">
-                                        <h6 class="font-weight-bold my-2" th:text="${review.feedback}"></h6>
+                                        <h6 class="font-weight-bold my-2 col-md-10" th:text="${review.feedback}"></h6>
                                         <ul class="list-inline small">
-                                            <li class="list-inline-item m-0"><i class="fa fa-star text-success" th:each="i : ${#numbers.sequence(1, review.star)}"></i></li>
-                                            <li class="list-inline-item m-0"><i class="fa fa-star-o text-gray" th:each="i : ${#numbers.sequence(1, 5-review.star)}" ></i></li>
+                                            <li class="list-inline-item m-0"><i class="fa fa-star text-warning" th:each="i : ${#numbers.sequence(1, review.star)}"></i></li>
+                                            <li class="list-inline-item m-0 gray-star"><i class="fa fa-star-o text-gray" th:unless="${review.star} == 5" th:each="i : ${#numbers.sequence(1, 5-review.star)}" ></i></li>
                                         </ul>
                                     </div>
                                  </div>
                             </div> <!-- End -->
-                        </li> <!-- End -->                         
+                        </li> <!-- End -->                       
                 </div>
             </div>
         </div>
