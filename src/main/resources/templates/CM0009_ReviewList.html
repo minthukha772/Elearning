@@ -12,7 +12,7 @@
     <link rel="stylesheet" type="text/css" href="/css/footer.css">
   </head>
 <body>
-    <div th:replace="fragments/usernav"></div>
+    <div th:replace="fragments/nav"></div>
 
         <div sec:authorize="!hasAuthority('ROLE_TEACHER')" th:if="${stuRegistered!=null}">
         <div class="container py-5">
