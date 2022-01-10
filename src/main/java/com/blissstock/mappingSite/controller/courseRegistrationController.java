@@ -39,7 +39,6 @@ public class CourseRegistrationController {
 
     private List<CourseTime> ctList = new ArrayList<>(); 
     
-
     @RequestMapping(value={"/teacher/course-registration","/admin/course-registration"})
     private String courseRegistration(Model model ){
         CourseInfo courseInfo = new CourseInfo();
