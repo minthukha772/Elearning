@@ -5,12 +5,11 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import com.blissstock.mappingSite.entity.JoinCourseUser;
 import com.blissstock.mappingSite.dto.StuPaymentDTO;
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.PaymentReceive;
-//import com.blissstock.mappingSite.entity.PaymentTesting;
 import com.blissstock.mappingSite.entity.UserInfo;
-import com.blissstock.mappingSite.repository.CourseInfoRepository;
 import com.blissstock.mappingSite.repository.CourseRepository;
 import com.blissstock.mappingSite.repository.PaymentRepository;
 //import com.blissstock.mappingSite.repository.CourseTestingRepository;
@@ -28,8 +27,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 public class PaymentController {

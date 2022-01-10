@@ -52,7 +52,7 @@ public class ManageCertificateController {
 
     Long uid = getUid(id);
     logger.info("User {}'s data is being processed ",uid);
-    List<FileInfo> fileInfos = loadImages(uid);
+    List<FileInfo> fileInfos = storageService.loadCertificatesAsFileInfo(uid);
     logger.info("{} photo has been retrieved",fileInfos.size());
     model.addAttribute("files", fileInfos);
 
@@ -77,7 +77,7 @@ public class ManageCertificateController {
     Long uid = getUid(id);
     try {
       // if (files.length > 0) {
-        storageService.store(uid, file, StorageServiceImpl.CERTIFICATEPATH);
+        storageService.store(uid, file, StorageServiceImpl.CERTIFICATE_PATH,false);
       // } else {
       //   model.addAttribute(
       //     "fileUploadError",
@@ -100,35 +100,10 @@ public class ManageCertificateController {
       e.printStackTrace();
     }
 
-    List<FileInfo> fileInfos = loadImages(uid);
+    List<FileInfo> fileInfos = storageService.loadCertificatesAsFileInfo(uid);
     model.addAttribute("files", fileInfos);
 
     return "AT0007_manage_certificate";
-  }
-
-  private List<FileInfo> loadImages(Long uid) {
-    try {
-      return storageService
-        .loadAllCertificates(uid)
-        .map(
-          path -> {
-            String name = path.getFileName().toString();
-            String url = MvcUriComponentsBuilder
-              .fromMethodName(
-                FileController.class,
-                "getCertificates",
-                uid,
-                path.getFileName().toString()
-              )
-              .build()
-              .toString();
-            return new FileInfo(name, url);
-          }
-        )
-        .collect(Collectors.toList());
-    } catch (Exception e) {
-      return new ArrayList<>();
-    }
   }
 
   @DeleteMapping(
