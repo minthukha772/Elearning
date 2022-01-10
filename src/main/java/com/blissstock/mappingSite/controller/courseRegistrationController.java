@@ -8,7 +8,7 @@ import com.blissstock.mappingSite.entity.Content;
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.CourseTime;
 import com.blissstock.mappingSite.entity.Syllabus;
-import com.blissstock.mappingSite.repository.CourseRepository;
+import com.blissstock.mappingSite.repository.CourseInfoRepository;
 import com.blissstock.mappingSite.repository.CourseTimeRepository;
 import com.blissstock.mappingSite.repository.UserInfoRepository;
 import com.blissstock.mappingSite.service.UserSessionServiceImpl;
@@ -21,15 +21,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+public class CourseRegistrationController {
 
-
-
-public class courseRegistrationController {
-
-    private static final Logger logger = LoggerFactory.getLogger(courseRegistrationController.class);
+    private static final Logger logger = LoggerFactory.getLogger(CourseRegistrationController.class);
 
     @Autowired
-    private CourseRepository courseRepo;
+    private CourseInfoRepository courseRepo;
 
     @Autowired
     private CourseTimeRepository courseTimeRepo;
@@ -42,7 +39,6 @@ public class courseRegistrationController {
 
     private List<CourseTime> ctList = new ArrayList<>(); 
     
-
     @RequestMapping(value={"/teacher/course-registration","/admin/course-registration"})
     private String courseRegistration(Model model ){
         CourseInfo courseInfo = new CourseInfo();
