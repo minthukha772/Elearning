@@ -1,7 +1,9 @@
 package com.blissstock.mappingSite.dto;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.Max;
@@ -40,6 +42,8 @@ public class UserRegisterDTO extends PasswordData implements Confirmable {
 
   @ValidEmail
   private String email;
+
+  private Long uid;
 
   @NotBlank(message = ConstrainMessage.EMPTY_CONSTRAIN_MESSAGE)
   private String name;
@@ -132,7 +136,7 @@ public class UserRegisterDTO extends PasswordData implements Confirmable {
     TeacherRegisterDTO registerDTO = new TeacherRegisterDTO();
     registerDTO.setEmail(userInfo.getUserAccount().getMail());
     registerDTO.setName(userInfo.getUserName());
-    registerDTO.setPhone(userInfo.getPhoneNo());
+    // registerDTO.setPhone(userInfo.getPhoneNo());
     registerDTO.setPhone(userInfo.getPhoneNo());
     registerDTO.setGender(userInfo.getGender());
     registerDTO.setDob(userInfo.getBirthDate());
@@ -145,6 +149,30 @@ public class UserRegisterDTO extends PasswordData implements Confirmable {
     registerDTO.setSelfDescription(userInfo.getSelfDescription());
 
     return registerDTO;
+  }
+
+  public static List<UserRegisterDTO> fromUserInfoList(List<UserInfo> userInfoList) {
+
+    List<UserRegisterDTO> registerDTOList = new ArrayList();
+    for (UserInfo userInfo : userInfoList) {
+
+      UserRegisterDTO registerDTO = new UserRegisterDTO();
+      registerDTO.setUid(userInfo.getUid());
+      registerDTO.setEmail(userInfo.getUserAccount().getMail());
+      registerDTO.setName(userInfo.getUserName());
+      registerDTO.setPhone(userInfo.getPhoneNo());
+      registerDTO.setPhone(userInfo.getPhoneNo());
+      registerDTO.setGender(userInfo.getGender());
+      registerDTO.setDob(userInfo.getBirthDate());
+      registerDTO.setZipCode(Integer.parseInt(userInfo.getPostalCode()));
+      registerDTO.setCity(userInfo.getCity());
+      registerDTO.setDivision(userInfo.getDivision());
+      registerDTO.setAddress(userInfo.getAddress());
+      registerDTO.setEducation(userInfo.getEducation());
+      registerDTOList.add(registerDTO);
+
+    }
+    return registerDTOList;
   }
 
   // todo find changing to static to non brick the System

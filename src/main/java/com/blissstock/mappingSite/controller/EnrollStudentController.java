@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.persistence.Lob;
 
 import com.blissstock.mappingSite.dto.JoinCourseDTO;
+import com.blissstock.mappingSite.dto.UserRegisterDTO;
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.exceptions.UserAlreadyExistException;
@@ -66,11 +67,13 @@ public class EnrollStudentController {
                         model.addAttribute("teachername", "Teacher");
                         model.addAttribute("level", course.getLevel());
 
-                        List<UserInfo> userInfo = userInfoRepository.findStudentsToEnroll(id.toString());
+                        List<UserInfo> userInfo = userInfoRepository.findStudentsToEnroll(id);
 
                         System.out.println(userInfo.get(0).getUserName());
-                        System.out.println(userInfo.toString());
-                        model.addAttribute("students", userInfo);
+                        // System.out.println(userInfo.toString());
+                        List<UserRegisterDTO> userRegisterDTO = UserRegisterDTO.fromUserInfoList(userInfo);
+                        System.out.println(userRegisterDTO.toString());
+                        model.addAttribute("students", userRegisterDTO);
 
                     } else {
                         logger.info("Course not found");

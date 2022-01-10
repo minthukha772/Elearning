@@ -151,6 +151,7 @@
                                             <th>No</th>
                                             <th>Name</th>
                                             <th>Phone Number</th>
+                                            <th>Email</th>
                                             <th>Add student</th>
 
                                             <th></th>
@@ -159,13 +160,15 @@
                                     </thead>
                                     <tbody>
                                         <tr th:each="student:${students}">
-                                            <td></td>
-                                            <td th:text="${student.userName}"></td>
+                                            <td th:text="${studentStat.index+1}"></td>
 
-                                            <td th:text="${student.phoneNo}"></td>
+                                            <td th:text="${student.name}"></td>
+
+                                            <td th:text="${student.phone}"></td>
+
+                                            <td th:text="${student.email}"></td>
                                             <td>
-                                                <text
-                                                    th:text="@{__${#httpServletRequest.requestURI}__/enroll/__${student.uid}__}"></text>
+
                                                 <!-- <form id="enrollstudent"
                                                     th:action="@{__${#httpServletRequest.requestURI}__/enroll/__*{student.uid}__}"
                                                     th:object="${id}" method="post">
@@ -231,19 +234,6 @@
     </footer>
 
     <script>
-        function openNav() {
-            document.getElementById("mySidebar").style.width = "250px";
-            document.getElementById("main").style.marginLeft = "250px";
-            document.getElementById("sidebutton").style.display = "none";
-            document.getElementById("mySidebar").style.position = "fixed";
-        }
-
-        function closeNav() {
-            document.getElementById("mySidebar").style.width = "0";
-            document.getElementById("main").style.marginLeft = "0";
-            document.getElementById("sidebutton").style.display = "block";
-            document.getElementById("sidebutton").style.width = "5px";
-        }
 
 
         function Enrollstudent(uid) {
