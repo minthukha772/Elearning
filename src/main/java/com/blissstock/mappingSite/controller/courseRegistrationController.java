@@ -2,13 +2,16 @@ package com.blissstock.mappingSite.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.blissstock.mappingSite.entity.Content;
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.CourseTime;
 import com.blissstock.mappingSite.entity.Syllabus;
-import com.blissstock.mappingSite.repository.CourseRepository;
+import com.blissstock.mappingSite.repository.CourseInfoRepository;
 import com.blissstock.mappingSite.repository.CourseTimeRepository;
+import com.blissstock.mappingSite.repository.UserInfoRepository;
+import com.blissstock.mappingSite.service.UserSessionServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,31 +21,37 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+public class CourseRegistrationController {
 
-public class courseRegistrationController {
+    private static final Logger logger = LoggerFactory.getLogger(CourseRegistrationController.class);
 
     @Autowired
-    private CourseRepository courseRepo;
+    private CourseInfoRepository courseRepo;
 
     @Autowired
     private CourseTimeRepository courseTimeRepo;
 
+    @Autowired
+    private UserSessionServiceImpl userSessionService;
+
+    @Autowired
+    private UserInfoRepository userInfoRepository;
+
     private List<CourseTime> ctList = new ArrayList<>(); 
     
-
     @RequestMapping(value={"/teacher/course-registration","/admin/course-registration"})
     private String courseRegistration(Model model ){
         CourseInfo courseInfo = new CourseInfo();
        
-        // List<CourseTime> courseTimeList = new ArrayList<>(7);  
-        // courseInfo.setCourseTime(courseTimeList);
+        List<CourseTime> courseTimeList = new ArrayList<>(7);  
+        courseInfo.setCourseTime(courseTimeList);
         
         model.addAttribute("course", courseInfo);
   
         return "AT00001_CourseRegisteration";
     }
     
-    @PostMapping("/courseregister-confirm")
+    @PostMapping("/teacher/courseregister-confirm")
     private String courseRegistrationConfirm(@ModelAttribute("course") CourseInfo course,
                                             @ModelAttribute("day0") String day0,
                                             @ModelAttribute("startTime0") String startTime0,
@@ -66,6 +75,8 @@ public class courseRegistrationController {
                                             @ModelAttribute("startTime6") String startTime6,
                                             @ModelAttribute("endTime6") String endTime6,
                                             Model model){
+        logger.info("POST requested");
+
         List<CourseTime> courseTimeList = new ArrayList<>();
         CourseTime courseTime0 = new CourseTime();
         CourseTime courseTime1 = new CourseTime();
@@ -137,10 +148,11 @@ public class courseRegistrationController {
         return "AT00002_CourseRegisterationConfirm";
     }
 
-    @PostMapping("/save-course-register")
+    @PostMapping("/teacher/save-course-register")
     private String saveCourseRegister(@ModelAttribute("course") CourseInfo course){
-        
-        course.setCourseApproved(true);
+        course.setUserInfo(userInfoRepository.findById(userSessionService.getId()).get());
+        logger.info("");
+        course.setIsCourseApproved(true); //was string "true"
         courseRepo.save(course);
         System.out.println("HoeHoe" + ctList);
         for(CourseTime courseTime : ctList){
@@ -148,8 +160,9 @@ public class courseRegistrationController {
             courseTimeRepo.save(courseTime);
         }
         
-        return "takealeave";
+        return "CM0001_CompleteScreen";
+        //return "takealeave";
     }
 
     
-} 
+}

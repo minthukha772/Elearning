@@ -6,7 +6,7 @@ import com.blissstock.mappingSite.entity.Syllabus;
 import com.blissstock.mappingSite.exceptions.CourseNotFoundException;
 import com.blissstock.mappingSite.exceptions.SyllabusNotFoundException;
 import com.blissstock.mappingSite.repository.ContentRepository;
-import com.blissstock.mappingSite.repository.CourseRepository;
+import com.blissstock.mappingSite.repository.CourseInfoRepository;
 import com.blissstock.mappingSite.repository.SyllabusRepository;
 
 import java.util.List;
@@ -27,7 +27,7 @@ public class SyllabusServiceImpl implements SyllabusService {
   UserSessionService userSessionService;
 
   @Autowired
-  CourseRepository courseRepository;
+  CourseInfoRepository courseRepository;
 
   @Autowired
   SyllabusRepository syllabusRepository;

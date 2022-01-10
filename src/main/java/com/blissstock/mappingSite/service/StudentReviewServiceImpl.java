@@ -11,13 +11,11 @@ import com.blissstock.mappingSite.dto.StudentReviewDTO;
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.JoinCourseUser;
 import com.blissstock.mappingSite.entity.Review;
-import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.exceptions.CourseNotFoundException;
-import com.blissstock.mappingSite.repository.CourseRepository;
+import com.blissstock.mappingSite.repository.CourseInfoRepository;
 import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
 import com.blissstock.mappingSite.repository.ReviewRepository;
 import com.blissstock.mappingSite.repository.UserInfoRepository;
-import com.blissstock.mappingSite.service.StudentReviewService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,10 +34,7 @@ public class StudentReviewServiceImpl implements StudentReviewService {
   private ReviewRepository reviewRepo;
 
   @Autowired
-  private UserInfoRepository userRepo;
-
-  @Autowired
-  private CourseRepository courseRepo;
+  private CourseInfoRepository courseRepo;
 
   
   @Autowired

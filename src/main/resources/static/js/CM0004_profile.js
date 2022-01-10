@@ -1,28 +1,78 @@
 $(function () {
+  $("#paymentAlert").hide();
 
-    $("#paymentAlert").hide();
+  $("#submitPayment").click((e) => {
+    console.log("submit payment button clicked");
+    const paymentPost = $("#paymentPost");
+    const fields = paymentPost
+      .find("select, textarea, :input:not([type=hidden])")
+      .serializeArray();
+    let hasError = false;
+    $.each(fields, function (i, field) {
+      if (!field.value) {
+        hasError = true;
+      }
+    });
+    if (hasError) {
+      $("#paymentAlert").show();
+    } else {
+      $("#paymentPost").submit();
+    }
+  });
 
+  const deleteUser = (uid) =>{
+    console.log("deleting user ", uid);
+    $.ajax({
+                type: "delete",
+                url: "/admin/profile/delete",
+                data: { uid },
+            }).done(function () {
+                //reload page
+                window.location.href = '/admin';
+            }).fail(function () {
+                alert("Something went wrong");
+            });
 
+} 
 
-    $("#submitPayment").click((e) => {
-        console.log("submit payment button clicked");
-        const paymentPost = $('#paymentPost');
-        const fields = paymentPost.find('select, textarea, :input:not([type=hidden])').serializeArray();
-        let hasError = false;
-        $.each(fields, function (i, field) {
-            if (!field.value) {
-                hasError = true;
+  $("#actionConfirmationModal").on("show.bs.modal", function (event) {
+    const button = $(event.relatedTarget);
 
-            }
-        });
-        if (hasError) {
-            $("#paymentAlert").show();
-        } else {
-            $('#paymentPost').submit();
-        }
+    const action = button.data("bs-action"); // Extract info from data-* attributes
+    // Extract info from data-* attributes
 
-
+    const modal = $(this);
+    modal.find(".modal-title").text(action + " User");
+    const actionBtn = modal.find("#actionBtn");
+    actionBtn.text(action);
+    actionBtn.click((e) => {
+      if (action == "Delete") {
+        console.log("perform delete operation");
+        deleteUser(uid);
+      } else if (action == "Suspend") {
+        console.log("perform suspend operation");
+      } else if (action == "Re-activate") {
+        console.log("perform re-active operation");
+      }
     });
 
+    // modal.find("#deleteCertificate").click((e) => {
+    //     $.ajax({
+    //         type: "delete",
+    //         url: uri,
+    //         data: { name },
+    //     }).done(function () {
+    //         //reload page
+    //         window.location.href = uri;
+    //     }).fail(function () {
+    //         alert("Something went wrong");
+    //     });
+    // });
 
+    /* modal.find('.modal-body input').val(recipient) */
+  });
+
+
+
+ 
 });

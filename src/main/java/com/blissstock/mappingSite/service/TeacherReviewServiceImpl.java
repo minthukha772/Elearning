@@ -13,7 +13,7 @@ import com.blissstock.mappingSite.dto.TeacherReviewDTO;
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.JoinCourseUser;
 import com.blissstock.mappingSite.entity.Review;
-import com.blissstock.mappingSite.repository.CourseRepository;
+import com.blissstock.mappingSite.repository.CourseInfoRepository;
 import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
 import com.blissstock.mappingSite.repository.ReviewRepository;
 import com.blissstock.mappingSite.entity.UserInfo;
@@ -41,7 +41,7 @@ public class TeacherReviewServiceImpl implements TeacherReviewService {
   private JoinCourseUserRepository joinRepo;
 
   @Autowired
-  private CourseRepository courseRepo;
+  private CourseInfoRepository courseRepo;
 
 
   public void addReview(TeacherReviewDTO trReviewDTO, Long courseId, Long userId) throws CourseNotFoundException {
