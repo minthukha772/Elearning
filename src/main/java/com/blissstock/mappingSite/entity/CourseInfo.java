@@ -48,6 +48,9 @@ public class CourseInfo {
   //@NotBlank(message="Please choose category")
   private String category;
 
+  @Column(name = "class_link")
+	private String classLink;
+
   @Column(name = "level", length = 15)
   //@NotBlank(message="Please choose course level")
   private String level;
@@ -56,8 +59,11 @@ public class CourseInfo {
   //@NotBlank(message="Please enter about course")
   private String aboutCourse;
 
-  @Column(name = "student_num", length = 20)
-  private int stuNum;
+  @Column(name = "prerequisite")
+	private String prerequisite;
+
+  @Column(name = "max_stu")
+  private Integer maxStu;
 
   //@NotNull
   @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -114,139 +120,16 @@ public class CourseInfo {
   @JsonIgnore
   private UserInfo userInfo;
 
-  //Constructors
+  public void setIsCourseApproved(Boolean isCourseApproved) {
+		this.isCourseApproved = isCourseApproved;
+	}
 
-  public Long getCourseId() {
-    return this.courseId;
-  }
+  // public String getTitle() {
+	// 	return this.title;
+	// }
 
-  public void setCourseId(Long courseId) {
-    this.courseId = courseId;
-  }
-
-  public String getCourseName() {
-    return this.courseName;
-  }
-
-  public void setCourseName(String courseName) {
-    this.courseName = courseName;
-  }
-
-  public String getClassType() {
-    return this.classType;
-  }
-
-  public void setClassType(String classType) {
-    this.classType = classType;
-  }
-
-  public String getCategory() {
-    return this.category;
-  }
-
-  public void setCategory(String category) {
-    this.category = category;
-  }
-
-  public String getLevel() {
-    return this.level;
-  }
-
-  public void setLevel(String level) {
-    this.level = level;
-  }
-
-  public String getAboutCourse() {
-    return this.aboutCourse;
-  }
-
-  public void setAboutCourse(String aboutCourse) {
-    this.aboutCourse = aboutCourse;
-  }
-
-  public int getStuNum() {
-    return this.stuNum;
-  }
-
-  public void setStuNum(int stuNum) {
-    this.stuNum = stuNum;
-  }
-
-  public Date getStartDate() {
-    return this.startDate;
-  }
-
-  public void setStartDate(Date startDate) {
-    this.startDate = startDate;
-  }
-
-  public Date getEndDate() {
-    return this.endDate;
-  }
-
-  public void setEndDate(Date endDate) {
-    this.endDate = endDate;
-  }
-
-  public int getFees() {
-    return this.fees;
-  }
-
-  public void setFees(int fees) {
-    this.fees = fees;
-  }
-
-  public boolean isIsCourseApproved() {
-    return this.isCourseApproved;
-  }
-
-  public boolean getIsCourseApproved() {
-    return this.isCourseApproved;
-  }
-
-  public void setIsCourseApproved(boolean isCourseApproved) {
-    this.isCourseApproved = isCourseApproved;
-  }
-
-  public List<CourseTime> getCourseTime() {
-    return this.courseTime;
-  }
-
-  public void setCourseTime(List<CourseTime> courseTime) {
-    this.courseTime = courseTime;
-  }
-
-  public List<Syllabus> getSyllabus() {
-    return this.syllabus;
-  }
-
-  public void setSyllabus(List<Syllabus> syllabus) {
-    this.syllabus = syllabus;
-  }
-
-  public List<Test> getTest() {
-    return this.test;
-  }
-
-  public void setTest(List<Test> test) {
-    this.test = test;
-  }
-
-  public List<JoinCourseUser> getJoin() {
-    return this.join;
-  }
-
-  public void setJoin(List<JoinCourseUser> join) {
-    this.join = join;
-  }
-
-  public UserInfo getUserInfo() {
-    return this.userInfo;
-  }
-
-  public void setUserInfo(UserInfo userInfo) {
-    this.userInfo = userInfo;
-  }
-
+	// public void setTitle(String title) {
+	// 	this.title = title;
+	// }
 
 }

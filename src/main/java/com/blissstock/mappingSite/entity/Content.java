@@ -20,7 +20,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @Entity
 @Data
 @Table(name = "content")
@@ -42,6 +41,9 @@ public class Content {
     private Syllabus syllabus;
 	
 	//Constructors
+
+	public Content() {
+	}
 
 	public Content(Long contentId, String content, Syllabus syllabus) {
 		this.contentId = contentId;

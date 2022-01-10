@@ -1,7 +1,5 @@
 package com.blissstock.mappingSite.entity;
-import java.util.ArrayList;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,8 +13,8 @@ import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,6 +23,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 @Entity
 @Table(name = "payment_account")
 public class PaymentAccount {
@@ -56,55 +55,4 @@ public class PaymentAccount {
     @JsonIgnore
     private BankInfo bankInfo;
 	
-    //Constructors
-
-    public Long getPaymentAccountId() {
-        return this.paymentAccountId;
-    }
-
-    public void setPaymentAccountId(Long paymentAccountId) {
-        this.paymentAccountId = paymentAccountId;
-    }
-
-    public String getAccountName() {
-        return this.accountName;
-    }
-
-    public void setAccountName(String accountName) {
-        this.accountName = accountName;
-    }
-
-    public Integer getAccountNumber() {
-        return this.accountNumber;
-    }
-
-    public void setAccountNumber(Integer accountNumber) {
-        this.accountNumber = accountNumber;
-    }
-
-    public Long getCheckedBank() {
-        return this.checkedBank;
-    }
-
-    public void setCheckedBank(Long checkedBank) {
-        this.checkedBank = checkedBank;
-    }
-
-    public UserInfo getUserInfo() {
-        return this.userInfo;
-    }
-
-    public void setUserInfo(UserInfo userInfo) {
-        this.userInfo = userInfo;
-    }
-
-    public BankInfo getBankInfo() {
-        return this.bankInfo;
-    }
-
-    public void setBankInfo(BankInfo bankInfo) {
-        this.bankInfo = bankInfo;
-    }
-
-   
 }

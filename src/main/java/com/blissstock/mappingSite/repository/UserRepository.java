@@ -12,7 +12,7 @@ import java.util.List;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserInfo, Long> {
-    @Query(value = "SELECT i.*,u.* FROM user_info i,user_account u WHERE i.id=u.id AND u.role='ROLE_TEACHER'", nativeQuery = true)
+    @Query(value = "SELECT i.*,u.* FROM user_info i,user_account u WHERE i.account_id=u.account_id AND u.role=:role", nativeQuery = true)
     public List<UserInfo> findByUserRoleI(@Param("role") String role);
     // public List<UserInfo> findByUserRoleI();
     // SELECT

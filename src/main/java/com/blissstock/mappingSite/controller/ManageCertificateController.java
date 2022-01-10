@@ -10,8 +10,11 @@ import com.blissstock.mappingSite.exceptions.NotImageFileException;
 import com.blissstock.mappingSite.exceptions.UnauthorizedFileAccessException;
 import com.blissstock.mappingSite.model.FileInfo;
 import com.blissstock.mappingSite.service.StorageService;
+import com.blissstock.mappingSite.service.StorageServiceImpl;
 import com.blissstock.mappingSite.service.UserSessionService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +31,10 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 @Controller
 public class ManageCertificateController {
 
+  private static final Logger logger = LoggerFactory.getLogger(
+    ManageCertificateController.class
+  );
+
   @Autowired
   StorageService storageService;
 
@@ -41,8 +48,12 @@ public class ManageCertificateController {
     Model model,
     @PathVariable(name = "id", required = false) Long id
   ) {
+    logger.info("GET Request, request id {}",id);
+
     Long uid = getUid(id);
-    List<FileInfo> fileInfos = loadImages(uid);
+    logger.info("User {}'s data is being processed ",uid);
+    List<FileInfo> fileInfos = storageService.loadCertificatesAsFileInfo(uid);
+    logger.info("{} photo has been retrieved",fileInfos.size());
     model.addAttribute("files", fileInfos);
 
     return "AT0007_manage_certificate";
@@ -52,22 +63,29 @@ public class ManageCertificateController {
     value = { "/teacher/manage_certificate", "/admin/manage_certificate/{id}" }
   )
   public String uploadFiles(
-    @RequestParam("files") MultipartFile[] files,
+    @RequestParam("files") MultipartFile file,
     Model model,
     @PathVariable(name = "id", required = false) Long id
   ) {
-    System.out.println(files.length);
+
+    //log
+    logger.info("POST mapping");
+    logger.info("Files -> {}", file);
+    logger.info("ID is {}", id);
+
+    // System.out.println(files.length);
     Long uid = getUid(id);
     try {
-      if (files.length > 0) {
-        storageService.storeCertificates(uid, files);
-      } else {
-        model.addAttribute(
-          "fileUploadError",
-          "Please Select at least one file"
-        );
-      }
+      // if (files.length > 0) {
+        storageService.store(uid, file, StorageServiceImpl.CERTIFICATE_PATH,false);
+      // } else {
+      //   model.addAttribute(
+      //     "fileUploadError",
+      //     "Please Select at least one file"
+      //   );
+      // }
     } catch (NotImageFileException e) {
+      e.printStackTrace();
       model.addAttribute(
         "fileUploadError",
         "Only Jpg, Jpeg and Png are allowed"
@@ -82,35 +100,10 @@ public class ManageCertificateController {
       e.printStackTrace();
     }
 
-    List<FileInfo> fileInfos = loadImages(uid);
+    List<FileInfo> fileInfos = storageService.loadCertificatesAsFileInfo(uid);
     model.addAttribute("files", fileInfos);
 
     return "AT0007_manage_certificate";
-  }
-
-  private List<FileInfo> loadImages(Long uid) {
-    try {
-      return storageService
-        .loadAllCertificates(uid)
-        .map(
-          path -> {
-            String name = path.getFileName().toString();
-            String url = MvcUriComponentsBuilder
-              .fromMethodName(
-                FileController.class,
-                "getCertificates",
-                uid,
-                path.getFileName().toString()
-              )
-              .build()
-              .toString();
-            return new FileInfo(name, url);
-          }
-        )
-        .collect(Collectors.toList());
-    } catch (Exception e) {
-      return new ArrayList<>();
-    }
   }
 
   @DeleteMapping(
@@ -120,7 +113,7 @@ public class ManageCertificateController {
     String name,
     @PathVariable(name = "id", required = false) Long id
   ) {
-    System.out.println("Delete requested for file name: " + name);
+    logger.info("DELETE Requested, file name {}",name);
     Long uid = getUid(id);
     //return ResponseEntity.badRequest().body("something went wrong");
     try {
@@ -145,7 +138,7 @@ public class ManageCertificateController {
     if (role == UserRole.ADMIN || role == UserRole.SUPER_ADMIN) {
       uid = id;
     } else if (role == UserRole.TEACHER) {
-      uid = userSessionService.getUserAccount().getId();
+      uid = userSessionService.getUserAccount().getAccountId();
     } else {
       throw new RuntimeException("user authetication fail");
     }

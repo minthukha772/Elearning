@@ -1,7 +1,8 @@
 package com.blissstock.mappingSite.dto;
 
+import com.blissstock.mappingSite.entity.PaymentAccount;
 import javax.validation.constraints.NotBlank;
-
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -14,36 +15,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PaymentInfoDTO {
-    @NotBlank
-    private String serviceName;
-    private String accountName;
-    private String accountNumber;
 
-    //Constructors
+  @NotNull
+  PaymentAccount primaryAccount;
 
-
-    public String getServiceName() {
-        return this.serviceName;
-    }
-
-    public void setServiceName(String serviceName) {
-        this.serviceName = serviceName;
-    }
-
-    public String getAccountName() {
-        return this.accountName;
-    }
-
-    public void setAccountName(String accountName) {
-        this.accountName = accountName;
-    }
-
-    public String getAccountNumber() {
-        return this.accountNumber;
-    }
-
-    public void setAccountNumber(String accountNumber) {
-        this.accountNumber = accountNumber;
-    }
-
+  @NotNull
+  PaymentAccount secondaryAccount;
 }

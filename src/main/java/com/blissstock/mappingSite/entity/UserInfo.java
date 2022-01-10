@@ -2,6 +2,7 @@ package com.blissstock.mappingSite.entity;
 
 import com.blissstock.mappingSite.dto.TeacherRegisterDTO;
 import com.blissstock.mappingSite.dto.UserRegisterDTO;
+import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.interfaces.Profile;
 import com.blissstock.mappingSite.utils.DateFormatter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -15,7 +16,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -23,15 +23,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.servlet.FlashMapManager;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -42,7 +33,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @NoArgsConstructor
 @Entity
 @Table(name = "user_info")
-public class UserInfo implements Profile{
+public class UserInfo implements Profile {
 
   @Column(name = "uid")
   @Id
@@ -89,10 +80,10 @@ public class UserInfo implements Profile{
   //mapping
   @OneToOne(fetch = FetchType.EAGER)
   @MapsId
-  @JoinColumn(name = "id")
+  @JoinColumn(name = "account_id")
   UserAccount userAccount;
 
-/*   @OneToMany(
+  /*   @OneToMany(
     fetch = FetchType.LAZY,
     cascade = CascadeType.ALL,
     mappedBy = "userInfo"
@@ -101,7 +92,7 @@ public class UserInfo implements Profile{
   private List<Certificate> certificateInfo = new ArrayList<>(); */
 
   @OneToMany(
-    fetch = FetchType.LAZY,
+    fetch = FetchType.EAGER,
     cascade = CascadeType.ALL,
     mappedBy = "userInfo"
   )
@@ -109,12 +100,20 @@ public class UserInfo implements Profile{
   private List<PaymentAccount> paymentAccount = new ArrayList<>();
 
   @OneToMany(
-    fetch = FetchType.LAZY, 
-    cascade = CascadeType.ALL, 
-    mappedBy="userInfo"
-    )
-	@JsonIgnore
-	private List<JoinCourseUser> join= new ArrayList<>();
+    fetch = FetchType.LAZY,
+    cascade = CascadeType.ALL,
+    mappedBy = "userInfo"
+  )
+  @JsonIgnore
+  private List<JoinCourseUser> join = new ArrayList<>();
+
+  @OneToMany(
+    fetch = FetchType.LAZY,
+    cascade = CascadeType.ALL,
+    mappedBy = "userInfo"
+  )
+  @JsonIgnore
+  private List<CourseInfo> courseInfo = new ArrayList<>();
 
   public static UserInfo fromRegisterDTO(UserRegisterDTO userRegisterDTO) {
     UserInfo userInfo = new UserInfo();
@@ -136,183 +135,27 @@ public class UserInfo implements Profile{
 
     return userInfo;
   }
-  @Override
-  public LinkedHashMap<String, String> toMapStudent() {
-    LinkedHashMap<String, String> map = new LinkedHashMap<>();
-    //map.put("Email", this.email);
-    map.put("Name", this.userName);
-    map.put("Phone Number", this.phoneNo);
-    map.put("Gender", this.gender);
-    map.put("Date of Birth", DateFormatter.format(this.birthDate));
-    map.put("Zip Code", this.postalCode + "");
-    map.put("City", this.city);
-    map.put("Division", this.division);
-    map.put("Address", this.address);
-    map.put("Education", this.education);
-    return map;
-  }
 
   @Override
-  public LinkedHashMap<String, String> toMapTeacher() {
+  public LinkedHashMap<String, String> toMap(boolean isSensitive) {
     LinkedHashMap<String, String> map = new LinkedHashMap<>();
-    //map.put("Email", this.email);
+    UserRole role = UserRole.strToUserRole(this.userAccount.getRole());
     map.put("Name", this.userName);
+    if (!isSensitive) {
+      map.put("Phone Number", this.phoneNo);
+    }
     map.put("Gender", this.gender);
-    map.put("Date of Birth", DateFormatter.format(this.birthDate));
+    if (!isSensitive) {
+      map.put("Date of Birth", DateFormatter.format(this.birthDate));
+      map.put("Zip Code", this.postalCode + "");
+      map.put("City", this.city);
+      map.put("Division", this.division);
+      map.put("Address", this.address);
+    }
     map.put("Education", this.education);
-    map.put("SelfDescription", this.selfDescription);
+    if (role == UserRole.TEACHER) {
+      map.put("Self Description", this.selfDescription);
+    }
     return map;
   }
-
-  //Constructors
-
-
-  public UserInfo(Long uid, String photo, String userName, String phoneNo, String gender, Date birthDate, String postalCode, String city, String division, String address, String education, String nrc, String selfDescription, UserAccount userAccount, List<PaymentAccount> paymentAccount, List<JoinCourseUser> join) {
-    this.uid = uid;
-    this.photo = photo;
-    this.userName = userName;
-    this.phoneNo = phoneNo;
-    this.gender = gender;
-    this.birthDate = birthDate;
-    this.postalCode = postalCode;
-    this.city = city;
-    this.division = division;
-    this.address = address;
-    this.education = education;
-    this.nrc = nrc;
-    this.selfDescription = selfDescription;
-    this.userAccount = userAccount;
-    this.paymentAccount = paymentAccount;
-    this.join = join;
-  }
-
-  public Long getUid() {
-    return this.uid;
-  }
-
-  public void setUid(Long uid) {
-    this.uid = uid;
-  }
-
-  public String getPhoto() {
-    return this.photo;
-  }
-
-  public void setPhoto(String photo) {
-    this.photo = photo;
-  }
-
-  public String getUserName() {
-    return this.userName;
-  }
-
-  public void setUserName(String userName) {
-    this.userName = userName;
-  }
-
-  public String getPhoneNo() {
-    return this.phoneNo;
-  }
-
-  public void setPhoneNo(String phoneNo) {
-    this.phoneNo = phoneNo;
-  }
-
-  public String getGender() {
-    return this.gender;
-  }
-
-  public void setGender(String gender) {
-    this.gender = gender;
-  }
-
-  public Date getBirthDate() {
-    return this.birthDate;
-  }
-
-  public void setBirthDate(Date birthDate) {
-    this.birthDate = birthDate;
-  }
-
-  public String getPostalCode() {
-    return this.postalCode;
-  }
-
-  public void setPostalCode(String postalCode) {
-    this.postalCode = postalCode;
-  }
-
-  public String getCity() {
-    return this.city;
-  }
-
-  public void setCity(String city) {
-    this.city = city;
-  }
-
-  public String getDivision() {
-    return this.division;
-  }
-
-  public void setDivision(String division) {
-    this.division = division;
-  }
-
-  public String getAddress() {
-    return this.address;
-  }
-
-  public void setAddress(String address) {
-    this.address = address;
-  }
-
-  public String getEducation() {
-    return this.education;
-  }
-
-  public void setEducation(String education) {
-    this.education = education;
-  }
-
-  public String getNrc() {
-    return this.nrc;
-  }
-
-  public void setNrc(String nrc) {
-    this.nrc = nrc;
-  }
-
-  public String getSelfDescription() {
-    return this.selfDescription;
-  }
-
-  public void setSelfDescription(String selfDescription) {
-    this.selfDescription = selfDescription;
-  }
-
-  public UserAccount getUserAccount() {
-    return this.userAccount;
-  }
-
-  public void setUserAccount(UserAccount userAccount) {
-    this.userAccount = userAccount;
-  }
-
-  public List<PaymentAccount> getPaymentAccount() {
-    return this.paymentAccount;
-  }
-
-  public void setPaymentAccount(List<PaymentAccount> paymentAccount) {
-    this.paymentAccount = paymentAccount;
-  }
-
-  public List<JoinCourseUser> getJoin() {
-    return this.join;
-  }
-
-  public void setJoin(List<JoinCourseUser> join) {
-    this.join = join;
-  }
-
- 
 }

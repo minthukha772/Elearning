@@ -1,8 +1,9 @@
 package com.blissstock.mappingSite.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
 import java.util.List;
+
+//import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,9 +14,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+//import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,6 +30,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Data
 @Table(name = "syllabus")
@@ -43,59 +50,16 @@ public class Syllabus {
     fetch = FetchType.EAGER,
     optional = false
   )
-  @JoinColumn(name = "course_id")
+  @JoinColumn(name = "courseId_fkey")
   @JsonIgnore
   private CourseInfo courseInfo;
 
   @OneToMany(
-    fetch = FetchType.EAGER,
+    fetch = FetchType.LAZY,
     cascade = CascadeType.ALL,
     mappedBy = "syllabus"
   )
   @JsonIgnore
   private List<Content> content = new ArrayList<>();
   
-  //Constructors
-
-
-  public Syllabus(Long syllabusId, String title, CourseInfo courseInfo, List<Content> content) {
-    this.syllabusId = syllabusId;
-    this.title = title;
-    this.courseInfo = courseInfo;
-    this.content = content;
-  }
-
-  public Long getSyllabusId() {
-    return this.syllabusId;
-  }
-
-  public void setSyllabusId(Long syllabusId) {
-    this.syllabusId = syllabusId;
-  }
-
-  public String getTitle() {
-    return this.title;
-  }
-
-  public void setTitle(String title) {
-    this.title = title;
-  }
-
-  public CourseInfo getCourseInfo() {
-    return this.courseInfo;
-  }
-
-  public void setCourseInfo(CourseInfo courseInfo) {
-    this.courseInfo = courseInfo;
-  }
-
-  public List<Content> getContent() {
-    return this.content;
-  }
-
-  public void setContent(List<Content> content) {
-    this.content = content;
-  }
-
-
 }

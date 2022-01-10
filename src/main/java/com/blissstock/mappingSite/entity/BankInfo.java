@@ -23,24 +23,4 @@ public class BankInfo {
   //@NotBlank(message="Please fill payment service")
   private String bankName;
 
-  //Constructors
-
- 
-  public Long getBankId() {
-    return this.bankId;
-  }
-
-  public void setBankId(Long bankId) {
-    this.bankId = bankId;
-  }
-
-  public String getBankName() {
-    return this.bankName;
-  }
-
-  public void setBankName(String bankName) {
-    this.bankName = bankName;
-  }
-
-
 }

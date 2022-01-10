@@ -60,68 +60,6 @@ public class Token {
 
   private Date expiryDate;
 
-  //Constructors
-
-
-  public Long getId() {
-    return this.id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public String getToken() {
-    return this.token;
-  }
-
-  public void setToken(String token) {
-    this.token = token;
-  }
-
-  public String getTokenType() {
-    return this.tokenType;
-  }
-
-  public void setTokenType(String tokenType) {
-    this.tokenType = tokenType;
-  }
-
-  public Long getCreated() {
-    return this.created;
-  }
-
-  public void setCreated(Long created) {
-    this.created = created;
-  }
-
-  public boolean isIsUsed() {
-    return this.isUsed;
-  }
-
-  public boolean getIsUsed() {
-    return this.isUsed;
-  }
-
-  public void setIsUsed(boolean isUsed) {
-    this.isUsed = isUsed;
-  }
-
-  public UserAccount getUserAccount() {
-    return this.userAccount;
-  }
-
-  public void setUserAccount(UserAccount userAccount) {
-    this.userAccount = userAccount;
-  }
-
-  public Date getExpiryDate() {
-    return this.expiryDate;
-  }
-
-  public void setExpiryDate(Date expiryDate) {
-    this.expiryDate = expiryDate;
-  }
 
 
 }

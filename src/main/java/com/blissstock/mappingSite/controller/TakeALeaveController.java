@@ -100,7 +100,7 @@ public class TakeALeaveController {
     //LeaveInfo leave= leaveRepo.findById(courseId).orElse(null);
    //leaveRepo.save(leaveInfo);
  
-   Long uid = userSessionService.getUserAccount().getId();
+   Long uid = userSessionService.getUserAccount().getAccountId();
 
 
 
