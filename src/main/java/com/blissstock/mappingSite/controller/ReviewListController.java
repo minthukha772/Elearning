@@ -46,6 +46,8 @@ public class ReviewListController {
 
          
         CourseInfo courseInfo=courseInfoRepo.findById(courseId).orElse(null);
+        String trName = courseInfo.getUserInfo().getUserName();
+        model.addAttribute("trName", trName);
         UserInfo user=userRepo.findById(userId).orElse(null);
         //Display course name
         String courseName=courseInfo.getCourseName();
@@ -58,10 +60,7 @@ public class ReviewListController {
         for(JoinCourseUser join:joinList){
             reviewList.addAll(join.getReview());
             UserInfo joinUser= join.getUserInfo();
-            if(joinUser.getUserAccount().getRole().equals("ROLE_TEACHER")){
-                model.addAttribute("trName", joinUser.getUserName());
-            } 
-            else if(joinUser.getUserAccount().getAccountId().equals(userId)){
+           if(joinUser.getUserAccount().getAccountId().equals(userId)){
                 if(joinUser.getUserAccount().getRole().equals("ROLE_STUDENT")){
                     model.addAttribute("stuRegistered", true);
                 }
@@ -86,7 +85,9 @@ public class ReviewListController {
             total_stars += review.getStar();
         }
         int average = (int)total_stars/numCourseReviewList;
+        String averageFloat = String.format("%.2f", (double)total_stars/numCourseReviewList);
         model.addAttribute("average", average);
+        model.addAttribute("averageFloat", averageFloat);
 
         //Display student reviews
         List<JoinCourseUser> joinUserList=user.getJoin();
