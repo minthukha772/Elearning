@@ -2,9 +2,11 @@ package com.blissstock.mappingSite.controller;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.blissstock.mappingSite.dto.CourseInfoDTO;
 import com.blissstock.mappingSite.entity.CourseInfo;
+import com.blissstock.mappingSite.model.CourseData;
 import com.blissstock.mappingSite.service.CourseService;
 
 import org.slf4j.Logger;
@@ -34,11 +36,10 @@ public class CourseListController {
         model.addAttribute("courseInfoDTO", courseInfoDTO);
 
         List<CourseInfo> courseList = courseService.getCourseList(courseInfoDTO);
-        for (CourseInfo courseInfo : courseList) {
-           System.out.println(courseInfo.getUserInfo()); 
-        }
-        // System.out.print("Here is : " + allList.get(0).getAboutCourse());
-        model.addAttribute("courseList", courseList);
+        //Encasulate Data
+        List<CourseData> courseDataList = courseList.stream().map((e) -> CourseData.construct(e)).collect(Collectors.toList());
+        logger.info("Getting course, count {}",courseList.size());
+        model.addAttribute("courseList", courseDataList);
         //model.addAttribute("courseList", new ArrayList<>());
         return "CM0002_CourseList";
     }
