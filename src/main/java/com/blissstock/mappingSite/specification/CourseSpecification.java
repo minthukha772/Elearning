@@ -46,6 +46,8 @@ public class CourseSpecification {
                 predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("endDate"), courseInfoDTO.getEndDate()));
             }
 
+            //Only get approved course
+            predicates.add(criteriaBuilder.equal(root.get("isCourseApproved"), true));
             query.orderBy(criteriaBuilder.desc(root.get("startDate")));
         
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));

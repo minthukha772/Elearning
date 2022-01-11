@@ -126,6 +126,9 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
 
     <script th:inline="javascript">
       const courseList = /*[[${courseList}]]*/ false;
+      courseList.forEach(element => {
+        console.log(element.userInfo)
+      });
       
     </script>
     <script th:src="@{/js/CM0002_CourseList.js}" ></script>

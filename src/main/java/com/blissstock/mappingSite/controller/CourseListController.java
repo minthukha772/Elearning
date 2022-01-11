@@ -29,12 +29,16 @@ public class CourseListController {
             LocalDate endDate) {    
         logger.info("GET request");
         CourseInfoDTO courseInfoDTO = new CourseInfoDTO(courseName, teacherName, startDate, endDate);
+       
         logger.debug("couresInfoDto {} ", courseInfoDTO);
         model.addAttribute("courseInfoDTO", courseInfoDTO);
 
-        List<CourseInfo> allList = courseService.getCourseList(courseInfoDTO);
+        List<CourseInfo> courseList = courseService.getCourseList(courseInfoDTO);
+        for (CourseInfo courseInfo : courseList) {
+           System.out.println(courseInfo.getUserInfo()); 
+        }
         // System.out.print("Here is : " + allList.get(0).getAboutCourse());
-        model.addAttribute("courseList", allList);
+        model.addAttribute("courseList", courseList);
         //model.addAttribute("courseList", new ArrayList<>());
         return "CM0002_CourseList";
     }
