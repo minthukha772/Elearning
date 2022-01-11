@@ -79,7 +79,15 @@ public class ReviewListController {
             }
         }
 
-        
+        //calculate average star rating for the course
+        int total_stars = 0;
+        int numCourseReviewList = courseReviewList.size();
+        for(Review review : courseReviewList){
+            total_stars += review.getStar();
+        }
+        int average = (int)total_stars/numCourseReviewList;
+        model.addAttribute("average", average);
+
         //Display student reviews
         List<JoinCourseUser> joinUserList=user.getJoin();
         List<Review> stuReviews=new ArrayList<Review>(); 
