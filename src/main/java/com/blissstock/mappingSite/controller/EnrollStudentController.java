@@ -49,8 +49,9 @@ public class EnrollStudentController {
     @Autowired
     private CourseTimeRepository courseTimeRepo;
 
-    @GetMapping("/admin/enrollStudent/course/{id}")
-    private String enrollStudent(@PathVariable(name = "id", required = true) Long id, Model model) {
+    @GetMapping(value = { "/admin/enrollStudent/course/{id}/{status}", "/admin/enrollStudent/course/{id}" })
+    private String enrollStudent(@PathVariable(name = "id", required = true) Long id,
+            @PathVariable(name = "status", required = false) Optional<String> status, Model model) {
         logger.info("Get Method");
         UserRole userRole = userSessionService.getRole();
         if (userRole.equals(UserRole.SUPER_ADMIN) || userRole.equals(UserRole.ADMIN)) {
@@ -63,10 +64,10 @@ public class EnrollStudentController {
                         // System.out.println(course.toString());
                         model.addAttribute("courseName", course.getCourseName());
                         // todo find teacher name
-                        course.getUserInfo();
+                        // course.getUserInfo();
                         model.addAttribute("teachername", "Teacher");
                         model.addAttribute("level", course.getLevel());
-
+                        model.addAttribute("CourseType", course.getClassType());
                         List<UserInfo> userInfo = userInfoRepository.findStudentsToEnroll(id);
 
                         System.out.println(userInfo.get(0).getUserName());
@@ -77,13 +78,25 @@ public class EnrollStudentController {
 
                     } else {
                         logger.info("Course not found");
+                        model.addAttribute("status", "error");
+                        model.addAttribute("errorMsg", "Course with id : " + id + " is not found. ");
 
                     }
                 } catch (Exception e) {
-                    System.out.println(" get students to enroll");
                     logger.info(e.toString());
                 }
 
+            }
+            if (status.isPresent()) {
+                String state = status.get();
+                if (state.equals("UserExists")) {
+                    model.addAttribute("status", "error");
+                    model.addAttribute("errorMsg", "User has already been enrolled");
+                }
+                if (state.equals("success")) {
+                    model.addAttribute("status", "success");
+                    model.addAttribute("Msg", "User has been enrolled Successfully");
+                }
             }
             return "AD0002_EnrollStudent";
         } else {
@@ -92,7 +105,9 @@ public class EnrollStudentController {
 
     }
 
-    @GetMapping("/admin/enrollStudent/course/{cid}/enroll/{uid}")
+    @GetMapping(value = { "/admin/enrollStudent/course/{cid}/enroll/{uid}",
+            "/admin/enrollStudent/course/{cid}/success/enroll/{uid}",
+            "/admin/enrollStudent/course/{cid}/UserExists/enroll/{uid}" })
     public String enorllStudent(Model model, @PathVariable(name = "cid", required = false) Long cid,
             @PathVariable(name = "uid", required = false) Long uid) {
         System.out.println("uid and cid is :" + uid + " " + cid);
@@ -107,11 +122,11 @@ public class EnrollStudentController {
                 joinCourseService.enrollStudent(joinCourseDTO);
             } catch (Exception e) {
                 logger.info(e.toString());
-                model.addAttribute("error", "User has already been enrolled");
-                return "redirect:/admin/enrollStudent/course/" + cid;
+
+                return "redirect:/admin/enrollStudent/course/" + cid + "/UserExists";
             }
-            model.addAttribute("success", "true");
-            return "redirect:/admin/enrollStudent/course/" + cid;
+
+            return "redirect:/admin/enrollStudent/course/" + cid + "/success";
 
         } else {
             return "redirect:/error/404";
