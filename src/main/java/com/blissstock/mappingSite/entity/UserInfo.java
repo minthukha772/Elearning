@@ -26,11 +26,14 @@ import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString(exclude = {"courseInfo"})
 @Entity
 @Table(name = "user_info")
 public class UserInfo implements Profile {
