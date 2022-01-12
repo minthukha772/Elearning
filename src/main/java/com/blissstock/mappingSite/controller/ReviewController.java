@@ -13,6 +13,8 @@ import com.blissstock.mappingSite.service.TeacherReviewService;
 import com.blissstock.mappingSite.service.UserService;
 import com.blissstock.mappingSite.service.UserSessionService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +28,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class ReviewController {
+
+  private static final Logger logger = LoggerFactory.getLogger(
+    ReviewController.class
+  );
 
     @Autowired
     UserSessionService userSessionService;
@@ -97,14 +103,18 @@ public class ReviewController {
 			return "CM0007_WriteReviewStudent";			
 		}   
         try{
-            if(action.equals("submit")){
+            logger.debug("action {},",action.equals("submit"));
+            // if(action.equals("submit")){
               Review review=reviewRepo.findById(reviewId).orElse(null);
+              logger.debug("Original Review Object {}",review);
               review.setStar(stuReviewDTO.getStar());
               review.setFeedback(stuReviewDTO.getFeedback());
-              reviewRepo.save(review);
-            }
+              Review savedReview = reviewRepo.save(review);
+              logger.info("The origin object is {}", review);
+              logger.info("The reviewRepo.save object is {}", savedReview);
+            // }
           }catch(Exception e){
-            System.out.println(e);
+            e.printStackTrace();
           }
         model.addAttribute("infoMap", stuReviewDTO.toMapReview());
         return "redirect:/review/complete";

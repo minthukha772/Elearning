@@ -11,9 +11,11 @@
     <link rel="stylesheet" type="text/css" href="/css/CM0009_ReviewList.css">
     <link rel="stylesheet" type="text/css" href="/css/ReviewListTab.css">
     <link rel="stylesheet" type="text/css" href="/css/footer.css">
+    <link rel="stylesheet" href="/css/adminsidebar.css" />
+    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
 </head>
 
-<body>
+<body id="body-pd">
     <div th:replace="fragments/nav"></div>
 
     <div sec:authorize="!hasAuthority('ROLE_TEACHER')" th:if="${stuRegistered!=null}">
@@ -206,6 +208,7 @@
         crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="/js/adminsidebar.js"></script>
 </body>
 
 </html>
