@@ -15,6 +15,8 @@ import com.blissstock.mappingSite.repository.PaymentRepository;
 //import com.blissstock.mappingSite.repository.CourseTestingRepository;
 //import com.blissstock.mappingSite.repository.TpaymentRepository;
 import com.blissstock.mappingSite.repository.UserRepository;
+import com.blissstock.mappingSite.service.UserService;
+import com.blissstock.mappingSite.service.UserSessionService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,6 +34,12 @@ import org.springframework.web.multipart.MultipartFile;
 public class PaymentController {
     
     @Autowired
+    UserSessionService userSessionService;
+
+    @Autowired
+    UserService userService;
+
+    @Autowired
     UserRepository userRepo;
 
     @Autowired
@@ -43,14 +51,20 @@ public class PaymentController {
 
     /*get student payment screen */
     @Valid
-    @GetMapping(value="/payment-upload/{joinId}")
-    // @GetMapping(value="/payment-upload/{courseId}/{userId}")
-    private String getPaymentUploadForm(@PathVariable Long courseId, @PathVariable Long userId,Model model) {
+    @GetMapping(value={"admin/payment-upload/{courseId}/{userId}",
+                      "student/payment-upload/{courseId}",
+                      "teacher/payment-upload/{courseId}"})
+
+    private String getPaymentUploadForm(@PathVariable Long courseId,@PathVariable(name = "id", required = false) Long id,Model model) {
 		//StuPaymentDTO payment = new StuPaymentDTO();
+    Long userId = id==null ? userSessionService.getUserAccount().getAccountId(): id;
+    CourseInfo courseInfo=courseRepo.findById(courseId).orElse(null);
     PaymentReceive payment = new PaymentReceive();
+        model.addAttribute("courseName", courseInfo.getCourseName());
+        model.addAttribute("fees", courseInfo.getFees());
         model.addAttribute("payment", payment);
         model.addAttribute("postAct", "/update-payment-slip/"+courseId+"/"+userId);
-        return "AS0001_StudentPayment";
+        return "AS0001_Payment";
     }
 
     /*student upload payment ss and go to payment success screen */

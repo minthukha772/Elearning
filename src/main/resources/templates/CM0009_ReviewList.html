@@ -102,8 +102,12 @@
                                 <li class="list-group-item" th:each="review:${stuReviews}">
                                     <div class="media align-items-lg-center flex-column flex-lg-row p-3">
                                         <div class="media-body order-2 order-lg-1">
-                                            <p class="font-italic text-muted mb-0 small"
-                                                th:text="${#dates.format(review.assignedDate, 'yyyy-MM-dd')}"></p>
+                                            <div class="d-flex align-items-center justify-content-between mt-1">
+                                                <p class="font-italic text-muted mb-0 small" th:text="${#dates.format(review.assignedDate, 'yyyy-MM-dd')}"></p>
+                                                <div sec:authorize="hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SUPER_ADMIN')">
+                                                <a th:href="@{'/admin/edit-teacher-review/'+${review.reviewId}}">Edit</a>
+                                                </div>
+                                                </div>
                                             <h5 class="mt-0 font-weight-bold mb-2">[[${trName}]]</h5>
                                             <span th:if="${review.reviewType == 1}"
                                                 style="color: #DC3545;">Concerns</span>
@@ -122,7 +126,7 @@
             </div>
         </div>
     </div>
-    <div sec:authorize="hasAuthority('ROLE_TEACHER') or hasAuthority('ROLE_STUDENT')" th:if="${stuRegistered==null}">
+    <div th:if="${stuRegistered==null}">
         <div class="container py-5">
             <div class="row">
                 <div class="col-lg-8 mx-auto">

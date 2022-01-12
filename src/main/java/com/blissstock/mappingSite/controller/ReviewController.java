@@ -69,11 +69,14 @@ public class ReviewController {
             if(action.equals("submit")){
               stuReviewService.addReview(stuReviewDTO, courseId, userId);
             }
+          
           }catch(Exception e){
             System.out.println(e);
           }
+         
         model.addAttribute("infoMap", stuReviewDTO.toMapReview());
         return "CM0007_WriteReviewStudent";
+        
 	}
     
     @Valid
@@ -104,7 +107,7 @@ public class ReviewController {
             System.out.println(e);
           }
         model.addAttribute("infoMap", stuReviewDTO.toMapReview());
-        return "CM0007_WriteReviewStudent";
+        return "redirect:/review/complete";
 	}
     
     //get teacher review 
@@ -129,7 +132,7 @@ public class ReviewController {
             System.out.println(e);
           }
         model.addAttribute("infoMap", trReviewDTO.toMapTrReview());
-        return "CM0007_WriteReviewTeacher";
+        return "redirect:/review/complete";
 	}
 
      //edit teacher review
@@ -161,7 +164,7 @@ public class ReviewController {
              System.out.println(e);
            }
          model.addAttribute("infoMap", trReviewDTO.toMapTrReview());
-         return "CM0007_WriteReviewTeacher";
+         return "redirect:/review/complete";
    }
    
    }
