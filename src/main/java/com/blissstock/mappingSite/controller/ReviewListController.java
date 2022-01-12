@@ -37,9 +37,9 @@ public class ReviewListController {
     UserRepository userRepo;
     //get student review 
     @Valid
-    @GetMapping(value={"/teacher/review-list/{courseId}",
-    "/student/review-list/{courseId}",
-    "/admin/review-list/{courseId}/{id}" 
+    @GetMapping(value={"/teacher/review-list/course_id/{courseId}",
+    "/student/review-list/course_id/{courseId}",
+    "/admin/review-list/course_id/{courseId}/student_id/{id}" 
     })
     private String getReviewList(@PathVariable Long courseId,@PathVariable(name = "id", required = false) Long id, Model model) {  
         Long userId = id==null ? userSessionService.getUserAccount().getAccountId(): id;
@@ -61,7 +61,7 @@ public class ReviewListController {
             if(joinUser.getUserAccount().getRole().equals("ROLE_TEACHER")){
                 model.addAttribute("trName", joinUser.getUserName());
             } 
-            else if(joinUser.getUserAccount().getAccountId().equals(userId)){
+            else if(joinUser.getUserAccount().getAccountId().equals(userId)){              
                 if(joinUser.getUserAccount().getRole().equals("ROLE_STUDENT")){
                     model.addAttribute("stuRegistered", true);
                 }

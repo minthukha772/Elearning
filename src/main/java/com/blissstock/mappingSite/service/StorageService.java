@@ -34,5 +34,7 @@ public interface StorageService {
     throws IOException, UnauthorizedFileAccessException;
 
   public boolean checkAuthForTeacher(Long uid);
+  
+  public Path loadProfile(String filename);
 
 }
