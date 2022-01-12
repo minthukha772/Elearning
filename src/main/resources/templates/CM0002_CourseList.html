@@ -24,6 +24,9 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
   <body>
     <div th:replace="/fragments/nav"></div>
 
+    <!-- Back to top button -->
+    
+
     <!-- Advance Search -->
     <div class="container-fluid mb-3" style="background-color: #5eba7d">
       <h2 class="pt-3 mb-3 text-white">Explore Courses</h2>
@@ -100,21 +103,22 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
         <div class="col-auto">
           <div class="card">
             <div class="card-header">Reduce Result by:</div>
-            <ul class="list-group list-group-flush filterContainer">
-              
-            </ul>
+            <ul class="list-group list-group-flush filterContainer"></ul>
             <div class="card-body">
-              <button class="btn btn-primary" type="submit" id="filterBtn">Apply</button>
+              <button class="btn btn-primary" type="submit" id="filterBtn">
+                Apply
+              </button>
             </div>
-            
           </div>
         </div>
         <!-- End: Filter -->
-        <div class="col-auto" id="courseList">
-          
+        <div class="col" id="course">
+          <div id="courseList" class="row gx-2 gy-2 my-3"></div>
         </div>
       </div>
     </div>
+
+    <div th:replace="/fragments/footer"></div>
 
     <!-- JS -->
     <script
@@ -123,11 +127,12 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
       crossorigin="anonymous"
     ></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script th:src="@{/js/pagination.min.js}"></script>
 
     <script th:inline="javascript">
       const courseList = /*[[${courseList}]]*/ false;
-          
     </script>
-    <script th:src="@{/js/CM0002_CourseList.js}" ></script>
+    <script th:src="@{/js/CM0002_CourseList.js}"></script>
+    <script src="/js/toTheTop.js"></script>
   </body>
 </html>

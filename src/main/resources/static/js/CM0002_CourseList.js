@@ -8,42 +8,38 @@ $(function () {
 });
 
 const filterAction = (courseList) => {
-    
-    const inputFilters = structureInputFilters();
-    console.log(inputFilters);
-    const filteredCourseList = courseList.filter((e) => {
-        let condition = true;
-        if(inputFilters['levels']){
-            condition = condition && inputFilters['levels'].includes(e.level);
-        }
-        if(inputFilters['categories']){
-            condition = condition && inputFilters['categories'].includes(e.category);
-        }
-        if(inputFilters['classTypes']){
-            condition = condition && inputFilters['classTypes'].includes(e.classType);
-        }
-        return condition;
-    });
-    renderCourseList(filteredCourseList);
-    
-    
+  const inputFilters = structureInputFilters();
+  console.log(inputFilters);
+  const filteredCourseList = courseList.filter((e) => {
+    let condition = true;
+    if (inputFilters["levels"]) {
+      condition = condition && inputFilters["levels"].includes(e.level);
+    }
+    if (inputFilters["categories"]) {
+      condition = condition && inputFilters["categories"].includes(e.category);
+    }
+    if (inputFilters["classTypes"]) {
+      condition = condition && inputFilters["classTypes"].includes(e.classType);
+    }
+    return condition;
+  });
+  renderCourseList(filteredCourseList);
 };
 
-const structureInputFilters = () =>{
-    const checkedBoxes = $(".filterContainer").find("input:checked");
-    const filterList = {};
-    checkedBoxes.each(function (index, element) {
-        const parent = $(element).data("parent")
-        const value = element.name;
-        if(!filterList[parent]){
-            // Create Array
-            filterList[parent] = [value];
-        }
-        else{
-            filterList[parent].push(value);
-        }
-    });
-    return filterList;
+const structureInputFilters = () => {
+  const checkedBoxes = $(".filterContainer").find("input:checked");
+  const filterList = {};
+  checkedBoxes.each(function (index, element) {
+    const parent = $(element).data("parent");
+    const value = element.name;
+    if (!filterList[parent]) {
+      // Create Array
+      filterList[parent] = [value];
+    } else {
+      filterList[parent].push(value);
+    }
+  });
+  return filterList;
 };
 
 const constructFilter = (courseList) => {
@@ -100,11 +96,75 @@ const renderFilterItems = (filterItems) => {
   });
 };
 
-const renderCourseList = (courseList) =>{
-    console.log("rendering");
-    $("#courseList").empty();
-    courseList.forEach((e,index) => {
-        console.log(e);
-        $("#courseList").append(`<b>${index}</b><p>${JSON.stringify(e)}</p><br>`);
-    });
+const renderCourseList = (courseList) => {
+  console.log(courseList);
+  $("#course").pagination({
+    dataSource: courseList,
+    pageSize: 5,
+    showNavigator: true,
+    position:"top",
+    className: 'paginationjs-theme-blue',
+    formatNavigator: '<span style="color: #f00"><%= currentPage %></span> of <%= totalPage %> pages, <%= totalNumber %> entries',
+    callback: function (data, pagination) {
+      // template method of yourself
+      $("#courseList").hide();
+      $("#courseList").empty();
+      data.forEach((e)=>{
+        const template = `
+        <div class="card col-12 col-md-6 col-xl-4 ">
+          <div class="card-body">
+            <div >
+              <h2>${e.courseName}</h2>
+              <a href="">${e.teacherName}</a>
+              <h6 class="mt-1">${e.category} &gt;${e.level}</h6>
+              <p>${e.aboutCourse}</p>
+              <h4>Date</h4>
+              <i>${e.startDate.substring(0,10)} - ${e.endDate.substring(0,10)}</i>
+              <h4 class="mt-2">${e.fees} MMK</h4>
+
+          
+            </div>
+            <a href="#" class="btn btn-primary">Detail</a>
+          </div>
+          
+        </div>
+        `;
+        $(template).appendTo($("#courseList"));
+
+        $("#courseList").fadeIn('slow');
+      
+      });
+     
+    },
+  });
 };
+// const renderCourseList = (courseList) => {
+//   console.log("rendering");
+//   $("#courseList").hide();
+//   $("#courseList").empty();
+//   courseList.forEach((e, index) => {
+//     console.log(e);
+
+//     const template =`
+//         <div class="card" >
+//           <div class="card-body">
+//             <div >
+//               <h2>${e.courseName}</h2>
+//               <h5>${e.teacherName}</h5>
+//               <h6>${e.category} &gt;${e.level}</h6>
+//               <p>${e.aboutCourse}</p>
+//               <h4>Prerequisites</h4>
+//               <p>${e.prerequisite}</p>
+//               <h4>${e.fees}</h4>
+
+//             </div>
+//             <a href="#" class="btn btn-primary">Detail</a>
+//           </div>
+
+//         </div>
+//         `
+//     $(template).appendTo($("#courseList"));
+
+//     $("#courseList").show('slow');
+//   });
+// };
