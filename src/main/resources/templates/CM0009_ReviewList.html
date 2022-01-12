@@ -168,6 +168,9 @@
 
                                     <p class="font-italic text-muted mb-0 small"
                                         th:text="${#dates.format(review.assignedDate, 'yyyy-MM-dd')}"></p>
+                                        <div sec:authorize="hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SUPER_ADMIN')">
+                                            <a th:href="@{'/admin/edit-student-review/'+${review.reviewId}}">Edit</a>
+                                        </div>
                                 </div>
                                 <h5 class="mt-0 font-weight-bold mb-2" th:text="${review.join.userInfo.userName}"></h5>
                                 <div class="d-flex align-items-center justify-content-between mt-1">
