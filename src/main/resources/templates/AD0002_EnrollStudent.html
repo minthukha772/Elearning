@@ -152,28 +152,31 @@
                         </h5>
                     </div>
                     <div class="CourseInfo">
-                        <table class="CourseInfoTable">
+                        <div th:if="${isCourseFound}">
 
-                            <tr>
-                                <th>Course Name </th>
-                                <th>:</th>
-                                <th th:text="${courseName}"></th>
-                                <th>Teacher Name: </th>
-                                <th>:</th>
-                                <th th:text="${teachername}"></th>
-                            </tr>
+                            <table class="CourseInfoTable">
 
-                            <tr>
-                                <th>Course level: </th>
-                                <th>:</th>
-                                <th th:text="${level}"></th>
+                                <tr>
+                                    <th>Course Name </th>
+                                    <th>:</th>
+                                    <th th:text="${courseName}"></th>
+                                    <th>Teacher Name: </th>
+                                    <th>:</th>
+                                    <th th:text="${teachername}"></th>
+                                </tr>
 
-                                <th>Course Type </th>
-                                <th>:</th>
-                                <th th:text="${CourseType}"></th>
-                            </tr>
+                                <tr>
+                                    <th>Course level: </th>
+                                    <th>:</th>
+                                    <th th:text="${level}"></th>
 
-                        </table>
+                                    <th>Course Type </th>
+                                    <th>:</th>
+                                    <th th:text="${CourseType}"></th>
+                                </tr>
+
+                            </table>
+                        </div>
                     </div>
 
 
@@ -215,47 +218,49 @@
                     <div class="card-body">
                         <section>
                             <div class="demo-html">
-                                <table id="example" class="table table-striped" style="width:100%">
-                                    <thead>
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Name</th>
-                                            <th>Email</th>
-                                            <th>Phone Number</th>
-                                            <th>Enroll Studnet</th>
+                                <div th:if="${isCourseFound}">
+                                    <table id="example" class="table table-striped" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Name</th>
+                                                <th>Email</th>
+                                                <th>Phone Number</th>
+                                                <th>Enroll Studnet</th>
 
 
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr th:each="student:${students}">
-                                            <td th:text="${studentStat.index+1}"></td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="student:${students}">
+                                                <td th:text="${studentStat.index+1}"></td>
 
-                                            <td th:text="${student.name}"></td>
-
-
-
-                                            <td th:text="${student.email}"></td>
-                                            <td th:text="${student.phone}"></td>
-                                            <td>
+                                                <td th:text="${student.name}"></td>
 
 
-                                                <button class="EnrollButton"
-                                                    th:attr="onclick=|Enrollstudent('${student.uid}')|">Enroll</button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Name</th>
-                                            <th>Email</th>
-                                            <th>Phone Number</th>
-                                            <th>Enroll Studnet</th>
 
-                                        </tr>
-                                    </tfoot>
-                                </table>
+                                                <td th:text="${student.email}"></td>
+                                                <td th:text="${student.phone}"></td>
+                                                <td>
+
+
+                                                    <button class="EnrollButton"
+                                                        th:attr="onclick=|Enrollstudent('${student.uid}')|">Enroll</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Name</th>
+                                                <th>Email</th>
+                                                <th>Phone Number</th>
+                                                <th>Enroll Studnet</th>
+
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
                             </div>
                         </section>
                     </div>

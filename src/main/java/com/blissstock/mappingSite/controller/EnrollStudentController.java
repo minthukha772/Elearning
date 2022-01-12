@@ -61,7 +61,7 @@ public class EnrollStudentController {
                     Optional<CourseInfo> courseInfo = courseRepo.findById(id);
                     if (courseInfo.isPresent()) {
                         CourseInfo course = courseInfo.get();
-                        // System.out.println(course.toString());
+                        // //System.out.println(course.toString());
                         model.addAttribute("courseName", course.getCourseName());
                         // todo find teacher name
                         // course.getUserInfo();
@@ -70,14 +70,16 @@ public class EnrollStudentController {
                         model.addAttribute("CourseType", course.getClassType());
                         List<UserInfo> userInfo = userInfoRepository.findStudentsToEnroll(id);
 
-                        System.out.println(userInfo.get(0).getUserName());
-                        // System.out.println(userInfo.toString());
+                        // System.out.println(userInfo.get(0).getUserName());
+                        // //System.out.println(userInfo.toString());
                         List<UserRegisterDTO> userRegisterDTO = UserRegisterDTO.fromUserInfoList(userInfo);
-                        System.out.println(userRegisterDTO.toString());
+                        // System.out.println(userRegisterDTO.toString());
+                        model.addAttribute("isCourseFound", "true");
                         model.addAttribute("students", userRegisterDTO);
 
                     } else {
                         logger.info("Course not found");
+                        model.addAttribute("isCourseFound", "false");
                         model.addAttribute("status", "error");
                         model.addAttribute("errorMsg", "Course with id : " + id + " is not found. ");
 
@@ -110,7 +112,7 @@ public class EnrollStudentController {
             "/admin/enrollStudent/course/{cid}/UserExists/enroll/{uid}" })
     public String enorllStudent(Model model, @PathVariable(name = "cid", required = false) Long cid,
             @PathVariable(name = "uid", required = false) Long uid) {
-        System.out.println("uid and cid is :" + uid + " " + cid);
+        // System.out.println("uid and cid is :" + uid + " " + cid);
 
         UserRole userRole = userSessionService.getRole();
         if (userRole.equals(UserRole.SUPER_ADMIN) || userRole.equals(UserRole.ADMIN)) {
