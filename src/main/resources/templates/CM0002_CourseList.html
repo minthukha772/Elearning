@@ -103,39 +103,46 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
 
     <!-- User Info -->
     <div
-      class="container-fluid mb-3 py-3 row"
+      class="container-fluid mb-3 py-3"
       style="background-color: #5eba7d"
       th:unless="${userInfo == null}"
-      
-     
     >
-      <div class="col-auto">
+      <div class="row">
+        <div class="col-auto">
+          <img
+            th:if="${profilePic == null}"
+            th:src="@{/images/profile.png}"
+            class="rounded-circle"
+            style="width: 150px"
+            alt="Avatar"
+          />
+          <img
+            th:unless="${profilePic == null}"
+            th:src="${profilePic.url}"
+            class="rounded-circle"
+            style="width: 150px"
+            alt="Avatar"
+          />
+        </div>
 
+        <div class="text-white col-auto mt-2 mt-sm-0">
+          <h4 th:text="${userInfo.userName}"></h4>
+          <p th:text="${userInfo.selfDescription}"></p>
+        </div>
       </div>
-      <img
-        src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
-        class="rounded-circle "
-        style="width: 150px"
-        alt="Avatar"
-        
-      />
-      <div class="text-white col-auto">
-        <h4 th:text="${userInfo.userName}"></h4>
-        <p th:text="${userInfo.selfDescription}"> </p>
-      </div>
-      
     </div>
     <!-- End: User Info -->
 
     <div class="container-fluid">
       <div class="row">
         <!-- Filter -->
-        <div class="col-auto">
+        <div class="col-sm-auto col-12 mb-3">
+            
           <div class="card">
             <div class="card-header">Reduce Result by:</div>
             <ul class="list-group list-group-flush filterContainer"></ul>
             <div class="card-body">
-              <button class="btn btn-primary" type="submit" id="filterBtn">
+              <button class="btn btn-primary filterBtn" type="submit" >
                 Apply
               </button>
             </div>
@@ -149,6 +156,8 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
     </div>
 
     <div th:replace="/fragments/footer"></div>
+
+  
 
     <!-- JS -->
     <script
