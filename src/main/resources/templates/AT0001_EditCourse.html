@@ -179,7 +179,7 @@
                         <div class="invalid-feedback" th:if="${#fields.hasErrors('classLink')}" th:errors="*{classLink}">This field is required.</div>
                     </div>
                     <input type="hidden" class="form-control" id="teacherid" th:field="*{uid}" style="border: none transparent;" readonly></input>
-                    <input type="text" class="form-control" id="teacherid" th:field="*{courseId}" style="border: none transparent;" readonly></input>
+                    <input type="hidden" class="form-control" id="teacherid" th:field="*{courseId}" style="border: none transparent;" readonly></input>
                 </div>
                 
                 

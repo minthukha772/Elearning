@@ -54,28 +54,7 @@ public class CourseEditController {
     private String editCourse(
         Model model,
         @PathVariable(required = false) Long userId,
-        @PathVariable Long courseId,
-        @ModelAttribute("day0") String day0,
-        @ModelAttribute("startTime0") String startTime0,
-        @ModelAttribute("endTime0") String endTime0,
-        @ModelAttribute("day1") String day1,
-        @ModelAttribute("startTime1") String startTime1,
-        @ModelAttribute("endTime1") String endTime1,
-        @ModelAttribute("day2") String day2,
-        @ModelAttribute("startTime2") String startTime2,
-        @ModelAttribute("endTime2") String endTime2,
-        @ModelAttribute("day3") String day3,
-        @ModelAttribute("startTime3") String startTime3,
-        @ModelAttribute("endTime3") String endTime3,
-        @ModelAttribute("day4") String day4,
-        @ModelAttribute("startTime4") String startTime4,
-        @ModelAttribute("endTime4") String endTime4,
-        @ModelAttribute("day5") String day5,
-        @ModelAttribute("startTime5") String startTime5,
-        @ModelAttribute("endTime5") String endTime5,
-        @ModelAttribute("day6") String day6,
-        @ModelAttribute("startTime6") String startTime6,
-        @ModelAttribute("endTime6") String endTime6){
+        @PathVariable Long courseId){
         logger.info("GET Requested");
 
         UserRole currentRole =userSessionService.getRole();
@@ -84,19 +63,12 @@ public class CourseEditController {
         }
 
         CourseInfo course = courseInfoRepo.findByCourseIDUID(courseId, userId);
-
+        logger.info("Get Requested {}",course);
         
         
         if(course != null){
             // List<CourseTime> courseTimeList = new ArrayList<>();
             List<CourseTime> courseTimeList = courseTimeRepo.searchTimeByCourseID(courseId);
-            CourseTime courseTime0 = new CourseTime();
-            CourseTime courseTime1 = new CourseTime();
-            CourseTime courseTime2 = new CourseTime();
-            CourseTime courseTime3 = new CourseTime();
-            CourseTime courseTime4 = new CourseTime();
-            CourseTime courseTime5 = new CourseTime();
-            CourseTime courseTime6 = new CourseTime();
         if(course.getClassType().equals("live")){
 
             model.addAttribute("classActiveLive", true);
@@ -146,7 +118,7 @@ public class CourseEditController {
 
             model.addAttribute("courseTimeList", courseTimeList);
             ctList = courseTimeList;
-            System.out.println("Heehee" + ctList);
+            // System.out.println("Heehee" + ctList);
             
         }else {
             model.addAttribute("classActiveVideo", true);
@@ -160,7 +132,7 @@ public class CourseEditController {
         if (role == UserRole.ADMIN || role == UserRole.SUPER_ADMIN) {
             // long uid = id;
             course.setUid(userId);
-            // logger.info("Teacher ID for course registration {}",uid);
+            logger.info("Teacher ID for update course {}",userId);
             // // model.addAttribute("teacherID", uid);
             // System.out.print("Admin registration : "+uid);
             List<String> breadcrumbList = new ArrayList<>();
@@ -174,7 +146,7 @@ public class CourseEditController {
         else{
             long uid =userSessionService.getId();
             course.setUid(uid);
-            logger.info("Teacher ID for course registration {}",uid);
+            logger.info("Teacher ID for update course {}",uid);
             // model.addAttribute("teacherID", uid);
             System.out.print("Teacher Registration"+uid);
             List<String> breadcrumbList = new ArrayList<>();
@@ -345,11 +317,12 @@ public class CourseEditController {
 
         String classType = course.getClassType();
 
-        long cid = 44;
-        CourseInfo test = courseRepo.findById(cid).get();
-        System.out.print("Test Info:" +test);
+        // long cid = 44;
+        // CourseInfo test = courseRepo.findById(cid).get();
+        // System.out.print("Test Info:" +test);
 
         CourseInfo updateCourse = courseRepo.findById(course.getCourseId()).get(); 
+        logger.info("Get Requested {}", updateCourse);
         System.out.print("Update Info: "+ updateCourse);
         if(classType.equals("live")){
             System.out.print("It works!");
@@ -370,6 +343,7 @@ public class CourseEditController {
                 // course.getCourseTime().remove(this);
                 for(CourseTime delCourseTime: courseTimeList){
                     courseTimeRepo.delete(delCourseTime);
+                    logger.info("Delete Previous Course Time List for CourseID {}", currentCourseID);
                 }
                 // courseTimeRepo.deleteByCourseID(currentCourseID);
                 // System.out.print("All Course Time have been deleted");
@@ -405,11 +379,13 @@ public class CourseEditController {
         // courseInfoRepo.updateVideoCourse(course.getCourseId(),course.getCourseName(), course.getCategory(), course.getClassLink(), course.getLevel(), course.getAboutCourse(), course.getPrerequisite(), course.getFees(), course.isCourseApproved());
         // System.out.print(course);
         courseInfoRepo.save(updateCourse);
+        logger.info("Update Course for CourseID {}", updateCourse.getCourseId());
         // System.out.println("HoeHoe" + ctList);
         for(CourseTime courseTime : ctList){
             courseTime.setCourseInfo(updateCourse);
             // System.out.print("Course Time List :"+courseTime);
             courseTimeRepo.save(courseTime);
+            logger.info("Update Course Time List for CourseID {}", updateCourse.getCourseId());
         }
 
         UserRole role = userSessionService.getRole();
