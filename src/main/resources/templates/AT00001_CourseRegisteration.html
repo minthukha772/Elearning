@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <!-- Title -->
+    <title>Mapping Site</title>
+    <link rel="shortcut icon" type="image/png" href="img/logo.png" />
+
+
+    <!-- Bootstrap CSS File -->
+    <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="/css/other-style.css" th:href="@{/css/other-style.css}">
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />-->
+    <link rel="stylesheet" href="/path/to/cdn/bootstrap.min.css" th:href="@{/path/to/cdn/bootstrap.min.css}"/>
+    <link rel="stylesheet" href="/path/to/timepicker.css" th:href="@{/path/to/timepicker.css}"/>
+
+
+    <!-- Script Session start-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>-->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="js/category.js" th:src="@{js/category.js}"></script>
+    <script type="text/javascript" src="js/date.js" th:src="@{js/date.js}"></script>
+    <script type="text/javascript" src="js/main.js" th:src="@{js/main.js}"></script>
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            $("#noCheck").prop("checked", true);
+
+        });
+    </script>
+
+    <script type="text/javascript">
+        function yesnoCheck() {
+            if (document.getElementById('yesCheck').checked) {
+                document.getElementById('iflive').style.display = 'block';
+                document.getElementById('ifvideo').style.display = 'none';
+            } else {
+                document.getElementById('iflive').style.display = 'none';
+                document.getElementById('ifvideo').style.display = 'block';
+            }
+
+        }
+    </script>
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            position: relative;
+            overflow: auto;
+        }
+        
+        .wrapper {
+            min-height: 100%;
+            margin-bottom: -50px;
+        }
+        
+        body {
+            background-color: #f0f0f0;
+        }
+        
+        .breadcrumb li a {
+            /* background-color: #FFFFFF; */
+            color: #5227CC;
+            background-color: transparent;
+            text-decoration: none;
+        }
+        
+        .push {
+            height: 50px;
+        }
+        
+        .completecard {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            margin-left: auto;
+            margin-right: auto;
+            width: 50%;
+            border-radius: 10px;
+            width: 800px;
+        }
+        
+        .card-header {
+            text-align: center;
+            background-color: whitesmoke;
+            height: 50px;
+            /* border-radius: 10px; */
+        }
+        
+        .btn-primary,
+        .btn-primary:hover,
+        .btn-primary:active,
+        .btn-primary:visited {
+            background-color: #7749F8 !important;
+        }
+    </style>
+
+    <!-- Script Session end-->
+</head>
+
+
+<body>
+    <div class="wrapper">
+
+
+        <nav aria-label="breadcrumb" class="bg-light" style="padding: 0 10px;">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Top</a></li>
+                <li class="breadcrumb-item"><a href="#">My Course</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Course Registration</li>
+            </ol>
+        </nav>
+
+        <!-- course registration section -->
+        <div class="container-fluid" id="courseres-form">
+            <div class="row form-header" style="margin-top: 50px;">
+                <div class="col-lg-2"></div>
+                <div class="col-lg-8  form-header-col">
+                    <b>
+                    <p class="text-center">Course Registration</p>
+                </b>
+                </div>
+                <div class="col-lg-2"></div>
+            </div>
+            <div class="row form-row">
+                <div class="col-lg-2"></div>
+                <div class="col-lg-8 form-col">
+                    <form th:action="@{/admin/courseregister-confirm}" method="post">
+                        <div th:object="${course}">
+                            <div class="row form-sec-header">
+                                <div class="col-lg-12 text-center">
+                                    <p></p>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-lg-1"></div>
+                                <label for="classtype" class="col-lg-3 col-form-label">Class Type</label>
+
+                                <div class="col-lg-8">
+                                    <div class="col-lg-4">
+                                        <input type="radio" onclick="javascript:yesnoCheck();" name="yesno" id="yesCheck" value="live" th:field="*{classType}">
+
+                                        <label>Live</label>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <input type="radio" onclick="javascript:yesnoCheck();" name="yesno" id="noCheck" value="video" th:field="*{classType}">
+                                        <label>Video</label>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="mb-3">
+                                <label class="form-label" for="vname">Course Name</label>
+
+                                <input th:field="*{courseName}" class="form-control" th:classappend="${#fields.hasErrors('courseName')}?'is-invalid':''" id="vname" type="text" placeholder="Japanese Language" required/>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('courseName')}" th:errors="*{courseName}">This field is required.</div>
+                            </div>
+
+
+                            <div class="mb-3">
+                                <label class="form-label" for="vcategory">Course Category</label>
+                                <select name="vcategory" th:field="*{category}" class="form-control" required>
+                            <option value="" selected="selected">Select Category</option>
+                            <option value="Japanese">Japanese</option>
+                            <option value="English">English</option>
+                            <option value="Python">Python</option>
+                            <option value="Java">Java</option>
+                        </select>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('category')}" th:errors="*{category}">
+                                    This field is required.
+                                </div>
+                            </div>
+
+
+                            <div class="mb-3">
+                                <label class="form-label" for="vlevel">Course Level</label>
+
+                                <input th:field="*{level}" class="form-control" th:classappend="${#fields.hasErrors('level')}?'is-invalid':''" id="clevel" type="text" placeholder="Enter Course Level(For example : Japanese Basic)" required/>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('level')}" th:errors="*{level}">This field is required.</div>
+                            </div>
+
+
+
+
+
+                            <div class="mb-3">
+                                <label class="form-label" for="vfee">Course Fee</label>
+
+                                <input th:field="*{fees}" class="form-control" th:classappend="${#fields.hasErrors('fees')}?'is-invalid':''" id="cfee" type="text" placeholder="Enter Course Fee(Kyats)" />
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('fees')}" th:errors="*{fees}">This field is required.</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label" for="vabout">About Course</label>
+
+                                <textarea th:field="*{aboutCourse}" class="form-control" th:classappend="${#fields.hasErrors('aboutCourse')}?'is-invalid':''" id="cabout" type="text" placeholder="Enter detail about your course here."></textarea>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('aboutCourse')}" th:errors="*{aboutCourse}">This field is required.</div>
+                            </div>
+
+
+                            <div class="mb-3">
+                                <label class="form-label" for="vlevel">Course Title</label>
+
+                                <!-- <input th:field="*{title}" class="form-control" th:classappend="${#fields.hasErrors('title')}?'is-invalid':''" id="clevel" type="text" placeholder="Enter Course Title" />
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">This field is required.</div> -->
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="vabout">Course Content</label>
+
+                                <!-- <textarea th:field="*{content}" class="form-control" th:classappend="${#fields.hasErrors('content')}?'is-invalid':''" id="cabout" type="text" placeholder="Enter course contents here."></textarea>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('content')}" th:errors="*{content}">This field is required.</div> -->
+                            </div>
+
+
+                            <div id="ifvideo" style="display: block;">
+                                <div class="mb-3">
+                                    <label class="form-label" for="vlink">Video Link</label>
+
+                                    <!-- <textarea th:field="*{classLink}" class="form-control" th:classappend="${#fields.hasErrors('classLink')}?'is-invalid':''" id="clink" type="text" placeholder="Enter your video course link here"></textarea>
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('classLink')}" th:errors="*{classLink}">This field is required.</div> -->
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+                        <div id="iflive" style="display: none;">
+
+                            <div th:object="${course}">
+                                <div class="mb-3">
+                                    <label class="form-label" for="maxStu">Student Numbers</label>
+
+                                    <input th:field="*{maxStu}" class="form-control" th:classappend="${#fields.hasErrors('maxStu')}?'is-invalid':''" id="maxStu" type="text" placeholder="Enter the number of students">
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('maxStu')}" th:errors="*{maxStu}">This field is required.</div>
+                                </div>
+                                <div class="form-group row"></div>
+                                <div class="form-group row">
+                                    <div class="col-lg-1"></div>
+                                    <label for="about" class="col-lg-2 col-form-label">Start Date</label>
+
+                                    <div class="col-lg-3">
+                                        <input id="datepicker9" th:field="*{startDate}" class="form-control" placeholder="yyyy-mm-dd">
+
+
+
+                                    </div>
+                                    <label for="date" class="col-lg-2 col-form-label">End Date</label>
+
+                                    <div class="col-lg-3">
+                                        <input id="datepicker10" th:field="*{endDate}" class="form-control" placeholder="yyyy-mm-dd">
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group row">
+                                <div class="col-lg-1"></div>
+                                <label class="col-lg-3 col-form-label">Choose Date and Time</label>
+                            </div>
+
+
+                            <div class="form-group row">
+                                <div class="col-lg-1"></div>
+                                <div class="col-lg-3">
+                                    <input type="checkbox" value="Monday" th:name="day0">
+                                    <label class="col-form-label">Monday</label>
+                                </div>
+
+                                <div class="col-lg-8">
+                                    <div class="col-lg-4">
+                                        <label for="time">From</label>
+
+                                        <input type="text" th:name="startTime0" id="time1" disabled />
+
+
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label for="time">To</label>
+                                        <input type="text" th:name="endTime0" id="time2" disabled />
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="form-group row">
+                                <div class="col-lg-1"></div>
+                                <div class="col-lg-3">
+                                    <input type="checkbox" value="Tuesday" th:name="day1">
+                                    <label class="col-form-label">Tuesday</label>
+                                </div>
+
+                                <div class="col-lg-8">
+                                    <div class="col-lg-4">
+                                        <label for="time">From</label>
+                                        <input type="text" th:name="startTime1" id="time3" disabled />
+
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label for="time">To</label>
+                                        <input type="text" th:name="endTime1" id="time4" disabled />
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="form-group row">
+                                <div class="col-lg-1"></div>
+                                <div class="col-lg-3">
+                                    <input type="checkbox" value="Wednesday" th:name="day2">
+                                    <label class="col-form-label">Wednesday</label>
+                                </div>
+
+                                <div class="col-lg-8">
+                                    <div class="col-lg-4">
+                                        <label for="time">From</label>
+                                        <input type="text" th:name="startTime2" id="time5" disabled />
+
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label for="time">To</label>
+                                        <input type="text" th:name="endTime2" id="time6" disabled />
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-lg-1"></div>
+                                <div class="col-lg-3">
+                                    <input type="checkbox" value="Thursday" th:name="day3">
+                                    <label class="col-form-label">Thursday</label>
+                                </div>
+
+                                <div class="col-lg-8">
+                                    <div class="col-lg-4">
+                                        <label for="time">From</label>
+                                        <input type="text" th:name="startTime3" id="time7" disabled />
+
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label for="time">To</label>
+                                        <input type="text" th:name="endTime3" id="time8" disabled />
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-lg-1"></div>
+                                <div class="col-lg-3">
+                                    <input type="checkbox" value="Friday" th:name="day4">
+                                    <label class="col-form-label">Friday</label>
+                                </div>
+
+                                <div class="col-lg-8">
+                                    <div class="col-lg-4">
+                                        <label for="time">From</label>
+                                        <input type="text" th:name="startTime4" id="time9" disabled />
+
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label for="time">To</label>
+                                        <input type="text" th:name="endTime4" id="time10" disabled />
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-lg-1"></div>
+                                <div class="col-lg-3">
+                                    <input type="checkbox" value="Saturday" th:name="day5">
+                                    <label class="col-form-label">Saturday</label>
+                                </div>
+
+                                <div class="col-lg-8">
+                                    <div class="col-lg-4">
+                                        <label for="time">From</label>
+                                        <input type="text" th:name="startTime5" id="time11" disabled />
+
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label for="time">To</label>
+                                        <input type="text" th:name="endTime5" id="time12" disabled />
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-lg-1"></div>
+                                <div class="col-lg-3">
+                                    <input type="checkbox" value="Sunday" th:name="day6">
+                                    <label class="col-form-label">Sunday</label>
+                                </div>
+
+                                <div class="col-lg-8">
+                                    <div class="col-lg-4">
+                                        <label for="time">From</label>
+                                        <input type="text" th:name="startTime6" id="time13" disabled />
+
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label for="time">To</label>
+                                        <input type="text" th:name="endTime6" id="time14" disabled />
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="input_fields_wrap">
+                            </div>
+                        </div>
+
+
+                        <div class="col-lg-12 text-center">
+                            <div class="col-lg-6">
+                                <button id="btnReset" type="reset" class="btn btn-spacing btn-secondary center-block" Style="width: 100px;" OnClick="btnClear_Click">Reset</button>
+                            </div>
+                            <div class="col-lg-6">
+                                <button id="btnReg" class="btn btn-spacing btn-primary center-block" Style="width: 150px;" OnClick="btnRegister_Click">Register</button>
+
+                            </div>
+                        </div>
+                        <div class="form-group row"></div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-2"></div>
+        </div>
+    </div>
+
+
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+    <script src="main.js"></script>
+    <script src="/path/to/cdn/jquery.slim.min.js"></script>
+    <script src="/path/to/timepicker.js"></script>
+
+    <script>
+        $("#time1").timepicker()({
+            pickTime: false
+        });
+    </script>
+    <script>
+        $("#time2").timepicker()({
+            pickTime: false
+        });
+    </script>
+    <script>
+        $("#time3").timepicker()({
+            pickTime: false
+        });
+    </script>
+    <script>
+        $("#time4").timepicker()({
+            pickTime: false
+        });
+    </script>
+    <script>
+        $("#time5").timepicker()({
+            pickTime: false
+        });
+    </script>
+    <script>
+        $("#time6").timepicker()({
+            pickTime: false
+        });
+    </script>
+    <script>
+        $("#time7").timepicker()({
+            pickTime: false
+        });
+    </script>
+    <script>
+        $("#time8").timepicker()({
+            pickTime: false
+        });
+    </script>
+    <script>
+        $("#time9").timepicker()({
+            pickTime: false
+        });
+    </script>
+    <script>
+        $("#time10").timepicker()({
+            pickTime: false
+        });
+    </script>
+    <script>
+        $("#time11").timepicker()({
+            pickTime: false
+        });
+    </script>
+    <script>
+        $("#time12").timepicker()({
+            pickTime: false
+        });
+    </script>
+    <script>
+        $("#time13").timepicker()({
+            pickTime: false
+        });
+    </script>
+    <script>
+        $("#time14").timepicker()({
+            pickTime: false
+        });
+    </script>
+
+
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js" type="text/javascript"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" type="text/javascript"></script>
+    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="Stylesheet" type="text/css" />
+    <script type="text/javascript">
+        $(function() {
+            $("#datepicker9").datepicker({
+                dateFormat: "yy-mm-dd",
+                numberOfMonths: 2,
+                onSelect: function(selected) {
+                    var dt = new Date(selected);
+                    dt.setDate(dt.getDate() + 1);
+                    $("#datepicker10").datepicker("option", "minDate", dt);
+                }
+            });
+            $("#datepicker10").datepicker({
+                dateFormat: "yy-mm-dd",
+                numberOfMonths: 2,
+                onSelect: function(selected) {
+                    var dt = new Date(selected);
+                    dt.setDate(dt.getDate() - 1);
+                    $("#datepicker9").datepicker("option", "maxDate", dt);
+                }
+            });
+        });
+    </script>
+    <script>
+        $("input").on("click", function() {
+            $("#log").html($("input:checked").val() + " is checked!");
+        });
+    </script>
+
+    <script>
+        $('input[type="checkbox"]').click(function() {
+            if (!this.checked) {
+                $(this).closest('div').nextAll('div').find('input').attr('disabled', true);
+            } else {
+                $(this).closest('div').nextAll('div').find('input').attr('disabled', false);
+            }
+        });
+    </script>
+
+</body>
+
+</html>

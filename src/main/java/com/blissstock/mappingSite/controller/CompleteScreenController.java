@@ -146,7 +146,7 @@ public class CompleteScreenController {
         return "CM0001_CompleteScreen";
     }
     
-    @RequestMapping("/course-upload/complete")
+    @RequestMapping("/teacher/course-upload/complete")
     public String UploadCourseComplete(Model model) {
         String header3 = "Course Upload Complete";
         String header5 = "Acknowledgement!";

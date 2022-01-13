@@ -1,0 +1,80 @@
+/*General*/
+.btn {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: 1px;
+  display: inline-block;
+  padding: 8px 32px;
+  border-radius: 50px;
+  transition: 0.5s;
+  margin: 10px;
+  color: #fff;
+  background: #f549ec;
+}
+
+.btn:hover,
+.btn:focus {
+  color: #f549ec;
+  background: #fff;
+}
+
+/*Navigation bar*/
+.navbar {
+  margin-bottom: 0;
+  border-radius: 0;
+  background: rgba(0,0,0,.7);
+  border: 0;
+  padding: 5px 0;
+  width: 100%;
+  position: fixed;
+  z-index: 9999;
+}
+
+.navbar-brand {
+  float: left;
+  min-height: 80px;
+  padding: 0 15px 5px;
+}
+
+#upper-menu {
+  padding-top: 15px;
+  padding-left: 7%;
+}
+.navbar-inverse .navbar-nav > li > a {
+  color: #fff;
+}
+
+.navbar-inverse .navbar-nav > li > a:hover,
+.navbar-inverse .navbar-nav > li > a:focus {
+  color: #f549ec;
+}
+
+.navbar-inverse .navbar-nav .active a,
+.navbar-inverse .navbar-nav .active a:focus,
+.navbar-inverse .navbar-nav .active a:hover {
+  color: #f549ec;
+  background: transparent;
+
+}
+
+.navbar-inverse .navbar-text {
+  padding-top: 10px;
+  color: #fff;
+}
+
+.navbar-nav > li > a {
+  padding-top: 5px;
+  padding-bottom: 10px;
+}
+
+/* carousel */
+
+
+.carousel-caption {
+  text-align: left;
+  left: 20%;
+  top: 50%;
+  transform: translateY(-50%);
+  text-transform: uppercase;
+}
