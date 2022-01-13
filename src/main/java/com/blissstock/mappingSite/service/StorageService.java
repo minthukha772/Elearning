@@ -1,5 +1,6 @@
 package com.blissstock.mappingSite.service;
 
+import com.blissstock.mappingSite.entity.PaymentReceive;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.exceptions.UnauthorizedFileAccessException;
 import com.blissstock.mappingSite.model.FileInfo;
@@ -34,7 +35,10 @@ public interface StorageService {
     throws IOException, UnauthorizedFileAccessException;
 
   public boolean checkAuthForTeacher(Long uid);
-  
-  public Path loadProfile(String filename);
+
+  public void storeSlip(MultipartFile file, String fileName);
+
+  public FileInfo loadSlipAsFileInfo(PaymentReceive payment);
+ 
 
 }
