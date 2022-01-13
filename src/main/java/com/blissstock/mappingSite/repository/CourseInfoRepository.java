@@ -14,4 +14,10 @@ import org.springframework.stereotype.Repository;
 public interface CourseInfoRepository extends JpaRepository<CourseInfo, Long> {
     @Query(nativeQuery = true, value="select * from course_info where first_name ilike %:courseName%")
 	public List<CourseInfo> findByCourseName(@Param("courseName")String courseName);
+
+    @Query(value = "SELECT * FROM course_info WHERE course_id=:courseID AND uid_fkey=:uid",nativeQuery = true)
+    public CourseInfo findByCourseIDUID(@Param("courseID") Long courseID,@Param("uid") Long uid);
+
+    @Query(value = "UPDATE course_info SET course_name=:courseName, category=:category, class_link=:classLink, level=:level, about_course=:aboutCourse, prerequisite=:prerequisite, course_fees=:fees, is_course_approved=:isCourseApproved WHERE course_id=:courseID",nativeQuery = true)
+    public CourseInfo updateVideoCourse(@Param("courseID") Long courseID,@Param("courseName")String courseName, @Param("category")String category, @Param("classLink")String classLink, @Param("level")String level, @Param("aboutCourse")String aboutCourse, @Param("prerequisite")String prerequisite, @Param("fees")int fees, @Param("isCourseApproved")boolean isCourseApproved);
 }
