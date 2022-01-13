@@ -115,7 +115,7 @@ const renderCourseList = (courseList) => {
           <div class="card-body">
             <div >
               <h2>${e.courseName}</h2>
-              <a href="">${e.teacherName}</a>
+              <a href="/guest/explore/teacher/${e.teacherId}">${e.teacherName}</a>
               <h6 class="mt-1">${e.category} &gt;${e.level}</h6>
               <p>${e.aboutCourse}</p>
               <h4>Date</h4>

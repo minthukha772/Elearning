@@ -37,6 +37,8 @@ public class CourseData {
 
     private String teacherName;
 
+    private Long teacherId;
+
     private String photo;
 
     private CourseData() {
@@ -58,6 +60,7 @@ public class CourseData {
         courseData.endDate = courseInfo.getEndDate();
         courseData.fees = courseInfo.getFees();
         courseData.teacherName = courseInfo.getUserInfo().getUserName();
+        courseData.teacherId = courseInfo.getUserInfo().getUid();
         courseData.photo = courseInfo.getUserInfo().getPhoto();
         
         return courseData;
