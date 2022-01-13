@@ -155,7 +155,8 @@ public class CompleteScreenController {
         model.addAttribute("header5", header5);
         model.addAttribute("paragraph", paragraph);
         List<String> breadcrumbList = new ArrayList<>();
-        breadcrumbList.add("UploadCourse");
+        breadcrumbList.add("My Course");
+        breadcrumbList.add("Course Registration");
         breadcrumbList.add("Complete");
         model.addAttribute("breadcrumbList",breadcrumbList);
         String nav_type = "fragments/usernav";
@@ -172,8 +173,9 @@ public class CompleteScreenController {
         model.addAttribute("header5", header5);
         model.addAttribute("paragraph", paragraph);
         List<String> breadcrumbList = new ArrayList<>();
-        breadcrumbList.add("Admin");
-        breadcrumbList.add("UploadCourse");
+        breadcrumbList.add("Top");
+        breadcrumbList.add("Teacher List");
+        breadcrumbList.add("Course Registration");
         breadcrumbList.add("Complete");
         model.addAttribute("breadcrumbList",breadcrumbList);
         String nav_type = "fragments/adminnav";

@@ -2,6 +2,10 @@ package com.blissstock.mappingSite.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.blissstock.mappingSite.entity.Content;
@@ -18,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -43,20 +48,54 @@ public class courseRegistrationController {
 
     private List<CourseTime> ctList = new ArrayList<>(); 
     
+    
+    @RequestMapping(value={"/teacher/course-registration","/admin/course-registration/{id}"})
+    private String courseRegistration(Model model,@PathVariable(required = false) Long id){
+        logger.info("GET Requested");
 
-    @RequestMapping(value={"/teacher/course-registration","/admin/course-registration"})
-    private String courseRegistration(Model model){
+        
+
         CourseInfo courseInfo = new CourseInfo();
        
         List<CourseTime> courseTimeList = new ArrayList<>(7);  
         courseInfo.setCourseTime(courseTimeList);
         
+        
+
+        UserRole role = userSessionService.getRole();
+        if (role == UserRole.ADMIN || role == UserRole.SUPER_ADMIN) {
+            long uid = id;
+            courseInfo.setUid(uid);
+            logger.info("Teacher ID for course registration {}",uid);
+            // model.addAttribute("teacherID", uid);
+            System.out.print("Admin registration : "+uid);
+            List<String> breadcrumbList = new ArrayList<>();
+            breadcrumbList.add("Top");
+            breadcrumbList.add("Teacher List");
+            breadcrumbList.add("Course Registration");
+            model.addAttribute("breadcrumbList",breadcrumbList);
+            String nav_type = "fragments/adminnav";
+            model.addAttribute("nav_type",nav_type);
+        }
+        else{
+            long uid =userSessionService.getId();
+            courseInfo.setUid(uid);
+            logger.info("Teacher ID for course registration {}",uid);
+            // model.addAttribute("teacherID", uid);
+            System.out.print("Teacher Registration"+uid);
+            List<String> breadcrumbList = new ArrayList<>();
+            breadcrumbList.add("My Course");
+            breadcrumbList.add("Course Registration");
+            model.addAttribute("breadcrumbList",breadcrumbList);
+            String nav_type = "fragments/usernav";
+            model.addAttribute("nav_type",nav_type);
+        }
+        
         model.addAttribute("course", courseInfo);
         
-        UserRole role = userSessionService.getRole();
         System.out.print("User Role:"+role);
 
-        if(role.equals("TEACHER")){
+        if(role == UserRole.TEACHER){
             model.addAttribute("postAction", "/teacher/courseregister-confirm");
         }
         else{
@@ -65,8 +104,9 @@ public class courseRegistrationController {
 
         
 
-        return "card";
+        return "AT0001_CourseRegistration";
     }
+    
     
     @PostMapping(value={"/teacher/courseregister-confirm","/admin/courseregister-confirm"})
     private String courseRegistrationConfirm(@ModelAttribute("course") CourseInfo course,
@@ -161,23 +201,39 @@ public class courseRegistrationController {
 
         UserRole role = userSessionService.getRole();
 
-        if(role.equals("TEACHER")){
+        if(role == UserRole.TEACHER){
             model.addAttribute("postAction", "/teacher/save-course-register");
+            List<String> breadcrumbList = new ArrayList<>();
+            breadcrumbList.add("My Course");
+            breadcrumbList.add("Course Registration");
+            breadcrumbList.add("Confirm");
+            model.addAttribute("breadcrumbList",breadcrumbList);
+            String nav_type = "fragments/usernav";
+            model.addAttribute("nav_type",nav_type);
         }
         else{
             model.addAttribute("postAction", "/admin/save-course-register");
+            List<String> breadcrumbList = new ArrayList<>();
+            breadcrumbList.add("Top");
+            breadcrumbList.add("Teacher List");
+            breadcrumbList.add("Course Registration");
+            breadcrumbList.add("Confirm");
+            model.addAttribute("breadcrumbList",breadcrumbList);
+            String nav_type = "fragments/adminnav";
+            model.addAttribute("nav_type",nav_type);
         }
         
         // System.out.println("Heehee" + day0 + " " + startTime0 + " " + endTime0 + " " + day1 + " " + startTime1 + " " + endTime1);
         // System.out.println("Haahaa " + courseTimeList.get(0).getCourseDays() + courseTimeList.size());
         
-        return "cardConfirm";
+        return "AT0002_CourseRegistrationConfirm";
     }
 
     @PostMapping(value = {"/teacher/save-course-register","/admin/save-course-register"})
     private String saveCourseRegister(@ModelAttribute("course") CourseInfo course){
-        course.setUserInfo(userInfoRepository.findById(userSessionService.getId()).get());
-        logger.info("");
+        // course.setUserInfo(userInfoRepository.findById(userSessionService.getId()).get());
+        course.setUserInfo(userInfoRepository.findById(course.getUid()).get());
+        logger.info("Post Requested");
         course.setIsCourseApproved(true); //was string "true"
         courseRepo.save(course);
         System.out.println("HoeHoe" + ctList);
@@ -188,7 +244,7 @@ public class courseRegistrationController {
 
         UserRole role = userSessionService.getRole();
 
-        if(role.equals("TEACHER")){
+        if(role == UserRole.TEACHER){
             return "redirect:/teacher/course-upload/complete";
         }
         else{
@@ -197,10 +253,10 @@ public class courseRegistrationController {
         //return "takealeave";
     }
 
-    @RequestMapping("/admin/course")
-    public String courseTest()
-    {
-        return "card";
-    }
+    // @RequestMapping("/admin/course")
+    // public String courseTest()
+    // {
+    //     return "card";
+    // }
     
 }

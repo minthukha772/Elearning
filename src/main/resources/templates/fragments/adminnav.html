@@ -1,520 +1,127 @@
-<!DOCTYPE html>
-<html lang="en">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4">
-
-<head>
-    <meta charset="utf-8">
-    <link rel="shortcut icon" type="image/ico" href="http://www.datatables.net/favicon.ico">
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, user-scalable=no">
-    <title>Mapping Site</title>
-    <!-- <link rel="stylesheet" type="text/css"
-        href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css"> -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <!-- Important for DropDown -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script> -->
-    <link rel="stylesheet" type="text/css" href="css/dataTables.bootstrap5.css">
-    <link rel="stylesheet" type="text/css" href="css/shCore.css">
-    <link rel="stylesheet" type="text/css" href="css/demo.css">
-    <!-- <link rel="stylesheet" type="text/css" href="css/dataTableManual.css">
-    <link rel="stylesheet" type="text/css" href="css/dataTableSCSSMaual.css"> -->
-
-
-
-    <title>Mapping Site</title>
-
-    <style>
-        body {
-            font-family: "Lato", sans-serif;
-        }
-
-
-
-        .sidebar .text {
-            font-size: 20px;
-            font-weight: 600;
-            line-height: 50px;
-            text-align: center;
-            background-color: #6C757D;
-            letter-spacing: 1px
-        }
-
-        .text {
-            color: #5227CC;
-            position: absolute;
-            top: 0;
-            float: left;
-            /* padding-left: 2px; */
-        }
-
-        .sidebar {
-            color: white;
-            height: 100%;
-            width: 250px;
-            position: absolute;
-            z-index: 100;
-            top: 0;
-            left: 0;
-            background-color: #6C757D;
-            overflow-x: hidden;
-            /* float: left; */
-            transition: 0.5s;
-            padding-top: 60px;
-
-
-        }
-
-        .sidebar a {
-            /* padding: 2px 2px 2px 2px; */
-            text-decoration: none;
-            font-size: 15px;
-            color: #818181;
-            display: block;
-            transition: 0.3s;
-        }
-
-        .sidebar a:hover {
-            color: #f1f1f1;
-        }
-
-        .sidebar .closebtn {
-            position: absolute;
-            top: 10px;
-            right: 25px;
-            font-size: 36px;
-            margin-left: 50px;
-        }
-
-        .openbtn {
-            font-size: 20px;
-            cursor: pointer;
-            background-color: #5227CC;
-            color: #f1f1f1;
-            padding: 8px 8px;
-            border: none;
-        }
-
-        .openbtn:hover {
-            background-color: #444;
-        }
-
-        #main {
-            transition: margin-left .5s;
-            padding: 16px;
-        }
-
-        /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
-        @media screen and (max-height: 450px) {
-            .sidebar {
-                padding-top: 15px;
-            }
-
-            .sidebar a {
-                font-size: 18px;
-            }
-        }
-
-        /* Update */
-        .sidebar ul {
-            list-style: none;
-            line-height: 24px;
-            /* padding: 0px;  */
-            margin-bottom: 10px;
-        }
-
-        .sidebar li {
-            margin-bottom: 10px;
-        }
-
-        .sidebar ul li a {
-            color: white;
-            text-decoration: none;
-        }
-
-        .sidebar ul li a:hover {
-            color: #5227CC;
-            background-color: transparent;
-            text-decoration: none;
-        }
-
-        .sidebar ul li a.active-link {
-            color: #5227CC;
-            background-color: transparent;
-            text-decoration: none;
-        }
-
-        /* header */
-        .header {
-            height: calc(3rem + 1rem);
-            /* padding: 0 0 0 calc(68px + 2px) */
-            padding: 0 0 0 50px
-        }
-
-        .header_img {
-            width: 35px;
-            height: 35px;
-            display: flex;
-            justify-content: center;
-            border-radius: 50%;
-            overflow: hidden;
-            float: right;
-        }
-
-        .header_img img {
-            width: 40px;
-        }
-
-
-        /* header */
-
-        /* breadcrumb */
-        .breadcrumb li a {
-            /* background-color: #FFFFFF; */
-            color: #5227CC;
-            background-color: transparent;
-            text-decoration: none;
-        }
-
-        li {
-            list-style-type: none;
-        }
-
-        /* Breadcrumb */
-
-        footer {
-            background-color: #0B0D17;
-            padding: 10px;
-            text-align: center;
-            color: white;
-        }
-
-        /* #footer {
-            position: fixed;
-            bottom: 0px;
-            left: 0px
-        } */
-
-        /* nav {
-            -webkit-flex: 2;
-            -ms-flex: 2;
-            flex: 2;
-            background: #ccc;
-
-        } */
-
-        /* #mySidebar.stickIt {
-            position: fixed;
-            top: 0px;
-        } */
-
-        .newbtn {
-            color: #000;
-            background-color: white;
-            border-color: #C9B9F7;
-            float: inherit;
-        }
-
-        .newbtn:hover {
-            color: #fff;
-            background-color: #7749F8;
-            border-color: #C9B9F7;
-            float: inherit;
-        }
-
-        .newbtn:focus {
-            color: #fff;
-            background-color: #7749F8;
-            border-color: #C9B9F7;
-            float: inherit;
-        }
-
-        /* DataTable Update */
-        /* .dataTables_filter {
-            float: left !important;
-        } */
-
-        .pagination>li>a,
-        .pagination>li>span {
-            color: #7749F8;
-        }
-
-        .pagination>li.active>a,
-        .pagination>li.active>span {
-            color: #fff !important;
-            background-color: #7749F8 !important;
-        }
-
-        /* .pagination > li.active > a, .pagination > li.active > span{background-color:#7749F8;color: #fff;} */
-        /* .dataTables_wrapper .dataTables_paginate .paginate_button:active {
-            background: #7749F8;
-            color: #fff!important;
-        } */
-
-        .dataTables_filter {
-            display: none;
-        }
-
-        /* Modal*/
-        .modal-title{
-            text-align: center;
-            margin: 0 auto;
-        }
-        #myModal{
-            text-align: center;
-        }
-    </style>
-
-    <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
-    <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script> -->
-
-    <!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script> -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
-
-    <script type="text/javascript" language="javascript" src="js/jquery.dataTables.js"></script>
-    <script type="text/javascript" language="javascript" src="js/dataTables.bootstrap5.js"></script>
-    <script type="text/javascript" language="javascript" src="js/shCore.js"></script>
-    <script type="text/javascript" language="javascript" src="js/demo.js"></script>
-    <script type="text/javascript" language="javascript" class="init">
-
-        $(document).ready(function () {
-            var t = $('#example').DataTable({
-                "columnDefs": [{
-                    "searchable": false,
-                    "orderable": false,
-                }],
-                "order": [
-                    [1, 'asc']
-                ],
-                "dom": '<"top"f>rt<"bottom"lp><"clear">', // Positions table elements
-                // "language": {
-                //     "search": "_INPUT_",            // Removes the 'Search' field label
-                //     "searchPlaceholder": "Search"   // Placeholder for the search box
-                // }
-                dom: 'lrtip'
-                // It's work
-                // initComplete: function () {
-                //     this.api().columns(4).every(function () {
-                //         var column = this;
-                //         var select = $('<select><option value="">All</option></select>')
-                //             .appendTo($(column.footer()).empty())
-                //             .on('change', function () {
-                //                 var val = $.fn.dataTable.util.escapeRegex(
-                //                     $(this).val()
-                //                 );
-
-                //                 column
-                //                     .search(val ? '^' + val + '$' : '', true, false)
-                //                     .draw();
-                //             });
-
-                //         column.data().unique().sort().each(function (d, j) {
-                //             select.append('<option value="' + d + '">' + d + '</option>')
-                //         });
-                //     });
-                // }
-            });
-
-            $("#mySearchButton").on("keyup click", function () {
-                t.search($("#mySearchText").val()).draw();
-            });
-
-            // var selectedValue=$("#account_status").val();
-            // console.log("Selected Value"+selectedValue);
-            // t.columns(4).search( selectedValue ).draw();
-
-            $('#account_status').on('change', function () {
-                t.search(this.value).draw();
-            });
-            // $('#account_status select').on('change', function () {
-            //     var val = $.fn.dataTable.util.escapeRegex(
-            //         $(this).val()
-            //     );
-
-            //     this
-            //         .search(val ? '^' + val + '$' : '', true, false)
-            //         .draw();
-            // });
-
-            // $('#example').DataTable({
-
-            // });
-
-            // $("#mySearchText").keyup(function() {t.fnFilter(this.value);});    
-            // $('#mySearchText').keypress(function(){
-            //     t.fnFilter( $(this).val() );
-            // });
-
-            // $('#mySearchText').keypress(function(){
-            //     t.fnFilter( this.value);
-            // });
-
-            // Yay it's ok
-            // $("#mySearchText").on("keyup search input paste cut", function() {
-            //     t.search(this.value).draw();
-            // });  
-            //Yay it's ok
-
-            t.on('order.dt search.dt', function () {
-                t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
-                    cell.innerHTML = i + 1;
-                });
-            }).draw();
-        });
-
-
-
-        // $(document).ready(function () {
-        //     var t = $('#example').DataTable({
-        //         "columnDefs": [{
-        //             "searchable": false,
-        //             "orderable": false,
-        //             "targets": 0
-        //         }],
-        //         "order": [
-        //             [ 1, 'asc' ]
-        //         ]
-        //     });
-
-        //     t.on('order.dt search.dt', function () {
-        //         t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
-        //             cell.innerHTML = i + 1;
-        //         });
-        //     }).draw();
-        // });
-
-        // dTable = $('#example').DataTable({
-        //     "bLengthChange": false, // this gives option for changing the number of records shown in the UI table
-        //     "lengthMenu": [4], // 4 records will be shown in the table
-        //     "columnDefs": [
-        //         { "className": "dt-center", "targets": "_all" } //columnDefs for align text to center
-        //     ],
-        //     "dom": "lrtip" //to hide default searchbox but search feature is not disabled hence customised searchbox can be made.
-        // });
-
-        // $('#myCustomSearchBox').keyup(function () {
-        //     dTable.search($(this).val()).draw();   // this  is for customized searchbox with datatable search feature.
-        // });
-
-    //     $('#myCustomSearchBox').keypress(function(){
-    //      oTable.fnFilter( $(this).val() );
-    //  });
-
-//     $('#myCustomSearchBox').on( 'keyup', function () {
-//    table.search( this.value ).draw();
-// } );
-// $("#mySearchText").keyup(function() {
-//    dataTable.fnFilter(this.value);
-// });  
-
-    // $("#myCustomSearchBox").html($(".dataTables_filter"));
-    
-        $(document).ready(function(){
-            $("#addadmin").click(function(){
-                $("#myModal").modal('show');
-            });
-        });
-    
-
-    </script>
-
-</head>
-
-<body>
-    <div style="position: relative;">
-        <!-- <div id="mySidebar" class="sidebar" style="float:left;">
-                                                                        
-            <div class="text">
-                Menu
-            </div>
-            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
-            <ul class="main_side">
-                <li><a th:href="@{/admin/profile}">Profile</a></li>
-                <li> <a href="#" id="1">User List <span class="fas fa-caret-down"></span> </a>
-                    <ul class="item-show-1">
-                        <li><a th:href="@{/student-list}">Student List</a></li>
-                        <li><a th:href="@{/teacher-list}">Teacher List</a></li>
-                        <li><a th:href="@{/admin-list}"  class="active-link">Admin List</a></li>
-                    </ul>
-                </li>
-                <li><a th:href="@{/payment-list}">Payment Record</a></li>
-                <li> <a id="2">Course <span class="fas fa-caret-down"></span> </a>
-                    <ul class="item-show-2">
-                        <li><a th:href="@{/course-list}">Course List</a></li>
-                    </ul>
-                </li>
-                <li><a th:href="@{/review-list}">Review List</a></li>
-                <li><a th:href="@{/absence-list}">Absence List</a></li>
-                <li><a th:href="@{/}">Log Out</a></li>
-            </ul>
-        </div> -->
-
-        <div id="main">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <div class="container-fluid">
-                    <div style="justify-content: space-between;">
-                        <!-- <button class="openbtn" onclick="openNav()">☰</button> -->
-                        <a class="navbar-brand" href="#">Mapping Site</a>
-                    </div>
-                  
-                  <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                  </button> -->
-                  <div class="header_img">
-                    <img src="images/admin_profile.jpg" th:src="@{/images/admin_profile.jpg}" alt="people-profile" onclick="location.href='/profile'">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <button
+      type="button"
+      class="btn btn-light"
+      data-bs-toggle="offcanvas"
+      href="#offcanvasExample"
+      role="button"
+      aria-controls="offcanvasExample"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        fill="currentColor"
+        class="bi bi-list"
+        viewBox="0 0 16 16"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"
+        ></path>
+      </svg>
+    </button>
+    <a class="navbar-brand" href="#">Mapping Site</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNavDropdown"
+      aria-controls="navbarNavDropdown"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+  </div>
+</nav>
+
+
+<!-- offcanvas -->
+<div
+  class="offcanvas offcanvas-start"
+  tabindex="-1"
+  id="offcanvasExample"
+  aria-labelledby="offcanvasExampleLabel"
+>
+<!-- header -->
+  <div class="offcanvas-header">
+
+    <h5>
+      <a href="#" style="text-decoration: none;" class="nav_logo">
+        <div class="my-3">
+          <i class="bx bx-layer nav_logo-icon"></i>
+          <span class="nav_logo-name">Menu</span>
+        </div>
+      </a>
+    </h5>
+
+    <button
+      type="button"
+      class="btn-close text-reset"
+      data-bs-dismiss="offcanvas"
+      aria-label="Close"
+    ></button>
+  </div>
+
+  <!-- body -->
+  <div class="offcanvas-body">
+    <div>
+
+      <div class="list-group list-group-flush">
+
+        <a href="#" class="list-group-item">
+          <div class="my-3">
+            <i class="bx bx-user nav_icon"></i>
+            <span class="nav_name">Profile</span>
+          </div>
+        </a>
+
+        <div class="list-group-item">
+          <div class="accordion accordian-flush my-3" id="accordionExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    <i class='bx bxs-user-detail'></i>
+                    <span class="nav_name">
+                      User List
+                    </span>
+                  </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><a href="#" style="text-decoration: none;"><i class="bx bx-group"></i><span class="nav_name">Student List</span></a></li>
+                        <li class="list-group-item"><a href="#" style="text-decoration: none;"><i class="bx bx-group"></i><span class="nav_name">Teacher List</span></a></li></li>
+                      </ul>
+                  </div>
                 </div>
-                </div>
-              </nav>
+              </div>
+          </div>
+        </div>
 
-            
-         
+        <a href="#" class="list-group-item">
+          <div class="my-3">
+            <i class="bx bx-book-open"></i><span class="nav_name">Courses</span>
+          </div>
+        </a>
+        
+        <a href="#" class="list-group-item">
+          <div class="my-3">
+            <i class="bx bxs-user-x"></i
+            ><span class="nav_name">Absence List</span>
+          </div>
+        </a>
+        
+        <a href="#" class="list-group-item">
+          <div class="my-3">
+            <i class="bx bx-log-out nav_icon"></i>
+            <span class="nav_name">Log Out</span>
+          </div>
+        </a>
 
-    <script>
-        function openNav() {
-            document.getElementById("mySidebar").style.width = "250px";
-            document.getElementById("main").style.marginLeft = "250px";
-            document.getElementById("sidebutton").style.display = "none";
-            document.getElementById("mySidebar").style.position = "fixed";
-        }
+      </div> 
 
-        function closeNav() {
-            document.getElementById("mySidebar").style.width = "0";
-            document.getElementById("main").style.marginLeft = "0";
-            document.getElementById("sidebutton").style.display = "block";
-            document.getElementById("sidebutton").style.width = "5px";
-        }
+    </div>
+  </div>
 
-        // $(window).scroll(function () {
-        //     $('#footer').css('left', '-' + $(window).scrollLeft() + 'px');
-        // });
-
-        // $(window).scroll(function () {
-        //     var scroll_top = $(this).scrollTop(); // get scroll position top
-        //     var height_element_parent = $("#mySidebar").parent().outerHeight(); //get high parent element
-        //     var height_element = $("#mySidebar").height(); //get high of elemeneto
-        //     var position_fixed_max = height_element_parent - height_element; // get the maximum position of the elemen
-        //     var position_fixed = scroll_top < 250 ? 250 - scroll_top : position_fixed_max > scroll_top ? 0 : position_fixed_max - scroll_top;
-        //     $("#mySidebar").css("top", position_fixed);
-        // });
-
-        var $scrollingDiv = $("#mySidebar");
-
-        $(window).scroll(function () {
-            var y = $(this).scrollTop(),
-                maxY = $('#footer').offset().top,
-                scrollHeight = $scrollingDiv.height();
-
-            if (y < maxY - scrollHeight) {
-                $scrollingDiv
-                    .stop()
-                    .animate({ "marginTop": ($(window).scrollTop()) + "px" }, "slow");
-            }
-        });
-
-    </script>
-
-</body>
-
-</html>
+</div>

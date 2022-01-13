@@ -67,7 +67,17 @@
 </head>
 </html>
 <body>
+    <div th:replace="${nav_type}"></div>
     
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <th:block th:each="bc : ${breadcrumbList}">
+            <!-- TODO change last route color -->
+            <li class="breadcrumb-item"><a href="#" th:utext="${bc}" style="text-decoration: none;color: #7749F8;"></a></li> 
+            <!-- <li class="breadcrumb-item active"><a href="#" th:utext="${state.last}"></a></li> -->
+            </th:block>
+        </ol>
+    </nav>
 
     <div class="card mx-auto p-3 mt-3" style="max-width: 800px;">
         <div class="text-center studentListHeader">
@@ -75,7 +85,7 @@
         </div>
         <hr class="py-1">
         <div>
-            <form th:action="@{/admin/save-course-register}" method="post">
+            <form th:action="@{${postAction}}" method="post">
                 <div th:object="${course}">
                     <div class="row form-sec-header">
                         <div class="col-lg-12 text-center">
@@ -136,8 +146,11 @@
 
                         <textarea class="form-control" id="inputClassLink" th:field="*{classLink}" style="border: none transparent;" readonly></textarea>
                     </div>
-
+                    <!-- <input type="hidden" class="form-control" id="teacherid" th:field="*{uid}" style="border: none transparent;" readonly></input> -->
+                    <input type="hidden" class="form-control" id="teacherid" th:field="*{uid}" style="border: none transparent;" readonly></input>
                 </div>
+
+                
 
                 <div th:if="${classActiveLive}">
 
