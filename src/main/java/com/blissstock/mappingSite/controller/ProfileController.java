@@ -305,6 +305,32 @@ public class ProfileController {
     return ResponseEntity.status(HttpStatus.OK).body("operation success");
   }
 
+  @PostMapping("admin/profile/suspend")
+  public ResponseEntity<Object> suspendUser(
+    Model model,
+    Long uid,
+    HttpServletRequest httpServletRequest
+  ){
+    logger.info("Suspend request for user with id {}", uid);
+
+    try {
+      UserInfo userInfo = userService.getUserInfoByID(uid);
+      if(userInfo == null){
+        throw new UserNotFoundException();
+      }
+      userAccountControlService.suspendUser(userInfo);
+    } catch (UserNotFoundException e) {
+      e.printStackTrace();
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User Not Found");
+    } catch (Exception e){
+      e.printStackTrace();
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
+    }
+
+    return ResponseEntity.status(HttpStatus.OK).body("operation success");
+
+  }
+
   private boolean isEditable(Long id) {
     UserRole role = userSessionService.getRole();
     if (role == UserRole.ADMIN || role == UserRole.SUPER_ADMIN) {

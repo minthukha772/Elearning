@@ -1,1 +1,1 @@
-SELECT * FROM review;
+SELECT * FROM user_account;
