@@ -28,7 +28,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
     
 
     <!-- Advance Search -->
-    <div class="container-fluid mb-3" style="background-color: #5eba7d">
+    <div class="container-fluid mb-3" style="background-color: #5eba7d" th:if="${searchable}">
       <h2 class="pt-3 mb-3 text-white">Explore Courses</h2>
 
       <form
@@ -97,6 +97,8 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
       </form>
     </div>
     <!-- End : Advance Search -->
+
+
     <div class="container-fluid">
       <div class="row">
         <!-- Filter -->
