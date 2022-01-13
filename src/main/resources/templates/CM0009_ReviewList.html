@@ -15,9 +15,11 @@
     <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
 </head>
 
-<body id="body-pd">
-    <div th:replace="fragments/nav"></div>
+<body>
+    <!-- <div th:replace="fragments/nav"></div> -->
+    <!-- <div th:replace="fragments/teacher-nav"></div> -->
 
+    <!-- Review List -->
     <div sec:authorize="!hasAuthority('ROLE_TEACHER')" th:if="${stuRegistered!=null}">
         <div class="container py-5">
             <div class="row">
@@ -47,8 +49,9 @@
                                 <li class="list-group-item">
                                     <div class="media align-items-lg-center flex-column flex-lg-row p-3">
                                         <div class="d-flex align-items-center justify-content-between mt-1">
-                                            <h5 class="font-weight-bold my-2 col-md-10" style="color: #87281A;">Course Average Rating</h5>
-                                            
+                                            <h5 class="font-weight-bold my-2 col-md-10" style="color: #87281A;">Course
+                                                Average Rating</h5>
+
                                             <ul class="list-inline large">
                                                 <p class="mx-4" style="color: #87281A;">[[${averageFloat}]]</p>
                                                 <li class="list-inline-item m-0"><i class="fa fa-star text-success"
@@ -105,11 +108,14 @@
                                     <div class="media align-items-lg-center flex-column flex-lg-row p-3">
                                         <div class="media-body order-2 order-lg-1">
                                             <div class="d-flex align-items-center justify-content-between mt-1">
-                                                <p class="font-italic text-muted mb-0 small" th:text="${#dates.format(review.assignedDate, 'yyyy-MM-dd')}"></p>
-                                                <div sec:authorize="hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SUPER_ADMIN')">
-                                                <a th:href="@{'/admin/edit-teacher-review/'+${review.reviewId}}">Edit</a>
+                                                <p class="font-italic text-muted mb-0 small"
+                                                    th:text="${#dates.format(review.assignedDate, 'yyyy-MM-dd')}"></p>
+                                                <div
+                                                    sec:authorize="hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SUPER_ADMIN')">
+                                                    <a
+                                                        th:href="@{'/admin/edit-teacher-review/'+${review.reviewId}}">Edit</a>
                                                 </div>
-                                                </div>
+                                            </div>
                                             <h5 class="mt-0 font-weight-bold mb-2">[[${trName}]]</h5>
                                             <span th:if="${review.reviewType == 1}"
                                                 style="color: #DC3545;">Concerns</span>
@@ -128,6 +134,8 @@
             </div>
         </div>
     </div>
+    <!-- End: Review List -->
+
     <div th:if="${stuRegistered==null}">
         <div class="container py-5">
             <div class="row">
@@ -149,8 +157,9 @@
                         <li class="list-group-item">
                             <div class="media align-items-lg-center flex-column flex-lg-row p-3">
                                 <div class="d-flex align-items-center justify-content-between mt-1">
-                                    <h5 class="font-weight-bold my-2 col-md-10" style="color: #87281A;">Course Average Rating</h5>
-                                    
+                                    <h5 class="font-weight-bold my-2 col-md-10" style="color: #87281A;">Course Average
+                                        Rating</h5>
+
                                     <ul class="list-inline large">
                                         <p class="mx-4" style="color: #87281A;">[[${averageFloat}]]</p>
                                         <li class="list-inline-item m-0"><i class="fa fa-star text-success"
@@ -170,9 +179,9 @@
 
                                     <p class="font-italic text-muted mb-0 small"
                                         th:text="${#dates.format(review.assignedDate, 'yyyy-MM-dd')}"></p>
-                                        <div sec:authorize="hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SUPER_ADMIN')">
-                                            <a th:href="@{'/admin/edit-student-review/'+${review.reviewId}}">Edit</a>
-                                        </div>
+                                    <div sec:authorize="hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SUPER_ADMIN')">
+                                        <a th:href="@{'/admin/edit-student-review/'+${review.reviewId}}">Edit</a>
+                                    </div>
                                 </div>
                                 <h5 class="mt-0 font-weight-bold mb-2" th:text="${review.join.userInfo.userName}"></h5>
                                 <div class="d-flex align-items-center justify-content-between mt-1">
