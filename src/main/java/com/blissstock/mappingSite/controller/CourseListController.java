@@ -61,17 +61,11 @@ public class CourseListController {
         logger.info("GET request");
 
         UserInfo userInfo = userService.getUserInfoByID(id);
-        logger.debug("User Info: {}", userInfo);
-        logger.debug("userInfo == null: {}", userInfo == null);
-        logger.debug("userInfo.getCourseInfo() == null: {}", userInfo.getCourseInfo() == null);
-        logger.debug("!{}.equals(UserRole.TEACHER.getValue()): {}",
-                userInfo.getUserAccount().getRole(),
-                !userInfo.getUserAccount().getRole().equals(UserRole.TEACHER.getValue()));
-
         if (userInfo == null || userInfo.getCourseInfo() == null
                 || !userInfo.getUserAccount().getRole().equals(UserRole.TEACHER.getValue())) {
             return "redirect:/guest/explore/";
         }
+        model.addAttribute("userInfo", userInfo);
 
         List<CourseInfo> courseList = userInfo.getCourseInfo();
         // Encasulate Data
@@ -80,7 +74,7 @@ public class CourseListController {
         logger.info("Getting course, count {}", courseList.size());
         model.addAttribute("courseList", courseDataList);
         // Enable Advance Search Function
-        model.addAttribute("searchable", true);
+        model.addAttribute("searchable", false);
         // model.addAttribute("courseList", new ArrayList<>());
         return "CM0002_CourseList";
     }
