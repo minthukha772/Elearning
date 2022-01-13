@@ -1,36 +1,101 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <button
+      type="button"
+      class="btn btn-light"
+      data-bs-toggle="offcanvas"
+      href="#offcanvasExample"
+      role="button"
+      aria-controls="offcanvasExample"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        fill="currentColor"
+        class="bi bi-list"
+        viewBox="0 0 16 16"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"
+        ></path>
+      </svg>
+    </button>
+    <a class="navbar-brand" href="#">Mapping Site</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNavDropdown"
+      aria-controls="navbarNavDropdown"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <!-- <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/teacher/profile/}">Profile</a>
+        </li>
+      </ul>
+    </div> -->
+  </div>
+</nav>
 
+<div
+  class="offcanvas offcanvas-start"
+  tabindex="-1"
+  id="offcanvasExample"
+  aria-labelledby="offcanvasExampleLabel"
+>
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
+    <button
+      type="button"
+      class="btn-close text-reset"
+      data-bs-dismiss="offcanvas"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="offcanvas-body">
+    <div>
+      <a href="#" class="nav_logo">
+        <i class="bx bx-layer nav_logo-icon"></i>
+        <span> class="nav_logo-name">Menu</span>
+      </a>
+      <div class="nav_list">
+        <a href="#" class="nav_link active">
+          <i class="bx bx-user nav_icon"></i>
+          <span class="nav_name">Profile</span>
+        </a>
 
-<!-- <body id="body-pd"> -->
-    <header class="header" id="header">
-        <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
-        <div class="header_img">       
-            <!-- <img id="profilePic" class="pic" th:src="${profile.url}"  th:alt="${profile.name}" /> -->
+        <a href="#" class="nav_link nav-link"
+          ><i class="bx bxs-user-detail"></i
+          ><span class="nav_name">User List</span>
+        </a>
+        <!-- <a class="nav-link nav-item has-submenu" href="#">  <i class='bx bxs-user-detail'></i> <span class="nav_name">User List</span>  </a> -->
+        <div class="submenu collapse nav_list">
+          <a class="nav_link" href="#"
+            ><i class="bx bx-group"></i
+            ><span class="nav_name">Student List</span>
+          </a>
+          <a class="nav_link" href="#"
+            ><i class="bx bxs-group"></i
+            ><span class="nav_name">Teacher List</span>
+          </a>
         </div>
-    </header>
-    <div class="l-navbar" id="nav-bar">
-        <nav class="nav sidebar">
-            <div><a href="#" class="nav_logo"> <i class='bx bx-layer nav_logo-icon'></i> <span
-                        class="nav_logo-name">Menu</span> </a>
-                <div class="nav_list"> <a href="#" class="nav_link active"> <i class='bx bx-user nav_icon'></i> <span
-                            class="nav_name">Profile</span> </a>
 
-                    <a href="#" class="nav_link nav-link"><i class='bx bxs-user-detail'></i><span class="nav_name">User
-                            List</span> </a>
-                    <!-- <a class="nav-link nav-item has-submenu" href="#">  <i class='bx bxs-user-detail'></i> <span class="nav_name">User List</span>  </a> -->
-                    <div class="submenu collapse nav_list">
-                        <a class="nav_link" href="#"><i class='bx bx-group'></i><span class="nav_name">Student
-                                List</span> </a>
-                        <a class="nav_link" href="#"><i class='bx bxs-group'></i><span class="nav_name">Teacher
-                                List</span> </a>
-                    </div>
+        <a href="#" class="nav_link">
+          <i class="bx bx-book-open"></i><span class="nav_name">Courses</span>
+        </a>
+        <a href="#" class="nav_link">
+          <i class="bx bxs-user-x"></i
+          ><span class="nav_name">Absence List</span>
+        </a>
 
-                    <a href="#" class="nav_link"> <i class='bx bx-book-open'></i><span class="nav_name">Courses</span>
-                    </a>
-                    <a href="#" class="nav_link"> <i class='bx bxs-user-x'></i><span class="nav_name">Absence
-                            List</span> </a>
-
-
-                    <!-- <div><a href="#" class="nav_logo"> <i class='bx bx-layer nav_logo-icon'></i> <span class="nav_logo-name">Menu</span> </a>
+        <!-- <div><a href="#" class="nav_logo"> <i class='bx bx-layer nav_logo-icon'></i> <span class="nav_logo-name">Menu</span> </a>
                 <div class="nav_list"> <a href="#" class="nav_link active"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Profile</span> </a>
                     <a href="#" class="nav_link"> <i class='bx bxs-user-detail'></i> <span class="nav_name">User List</span> </a> 
                     <a href="#" class="nav_link"><i class='bx bxs-user-detail'></i><span class="nav_name">User List</span> </a>
@@ -43,9 +108,11 @@
                     <a href="#" class="nav_link"> <i class='bx bxs-user-x'></i><span class="nav_name">Absence List</span> </a>                   
                     <a href="#" class="nav_link"> <i class='bx bx-bar-chart-alt-2 nav_icon'></i> <span class="nav_name">Stats</span> </a> </div>
                 </div> -->
-                <a href="#" class="nav_link"> <i class='bx bx-log-out nav_icon'></i> <span class="nav_name">Log 
-                        Out</span> </a>
-                </div></div>
-        </nav>
+        <a href="#" class="nav_link">
+          <i class="bx bx-log-out nav_icon"></i>
+          <span class="nav_name">Log Out</span>
+        </a>
+      </div>
     </div>
-    
+  </div>
+</div>
