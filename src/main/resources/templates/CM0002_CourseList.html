@@ -25,10 +25,13 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
     <div th:replace="/fragments/nav"></div>
 
     <!-- Back to top button -->
-    
 
     <!-- Advance Search -->
-    <div class="container-fluid mb-3" style="background-color: #5eba7d" th:if="${searchable}">
+    <div
+      class="container-fluid mb-3"
+      style="background-color: #5eba7d"
+      th:if="${searchable}"
+    >
       <h2 class="pt-3 mb-3 text-white">Explore Courses</h2>
 
       <form
@@ -98,6 +101,31 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
     </div>
     <!-- End : Advance Search -->
 
+    <!-- User Info -->
+    <div
+      class="container-fluid mb-3 py-3 row"
+      style="background-color: #5eba7d"
+      th:unless="${userInfo == null}"
+      
+     
+    >
+      <div class="col-auto">
+
+      </div>
+      <img
+        src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
+        class="rounded-circle "
+        style="width: 150px"
+        alt="Avatar"
+        
+      />
+      <div class="text-white col-auto">
+        <h4 th:text="${userInfo.userName}"></h4>
+        <p th:text="${userInfo.selfDescription}"> </p>
+      </div>
+      
+    </div>
+    <!-- End: User Info -->
 
     <div class="container-fluid">
       <div class="row">
