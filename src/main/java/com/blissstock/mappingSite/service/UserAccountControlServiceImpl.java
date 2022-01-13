@@ -41,7 +41,10 @@ public class UserAccountControlServiceImpl implements UserAccountControlService 
     @Override
     public void reactivateUser(UserAccount userAccount){
         logger.info("reactivate user {}", userAccount.getAccountId());
-        userAccount.setAccountStatus(AccountStatus.REGISTERED.getValue());
+        if(userAccount.getRole().equals("ROLE_STUDENT"))
+            userAccount.setAccountStatus(AccountStatus.REGISTERED.getValue());
+        else
+            userAccount.setAccountStatus(AccountStatus.VERIFIED.getValue());
         userService.updateUserAccount(userAccount);
     }
 
