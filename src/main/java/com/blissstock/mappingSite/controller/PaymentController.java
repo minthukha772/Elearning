@@ -168,70 +168,70 @@ public class PaymentController {
     }
 
   
-    @GetMapping(value="/edit-payment-slip/{paymentReceiveId}")
-    private String stuGetPaymentSlip(@PathVariable Long paymentReceiveId,Model model) {
-      PaymentReceive paymentInfo= paymentRepo.findById(paymentReceiveId).orElse(null);
-      //PaymentTesting payment = new PaymentTesting();
-      model.addAttribute("payment", paymentInfo);
-      model.addAttribute("error", paymentInfo);
-      return "AS0001_StudentPayment";
-	}
-    /*get admin payment check screen */
-    @GetMapping(value="/admin-check-stupayment/{paymentReceiveId}")
-    private String adminGetStudentPaymentSlip(@PathVariable Long paymentReceiveId,Model model) {
-        PaymentReceive paymentInfo= paymentRepo.findById(paymentReceiveId).orElse(null);
-        model.addAttribute("payment", paymentInfo);
-        model.addAttribute("error", paymentInfo);
-	return "AS0001_AdminPaymentCheck";
-	}
-  /*@PostMapping("/update-stupayment-status") 
-  public String updatePaymentStatus(@RequestParam("paymentReceiveId") Long paymentReceiveId, @Valid @ModelAttribute("payment") PaymentTesting paymentInfo, BindingResult result, Model model,RedirectAttributes redirectAttr) { 
-  PaymentTesting payment= paymentRepo.findById(paymentReceiveId).orElse(null);
-  //review.setStar(reviewInfo.getStar());
-  //review.setFeedback(reviewInfo.getFeedback());
-  paymentRepo.save(payment);
-  return "redirect:/student-review?reviewId="+paymentReceiveId;
+//     @GetMapping(value="/edit-payment-slip/{paymentReceiveId}")
+//     private String stuGetPaymentSlip(@PathVariable Long paymentReceiveId,Model model) {
+//       PaymentReceive paymentInfo= paymentRepo.findById(paymentReceiveId).orElse(null);
+//       //PaymentTesting payment = new PaymentTesting();
+//       model.addAttribute("payment", paymentInfo);
+//       model.addAttribute("error", paymentInfo);
+//       return "AS0001_StudentPayment";
+// 	}
+//     /*get admin payment check screen */
+//     @GetMapping(value="/admin-check-stupayment/{paymentReceiveId}")
+//     private String adminGetStudentPaymentSlip(@PathVariable Long paymentReceiveId,Model model) {
+//         PaymentReceive paymentInfo= paymentRepo.findById(paymentReceiveId).orElse(null);
+//         model.addAttribute("payment", paymentInfo);
+//         model.addAttribute("error", paymentInfo);
+// 	return "AS0001_AdminPaymentCheck";
+// 	}
+//   /*@PostMapping("/update-stupayment-status") 
+//   public String updatePaymentStatus(@RequestParam("paymentReceiveId") Long paymentReceiveId, @Valid @ModelAttribute("payment") PaymentTesting paymentInfo, BindingResult result, Model model,RedirectAttributes redirectAttr) { 
+//   PaymentTesting payment= paymentRepo.findById(paymentReceiveId).orElse(null);
+//   //review.setStar(reviewInfo.getStar());
+//   //review.setFeedback(reviewInfo.getFeedback());
+//   paymentRepo.save(payment);
+//   return "redirect:/student-review?reviewId="+paymentReceiveId;
  
- }
- 30.11.2021*/ 
+//  }
+//  30.11.2021*/ 
 
-    /*admin click submit button and go to payment complete screen . payment status-> complete */
- @PostMapping("/update-stupayment-status") 
- /*private String adminUpdatePaymentForm(PaymentTesting inputSlip,Model model,
- @Valid 
- BindingResult bindingResult,
- HttpServletRequest request){*/
-  /*private String updatePaymentStatus(@RequestParam("paymentReceiveId") Long paymentReceiveId, @Valid @ModelAttribute("payment") PaymentTesting paymentInfo, BindingResult result, Model model,RedirectAttributes redirectAttr) { */
-    private String updatePaymentStatus(@RequestParam("paymentReceiveId") Long paymentReceiveId, @Valid @ModelAttribute("payment") PaymentReceive paymentInfo, HttpServletRequest request, BindingResult result, Model model) {
-    PaymentReceive payment= paymentRepo.findById(paymentReceiveId).orElse(null);
-    payment.setPaymentStatus("Complete");
-    paymentRepo.save(payment);
-    return "AdminPaymentCheckSuccess";
- }
+//     /*admin click submit button and go to payment complete screen . payment status-> complete */
+//  @PostMapping("/update-stupayment-status") 
+//  /*private String adminUpdatePaymentForm(PaymentTesting inputSlip,Model model,
+//  @Valid 
+//  BindingResult bindingResult,
+//  HttpServletRequest request){*/
+//   /*private String updatePaymentStatus(@RequestParam("paymentReceiveId") Long paymentReceiveId, @Valid @ModelAttribute("payment") PaymentTesting paymentInfo, BindingResult result, Model model,RedirectAttributes redirectAttr) { */
+//     private String updatePaymentStatus(@RequestParam("paymentReceiveId") Long paymentReceiveId, @Valid @ModelAttribute("payment") PaymentReceive paymentInfo, HttpServletRequest request, BindingResult result, Model model) {
+//     PaymentReceive payment= paymentRepo.findById(paymentReceiveId).orElse(null);
+//     payment.setPaymentStatus("Complete");
+//     paymentRepo.save(payment);
+//     return "AdminPaymentCheckSuccess";
+//  }
 
- /*admin click request to reupload button and modal appear and go to payment error screen . payment status-> error */
- @PostMapping("/payment-error-reason") 
- private String updatePaymentError(@RequestParam("paymentReceiveId") Long paymentReceiveId,@RequestParam("paymentErrStatus") String paymentErrStatus, @Valid @ModelAttribute("error") PaymentReceive paymentInfo, HttpServletRequest request, BindingResult result, Model model){
+//  /*admin click request to reupload button and modal appear and go to payment error screen . payment status-> error */
+//  @PostMapping("/payment-error-reason") 
+//  private String updatePaymentError(@RequestParam("paymentReceiveId") Long paymentReceiveId,@RequestParam("paymentErrStatus") String paymentErrStatus, @Valid @ModelAttribute("error") PaymentReceive paymentInfo, HttpServletRequest request, BindingResult result, Model model){
   
-  PaymentReceive errorReason= paymentRepo.findById(paymentReceiveId).orElse(null);
-  //TODO inspect here
-  //errorReason.setPaymentErrStatus(paymentErrStatus);
-  errorReason.setPaymentStatus("Error");;
-  paymentRepo.save(errorReason);
-  return "AdminPaymentCheckError";
- }
- private Long getUid(Long id) {
-  Long uid = 0L;
-  UserRole role = userSessionService.getRole();
-  if (role == UserRole.ADMIN || role == UserRole.SUPER_ADMIN) {
-    uid = id;
-  } else if (id != null) {
-    uid = id;
-  } else if (role == UserRole.TEACHER || role == UserRole.STUDENT) {
-    uid = userSessionService.getUserAccount().getAccountId();
-  } else {
-    throw new RuntimeException("user authetication fail");
-  }
-  return uid;
-}
+//   PaymentReceive errorReason= paymentRepo.findById(paymentReceiveId).orElse(null);
+//   //TODO inspect here
+//   //errorReason.setPaymentErrStatus(paymentErrStatus);
+//   errorReason.setPaymentStatus("Error");;
+//   paymentRepo.save(errorReason);
+//   return "AdminPaymentCheckError";
+//  }
+//  private Long getUid(Long id) {
+//   Long uid = 0L;
+//   UserRole role = userSessionService.getRole();
+//   if (role == UserRole.ADMIN || role == UserRole.SUPER_ADMIN) {
+//     uid = id;
+//   } else if (id != null) {
+//     uid = id;
+//   } else if (role == UserRole.TEACHER || role == UserRole.STUDENT) {
+//     uid = userSessionService.getUserAccount().getAccountId();
+//   } else {
+//     throw new RuntimeException("user authetication fail");
+//   }
+//   return uid;
+// }
 }
