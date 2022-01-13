@@ -281,11 +281,13 @@
                             <div class="form-group row">    
                                 <label class="radio-inline">
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" th:field="*{paymentStatus}" value="COMPLETED" id="inlineRadio1">
-                                        <label class="form-check-label" for="inlineRadio1" style="color: #28A745;">COMPLETED</label>
+                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" th:field="*{paymentStatus}" value="COMPLETED" id="inlineRadio1" 
+                                        th:disabled="${payment.paymentStatus eq 'ERROR'}">
+                                        <label class="form-check-label" for="inlineRadio1" style="color: #28A745;" >COMPLETED</label>
                                       </div>
                                       <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" th:field="*{paymentStatus}" value="ERROR" id="inlineRadio2">
+                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" th:field="*{paymentStatus}" value="ERROR" id="inlineRadio2"
+                                        th:disabled="${payment.paymentStatus eq 'COMPLETED'}">
                                         <label class="form-check-label" for="inlineRadio2" style="color: #DC3545;">ERROR</label>
                                       </div>
                                 </div>

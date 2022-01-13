@@ -134,7 +134,7 @@ public class PaymentController {
      
     String redirectAddress =
     "redirect:" +
-    request.getRequestURI().replace("/update-payment-slip/{courseId}/{userId}", "");
+    request.getRequestURI().replace("/edit/", "");
     logger.debug("Redirect Addresss {}", redirectAddress);
 
     if (!slip.isEmpty() && CheckUploadFileType.checkType(slip)) {
@@ -157,11 +157,15 @@ public class PaymentController {
       }
       
       payment.setPaymentStatus(inputPayment.getPaymentStatus());
+      System.out.println(inputPayment.getPaymentStatus());
 
       payment.setPaymentReceiveDate(GregorianCalendar.getInstance().getTime());
       paymentRepo.save(payment);
 
       logger.info("payment slip {} stored", saveFileName);
+    }
+    if(payment.getPaymentStatus()=="ERROR"){
+      return redirectAddress;
     }
       return "redirect:/payment/complete";
   
