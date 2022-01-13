@@ -34,14 +34,13 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4">
                 
 
                 /*<![CDATA[*/
+                
+
                 $(document).ready(function () {
                     var t = $('#example').DataTable({
                         "columnDefs": [{
                             "searchable": false,
-                            "orderable": false,
-                            "targets": -1,
-                            "data": null,
-                            "defaultContent": "<a href='/admin/course-upload' class='btn btn-primary' style='float: center;background-color: #5239CC;'>Register</a>"
+                            "orderable": false
                         }],
                         "order": [
                         [1, 'asc']
@@ -253,7 +252,10 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4">
                                                                                                     <td th:text="${dr.phoneNo}"></td>
                                                                                                     <td th:text="${dr.userAccount.mail}"></td>
                                                                                                     <td th:text="${dr.userAccount.accountStatus}"></td>
-                                                                                                    <td></td>
+                                                                                                    <td>
+                                                                                                        <a th:href="@{'/admin/course-registration/' + ${dr.uid}}" class='btn btn-primary' style='float: center;background-color: #5239CC;'>Register</a>
+                                                                                                    </td>
+                                                                                                    <!-- <td></td> -->
                                                                                                 </tr>
                                                                                             </tbody>
                                                                                             <tfoot>
