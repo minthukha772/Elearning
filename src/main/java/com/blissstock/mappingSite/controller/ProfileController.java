@@ -331,6 +331,33 @@ public class ProfileController {
 
   }
 
+  @PostMapping("admin/profile/reactivate")
+  public ResponseEntity<Object> reactivateUser(
+    Model model,
+    Long uid,
+    HttpServletRequest httpServletRequest
+  ){
+    logger.info("Reactivate request for user with id {}", uid);
+
+    try {
+      UserInfo userInfo = userService.getUserInfoByID(uid);
+      if(userInfo == null){
+        throw new UserNotFoundException();
+      }
+      userAccountControlService.reactivateUser(userInfo);
+    } catch (UserNotFoundException e) {
+      e.printStackTrace();
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User Not Found");
+    } catch (Exception e){
+      e.printStackTrace();
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
+    }
+
+    return ResponseEntity.status(HttpStatus.OK).body("operation success");
+
+  }
+
+
   private boolean isEditable(Long id) {
     UserRole role = userSessionService.getRole();
     if (role == UserRole.ADMIN || role == UserRole.SUPER_ADMIN) {

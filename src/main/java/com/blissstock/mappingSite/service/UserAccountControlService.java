@@ -16,4 +16,8 @@ public interface UserAccountControlService {
 
     public void approveTeacher(UserInfo userInfo);
 
+    public void reactivateUser(UserInfo userInfo);
+
+    public void reactivateUser(UserAccount userAccount);
+
 }

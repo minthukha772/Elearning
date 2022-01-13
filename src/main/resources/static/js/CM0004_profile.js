@@ -50,6 +50,21 @@ const suspendUser = (uid) =>{
 
 } 
 
+const reactivateUser = (uid) =>{
+  console.log("reactivating user ", uid);
+  $.ajax({
+              type: "post",
+              url: "/admin/profile/reactivate",
+              data: { uid },
+          }).done(function () {
+              //reload page
+              window.location.href = '/admin';
+          }).fail(function () {
+              alert("Something went wrong");
+          });
+
+} 
+
   $("#actionConfirmationModal").on("show.bs.modal", function (event) {
     const button = $(event.relatedTarget);
 
@@ -69,6 +84,7 @@ const suspendUser = (uid) =>{
         suspendUser(uid);
       } else if (action == "Re-activate") {
         console.log("perform re-active operation");
+        reactivateUser(uid);
       }
     });
 

@@ -39,6 +39,18 @@ public class UserAccountControlServiceImpl implements UserAccountControlService 
     }
 
     @Override
+    public void reactivateUser(UserAccount userAccount){
+        logger.info("reactivate user {}", userAccount.getAccountId());
+        userAccount.setAccountStatus(AccountStatus.REGISTERED.getValue());
+        userService.updateUserAccount(userAccount);
+    }
+
+    @Override
+    public void reactivateUser(UserInfo userInfo) {
+        reactivateUser(userInfo.getUserAccount());
+    }
+
+    @Override
     public void deleteUser(UserAccount userAccount) {
        UserInfo userInfo = userInfoRepository.findById(userAccount.getAccountId()).get();
        deleteUser(userInfo);
@@ -65,5 +77,7 @@ public class UserAccountControlServiceImpl implements UserAccountControlService 
         approveTeacher(userInfo.getUserAccount());
 
     }
+
+   
 
 }
