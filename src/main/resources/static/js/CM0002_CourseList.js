@@ -1,7 +1,7 @@
 $(function () {
   constructFilter(courseList);
   renderCourseList(courseList);
-  $("#filterBtn").click(function (e) {
+  $(".filterBtn").click(function (e) {
     e.preventDefault();
     filterAction(courseList);
   });
@@ -111,7 +111,7 @@ const renderCourseList = (courseList) => {
       $("#courseList").empty();
       data.forEach((e)=>{
         const template = `
-        <div class="card col-12 col-md-6 col-xl-4 ">
+        <div class="card col-12 col-xl-6 col-xxl-4">
           <div class="card-body">
             <div >
               <h2>${e.courseName}</h2>

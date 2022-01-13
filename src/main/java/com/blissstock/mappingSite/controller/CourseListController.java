@@ -11,7 +11,9 @@ import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.model.CourseData;
+import com.blissstock.mappingSite.model.FileInfo;
 import com.blissstock.mappingSite.service.CourseService;
+import com.blissstock.mappingSite.service.StorageService;
 import com.blissstock.mappingSite.service.UserService;
 
 import org.slf4j.Logger;
@@ -31,6 +33,9 @@ public class CourseListController {
 
     @Autowired
     CourseService courseService;
+
+    @Autowired
+    StorageService storageService;
 
     @Autowired
     UserService userService;
@@ -66,6 +71,18 @@ public class CourseListController {
             return "redirect:/guest/explore/";
         }
         model.addAttribute("userInfo", userInfo);
+
+        // ##################################################//
+        // Load Profile Photo
+        try {
+            FileInfo profilePic = storageService.loadProfileAsFileInfo(userInfo);
+            model.addAttribute("profilePic", profilePic);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.info("unable to get profile {}", id);
+        }
+
+        // ##################################################//
 
         List<CourseInfo> courseList = userInfo.getCourseInfo();
         // Encasulate Data
