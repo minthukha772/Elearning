@@ -109,6 +109,13 @@ public class CourseListController {
         return "CM0002_CourseList";
     }
 
+    @GetMapping(value = "/teacher/my-course")
+    public String teacherCourse(Model model) {
+        Long uid = userSessionService.getId();
+        return getCourseListByTeacherID(model, uid);
+        
+    }
+
     @GetMapping(value = "/student/my-course")
     public String studentCourse(Model model) {
         logger.info("GET Request");
