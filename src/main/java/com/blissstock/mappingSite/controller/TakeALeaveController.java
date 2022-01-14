@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import com.blissstock.mappingSite.entity.JoinCourseUser;
 import com.blissstock.mappingSite.entity.LeaveInfo;
+import com.blissstock.mappingSite.enums.UserRole;
 // import com.blissstock.mappingSite.entity.LeaveTest;
 import com.blissstock.mappingSite.repository.CourseRepository;
 import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
@@ -62,35 +63,58 @@ public class TakeALeaveController {
     UserSessionService userSessionService;
 
 	@Valid
-    @GetMapping(value={"/student/leave/{courseId}","/teacher/leave/{courseId}","/admin/leave/{courseId}"})
-    private String getTakeALeaveForm(@PathVariable Long courseId,@RequestParam(value = "record_date", defaultValue="Japanese N3") String course, @RequestParam(value = "user_name",defaultValue = "Nani") String name,Model model) {
+    @GetMapping(value={"/student/leave/{courseId}","/teacher/leave/{courseId}","/admin/leave/{courseId}/{userId}"})
+    private String getTakeALeaveForm(@PathVariable Long courseId,@PathVariable(required = false) Long userId,@RequestParam(value = "record_date") String course, @RequestParam(value = "user_name") String name,Model model) {
 		  LeaveInfo leaveInfo = new LeaveInfo();
       
 		  model.addAttribute("course",course);
 		  model.addAttribute("name", name);
       model.addAttribute("leave", leaveInfo);
-      model.addAttribute("postAction", "/admin/leave/"+courseId+"/confirm");
+      UserRole role = userSessionService.getRole();
+
+        if(role == UserRole.STUDENT){
+          model.addAttribute("postAction", "/student/leave/"+courseId+"/confirm");      
+        }
+        else if(role ==UserRole.TEACHER){
+          model.addAttribute("postAction", "/teacher/leave/"+courseId+"/confirm");      
+        }
+        else{
+          //add user id
+          model.addAttribute("postAction", "/admin/leave/"+courseId+"/"+userId+"/confirm");
+        }
+      
       return "ST0003_TakeALeaveScreen";
     }
 
-    @PostMapping(value={"/student/leave/{courseId}/confirm","/teacher/leave/{courseId}/confirm","/admin/leave/{courseId}/confirm"})
-	  public String postCourseInfoForm(@RequestParam(value = "record_date", defaultValue="Japanese N3") String course, @RequestParam(value = "user_name",defaultValue = "Nani") String name, @Valid @ModelAttribute("leave") LeaveInfo leaveInfo, BindingResult bindingResult,@PathVariable Long courseId, Model model) {
+    @PostMapping(value={"/student/leave/{courseId}/confirm","/teacher/leave/{courseId}/confirm","/admin/leave/{courseId}/{userId}/confirm"})
+	  public String postCourseInfoForm(@Valid @ModelAttribute("leave") LeaveInfo leaveInfo, @PathVariable Long courseId, Model model,@PathVariable(required = false) Long userId) {
 	  //if(bindingResult.hasErrors()) {
      //return "AT00001_CourseRegisteration";
         //}
         // System.out.print("Take A Leave ID in confirm screen:"+leaveInfo.getLeaveId());
-      model.addAttribute("course",course);
-      model.addAttribute("name", name);
-      model.addAttribute("postAction", "/admin/leave/"+courseId+"/complete");
+      // model.addAttribute("course",course);
+      // model.addAttribute("name", name);
+      UserRole role = userSessionService.getRole();
+
+        if(role == UserRole.STUDENT){
+          model.addAttribute("postAction", "/student/leave/"+courseId+"/complete");      
+        }
+        else if(role ==UserRole.TEACHER){
+          model.addAttribute("postAction", "/teacher/leave/"+courseId+"/complete");      
+        }
+        else{
+          model.addAttribute("postAction", "/admin/leave/"+courseId+"/"+userId+"/complete");
+        }
+      
         return "ST0004_LeaveConfirmScreen";
 }
 
-@PostMapping("/admin/leave/{courseId}/complete")
+@PostMapping(value={"/student/leave/{courseId}/complete","/teacher/leave/{courseId}/complete","/admin/leave/{courseId}/{userId}/complete"})
   public String saveLeaveRequestForm(@RequestParam(value = "record_date", defaultValue="Japanese N3") String course, @RequestParam(value = "user_name",defaultValue = "Nani") String name,
     Model model,
     @Valid @ModelAttribute("leave") LeaveInfo leaveInfo,
-    BindingResult bindingResult,
     @PathVariable Long courseId,
+    @PathVariable(required = false) Long userId,
     @RequestParam(value="action", required=true) String action,
     HttpServletRequest request
   ) {
@@ -99,18 +123,38 @@ public class TakeALeaveController {
   System.out.print("New Leave Request:"+leaveInfo.getLeaveDate());
     //LeaveInfo leave= leaveRepo.findById(courseId).orElse(null);
    //leaveRepo.save(leaveInfo);
- 
-   Long uid = userSessionService.getUserAccount().getAccountId();
+    
+   UserRole role = userSessionService.getRole();
+    
 
-
-
-   List<JoinCourseUser> joins=joinRepo.findByCourseUser(courseId, uid);
+   if(role == UserRole.ADMIN || role == UserRole.SUPER_ADMIN){
+    Long uid = userId;
+    List<JoinCourseUser> joins=joinRepo.findByCourseUser(courseId, uid);
     for(JoinCourseUser join:joins){
       leaveInfo.setJoin(join);
       leaveRepo.save(leaveInfo);
       joinRepo.save(join);
       
     }
+   }
+   else{
+    Long uid = userSessionService.getUserAccount().getAccountId();
+    List<JoinCourseUser> joins=joinRepo.findByCourseUser(courseId, uid);
+    for(JoinCourseUser join:joins){
+      leaveInfo.setJoin(join);
+      leaveRepo.save(leaveInfo);
+      joinRepo.save(join);
+      
+    }
+   }
+
+  //  List<JoinCourseUser> joins=joinRepo.findByCourseUser(courseId, uid);
+  //   for(JoinCourseUser join:joins){
+  //     leaveInfo.setJoin(join);
+  //     leaveRepo.save(leaveInfo);
+  //     joinRepo.save(join);
+      
+  //   }
 
 
    return "redirect:/leave/complete";
