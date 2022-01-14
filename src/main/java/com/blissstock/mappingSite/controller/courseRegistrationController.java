@@ -11,11 +11,13 @@ import org.slf4j.LoggerFactory;
 import com.blissstock.mappingSite.entity.Content;
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.CourseTime;
+import com.blissstock.mappingSite.entity.JoinCourseUser;
 import com.blissstock.mappingSite.entity.Syllabus;
 import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
 import com.blissstock.mappingSite.repository.CourseRepository;
 import com.blissstock.mappingSite.repository.CourseTimeRepository;
+import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
 import com.blissstock.mappingSite.repository.UserInfoRepository;
 import com.blissstock.mappingSite.service.UserSessionServiceImpl;
 
@@ -40,6 +42,9 @@ public class courseRegistrationController {
 
     @Autowired
     private CourseInfoRepository courseInfoRepo;
+
+    @Autowired
+    JoinCourseUserRepository joinRepo;
 
     @Autowired
     private CourseTimeRepository courseTimeRepo;
@@ -240,6 +245,14 @@ public class courseRegistrationController {
         logger.info("Post Requested");
         course.setIsCourseApproved(true); //was string "true"
         courseRepo.save(course);
+
+        JoinCourseUser joins = new JoinCourseUser();
+        joins.setCourseInfo(course);
+        joins.setUserInfo(userInfoRepository.findById(course.getUid()).get());
+        joinRepo.save(joins);
+
+        // course.setJoin(join);
+
         System.out.println("HoeHoe" + ctList);
         for(CourseTime courseTime : ctList){
             courseTime.setCourseInfo(course);
