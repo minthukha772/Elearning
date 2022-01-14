@@ -49,6 +49,12 @@ public class ListOfUserController {
         // System.out.println(tAllRecord);
         logger.info("Teacher List of Mapping Site {}",tAllRecord);
         model.addAttribute("tAllTeacherList", tAllRecord);
+        // List<String> breadcrumbList = new ArrayList<>();
+        // breadcrumbList.add("Top");
+        // breadcrumbList.add("Teacher List");
+        // model.addAttribute("breadcrumbList",breadcrumbList);
+        String nav_type = "fragments/adminnav";
+        model.addAttribute("nav_type",nav_type);
         return "AT0003_ListofTeachersScreen";
     }
     @RequestMapping(value = "/admin/student-list",method = RequestMethod.GET)
@@ -64,6 +70,13 @@ public class ListOfUserController {
         // System.out.println(sAllRecord);
         // List<UserAccount> uAllRecord = userAccountRepo.findByUserRoleU("Student");
         // model.addAttribute("UAllStudentList", uAllRecord);
+        // List<String> breadcrumbList = new ArrayList<>();
+        // breadcrumbList.add("Top");
+        // breadcrumbList.add("Student List");
+        // model.addAttribute("breadcrumbList",breadcrumbList);
+        String nav_type = "fragments/adminnav";
+        model.addAttribute("nav_type",nav_type);
+
         return "AT0003_ListofStudentsScreen";
     }
     
@@ -83,6 +96,13 @@ public class ListOfUserController {
         model.addAttribute("adminRole", adminRole);
         // System.out.println(servletContext.getContextPath());
         // System.out.println("Previous Path Info "+req.getRequestURL());
+        // List<String> breadcrumbList = new ArrayList<>();
+        // breadcrumbList.add("Top");
+        // breadcrumbList.add("Admin List");
+        // model.addAttribute("breadcrumbList",breadcrumbList);
+        String nav_type = "fragments/superadminnav";
+        model.addAttribute("nav_type",nav_type);
+
         return "AT0003_ListofAdminsScreen";
     }
     

@@ -48,6 +48,13 @@ public class PaymentListController {
 
         logger.info("Payment Receive List {}",viewPayment);
 
+        // List<String> breadcrumbList = new ArrayList<>();
+        //     breadcrumbList.add("Top");
+        //     breadcrumbList.add("Payment List");
+        //     model.addAttribute("breadcrumbList",breadcrumbList);
+            String nav_type = "fragments/adminnav";
+            model.addAttribute("nav_type",nav_type);
+
         List<PaymentLists> payUserList = new ArrayList<>();
         // List<AllPaymentLists> allPayment = new AllPaymentLists();
         for(PaymentReceive paymentReceive:viewPayment)
@@ -69,6 +76,7 @@ public class PaymentListController {
 
         // System.out.println("All Payments"+payUserList);
         model.addAttribute("allPaymentList",payUserList);
+        
         return "AD0003_PaymentListScreen";
     }
 }
