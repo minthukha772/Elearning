@@ -84,7 +84,7 @@ public class TakeALeaveController {
           model.addAttribute("postAction", "/teacher/leave/"+courseId+"/confirm?course_name="+course+"&teacher_name="+name);      
         }
         else{
-          //add user id
+          
           model.addAttribute("postAction", "/admin/leave/"+courseId+"/"+userId+"/confirm?course_name="+course+"&teacher_name="+name);
         }
       
@@ -103,12 +103,15 @@ public class TakeALeaveController {
 
         if(role == UserRole.STUDENT){
           model.addAttribute("postAction", "/student/leave/"+courseId+"/complete");
+          model.addAttribute("previousAction", "/student/leave/"+courseId+"/confirm?course_name="+course+"&teacher_name="+name);      
         }
         else if(role ==UserRole.TEACHER){
           model.addAttribute("postAction", "/teacher/leave/"+courseId+"/complete");
+          model.addAttribute("previousAction", "/teacher/leave/"+courseId+"/confirm?course_name="+course+"&teacher_name="+name);      
         }
         else{
           model.addAttribute("postAction", "/admin/leave/"+courseId+"/"+userId+"/complete");
+          model.addAttribute("previousAction", "/admin/leave/"+courseId+"/"+userId+"/confirm?course_name="+course+"&teacher_name="+name);
         }
       
         return "ST0004_LeaveConfirmScreen";

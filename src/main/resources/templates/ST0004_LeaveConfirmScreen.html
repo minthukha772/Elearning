@@ -142,7 +142,7 @@
                         <label for="coursename" class="col-lg-2 col-form-label">Course Name</label>
 
                         <div class="col-lg-6">
-                            <label for="coursename" class="col-lg-4 col-form-label" th:text="${course}"></label>
+                            <label for="coursename" class="col-form-label" th:text="${course}"></label>
                         </div>
                         <!--div class="col-lg-3">
                   <input type="email" class="form-control" id="inputEmail" placeholder="姓" required>
@@ -154,7 +154,7 @@
                         <label for="teachername" class="col-lg-2 col-form-label">Teacher Name</label>
 
                         <div class="col-lg-6">
-                            <label for="teachername" class="col-lg-4 col-form-label" th:text="${name}"></label>
+                            <label for="teachername" class="col-form-label" th:text="${name}"></label>
                         </div>
                     </div>
 
@@ -219,7 +219,7 @@
 
                         <div class="row col-lg-8 ">
                             <div class="col-lg-4 ">
-                                <button id="btnReset " type="button " class="btn btn-spacing btn-secondary center-block " Style="width: 125px; " OnClick="history.go(-1) ">Back</button>
+                                <button id="btnReset " type="button " class="btn btn-spacing btn-secondary center-block " Style="width: 125px; " onclick="window.history.go(-1); return false;">Back</button>
 
                             </div>
                             <div class="col-lg-4 ">
