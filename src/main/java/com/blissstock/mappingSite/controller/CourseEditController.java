@@ -15,7 +15,7 @@ import com.blissstock.mappingSite.entity.CourseTime;
 import com.blissstock.mappingSite.entity.Syllabus;
 import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
-import com.blissstock.mappingSite.repository.CourseRepository;
+// import com.blissstock.mappingSite.repository.CourseRepository;
 import com.blissstock.mappingSite.repository.CourseTimeRepository;
 import com.blissstock.mappingSite.repository.UserInfoRepository;
 import com.blissstock.mappingSite.service.UserSessionServiceImpl;
@@ -33,8 +33,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class CourseEditController {
     private static final Logger logger = LoggerFactory.getLogger(courseRegistrationController.class);
 
-    @Autowired
-    private CourseRepository courseRepo;
+    // @Autowired
+    // private CourseRepository courseRepo;
 
     @Autowired
     private CourseInfoRepository courseInfoRepo;
@@ -138,7 +138,7 @@ public class CourseEditController {
             List<String> breadcrumbList = new ArrayList<>();
             breadcrumbList.add("Top");
             breadcrumbList.add("Teacher List");
-            breadcrumbList.add("Course Registration");
+            breadcrumbList.add("Update Course");
             model.addAttribute("breadcrumbList",breadcrumbList);
             String nav_type = "fragments/adminnav";
             model.addAttribute("nav_type",nav_type);
@@ -151,9 +151,9 @@ public class CourseEditController {
             System.out.print("Teacher Registration"+uid);
             List<String> breadcrumbList = new ArrayList<>();
             breadcrumbList.add("My Course");
-            breadcrumbList.add("Course Registration");
+            breadcrumbList.add("Update Course");
             model.addAttribute("breadcrumbList",breadcrumbList);
-            String nav_type = "fragments/usernav";
+            String nav_type = "fragments/teacher-nav";
             model.addAttribute("nav_type",nav_type);
         }
         
@@ -277,10 +277,10 @@ public class CourseEditController {
             model.addAttribute("postAction", "/teacher/edit/complete");
             List<String> breadcrumbList = new ArrayList<>();
             breadcrumbList.add("My Course");
-            breadcrumbList.add("Course Registration");
+            breadcrumbList.add("Update Course");
             breadcrumbList.add("Confirm");
             model.addAttribute("breadcrumbList",breadcrumbList);
-            String nav_type = "fragments/usernav";
+            String nav_type = "fragments/teacher-nav";
             model.addAttribute("nav_type",nav_type);
         }
         else{
@@ -288,7 +288,7 @@ public class CourseEditController {
             List<String> breadcrumbList = new ArrayList<>();
             breadcrumbList.add("Top");
             breadcrumbList.add("Teacher List");
-            breadcrumbList.add("Course Registration");
+            breadcrumbList.add("Update Course");
             breadcrumbList.add("Confirm");
             model.addAttribute("breadcrumbList",breadcrumbList);
             String nav_type = "fragments/adminnav";
@@ -321,7 +321,7 @@ public class CourseEditController {
         // CourseInfo test = courseRepo.findById(cid).get();
         // System.out.print("Test Info:" +test);
 
-        CourseInfo updateCourse = courseRepo.findById(course.getCourseId()).get(); 
+        CourseInfo updateCourse = courseInfoRepo.findById(course.getCourseId()).get(); 
         logger.info("Get Requested {}", updateCourse);
         System.out.print("Update Info: "+ updateCourse);
         if(classType.equals("live")){
