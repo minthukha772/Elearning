@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import ch.qos.logback.core.recovery.ResilientSyslogOutputStream;
 import lombok.experimental.Helper;
 import net.bytebuddy.agent.builder.AgentBuilder.RedefinitionStrategy.Listener;
 
@@ -55,26 +56,27 @@ public class CourseDetailsController {
     )
     private String getCourseDetails(@PathVariable Long courseId, Model model){
         Long userId;
+
+        CourseInfo courseInfo = courseInfoRepository.findById(courseId).get();
+        model.addAttribute("courseInfo", courseInfo);
+
+        List<CourseTime> courseTimeList = courseInfo.getCourseTime();
+        model.addAttribute("courseTimeList", courseTimeList);
+
+         
+
         if(userSessionService.getRole()== UserRole.TEACHER){
             userId = userSessionService.getUserAccount().getAccountId();
-            CourseInfo courseInfo = courseInfoRepository.findById(courseId).get();
-           
-            model.addAttribute("courseInfo", courseInfo);
             model.addAttribute("teacher", "TEACHER");
             model.addAttribute("classlink", courseInfo.getClassLink());
 
-            List<CourseTime> courseTimeList = courseInfo.getCourseTime();
-            model.addAttribute("courseTimeList", courseTimeList);
-
         }
         else if(userSessionService.getRole()== UserRole.STUDENT){
-            CourseInfo courseInfo = courseInfoRepository.findById(courseId).get();
-            model.addAttribute("courseInfo", courseInfo);
             model.addAttribute("student", "STUDENT");
         }
         else if(userSessionService.getRole()== UserRole.ADMIN){
-            CourseInfo courseInfo = courseInfoRepository.findById(courseId).get();
-            model.addAttribute("courseInfo", courseInfo);
+
+            Integer maxStudent = courseInfo.getMaxStu();
             model.addAttribute("admin", "ADMIN");
             model.addAttribute("classlink", courseInfo.getClassLink());
 
@@ -83,9 +85,11 @@ public class CourseDetailsController {
                 studentList.add(joinCourseUser.getUserInfo());
             }
             model.addAttribute("studentList", studentList);
+            Integer stuListSize = studentList.size();
+            Integer availableStuList = maxStudent - stuListSize;
+            model.addAttribute("availableStuList", availableStuList);
 
-            List<CourseTime> courseTimeList = courseInfo.getCourseTime();
-            model.addAttribute("courseTimeList", courseTimeList);
+
 
         }
         return "CM0003_CourseDetails";
@@ -116,12 +120,12 @@ public class CourseDetailsController {
         return "redirect:/admin/course-details/" + courseId; 
     }
 
-    @GetMapping("/admin/hello")
-    private String helloWorld(){
-        Long myId = (long) 1;
-        CourseInfo courseInfo = courseInfoRepository.findById(myId).get();
-        System.out.println("BlaBla" + courseInfo.getTest().size());
-        return "hello";
+    // @GetMapping("/admin/hello")
+    // private String helloWorld(){
+    //     Long myId = (long) 1;
+    //     CourseInfo courseInfo = courseInfoRepository.findById(myId).get();
+    //     System.out.println("BlaBla" + courseInfo.getTest().size());
+    //     return "hello";
     }
 
 
