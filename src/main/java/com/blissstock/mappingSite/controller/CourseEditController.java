@@ -1,5 +1,6 @@
 package com.blissstock.mappingSite.controller;
 
+import java.lang.Character.Subset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,13 +12,11 @@ import org.slf4j.LoggerFactory;
 import com.blissstock.mappingSite.entity.Content;
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.CourseTime;
-import com.blissstock.mappingSite.entity.JoinCourseUser;
 import com.blissstock.mappingSite.entity.Syllabus;
 import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
-// import com.blissstock.mappingSite.repository.CourseRepository;
+import com.blissstock.mappingSite.repository.CourseRepository;
 import com.blissstock.mappingSite.repository.CourseTimeRepository;
-import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
 import com.blissstock.mappingSite.repository.UserInfoRepository;
 import com.blissstock.mappingSite.service.UserSessionServiceImpl;
 
@@ -31,20 +30,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 
-
-
-public class courseRegistrationController {
-
+public class CourseEditController {
     private static final Logger logger = LoggerFactory.getLogger(courseRegistrationController.class);
 
-    // @Autowired
-    // private CourseRepository courseRepo;
+    @Autowired
+    private CourseRepository courseRepo;
 
     @Autowired
     private CourseInfoRepository courseInfoRepo;
-
-    @Autowired
-    JoinCourseUserRepository joinRepo;
 
     @Autowired
     private CourseTimeRepository courseTimeRepo;
@@ -56,28 +49,92 @@ public class courseRegistrationController {
     private UserInfoRepository userInfoRepository;
 
     private List<CourseTime> ctList = new ArrayList<>(); 
-    
-    
-    @RequestMapping(value={"/teacher/course-registration","/admin/course-registration/{id}"})
-    private String courseRegistration(Model model,@PathVariable(required = false) Long id){
+
+    @RequestMapping(value={"/teacher/edit/{courseId}","/admin/edit/course/{courseId}/{userId}"})
+    private String editCourse(
+        Model model,
+        @PathVariable(required = false) Long userId,
+        @PathVariable Long courseId){
         logger.info("GET Requested");
 
-        
+        UserRole currentRole =userSessionService.getRole();
+        if(currentRole == UserRole.TEACHER){
+            userId =userSessionService.getId();
+        }
 
-        CourseInfo courseInfo = new CourseInfo();
-       
-        List<CourseTime> courseTimeList = new ArrayList<>(7);  
-        courseInfo.setCourseTime(courseTimeList);
+        CourseInfo course = courseInfoRepo.findByCourseIDUID(courseId, userId);
+        logger.info("Get Requested {}",course);
+        
+        
+        if(course != null){
+            // List<CourseTime> courseTimeList = new ArrayList<>();
+            List<CourseTime> courseTimeList = courseTimeRepo.searchTimeByCourseID(courseId);
+        if(course.getClassType().equals("live")){
+
+            model.addAttribute("classActiveLive", true);
+            
+            // if(!day0.equals("")){
+            //     courseTime0.setCourseDays(day0);
+            //     courseTime0.setCourseStartTime(startTime0);
+            //     courseTime0.setCourseEndTime(endTime0);
+            //     courseTimeList.add(courseTime0);
+            // }
+            // if(!day1.equals("")){
+            //     courseTime1.setCourseDays(day1);
+            //     courseTime1.setCourseStartTime(startTime1);
+            //     courseTime1.setCourseEndTime(endTime1);
+            //     courseTimeList.add(courseTime1);
+            // }
+            // if(!day2.equals("")){
+            //     courseTime2.setCourseDays(day2);
+            //     courseTime2.setCourseStartTime(startTime2);
+            //     courseTime2.setCourseEndTime(endTime2);
+            //     courseTimeList.add(courseTime2);
+            // }
+            // if(!day3.equals("")){
+            //     courseTime3.setCourseDays(day3);
+            //     courseTime3.setCourseStartTime(startTime3);
+            //     courseTime3.setCourseEndTime(endTime3);
+            //     courseTimeList.add(courseTime3);
+            // }
+            // if(!day4.equals("")){
+            //     courseTime4.setCourseDays(day4);
+            //     courseTime4.setCourseStartTime(startTime4);
+            //     courseTime4.setCourseEndTime(endTime4);
+            //     courseTimeList.add(courseTime4);
+            // }
+            // if(!day5.equals("")){
+            //     courseTime5.setCourseDays(day5);
+            //     courseTime5.setCourseStartTime(startTime5);
+            //     courseTime5.setCourseEndTime(endTime5);
+            //     courseTimeList.add(courseTime5);
+            // }
+            // if(!day6.equals("")){
+            //     courseTime6.setCourseDays(day6);
+            //     courseTime6.setCourseStartTime(startTime6);
+            //     courseTime6.setCourseEndTime(endTime6);
+            //     courseTimeList.add(courseTime6);
+            // }
+
+            model.addAttribute("courseTimeList", courseTimeList);
+            ctList = courseTimeList;
+            // System.out.println("Heehee" + ctList);
+            
+        }else {
+            model.addAttribute("classActiveVideo", true);
+        }
+        
+        model.addAttribute("course", course);
         
         
 
         UserRole role = userSessionService.getRole();
         if (role == UserRole.ADMIN || role == UserRole.SUPER_ADMIN) {
-            long uid = id;
-            courseInfo.setUid(uid);
-            logger.info("Teacher ID for course registration {}",uid);
-            // model.addAttribute("teacherID", uid);
-            System.out.print("Admin registration : "+uid);
+            // long uid = id;
+            course.setUid(userId);
+            logger.info("Teacher ID for update course {}",userId);
+            // // model.addAttribute("teacherID", uid);
+            // System.out.print("Admin registration : "+uid);
             List<String> breadcrumbList = new ArrayList<>();
             breadcrumbList.add("Top");
             breadcrumbList.add("Teacher List");
@@ -88,37 +145,39 @@ public class courseRegistrationController {
         }
         else{
             long uid =userSessionService.getId();
-            courseInfo.setUid(uid);
-            logger.info("Teacher ID for course registration {}",uid);
+            course.setUid(uid);
+            logger.info("Teacher ID for update course {}",uid);
             // model.addAttribute("teacherID", uid);
             System.out.print("Teacher Registration"+uid);
             List<String> breadcrumbList = new ArrayList<>();
             breadcrumbList.add("My Course");
             breadcrumbList.add("Course Registration");
             model.addAttribute("breadcrumbList",breadcrumbList);
-            String nav_type = "fragments/teacher-nav";
+            String nav_type = "fragments/usernav";
             model.addAttribute("nav_type",nav_type);
         }
         
-        model.addAttribute("course", courseInfo);
         
-        System.out.print("User Role:"+role);
 
         if(role == UserRole.TEACHER){
-            model.addAttribute("postAction", "/teacher/courseregister-confirm");
+            model.addAttribute("postAction", "/teacher/edit/course/confirm");
         }
         else{
-            model.addAttribute("postAction", "/admin/courseregister-confirm");
+            model.addAttribute("postAction", "/admin/edit/course/"+userId+"/confirm");
         }
 
         
 
-        return "AT0001_CourseRegistration";
+        return "AT0001_EditCourse";
+        }
+        else{
+            return "redirect:/";
+        }
+        
     }
-    
-    
-    @PostMapping(value={"/teacher/courseregister-confirm","/admin/courseregister-confirm"})
-    private String courseRegistrationConfirm(@ModelAttribute("course") CourseInfo course,
+
+    @PostMapping(value={"/teacher/edit/course/confirm","/admin/edit/course/{userId}/confirm"})
+    private String editCourseConfirm(@ModelAttribute("course") CourseInfo course,
                                             @ModelAttribute("day0") String day0,
                                             @ModelAttribute("startTime0") String startTime0,
                                             @ModelAttribute("endTime0") String endTime0,
@@ -140,8 +199,12 @@ public class courseRegistrationController {
                                             @ModelAttribute("day6") String day6,
                                             @ModelAttribute("startTime6") String startTime6,
                                             @ModelAttribute("endTime6") String endTime6,
+                                            @PathVariable(required = false) Long courseId,
+                                            @PathVariable(required = false) Long userId,
                                             Model model){
         logger.info("POST requested");
+
+        // System.out.print("Current Course ID : "+courseId);
 
         List<CourseTime> courseTimeList = new ArrayList<>();
         CourseTime courseTime0 = new CourseTime();
@@ -211,17 +274,17 @@ public class courseRegistrationController {
         UserRole role = userSessionService.getRole();
 
         if(role == UserRole.TEACHER){
-            model.addAttribute("postAction", "/teacher/save-course-register");
+            model.addAttribute("postAction", "/teacher/edit/complete");
             List<String> breadcrumbList = new ArrayList<>();
             breadcrumbList.add("My Course");
             breadcrumbList.add("Course Registration");
             breadcrumbList.add("Confirm");
             model.addAttribute("breadcrumbList",breadcrumbList);
-            String nav_type = "fragments/teacher-nav";
+            String nav_type = "fragments/usernav";
             model.addAttribute("nav_type",nav_type);
         }
         else{
-            model.addAttribute("postAction", "/admin/save-course-register");
+            model.addAttribute("postAction", "/admin/edit/course/complete");
             List<String> breadcrumbList = new ArrayList<>();
             breadcrumbList.add("Top");
             breadcrumbList.add("Teacher List");
@@ -231,32 +294,98 @@ public class courseRegistrationController {
             String nav_type = "fragments/adminnav";
             model.addAttribute("nav_type",nav_type);
         }
+
+
         
         // System.out.println("Heehee" + day0 + " " + startTime0 + " " + endTime0 + " " + day1 + " " + startTime1 + " " + endTime1);
         // System.out.println("Haahaa " + courseTimeList.get(0).getCourseDays() + courseTimeList.size());
         
-        return "AT0002_CourseRegistrationConfirm";
+        return "AT0002_EditCourseConfirm";
     }
 
-    @PostMapping(value = {"/teacher/save-course-register","/admin/save-course-register"})
-    private String saveCourseRegister(@ModelAttribute("course") CourseInfo course){
+    @PostMapping(value = {"/teacher/edit/complete","/admin/edit/course/complete"})
+    private String editCourseComplete(@ModelAttribute("course") CourseInfo course){
         // course.setUserInfo(userInfoRepository.findById(userSessionService.getId()).get());
+
         course.setUserInfo(userInfoRepository.findById(course.getUid()).get());
+        System.out.print("Teacher id:"+course.getUid());
+        System.out.print("Course Info Update:"+course);
+
         logger.info("Post Requested");
-        course.setIsCourseApproved(true); //was string "true"
-        courseInfoRepo.save(course);
 
-        JoinCourseUser joins = new JoinCourseUser();
-        joins.setCourseInfo(course);
-        joins.setUserInfo(userInfoRepository.findById(course.getUid()).get());
-        joinRepo.save(joins);
+        // course.setIsCourseApproved(true); //was string "true"
 
-        // course.setJoin(join);
+        String classType = course.getClassType();
 
-        System.out.println("HoeHoe" + ctList);
+        // long cid = 44;
+        // CourseInfo test = courseRepo.findById(cid).get();
+        // System.out.print("Test Info:" +test);
+
+        CourseInfo updateCourse = courseRepo.findById(course.getCourseId()).get(); 
+        logger.info("Get Requested {}", updateCourse);
+        System.out.print("Update Info: "+ updateCourse);
+        if(classType.equals("live")){
+            System.out.print("It works!");
+            updateCourse.setMaxStu(course.getMaxStu());
+            updateCourse.setStartDate(course.getStartDate());
+            updateCourse.setEndDate(course.getEndDate());
+            
+            
+            Long currentCourseID = updateCourse.getCourseId();
+
+            System.out.print("Current ID "+course.getCourseId());
+
+            List<CourseTime> courseTimeList = courseTimeRepo.searchTimeByCourseID(currentCourseID);
+            // System.out.print("Time List:"+courseTimeList);
+            // courseTimeRepo.searchTimeByCourseID(currentCourseID)!=null
+            if(courseTimeList!=null){
+                System.out.print("Course Time Not Null");
+                // course.getCourseTime().remove(this);
+                for(CourseTime delCourseTime: courseTimeList){
+                    courseTimeRepo.delete(delCourseTime);
+                    logger.info("Delete Previous Course Time List for CourseID {}", currentCourseID);
+                }
+                // courseTimeRepo.deleteByCourseID(currentCourseID);
+                // System.out.print("All Course Time have been deleted");
+                updateCourse.setCourseTime(course.getCourseTime());
+            }
+            else{
+                System.out.print("Course Time is null");
+            }
+        }
+
+        
+        
+        updateCourse.setClassType(course.getClassType());
+        updateCourse.setCourseName(course.getCourseName());
+        updateCourse.setCategory(course.getCategory());
+        updateCourse.setLevel(course.getLevel());
+        updateCourse.setFees(course.getFees());
+        updateCourse.setAboutCourse(course.getAboutCourse());
+        updateCourse.setPrerequisite(course.getPrerequisite());
+        updateCourse.setClassLink(course.getClassLink());
+        updateCourse.setIsCourseApproved(true);
+        updateCourse.setUserInfo(course.getUserInfo());
+
+        System.out.print(course.getClassType());
+        
+
+        // System.out.print("Previous Course Info:"+updateCourse);
+        // // System.out.print("Before Update Course ID: "+courseId);
+
+        // System.out.print("Updated Course Info:"+updateCourse);
+        // System.out.print(course.getCourseId());
+
+        // courseInfoRepo.updateVideoCourse(course.getCourseId(),course.getCourseName(), course.getCategory(), course.getClassLink(), course.getLevel(), course.getAboutCourse(), course.getPrerequisite(), course.getFees(), course.isCourseApproved());
+        // System.out.print(course);
+        courseInfoRepo.save(updateCourse);
+        logger.info("Update Course for CourseID {}", updateCourse.getCourseId());
+        // System.out.println("HoeHoe" + ctList);
         for(CourseTime courseTime : ctList){
-            courseTime.setCourseInfo(course);
+            courseTime.setCourseInfo(updateCourse);
+            // System.out.print("Course Time List :"+courseTime);
             courseTimeRepo.save(courseTime);
+            logger.info("Update Course Time List for CourseID {}", updateCourse.getCourseId());
         }
 
         UserRole role = userSessionService.getRole();
@@ -277,5 +406,5 @@ public class courseRegistrationController {
     // }
 
     
-    
+
 }

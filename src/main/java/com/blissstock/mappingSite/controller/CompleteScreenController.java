@@ -3,15 +3,21 @@ package com.blissstock.mappingSite.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.blissstock.mappingSite.enums.UserRole;
+import com.blissstock.mappingSite.service.UserSessionService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class CompleteScreenController {
+
+    @Autowired
+    UserSessionService userSessionService;
 
     private static final Logger logger = LoggerFactory.getLogger(CompleteScreenController.class);
 
@@ -88,8 +94,16 @@ public class CompleteScreenController {
         breadcrumbList.add("Review");
         breadcrumbList.add("Complete");
         model.addAttribute("breadcrumbList", breadcrumbList);
-        String nav_type = "fragments/usernav";
-        model.addAttribute("nav_type", nav_type);
+        UserRole role = userSessionService.getRole();
+        if(role ==UserRole.STUDENT){
+            String nav_type = "fragments/student-nav";
+            model.addAttribute("nav_type", nav_type);
+        }
+        else{
+            String nav_type = "fragments/teacher-nav";
+            model.addAttribute("nav_type", nav_type);
+        }
+        
         return "CM0001_CompleteScreen";
     }
 
@@ -128,7 +142,7 @@ public class CompleteScreenController {
         return "CM0001_CompleteScreen";
     }
 
-    @RequestMapping(value = { "/leave/complete", "/leave/complete" })
+    @RequestMapping("/leave/complete")
     public String TakeALeaveComplete(Model model) {
         String header3 = "Requesting a Leave Complete";
         String header5 = "Acknowledgement!";
@@ -140,12 +154,23 @@ public class CompleteScreenController {
         breadcrumbList.add("TakeALeave");
         breadcrumbList.add("Complete");
         model.addAttribute("breadcrumbList", breadcrumbList);
-        String nav_type = "fragments/usernav";
-        model.addAttribute("nav_type", nav_type);
+        UserRole role = userSessionService.getRole();
+        if(role == UserRole.STUDENT){
+            String nav_type = "fragments/student-nav";
+            model.addAttribute("nav_type", nav_type);
+        }
+        else if(role == UserRole.TEACHER){
+            String nav_type = "fragments/teacher-nav";
+            model.addAttribute("nav_type", nav_type);
+        }
+        else{
+            String nav_type = "fragments/adminnav";
+            model.addAttribute("nav_type", nav_type);
+        }
         return "CM0001_CompleteScreen";
     }
-
-    @RequestMapping("/course-upload/complete")
+    
+    @RequestMapping("/teacher/course-upload/complete")
     public String UploadCourseComplete(Model model) {
         String header3 = "Course Upload Complete";
         String header5 = "Acknowledgement!";
@@ -154,10 +179,11 @@ public class CompleteScreenController {
         model.addAttribute("header5", header5);
         model.addAttribute("paragraph", paragraph);
         List<String> breadcrumbList = new ArrayList<>();
-        breadcrumbList.add("UploadCourse");
+        breadcrumbList.add("My Course");
+        breadcrumbList.add("Course Registration");
         breadcrumbList.add("Complete");
         model.addAttribute("breadcrumbList", breadcrumbList);
-        String nav_type = "fragments/usernav";
+        String nav_type = "fragments/teacher-nav";
         model.addAttribute("nav_type", nav_type);
         return "CM0001_CompleteScreen";
     }
@@ -171,8 +197,9 @@ public class CompleteScreenController {
         model.addAttribute("header5", header5);
         model.addAttribute("paragraph", paragraph);
         List<String> breadcrumbList = new ArrayList<>();
-        breadcrumbList.add("Admin");
-        breadcrumbList.add("UploadCourse");
+        breadcrumbList.add("Top");
+        breadcrumbList.add("Teacher List");
+        breadcrumbList.add("Course Registration");
         breadcrumbList.add("Complete");
         model.addAttribute("breadcrumbList", breadcrumbList);
         String nav_type = "fragments/adminnav";
