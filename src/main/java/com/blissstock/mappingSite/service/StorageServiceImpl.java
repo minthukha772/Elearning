@@ -119,7 +119,12 @@ public class StorageServiceImpl implements StorageService {
   //     );
   //   }
   // }
-
+  @Override 
+  public Path loadProfile(String filename) { 
+    
+    return PROFILE_PATH.resolve(filename); 
+  }
+	
   @Override
   public Resource load(Long uid, String filename, Path path)
     throws UnauthorizedFileAccessException {
