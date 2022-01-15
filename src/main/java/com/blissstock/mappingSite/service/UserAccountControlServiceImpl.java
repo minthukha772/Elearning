@@ -26,6 +26,18 @@ public class UserAccountControlServiceImpl implements UserAccountControlService 
     UserAccountRepository userAccountRepository;
 
     @Override
+    public void verifyUser(UserAccount userAccount) {
+        logger.info("verify user {}", userAccount.getAccountId());
+        userAccount.setAccountStatus(AccountStatus.VERIFIED.getValue());
+        userService.updateUserAccount(userAccount);
+    }
+
+    @Override
+    public void verifyUser(UserInfo userInfo) {
+       suspendUser(userInfo.getUserAccount());
+    }
+
+    @Override
     public void suspendUser(UserAccount userAccount) {
         logger.info("suspend user {}", userAccount.getAccountId());
         userAccount.setAccountStatus(AccountStatus.SUSPENDED.getValue());

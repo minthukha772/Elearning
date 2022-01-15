@@ -9,6 +9,7 @@ import com.blissstock.mappingSite.dto.PaymentInfoDTO;
 import com.blissstock.mappingSite.entity.BankInfo;
 import com.blissstock.mappingSite.entity.PaymentAccount;
 import com.blissstock.mappingSite.entity.UserInfo;
+import com.blissstock.mappingSite.enums.AccountStatus;
 import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.exceptions.UnauthorizedFileAccessException;
 import com.blissstock.mappingSite.exceptions.UserNotFoundException;
@@ -126,8 +127,13 @@ public class ProfileController {
     //##################################################//
 
     //##################################################//
-    // Check Role
 
+    //get Status
+    AccountStatus status = AccountStatus.strToAccountStatus(userInfo.getUserAccount().getAccountStatus());
+    logger.info("requested user status is {}", status);
+
+
+    // Check Role
     UserRole role = UserRole.strToUserRole(userInfo.getUserAccount().getRole());
     logger.debug("requested user role is {}", role.getValue());
 
@@ -193,6 +199,7 @@ public class ProfileController {
 
     model.addAttribute("role", role.getValue());
     model.addAttribute("infoMap", userInfo.toMap(false));
+    model.addAttribute("status", status.getValue());
 
     logger.debug("model attribute, isEditable: {}", isEditable(uid));
 
@@ -345,6 +352,32 @@ public class ProfileController {
         throw new UserNotFoundException();
       }
       userAccountControlService.reactivateUser(userInfo);
+    } catch (UserNotFoundException e) {
+      e.printStackTrace();
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User Not Found");
+    } catch (Exception e){
+      e.printStackTrace();
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
+    }
+
+    return ResponseEntity.status(HttpStatus.OK).body("operation success");
+
+  }
+
+  @PostMapping("admin/profile/verify")
+  public ResponseEntity<Object> verifyUser(
+    Model model,
+    Long uid,
+    HttpServletRequest httpServletRequest
+  ){
+    logger.info("Verify request for user with id {}", uid);
+
+    try {
+      UserInfo userInfo = userService.getUserInfoByID(uid);
+      if(userInfo == null){
+        throw new UserNotFoundException();
+      }
+      userAccountControlService.verifyUser(userInfo);
     } catch (UserNotFoundException e) {
       e.printStackTrace();
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User Not Found");

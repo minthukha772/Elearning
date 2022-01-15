@@ -65,6 +65,21 @@ const reactivateUser = (uid) =>{
 
 } 
 
+const verifyUser = (uid) =>{
+  console.log("verifying user ", uid);
+  $.ajax({
+              type: "post",
+              url: "/admin/profile/verify",
+              data: { uid },
+          }).done(function () {
+              //reload page
+              window.location.href = '/admin';
+          }).fail(function () {
+              alert("Something went wrong");
+          });
+
+} 
+
   $("#actionConfirmationModal").on("show.bs.modal", function (event) {
     const button = $(event.relatedTarget);
 
@@ -85,6 +100,9 @@ const reactivateUser = (uid) =>{
       } else if (action == "Re-activate") {
         console.log("perform re-active operation");
         reactivateUser(uid);
+      }else if(action == "Verify"){
+        console.log("perform verify operation");
+        verifyUser(uid);
       }
     });
 

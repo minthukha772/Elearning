@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public enum AccountStatus {
 
+    
+
     //For Student
     REGISTERED("REGISTERED"),
 
@@ -14,9 +16,17 @@ public enum AccountStatus {
 
     //For All User
     SUSPENDED("SUSPENDED");
+
+    
     
     @Getter private String value;
 
-   
+    public static AccountStatus strToAccountStatus(String str){
+        for (AccountStatus status: AccountStatus.values()) {
+            if(str.equalsIgnoreCase(status.value))
+                return status;
+        }
+        return AccountStatus.SUSPENDED;
+    }
 
 }
