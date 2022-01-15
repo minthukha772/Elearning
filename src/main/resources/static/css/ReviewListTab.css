@@ -6,6 +6,7 @@
 	margin-bottom: 18px;
 	margin-left: 0;
 	list-style: none;
+		
 }
 
 .nav>li>a {
@@ -14,6 +15,7 @@
 
 .nav-tabs {
 	*zoom: 1;
+    
 }
 
 .nav-tabs:before,
@@ -35,10 +37,13 @@
 	padding-left: 12px;
 	margin-right: 2px;
 	line-height: 14px;
+	height: 60px;
+
 }
 
 .nav-tabs {
 	border-bottom: 1px solid #ddd;
+	
 }
 
 .nav-tabs>li {
@@ -46,7 +51,7 @@
 }
 
 .nav-tabs>li>a {
-	padding-top: 8px;
+	padding-top: 20px;
 	padding-bottom: 8px;
 	line-height: 18px;
 	border: 1px solid transparent;
@@ -65,12 +70,16 @@
 	cursor: default;
 	background-color: #ffffff;
 	border: 1px solid #ddd;
-	border-bottom-color: transparent;
+	border-bottom-color: transparent;	
 }
 
+.nav-tabs .nav-item .nav-link.active {
+	color: #7749F8;
+  }
 
 .tab-content.active {
 	display: block;
+
 }
 
 .tab-content.hide {
@@ -115,6 +124,7 @@
 
 .tab-content {
 	padding: 20px;
+
 }
 
 .tab-textbox {
@@ -135,3 +145,17 @@
 .activity-name {
 	display: inline-block;
 }
+
+.fa{
+	padding-right: 4px !important;
+}
+
+li+li{
+	margin-left: 0!important;
+}
+
+.letterpress {
+	color: #888;
+	text-align: center;
+	text-shadow: 1px 1px rgba(255,255,255,0.8);
+ }

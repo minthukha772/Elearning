@@ -55,11 +55,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .permitAll()
         .antMatchers("/register/**", "/login/**", "/password/**", "/home/**", "/verify_password/**")
         .permitAll()
-        .antMatchers("/verify_password/**", "/course-list-guest/**", "/**/change_password", "/change_password")
+        .antMatchers("/guest/**", "/**/change_password", "/change_password")
         .permitAll()
         .antMatchers("/check_email/**", "/check_email/admin/register", "confirmation")
-        .permitAll()
-        .antMatchers("/log/**")// TODO:remove in production, for testing purpose only.
         .permitAll()
         .antMatchers("/images/**", "/css/**", "/js/**")
         .permitAll()
@@ -67,7 +65,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .hasAnyAuthority(UserRole.STUDENT.getValue())
         .antMatchers("/teacher/**")
         .hasAnyAuthority(UserRole.TEACHER.getValue())
-        .antMatchers("/admin/**")
+        .antMatchers("/admin/**")      
         .hasAnyAuthority(
             UserRole.ADMIN.getValue(),
             UserRole.SUPER_ADMIN.getValue())

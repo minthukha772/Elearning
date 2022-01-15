@@ -17,7 +17,7 @@ public class SyllabusDTO {
    
 	//private Long courseId;
 
-	@NotBlank(message="Please fill title")
+	//@NotBlank(message="Please fill title")
 	private String title;
 
 }

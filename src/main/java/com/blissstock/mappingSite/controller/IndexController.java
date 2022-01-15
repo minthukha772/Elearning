@@ -9,15 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import com.blissstock.mappingSite.repository.CourseRepository;
+import com.blissstock.mappingSite.repository.CourseInfoRepository;
 
 @Controller
 @RequestMapping("/")
 public class IndexController {
-    private static final Logger logger = LoggerFactory.getLogger(CheckEmailController.class);
+    private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
 
     @Autowired
-    private CourseRepository courseRepo;
+    private CourseInfoRepository courseRepo;
 
     @GetMapping("/")
     private String getCourses(Model model) {

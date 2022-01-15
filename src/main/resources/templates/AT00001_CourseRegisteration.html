@@ -15,8 +15,8 @@
 
     <!-- Bootstrap CSS File -->
     <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <link rel="stylesheet" href="css/other-style.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" href="/css/other-style.css">
     <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />-->
@@ -214,14 +214,14 @@
                             <div class="mb-3">
                                 <label class="form-label" for="vlevel">Course Title</label>
 
-                                <input th:field="*{title}" class="form-control" th:classappend="${#fields.hasErrors('title')}?'is-invalid':''" id="clevel" type="text" placeholder="Enter Course Title" />
-                                <div class="invalid-feedback" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">This field is required.</div>
+                                <!-- <input th:field="*{title}" class="form-control" th:classappend="${#fields.hasErrors('title')}?'is-invalid':''" id="clevel" type="text" placeholder="Enter Course Title" />
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">This field is required.</div> -->
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="vabout">Course Content</label>
 
-                                <textarea th:field="*{content}" class="form-control" th:classappend="${#fields.hasErrors('content')}?'is-invalid':''" id="cabout" type="text" placeholder="Enter course contents here."></textarea>
-                                <div class="invalid-feedback" th:if="${#fields.hasErrors('content')}" th:errors="*{content}">This field is required.</div>
+                                <!-- <textarea th:field="*{content}" class="form-control" th:classappend="${#fields.hasErrors('content')}?'is-invalid':''" id="cabout" type="text" placeholder="Enter course contents here."></textarea>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('content')}" th:errors="*{content}">This field is required.</div> -->
                             </div>
 
 
@@ -229,8 +229,8 @@
                                 <div class="mb-3">
                                     <label class="form-label" for="vlink">Video Link</label>
 
-                                    <textarea th:field="*{classLink}" class="form-control" th:classappend="${#fields.hasErrors('classLink')}?'is-invalid':''" id="clink" type="text" placeholder="Enter your video course link here"></textarea>
-                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('classLink')}" th:errors="*{classLink}">This field is required.</div>
+                                    <!-- <textarea th:field="*{classLink}" class="form-control" th:classappend="${#fields.hasErrors('classLink')}?'is-invalid':''" id="clink" type="text" placeholder="Enter your video course link here"></textarea>
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('classLink')}" th:errors="*{classLink}">This field is required.</div> -->
                                 </div>
 
                             </div>

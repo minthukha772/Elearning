@@ -5,13 +5,12 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import com.blissstock.mappingSite.entity.JoinCourseUser;
 import com.blissstock.mappingSite.dto.StuPaymentDTO;
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.PaymentReceive;
-//import com.blissstock.mappingSite.entity.PaymentTesting;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
-import com.blissstock.mappingSite.repository.CourseRepository;
 import com.blissstock.mappingSite.repository.PaymentRepository;
 //import com.blissstock.mappingSite.repository.CourseTestingRepository;
 //import com.blissstock.mappingSite.repository.TpaymentRepository;
@@ -28,8 +27,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 public class PaymentController {
@@ -41,12 +38,13 @@ public class PaymentController {
     PaymentRepository paymentRepo;
 
     @Autowired
-    CourseRepository courseRepo;
+    CourseInfoRepository courseRepo;
 
 
     /*get student payment screen */
     @Valid
-    @GetMapping(value="/payment-upload/{courseId}/{userId}")
+    @GetMapping(value="/payment-upload/{joinId}")
+    // @GetMapping(value="/payment-upload/{courseId}/{userId}")
     private String getPaymentUploadForm(@PathVariable Long courseId, @PathVariable Long userId,Model model) {
 		//StuPaymentDTO payment = new StuPaymentDTO();
     PaymentReceive payment = new PaymentReceive();
@@ -83,7 +81,8 @@ public class PaymentController {
         
         //PaymentTesting saveSlip = new PaymentTesting(null, inputSlip.getSlip(),  inputSlip.getPaymentStatus(), inputSlip.getPaymentReceiveDate());
    //paymentRepo.save(saveSlip);
-        return "StuPaymentSuccess";
+        //return "StuPaymentSuccess";
+        return "CM0001_CompleteScreen";
         //return new RedirectView("/users", true);
     }
 

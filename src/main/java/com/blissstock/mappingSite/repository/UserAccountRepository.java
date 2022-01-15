@@ -20,4 +20,5 @@ public interface UserAccountRepository
 
   List<UserAccount> findByRole(String role);
   UserAccount findByMail(/* @Param("mail") */String mail);
+
 }

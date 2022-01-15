@@ -1,6 +1,8 @@
 package com.blissstock.mappingSite.controller;
 
 import com.blissstock.mappingSite.service.StorageService;
+import com.blissstock.mappingSite.service.StorageServiceImpl;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -19,35 +21,27 @@ public class FileController {
 
   @Autowired
   StorageService storageService;
-  
-  @GetMapping("/files/profiles/{filename:.+}")
-  @ResponseBody
-  public ResponseEntity<Resource> getProfile(@PathVariable String filename) {
-    Resource file = storageService.loadAsResource(filename);
-    return ResponseEntity
-      .ok()
-      .header(
-        HttpHeaders.CONTENT_DISPOSITION,
-        "attachment; filename=\"" + file.getFilename() + "\""
-      )
-      .body(file);
-  }
-
 
   @Autowired
   UserSessionService userSessionService;
 
-  @GetMapping("/files/certificates/{uid}/{filename:.+}")
+  @GetMapping("/files/{type}/{uid}/{filename:.+}")
   @ResponseBody
-  public ResponseEntity<Resource> getCertificates(
+  public ResponseEntity<Resource> getResource(
+    @PathVariable String type,
     @PathVariable Long uid,
     @PathVariable String filename
   ) {
-    System.out.println(filename);
-    System.out.println(uid);
-    Resource file;
+    
+    Resource file = null;
     try {
-      file = storageService.loadCertificate(uid, filename);
+     
+      if(type.equals("profiles")){
+        file = storageService.load(uid, filename,StorageServiceImpl.PROFILE_PATH);
+      }else if(type.equals("certificates")){
+        file = storageService.load(uid, filename,StorageServiceImpl.CERTIFICATE_PATH);
+      }
+      
     } catch (UnauthorizedFileAccessException e) {
       e.printStackTrace();
       return ResponseEntity.badRequest().body(null);

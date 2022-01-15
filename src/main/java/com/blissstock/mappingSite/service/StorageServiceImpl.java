@@ -8,15 +8,22 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.blissstock.mappingSite.controller.FileController;
 import com.blissstock.mappingSite.entity.UserAccount;
+import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.exceptions.FileStorageException;
 import com.blissstock.mappingSite.exceptions.NotImageFileException;
 import com.blissstock.mappingSite.exceptions.UnauthorizedFileAccessException;
+import com.blissstock.mappingSite.model.FileInfo;
 import com.blissstock.mappingSite.validation.validators.ImageFileValidator;
 
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +31,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 @Service
 public class StorageServiceImpl implements StorageService {
@@ -32,12 +40,15 @@ public class StorageServiceImpl implements StorageService {
     StorageServiceImpl.class
   );
 
-  private final Path root = Paths.get("uploads");
-  private final Path certificatePath = Paths.get(
+  private static final Path root = Paths.get("uploads");
+  public static final Path CERTIFICATE_PATH = Paths.get(
     root + File.separator + "certificates"
   );
-  private final Path profilepath = Paths.get(
+  public static final Path PROFILE_PATH = Paths.get(
     root + File.separator + "profiles"
+  );
+  public static final Path SLIP_PATH = Paths.get(
+    root + File.separator + "slip"
   );
 
   @Autowired
@@ -49,74 +60,73 @@ public class StorageServiceImpl implements StorageService {
       if (!Files.exists(root)) {
         Files.createDirectory(root);
       }
-      if (!Files.exists(certificatePath)) {
-        Files.createDirectory(certificatePath);
+      if (!Files.exists(CERTIFICATE_PATH)) {
+        Files.createDirectory(CERTIFICATE_PATH);
       }
-      if (!Files.exists(profilepath)) {
-        Files.createDirectory(profilepath);
+      if (!Files.exists(PROFILE_PATH)) {
+        Files.createDirectory(PROFILE_PATH);
+      }
+      if (!Files.exists(SLIP_PATH)) {
+        Files.createDirectory(SLIP_PATH);
       }
     } catch (IOException e) {
       throw new RuntimeException("Could not initialize folder for upload!");
     }
   }
 
-  @Override
-  public void storeProfile(MultipartFile file, String fileName) {
-    try {
-      if (file.isEmpty()) {
-        throw new StorageException("Failed to store empty file " + fileName);
-      }
-      if (fileName.contains("..")) {
-        // This is a security check
-        throw new StorageException(
-          "Cannot store file with relative path outside current directory " +
-          fileName
-        );
-      }
-      try (InputStream inputStream = file.getInputStream()) {
-        Files.copy(
-          inputStream,
-          this.profilepath.resolve(fileName),
-          StandardCopyOption.REPLACE_EXISTING
-        );
-      }
-    } catch (IOException e) {
-      throw new StorageException("Failed to store file " + fileName, e);
-    }
-  }
+  // @Override
+  // public void storeProfile(MultipartFile file, String fileName, Long uid) {
+  //   Path path = PROFILE_PATH + File.separator + uid;
+  //   try {
+  //     if (file.isEmpty()) {
+  //       throw new StorageException("Failed to store empty file " + fileName);
+  //     }
+  //     if (fileName.contains("..")) {
+  //       // This is a security check
+  //       throw new StorageException(
+  //         "Cannot store file with relative path outside current directory " +
+  //         fileName
+  //       );
+  //     }
+  //     try (InputStream inputStream = file.getInputStream()) {
+  //       Files.copy(
+  //         inputStream,
+  //         PROFILE_PATH.resolve(fileName),
+  //         StandardCopyOption.REPLACE_EXISTING
+  //       );
+  //     }
+  //   } catch (IOException e) {
+  //     throw new StorageException("Failed to store file " + fileName, e);
+  //   }
+  // }
+
+  // @Override
+  // public Resource loadAsResource(String filename) {
+  //   try {
+  //     Path file = loadProfile(filename);
+  //     Resource resource = new UrlResource(file.toUri());
+  //     if (resource.exists() || resource.isReadable()) {
+  //       return resource;
+  //     } else {
+  //       throw new StorageFileNotFoundException(
+  //         "Could not read file: " + filename
+  //       );
+  //     }
+  //   } catch (MalformedURLException e) {
+  //     throw new StorageFileNotFoundException(
+  //       "Could not read file: " + filename,
+  //       e
+  //     );
+  //   }
+  // }
 
   @Override
-  public Path loadProfile(String filename) {
-    return profilepath.resolve(filename);
-  }
-
-  @Override
-  public Resource loadAsResource(String filename) {
-    try {
-      Path file = loadProfile(filename);
-      Resource resource = new UrlResource(file.toUri());
-      if (resource.exists() || resource.isReadable()) {
-        return resource;
-      } else {
-        throw new StorageFileNotFoundException(
-          "Could not read file: " + filename
-        );
-      }
-    } catch (MalformedURLException e) {
-      throw new StorageFileNotFoundException(
-        "Could not read file: " + filename,
-        e
-      );
-    }
-  }
-
-  @Override
-  public Resource loadCertificate(Long uid, String filename)
+  public Resource load(Long uid, String filename, Path path)
     throws UnauthorizedFileAccessException {
     // if (!checkAuthForTeacher(uid)) {
     //   throw new UnauthorizedFileAccessException();
     // }
-    Path storeLocation = Paths.get(certificatePath + File.separator + uid);
+    Path storeLocation = Paths.get(path + File.separator + uid);
     try {
       Path file = storeLocation.resolve(filename);
       Resource resource = new UrlResource(file.toUri());
@@ -132,24 +142,29 @@ public class StorageServiceImpl implements StorageService {
   }
 
   @Override
-  public void storeCertificates(Long uid, MultipartFile[] files)
+  public void store(Long uid, MultipartFile file, Path path, boolean deleteAllOldFiles)
     throws UnauthorizedFileAccessException {
     //Checking Content Type
-    logger.info("files with size: {} is being stored",files.length);
-    if (!checkAuthForTeacher(uid)) {
+    // logger.info("files with size: {} is being stored",files.length);
+
+
+
+    if (path.equals(CERTIFICATE_PATH) && !checkAuthForTeacher(uid)) {
       logger.info("User " + uid + " is uploding certificates");
       logger.error("unauthorize file access");
       throw new UnauthorizedFileAccessException();
     }
     ImageFileValidator fileValidator = new ImageFileValidator();
-    for (MultipartFile file : files) {
+    // for (MultipartFile file : files) {
       if (!fileValidator.isSupportedContentType(file.getContentType())) {
         logger.error("not file exception, {}",file.getName());
         throw new NotImageFileException();
       }
-    }
-    Path storeLocation = Paths.get(certificatePath + File.separator + uid);
+    // }
+    Path storeLocation = Paths.get(path + File.separator + uid);
 
+    
+    //Create Directory if it does not exists
     if (!Files.exists(storeLocation)) {
       try {
         Files.createDirectories(storeLocation);
@@ -159,8 +174,19 @@ public class StorageServiceImpl implements StorageService {
         throw new RuntimeException("Could not initialize folder for upload!");
       }
     }
+
+    if(deleteAllOldFiles){
+      logger.info("Deleting all photos of Uid: {}",uid);
+      try {
+        FileUtils.cleanDirectory(storeLocation.toFile()); 
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+
+   
     
-    for (MultipartFile file : files) {
+    // for (MultipartFile file : files) {
       try {
         try {
           Files.copy(
@@ -181,9 +207,9 @@ public class StorageServiceImpl implements StorageService {
           ". Please try again!"
         );
       }
-      logger.info("User {} has stored {} files",uid,files.length);
+      // logger.info("User {} has stored {} files",uid,files.length);
     }
-  }
+  // }
 
   @Override
   public Stream<Path> loadAllCertificates(Long uid)
@@ -192,7 +218,7 @@ public class StorageServiceImpl implements StorageService {
     //   throw new UnauthorizedFileAccessException();
     // }
     logger.info("Certificates of user {} has been requested", uid);
-    Path storeLocation = Paths.get(certificatePath + File.separator + uid);
+    Path storeLocation = Paths.get(CERTIFICATE_PATH + File.separator + uid);
     try {
       return Files
         .walk(storeLocation, 1)
@@ -211,7 +237,7 @@ public class StorageServiceImpl implements StorageService {
       throw new UnauthorizedFileAccessException();
     }
     logger.info("Certificates of {} has been requested to delete", uid);
-    Path storeLocation = Paths.get(certificatePath + File.separator + uid);
+    Path storeLocation = Paths.get(CERTIFICATE_PATH + File.separator + uid);
     Path file = storeLocation.resolve(filename);
     Files.delete(file);
     logger.info("User {} deleted file {}",uid,filename);
@@ -236,5 +262,53 @@ public class StorageServiceImpl implements StorageService {
       return false;
     }
     return true;
+  }
+
+  @Override
+  public List<FileInfo> loadCertificatesAsFileInfo(Long uid) {
+    try {
+      return loadAllCertificates(uid)
+        .map(
+          path -> {
+            String name = path.getFileName().toString();
+            String url = MvcUriComponentsBuilder
+              .fromMethodName(
+                FileController.class,
+                "getResource",
+                "certificates",
+                uid,
+                path.getFileName().toString()
+              )
+              .build()
+              .toString();
+            return new FileInfo(name, url);
+          }
+        )
+        .collect(Collectors.toList());
+    } catch (Exception e) {
+      return new ArrayList<>();
+    }
+
+  }
+
+  @Override
+  public FileInfo loadProfileAsFileInfo(UserInfo userInfo) {
+    
+    String name = userInfo.getPhoto();
+    if(name == null || name.isEmpty()){
+      return null;
+    }
+    String url = MvcUriComponentsBuilder
+      .fromMethodName(
+        FileController.class,
+        "getResource",
+        "profiles",
+        userInfo.getUid(),
+        name
+      )
+      .build()
+      .toString();
+    logger.info("Get Data as Resource name: {}, url: {}",name,url);
+    return new FileInfo(name, url);
   }
 }

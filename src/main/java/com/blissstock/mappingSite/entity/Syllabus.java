@@ -50,7 +50,7 @@ public class Syllabus {
     fetch = FetchType.EAGER,
     optional = false
   )
-  @JoinColumn(name = "course_id")
+  @JoinColumn(name = "courseId_fkey")
   @JsonIgnore
   private CourseInfo courseInfo;
 
