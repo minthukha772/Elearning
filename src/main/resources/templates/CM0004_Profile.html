@@ -285,7 +285,21 @@
         <div class="card">
           <div class="card-header">User Account Control</div>
           <div class="card-body">
-            <div class="d-flex justify-content-between mb-3">
+
+            <!-- verify button -->
+            <div class="d-flex justify-content-between mb-3" th:if="${role=='ROLE_TEACHER' and status == 'REQUESTED'}">
+              <p>Verify requested user</p>
+              <button
+              class="btn btn-primary"
+              data-bs-action="Verify"
+              data-bs-toggle="modal"
+              data-bs-target="#actionConfirmationModal"
+            >Verify
+              </button>
+            </div>
+
+            <!-- suspend button -->
+            <div class="d-flex justify-content-between mb-3" th:if="${(role=='ROLE_TEACHER' or role == 'ROLE_STUDENT') and (status == 'REGISTERED' or status == 'VERIFIED' or status == 'REQUESTED')}">
               <p>Suspend User For A While</p>
               <button
               class="btn btn-danger"
@@ -295,7 +309,9 @@
             >Suspend
               </button>
             </div>
-            <div class="d-flex justify-content-between mb-3">
+
+            <!-- reactivate button -->
+            <div class="d-flex justify-content-between mb-3" th:if="${(role=='ROLE_TEACHER' or role == 'ROLE_STUDENT') and status == 'SUSPENDED'}">
               <p>Re-activate User</p>
               
               <button
@@ -306,7 +322,9 @@
             >Re-activate
               </button>
             </div>
-            <div class="d-flex justify-content-between mb-3">
+
+            <!-- delete button -->
+            <div class="d-flex justify-content-between mb-3" th:if="${(role=='ROLE_TEACHER' or role == 'ROLE_STUDENT') and (status == 'REGISTERED' or status == 'VERIFIED' or status == 'REQUESTED' or status == 'SUSPENDED')}">
               <p>Delete User Account</p>
               <button
               class="btn btn-danger"
@@ -316,6 +334,7 @@
             >Delete Account
               </button>
             </div>
+
           </div>
         </div>
       </div>

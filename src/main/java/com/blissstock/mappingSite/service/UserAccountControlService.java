@@ -4,6 +4,11 @@ import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.entity.UserInfo;
 
 public interface UserAccountControlService {
+
+    public void verifyUser(UserAccount userAccount);
+
+    public void verifyUser(UserInfo userInfo);
+    
     public void suspendUser(UserAccount userAccount);
 
     public void suspendUser(UserInfo userInfo);
@@ -15,5 +20,9 @@ public interface UserAccountControlService {
     public void approveTeacher(UserAccount userAccount);
 
     public void approveTeacher(UserInfo userInfo);
+
+    public void reactivateUser(UserInfo userInfo);
+
+    public void reactivateUser(UserAccount userAccount);
 
 }
