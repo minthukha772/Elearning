@@ -37,15 +37,17 @@ public class ReviewListController {
     UserRepository userRepo;
     //get student review 
     @Valid
-    @GetMapping(value={"/teacher/review-list/{courseId}",
-    "/student/review-list/{courseId}",
-    "/admin/review-list/{courseId}/{id}" 
+    @GetMapping(value={"/teacher/review-list/course_id/{courseId}",
+    "/student/review-list/course_id/{courseId}",
+    "/admin/review-list/course_id/{courseId}/student_id/{id}" 
     })
     private String getReviewList(@PathVariable Long courseId,@PathVariable(name = "id", required = false) Long id, Model model) {  
         Long userId = id==null ? userSessionService.getUserAccount().getAccountId(): id;
 
          
         CourseInfo courseInfo=courseInfoRepo.findById(courseId).orElse(null);
+        String trName = courseInfo.getUserInfo().getUserName();
+        model.addAttribute("trName", trName);
         UserInfo user=userRepo.findById(userId).orElse(null);
         //Display course name
         String courseName=courseInfo.getCourseName();
@@ -58,10 +60,7 @@ public class ReviewListController {
         for(JoinCourseUser join:joinList){
             reviewList.addAll(join.getReview());
             UserInfo joinUser= join.getUserInfo();
-            if(joinUser.getUserAccount().getRole().equals("ROLE_TEACHER")){
-                model.addAttribute("trName", joinUser.getUserName());
-            } 
-            else if(joinUser.getUserAccount().getAccountId().equals(userId)){
+           if(joinUser.getUserAccount().getAccountId().equals(userId)){
                 if(joinUser.getUserAccount().getRole().equals("ROLE_STUDENT")){
                     model.addAttribute("stuRegistered", true);
                 }
@@ -79,7 +78,17 @@ public class ReviewListController {
             }
         }
 
-        
+        //calculate average star rating for the course
+        int total_stars = 0;
+        int numCourseReviewList = courseReviewList.size();
+        for(Review review : courseReviewList){
+            total_stars += review.getStar();
+        }
+        int average = (int)total_stars/numCourseReviewList;
+        String averageFloat = String.format("%.2f", (double)total_stars/numCourseReviewList);
+        model.addAttribute("average", average);
+        model.addAttribute("averageFloat", averageFloat);
+
         //Display student reviews
         List<JoinCourseUser> joinUserList=user.getJoin();
         List<Review> stuReviews=new ArrayList<Review>(); 

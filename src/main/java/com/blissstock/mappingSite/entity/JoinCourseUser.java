@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -52,7 +53,8 @@ public class JoinCourseUser {
   @JsonIgnore
   private List<LeaveInfo> leaveInfo = new ArrayList<>();
 
-  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "join")
-  @JsonIgnore
-  private List<PaymentReceive> paymentReceive = new ArrayList<>();
+  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="join")
+	@JsonIgnore
+	private PaymentReceive paymentReceive;
 }
+
