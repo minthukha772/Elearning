@@ -34,7 +34,7 @@ public class UserAccountControlServiceImpl implements UserAccountControlService 
 
     @Override
     public void verifyUser(UserInfo userInfo) {
-       suspendUser(userInfo.getUserAccount());
+       verifyUser(userInfo.getUserAccount());
     }
 
     @Override

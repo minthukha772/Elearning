@@ -26,7 +26,7 @@ public enum AccountStatus {
             if(str.equalsIgnoreCase(status.value))
                 return status;
         }
-        return AccountStatus.SUSPENDED;
+        return null;
     }
 
 }

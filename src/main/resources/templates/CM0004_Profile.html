@@ -287,7 +287,7 @@
           <div class="card-body">
 
             <!-- verify button -->
-            <div class="d-flex justify-content-between mb-3" th:if="${role=='ROLE_TEACHER' && status == 'REQUESTED'}">
+            <div class="d-flex justify-content-between mb-3" th:if="${role=='ROLE_TEACHER' and status == 'REQUESTED'}">
               <p>Verify requested user</p>
               <button
               class="btn btn-primary"
@@ -299,7 +299,7 @@
             </div>
 
             <!-- suspend button -->
-            <div class="d-flex justify-content-between mb-3" th:if="${(role=='ROLE_TEACHER' || role == 'ROLE_STUDENT') && (status == 'REGISTERED' || status == 'VERIFIED')}">
+            <div class="d-flex justify-content-between mb-3" th:if="${(role=='ROLE_TEACHER' or role == 'ROLE_STUDENT') and (status == 'REGISTERED' or status == 'VERIFIED' or status == 'REQUESTED')}">
               <p>Suspend User For A While</p>
               <button
               class="btn btn-danger"
@@ -311,7 +311,7 @@
             </div>
 
             <!-- reactivate button -->
-            <div class="d-flex justify-content-between mb-3" th:if="${(role=='ROLE_TEACHER' || role == 'ROLE_STUDENT') && status == 'SUSPENED'}">
+            <div class="d-flex justify-content-between mb-3" th:if="${(role=='ROLE_TEACHER' or role == 'ROLE_STUDENT') and status == 'SUSPENDED'}">
               <p>Re-activate User</p>
               
               <button
@@ -324,7 +324,7 @@
             </div>
 
             <!-- delete button -->
-            <div class="d-flex justify-content-between mb-3" th:if="${(role=='ROLE_TEACHER' || role == 'ROLE_STUDENT') && (status == 'REGISTERED' || status == 'VERIFIED')}">
+            <div class="d-flex justify-content-between mb-3" th:if="${(role=='ROLE_TEACHER' or role == 'ROLE_STUDENT') and (status == 'REGISTERED' or status == 'VERIFIED' or status == 'REQUESTED' or status == 'SUSPENDED')}">
               <p>Delete User Account</p>
               <button
               class="btn btn-danger"
