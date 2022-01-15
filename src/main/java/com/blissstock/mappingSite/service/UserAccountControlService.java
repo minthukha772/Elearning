@@ -25,4 +25,6 @@ public interface UserAccountControlService {
 
     public void reactivateUser(UserAccount userAccount);
 
+    public void destroyUserSession(UserAccount userAccount);
+
 }
