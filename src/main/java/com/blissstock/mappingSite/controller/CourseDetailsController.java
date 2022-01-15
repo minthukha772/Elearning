@@ -126,7 +126,7 @@ public class CourseDetailsController {
     //     CourseInfo courseInfo = courseInfoRepository.findById(myId).get();
     //     System.out.println("BlaBla" + courseInfo.getTest().size());
     //     return "hello";
-    }
+    //}
 
 
 }
