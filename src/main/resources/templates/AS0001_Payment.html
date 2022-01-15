@@ -56,7 +56,7 @@
                 <li class="breadcrumb-item">
                     <a href="#" data-bs-toggle="modal" data-bs-target="#reEnterEmail">Course Details</a>
                 </li>
-                <li class="breadcrumb-item active">Review</li>
+                <li class="breadcrumb-item active">Payment Details</li>
 
             </ol>
         </nav>
@@ -136,9 +136,7 @@
                                 <div class="col-lg-6">
                                     <label for="coursename" class="col-form-label">Kpay Phone Number</label>
                                 </div>
-                                <!--div class="col-lg-3">
-                            <input type="email" class="form-control" id="inputEmail" placeholder="姓" required>
-                        </div-->
+                                
                             </div>
                             <div class="form-group row">
                                 <div class="col-lg-1"></div>
@@ -147,9 +145,7 @@
                                 <div class="col-lg-6">
                                     <label for="coursename" class="col-form-label">09 999999999</label>
                                 </div>
-                                <!--div class="col-lg-3">
-                            <input type="email" class="form-control" id="inputEmail" placeholder="姓" required>
-                        </div-->
+                                
                             </div>
                             <div class="form-group row">
                                 <div class="col-lg-1"></div>
@@ -158,9 +154,7 @@
                                 <div class="col-lg-6">
                                     <label for="coursename" class="col-form-label">09 999999999</label>
                                 </div>
-                                <!--div class="col-lg-3">
-                            <input type="email" class="form-control" id="inputEmail" placeholder="姓" required>
-                        </div-->
+                               
                             </div>
                         </div>
 
@@ -173,9 +167,7 @@
                                 <div class="col-lg-6">
                                     <label for="coursename" class="col-form-label">AYAPay Phone Number</label>
                                 </div>
-                                <!--div class="col-lg-3">
-                            <input type="email" class="form-control" id="inputEmail" placeholder="姓" required>
-                        </div-->
+                               
                             </div>
                             <div class="form-group row">
                                 <div class="col-lg-1"></div>
@@ -184,9 +176,7 @@
                                 <div class="col-lg-6">
                                     <label for="coursename" class="col-form-label">09 999999999</label>
                                 </div>
-                                <!--div class="col-lg-3">
-                            <input type="email" class="form-control" id="inputEmail" placeholder="姓" required>
-                        </div-->
+                              
                             </div>
                             <div class="form-group row">
                                 <div class="col-lg-1"></div>
@@ -195,9 +185,7 @@
                                 <div class="col-lg-6">
                                     <label for="coursename" class="col-form-label">09 999999999</label>
                                 </div>
-                                <!--div class="col-lg-3">
-                            <input type="email" class="form-control" id="inputEmail" placeholder="姓" required>
-                        </div-->
+                                
                             </div>
                         </div>
 
@@ -221,9 +209,7 @@
                                 <div class="col-lg-6">
                                     <label for="coursename" class="col-form-label">09 999999999</label>
                                 </div>
-                                <!--div class="col-lg-3">
-                            <input type="email" class="form-control" id="inputEmail" placeholder="姓" required>
-                        </div-->
+                               
                             </div>
                             <div class="form-group row">
                                 <div class="col-lg-1"></div>
@@ -232,9 +218,7 @@
                                 <div class="col-lg-6">
                                     <label for="coursename" class="col-form-label">09 999999999</label>
                                 </div>
-                                <!--div class="col-lg-3">
-                            <input type="email" class="form-control" id="inputEmail" placeholder="姓" required>
-                        </div-->
+                                
                             </div>
                         </div>
                     </form>
@@ -248,7 +232,7 @@
                 <!-- Student view -->
                 <div class="card-body">
   
-                        <form method="post" th:action="@{${postAct}}" th:object="${payment}"
+                        <form method="post"  th:action="@{__${#httpServletRequest.requestURI}__/edit/}" th:object="${payment}"
                             enctype="multipart/form-data">
                             <div class="row form-sec-header">
                                 <div class="col-lg-12 text-center">
@@ -264,28 +248,23 @@
                                 <div class="form-input">
                                     <div class="ml-2">
                                         <div id="msg"></div>
-                                          <input type="file" name="img[]" class="file" accept="image/*">
+                                        
+                                        <div class="ml-2 col-md-8">
+                                            
+                                            <img id="preview" class="img-thumbnail" th:src="${slip.url}"  th:alt="${slip.name}">
+                                       
+                                        </div>
+                                        
+                                          <input type="file" class="file" accept="image/*"  name="slip"  th:src="${slip.url}"  th:alt="${slip.name}">
+                                          <div sec:authorize="hasAuthority('ROLE_STUDENT') ">
                                           <div class="input-group my-3">
-                                            <input type="text" class="form-control" disabled placeholder="Upload File" id="file">
+                                            <input type="text" class="form-control"  disabled placeholder="Upload File" >
                                             <div class="input-group-append">
                                               <button type="button" class="browse btn btn-primary">Browse...</button>
                                             </div>
                                           </div>
+                                        </div>
                                       </div>
-                                      <div class="ml-2 col-sm-6">
-                                        <img src="https://placehold.it/80x80" id="preview" class="img-thumbnail">
-                                      </div>
-                                    <!-- <div class="preview">
-                                        <img id="file-ip-1-preview" th:field="*{slip}" alt= "Upload voucher image here" style="width: 300px; height: 700px; padding-left:250px;">
-                                    </div>
-                                   
-                                    <input type="file" id="file-ip-1" accept="image/*" name="image"
-                                        onchange="showPreview(event);" class="form-control"
-                                        th:classappend="${#fields.hasErrors('slip')}?'is-invalid':''">
-                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('slip')}"
-                                        th:errors="*{slip}">This field is required.</div> -->
-
-
                                 </div>
                             </div>
                             <!--<div class="form-group row">
@@ -295,14 +274,24 @@
                                 <input type="file" id="img" name="img" accept="image/*">
                                 <div class="invalid-feedback" th:if="${#fields.hasErrors('slip')}" th:errors="*{slip}">This field is required.</div>
                             </div>-->
-                            <div class="form-group row">
-                                <!-- <img th:src="@{${payment.slipImagePath}}" /></div> -->
-
-                                <div class="form-group">
-                                    <!-- <input type="text" class="form-control rounded-left" th:field="*{paymentErrStatus}" style="border: none transparent;" readonly> -->
-
+                            <div sec:authorize="hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SUPER_ADMIN') ">
+                            <div id="status" class="mt-1 mb-3">
+                                <span class="badge rounded-pill  bg-warning text-dark" th:text="${payment.paymentStatus}"></span>
+                            </div>
+                            <div class="form-group row">    
+                                <label class="radio-inline">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" th:field="*{paymentStatus}" value="COMPLETED" id="inlineRadio1" 
+                                        th:disabled="${payment.paymentStatus eq 'ERROR'}">
+                                        <label class="form-check-label" for="inlineRadio1" style="color: #28A745;" >COMPLETED</label>
+                                      </div>
+                                      <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" th:field="*{paymentStatus}" value="ERROR" id="inlineRadio2"
+                                        th:disabled="${payment.paymentStatus eq 'COMPLETED'}">
+                                        <label class="form-check-label" for="inlineRadio2" style="color: #DC3545;">ERROR</label>
+                                      </div>
                                 </div>
-
+                            </div>
                                 <div class="form-group row">
                                     <div class="col-lg-12 text-center">
                                         <button id="btnReg" type="submit"

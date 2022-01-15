@@ -40,6 +40,8 @@ public class FileController {
         file = storageService.load(uid, filename,StorageServiceImpl.PROFILE_PATH);
       }else if(type.equals("certificates")){
         file = storageService.load(uid, filename,StorageServiceImpl.CERTIFICATE_PATH);
+      }else if(type.equals("slip")){
+        file = storageService.load(uid, filename,StorageServiceImpl.SLIP_PATH);
       }
       
     } catch (UnauthorizedFileAccessException e) {
