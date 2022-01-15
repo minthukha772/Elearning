@@ -3,16 +3,13 @@ package com.blissstock.mappingSite.controller;
 import java.util.List;
 import java.util.Optional;
 
-import javax.persistence.Lob;
-
 import com.blissstock.mappingSite.dto.JoinCourseDTO;
 import com.blissstock.mappingSite.dto.UserRegisterDTO;
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.enums.UserRole;
-import com.blissstock.mappingSite.exceptions.UserAlreadyExistException;
-import com.blissstock.mappingSite.repository.CourseRepository;
+import com.blissstock.mappingSite.repository.CourseInfoRepository;
 import com.blissstock.mappingSite.repository.CourseTimeRepository;
-import com.blissstock.mappingSite.repository.UserAccountRepository;
+
 import com.blissstock.mappingSite.repository.UserInfoRepository;
 import com.blissstock.mappingSite.service.JoinCourseService;
 import com.blissstock.mappingSite.service.UserSessionService;
@@ -23,11 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-
-import javassist.bytecode.stackmap.BasicBlock.Catch;
 
 @Controller
 public class EnrollStudentController {
@@ -44,7 +37,7 @@ public class EnrollStudentController {
     private JoinCourseService joinCourseService;
 
     @Autowired
-    private CourseRepository courseRepo;
+    private CourseInfoRepository courseRepo;
 
     @Autowired
     private CourseTimeRepository courseTimeRepo;
