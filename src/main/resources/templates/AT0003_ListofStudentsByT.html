@@ -176,28 +176,28 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4">
                                                                                         <div class="col-md-4" style="display: flex;">
                                                                                             <div class="card-body part1">
                                                                                                 <p class="card-text">
-                                                                                                    <p class="fw-bold customp1" th:utext="${#strings.substringBefore(courseInfo.startDate, ' ')} + ' ~ ' + ${#strings.substringBefore(courseInfo.endDate, ' ')}">18.1.2022 - 20.3.2022</p>
+                                                                                                    <p class="fw-bold customp1" th:utext="${#strings.substringBefore(courseInfo.startDate, ' ')} + ' ~ ' + ${#strings.substringBefore(courseInfo.endDate, ' ')}"></p>
                                                                                                     <div th:each="time : ${courseTimeList}">
-                                                                                                        <p class="fw-normal customp1" th:text="${time.courseDays} + ':' + ${time.courseStartTime} + '~' + ${time.courseEndTime}">Mon: 13:00~15:00</p>
+                                                                                                        <p class="fw-normal customp1" th:text="${time.courseDays} + ':' + ${time.courseStartTime} + '~' + ${time.courseEndTime}"></p>
                                                                                                     </div>
                                                                                                     <!-- <p class="fw-normal customp1">Mon: 13:00~15:00</p>
                                                                                                     <p class="fw-normal customp1">Tue: 13:00~15:00</p> -->
-                                                                                                    <p class="fw-normal customp1 customcolor">Only 2 more students!</p>
-                                                                                                    <p class="fw-normal customp1 customcolor">Status :<br>Edited by teacher</p>
+                                                                                                    <p class="fw-normal customp1 customcolor" th:text="'Only ' + ${availableStuList} + ' more students!'"></p>
+                                                                                                    <!-- <p class="fw-normal customp1 customcolor">Status :<br>Edited by teacher</p> -->
                                                                                                 </p>
                                                                                             </div>
                                                                                         </div>
                                                                                         <div class="col-md-8">
                                                                                             <div class="card-body part2">
-                                                                                                <h5 class="card-title fw-bolder" th:text="${courseInfo.courseName}">Basic Programming <sup class="part2_color fw-bold">Batch III</sup></h5>
+                                                                                                <h5 class="card-title fw-bolder" th:text="${courseInfo.courseName}"></h5>
                                                                                                 <p class="card-text">
-                                                                                                    <p class="part2_color fw-bold customp2" th:text="${teacherName}">Dr. Nay Min Khant</p>
-                                                                                                    <p class="fs-6 customp2" th:text="${courseInfo.category} + ' > ' + ${courseInfo.level}">Computer Science > Beginner Level</p>
-                                                                                                    <p><small class="text-muted customp2" th:text="${courseInfo.aboutCourse}">This is a wider card with supporting text below as a natural lead-into additional content. This content is a little bit longer.</small></p>
+                                                                                                    <p class="part2_color fw-bold customp2" th:text="${teacherName}"></p>
+                                                                                                    <p class="fs-6 customp2" th:text="${courseInfo.category} + ' > ' + ${courseInfo.level}"></p>
+                                                                                                    <p><small class="text-muted customp2" th:text="${courseInfo.aboutCourse}"></small></p>
                                                                                                     <p class="fw-bold fs-5 customp2">Prerequisites</p>
-                                                                                                    <p class="fw-normal customp2">Basic Understand in Computer Terms</p>
-                                                                                                    <p class="fw-bold customp2" th:text="'$ ' + ${courseInfo.fees}">150000 mmk</p>
-                                                                                                    <p class="fw-bold" th:text="'Participants : ' + ${#lists.size(allStudentList)}">Participants : 4/12</p>
+                                                                                                    <p class="fw-normal customp2" th:text="${courseInfo.prerequisite}"></p>
+                                                                                                    <p class="fw-bold customp2" th:text="'$ ' + ${courseInfo.fees}"></p>
+                                                                                                    <p class="fw-bold" th:text="'Participants : ' + ${#lists.size(allStudentList)} + '/'+ ${courseInfo.maxStu}"></p>
                                                                                                 </p>
                                                                                             </div>
                                                                                         </div>

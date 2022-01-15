@@ -134,6 +134,11 @@ public class ListOfUserController {
         System.out.println("User List"+userList);
         // List<UserInfo> stAllRecord = userRepo.findByCourseI();
         // System.out.println(stAllRecord);
+        Integer maxStudent = course.getMaxStu();
+        Integer currentStuList = userList.size();
+        Integer availableStuList = maxStudent - currentStuList;
+        model.addAttribute("availableStuList", availableStuList);
+
         UserInfo teacherInfo = course.getUserInfo();
         String teacherName = teacherInfo.getUserName();
         List<CourseTime> courseTimeList = course.getCourseTime();
