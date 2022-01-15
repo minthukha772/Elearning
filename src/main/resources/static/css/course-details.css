@@ -15,7 +15,6 @@ body {
 .right {
     padding: 3%;
     background-color: #fff;
-    line-height: 50px;
 }
 
 option {
@@ -48,4 +47,31 @@ table {
 
 th {
     font-size: 20px;
+}
+
+.p18size {
+    font-size: 18px;
+}
+
+.p16size {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.p16normal {
+    font-size: 16px;
+}
+
+.p12size {
+    font-size: 12px;
+}
+
+.prerequisites {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.link {
+    font-size: 24px;
+    font-weight: bold;
 }
