@@ -3,7 +3,7 @@ package com.blissstock.mappingSite.controller;
 import javax.validation.Valid;
 
 import com.blissstock.mappingSite.entity.LeaveInfo;
-import com.blissstock.mappingSite.repository.CourseRepository;
+import com.blissstock.mappingSite.repository.CourseInfoRepository;
 import com.blissstock.mappingSite.repository.LeaveInfoRepository;
 import com.blissstock.mappingSite.repository.UserRepository;
 
@@ -26,7 +26,7 @@ public class TakeALeaveController {
 	UserRepository userRepo;
 	
 	@Autowired
-	CourseRepository courseRepo;
+	CourseInfoRepository courseRepo;
 	
 	@Autowired
 	LeaveInfoRepository leaveRepo;

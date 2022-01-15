@@ -1,6 +1,6 @@
 package com.blissstock.mappingSite.controller;
 
-import com.blissstock.mappingSite.repository.CourseRepository;
+import com.blissstock.mappingSite.repository.CourseInfoRepository;
 import com.blissstock.mappingSite.repository.CourseTimeRepository;
 import com.blissstock.mappingSite.repository.LeaveInfoRepository;
 import com.blissstock.mappingSite.repository.UserRepository;
@@ -23,7 +23,7 @@ public class CourseTestingController {
     ContentRepository contentRepo; */
 
     @Autowired
-    CourseRepository courseRepo;
+    CourseInfoRepository courseRepo;
 
     @Autowired
     LeaveInfoRepository leaveRepo;

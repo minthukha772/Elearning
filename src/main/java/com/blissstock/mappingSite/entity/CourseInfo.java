@@ -15,6 +15,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -115,9 +117,24 @@ public class CourseInfo {
   @JsonIgnore
   private List<JoinCourseUser> join = new ArrayList<>();
 
+  @Transient
+  private Long uid;
+
   @ManyToOne(fetch = FetchType.EAGER, optional = false)
   @JoinColumn(name = "uid_fkey")
   @JsonIgnore
   private UserInfo userInfo;
+
+  public void setIsCourseApproved(Boolean isCourseApproved) {
+		this.isCourseApproved = isCourseApproved;
+	}
+
+  // public String getTitle() {
+	// 	return this.title;
+	// }
+
+	// public void setTitle(String title) {
+	// 	this.title = title;
+	// }
 
 }

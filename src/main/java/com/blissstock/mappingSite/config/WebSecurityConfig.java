@@ -8,9 +8,14 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 /**
  * SpringSecurityを利用するための設定クラス
@@ -20,7 +25,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  *
  */
 @Configuration
-// @EnableWebSecurity
+@EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Autowired
@@ -55,11 +60,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .permitAll()
         .antMatchers("/register/**", "/login/**", "/password/**", "/home/**", "/verify_password/**")
         .permitAll()
-        .antMatchers("/verify_password/**", "/course-list-guest/**", "/**/change_password", "/change_password")
+        .antMatchers("/guest/**", "/**/change_password", "/change_password")
         .permitAll()
-        .antMatchers("/check_email/**")
-        .permitAll()
-        .antMatchers("/log/**")// TODO:remove in production, for testing purpose only.
+        .antMatchers("/check_email/**", "/check_email/admin/register", "confirmation")
         .permitAll()
         .antMatchers("/images/**", "/css/**", "/js/**")
         .permitAll()
@@ -67,7 +70,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .hasAnyAuthority(UserRole.STUDENT.getValue())
         .antMatchers("/teacher/**")
         .hasAnyAuthority(UserRole.TEACHER.getValue())
-        .antMatchers("/admin/**")      
+        .antMatchers("/admin/**")
         .hasAnyAuthority(
             UserRole.ADMIN.getValue(),
             UserRole.SUPER_ADMIN.getValue())
@@ -87,7 +90,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .logoutUrl("/logout")
         .logoutSuccessUrl("/login?logout")
         .permitAll();
-
+    http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED).invalidSessionUrl("/login")
+        .maximumSessions(1).sessionRegistry(sessionRegistry())
+        .expiredUrl("/login");
     http.csrf().disable();
   }
 
@@ -109,5 +114,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   public AuthenticationManager authenticationManagerBean() throws Exception {
     return super.authenticationManagerBean();
+  }
+
+  /**
+   * We need this bean for the session management. Specially if we want to control
+   * the concurrent session-control support
+   * with Spring security.
+   * 
+   * @return
+   */
+  @Bean
+  public HttpSessionEventPublisher httpSessionEventPublisher() {
+    return new HttpSessionEventPublisher();
+  }
+
+  @Bean
+  public SessionRegistry sessionRegistry() {
+    return new SessionRegistryImpl();
   }
 }
