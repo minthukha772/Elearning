@@ -28,7 +28,7 @@ public class HomeRedirectController {
        return "redirect:student/my-course";
     }
     if(userRole == UserRole.TEACHER){
-      return "redirect:/teacher";
+      return "redirect:/teacher/my-course";
     }
     return "redirect:/";
   }
