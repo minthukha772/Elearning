@@ -16,16 +16,9 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js}" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
 </head>
 <body>
-    <div th:if="${student == 'STUDENT'}">
-        <div th:replace="fragments/usernav"></div>
-    </div>  
-    <div th:if="${teacher == 'TEACHER'}">
-        <div th:replace="fragments/usernav"></div>
-    </div> 
-    <div th:if="${admin == 'ADMIN'}">
-        <div th:replace="fragments/adminnav"></div>
-    </div> 
-
+    <div th:replace="fragments/nav">
+        
+    </div>
     
     <div class="container card-position">
         <div class="row">

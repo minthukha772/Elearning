@@ -46,7 +46,7 @@ public class CourseDetailsController {
     JoinCourseUserRepository joinCourseUserRepository;
 
     @GetMapping(
-        value =  {"/student/course-details/{courseId}", "/teacher/course-details/{courseId}", "/admin/course-details/{courseId}"}
+        value =  {"/student/course-details/{courseId}", "/teacher/course-details/{courseId}", "/admin/course-details/{courseId}","/guest/course-detail/{courseId}"}
     )
     private String getCourseDetails(@PathVariable Long courseId, Model model){
         Long userId;

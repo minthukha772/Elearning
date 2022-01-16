@@ -124,7 +124,7 @@ const renderCourseList = (courseList) => {
 
           
             </div>
-            <a href="#" class="btn btn-primary">Detail</a>
+            <a href="/guest/course-detail/${e.courseId}" class="btn btn-primary">Detail</a>
           </div>
           
         </div>
