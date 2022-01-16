@@ -39,7 +39,7 @@ public class PaymentAccount {
 
     @Column(name="account_number")
     //@NotBlank(message="Please fill bank account number.")
-    private Integer accountNumber;
+    private Long accountNumber;
     
     @Transient
 	private Long checkedBank;

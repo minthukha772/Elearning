@@ -128,6 +128,11 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
         <div class="text-white col-auto mt-2 mt-sm-0">
           <h4 th:text="${userInfo.userName}"></h4>
           <p th:text="${userInfo.selfDescription}"></p>
+          <div sec:authorize="hasAuthority('ROLE_TEACHER')">
+            <div th:if="${userInfo.userAccount.accountStatus == 'VERIFIED'}">
+              <a th:href="@{/teacher/course-registration}" class="btn btn-primary">Add Course</a>
+            </div>
+          </div>
         </div>
       </div>
     </div>

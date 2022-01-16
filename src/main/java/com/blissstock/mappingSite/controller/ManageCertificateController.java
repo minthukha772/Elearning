@@ -64,14 +64,15 @@ public class ManageCertificateController {
     Model model,
     @PathVariable(name = "id", required = false) Long id
   ) {
-
+    
     //log
     logger.info("POST mapping");
     logger.info("Files -> {}", file);
-    logger.info("ID is {}", id);
+    
 
     // System.out.println(files.length);
     Long uid = getUid(id);
+    logger.info("ID is {}", uid);
     try {
       // if (files.length > 0) {
         storageService.store(uid, file, StorageServiceImpl.CERTIFICATE_PATH,false);

@@ -54,7 +54,7 @@
       <div class="card">
         <div class="card-body">
           <form
-            id="paymentPost"
+            id="profilePost"
             method="post"
             th:action="@{__${#httpServletRequest.requestURI}__edit/profile-pic/}"
             enctype="multipart/form-data"
@@ -347,7 +347,8 @@
         <div></div>
         <div>
           <!-- TODO redirect to Course List -->
-          <a class="btn btn-primary mt-3 text-end" href="#">Browse Course</a>
+          <a class="btn btn-primary mt-3 text-end" th:if="${#authorization.expression('isAuthenticated()')}" th:href="@{/guest/explore/teacher/{id}(id=${id})}">Browse Course</a>
+
         </div>
       </div>
     </div>

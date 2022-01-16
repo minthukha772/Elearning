@@ -31,6 +31,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -216,11 +217,15 @@ public class ProfileController {
     Model model,
     @ModelAttribute PaymentInfoDTO paymentInfoDTO,
     @PathVariable(required = false) Long id,
-    HttpServletRequest httpServletRequest
+    HttpServletRequest httpServletRequest,
+    BindingResult bindingResult
   ) {
     logger.info("Post Requested");
     logger.info("Payment Edit Info {}", paymentInfoDTO);
 
+    if(bindingResult.hasErrors()){
+      logger.debug("error: {}",bindingResult.getAllErrors());
+    }
     Long uid = getUid(id);
 
     List<PaymentAccount> paymentAccounts = new ArrayList<>();

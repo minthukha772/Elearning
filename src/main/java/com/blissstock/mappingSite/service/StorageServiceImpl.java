@@ -247,6 +247,7 @@ public class StorageServiceImpl implements StorageService {
   public boolean checkAuthForTeacher(Long uid) {
     UserAccount userAccount = userSessionService.getUserAccount();
     UserRole userRole = UserRole.strToUserRole(userAccount.getRole());
+    logger.debug("user Role {}",userRole == UserRole.TEACHER);
     if (
       userRole != UserRole.ADMIN &&
       userRole != UserRole.SUPER_ADMIN &&
@@ -255,10 +256,12 @@ public class StorageServiceImpl implements StorageService {
       //  if user is not one of the following, it will return false;
       //  Teacher, Admin, Super Admin
       //
+      logger.debug("user role is not correct");
       return false;
     }
-    if (userRole == UserRole.TEACHER && userAccount.getAccountId() != uid) {
+    if (userRole == UserRole.TEACHER && !userAccount.getAccountId().equals(uid)) {
       // This condition is to make sure, teacher is not accessing other teacher resources.
+      logger.debug("id is not correct {}",userAccount.getAccountId() != uid);
       return false;
     }
     return true;
