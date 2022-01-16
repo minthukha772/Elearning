@@ -6,36 +6,40 @@ INSERT INTO public.bank_mst(bank_id, bank_name)VALUES (4,'KBZ');
 INSERT INTO public.bank_mst(bank_id, bank_name)VALUES (5,'CB');
 INSERT INTO public.bank_mst(bank_id, bank_name)VALUES (6,'AYA');
 
+
+
 -- User Account
-INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (10001,'Registered',TRUE,'Rachel@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-10','STUDENT','photo_sample');
-INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (10002,'Request',FALSE,'Michel@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-10','STUDENT','photo_sample');
-INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (10003,'Suspended',TRUE,'Bella@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-10','STUDENT','photo_sample');
-INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (10004,'Registered',TRUE,'James@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-11','STUDENT','photo_sample');
-INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (10005,'Request',TRUE,'Christine@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-11','STUDENT','photo_sample');
-INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (10006,'Registered',TRUE,'Zet@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-12','STUDENT','photo_sample');
-INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (10007,'Request',TRUE,'Lin@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-13','STUDENT','photo_sample');
-INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (10008,'Registered',TRUE,'Htet@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-13','STUDENT','photo_sample');
-INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (10009,'Request',TRUE,'Myat@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-13','STUDENT','photo_sample');
-INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (10010,'Registered',TRUE,'Min@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-13','STUDENT','photo_sample');
-INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (10011,'Request',FALSE,'Moh@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-13','STUDENT','photo_sample');
-INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (10012,'Registered',TRUE,'Mann@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-14','STUDENT','photo_sample');
-INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (10013,'Request',TRUE,'Thu@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-15','STUDENT','photo_sample');
-INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (10014,'Registered',TRUE,'Aye@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-15','TEACHER','photo_sample');
-INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (10015,'Request',TRUE,'Pwint@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-16','TEACHER','photo_sample');
-INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (10016,'Registered',TRUE,'Hnin@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-18','TEACHER','photo_sample');
-INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (20001,'Request',TRUE,'Zyan@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-18','TEACHER','photo_sample');
-INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (20002,'Registered',TRUE,'Thant@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-20','TEACHER','photo_sample');
-INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (20003,'Request',TRUE,'Htoo@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-20','TEACHER','photo_sample');
-INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (20004,'Registered',TRUE,'Moe@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-20','TEACHER_PENDING','photo_sample');
-INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (20005,'Request',TRUE,'Myint@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-20','TEACHER_PENDING','photo_sample');
-INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (20006,'Registered',TRUE,'Dali@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-20','TEACHER_PENDING','photo_sample');
-INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (20007,'Request',TRUE,'Chaint@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-23','TEACHER_PENDING','photo_sample');
-INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (20008,'Registered',TRUE,'Diana@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-23','TEACHER_PENDING','photo_sample');
-INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (30013,'Request',TRUE,'Admin13@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-23','ADMIN','photo_sample');
-INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (30014,'Registered',TRUE,'Admin14@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-27','ADMIN','photo_sample');
-INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (30015,'Request',TRUE,'Admin15@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-28','ADMIN','photo_sample');
-INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (30016,'Registered',TRUE,'Admin16@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-28','ADMIN','photo_sample');
-INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (40001,'Registered',TRUE,'SuperAdmin@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-12-01','SUPER_ADMIN','photo_sample');
+INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (10001,'REGISTERED',TRUE,'Rachel@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-10','ROLE_STUDENT','photo_sample');
+INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (10002,'REGISTERED',FALSE,'Michel@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-10','ROLE_STUDENT','photo_sample');
+INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (10003,'SUSPENDED',TRUE,'Bella@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-10','ROLE_STUDENT','photo_sample');
+INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (10004,'REGISTERED',TRUE,'James@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-11','ROLE_STUDENT','photo_sample');
+INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (10005,'REGISTERED',TRUE,'Christine@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-11','ROLE_STUDENT','photo_sample');
+INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (10006,'REGISTERED',TRUE,'Zet@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-12','ROLE_STUDENT','photo_sample');
+INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (10007,'REGISTERED',TRUE,'Lin@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-13','ROLE_STUDENT','photo_sample');
+INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (10008,'REGISTERED',TRUE,'Htet@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-13','ROLE_STUDENT','photo_sample');
+INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (10009,'REGISTERED',TRUE,'Myat@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-13','ROLE_STUDENT','photo_sample');
+INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (10010,'REGISTERED',TRUE,'Min@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-13','ROLE_STUDENT','photo_sample');
+INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (10011,'REGISTERED',FALSE,'Moh@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-13','ROLE_STUDENT','photo_sample');
+INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (10012,'REGISTERED',TRUE,'Mann@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-14','ROLE_STUDENT','photo_sample');
+INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (10013,'REGISTERED',TRUE,'Thu@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-15','ROLE_STUDENT','photo_sample');
+INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (10014,'VERIFIED',TRUE,'Aye@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-15','ROLE_TEACHER','photo_sample');
+INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (10015,'REQUESTED',TRUE,'Pwint@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-16','ROLE_TEACHER','photo_sample');
+INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (10016,'VERIFIED',TRUE,'Hnin@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-18','ROLE_TEACHER','photo_sample');
+INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (20001,'REQUESTED',TRUE,'Zyan@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-18','ROLE_TEACHER','photo_sample');
+INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (20002,'VERIFIED',TRUE,'Thant@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-20','ROLE_TEACHER','photo_sample');
+INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (20003,'REQUESTED',TRUE,'Htoo@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-20','ROLE_TEACHER','photo_sample');
+INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (20004,'VERIFIED',TRUE,'Moe@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-20','ROLE_TEACHER','photo_sample');
+INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (20005,'REQUESTED',TRUE,'Myint@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-20','ROLE_TEACHER','photo_sample');
+INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (20006,'VERIFIED',TRUE,'Dali@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-20','ROLE_TEACHER','photo_sample');
+INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (20007,'REQUESTED',TRUE,'Chaint@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-23','ROLE_TEACHER','photo_sample');
+INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (20008,'VERIFIED',TRUE,'Diana@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-23','ROLE_TEACHER','photo_sample');
+INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (30013,'REGISTERED',TRUE,'Admin13@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-23','ROLE_ADMIN','photo_sample');
+INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (30014,'REGISTERED',TRUE,'Admin14@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-27','ROLE_ADMIN','photo_sample');
+INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (30015,'REGISTERED',TRUE,'Admin15@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-28','ROLE_ADMIN','photo_sample');
+INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (30016,'REGISTERED',TRUE,'Admin16@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-11-28','ROLE_ADMIN','photo_sample');
+INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (40001,'REGISTERED',TRUE,'SuperAdmin@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-12-01','ROLE_SUPER_ADMIN','photo_sample');
+
+
 
 -- User Info
 INSERT INTO public.user_info(account_id, address, birth_date, city, division, education, gender, nrc, phone_no, photo, postal_code, self_description, user_name)VALUES (10001,'123st','2021-11-10','Yangon','Yangon','Fourth Year','female','12/TTT(Naing)111111','9420099999',null,'11211','About myself','Rachel');
@@ -68,24 +72,376 @@ INSERT INTO public.user_info(account_id, address, birth_date, city, division, ed
 INSERT INTO public.user_info(account_id, address, birth_date, city, division, education, gender, nrc, phone_no, photo, postal_code, self_description, user_name)VALUES (30016,'150st','1992-11-25','Yangon','Yangon','Graduated','female','12/TTT(Naing)111138','9420100026',null,'11238','About myself','Lisa');
 INSERT INTO public.user_info(account_id, address, birth_date, city, division, education, gender, nrc, phone_no, photo, postal_code, self_description, user_name)VALUES (40001,'151st','1999-06-01','Yangon','Yangon','Graduated','male','12/TTT(Naing)111139','9420100027',null,'11239','About myself','Juila');
 
--- Course
-INSERT INTO public.course_info(course_id,about_course,category,class_link,class_type,course_name,end_date,course_fees,is_course_approved,level, start_date,  max_stu, prerequisite) VALUES (50001,'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.','Computer Science','https://classroom.google.com/u/0/c/...','Live','Basic Programming','1.5.2021',150000,'TRUE','Basic','1.1.2021', 20,  'A computer and basic knowledge of how to use it.');
-INSERT INTO public.course_info(course_id,about_course,category,class_link,class_type,course_name,end_date,course_fees,is_course_approved,level, start_date,  max_stu, prerequisite) VALUES (50002,'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.','Language','https://classroom.google.com/u/0/c/...','Live','Japanese N5','1.6.2021',150000,'TRUE','Basic','1.2.2021', 21, 'No need any prequisites.');
-INSERT INTO public.course_info(course_id,about_course,category,class_link,class_type,course_name,end_date,course_fees,is_course_approved,level, start_date,  max_stu, prerequisite) VALUES (50003,'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.','Language','https://classroom.google.com/u/0/c/...','Live','Japanese N4','1.7.2021',150000,'TRUE','Basic','1.3.2021', 4,  'Must complete N5 level.');
-INSERT INTO public.course_info(course_id,about_course,category,class_link,class_type,course_name,end_date,course_fees,is_course_approved,level, start_date,  max_stu, prerequisite) VALUES (50004,'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.','Language','https://classroom.google.com/u/0/c/...','Live','Japanese N3','1.8.2021',200000,'TRUE','Intermediate','1.4.2021', 28,  'Must complete N4 level.');
-INSERT INTO public.course_info(course_id,about_course,category,class_link,class_type,course_name,end_date,course_fees,is_course_approved,level, start_date,  max_stu, prerequisite) VALUES (50005,'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.','Language','https://classroom.google.com/u/0/c/...','Live','Japanese N2','1.9.2021',250000,'TRUE','Advanced','1.5.2021', 20,  'Must complete N3 level.');
-INSERT INTO public.course_info(course_id,about_course,category,class_link,class_type,course_name,end_date,course_fees,is_course_approved,level, start_date,  max_stu, prerequisite) VALUES (50006,'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.','Language','https://classroom.google.com/u/0/c/...','Live','Japanese N1','1.10.2021',300000,'TRUE','Advanced','1.5.2021', 15,  'Must complete N2 level.');
-INSERT INTO public.course_info(course_id,about_course,category,class_link,class_type,course_name,end_date,course_fees,is_course_approved,level, start_date,  max_stu, prerequisite) VALUES (50007,'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.','Computer Science','https://classroom.google.com/u/0/c/...','Video','Networking','2.5.2021',250000,'TRUE','Intermediate','5.1.2021', 90,  'Basic hardware knowledge.');
-INSERT INTO public.course_info(course_id,about_course,category,class_link,class_type,course_name,end_date,course_fees,is_course_approved,level, start_date,  max_stu, prerequisite) VALUES (50008,'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.','Computer Science','https://classroom.google.com/u/0/c/...','Live','Java','2.6.2021',200000,'TRUE','Basic','7.1.2021', 48,'A computer and basic knowledge of how to use it.');
-INSERT INTO public.course_info(course_id,about_course,category,class_link,class_type,course_name,end_date,course_fees,is_course_approved,level, start_date,  max_stu, prerequisite) VALUES (50009,'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.','Computer Science','https://classroom.google.com/u/0/c/...','Video','Deep Learning','2.7.2021',300000,'TRUE','Basic','10.2.2021', 10,  'Strong knowlege in programming.');
-INSERT INTO public.course_info(course_id,about_course,category,class_link,class_type,course_name,end_date,course_fees,is_course_approved,level, start_date,  max_stu, prerequisite) VALUES (50010,'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.','Computer Science','https://classroom.google.com/u/0/c/...','Live','PHP','2.8.2021',250000,'FALSE','Intermediate','1.3.2021', 44, 'Basic PHP programming knowledge');
-INSERT INTO public.course_info(course_id,about_course,category,class_link,class_type,course_name,end_date,course_fees,is_course_approved,level, start_date,  max_stu, prerequisite) VALUES (50011,'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.','Computer Science','https://classroom.google.com/u/0/c/...','Video','Python','2.9.2021',250000,'TRUE','Advanced','5.3.2021', 50, 'Strong knowlege in programming.');
-INSERT INTO public.course_info(course_id,about_course,category,class_link,class_type,course_name,end_date,course_fees,is_course_approved,level, start_date,  max_stu, prerequisite) VALUES (50012,'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.','Computer Science','https://classroom.google.com/u/0/c/...','Video','Basic Programming','2.10.2021',150000,'FALSE','Basic','1.6.2021', 25,'A computer and basic knowledge of how to use it.');
-INSERT INTO public.course_info(course_id,about_course,category,class_link,class_type,course_name,end_date,course_fees,is_course_approved,level, start_date,  max_stu, prerequisite) VALUES (50013,'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.','Computer Science','https://classroom.google.com/u/0/c/...','Video','Java','1.5.2021',200000,'TRUE','Intermediate','1.2.2021', 70, 'Basic Java programming knowledge.');
-INSERT INTO public.course_info(course_id,about_course,category,class_link,class_type,course_name,end_date,course_fees,is_course_approved,level, start_date,  max_stu, prerequisite) VALUES (50014,'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.','Language','https://classroom.google.com/u/0/c/...','Video','Japanese N5','1.6.2021',150000,'TRUE','Basic','9.2.2021', 21, 'No need any prequisites.');
-INSERT INTO public.course_info(course_id,about_course,category,class_link,class_type,course_name,end_date,course_fees,is_course_approved,level, start_date,  max_stu, prerequisite) VALUES (50015,'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.','Language','https://classroom.google.com/u/0/c/...','Video','Japanese N4','2.6.2021',150000,'FALSE','Basic','1.2.2021', 20,  'Must complete N5 level.');
-INSERT INTO public.course_info(course_id,about_course,category,class_link,class_type,course_name,end_date,course_fees,is_course_approved,level, start_date,  max_stu, prerequisite) VALUES (50016,'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.','Language','https://classroom.google.com/u/0/c/...','Video','Japanese N3','3.6.2021',200000,'TRUE','Intermediate','1.3.2021', 23, 'Must complete N4 level.');
-INSERT INTO public.course_info(course_id,about_course,category,class_link,class_type,course_name,end_date,course_fees,is_course_approved,level, start_date,  max_stu, prerequisite) VALUES (50017,'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.','Language','https://classroom.google.com/u/0/c/...','Video','Japanese N2','10.8.2021',250000,'TRUE','Advanced','9.4.2021', 60,  'Must complete N3 level.');
-INSERT INTO public.course_info(course_id,about_course,category,class_link,class_type,course_name,end_date,course_fees,is_course_approved,level, start_date,  max_stu, prerequisite) VALUES (50018,'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.','Language','https://classroom.google.com/u/0/c/...','Video','Japanese N1','1.6.2021',300000,'TRUE','Advanced','8.1.2021', 77,  'Must complete N2 level.');
-INSERT INTO public.course_info(course_id,about_course,category,class_link,class_type,course_name,end_date,course_fees,is_course_approved,level, start_date,  max_stu, prerequisite) VALUES (50019,'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.','Language','https://classroom.google.com/u/0/c/...','Live','English','1.7.2021',20000,'TRUE','Basic','1.5.2021', 95,  'No need any prequisites.');
-INSERT INTO public.course_info(course_id,about_course,category,class_link,class_type,course_name,end_date,course_fees,is_course_approved,level, start_date,  max_stu, prerequisite) VALUES (50020,'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.','Language','https://classroom.google.com/u/0/c/...','Video','English','5.5.2021',200000,'TRUE','Basic','1.3.2021', 50, 'No need any prequisites.');
+-- Course info
+INSERT INTO public.course_info(course_id,about_course,category,class_link,class_type,course_name,end_date,course_fees,is_course_approved,level, start_date,  max_stu, prerequisite, uid_fkey) VALUES (50001,'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.','Computer Science','https://classroom.google.com/u/0/c/...','LIVE','Basic Programming','5.1.2021',150000,'TRUE','Basic','1.1.2021',  50, 'A computer and basic knowledge of how to use it.', 10014);
+INSERT INTO public.course_info(course_id,about_course,category,class_link,class_type,course_name,end_date,course_fees,is_course_approved,level, start_date,  max_stu, prerequisite, uid_fkey) VALUES (50002,'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.','Language','https://classroom.google.com/u/0/c/...','LIVE','Japanese N5','6.1.2021',150000,'TRUE','Basic','2.1.2021',  30, 'No need any prequisites.', 10015);
+INSERT INTO public.course_info(course_id,about_course,category,class_link,class_type,course_name,end_date,course_fees,is_course_approved,level, start_date,  max_stu, prerequisite, uid_fkey) VALUES (50003,'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.','Language','https://classroom.google.com/u/0/c/...','LIVE','Japanese N4','7.1.2021',150000,'TRUE','Basic','3.1.2021', 10, 'Must complete N5 level.', 10016);
+INSERT INTO public.course_info(course_id,about_course,category,class_link,class_type,course_name,end_date,course_fees,is_course_approved,level, start_date,  max_stu, prerequisite, uid_fkey) VALUES (50004,'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.','Language','https://classroom.google.com/u/0/c/...','LIVE','Japanese N3','8.1.2021',200000,'TRUE','Intermediate','4.1.2021',  50, 'Must complete N4 level.', 20001);
+INSERT INTO public.course_info(course_id,about_course,category,class_link,class_type,course_name,end_date,course_fees,is_course_approved,level, start_date,  max_stu, prerequisite, uid_fkey) VALUES (50005,'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.','Language','https://classroom.google.com/u/0/c/...','LIVE','Japanese N2','9.1.2021',250000,'TRUE','Advanced','5.1.2021',  35, 'Must complete N3 level.', 20002);
+INSERT INTO public.course_info(course_id,about_course,category,class_link,class_type,course_name,end_date,course_fees,is_course_approved,level, start_date,  max_stu, prerequisite, uid_fkey) VALUES (50006,'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.','Language','https://classroom.google.com/u/0/c/...','LIVE','Japanese N1','10.1.2021',300000,'TRUE','Advanced','5.1.2021',  25, 'Must complete N2 level.', 20003);
+INSERT INTO public.course_info(course_id,about_course,category,class_link,class_type,course_name,end_date,course_fees,is_course_approved,level, start_date,  max_stu, prerequisite, uid_fkey) VALUES (50007,'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.','Computer Science','https://classroom.google.com/u/0/c/...','VIDEO','Networking','5.2.2021',250000,'TRUE','Intermediate','1.5.2021',  100, 'Basic hardware knowledge.', 20004);
+INSERT INTO public.course_info(course_id,about_course,category,class_link,class_type,course_name,end_date,course_fees,is_course_approved,level, start_date,  max_stu, prerequisite, uid_fkey) VALUES (50008,'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.','Computer Science','https://classroom.google.com/u/0/c/...','LIVE','Java','6.2.2021',200000,'TRUE','Basic','1.7.2021',  50, 'A computer and basic knowledge of how to use it.', 20005);
+INSERT INTO public.course_info(course_id,about_course,category,class_link,class_type,course_name,end_date,course_fees,is_course_approved,level, start_date,  max_stu, prerequisite, uid_fkey) VALUES (50009,'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.','Computer Science','https://classroom.google.com/u/0/c/...','VIDEO','Deep Learning','7.2.2021',300000,'TRUE','Basic','2.10.2021',  40, 'Strong knowlege in programming.', 20006);
+INSERT INTO public.course_info(course_id,about_course,category,class_link,class_type,course_name,end_date,course_fees,is_course_approved,level, start_date,  max_stu, prerequisite, uid_fkey) VALUES (50010,'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.','Computer Science','https://classroom.google.com/u/0/c/...','LIVE','PHP','8.2.2021',250000,'FALSE','Intermediate','3.1.2021',  50, 'Basic PHP programming knowledge', 20007);
+INSERT INTO public.course_info(course_id,about_course,category,class_link,class_type,course_name,end_date,course_fees,is_course_approved,level, start_date,  max_stu, prerequisite, uid_fkey) VALUES (50011,'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.','Computer Science','https://classroom.google.com/u/0/c/...','VIDEO','Python','9.2.2021',250000,'TRUE','Advanced','3.5.2021',  70, 'Strong knowlege in programming.', 20008);
+INSERT INTO public.course_info(course_id,about_course,category,class_link,class_type,course_name,end_date,course_fees,is_course_approved,level, start_date,  max_stu, prerequisite, uid_fkey) VALUES (50012,'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.','Computer Science','https://classroom.google.com/u/0/c/...','VIDEO','Basic Programming','10.2.2021',150000,'FALSE','Basic','6.1.2021',  50, 'A computer and basic knowledge of how to use it.', 10014);
+INSERT INTO public.course_info(course_id,about_course,category,class_link,class_type,course_name,end_date,course_fees,is_course_approved,level, start_date,  max_stu, prerequisite, uid_fkey) VALUES (50013,'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.','Computer Science','https://classroom.google.com/u/0/c/...','VIDEO','Java','5.1.2021',200000,'TRUE','Intermediate','2.1.2021',  80, 'Basic Java programming knowledge.', 10015);
+INSERT INTO public.course_info(course_id,about_course,category,class_link,class_type,course_name,end_date,course_fees,is_course_approved,level, start_date,  max_stu, prerequisite, uid_fkey) VALUES (50014,'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.','Language','https://classroom.google.com/u/0/c/...','VIDEO','Japanese N5','6.1.2021',150000,'TRUE','Basic','2.9.2021',  100, 'No need any prequisites.', 10016);
+INSERT INTO public.course_info(course_id,about_course,category,class_link,class_type,course_name,end_date,course_fees,is_course_approved,level, start_date,  max_stu, prerequisite, uid_fkey) VALUES (50015,'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.','Language','https://classroom.google.com/u/0/c/...','VIDEO','Japanese N4','6.2.2021',150000,'FALSE','Basic','2.1.2021',  20, 'Must complete N5 level.', 20001);
+INSERT INTO public.course_info(course_id,about_course,category,class_link,class_type,course_name,end_date,course_fees,is_course_approved,level, start_date,  max_stu, prerequisite, uid_fkey) VALUES (50016,'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.','Language','https://classroom.google.com/u/0/c/...','VIDEO','Japanese N3','6.3.2021',200000,'TRUE','Intermediate','3.1.2021',  40, 'Must complete N4 level.', 20002);
+INSERT INTO public.course_info(course_id,about_course,category,class_link,class_type,course_name,end_date,course_fees,is_course_approved,level, start_date,  max_stu, prerequisite, uid_fkey) VALUES (50017,'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.','Language','https://classroom.google.com/u/0/c/...','VIDEO','Japanese N2','8.10.2021',250000,'TRUE','Advanced','4.9.2021',  65, 'Must complete N3 level.', 20003);
+INSERT INTO public.course_info(course_id,about_course,category,class_link,class_type,course_name,end_date,course_fees,is_course_approved,level, start_date,  max_stu, prerequisite, uid_fkey) VALUES (50018,'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.','Language','https://classroom.google.com/u/0/c/...','VIDEO','Japanese N1','6.1.2021',300000,'TRUE','Advanced','1.8.2021',  85, 'Must complete N2 level.', 20004);
+INSERT INTO public.course_info(course_id,about_course,category,class_link,class_type,course_name,end_date,course_fees,is_course_approved,level, start_date,  max_stu, prerequisite, uid_fkey) VALUES (50019,'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.','Language','https://classroom.google.com/u/0/c/...','LIVE','English','7.1.2021',20000,'TRUE','Basic','5.1.2021',  100, 'No need any prequisites.', 20005);
+INSERT INTO public.course_info(course_id,about_course,category,class_link,class_type,course_name,end_date,course_fees,is_course_approved,level, start_date,  max_stu, prerequisite, uid_fkey) VALUES (50020,'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.','Language','https://classroom.google.com/u/0/c/...','VIDEO','English','5.5.2021',200000,'TRUE','Basic','3.1.2021',  55, 'No need any prequisites.', 20006);
+
+
+--Course time
+INSERT INTO public.course_time(course_time_id, course_days, course_start_time, course_end_time, course_id_fkey) VALUES (51001,'Monday','9:00','11:00',50001);
+INSERT INTO public.course_time(course_time_id, course_days, course_start_time, course_end_time, course_id_fkey) VALUES (51002,'Tuesday','9:00','11:00',50001);
+INSERT INTO public.course_time(course_time_id, course_days, course_start_time, course_end_time, course_id_fkey) VALUES (51003,'Saturday','1:00','3:00',50002);
+INSERT INTO public.course_time(course_time_id, course_days, course_start_time, course_end_time, course_id_fkey) VALUES (51004,'Sunday','1:00','3:00',50002);
+INSERT INTO public.course_time(course_time_id, course_days, course_start_time, course_end_time, course_id_fkey) VALUES (51005,'Wednesday','11:00','2:00',50003);
+INSERT INTO public.course_time(course_time_id, course_days, course_start_time, course_end_time, course_id_fkey) VALUES (51006,'Thursday','11:00','2:00',50003);
+INSERT INTO public.course_time(course_time_id, course_days, course_start_time, course_end_time, course_id_fkey) VALUES (51007,'Friday','5:00','7:30',50004);
+INSERT INTO public.course_time(course_time_id, course_days, course_start_time, course_end_time, course_id_fkey) VALUES (51008,'Saturday','5:00','7:30',50004);
+INSERT INTO public.course_time(course_time_id, course_days, course_start_time, course_end_time, course_id_fkey) VALUES (51009,'Monday','9:00','11:00',50005);
+INSERT INTO public.course_time(course_time_id, course_days, course_start_time, course_end_time, course_id_fkey) VALUES (51010,'Tuesday','9:00','11:00',50005);
+INSERT INTO public.course_time(course_time_id, course_days, course_start_time, course_end_time, course_id_fkey) VALUES (51011,'Saturday','1:00','3:00',50006);
+INSERT INTO public.course_time(course_time_id, course_days, course_start_time, course_end_time, course_id_fkey) VALUES (51012,'Sunday','1:00','3:00',50006);
+INSERT INTO public.course_time(course_time_id, course_days, course_start_time, course_end_time, course_id_fkey) VALUES (51013,'Wednesday','11:00','2:00',50007);
+INSERT INTO public.course_time(course_time_id, course_days, course_start_time, course_end_time, course_id_fkey) VALUES (51014,'Thursday','11:00','2:00',50007);
+INSERT INTO public.course_time(course_time_id, course_days, course_start_time, course_end_time, course_id_fkey) VALUES (51015,'Friday','5:00','7:30',50008);
+INSERT INTO public.course_time(course_time_id, course_days, course_start_time, course_end_time, course_id_fkey) VALUES (51016,'Saturday','5:00','7:30',50008);
+INSERT INTO public.course_time(course_time_id, course_days, course_start_time, course_end_time, course_id_fkey) VALUES (51017,'Monday','9:00','11:00',50009);
+INSERT INTO public.course_time(course_time_id, course_days, course_start_time, course_end_time, course_id_fkey) VALUES (51018,'Tuesday','9:00','11:00',50009);
+INSERT INTO public.course_time(course_time_id, course_days, course_start_time, course_end_time, course_id_fkey) VALUES (51019,'Saturday','1:00','3:00',50010);
+INSERT INTO public.course_time(course_time_id, course_days, course_start_time, course_end_time, course_id_fkey) VALUES (51020,'Sunday','1:00','3:00',50010);
+INSERT INTO public.course_time(course_time_id, course_days, course_start_time, course_end_time, course_id_fkey) VALUES (51021,'Wednesday','11:00','2:00',50011);
+INSERT INTO public.course_time(course_time_id, course_days, course_start_time, course_end_time, course_id_fkey) VALUES (51022,'Thursday','11:00','2:00',50011);
+INSERT INTO public.course_time(course_time_id, course_days, course_start_time, course_end_time, course_id_fkey) VALUES (51023,'Friday','5:00','7:30',50012);
+INSERT INTO public.course_time(course_time_id, course_days, course_start_time, course_end_time, course_id_fkey) VALUES (51024,'Saturday','5:00','7:30',50012);
+INSERT INTO public.course_time(course_time_id, course_days, course_start_time, course_end_time, course_id_fkey) VALUES (51025,'Monday','9:00','11:00',50013);
+INSERT INTO public.course_time(course_time_id, course_days, course_start_time, course_end_time, course_id_fkey) VALUES (51026,'Tuesday','9:00','11:00',50013);
+INSERT INTO public.course_time(course_time_id, course_days, course_start_time, course_end_time, course_id_fkey) VALUES (51027,'Saturday','1:00','3:00',50014);
+INSERT INTO public.course_time(course_time_id, course_days, course_start_time, course_end_time, course_id_fkey) VALUES (51028,'Sunday','1:00','3:00',50014);
+INSERT INTO public.course_time(course_time_id, course_days, course_start_time, course_end_time, course_id_fkey) VALUES (51029,'Wednesday','11:00','2:00',50015);
+INSERT INTO public.course_time(course_time_id, course_days, course_start_time, course_end_time, course_id_fkey) VALUES (51030,'Thursday','11:00','2:00',50015);
+INSERT INTO public.course_time(course_time_id, course_days, course_start_time, course_end_time, course_id_fkey) VALUES (51031,'Friday','5:00','7:30',50016);
+INSERT INTO public.course_time(course_time_id, course_days, course_start_time, course_end_time, course_id_fkey) VALUES (51032,'Saturday','5:00','7:30',50016);
+INSERT INTO public.course_time(course_time_id, course_days, course_start_time, course_end_time, course_id_fkey) VALUES (51033,'Monday','9:00','11:00',50017);
+INSERT INTO public.course_time(course_time_id, course_days, course_start_time, course_end_time, course_id_fkey) VALUES (51034,'Tuesday','9:00','11:00',50017);
+INSERT INTO public.course_time(course_time_id, course_days, course_start_time, course_end_time, course_id_fkey) VALUES (51035,'Saturday','1:00','3:00',50018);
+INSERT INTO public.course_time(course_time_id, course_days, course_start_time, course_end_time, course_id_fkey) VALUES (51036,'Sunday','1:00','3:00',50018);
+INSERT INTO public.course_time(course_time_id, course_days, course_start_time, course_end_time, course_id_fkey) VALUES (51037,'Wednesday','11:00','2:00',50019);
+INSERT INTO public.course_time(course_time_id, course_days, course_start_time, course_end_time, course_id_fkey) VALUES (51038,'Thursday','11:00','2:00',50019);
+INSERT INTO public.course_time(course_time_id, course_days, course_start_time, course_end_time, course_id_fkey) VALUES (51039,'Friday','5:00','7:30',50020);
+INSERT INTO public.course_time(course_time_id, course_days, course_start_time, course_end_time, course_id_fkey) VALUES (51040,'Saturday','5:00','7:30',50020);
+
+
+--join course user
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (1, 50001,10001);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (2, 50001,10002);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (3, 50001,10003);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (4, 50002,10004);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (5, 50002,10005);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (6, 50002,10006);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (7, 50002,10007);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (8, 50003,10007);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (9, 50004,10007);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (10, 50004,10008);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (11, 50005,10008);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (12, 50005,10009);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (13, 50003,10009);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (14, 50004,10009);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (15, 50006,10010);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (16, 50007,10010);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (17, 50006,10011);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (18, 50007,10011);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (19, 50008,10011);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (20, 50009,10011);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (21, 50006,10012);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (22, 50005,10012);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (23, 50004,10013);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (24, 50010,10014);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (25, 50011,10014);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (26, 50010,10015);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (27, 50011,10016);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (28, 50009,10016);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (29, 50008,10016);
+
+
+--syllabus
+INSERT INTO public.syllabus(syllabus_id, title, course_id_fkey) VALUES (52001,'Chapter 1 : Introduction',50001);
+INSERT INTO public.syllabus(syllabus_id, title, course_id_fkey) VALUES (52002,'Chapter 2 : Basic Programming',50001);
+INSERT INTO public.syllabus(syllabus_id, title, course_id_fkey) VALUES (52003,'Chapter 1 : Introduction',50002);
+INSERT INTO public.syllabus(syllabus_id, title, course_id_fkey) VALUES (52004,'Chapter 2 : Basic Alphabets',50002);
+INSERT INTO public.syllabus(syllabus_id, title, course_id_fkey) VALUES (52005,'Chapter 1 : Introduction',50003);
+INSERT INTO public.syllabus(syllabus_id, title, course_id_fkey) VALUES (52006,'Chapter 2 : N4 Grammar',50003);
+INSERT INTO public.syllabus(syllabus_id, title, course_id_fkey) VALUES (52007,'Chapter 1 : Introduction',50004);
+INSERT INTO public.syllabus(syllabus_id, title, course_id_fkey) VALUES (52008,'Chapter 2 : N3 Grammar',50004);
+INSERT INTO public.syllabus(syllabus_id, title, course_id_fkey) VALUES (52009,'Chapter 1 : Introduction',50005);
+INSERT INTO public.syllabus(syllabus_id, title, course_id_fkey) VALUES (52010,'Chapter 2 : N2 Grammar',50005);
+INSERT INTO public.syllabus(syllabus_id, title, course_id_fkey) VALUES (52011,'Chapter 1 : Introduction',50006);
+INSERT INTO public.syllabus(syllabus_id, title, course_id_fkey) VALUES (52012,'Chapter 2 : N1 Grammar',50006);
+INSERT INTO public.syllabus(syllabus_id, title, course_id_fkey) VALUES (52013,'Chapter 1 : Introduction',50007);
+INSERT INTO public.syllabus(syllabus_id, title, course_id_fkey) VALUES (52014,'Chapter 2 : Basic Networking',50007);
+INSERT INTO public.syllabus(syllabus_id, title, course_id_fkey) VALUES (52015,'Chapter 1 : Introduction',50008);
+INSERT INTO public.syllabus(syllabus_id, title, course_id_fkey) VALUES (52016,'Chapter 2 : Basic Java',50008);
+INSERT INTO public.syllabus(syllabus_id, title, course_id_fkey) VALUES (52017,'Chapter 1 : Introduction',50009);
+INSERT INTO public.syllabus(syllabus_id, title, course_id_fkey) VALUES (52018,'Chapter 2 : Deep Learning',50009);
+INSERT INTO public.syllabus(syllabus_id, title, course_id_fkey) VALUES (52019,'Chapter 1 : Introduction',50010);
+INSERT INTO public.syllabus(syllabus_id, title, course_id_fkey) VALUES (52020,'Chapter 2 : Basic PHP',50010);
+INSERT INTO public.syllabus(syllabus_id, title, course_id_fkey) VALUES (52021,'Chapter 1 : Introduction',50011);
+INSERT INTO public.syllabus(syllabus_id, title, course_id_fkey) VALUES (52022,'Chapter 2 : Basic Python',50011);
+INSERT INTO public.syllabus(syllabus_id, title, course_id_fkey) VALUES (52023,'Chapter 1 : Introduction',50012);
+INSERT INTO public.syllabus(syllabus_id, title, course_id_fkey) VALUES (52024,'Chapter 2 : Basic Programming',50012);
+INSERT INTO public.syllabus(syllabus_id, title, course_id_fkey) VALUES (52025,'Chapter 1 : Introduction',50013);
+INSERT INTO public.syllabus(syllabus_id, title, course_id_fkey) VALUES (52026,'Chapter 2 : Basic Java',50013);
+INSERT INTO public.syllabus(syllabus_id, title, course_id_fkey) VALUES (52027,'Chapter 1 : Introduction',50014);
+INSERT INTO public.syllabus(syllabus_id, title, course_id_fkey) VALUES (52028,'Chapter 2 : Basic Alphabets',50014);
+INSERT INTO public.syllabus(syllabus_id, title, course_id_fkey) VALUES (52029,'Chapter 1 : Introduction',50015);
+INSERT INTO public.syllabus(syllabus_id, title, course_id_fkey) VALUES (52030,'Chapter 2 : N4 Grammar',50015);
+INSERT INTO public.syllabus(syllabus_id, title, course_id_fkey) VALUES (52031,'Chapter 1 : Introduction',50016);
+INSERT INTO public.syllabus(syllabus_id, title, course_id_fkey) VALUES (52032,'Chapter 2 : N3 Grammar',50016);
+INSERT INTO public.syllabus(syllabus_id, title, course_id_fkey) VALUES (52033,'Chapter 1 : Introduction',50017);
+INSERT INTO public.syllabus(syllabus_id, title, course_id_fkey) VALUES (52034,'Chapter 2 : N2 Grammar',50017);
+INSERT INTO public.syllabus(syllabus_id, title, course_id_fkey) VALUES (52035,'Chapter 1 : Introduction',50018);
+INSERT INTO public.syllabus(syllabus_id, title, course_id_fkey) VALUES (52036,'Chapter 2 : N1 Grammar',50018);
+INSERT INTO public.syllabus(syllabus_id, title, course_id_fkey) VALUES (52037,'Chapter 1 : Introduction',50019);
+INSERT INTO public.syllabus(syllabus_id, title, course_id_fkey) VALUES (52038,'Chapter 2 : Basic Grammar',50019);
+INSERT INTO public.syllabus(syllabus_id, title, course_id_fkey) VALUES (52039,'Chapter 1 : Introduction',50020);
+INSERT INTO public.syllabus(syllabus_id, title, course_id_fkey) VALUES (52040,'Chapter 2 : Basic Grammar',50020);
+
+
+--Content
+INSERT INTO public.content(content_id, content, syllabus_id) VALUES (54001,'Introduction to programming',52001);
+INSERT INTO public.content(content_id, content, syllabus_id) VALUES (54002,'Programming Environments',52002);
+INSERT INTO public.content(content_id, content, syllabus_id) VALUES (54003,'Introduction to Japanese',52003);
+INSERT INTO public.content(content_id, content, syllabus_id) VALUES (54004,'Hiragana and Katakana',52004);
+INSERT INTO public.content(content_id, content, syllabus_id) VALUES (54005,'Revision for N5',52005);
+INSERT INTO public.content(content_id, content, syllabus_id) VALUES (54006,'Chapter 26 : Plain form + んです',52006);
+INSERT INTO public.content(content_id, content, syllabus_id) VALUES (54007,'Revision for N4',52007);
+INSERT INTO public.content(content_id, content, syllabus_id) VALUES (54008,'N3 Grammar',52008);
+INSERT INTO public.content(content_id, content, syllabus_id) VALUES (54009,'Revision for N3',52009);
+INSERT INTO public.content(content_id, content, syllabus_id) VALUES (54010,'N2 Grammar',52010);
+INSERT INTO public.content(content_id, content, syllabus_id) VALUES (54011,'Revision for N2',52011);
+INSERT INTO public.content(content_id, content, syllabus_id) VALUES (54012,'N1 Grammar',52012);
+INSERT INTO public.content(content_id, content, syllabus_id) VALUES (54013,'Introduction to Networking',52013);
+INSERT INTO public.content(content_id, content, syllabus_id) VALUES (54014,'Basic Requirements',52014);
+INSERT INTO public.content(content_id, content, syllabus_id) VALUES (54015,'Introduction to Java',52015);
+INSERT INTO public.content(content_id, content, syllabus_id) VALUES (54016,'Basic Requirements',52016);
+INSERT INTO public.content(content_id, content, syllabus_id) VALUES (54017,'Introduction to Deep Learning',52017);
+INSERT INTO public.content(content_id, content, syllabus_id) VALUES (54018,'Basic Requirements',52018);
+INSERT INTO public.content(content_id, content, syllabus_id) VALUES (54019,'Introduction to PHP',52019);
+INSERT INTO public.content(content_id, content, syllabus_id) VALUES (54020,'Basic Requirements',52020);
+INSERT INTO public.content(content_id, content, syllabus_id) VALUES (54021,'Introduction to Python',52021);
+INSERT INTO public.content(content_id, content, syllabus_id) VALUES (54022,'Basic Requirements',52022);
+INSERT INTO public.content(content_id, content, syllabus_id) VALUES (54023,'Introduction to programming',52023);
+INSERT INTO public.content(content_id, content, syllabus_id) VALUES (54024,'Programming Environments',52024);
+INSERT INTO public.content(content_id, content, syllabus_id) VALUES (54025,'Introduction to Java',52025);
+INSERT INTO public.content(content_id, content, syllabus_id) VALUES (54026,'Basic Requirements',52026);
+INSERT INTO public.content(content_id, content, syllabus_id) VALUES (54027,'Introduction to Japanese',52027);
+INSERT INTO public.content(content_id, content, syllabus_id) VALUES (54028,'Hiragana and Katakana',52028);
+INSERT INTO public.content(content_id, content, syllabus_id) VALUES (54029,'Revision for N5',52029);
+INSERT INTO public.content(content_id, content, syllabus_id) VALUES (54030,'Chapter 26 : Plain form + んです',52030);
+INSERT INTO public.content(content_id, content, syllabus_id) VALUES (54031,'Revision for N4',52031);
+INSERT INTO public.content(content_id, content, syllabus_id) VALUES (54032,'N3 Grammar',52032);
+INSERT INTO public.content(content_id, content, syllabus_id) VALUES (54033,'Revision for N3',52033);
+INSERT INTO public.content(content_id, content, syllabus_id) VALUES (54034,'N2 Grammar',52034);
+INSERT INTO public.content(content_id, content, syllabus_id) VALUES (54035,'Revision for N2',52035);
+INSERT INTO public.content(content_id, content, syllabus_id) VALUES (54036,'N1 Grammar',52036);
+INSERT INTO public.content(content_id, content, syllabus_id) VALUES (54037,'Introduction to English',52037);
+INSERT INTO public.content(content_id, content, syllabus_id) VALUES (54038,'English Grammar',52038);
+INSERT INTO public.content(content_id, content, syllabus_id) VALUES (54039,'Introduction to English',52039);
+INSERT INTO public.content(content_id, content, syllabus_id) VALUES (54040,'English Grammar',52040);
+
+
+--Payment account
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81001,'Khaing Inzali','0978626754',10001,1);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81002,'Ag Phyo','0943055467',10001,3);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81003,'Myint Eindra Hlaing','0976543554',10002,1);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81004,'Htun Naing ','1156785453',10003,4);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81005,'Inzali Nandar','786736753',10003,6);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81006,'Nyan Phone','0986523134',10004,2);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81007,'Lin Thu','0945689723',10005,2);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81008,'Yi Thawdar','0344536728',10006,5);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81009,'Lin Tun Ko Thura','0378675613',10006,6);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81010,'Lei Myitzu','095105674',10007,1);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81011,'Thuta Pyay Zeyar Soe','0976544889',10008,1);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81012,'Thuta Pyay Zeyar Soe','0986546677',10009,1);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81013,'Phyo Lin Myint','0975478634',10010,1);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81014,'Tun Htet Soe Tun','0978756476',10011,2);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81015,'Tun Htet Soe Tun','0945546786',10012,2);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81016,'Tun Htet Soe Tun','0945377889',10013,2);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81017,'Kay Hnin Oo','1000987657',10013,6);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81018,'Thandar Naing Aye','876786756',10014,5);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81019,'Aung Nyan','878656645',10014,6);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81020,'Aung Nyan','0973454367',10015,1);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81021,'Ohmar Thi','0945673322',10016,2);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81022,'Ohmar Thi','0945344889',20001,3);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81023,'Ohmar Thi','095107886',20002,3);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81024,'Hlaing Yee','0979966542',20003,3);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81025,'Thura Ko','576849337',20004,4);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81026,'Ye Thuta ','85769473',20005,5);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81027,'Ye Thuta ','00274639067',20006,5);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81028,'Htun Thiha ','2007465789',20007,5);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81029,'Tun Khin','1000564789',20008,4);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81030,'Su Pwint Ohnmar ','2000987677',20008,4);
+
+
+--Leave info
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70001,'2021-11-10','9:00','11:00','Sick', 1);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70002,'2021-11-10','9:00','11:00','High Fever', 2);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70003,'2021-11-10','9:00','10:00','A relative is going to live abroad.', 2);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70004,'2021-11-11','1:00','3:00','A dentist’s appointment.', 4);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70005,'2021-11-11','1:30','3:00','Excessive job-related stress.', 4);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70006,'2021-11-12','2:00','3:00','Bereavement leave.', 4);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70007,'2021-11-13','1:00','3:00','Emergency medical procedure', 5);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70008,'2021-11-13','11:00','2:00','You have an important appointment with your doctor that you totally forgot about.', 8);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70009,'2021-11-13','11:00','2:00','Daycare child problems', 8);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70010,'2021-11-13','11:00','2:00','Relative’s wedding.', 10);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70011,'2021-11-13','5:00','7:30','Suffered from an accident.', 10);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70012,'2021-11-14','9:00','11:00','Loss or theft.', 11);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70013,'2021-11-15','9:00','10:00','Due to illness or injury ', 12);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70014,'2021-11-15','1:00','2:00','Family emergency', 17);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70015,'2021-11-16','1:00','3:00','Days of mourning for the death of a relative', 15);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70016,'2021-11-18','1:00','3:00','For vehicle or transportation problems', 17);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70017,'2021-11-18','1:00','3:00','For taking a mental health Day', 21);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70018,'2021-11-20','2:00','3:00','For emergency at home', 15);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70019,'2021-11-20','2:00','3:00','For medical appointments', 21);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70020,'2021-11-20','11:00','12:00','By Jury duty/ Duties of a citizen', 16);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70021,'2021-11-20','11:00','12:00','For unforeseen events', 18);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70022,'2021-11-20','5:00','7:30','For falling asleep', 19);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70023,'2021-11-23','5:00','6:00','Medical tests',  27);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70024,'2021-11-23','5:00','7:30','Pets emergencies', 26);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70025,'2021-11-23','5:00','7:30','Deaths and funerals', 23);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70026,'2021-11-27','9:00','11:00','Shipments of packages, furniture, etc.', 14);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70027,'2021-11-28','9:00','11:00','Tragedy at home', 20);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70028,'2021-11-28','9:00','10:00','Personal reasons.', 22);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70029,'2021-12-01','1:00','3:00','Family emergency', 25);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70030,'2021-12-02','1:00','3:00','Medical emergency', 28);
+
+
+--Payment receive
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_fkey) VALUES (80001,'1.1.2021','Completed','https://www.w26schools.com/images/picture.jpg', 1);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_fkey) VALUES (80002,'2.1.2021','Completed','https://www.w27schools.com/images/picture.jpg', 2);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_fkey) VALUES (80003,'3.1.2021','Completed','https://www.w28schools.com/images/picture.jpg', 3);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_fkey) VALUES (80004,'4.1.2021','Completed','https://www.w29schools.com/images/picture.jpg', 4);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_fkey) VALUES (80005,'5.1.2021','Completed','https://www.w30schools.com/images/picture.jpg', 5);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_fkey) VALUES (80006,'6.1.2021','Completed','https://www.w31schools.com/images/picture.jpg', 6);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_fkey) VALUES (80007,'7.1.2021','Completed','https://www.w32schools.com/images/picture.jpg', 7);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_fkey) VALUES (80008,'8.1.2021','Pending','https://www.w33schools.com/images/picture.jpg', 8);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_fkey) VALUES (80009,'9.1.2021','Request','https://www.w34schools.com/images/picture.jpg', 9);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_fkey) VALUES (80010,'1.1.2021','Error','https://www.w35schools.com/images/picture.jpg', 10);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_fkey) VALUES (80011,'1.1.2021','Pending','https://www.w36schools.com/images/picture.jpg', 11);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_fkey) VALUES (80012,'2.1.2021','Pending','https://www.w37schools.com/images/picture.jpg', 12);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_fkey) VALUES (80013,'3.1.2021','Pending','https://www.w38schools.com/images/picture.jpg', 13);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_fkey) VALUES (80014,'4.1.2021','Pending','https://www.w39schools.com/images/picture.jpg', 14);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_fkey) VALUES (80015,'5.1.2021','Pending','https://www.w40schools.com/images/picture.jpg', 15);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_fkey) VALUES (80016,'6.1.2021','Pending','https://www.w41schools.com/images/picture.jpg', 16);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_fkey) VALUES (80017,'7.1.2021','Request','https://www.w42schools.com/images/picture.jpg', 17);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_fkey) VALUES (80018,'8.1.2021','Error','https://www.w43schools.com/images/picture.jpg', 18);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_fkey) VALUES (80019,'9.1.2021','Completed','https://www.w44schools.com/images/picture.jpg', 19);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_fkey) VALUES (80020,'2.2.2021','Completed','https://www.w45schools.com/images/picture.jpg', 20);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_fkey) VALUES (80021,'1.2.2021','Completed','https://www.w46schools.com/images/picture.jpg', 21);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_fkey) VALUES (80022,'3.1.2021','Completed','https://www.w47schools.com/images/picture.jpg', 22);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_fkey) VALUES (80023,'4.1.2021','Completed','https://www.w48schools.com/images/picture.jpg', 23);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_fkey) VALUES (80024,'5.1.2021','Completed','https://www.w49schools.com/images/picture.jpg', 24);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_fkey) VALUES (80025,'6.1.2021','Completed','https://www.w50schools.com/images/picture.jpg', 25);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_fkey) VALUES (80026,'6.1.2021','Pending','https://www.w51schools.com/images/picture.jpg', 26);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_fkey) VALUES (80027,'7.1.2021','Pending','https://www.w52schools.com/images/picture.jpg', 27);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_fkey) VALUES (80028,'8.1.2021','Pending','https://www.w53schools.com/images/picture.jpg', 28);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_fkey) VALUES (80029,'9.1.2021','Completed','https://www.w54schools.com/images/picture.jpg', 29);
+
+
+--Review
+INSERT INTO public.review(
+ review_id, assigned_date, feedback, review_type, star, join_fkey)
+ VALUES (60001,'2021-11-10','This class is very helpful to me. Currently, I am still learning this class which makes up a lot of basic music knowledge.',0,5,1);
+INSERT INTO public.review(
+ review_id, assigned_date, feedback, review_type, star, join_fkey)
+ VALUES (60002,'2021-11-10','like!Prof and TAs are helpful and the discussion among students are quite active. Very rewarding learning experience!',0,5,2);
+INSERT INTO public.review(
+ review_id, assigned_date, feedback, review_type, star, join_fkey)
+ VALUES (60003,'2021-11-10','Excellent score!',2,0,3);
+INSERT INTO public.review(
+ review_id, assigned_date, feedback, review_type, star, join_fkey)
+ VALUES (60004,'2021-11-11','Retake exam on December 1st',1,0,4);
+INSERT INTO public.review(
+ review_id, assigned_date, feedback, review_type, star, join_fkey)
+ VALUES (60005,'2021-11-11','Check up twice before uploading the assignment It all wrong',1,0,5);
+INSERT INTO public.review(
+ review_id, assigned_date, feedback, review_type, star, join_fkey)
+ VALUES (60006,'2021-11-12','One of the most useful course on IT Management!',0,5,6);
+INSERT INTO public.review(
+ review_id, assigned_date, feedback, review_type, star, join_fkey)
+ VALUES (60007,'2021-11-13','I was disappointed because the name is misleading. The course provides a good introduction & overview of the responsibilities of the CTO, but has very little specifically digital content.',0,5,7);
+INSERT INTO public.review(
+ review_id, assigned_date, feedback, review_type, star, join_fkey)
+ VALUES (60008,'2021-11-13','Super content. I will definitely re-do the course',0,3,8);
+INSERT INTO public.review(
+ review_id, assigned_date, feedback, review_type, star, join_fkey)
+ VALUES (60009,'2021-11-13','Scores keep getting declined Try better',1,0,9);
+INSERT INTO public.review(
+ review_id, assigned_date, feedback, review_type, star, join_fkey)
+ VALUES (60010,'2021-11-13','Is there any reason why you should not apply the course by BCG?)Its content is pretty unique and includes a high level analysis and a wide range of knowledge needed to cover all detailed aspects.Best regards,Oleg Serov',0,5,10);
+INSERT INTO public.review(
+ review_id, assigned_date, feedback, review_type, star, join_fkey)
+ VALUES (60011,'2021-11-13','Excellent course and teachers. Congratulations!!',0,5,11);
+INSERT INTO public.review(
+ review_id, assigned_date, feedback, review_type, star, join_fkey)
+ VALUES (60012,'2021-11-14','This is a good course for an CIO in a non technical company.',0,5,12);
+INSERT INTO public.review(
+ review_id, assigned_date, feedback, review_type, star, join_fkey)
+ VALUES (60013,'2021-11-15','Good content, but the course setting does (at least for me) not allow learn the content long term due to missing reading material.',0,5,13);
+INSERT INTO public.review(
+ review_id, assigned_date, feedback, review_type, star, join_fkey)
+ VALUES (60014,'2021-11-15','Very structured approach. Thank you for sharing with me.',0,3,14);
+INSERT INTO public.review(
+ review_id, assigned_date, feedback, review_type, star, join_fkey)
+ VALUES (60015,'2021-11-16','Program demystifies the evolving world of CIOs in a typical global corporation.Coverage being introductory familiarizes participants nicely through some of the nuances & emerging trends.',0,5,15);
+INSERT INTO public.review(
+ review_id, assigned_date, feedback, review_type, star, join_fkey)
+ VALUES (60016,'2021-11-18','Very relevant and useful course designed for CIOs',0,4,16);
+INSERT INTO public.review(
+ review_id, assigned_date, feedback, review_type, star, join_fkey)
+ VALUES (60017,'2021-11-18','This course does not say anything about digitization which is the core subject of the digital wave.',0,2,17);
+INSERT INTO public.review(
+ review_id, assigned_date, feedback, review_type, star, join_fkey)
+ VALUES (60018,'2021-11-20','Well done keep going',2,0,18);
+INSERT INTO public.review(
+ review_id, assigned_date, feedback, review_type, star, join_fkey)
+ VALUES (60019,'2021-11-20','Absent too much',1,0,19);
+INSERT INTO public.review(
+ review_id, assigned_date, feedback, review_type, star, join_fkey)
+ VALUES (60020,'2021-11-20','Great piece of work, I especially liked a few lifehacks for the CIO',0,3,20);
+INSERT INTO public.review(
+ review_id, assigned_date, feedback, review_type, star, join_fkey)
+ VALUES (60021,'2021-11-20','Focus more on lesson',1,0,21);
+INSERT INTO public.review(
+ review_id, assigned_date, feedback, review_type, star, join_fkey)
+ VALUES (60022,'2021-11-20','One of the excellent courses at Coursera for information technology bosses and managers.',0,5,22);
+INSERT INTO public.review(
+ review_id, assigned_date, feedback, review_type, star, join_fkey)
+ VALUES (60023,'2021-11-23','Dont be late on class',1,0,23);
+INSERT INTO public.review(
+ review_id, assigned_date, feedback, review_type, star, join_fkey)
+ VALUES (60024,'2021-11-23','Easy to follow and includes a lot basic and important techniques to use sketchup.',0,5,24);
+INSERT INTO public.review(
+ review_id, assigned_date, feedback, review_type, star, join_fkey)
+ VALUES (60025,'2021-11-23','Really nice teacher!I could got the point eazliy but the v',0,5,25);
+INSERT INTO public.review(
+ review_id, assigned_date, feedback, review_type, star, join_fkey)
+ VALUES (60026,'2021-11-27','Great course - I recommend it for all, especially IT and Business Managers!',0,4,26);
+INSERT INTO public.review(
+ review_id, assigned_date, feedback, review_type, star, join_fkey)
+ VALUES (60027,'2021-11-28','Congratulations for receiving highest mark',2,0,27);
+INSERT INTO public.review(
+ review_id, assigned_date, feedback, review_type, star, join_fkey)
+ VALUES (60028,'2021-11-28','Videos that are presented in French could have been translated to English.',0,2,28);
+INSERT INTO public.review(
+ review_id, assigned_date, feedback, review_type, star, join_fkey)
+ VALUES (60029,'2021-12-01','The course content is quite good, though it could have been deeper in some areas.But its peer review system is not working well, if at all.Regards, An Le.',0,4,29);
+-- INSERT INTO public.review(
+--  review_id, assigned_date, feedback, review_type, star, join_fkey)
+--  VALUES (60030,'2021-12-02','Keep up with deadlines',1,0,50010,20008);
