@@ -38,7 +38,7 @@ public interface StorageService {
 
   public void storeSlip(MultipartFile file, String fileName);
 
-  public FileInfo loadSlipAsFileInfo(PaymentReceive payment);
+  public FileInfo loadSlipAsFileInfo(PaymentReceive payment, Long userId);
  
 
 }

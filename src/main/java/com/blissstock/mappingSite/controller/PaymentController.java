@@ -91,7 +91,7 @@ public class PaymentController {
         model.addAttribute("payment", payment);
         //Load Profile
         try {
-        FileInfo slipPic = storageService.loadSlipAsFileInfo(payment);
+        FileInfo slipPic = storageService.loadSlipAsFileInfo(payment,userId);
         model.addAttribute("slip", slipPic);
         } catch (Exception e) {
         e.printStackTrace();
@@ -102,17 +102,15 @@ public class PaymentController {
 
     /*student upload payment ss and go to payment success screen */
     /*save ss in image folder and will appear in admin payment check screen */
-    @PostMapping(value = {"/admin/payment-upload/course_id/{courseId}/student_id/{id}/edit/",
-                         "/student/payment-upload/course_id/{courseId}/edit/"})
-    public String savePhoto(
+    @PostMapping(value = "/student/payment-upload/course_id/{courseId}/edit/")
+    public String studentUploadPayment(
     @Valid @ModelAttribute("payment") PaymentReceive inputPayment,
     BindingResult bindingResult,
     Model model, 
     @RequestParam("slip") MultipartFile slip,  
     @PathVariable Long courseId, 
-    @PathVariable Long id,
-    HttpServletRequest request)  {
-      Long userId = id==null ? userSessionService.getUserAccount().getAccountId(): id;
+    HttpServletRequest request) {
+      Long userId= userSessionService.getUserAccount().getAccountId();
 
       JoinCourseUser join=joinRepo.findByPayment(courseId, userId);
       PaymentReceive payment=paymentRepo.findByJoin(join.getJoinId());
@@ -128,7 +126,7 @@ public class PaymentController {
     request.getRequestURI().replace("/edit/", "");
     logger.debug("Redirect Addresss {}", redirectAddress);
 
-    if (!slip.isEmpty() && CheckUploadFileType.checkType(slip)) {
+    //if (!slip.isEmpty() && CheckUploadFileType.checkType(slip)) {
       //get original photo name and generate a new file name
       String saveFileName = StringUtils.cleanPath(
         slip.getOriginalFilename()
@@ -136,32 +134,58 @@ public class PaymentController {
 
       //upload photo
       try {
-        storageService.store(payment.getPaymentReceiveId(), slip, StorageServiceImpl.SLIP_PATH, true);
+        storageService.store(userId, slip, StorageServiceImpl.SLIP_PATH, true);
       } catch (UnauthorizedFileAccessException e) {
         // TODO Auto-generated catch block
         e.printStackTrace();
       }
       //insert photo 
       payment.setSlip(saveFileName);
-      if(userSessionService.getUserAccount().getRole()=="ROLE_STUDENT"){
-      payment.setPaymentStatus(PaymentStatus.PENDING.getValue());
-      }
-      
-      payment.setPaymentStatus(inputPayment.getPaymentStatus());
-      System.out.println(inputPayment.getPaymentStatus());
+      payment.setPaymentStatus(PaymentStatus.PENDING.getValue()); 
 
       payment.setPaymentReceiveDate(GregorianCalendar.getInstance().getTime());
       paymentRepo.save(payment);
 
       logger.info("payment slip {} stored", saveFileName);
-    }
+    //}
     if(payment.getPaymentStatus()=="ERROR"){
       return redirectAddress;
     }
       return "redirect:/payment/complete";
   
     }
+    @PostMapping(value = "/admin/payment-upload/course_id/{courseId}/student_id/{id}/edit/")
+    public String adminUploadPayment(
+    @Valid @ModelAttribute("payment") PaymentReceive inputPayment,
+    BindingResult bindingResult,
+    Model model, 
+    @PathVariable Long courseId, 
+    @PathVariable(name = "id", required = false) Long userId,
+    HttpServletRequest request) {
 
+    JoinCourseUser join=joinRepo.findByPayment(courseId, userId);
+    PaymentReceive payment=paymentRepo.findByJoin(join.getJoinId());
+ 
+    payment.setJoin(join);
+    joinRepo.save(join);
+
+    String redirectAddress =
+    "redirect:" +
+    request.getRequestURI().replace("/edit/", "");
+    logger.debug("Redirect Addresss {}", redirectAddress);
+
+    payment.setPaymentStatus(inputPayment.getPaymentStatus());
+    System.out.println(inputPayment.getPaymentStatus());
+
+    paymentRepo.save(payment);
+
+//}
+    if(payment.getPaymentStatus()=="ERROR"){
+    return redirectAddress;
+    }
+    return redirectAddress;
+
+}
   
 //     @GetMapping(value="/edit-payment-slip/{paymentReceiveId}")
 //     private String stuGetPaymentSlip(@PathVariable Long paymentReceiveId,Model model) {

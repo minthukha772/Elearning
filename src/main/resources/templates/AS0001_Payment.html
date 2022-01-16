@@ -244,6 +244,11 @@
                                 <label for="text" class="col-lg-10 col-form-label">After transfering course fee, please
                                     submit the screenshot of the transaction.</label>
                             </div>
+                            <div sec:authorize="hasAuthority('ROLE_STUDENT') ">
+                            <div class="alert alert-danger" role="alert" th:if="${payment.paymentStatus eq 'ERROR'}">
+                                Please reupload valid payment slip
+                              </div>
+                              </div>
                             <div class="center">
                                 <div class="form-input">
                                     <div class="ml-2">
@@ -274,20 +279,21 @@
                                 <input type="file" id="img" name="img" accept="image/*">
                                 <div class="invalid-feedback" th:if="${#fields.hasErrors('slip')}" th:errors="*{slip}">This field is required.</div>
                             </div>-->
-                            <div sec:authorize="hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SUPER_ADMIN') ">
+                            
                             <div id="status" class="mt-1 mb-3">
-                                <span class="badge rounded-pill  bg-warning text-dark" th:text="${payment.paymentStatus}"></span>
+                                <span th:classappend="${payment.paymentStatus eq 'ERROR' ?'bg-danger':' bg-warning'}" class="badge rounded-pill" th:text="${payment.paymentStatus}" style="color: white;"></span>
                             </div>
+                            <div sec:authorize="hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SUPER_ADMIN') ">
                             <div class="form-group row">    
                                 <label class="radio-inline">
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="inlineRadioOptions" th:field="*{paymentStatus}" value="COMPLETED" id="inlineRadio1" 
-                                        th:disabled="${payment.paymentStatus eq 'ERROR'}">
+                                        th:disabled="${payment.paymentStatus eq 'ERROR' or payment.paymentStatus eq 'REQUESTED'}">
                                         <label class="form-check-label" for="inlineRadio1" style="color: #28A745;" >COMPLETED</label>
                                       </div>
                                       <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="inlineRadioOptions" th:field="*{paymentStatus}" value="ERROR" id="inlineRadio2"
-                                        th:disabled="${payment.paymentStatus eq 'COMPLETED'}">
+                                        th:disabled="${payment.paymentStatus eq 'COMPLETED' or payment.paymentStatus eq 'REQUESTED'}">
                                         <label class="form-check-label" for="inlineRadio2" style="color: #DC3545;">ERROR</label>
                                       </div>
                                 </div>

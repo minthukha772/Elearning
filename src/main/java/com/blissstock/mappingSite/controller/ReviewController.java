@@ -74,6 +74,7 @@ public class ReviewController {
         try{
             if(action.equals("submit")){
               stuReviewService.addReview(stuReviewDTO, courseId, userId);
+              return "redirect:/review/complete";
             }
           
           }catch(Exception e){
@@ -82,7 +83,7 @@ public class ReviewController {
          
         model.addAttribute("infoMap", stuReviewDTO.toMapReview());
         return "CM0007_WriteReviewStudent";
-        
+ 
 	}
     
     @Valid
@@ -132,17 +133,18 @@ public class ReviewController {
     private String postTeacherReviewForm( @Valid @ModelAttribute("review") TeacherReviewDTO trReviewDTO, BindingResult bindingResult,@PathVariable Long courseId, @PathVariable Long userId, Model model, @RequestParam(value="action", required=true) String action) { 
         if(bindingResult.hasErrors()) {
 			return "CM0007_WriteReviewTeacher";			
-		}  
+		  }  
         try{
             if(action.equals("submit")){
               System.out.println(trReviewDTO.getReviewType());
               trReviewService.addReview(trReviewDTO, courseId, userId);
+              return "redirect:/review/complete";
             }
           }catch(Exception e){
             System.out.println(e);
           }
         model.addAttribute("infoMap", trReviewDTO.toMapTrReview());
-        return "redirect:/review/complete";
+        return "CM0007_WriteReviewTeacher";
 	}
 
      //edit teacher review

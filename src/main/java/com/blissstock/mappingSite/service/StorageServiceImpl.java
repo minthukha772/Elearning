@@ -341,7 +341,7 @@ public class StorageServiceImpl implements StorageService {
   }
 
   @Override
-  public FileInfo loadSlipAsFileInfo(PaymentReceive payment) {
+  public FileInfo loadSlipAsFileInfo(PaymentReceive payment, Long userId) {
     
     String name =payment.getSlip();
     if(name == null || name.isEmpty()){
@@ -352,7 +352,7 @@ public class StorageServiceImpl implements StorageService {
         FileController.class,
         "getResource",
         "slip",
-        payment.getPaymentReceiveId(),
+        userId,
         name
       )
       .build()
