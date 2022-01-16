@@ -8,6 +8,9 @@ import com.blissstock.mappingSite.service.UserService;
 import com.blissstock.mappingSite.service.UserSessionService;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,6 +31,8 @@ public class ProfileEditController {
 
   @Autowired
   UserService userService;
+
+  private static Logger logger = LoggerFactory.getLogger(ProfileEditController.class);
 
 
   @GetMapping(
@@ -98,11 +103,22 @@ public class ProfileEditController {
     model.addAttribute("userInfo", userInfo);
     try {
       if (action.equals("submit")) {
+        logger.info("update userinfo {}",uid);
         userService.updateUser(userInfo, uid);
+        if(userSessionService.getRole() == UserRole.STUDENT){
+          return "redirect:/student/profile/?message=profileEdit";
+        }else{
+          return "redirect:/admin/browse/profile/"+uid+"?message=profileEdit";
+        }
       }
-      //TODO redirect to complete page
+     
     } catch (Exception e) {
-      System.out.println(e);
+      e.printStackTrace();
+      if(userSessionService.getRole() == UserRole.STUDENT){
+        return "redirect:/student/profile/?message=profileEdit";
+      }else{
+        return "redirect:/admin/browse/profile/"+uid+"?message=profileEdit";
+      }
     }
 
     //Information For Randering Confirm
@@ -139,11 +155,25 @@ public class ProfileEditController {
     model.addAttribute("userInfo", userInfo);
     try {
       if (action.equals("submit")) {
+        logger.info("update userinfo {}",uid);
         userService.updateUser(userInfo, uid);
+        if(userSessionService.getRole() == UserRole.TEACHER){
+          return "redirect:/teacher/profile/?message=profileEdit";
+        }else{
+          return "redirect:/admin/browse/profile/"+uid+"?message=profileEdit";
+        }
+        
       }
-      //TODO redirect to complete page
+ 
+      
     } catch (Exception e) {
-      System.out.println(e);
+      e.printStackTrace();
+      if(userSessionService.getRole() == UserRole.TEACHER){
+        return "redirect:/teacher/profile/?error=profileEdit";
+      }else{
+        return "redirect:/admin/browse/profile/"+uid+"?error=profileEdit";
+      }
+      
     }
 
     //Information For Randering Confirm

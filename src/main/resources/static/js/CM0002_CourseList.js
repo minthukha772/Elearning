@@ -1,302 +1,170 @@
-const courseList = [
-    {
-        "courseId": 50001,
-        "courseName": "Basic Programming",
-        "classType": "Live",
-        "category": "Computer Science",
-        "classLink": "https://classroom.google.com/u/0/c/...",
-        "level": "Basic",
-        "aboutCourse": "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.",
-        "prerequisite": "A computer and basic knowledge of how to use it.",
-        "maxStu": 20,
-        "startDate": "2021-01-01T00:00:00.000+06:30",
-        "endDate": "2021-01-05T00:00:00.000+06:30",
-        "fees": 150000,
-        "courseApproved": true
-    },
-    {
-        "courseId": 50002,
-        "courseName": "Japanese N5",
-        "classType": "Live",
-        "category": "Language",
-        "classLink": "https://classroom.google.com/u/0/c/...",
-        "level": "Basic",
-        "aboutCourse": "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.",
-        "prerequisite": "No need any prequisites.",
-        "maxStu": 21,
-        "startDate": "2021-01-02T00:00:00.000+06:30",
-        "endDate": "2021-01-06T00:00:00.000+06:30",
-        "fees": 150000,
-        "courseApproved": true
-    },
-    {
-        "courseId": 50003,
-        "courseName": "Japanese N4",
-        "classType": "Live",
-        "category": "Language",
-        "classLink": "https://classroom.google.com/u/0/c/...",
-        "level": "Basic",
-        "aboutCourse": "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.",
-        "prerequisite": "Must complete N5 level.",
-        "maxStu": 4,
-        "startDate": "2021-01-03T00:00:00.000+06:30",
-        "endDate": "2021-01-07T00:00:00.000+06:30",
-        "fees": 150000,
-        "courseApproved": true
-    },
-    {
-        "courseId": 50004,
-        "courseName": "Japanese N3",
-        "classType": "Live",
-        "category": "Language",
-        "classLink": "https://classroom.google.com/u/0/c/...",
-        "level": "Intermediate",
-        "aboutCourse": "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.",
-        "prerequisite": "Must complete N4 level.",
-        "maxStu": 28,
-        "startDate": "2021-01-04T00:00:00.000+06:30",
-        "endDate": "2021-01-08T00:00:00.000+06:30",
-        "fees": 200000,
-        "courseApproved": true
-    },
-    {
-        "courseId": 50005,
-        "courseName": "Japanese N2",
-        "classType": "Live",
-        "category": "Language",
-        "classLink": "https://classroom.google.com/u/0/c/...",
-        "level": "Advanced",
-        "aboutCourse": "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.",
-        "prerequisite": "Must complete N3 level.",
-        "maxStu": 20,
-        "startDate": "2021-01-05T00:00:00.000+06:30",
-        "endDate": "2021-01-09T00:00:00.000+06:30",
-        "fees": 250000,
-        "courseApproved": true
-    },
-    {
-        "courseId": 50006,
-        "courseName": "Japanese N1",
-        "classType": "Live",
-        "category": "Language",
-        "classLink": "https://classroom.google.com/u/0/c/...",
-        "level": "Advanced",
-        "aboutCourse": "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.",
-        "prerequisite": "Must complete N2 level.",
-        "maxStu": 15,
-        "startDate": "2021-01-05T00:00:00.000+06:30",
-        "endDate": "2021-01-10T00:00:00.000+06:30",
-        "fees": 300000,
-        "courseApproved": true
-    },
-    {
-        "courseId": 50007,
-        "courseName": "Networking",
-        "classType": "Video",
-        "category": "Computer Science",
-        "classLink": "https://classroom.google.com/u/0/c/...",
-        "level": "Intermediate",
-        "aboutCourse": "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.",
-        "prerequisite": "Basic hardware knowledge.",
-        "maxStu": 90,
-        "startDate": "2021-05-01T00:00:00.000+06:30",
-        "endDate": "2021-02-05T00:00:00.000+06:30",
-        "fees": 250000,
-        "courseApproved": true
-    },
-    {
-        "courseId": 50008,
-        "courseName": "Java",
-        "classType": "Live",
-        "category": "Computer Science",
-        "classLink": "https://classroom.google.com/u/0/c/...",
-        "level": "Basic",
-        "aboutCourse": "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.",
-        "prerequisite": "A computer and basic knowledge of how to use it.",
-        "maxStu": 48,
-        "startDate": "2021-07-01T00:00:00.000+06:30",
-        "endDate": "2021-02-06T00:00:00.000+06:30",
-        "fees": 200000,
-        "courseApproved": true
-    },
-    {
-        "courseId": 50009,
-        "courseName": "Deep Learning",
-        "classType": "Video",
-        "category": "Computer Science",
-        "classLink": "https://classroom.google.com/u/0/c/...",
-        "level": "Basic",
-        "aboutCourse": "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.",
-        "prerequisite": "Strong knowlege in programming.",
-        "maxStu": 10,
-        "startDate": "2021-10-02T00:00:00.000+06:30",
-        "endDate": "2021-02-07T00:00:00.000+06:30",
-        "fees": 300000,
-        "courseApproved": true
-    },
-    {
-        "courseId": 50010,
-        "courseName": "PHP",
-        "classType": "Live",
-        "category": "Computer Science",
-        "classLink": "https://classroom.google.com/u/0/c/...",
-        "level": "Intermediate",
-        "aboutCourse": "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.",
-        "prerequisite": "Basic PHP programming knowledge",
-        "maxStu": 44,
-        "startDate": "2021-01-03T00:00:00.000+06:30",
-        "endDate": "2021-02-08T00:00:00.000+06:30",
-        "fees": 250000,
-        "courseApproved": false
-    },
-    {
-        "courseId": 50011,
-        "courseName": "Python",
-        "classType": "Video",
-        "category": "Computer Science",
-        "classLink": "https://classroom.google.com/u/0/c/...",
-        "level": "Advanced",
-        "aboutCourse": "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.",
-        "prerequisite": "Strong knowlege in programming.",
-        "maxStu": 50,
-        "startDate": "2021-05-03T00:00:00.000+06:30",
-        "endDate": "2021-02-09T00:00:00.000+06:30",
-        "fees": 250000,
-        "courseApproved": true
-    },
-    {
-        "courseId": 50012,
-        "courseName": "Basic Programming",
-        "classType": "Video",
-        "category": "Computer Science",
-        "classLink": "https://classroom.google.com/u/0/c/...",
-        "level": "Basic",
-        "aboutCourse": "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.",
-        "prerequisite": "A computer and basic knowledge of how to use it.",
-        "maxStu": 25,
-        "startDate": "2021-01-06T00:00:00.000+06:30",
-        "endDate": "2021-02-10T00:00:00.000+06:30",
-        "fees": 150000,
-        "courseApproved": false
-    },
-    {
-        "courseId": 50013,
-        "courseName": "Java",
-        "classType": "Video",
-        "category": "Computer Science",
-        "classLink": "https://classroom.google.com/u/0/c/...",
-        "level": "Intermediate",
-        "aboutCourse": "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.",
-        "prerequisite": "Basic Java programming knowledge.",
-        "maxStu": 70,
-        "startDate": "2021-01-02T00:00:00.000+06:30",
-        "endDate": "2021-01-05T00:00:00.000+06:30",
-        "fees": 200000,
-        "courseApproved": true
-    },
-    {
-        "courseId": 50014,
-        "courseName": "Japanese N5",
-        "classType": "Video",
-        "category": "Language",
-        "classLink": "https://classroom.google.com/u/0/c/...",
-        "level": "Basic",
-        "aboutCourse": "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.",
-        "prerequisite": "No need any prequisites.",
-        "maxStu": 21,
-        "startDate": "2021-09-02T00:00:00.000+06:30",
-        "endDate": "2021-01-06T00:00:00.000+06:30",
-        "fees": 150000,
-        "courseApproved": true
-    },
-    {
-        "courseId": 50015,
-        "courseName": "Japanese N4",
-        "classType": "Video",
-        "category": "Language",
-        "classLink": "https://classroom.google.com/u/0/c/...",
-        "level": "Basic",
-        "aboutCourse": "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.",
-        "prerequisite": "Must complete N5 level.",
-        "maxStu": 20,
-        "startDate": "2021-01-02T00:00:00.000+06:30",
-        "endDate": "2021-02-06T00:00:00.000+06:30",
-        "fees": 150000,
-        "courseApproved": false
-    },
-    {
-        "courseId": 50016,
-        "courseName": "Japanese N3",
-        "classType": "Video",
-        "category": "Language",
-        "classLink": "https://classroom.google.com/u/0/c/...",
-        "level": "Intermediate",
-        "aboutCourse": "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.",
-        "prerequisite": "Must complete N4 level.",
-        "maxStu": 23,
-        "startDate": "2021-01-03T00:00:00.000+06:30",
-        "endDate": "2021-03-06T00:00:00.000+06:30",
-        "fees": 200000,
-        "courseApproved": true
-    },
-    {
-        "courseId": 50017,
-        "courseName": "Japanese N2",
-        "classType": "Video",
-        "category": "Language",
-        "classLink": "https://classroom.google.com/u/0/c/...",
-        "level": "Advanced",
-        "aboutCourse": "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.",
-        "prerequisite": "Must complete N3 level.",
-        "maxStu": 60,
-        "startDate": "2021-09-04T00:00:00.000+06:30",
-        "endDate": "2021-10-08T00:00:00.000+06:30",
-        "fees": 250000,
-        "courseApproved": true
-    },
-    {
-        "courseId": 50018,
-        "courseName": "Japanese N1",
-        "classType": "Video",
-        "category": "Language",
-        "classLink": "https://classroom.google.com/u/0/c/...",
-        "level": "Advanced",
-        "aboutCourse": "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.",
-        "prerequisite": "Must complete N2 level.",
-        "maxStu": 77,
-        "startDate": "2021-08-01T00:00:00.000+06:30",
-        "endDate": "2021-01-06T00:00:00.000+06:30",
-        "fees": 300000,
-        "courseApproved": true
-    },
-    {
-        "courseId": 50019,
-        "courseName": "English",
-        "classType": "Live",
-        "category": "Language",
-        "classLink": "https://classroom.google.com/u/0/c/...",
-        "level": "Basic",
-        "aboutCourse": "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.",
-        "prerequisite": "No need any prequisites.",
-        "maxStu": 95,
-        "startDate": "2021-01-05T00:00:00.000+06:30",
-        "endDate": "2021-01-07T00:00:00.000+06:30",
-        "fees": 20000,
-        "courseApproved": true
-    },
-    {
-        "courseId": 50020,
-        "courseName": "English",
-        "classType": "Video",
-        "category": "Language",
-        "classLink": "https://classroom.google.com/u/0/c/...",
-        "level": "Basic",
-        "aboutCourse": "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.",
-        "prerequisite": "No need any prequisites.",
-        "maxStu": 50,
-        "startDate": "2021-01-03T00:00:00.000+06:30",
-        "endDate": "2021-05-05T00:00:00.000+06:30",
-        "fees": 200000,
-        "courseApproved": true
+$(function () {
+  constructFilter(courseList);
+  renderCourseList(courseList);
+  $(".filterBtn").click(function (e) {
+    e.preventDefault();
+    filterAction(courseList);
+  });
+});
+
+const filterAction = (courseList) => {
+  const inputFilters = structureInputFilters();
+  console.log(inputFilters);
+  const filteredCourseList = courseList.filter((e) => {
+    let condition = true;
+    if (inputFilters["levels"]) {
+      condition = condition && inputFilters["levels"].includes(e.level);
     }
-]
+    if (inputFilters["categories"]) {
+      condition = condition && inputFilters["categories"].includes(e.category);
+    }
+    if (inputFilters["classTypes"]) {
+      condition = condition && inputFilters["classTypes"].includes(e.classType);
+    }
+    return condition;
+  });
+  renderCourseList(filteredCourseList);
+};
+
+const structureInputFilters = () => {
+  const checkedBoxes = $(".filterContainer").find("input:checked");
+  const filterList = {};
+  checkedBoxes.each(function (index, element) {
+    const parent = $(element).data("parent");
+    const value = element.name;
+    if (!filterList[parent]) {
+      // Create Array
+      filterList[parent] = [value];
+    } else {
+      filterList[parent].push(value);
+    }
+  });
+  return filterList;
+};
+
+const constructFilter = (courseList) => {
+  const filterItems = getFilterItems(courseList);
+  renderFilterItems(filterItems);
+};
+
+const getFilterItems = (courseList) => {
+  const levels = {};
+  const categories = {};
+  const classTypes = {};
+
+  courseList.forEach((element) => {
+    levels[element.level] = levels[element.level]
+      ? levels[element.level] + 1
+      : 1;
+    categories[element.category] = categories[element.category]
+      ? categories[element.category] + 1
+      : 1;
+    classTypes[element.classType] = classTypes[element.classType]
+      ? classTypes[element.classType] + 1
+      : 1;
+  });
+
+  return { levels, categories, "class Types": classTypes };
+};
+
+const renderFilterItems = (filterItems) => {
+  console.log("rendering");
+  const keys = Object.keys(filterItems);
+  keys.forEach((key, index) => {
+    const filterContainer = $(".filterContainer");
+    const id = `${key.replace(/\s/g, "")}`;
+    // Render Title
+    filterContainer.append(
+      `<li class="list-group-item" id="${id}"><b class="text-capitalize">${key}</b></li>`
+    );
+    // Render CheckBox
+    const checkBoxContainer = filterContainer.find(`#${id}`);
+    const filterKeys = Object.keys(filterItems[key]);
+    filterKeys.forEach((item, j) => {
+      const count = filterItems[key][item];
+      console.log(item, count);
+      //const checkBoxId = `${id}-item`;
+      checkBoxContainer.append(
+        `
+        <div class="mt-1">
+            <input type="checkbox" name="${item}" data-parent="${id}" id="${item}" value="${item} checked">
+            <label for="${item}">${item} (${count})</label>
+        </div>
+        `
+      );
+    });
+  });
+};
+
+const renderCourseList = (courseList) => {
+  console.log(courseList);
+  $("#course").pagination({
+    dataSource: courseList,
+    pageSize: 5,
+    showNavigator: true,
+    position:"top",
+    className: 'paginationjs-theme-blue',
+    formatNavigator: '<span style="color: #f00"><%= currentPage %></span> of <%= totalPage %> pages, <%= totalNumber %> entries',
+    callback: function (data, pagination) {
+      // template method of yourself
+      $("#courseList").hide();
+      $("#courseList").empty();
+      data.forEach((e)=>{
+        const template = `
+        <div class="card col-12 col-xl-6 col-xxl-4">
+          <div class="card-body">
+            <div >
+              <h2>${e.courseName}</h2>
+              <a href="/guest/explore/teacher/${e.teacherId}">${e.teacherName}</a>
+              <h6 class="mt-1">${e.category} &gt;${e.level}</h6>
+              <p>${e.aboutCourse}</p>
+              <h4>Date</h4>
+              <i>${e.startDate.substring(0,10)} - ${e.endDate.substring(0,10)}</i>
+              <h4 class="mt-2">${e.fees} MMK</h4>
+
+          
+            </div>
+            <a href="#" class="btn btn-primary">Detail</a>
+          </div>
+          
+        </div>
+        `;
+        $(template).appendTo($("#courseList"));
+
+        $("#courseList").fadeIn('slow');
+      
+      });
+     
+    },
+  });
+};
+// const renderCourseList = (courseList) => {
+//   console.log("rendering");
+//   $("#courseList").hide();
+//   $("#courseList").empty();
+//   courseList.forEach((e, index) => {
+//     console.log(e);
+
+//     const template =`
+//         <div class="card" >
+//           <div class="card-body">
+//             <div >
+//               <h2>${e.courseName}</h2>
+//               <h5>${e.teacherName}</h5>
+//               <h6>${e.category} &gt;${e.level}</h6>
+//               <p>${e.aboutCourse}</p>
+//               <h4>Prerequisites</h4>
+//               <p>${e.prerequisite}</p>
+//               <h4>${e.fees}</h4>
+
+//             </div>
+//             <a href="#" class="btn btn-primary">Detail</a>
+//           </div>
+
+//         </div>
+//         `
+//     $(template).appendTo($("#courseList"));
+
+//     $("#courseList").show('slow');
+//   });
+// };

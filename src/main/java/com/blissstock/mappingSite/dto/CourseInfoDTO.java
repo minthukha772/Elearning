@@ -1,6 +1,7 @@
 package com.blissstock.mappingSite.dto;
 
-import java.time.LocalDate;
+// import java.time.LocalDate;
+import java.util.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,8 +20,8 @@ public class CourseInfoDTO {
 
     public String teacherName;
 
-    public LocalDate startDate;
+    public Date startDate;
 
-    public LocalDate endDate;
+    public Date endDate;
     
 }
