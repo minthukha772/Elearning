@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js}" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
     <title>Mapping Site</title>
     <style>
         html,
@@ -53,12 +54,12 @@
             /* border-radius: 10px; */
         }
         
-        .btn-primary,
+        /* .btn-primary,
         .btn-primary:hover,
         .btn-primary:active,
         .btn-primary:visited {
             background-color: #7749F8 !important;
-        }
+        } */
         /* .formborder{
       border:1px solid #DAD9D9;
       padding: 10px;
@@ -115,48 +116,23 @@
 
     <!-- Hello -->
     <div class="wrapper">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">MappingSite</a>
-                <!--  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button> -->
-                <div class="d-flex" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">My Course</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Explore</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Profile</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#" style="color: red;">Log Out</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-
-        <nav aria-label="breadcrumb" class="bg-light" style="padding: 0 10px;">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Top</a></li>
-                <li class="breadcrumb-item"><a href="#">Course List</a></li>
-                <li class="breadcrumb-item"><a href="#">Course Detail</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Take A Leave Confirm</li>
-            </ol>
-        </nav>
+        <div th:replace="${nav_type}"></div>
+    
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <th:block th:each="bc : ${breadcrumbList}">
+            <!-- TODO change last route color -->
+            <li class="breadcrumb-item"><a href="#" th:utext="${bc}" style="text-decoration: none;color: #7749F8;"></a></li> 
+            <!-- <li class="breadcrumb-item active"><a href="#" th:utext="${state.last}"></a></li> -->
+            </th:block>
+        </ol>
+    </nav>
 
 
         <div class="card mx-auto completecard">
             <h3 class="card-header" style="border-radius: 10px 10px 0 0;">Take A Leave Confirm</h3>
             <div class="card-body">
-                <form th:object="${leave}" method="post" action="/save-leave-request">
+                <form th:object="${leave}" method="post" th:action="@{${postAction}}">
                     <div class="row form-sec-header">
                         <div class="col-lg-12 text-center">
                             <p></p>
@@ -168,7 +144,7 @@
                         <label for="coursename" class="col-lg-2 col-form-label">Course Name</label>
 
                         <div class="col-lg-6">
-                            <label for="coursename" class="col-lg-4 col-form-label" th:text="${course}"></label>
+                            <label for="coursename" class="col-form-label" th:text="${course}"></label>
                         </div>
                         <!--div class="col-lg-3">
                   <input type="email" class="form-control" id="inputEmail" placeholder="姓" required>
@@ -180,31 +156,31 @@
                         <label for="teachername" class="col-lg-2 col-form-label">Teacher Name</label>
 
                         <div class="col-lg-6">
-                            <label for="teachername" class="col-lg-4 col-form-label" th:text="${name}"></label>
+                            <label for="teachername" class="col-form-label" th:text="${name}"></label>
                         </div>
                     </div>
 
                     <div class="form-group row mb-3">
                         <div class="col-lg-1"></div>
-                        <label for="about" class="col-lg-2 col-form-label">From Date</label>
+                        <label for="about" class="col-lg-2 col-form-label">Date</label>
 
                         <div class="col-lg-3">
                             <!--<input id="datepicker9" class="form-control" placeholder="yyyy-mm-dd" th:field="*{leaveStartDate}" readonly>-->
                             <!--<input type="date" id="date9" class="form-control" placeholder="yyyy-mm-dd" style="border: none transparent;" th:field="*{leaveStartDate}" readonly>-->
                             <!--<label class="form-control" th:field="*{leaveStartDate}"></label>-->
-                            <input class="form-control" placeholder="yyyy-mm-dd" th:field="*{leaveStartDate}" style="border: none transparent;" readonly>
+                            <input class="form-control" placeholder="yyyy-mm-dd" th:field="*{leaveDate}" style="border: none transparent;" readonly>
 
                         </div>
-                        <label for="date" class="col-lg-2 col-form-label">To Date</label>
+                        <!-- <label for="date" class="col-lg-2 col-form-label">To Date</label> -->
 
-                        <div class="col-lg-3">
+                        <!-- <div class="col-lg-3"> -->
                             <!--<label class="form-control" th:field="*{leaveEndDate}"></label>-->
-                            <input class="form-control" placeholder="yyyy-mm-dd" th:field="*{leaveEndDate}" style="border: none transparent;" readonly>
+                            <!-- <input class="form-control" placeholder="yyyy-mm-dd" th:field="*{leaveEndDate}" style="border: none transparent;" readonly> -->
                             <!--<input id=" datepicker10 " class="form-control " placeholder="yyyy-mm-dd " th:field="*{leaveEndDate}" readonly>-->
                             <!--<input type="date " id="date10 " class="form-control " placeholder="yyyy-mm-dd " style="border: none transparent; " th:field="*{leaveEndDate} " readonly>-->
 
 
-                        </div>
+                        <!-- </div> -->
 
                     </div>
 
@@ -216,14 +192,14 @@
                             <div class="col-lg-4 ">
                                 <label for="time " class="col-form-label ">From</label>
                                 <!--<input class="form-control" th:field="*{leaveStartTime}" style="border: none transparent;" readonly>-->
-                                <input class="form-control " th:field="*{leaveStartTime}" readonly/>
+                                <input type="time" class="form-control " th:field="*{leaveStartTime}" readonly/>
 
                             </div>
                             <div class="col-lg-1 "></div>
                             <div class="col-lg-4 ">
                                 <label for="time " class="col-form-label ">To</label>
                                 <!--<input class="form-control" th:field="*{leaveEndTime}" style="border: none transparent;" readonly>-->
-                                <input class="form-control " th:field="*{leaveEndTime}" readonly />
+                                <input type="time" class="form-control " th:field="*{leaveEndTime}" readonly />
 
                             </div>
                         </div>
@@ -235,6 +211,7 @@
 
                         <div class="col-lg-6 ">
                             <textarea class="form-control " id="inputEmail " placeholder="reason " th:field="*{reason} " readonly></textarea>
+                            <!-- <input type="hidden" id="LeaveID" th:field="*{leaveId}"> -->
                         </div>
                     </div>
 
@@ -244,11 +221,11 @@
 
                         <div class="row col-lg-8 ">
                             <div class="col-lg-4 ">
-                                <button id="btnReset " type="button " class="btn btn-spacing btn-secondary center-block " Style="width: 125px; " OnClick="history.go(-1) ">Back</button>
+                                <button id="btnReset " type="button " class="btn btn-spacing btn-secondary center-block " Style="width: 125px; " onclick="window.history.go(-1); return false;">Back</button>
 
                             </div>
                             <div class="col-lg-4 ">
-                                <button id="btnReg " type="submit " class="btn btn-spacing btn-primary center-block " Style="width: 150px; " OnClick="btnRegister_Click ">Submit</button>
+                                <button id="btnReg " type="submit " class="btn btn-spacing btn-primary center-block " Style="width: 150px; " name="action" OnClick="btnRegister_Click ">Submit</button>
 
 
                             </div>
@@ -269,46 +246,7 @@
     <!-- Hello -->
 
     <!-- footer -->
-    <section class="footer-link ">
-        <div class="container text-center text-md-start mt-5 ">
-            <!-- Grid row -->
-            <div class="row mt-3 ">
-                <!-- Grid column -->
-                <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4 ">
-                    <!-- Content -->
-                    <h6 class="text-uppercase fw-bold mb-4 footerhead ">
-                        Address
-                    </h6>
-                    <p class="footertext ">
-                        Building “16/6” Bawzin Street, Thuwanna Lann Sone Bus Stop, Thingangyun Township .
-                    </p>
-                </div>
-                <!-- Grid column -->
-
-                <!-- Grid column -->
-                <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4 ">
-                    <!-- Links -->
-                    <h6 class="text-uppercase fw-bold mb-4 footerhead ">
-                        Contact Us
-                    </h6>
-                    <p class="footertext "><i class="fas fa-envelope me-3 "></i>Email : someone@bliss-stock.com</p>
-                    <p class="footertext "><i class="fas fa-phone me-3 "></i>Phone: +959 259 123 123</p>
-                </div>
-                <!-- Grid column -->
-
-
-            </div>
-            <!-- Grid row -->
-        </div>
-    </section>
-
-    <section class="footer-social ">
-        <div class="container ">
-            <div class="row index-social-link text-center ">
-                <p class="copy-c ">&copy; Copyright <strong>Bliss Stock</strong>. All Rights Reserved</p>
-            </div>
-        </div>
-    </section>
+    <div th:replace="fragments/footer"></div>
 
     <a href="# " class="back-to-top "><i class="fa fa-chevron-up "></i></a>
     <!-- Footer -->

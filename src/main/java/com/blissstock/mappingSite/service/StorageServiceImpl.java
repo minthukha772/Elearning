@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.blissstock.mappingSite.controller.FileController;
+import com.blissstock.mappingSite.entity.PaymentReceive;
 import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.enums.UserRole;
@@ -47,7 +48,7 @@ public class StorageServiceImpl implements StorageService {
   public static final Path PROFILE_PATH = Paths.get(
     root + File.separator + "profiles"
   );
-  public static final Path SLIP_PATH = Paths.get(
+  public final static Path SLIP_PATH = Paths.get(
     root + File.separator + "slip"
   );
 
@@ -119,7 +120,6 @@ public class StorageServiceImpl implements StorageService {
   //     );
   //   }
   // }
-
   @Override
   public Resource load(Long uid, String filename, Path path)
     throws UnauthorizedFileAccessException {
@@ -309,6 +309,53 @@ public class StorageServiceImpl implements StorageService {
       .build()
       .toString();
     logger.info("Get Data as Resource name: {}, url: {}",name,url);
+    return new FileInfo(name, url);
+  }
+  
+  @Override
+  public void storeSlip(MultipartFile file, String fileName) {
+    try {
+      if (file.isEmpty()) {
+        throw new StorageException("Failed to store empty file " + fileName);
+      }
+      if (fileName.contains("..")) {
+        // This is a security check
+        throw new StorageException(
+          "Cannot store file with relative path outside current directory " +
+          fileName
+        );
+      }
+      try (InputStream inputStream = file.getInputStream()) {
+        Files.copy(
+          inputStream,
+          this.SLIP_PATH.resolve(fileName),
+          StandardCopyOption.REPLACE_EXISTING
+        );
+      }
+    } catch (IOException e) {
+      throw new StorageException("Failed to store file " + fileName, e);
+    }
+  }
+
+  @Override
+  public FileInfo loadSlipAsFileInfo(PaymentReceive payment) {
+    
+    String name =payment.getSlip();
+    if(name == null || name.isEmpty()){
+      return new FileInfo("default", "/images/80x80.png");
+    }
+    String url = MvcUriComponentsBuilder
+      .fromMethodName(
+        FileController.class,
+        "getResource",
+        "slip",
+        payment.getPaymentReceiveId(),
+        name
+      )
+      .build()
+      .toString();
+    logger.info("Get Data as Resource name: {}, url: {}",name,url);
+    System.out.println(name);
     return new FileInfo(name, url);
   }
 }

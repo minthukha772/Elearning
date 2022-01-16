@@ -2,14 +2,22 @@ package com.blissstock.mappingSite.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.blissstock.mappingSite.entity.Content;
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.CourseTime;
+import com.blissstock.mappingSite.entity.JoinCourseUser;
 import com.blissstock.mappingSite.entity.Syllabus;
+import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
+// import com.blissstock.mappingSite.repository.CourseRepository;
 import com.blissstock.mappingSite.repository.CourseTimeRepository;
+import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
 import com.blissstock.mappingSite.repository.UserInfoRepository;
 import com.blissstock.mappingSite.service.UserSessionServiceImpl;
 
@@ -17,16 +25,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-public class CourseRegistrationController {
 
-    private static final Logger logger = LoggerFactory.getLogger(CourseRegistrationController.class);
+
+
+public class courseRegistrationController {
+
+    private static final Logger logger = LoggerFactory.getLogger(courseRegistrationController.class);
+
+    // @Autowired
+    // private CourseRepository courseRepo;
 
     @Autowired
-    private CourseInfoRepository courseRepo;
+    private CourseInfoRepository courseInfoRepo;
+
+    @Autowired
+    JoinCourseUserRepository joinRepo;
 
     @Autowired
     private CourseTimeRepository courseTimeRepo;
@@ -39,19 +57,67 @@ public class CourseRegistrationController {
 
     private List<CourseTime> ctList = new ArrayList<>(); 
     
-    @RequestMapping(value={"/teacher/course-registration","/admin/course-registration"})
-    private String courseRegistration(Model model ){
+    
+    @RequestMapping(value={"/teacher/course-registration","/admin/course-registration/{id}"})
+    private String courseRegistration(Model model,@PathVariable(required = false) Long id){
+        logger.info("GET Requested");
+
+        
+
         CourseInfo courseInfo = new CourseInfo();
        
         List<CourseTime> courseTimeList = new ArrayList<>(7);  
         courseInfo.setCourseTime(courseTimeList);
         
+        
+
+        UserRole role = userSessionService.getRole();
+        if (role == UserRole.ADMIN || role == UserRole.SUPER_ADMIN) {
+            long uid = id;
+            courseInfo.setUid(uid);
+            logger.info("Teacher ID for course registration {}",uid);
+            // model.addAttribute("teacherID", uid);
+            System.out.print("Admin registration : "+uid);
+            List<String> breadcrumbList = new ArrayList<>();
+            breadcrumbList.add("Top");
+            breadcrumbList.add("Teacher List");
+            breadcrumbList.add("Course Registration");
+            model.addAttribute("breadcrumbList",breadcrumbList);
+            String nav_type = "fragments/adminnav";
+            model.addAttribute("nav_type",nav_type);
+        }
+        else{
+            long uid =userSessionService.getId();
+            courseInfo.setUid(uid);
+            logger.info("Teacher ID for course registration {}",uid);
+            // model.addAttribute("teacherID", uid);
+            System.out.print("Teacher Registration"+uid);
+            List<String> breadcrumbList = new ArrayList<>();
+            breadcrumbList.add("My Course");
+            breadcrumbList.add("Course Registration");
+            model.addAttribute("breadcrumbList",breadcrumbList);
+            String nav_type = "fragments/teacher-nav";
+            model.addAttribute("nav_type",nav_type);
+        }
+        
         model.addAttribute("course", courseInfo);
-  
-        return "AT00001_CourseRegisteration";
+        
+        System.out.print("User Role:"+role);
+
+        if(role == UserRole.TEACHER){
+            model.addAttribute("postAction", "/teacher/courseregister-confirm");
+        }
+        else{
+            model.addAttribute("postAction", "/admin/courseregister-confirm");
+        }
+
+        
+
+        return "AT0001_CourseRegistration";
     }
     
-    @PostMapping("/teacher/courseregister-confirm")
+    
+    @PostMapping(value={"/teacher/courseregister-confirm","/admin/courseregister-confirm"})
     private String courseRegistrationConfirm(@ModelAttribute("course") CourseInfo course,
                                             @ModelAttribute("day0") String day0,
                                             @ModelAttribute("startTime0") String startTime0,
@@ -141,28 +207,75 @@ public class CourseRegistrationController {
         }
         
         model.addAttribute("course", course);
+
+        UserRole role = userSessionService.getRole();
+
+        if(role == UserRole.TEACHER){
+            model.addAttribute("postAction", "/teacher/save-course-register");
+            List<String> breadcrumbList = new ArrayList<>();
+            breadcrumbList.add("My Course");
+            breadcrumbList.add("Course Registration");
+            breadcrumbList.add("Confirm");
+            model.addAttribute("breadcrumbList",breadcrumbList);
+            String nav_type = "fragments/teacher-nav";
+            model.addAttribute("nav_type",nav_type);
+        }
+        else{
+            model.addAttribute("postAction", "/admin/save-course-register");
+            List<String> breadcrumbList = new ArrayList<>();
+            breadcrumbList.add("Top");
+            breadcrumbList.add("Teacher List");
+            breadcrumbList.add("Course Registration");
+            breadcrumbList.add("Confirm");
+            model.addAttribute("breadcrumbList",breadcrumbList);
+            String nav_type = "fragments/adminnav";
+            model.addAttribute("nav_type",nav_type);
+        }
         
         // System.out.println("Heehee" + day0 + " " + startTime0 + " " + endTime0 + " " + day1 + " " + startTime1 + " " + endTime1);
         // System.out.println("Haahaa " + courseTimeList.get(0).getCourseDays() + courseTimeList.size());
         
-        return "AT00002_CourseRegisterationConfirm";
+        return "AT0002_CourseRegistrationConfirm";
     }
 
-    @PostMapping("/teacher/save-course-register")
+    @PostMapping(value = {"/teacher/save-course-register","/admin/save-course-register"})
     private String saveCourseRegister(@ModelAttribute("course") CourseInfo course){
-        course.setUserInfo(userInfoRepository.findById(userSessionService.getId()).get());
-        logger.info("");
+        // course.setUserInfo(userInfoRepository.findById(userSessionService.getId()).get());
+        course.setUserInfo(userInfoRepository.findById(course.getUid()).get());
+        logger.info("Post Requested");
         course.setIsCourseApproved(true); //was string "true"
-        courseRepo.save(course);
+        courseInfoRepo.save(course);
+
+        JoinCourseUser joins = new JoinCourseUser();
+        joins.setCourseInfo(course);
+        joins.setUserInfo(userInfoRepository.findById(course.getUid()).get());
+        joinRepo.save(joins);
+
+        // course.setJoin(join);
+
         System.out.println("HoeHoe" + ctList);
         for(CourseTime courseTime : ctList){
             courseTime.setCourseInfo(course);
             courseTimeRepo.save(courseTime);
         }
-        
-        return "CM0001_CompleteScreen";
+
+        UserRole role = userSessionService.getRole();
+
+        if(role == UserRole.TEACHER){
+            return "redirect:/teacher/course-upload/complete";
+        }
+        else{
+            return "redirect:/admin/course-upload/complete";
+        }
         //return "takealeave";
     }
 
+    // @RequestMapping("/admin/course")
+    // public String courseTest()
+    // {
+    //     return "card";
+    // }
+
+    
     
 }

@@ -34,7 +34,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class AdminTopController {
 
   private static Logger logger = LoggerFactory.getLogger(
-      ProfileController.class);
+     AdminTopController.class);
 
   @Autowired
   StorageService storageService;
@@ -85,69 +85,6 @@ public class AdminTopController {
     return "AD0001_AdminTop";
 
   }
-  // //Get profile photo
-  // private FileInfo loadProfile(long userId) {
-  // try {
-  // UserInfo userInfo = userRepo.findById(userId).orElse(null);
-  // Path path = storageService.loadProfile(userInfo.getPhoto());
-  // String name = path.getFileName().toString();
-  // String url = MvcUriComponentsBuilder
-  // .fromMethodName(
-  // FileController.class,
-  // "getProfile",
-  // path.getFileName().toString()
-  // )
-  // .build()
-  // .toString();
-
-  // return new FileInfo(name, url);
-  // } catch (Exception e) {
-  // return null;
-  // }
-
-  // // @PostMapping(value= "/admin/top/update")
-  // // private String postProfile(Model model,
-  // // @RequestParam("profile_pic") MultipartFile photo,
-  // // @RequestParam(value="action", required=true) String action
-  // // ) {
-  // // UserInfo userInfo=userRepo.findById(userId).orElse(null);
-  // // UserAccount acc=userInfo.getUserAccount();
-
-  // if(!photo.isEmpty()) {
-  // if(CheckUploadFileType.checkType(photo)) {
-  // //get original photo name and generate a new file name
-  // String originalFileName =StringUtils.cleanPath(photo.getOriginalFilename());
-  // //upload photo
-  // try {
-  // storageService.store(userId, photo, StorageServiceImpl.PROFILE_PATH, true);
-  // userInfo.setPhoto(originalFileName);
-  // userRepo.save(userInfo);
-  // } catch (UnauthorizedFileAccessException e) {
-  // // TODO Auto-generated catch block
-  // e.printStackTrace();
-  // }
-
-  // //insert photo
-
-  // }else {
-  // model.addAttribute("photoTypeErr", "Files other than image file cannot be
-  // uploaded.");
-  // return "CM0004_TeacherProfile";
-  // }
-  // }
-  // userInfo.setUserName(userInfo.getUserName());
-  // userRepo.save(userInfo);
-  // // else if(action.equals("add_payment")){
-  // // List<PaymentAccount> payAccs=userInfo.getPaymentAccount();
-  // // System.out.println(payAccs);
-  // // for(PaymentAccount payAcc : payAccs){
-  // // payAccRepo.save(payAcc);
-  // // System.out.println(payAcc);
-  // // }
-  // // }
-
-  // // return "AD0001_AdminTop";
-  // // }
 
   @PostMapping(value = "/admin/top/edit/")
   public String editProfilePicture(

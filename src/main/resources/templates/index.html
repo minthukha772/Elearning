@@ -96,9 +96,9 @@
             <img th:src="@{/images/top-1.jpg}" class="card-img-top" alt="..." />
             <div class="card-body">
               <h5 class="card-title" th:text="${courseInof.courseName}">Course Name</h5>
-              <!–– to do find teacher name ––>
-                <p class="card-text" th:text="${courseInof.level}">Teacher Name</p>
-                <p class=" card-text" th:text="${courseInof.fees}">Price</p>
+
+              <p class="card-text" th:text="${courseInof.level}">Teacher Name</p>
+              <p class=" card-text" th:text="${courseInof.fees}">Price</p>
             </div>
             <div class=" card-footer">
               <a href="#" class="btn btn-primary d-block">See More</a>
@@ -107,15 +107,15 @@
         </div>
 
       </div>
-      <div class="tab-pane fade" id="recorded" role="tabpanel" aria-labelledby="recorded-tab">
+      <div class="tab-pane fade" id="" role="tabpanel" aria-labelledby="recorded-tab">
         <div class="coursesSlider" id="recordedCourse">
           <div class="card" th:each="courseInof:${recordedCourse}">
             <img th:src="@{/images/top-1.jpg}" class="card-img-top" alt="..." />
             <div class="card-body">
               <h5 class="card-title" th:text="${courseInof.courseName}">Course Name</h5>
-              <!–– to do find teacher name ––>
-                <p class="card-text" th:text="${courseInof.level}">Teacher Name</p>
-                <p class=" card-text" th:text="${courseInof.fees}">Price</p>
+
+              <p class="card-text" th:text="${courseInof.level}">Teacher Name</p>
+              <p class=" card-text" th:text="${courseInof.fees}">Price</p>
             </div>
             <div class=" card-footer">
               <a href="#" class="btn btn-primary d-block">See More</a>
@@ -190,8 +190,7 @@
         anywhere. We believe that the marketplace model is the best way to
         deliver valuable educational content to our users. Rules are needed to
         secure our platform and services to our customers, our company, and
-        our community of students and teachers. 
-        <!-- <a href="">For More</a>. -->
+        our community of students and teachers. <a th:href="@{/guest/terms_and_conditions}">For More</a>.
         <!-- TODO add term and service link -->
       </p>
     </div>
