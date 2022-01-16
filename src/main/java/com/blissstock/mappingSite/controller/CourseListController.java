@@ -17,7 +17,9 @@ import com.blissstock.mappingSite.service.JoinCourseUserService;
 import com.blissstock.mappingSite.service.StorageService;
 import com.blissstock.mappingSite.service.UserService;
 import com.blissstock.mappingSite.service.UserSessionService;
+import com.blissstock.mappingSite.utils.StringToDateConvert;
 
+import org.apache.commons.lang3.ObjectUtils.Null;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+
+import net.bytebuddy.asm.Advice.Local;
 
 @Controller
 
@@ -48,10 +52,12 @@ public class CourseListController {
     JoinCourseUserService joinCourseUserService;
 
     @GetMapping("/guest/explore")
-    private String getCourseListGuest(Model model, String courseName, String teacherName, LocalDate startDate,
-            LocalDate endDate) {
+    private String getCourseListGuest(Model model, String courseName, String teacherName, String startDate,
+            String endDate) {
         logger.info("GET request");
-        CourseInfoDTO courseInfoDTO = new CourseInfoDTO(courseName, teacherName, startDate, endDate);
+
+        CourseInfoDTO courseInfoDTO = new CourseInfoDTO(courseName, teacherName, StringToDateConvert.stringToDate(startDate), StringToDateConvert.stringToDate(endDate));
+        
 
         logger.debug("couresInfoDto {} ", courseInfoDTO);
         model.addAttribute("courseInfoDTO", courseInfoDTO);
