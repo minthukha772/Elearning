@@ -56,8 +56,8 @@ public class CourseListController {
             String endDate) {
         logger.info("GET request");
 
-        CourseInfoDTO courseInfoDTO = new CourseInfoDTO(courseName, teacherName, StringToDateConvert.stringToDate(startDate), StringToDateConvert.stringToDate(endDate));
-        
+        CourseInfoDTO courseInfoDTO = new CourseInfoDTO(courseName, teacherName,
+                StringToDateConvert.stringToDate(startDate), StringToDateConvert.stringToDate(endDate));
 
         logger.debug("couresInfoDto {} ", courseInfoDTO);
         model.addAttribute("courseInfoDTO", courseInfoDTO);
@@ -113,7 +113,7 @@ public class CourseListController {
     public String teacherCourse(Model model) {
         Long uid = userSessionService.getId();
         return getCourseListByTeacherID(model, uid);
-        
+
     }
 
     @GetMapping(value = "/student/my-course")
@@ -146,7 +146,7 @@ public class CourseListController {
         // Disable Advance Search Function
         model.addAttribute("searchable", false);
 
-        return new String();
+        return "CM0002_CourseList";
     }
 
 }
