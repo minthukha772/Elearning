@@ -299,7 +299,7 @@ public class StorageServiceImpl implements StorageService {
     
     String name = userInfo.getPhoto();
     if(name == null || name.isEmpty()){
-      return null;
+      return new FileInfo("default", "/images/profile.png");
     }
     String url = MvcUriComponentsBuilder
       .fromMethodName(
