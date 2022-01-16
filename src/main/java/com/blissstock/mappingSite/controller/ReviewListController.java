@@ -9,7 +9,6 @@ import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.JoinCourseUser;
 import com.blissstock.mappingSite.entity.Review;
 import com.blissstock.mappingSite.entity.UserInfo;
-import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
 import com.blissstock.mappingSite.repository.UserRepository;
 import com.blissstock.mappingSite.service.UserService;
@@ -54,7 +53,7 @@ public class ReviewListController {
         model.addAttribute("courseName", courseName);
 
 
-        //Get review list and teahcer name of course
+        //Get review list and teacher name of course
         List<JoinCourseUser> joinList=courseInfo.getJoin();
         List<Review> reviewList=new ArrayList<Review>();
         for(JoinCourseUser join:joinList){

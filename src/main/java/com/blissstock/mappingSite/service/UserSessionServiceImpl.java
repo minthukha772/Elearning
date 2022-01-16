@@ -1,16 +1,17 @@
 package com.blissstock.mappingSite.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.blissstock.mappingSite.entity.CustomUser;
 import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
-import java.util.List;
-import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 @Service

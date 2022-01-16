@@ -1,13 +1,14 @@
 package com.blissstock.mappingSite.service;
 
+import java.util.List;
+
 import com.blissstock.mappingSite.entity.BankInfo;
 import com.blissstock.mappingSite.entity.PaymentAccount;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.exceptions.UserNotFoundException;
 import com.blissstock.mappingSite.repository.BankInfoRepository;
 import com.blissstock.mappingSite.repository.PaymentAccountRepository;
-import com.blissstock.mappingSite.repository.PaymentRepository;
-import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -2,13 +2,11 @@ package com.blissstock.mappingSite.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.CourseTime;
 import com.blissstock.mappingSite.entity.JoinCourseUser;
 import com.blissstock.mappingSite.entity.Test;
-import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
@@ -25,10 +23,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-
-import ch.qos.logback.core.recovery.ResilientSyslogOutputStream;
-import lombok.experimental.Helper;
-import net.bytebuddy.agent.builder.AgentBuilder.RedefinitionStrategy.Listener;
 
 @Controller
 public class CourseDetailsController {

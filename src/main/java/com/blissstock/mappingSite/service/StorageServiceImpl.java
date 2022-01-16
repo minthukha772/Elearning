@@ -328,7 +328,7 @@ public class StorageServiceImpl implements StorageService {
       try (InputStream inputStream = file.getInputStream()) {
         Files.copy(
           inputStream,
-          this.SLIP_PATH.resolve(fileName),
+          SLIP_PATH.resolve(fileName),
           StandardCopyOption.REPLACE_EXISTING
         );
       }

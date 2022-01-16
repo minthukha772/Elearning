@@ -1,21 +1,11 @@
 package com.blissstock.mappingSite.dto;
 
-import com.blissstock.mappingSite.entity.CourseInfo;
-import com.blissstock.mappingSite.entity.JoinCourseUser;
-import com.blissstock.mappingSite.entity.UserInfo;
-import com.blissstock.mappingSite.exceptions.UserNotFoundException;
-import com.blissstock.mappingSite.repository.CourseInfoRepository;
-import com.blissstock.mappingSite.repository.UserInfoRepository;
+import javax.validation.constraints.NotBlank;
+
 import com.blissstock.mappingSite.repository.UserRepository;
 import com.blissstock.mappingSite.service.UserService;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Optional;
-
-import javax.validation.constraints.NotBlank;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -36,8 +26,8 @@ public class JoinCourseDTO {
     @Autowired
     UserRepository userRepository;
 
-    private static final Logger logger = LoggerFactory.getLogger(
-            JoinCourseDTO.class);
+    // private static final Logger logger = LoggerFactory.getLogger(
+    //         JoinCourseDTO.class);
 
     private Long joinId;
 

@@ -2,7 +2,6 @@ package com.blissstock.mappingSite.utils;
 
 public class FileNameGenerator {
 	private static String getFileExtension(String fileName) {
-		// TODO Auto-generated method stub
 		try {
 			int index = fileName.lastIndexOf(".");
 			return index== -1?"":fileName.substring(index);

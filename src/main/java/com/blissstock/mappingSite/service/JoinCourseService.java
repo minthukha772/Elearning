@@ -3,24 +3,20 @@ package com.blissstock.mappingSite.service;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
+
 import com.blissstock.mappingSite.dto.JoinCourseDTO;
-import com.blissstock.mappingSite.repository.CourseInfoRepository;
-import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
-import com.blissstock.mappingSite.repository.UserInfoRepository;
-import com.blissstock.mappingSite.repository.UserRepository;
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.JoinCourseUser;
 import com.blissstock.mappingSite.entity.UserInfo;
+import com.blissstock.mappingSite.exceptions.UserAlreadyExistException;
+import com.blissstock.mappingSite.repository.CourseInfoRepository;
+import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
+import com.blissstock.mappingSite.repository.UserRepository;
 
-import org.checkerframework.checker.nullness.Opt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import ch.qos.logback.core.net.SyslogOutputStream;
-
-import com.blissstock.mappingSite.exceptions.UserAlreadyExistException;
 
 @Service
 @Transactional

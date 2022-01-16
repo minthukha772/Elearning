@@ -1,11 +1,12 @@
 package com.blissstock.mappingSite.dto;
 
 
-import javax.validation.constraints.NotBlank;
+import java.util.Date;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
+
 import org.springframework.format.annotation.DateTimeFormat;
-import java.util.Date;
 
 import lombok.Data;
 import lombok.Getter;

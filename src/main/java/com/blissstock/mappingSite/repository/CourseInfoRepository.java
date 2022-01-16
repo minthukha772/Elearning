@@ -1,9 +1,7 @@
 package com.blissstock.mappingSite.repository;
 
-import java.util.Date;
 import java.util.List;
 
-import com.blissstock.mappingSite.dto.CourseInfoDTO;
 import com.blissstock.mappingSite.entity.CourseInfo;
 
 import org.springframework.data.domain.Pageable;

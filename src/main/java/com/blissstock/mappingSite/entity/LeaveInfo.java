@@ -1,9 +1,7 @@
 package com.blissstock.mappingSite.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import java.sql.Time;
 import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,14 +11,16 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
 
 @Data
 @Getter

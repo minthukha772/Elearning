@@ -1,20 +1,14 @@
 package com.blissstock.mappingSite.controller;
 
-import java.io.IOException;
 import java.util.GregorianCalendar;
-import java.util.List;
 
-import javax.persistence.criteria.Join;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import com.blissstock.mappingSite.entity.JoinCourseUser;
-import com.blissstock.mappingSite.dto.StuPaymentDTO;
 import com.blissstock.mappingSite.entity.CourseInfo;
+import com.blissstock.mappingSite.entity.JoinCourseUser;
 import com.blissstock.mappingSite.entity.PaymentReceive;
-import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.enums.PaymentStatus;
-import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.exceptions.UnauthorizedFileAccessException;
 import com.blissstock.mappingSite.model.FileInfo;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
@@ -28,12 +22,10 @@ import com.blissstock.mappingSite.service.StorageServiceImpl;
 import com.blissstock.mappingSite.service.UserService;
 import com.blissstock.mappingSite.service.UserSessionService;
 import com.blissstock.mappingSite.utils.CheckUploadFileType;
-import com.blissstock.mappingSite.utils.FileNameGenerator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -43,7 +35,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller

@@ -1,9 +1,7 @@
 package com.blissstock.mappingSite.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.exceptions.NotImageFileException;
@@ -26,7 +24,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 @Controller
 public class ManageCertificateController {
@@ -140,7 +137,7 @@ public class ManageCertificateController {
     } else if (role == UserRole.TEACHER) {
       uid = userSessionService.getUserAccount().getAccountId();
     } else {
-      throw new RuntimeException("user authetication fail");
+      throw new RuntimeException("user authentication fail");
     }
     return uid;
   }
