@@ -45,6 +45,7 @@ public class UserRegisterValidatorTest {
     userTemplate.setAddress(faker.address().fullAddress());
     userTemplate.setEducation(faker.educator().university());
     userTemplate.setAcceptTerm(true);
+    userTemplate.setRole("ROLE_STUDENT");
   }
 
   @Test
