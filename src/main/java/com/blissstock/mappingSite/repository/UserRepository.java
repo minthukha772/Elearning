@@ -12,12 +12,14 @@ import java.util.List;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserInfo, Long> {
-    @Query(value = "SELECT i.*,u.* FROM user_info i,user_account u WHERE i.id=u.id AND u.role=:role", nativeQuery = true)
+    @Query(value = "SELECT i.*,u.* FROM user_info i,user_account u WHERE i.account_id=u.account_id AND u.role=:role", nativeQuery = true)
+    public List<UserInfo> findByUserRoleI(@Param("role") String role);
+    // public List<UserInfo> findByUserRoleI();
     // SELECT
     // o.payment_receive_date,o.payment_status,r.requested_user_name,r.requested_course_name,r.requested_course_fees
     // FROM payment_receive o,requested_course r WHERE
     // o.course_id_fkey=r.course_id_fkey AND o.uid_fkey=r.uid_fkey;
-    public List<UserInfo> findByUserRoleI(@Param("role") String role);
+    // public List<UserInfo> findByUserRoleI(@Param("role") String role);
     // public List<UserInfo> findByUserRoleI();
     // public List<UserInfo> findByUserRoleI();
     

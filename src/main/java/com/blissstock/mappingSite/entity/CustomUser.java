@@ -50,15 +50,5 @@ public class CustomUser extends User {
     this.id = id;
   }
 
-  //Getter and Setter
-
-  public Long getId() {
-    return this.id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
 
 }

@@ -43,17 +43,17 @@ public class LeaveInfo {
     name = "leave_start_time"
     // ,columnDefinition = "TIMESTAMP WITH TIME ZONE"
   )
-  @NotNull
+  // @NotNull
   // @Temporal(TemporalType.TIME)
-  private Time leaveStartTime;
+  private String leaveStartTime;
 
   @Column(
     name = "leave_end_time"
     // ,columnDefinition = "TIMESTAMP WITH TIME ZONE"
   )
-  @NotNull
+  // @NotNull
   // @Temporal(TemporalType.TIME)
-  private Time leaveEndTime;
+  private String leaveEndTime;
 
   @NotBlank(message = "Please fill reason")
   @Column(name = "reason")
@@ -89,37 +89,37 @@ public class LeaveInfo {
   // @JsonIgnore
   // private CourseInfo courseInfo;
 
-  public Long getLeaveId() {
-    return this.leaveId;
-  }
+  // public Long getLeaveId() {
+  //   return this.leaveId;
+  // }
 
-  public void setLeaveId(Long leaveId) {
-    this.leaveId = leaveId;
-  }
+  // public void setLeaveId(Long leaveId) {
+  //   this.leaveId = leaveId;
+  // }
 
-  public Date getLeaveStartTime() {
-    return this.leaveStartTime;
-  }
+  // public Date getLeaveStartTime() {
+  //   return this.leaveStartTime;
+  // }
 
-  public void setLeaveStartTime(Time leaveStartTime) {
-    this.leaveStartTime = leaveStartTime;
-  }
+  // public void setLeaveStartTime(Time leaveStartTime) {
+  //   this.leaveStartTime = leaveStartTime;
+  // }
 
-  public Date getLeaveEndTime() {
-    return this.leaveEndTime;
-  }
+  // public Date getLeaveEndTime() {
+  //   return this.leaveEndTime;
+  // }
 
-  public void setLeaveEndTime(Time leaveEndTime) {
-    this.leaveEndTime = leaveEndTime;
-  }
+  // public void setLeaveEndTime(Time leaveEndTime) {
+  //   this.leaveEndTime = leaveEndTime;
+  // }
 
-  public String getReason() {
-    return this.reason;
-  }
+  // public String getReason() {
+  //   return this.reason;
+  // }
 
-  public void setReason(String reason) {
-    this.reason = reason;
-  }
+  // public void setReason(String reason) {
+  //   this.reason = reason;
+  // }
 
   // public UserInfo getUserInfo() {
   //   return this.userInfo;
@@ -153,29 +153,29 @@ public class LeaveInfo {
   //   this.leaveEndDate = leaveEndDate;
   // }
 
-  public LeaveInfo(
-    Long leaveId,
-    Date leaveDate,
-    // Date leaveStartDate,
-    // Date leaveEndDate,
-    Time leaveStartTime,
-    Time leaveEndTime,
-    String reason,
-    // UserInfo userInfo,
-    // CourseInfo courseInfo,
-    JoinCourseUser join
-  ) {
-    this.leaveId = leaveId;
-    this.leaveDate = leaveDate;
-    // this.leaveStartDate = leaveStartDate;
-    // this.leaveEndDate = leaveEndDate;
-    this.leaveStartTime = leaveStartTime;
-    this.leaveEndTime = leaveEndTime;
-    this.reason = reason;
-    // this.userInfo = userInfo;
-    // this.courseInfo = courseInfo;
-    this.join = join;
-  }
+  // public LeaveInfo(
+  //   Long leaveId,
+  //   Date leaveDate,
+  //   // Date leaveStartDate,
+  //   // Date leaveEndDate,
+  //   Time leaveStartTime,
+  //   Time leaveEndTime,
+  //   String reason,
+  //   // UserInfo userInfo,
+  //   // CourseInfo courseInfo,
+  //   JoinCourseUser join
+  // ) {
+  //   this.leaveId = leaveId;
+  //   this.leaveDate = leaveDate;
+  //   // this.leaveStartDate = leaveStartDate;
+  //   // this.leaveEndDate = leaveEndDate;
+  //   this.leaveStartTime = leaveStartTime;
+  //   this.leaveEndTime = leaveEndTime;
+  //   this.reason = reason;
+  //   // this.userInfo = userInfo;
+  //   // this.courseInfo = courseInfo;
+  //   this.join = join;
+  // }
 
-  public LeaveInfo() {}
+  // public LeaveInfo() {}
 }
