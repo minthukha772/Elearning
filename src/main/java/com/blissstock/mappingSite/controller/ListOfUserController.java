@@ -9,9 +9,9 @@ import com.blissstock.mappingSite.repository.CourseInfoRepository;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
 import com.blissstock.mappingSite.repository.UserRepository;
 import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,11 +20,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class ListOfUserController {
+
 
     private static final Logger logger = LoggerFactory.getLogger(ListOfUserController.class);
     
@@ -66,10 +68,12 @@ public class ListOfUserController {
         // System.out.println("Student List Console"+sAllRecord);
         
         logger.info("Student List of Mapping Site {}",sAllRecord);
+
         model.addAttribute("sAllStudentList", sAllRecord);
         // System.out.println(sAllRecord);
         // List<UserAccount> uAllRecord = userAccountRepo.findByUserRoleU("Student");
         // model.addAttribute("UAllStudentList", uAllRecord);
+
         // List<String> breadcrumbList = new ArrayList<>();
         // breadcrumbList.add("Top");
         // breadcrumbList.add("Student List");
@@ -91,8 +95,10 @@ public class ListOfUserController {
 
         logger.info("Admin List of Mapping Site {}",aAllRecord);
 
+
+        List<UserInfo> aAllRecord = userRepo.findByUserRoleI("Admin");
         model.addAttribute("aAllAdminList", aAllRecord);
-        model.addAttribute("adminRegister",newAdmin);
+        model.addAttribute("adminRegister", newAdmin);
         model.addAttribute("adminRole", adminRole);
         // System.out.println(servletContext.getContextPath());
         // System.out.println("Previous Path Info "+req.getRequestURL());
@@ -105,6 +111,7 @@ public class ListOfUserController {
 
         return "AT0003_ListofAdminsScreen";
     }
+
     
     // @RequestMapping(value = "/teacher/course-list/{courseId}/student-list",method = RequestMethod.GET)
     @RequestMapping(value = "/teacher/student-list/{courseId}",method = RequestMethod.GET)
@@ -149,6 +156,7 @@ public class ListOfUserController {
         
         List<UserInfo> tAllRecord = userRepo.findByUserRoleI("ROLE_TEACHER");
         System.out.println("Teacher List"+tAllRecord);
+
         // model.addAttribute("tAllTeacherList", tAllRecord);
         return "AT0003_ListofStudentsByT";
     }
