@@ -68,10 +68,7 @@ public class AdminTopController {
       return "redirect:/404";
     }
     // load profile picture
-    if (userInfo.getPhoto() == null) {
-      String photoString = null;
-      model.addAttribute("pic64", photoString);
-    }
+    
     FileInfo profile = storageService.loadProfileAsFileInfo(userInfo);
     model.addAttribute("profile", profile);
 
@@ -110,9 +107,9 @@ public class AdminTopController {
         // get original photo name and generate a new file name
         String originalFileName = StringUtils.cleanPath(
             photo.getOriginalFilename());
-        String saveFileName = FileNameGenerator.renameFileName(
-            originalFileName,
-            uid.toString());
+        // String saveFileName = FileNameGenerator.renameFileName(
+        //     originalFileName,
+        //     uid.toString());
 
         // upload photo
         try {
@@ -121,27 +118,15 @@ public class AdminTopController {
           e.printStackTrace();
         }
         // insert photo
-        userInfo.setPhoto(saveFileName);
+        userInfo.setPhoto(originalFileName);
         userRepo.save(userInfo);
 
-        logger.info("profile photo {} stored", saveFileName);
+        logger.info("profile photo {} stored", originalFileName);
         return redirectAddress + "/";
       }
-    } else if (action.equals("edit")) {
+    } 
 
-      UserInfo nameEdit = mailEdit.getUserInfo();
-      // System.out.println(nameEdit.getPhoto());
-      userInfo.setUserName(nameEdit.getUserName());
-      userAcc.setMail(mailEdit.getMail());
-      System.out.println(mailEdit.getMail());
-      userRepo.save(userInfo);
-      userAccRepo.save(userAcc);
-
-      // logger.info("profile photo {} stored", saveFileName);
-      return redirectAddress + "/";
-    }
-
-    return redirectAddress + "?error";
+    return "redirect:/admin/top/";
   }
 
 }
