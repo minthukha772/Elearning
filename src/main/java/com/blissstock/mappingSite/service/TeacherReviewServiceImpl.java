@@ -8,18 +8,14 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
-import com.blissstock.mappingSite.dto.StudentReviewDTO;
 import com.blissstock.mappingSite.dto.TeacherReviewDTO;
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.JoinCourseUser;
 import com.blissstock.mappingSite.entity.Review;
+import com.blissstock.mappingSite.exceptions.CourseNotFoundException;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
 import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
 import com.blissstock.mappingSite.repository.ReviewRepository;
-import com.blissstock.mappingSite.entity.UserInfo;
-import com.blissstock.mappingSite.exceptions.CourseNotFoundException;
-import com.blissstock.mappingSite.repository.ReviewRepository;
-import com.blissstock.mappingSite.service.TeacherReviewService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,7 +69,7 @@ public class TeacherReviewServiceImpl implements TeacherReviewService {
 
   // @Override
   // public UserRegisterDTO getUserByID(Long id) {
-  //   //TODO to Implement
+  
   //   return new UserRegisterDTO();
   // }
 }

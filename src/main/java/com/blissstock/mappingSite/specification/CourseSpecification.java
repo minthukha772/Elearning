@@ -3,15 +3,11 @@ package com.blissstock.mappingSite.specification;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 
 import com.blissstock.mappingSite.dto.CourseInfoDTO;
 import com.blissstock.mappingSite.entity.CourseInfo;
-import com.blissstock.mappingSite.entity.UserInfo;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
