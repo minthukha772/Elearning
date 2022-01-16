@@ -3,16 +3,9 @@ package com.blissstock.mappingSite.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import com.blissstock.mappingSite.entity.Content;
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.CourseTime;
 import com.blissstock.mappingSite.entity.JoinCourseUser;
-import com.blissstock.mappingSite.entity.Syllabus;
 import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
 // import com.blissstock.mappingSite.repository.CourseRepository;
@@ -21,6 +14,8 @@ import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
 import com.blissstock.mappingSite.repository.UserInfoRepository;
 import com.blissstock.mappingSite.service.UserSessionServiceImpl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

@@ -12,13 +12,10 @@ import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import com.blissstock.mappingSite.interfaces.Confirmable;
-import com.blissstock.mappingSite.interfaces.Profile;
 import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.interfaces.Confirmable;
-import com.blissstock.mappingSite.interfaces.Profile;
 import com.blissstock.mappingSite.utils.DateFormatter;
 import com.blissstock.mappingSite.validation.ConstrainMessage;
 import com.blissstock.mappingSite.validation.constrains.PasswordData;
@@ -37,7 +34,7 @@ import lombok.Setter;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @PasswordMatch
-// @PasswordMatch only work with PasswordData classees
+// @PasswordMatch only work with PasswordData class
 public class UserRegisterDTO extends PasswordData implements Confirmable {
 
   @ValidEmail
@@ -105,7 +102,7 @@ public class UserRegisterDTO extends PasswordData implements Confirmable {
     return map;
   }
 
-  // This Funcation has side use with
+  // This Function has side use with
   public static UserInfo toUserInfo(
       UserRegisterDTO userRegisterDTO,
       UserInfo userInfo) {
@@ -153,7 +150,7 @@ public class UserRegisterDTO extends PasswordData implements Confirmable {
 
   public static List<UserRegisterDTO> fromUserInfoList(List<UserInfo> userInfoList) {
 
-    List<UserRegisterDTO> registerDTOList = new ArrayList();
+    List<UserRegisterDTO> registerDTOList = new ArrayList<UserRegisterDTO>();
     for (UserInfo userInfo : userInfoList) {
 
       UserRegisterDTO registerDTO = new UserRegisterDTO();

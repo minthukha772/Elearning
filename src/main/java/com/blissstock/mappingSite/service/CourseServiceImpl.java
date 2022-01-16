@@ -2,7 +2,6 @@ package com.blissstock.mappingSite.service;
 
 import java.util.List;
 
-import com.blissstock.mappingSite.dto.CourseDTO;
 import com.blissstock.mappingSite.dto.CourseInfoDTO;
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;

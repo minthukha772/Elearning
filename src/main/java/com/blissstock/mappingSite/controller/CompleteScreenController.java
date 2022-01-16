@@ -6,8 +6,8 @@ import java.util.List;
 import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.service.UserSessionService;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+// import org.slf4j.Logger;
+// import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +19,7 @@ public class CompleteScreenController {
     @Autowired
     UserSessionService userSessionService;
 
-    private static final Logger logger = LoggerFactory.getLogger(CompleteScreenController.class);
+    // private static final Logger logger = LoggerFactory.getLogger(CompleteScreenController.class);
 
     @RequestMapping("/card")
     public String CardSample() {

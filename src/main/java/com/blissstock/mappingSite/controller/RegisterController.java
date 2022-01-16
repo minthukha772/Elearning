@@ -1,5 +1,9 @@
 package com.blissstock.mappingSite.controller;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Valid;
+
 import com.blissstock.mappingSite.dto.TeacherRegisterDTO;
 import com.blissstock.mappingSite.dto.UserRegisterDTO;
 import com.blissstock.mappingSite.entity.UserAccount;
@@ -10,9 +14,7 @@ import com.blissstock.mappingSite.service.MailService;
 import com.blissstock.mappingSite.service.UserService;
 import com.blissstock.mappingSite.service.UserSessionService;
 import com.blissstock.mappingSite.validation.validators.EmailValidator;
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.ConstraintViolationException;
-import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +29,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.thymeleaf.standard.expression.Each;
 
 @Controller
 public class RegisterController {

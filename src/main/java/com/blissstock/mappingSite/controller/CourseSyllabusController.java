@@ -1,14 +1,15 @@
 package com.blissstock.mappingSite.controller;
 
-import com.blissstock.mappingSite.entity.Content;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import com.blissstock.mappingSite.entity.Syllabus;
-import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.exceptions.CourseNotFoundException;
 import com.blissstock.mappingSite.exceptions.InsuffientPermssionException;
 import com.blissstock.mappingSite.service.SyllabusService;
 import com.blissstock.mappingSite.service.UserSessionService;
-import java.util.List;
-import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

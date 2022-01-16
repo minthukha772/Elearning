@@ -1,14 +1,11 @@
 package com.blissstock.mappingSite.service;
 
-import java.util.Optional;
-
 import com.blissstock.mappingSite.dto.PasswordDTO;
 import com.blissstock.mappingSite.dto.UserRegisterDTO;
 import com.blissstock.mappingSite.entity.Token;
 import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.enums.TokenType;
-import com.blissstock.mappingSite.exceptions.UserNotFoundException;
 
 public interface UserService {
   public UserInfo addUser(UserRegisterDTO userRegisterDTO) throws Exception;

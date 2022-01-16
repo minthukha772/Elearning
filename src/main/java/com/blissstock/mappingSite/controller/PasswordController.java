@@ -1,7 +1,5 @@
 package com.blissstock.mappingSite.controller;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -23,7 +21,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -50,7 +47,7 @@ public class PasswordController {
 
   
     @GetMapping("/password/encrypt")
-    public String encrpty(Model model, String pass) {
+    public String encrypt(Model model, String pass) {
     String password = passwordEncoder.encode(pass);
     System.out.println(password);
      return "redirect:/";
@@ -115,7 +112,7 @@ public class PasswordController {
   }
 
   @PostMapping("password/verify_password")
-  public String changePassoword(Model model, @Valid @ModelAttribute("passwordDTO") PasswordDTO passwordDTO,
+  public String changePassword(Model model, @Valid @ModelAttribute("passwordDTO") PasswordDTO passwordDTO,
       @ModelAttribute("token") String token,
       BindingResult bindingResult) {
     logger.info("Post Method");
@@ -130,10 +127,10 @@ public class PasswordController {
       model.addAttribute("error", bindingResult.getFieldError().getDefaultMessage());
       return "CM006_reset_password_screen";
     }
-    logger.info("passwrod binding is success");
+    logger.info("password binding is success");
 
     if (!passwordDTO.getPassword().equals(passwordDTO.getConfirmPassword())) {
-      logger.info("Password and coniform password do not match");
+      logger.info("Password and conform password do not match");
 
       model.addAttribute("error", "password and confirm password should match");
       return "CM006_reset_password_screen";
@@ -149,7 +146,7 @@ public class PasswordController {
       userService.updateUserAccount(userAccount);
       userService.setAsUsedToken(token);
       model.addAttribute("success", "Password Change Success");
-      model.addAttribute("message", "Plesase login with new passowrd to continue");
+      model.addAttribute("message", "Please login with new password to continue");
       return "CM006_reset_password_screen";
     }
 
@@ -208,7 +205,7 @@ public class PasswordController {
         if (savedToken == null) {
           isTokenValid = false;
         } else {
-          // If token is valid, set it as old password for futher use.
+          // If token is valid, set it as old password for further use.
           passwordDTO.setOldPassword(token);
         }
       }
@@ -247,7 +244,7 @@ public class PasswordController {
       model.addAttribute("error", bindingResult.getFieldError().getDefaultMessage());
       return "CM0006_change_password_screen";
     }
-    logger.info("passwrod binding is success");
+    logger.info("password binding is success");
 
     System.out.println("Password DTO is" + passwordDTO.toString());
     // //System.out.println(passwordDTO.getPassword());
@@ -255,7 +252,7 @@ public class PasswordController {
     // //System.out.println(passwordDTO.getOldPassword());
 
     if (!passwordDTO.getPassword().equals(passwordDTO.getConfirmPassword())) {
-      logger.info("Password and coniform password do not match");
+      logger.info("Password and conform password do not match");
 
       model.addAttribute("error", "password and confirm password should match");
       return "CM0006_change_password_screen";
@@ -274,7 +271,7 @@ public class PasswordController {
       userService.updateUserAccount(userAccount);
 
       model.addAttribute("success", "Password Change Success");
-      model.addAttribute("message", "Plesase login with new passowrd to continue");
+      model.addAttribute("message", "Please login with new password to continue");
       // todo navigate to complete screen;
       // model.addAttribute("title", "Login");
       return "CM0006_change_password_screen";

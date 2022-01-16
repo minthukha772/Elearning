@@ -6,14 +6,13 @@ import java.util.Optional;
 import com.blissstock.mappingSite.dto.JoinCourseDTO;
 import com.blissstock.mappingSite.dto.UserRegisterDTO;
 import com.blissstock.mappingSite.entity.CourseInfo;
+import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
-import com.blissstock.mappingSite.repository.CourseTimeRepository;
-
 import com.blissstock.mappingSite.repository.UserInfoRepository;
 import com.blissstock.mappingSite.service.JoinCourseService;
 import com.blissstock.mappingSite.service.UserSessionService;
-import com.blissstock.mappingSite.entity.UserInfo;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +38,8 @@ public class EnrollStudentController {
     @Autowired
     private CourseInfoRepository courseRepo;
 
-    @Autowired
-    private CourseTimeRepository courseTimeRepo;
+    // @Autowired
+    // private CourseTimeRepository courseTimeRepo;
 
     @GetMapping(value = { "/admin/enrollStudent/course/{id}/{status}", "/admin/enrollStudent/course/{id}" })
     private String enrollStudent(@PathVariable(name = "id", required = true) Long id,

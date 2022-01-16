@@ -1,15 +1,10 @@
 package com.blissstock.mappingSite.entity;
 
-import com.blissstock.mappingSite.dto.TeacherRegisterDTO;
-import com.blissstock.mappingSite.dto.UserRegisterDTO;
-import com.blissstock.mappingSite.enums.UserRole;
-import com.blissstock.mappingSite.interfaces.Profile;
-import com.blissstock.mappingSite.utils.DateFormatter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,15 +15,21 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import com.blissstock.mappingSite.dto.TeacherRegisterDTO;
+import com.blissstock.mappingSite.dto.UserRegisterDTO;
+import com.blissstock.mappingSite.enums.UserRole;
+import com.blissstock.mappingSite.interfaces.Profile;
+import com.blissstock.mappingSite.utils.DateFormatter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
 @Setter

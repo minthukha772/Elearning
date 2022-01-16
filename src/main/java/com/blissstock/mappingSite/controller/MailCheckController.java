@@ -1,22 +1,14 @@
 package com.blissstock.mappingSite.controller;
 
+import com.blissstock.mappingSite.entity.UserAccount;
+import com.blissstock.mappingSite.service.UserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.ui.Model;
-import antlr.Token;
-
-import com.blissstock.mappingSite.service.UserService;
-import com.blissstock.mappingSite.service.UserServiceImpl;
-
-import java.util.Optional;
-
-import com.blissstock.mappingSite.entity.UserAccount;
-import com.blissstock.mappingSite.repository.TokenRepository;
-import com.blissstock.mappingSite.repository.UserRepository;
 
 @Controller
 @RequestMapping("/")
