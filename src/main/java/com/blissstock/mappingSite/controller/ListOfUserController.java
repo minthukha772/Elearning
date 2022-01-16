@@ -96,7 +96,7 @@ public class ListOfUserController {
         logger.info("Admin List of Mapping Site {}",aAllRecord);
 
 
-        List<UserInfo> aAllRecord = userRepo.findByUserRoleI("Admin");
+        
         model.addAttribute("aAllAdminList", aAllRecord);
         model.addAttribute("adminRegister", newAdmin);
         model.addAttribute("adminRole", adminRole);
