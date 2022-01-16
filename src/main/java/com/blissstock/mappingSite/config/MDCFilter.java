@@ -1,6 +1,7 @@
 package com.blissstock.mappingSite.config;
 
 import java.io.IOException;
+
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -11,15 +12,12 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.blissstock.mappingSite.service.UserSessionService;
 
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+
 @Component
-@Slf4j
 public class MDCFilter implements Filter {
 
   @Autowired

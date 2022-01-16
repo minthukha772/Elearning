@@ -9,7 +9,6 @@ import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.JoinCourseUser;
 import com.blissstock.mappingSite.entity.Review;
 import com.blissstock.mappingSite.entity.UserInfo;
-import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
 import com.blissstock.mappingSite.repository.UserRepository;
 import com.blissstock.mappingSite.service.UserService;
@@ -37,42 +36,38 @@ public class ReviewListController {
     UserRepository userRepo;
     //get student review 
     @Valid
-    @GetMapping(value={"/teacher/review-list/{courseId}",
-    "/student/review-list/{courseId}",
-    "/admin/review-list/{courseId}" 
+    @GetMapping(value={"/teacher/review-list/course_id/{courseId}",
+    "/student/review-list/course_id/{courseId}",
+    "/admin/review-list/course_id/{courseId}/student_id/{id}" 
     })
-    private String getReviewList(@PathVariable Long courseId, Model model) {  
-        model.addAttribute("courseId",courseId);
-        Long userId = userSessionService.getUserAccount().getAccountId();
-        
+    private String getReviewList(@PathVariable Long courseId,@PathVariable(name = "id", required = false) Long id, Model model) {  
+        Long userId = id==null ? userSessionService.getUserAccount().getAccountId(): id;
+
+         
         CourseInfo courseInfo=courseInfoRepo.findById(courseId).orElse(null);
+        String trName = courseInfo.getUserInfo().getUserName();
+        model.addAttribute("trName", trName);
         UserInfo user=userRepo.findById(userId).orElse(null);
         //Display course name
         String courseName=courseInfo.getCourseName();
         model.addAttribute("courseName", courseName);
 
-        //Add user name and review to list
+
+        //Get review list and teacher name of course
         List<JoinCourseUser> joinList=courseInfo.getJoin();
-        List<UserInfo> userInfoList= new ArrayList<UserInfo>(); 
-        List<Review> reviewList=new ArrayList<Review>(); 
+        List<Review> reviewList=new ArrayList<Review>();
         for(JoinCourseUser join:joinList){
-            userInfoList.add(join.getUserInfo());
             reviewList.addAll(join.getReview());
-        }
-        //Display user names
-        for(UserInfo userInfo:userInfoList){
-            String userRole =  userInfo.getUserAccount().getRole();
-            if(userRole.equals(UserRole.TEACHER)){
-                String trName=userInfo.getUserName();
-                model.addAttribute("trName", trName);
+            UserInfo joinUser= join.getUserInfo();
+           if(joinUser.getUserAccount().getAccountId().equals(userId)){
+                if(joinUser.getUserAccount().getRole().equals("ROLE_STUDENT")){
+                    model.addAttribute("stuRegistered", true);
+                }
             } 
-            else if(userRole.equals(UserRole.STUDENT)){
-                String stuName=userInfo.getUserName();
-                model.addAttribute("stuName", stuName);
-            }
+            
         }
 
-        //Display reviews        
+        //Display course reviews        
         //List<Review> reviews=courseInfo.getReview();
         List<Review> courseReviewList= new ArrayList<Review>(); 
         for (Review courseReview:reviewList){
@@ -81,13 +76,26 @@ public class ReviewListController {
                 model.addAttribute("courseReviewList", courseReviewList);
             }
         }
+
+        //calculate average star rating for the course
+        int total_stars = 0;
+        int numCourseReviewList = courseReviewList.size();
+        for(Review review : courseReviewList){
+            total_stars += review.getStar();
+        }
+        int average = (int)total_stars/numCourseReviewList;
+        String averageFloat = String.format("%.2f", (double)total_stars/numCourseReviewList);
+        model.addAttribute("average", average);
+        model.addAttribute("averageFloat", averageFloat);
+
         //Display student reviews
         List<JoinCourseUser> joinUserList=user.getJoin();
         List<Review> stuReviews=new ArrayList<Review>(); 
         for(JoinCourseUser join:joinUserList){
+            if(join.getCourseInfo().getCourseId().equals(courseId)){
             stuReviews.addAll(join.getReview());
+            }
         }
-        //List<Review> stuReviews=user.getReview();
         List<Review> studentReviewList= new ArrayList<Review>();
         for(Review studentReview:stuReviews) {
             if(studentReview.getStar()==0){
@@ -95,13 +103,6 @@ public class ReviewListController {
                 model.addAttribute("stuReviews", studentReviewList);
             }
         }
-        // for(Review review : reviews){
-        //     model.addAttribute("review", review);  
-        // }
-        // UserInfo userInfo=userRepo.findByUserName(userName);
-        // //Long userId=userInfo.getUid();
-        // UserAccount account=userInfo.getUserAccount();
-        // String role = account.getRole();
 
             return "CM0009_ReviewList";
 	}

@@ -40,7 +40,6 @@ INSERT INTO public.user_account(account_id, account_status, is_mail_verified, ma
 INSERT INTO public.user_account(account_id, account_status, is_mail_verified, mail, password, registered_date, role, photo) VALUES (40001,'REGISTERED',TRUE,'SuperAdmin@gmail.com','$2a$10$T6ues0iAD9jXnIqxGWPzzOtppcA5pDx6YqmE/c8J/hYyIP2Z8ZhNW','2021-12-01','ROLE_SUPER_ADMIN','photo_sample');
 
 
-
 -- User Info
 INSERT INTO public.user_info(account_id, address, birth_date, city, division, education, gender, nrc, phone_no, photo, postal_code, self_description, user_name)VALUES (10001,'123st','2021-11-10','Yangon','Yangon','Fourth Year','female','12/TTT(Naing)111111','9420099999',null,'11211','About myself','Rachel');
 INSERT INTO public.user_info(account_id, address, birth_date, city, division, education, gender, nrc, phone_no, photo, postal_code, self_description, user_name)VALUES (10002,'124st','20001-01-01','Yangon','Yangon','Third Year','male','12/TTT(Naing)111112','9420100000',null,'11212','About myself','Michel');
@@ -445,3 +444,4 @@ INSERT INTO public.review(
 -- INSERT INTO public.review(
 --  review_id, assigned_date, feedback, review_type, star, join_fkey)
 --  VALUES (60030,'2021-12-02','Keep up with deadlines',1,0,50010,20008);
+

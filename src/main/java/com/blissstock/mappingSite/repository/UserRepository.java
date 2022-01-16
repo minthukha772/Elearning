@@ -1,23 +1,24 @@
 package com.blissstock.mappingSite.repository;
 
+import java.util.List;
+
 import com.blissstock.mappingSite.entity.UserInfo;
 
-import org.hibernate.type.TrueFalseType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
 public interface UserRepository extends JpaRepository<UserInfo, Long> {
-    @Query(value = "SELECT i.*,u.* FROM user_info i,user_account u WHERE i.id=u.id AND u.role=:role", nativeQuery = true)
+    @Query(value = "SELECT i.*,u.* FROM user_info i,user_account u WHERE i.account_id=u.account_id AND u.role=:role", nativeQuery = true)
+    public List<UserInfo> findByUserRoleI(@Param("role") String role);
+    // public List<UserInfo> findByUserRoleI();
     // SELECT
     // o.payment_receive_date,o.payment_status,r.requested_user_name,r.requested_course_name,r.requested_course_fees
     // FROM payment_receive o,requested_course r WHERE
     // o.course_id_fkey=r.course_id_fkey AND o.uid_fkey=r.uid_fkey;
-    public List<UserInfo> findByUserRoleI(@Param("role") String role);
+    // public List<UserInfo> findByUserRoleI(@Param("role") String role);
     // public List<UserInfo> findByUserRoleI();
     // public List<UserInfo> findByUserRoleI();
     

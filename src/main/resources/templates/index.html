@@ -4,8 +4,7 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+  <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
   <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
   <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
   <link rel="stylesheet" href="css/index.css" />
@@ -20,12 +19,12 @@
     th:unless="${#authorization.expression('isAuthenticated()')}">
     <ul class="nav justify-content-center row gx-3 gy-2">
       <li class="nav-item col-auto text-center">
-        <a class="btn btn-light btn-lg active" aria-current="page" th:href="@{/check_email/register/student}">Register
+        <a class="btn btn-light btn-lg active" style="background-color: white;"  aria-current="page" th:href="@{/check_email/register/student}">Register
           as
           Student</a>
       </li>
       <li class="nav-item col-auto text-center">
-        <a class="btn btn-light btn-lg active" aria-current="page" th:href="@{/check_email/register/teacher}">Register
+        <a class="btn btn-light btn-lg active" style="background-color: white;" aria-current="page" th:href="@{/check_email/register/teacher}">Register
           as
           Teacher</a>
       </li>
@@ -96,9 +95,9 @@
             <img th:src="@{/images/top-1.jpg}" class="card-img-top" alt="..." />
             <div class="card-body">
               <h5 class="card-title" th:text="${courseInof.courseName}">Course Name</h5>
-              <!–– to do find teacher name ––>
-                <p class="card-text" th:text="${courseInof.level}">Teacher Name</p>
-                <p class=" card-text" th:text="${courseInof.fees}">Price</p>
+
+              <p class="card-text" th:text="${courseInof.level}">Teacher Name</p>
+              <p class=" card-text" th:text="${courseInof.fees}">Price</p>
             </div>
             <div class=" card-footer">
               <a href="#" class="btn btn-primary d-block">See More</a>
@@ -107,15 +106,15 @@
         </div>
 
       </div>
-      <div class="tab-pane fade" id="recorded" role="tabpanel" aria-labelledby="recorded-tab">
+      <div class="tab-pane fade" id="" role="tabpanel" aria-labelledby="recorded-tab">
         <div class="coursesSlider" id="recordedCourse">
           <div class="card" th:each="courseInof:${recordedCourse}">
             <img th:src="@{/images/top-1.jpg}" class="card-img-top" alt="..." />
             <div class="card-body">
               <h5 class="card-title" th:text="${courseInof.courseName}">Course Name</h5>
-              <!–– to do find teacher name ––>
-                <p class="card-text" th:text="${courseInof.level}">Teacher Name</p>
-                <p class=" card-text" th:text="${courseInof.fees}">Price</p>
+
+              <p class="card-text" th:text="${courseInof.level}">Teacher Name</p>
+              <p class=" card-text" th:text="${courseInof.fees}">Price</p>
             </div>
             <div class=" card-footer">
               <a href="#" class="btn btn-primary d-block">See More</a>
@@ -125,7 +124,7 @@
       </div>
   </section>
 
-  <section id="hiring" class="mt-5 py-3">
+  <section id="hiring" class="mt-5 py-3" th:unless="${#authorization.expression('isAuthenticated()')}">
     <div class="container">
       <h4>We are hiring!</h4>
       <div class="row">
@@ -156,13 +155,13 @@
         </div>
 
         <div class="col-sm-12 col-md-7 pt-sm-2">
-          <form action="get">
+          <form th:action="@{/guest/explore}" method="get">
             <div class="row g-2">
               <div class="col-md-6 col-sm-12">
                 <input type="date" class="form-control" aria-label="Start Date" name="startDate" />
               </div>
               <div class="col-md-6 col-sm-12 mt-sm-3 mt-md-0">
-                <input type="date" class="form-control" aria-label="End Date" />
+                <input type="date" class="form-control" aria-label="End Date" name="endDate"/>
               </div>
             </div>
             <div class="row justify-content-end">
@@ -171,7 +170,7 @@
                     col-auto
                     me-sm-3 me-md-2
                     mt-md-2 mt-sm-3
-                  " id="submitButton" name="action" type="submit" value="next">
+                  " id="submitButton" name="action" type="submit" >
                 Search
               </button>
             </div>
@@ -190,7 +189,7 @@
         anywhere. We believe that the marketplace model is the best way to
         deliver valuable educational content to our users. Rules are needed to
         secure our platform and services to our customers, our company, and
-        our community of students and teachers. <a href="">For More</a>.
+        our community of students and teachers. <a th:href="@{/guest/terms_and_conditions}">For More</a>.
         <!-- TODO add term and service link -->
       </p>
     </div>

@@ -10,21 +10,21 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class UserAccountTests
 {
-    @Test
-    @Tag("Student")
-    public void StudentTypeTest(){
-        UserRegisterDTO userRegisterDTO = new UserRegisterDTO();
-        UserAccount userAccount= UserRegisterDTO.toUserAccount(userRegisterDTO);
-        assertThat(userAccount.getRole()).isEqualTo("ROLE_STUDENT");
+    // @Test
+    // @Tag("Student")
+    // public void StudentTypeTest(){
+    //     UserRegisterDTO userRegisterDTO = new UserRegisterDTO();
+    //     UserAccount userAccount= UserRegisterDTO.toUserAccount(userRegisterDTO);
+    //     assertThat(userAccount.getRole()).isEqualTo("ROLE_STUDENT");
 
-    }
+    // }
 
-    @Test
-    @Tag("Teacher")
-    public void TeacherTypeTest(){
-        UserRegisterDTO userRegisterDTO = new TeacherRegisterDTO();
-        UserAccount userAccount= UserRegisterDTO.toUserAccount(userRegisterDTO);
-        assertThat(userAccount.getRole()).isEqualTo("ROLE_TEACHER");
+    // @Test
+    // @Tag("Teacher")
+    // public void TeacherTypeTest(){
+    //     UserRegisterDTO userRegisterDTO = new TeacherRegisterDTO();
+    //     UserAccount userAccount= UserRegisterDTO.toUserAccount(userRegisterDTO);
+    //     assertThat(userAccount.getRole()).isEqualTo("ROLE_TEACHER");
 
-    }
+    // }
 }

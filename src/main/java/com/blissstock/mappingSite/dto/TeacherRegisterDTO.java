@@ -4,14 +4,13 @@ import java.util.LinkedHashMap;
 
 import javax.validation.constraints.NotBlank;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
-
-@Data
+@ToString
 public class TeacherRegisterDTO extends UserRegisterDTO{
   
   @NotBlank(message = "This field is required")

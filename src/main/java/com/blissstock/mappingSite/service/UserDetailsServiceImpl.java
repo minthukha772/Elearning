@@ -1,11 +1,12 @@
 package com.blissstock.mappingSite.service;
 
-import com.blissstock.mappingSite.entity.CustomUser;
-import com.blissstock.mappingSite.entity.UserAccount;
-import com.blissstock.mappingSite.enums.UserRole;
-import com.blissstock.mappingSite.repository.UserAccountRepository;
 import java.util.HashSet;
 import java.util.Set;
+
+import com.blissstock.mappingSite.entity.CustomUser;
+import com.blissstock.mappingSite.entity.UserAccount;
+import com.blissstock.mappingSite.repository.UserAccountRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

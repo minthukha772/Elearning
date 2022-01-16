@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
     <title>Mapping Site</title>
     <style>
         html,
@@ -115,38 +115,10 @@
 
     <!-- Hello -->
     <div class="wrapper">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">MappingSite</a>
-                <!--  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button> -->
-                <div class="d-flex" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">My Course</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Explore</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Profile</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#" style="color: red;">Log Out</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
 
+        <div th:replace="/fragments/nav"></div>
 
-
-
-        <div class="card mx-auto completecard">
+        <div class="card mx-auto completecard my-5">
             <h3 class="card-header" style="border-radius: 10px 10px 0 0;">About Management Company</h3>
             <div class="card-body">
                 <form>
@@ -185,55 +157,11 @@
             </div>
         </div>
 
-        <div class="push"></div>
+        <div th:replace="/fragments/footer"></div>
+
+        <!-- <div class="push"></div> -->
     </div>
     <!-- Hello -->
-
-    <!-- footer -->
-    <section class="footer-link">
-        <div class="container text-center text-md-start mt-5">
-            <!-- Grid row -->
-            <div class="row mt-3">
-                <!-- Grid column -->
-                <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
-                    <!-- Content -->
-                    <h6 class="text-uppercase fw-bold mb-4 footerhead">
-                        Address
-                    </h6>
-                    <p class="footertext">
-                        Building “16/6” Bawzin Street, Thuwanna Lann Sone Bus Stop, Thingangyun Township .
-                    </p>
-                </div>
-                <!-- Grid column -->
-
-                <!-- Grid column -->
-                <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
-                    <!-- Links -->
-                    <h6 class="text-uppercase fw-bold mb-4 footerhead">
-                        Contact Us
-                    </h6>
-                    <p class="footertext"><i class="fas fa-envelope me-3"></i>Email : someone@bliss-stock.com</p>
-                    <p class="footertext"><i class="fas fa-phone me-3"></i>Phone: +959 259 123 123</p>
-                </div>
-                <!-- Grid column -->
-
-
-            </div>
-            <!-- Grid row -->
-        </div>
-    </section>
-
-    <section class="footer-social">
-        <div class="container">
-            <div class="row index-social-link text-center">
-                <p class="copy-c">&copy; Copyright <strong>Bliss Stock</strong>. All Rights Reserved</p>
-            </div>
-        </div>
-    </section>
-
-    <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
-    <!-- Footer -->
-
 
 
 

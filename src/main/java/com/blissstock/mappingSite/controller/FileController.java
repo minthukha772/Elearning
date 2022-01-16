@@ -1,14 +1,12 @@
 package com.blissstock.mappingSite.controller;
 
+import com.blissstock.mappingSite.exceptions.UnauthorizedFileAccessException;
 import com.blissstock.mappingSite.service.StorageService;
 import com.blissstock.mappingSite.service.StorageServiceImpl;
+import com.blissstock.mappingSite.service.UserSessionService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import com.blissstock.mappingSite.exceptions.UnauthorizedFileAccessException;
-import com.blissstock.mappingSite.service.UserSessionService;
-
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -40,6 +38,8 @@ public class FileController {
         file = storageService.load(uid, filename,StorageServiceImpl.PROFILE_PATH);
       }else if(type.equals("certificates")){
         file = storageService.load(uid, filename,StorageServiceImpl.CERTIFICATE_PATH);
+      }else if(type.equals("slip")){
+        file = storageService.load(uid, filename,StorageServiceImpl.SLIP_PATH);
       }
       
     } catch (UnauthorizedFileAccessException e) {

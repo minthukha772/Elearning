@@ -1,0 +1,128 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <button
+      type="button"
+      class="btn btn-light"
+      data-bs-toggle="offcanvas"
+      href="#offcanvasExample"
+      role="button"
+      aria-controls="offcanvasExample"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        fill="currentColor"
+        class="bi bi-list"
+        viewBox="0 0 16 16"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"
+        ></path>
+      </svg>
+    </button>
+    <a class="navbar-brand" href="#">Mapping Site</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNavDropdown"
+      aria-controls="navbarNavDropdown"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+  </div>
+</nav>
+
+
+<!-- offcanvas -->
+<div
+  class="offcanvas offcanvas-start"
+  tabindex="-1"
+  id="offcanvasExample"
+  aria-labelledby="offcanvasExampleLabel"
+>
+<!-- header -->
+  <div class="offcanvas-header">
+
+    <h5>
+      <a href="#" style="text-decoration: none;" class="nav_logo">
+        <div class="my-3">
+          <i class="bx bx-layer nav_logo-icon"></i>
+          <span class="nav_logo-name">Menu</span>
+        </div>
+      </a>
+    </h5>
+
+    <button
+      type="button"
+      class="btn-close text-reset"
+      data-bs-dismiss="offcanvas"
+      aria-label="Close"
+    ></button>
+  </div>
+
+  <!-- body -->
+  <div class="offcanvas-body">
+    <div>
+
+      <div class="list-group list-group-flush">
+
+        <a href="#" class="list-group-item">
+          <div class="my-3">
+            <i class="bx bx-user nav_icon"></i>
+            <span class="nav_name">Profile</span>
+          </div>
+        </a>
+
+        <div class="list-group-item">
+          <div class="accordion accordian-flush my-3" id="accordionExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    <i class='bx bxs-user-detail'></i>
+                    <span class="nav_name">
+                      User List
+                    </span>
+                  </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><a href="#" style="text-decoration: none;"><i class="bx bx-group"></i><span class="nav_name">Student List</span></a></li>
+                        <li class="list-group-item"><a href="#" style="text-decoration: none;"><i class="bx bx-group"></i><span class="nav_name">Teacher List</span></a></li>
+                        <li class="list-group-item"><a href="#" style="text-decoration: none;"><i class="bx bx-group"></i><span class="nav_name">Admin List</span></a></li>
+                      </ul>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </div>
+
+        <a href="#" class="list-group-item">
+          <div class="my-3">
+            <i class="bx bx-book-open"></i><span class="nav_name">Courses</span>
+          </div>
+        </a>
+        
+        <a href="#" class="list-group-item">
+          <div class="my-3">
+            <i class="bx bxs-user-x"></i
+            ><span class="nav_name">Absence List</span>
+          </div>
+        </a>
+        
+        <a href="#" class="list-group-item">
+          <div class="my-3">
+            <i class="bx bx-log-out nav_icon"></i>
+            <span class="nav_name">Log Out</span>
+          </div>
+        </a>
+
+      </div> 
+
+    </div>
+  </div>
+
+</div>

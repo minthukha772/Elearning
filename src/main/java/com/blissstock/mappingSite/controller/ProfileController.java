@@ -9,6 +9,7 @@ import com.blissstock.mappingSite.dto.PaymentInfoDTO;
 import com.blissstock.mappingSite.entity.BankInfo;
 import com.blissstock.mappingSite.entity.PaymentAccount;
 import com.blissstock.mappingSite.entity.UserInfo;
+import com.blissstock.mappingSite.enums.AccountStatus;
 import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.exceptions.UnauthorizedFileAccessException;
 import com.blissstock.mappingSite.exceptions.UserNotFoundException;
@@ -30,6 +31,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -126,8 +128,13 @@ public class ProfileController {
     //##################################################//
 
     //##################################################//
-    // Check Role
 
+    //get Status
+    AccountStatus status = AccountStatus.strToAccountStatus(userInfo.getUserAccount().getAccountStatus());
+    logger.info("requested user status is {}", status);
+
+
+    // Check Role
     UserRole role = UserRole.strToUserRole(userInfo.getUserAccount().getRole());
     logger.debug("requested user role is {}", role.getValue());
 
@@ -193,6 +200,7 @@ public class ProfileController {
 
     model.addAttribute("role", role.getValue());
     model.addAttribute("infoMap", userInfo.toMap(false));
+    model.addAttribute("status", status.getValue());
 
     logger.debug("model attribute, isEditable: {}", isEditable(uid));
 
@@ -209,11 +217,15 @@ public class ProfileController {
     Model model,
     @ModelAttribute PaymentInfoDTO paymentInfoDTO,
     @PathVariable(required = false) Long id,
-    HttpServletRequest httpServletRequest
+    HttpServletRequest httpServletRequest,
+    BindingResult bindingResult
   ) {
     logger.info("Post Requested");
     logger.info("Payment Edit Info {}", paymentInfoDTO);
 
+    if(bindingResult.hasErrors()){
+      logger.debug("error: {}",bindingResult.getAllErrors());
+    }
     Long uid = getUid(id);
 
     List<PaymentAccount> paymentAccounts = new ArrayList<>();
@@ -304,6 +316,85 @@ public class ProfileController {
 
     return ResponseEntity.status(HttpStatus.OK).body("operation success");
   }
+
+  @PostMapping("admin/profile/suspend")
+  public ResponseEntity<Object> suspendUser(
+    Model model,
+    Long uid,
+    HttpServletRequest httpServletRequest
+  ){
+    logger.info("Suspend request for user with id {}", uid);
+
+    try {
+      UserInfo userInfo = userService.getUserInfoByID(uid);
+      if(userInfo == null){
+        throw new UserNotFoundException();
+      }
+      userAccountControlService.suspendUser(userInfo);
+    } catch (UserNotFoundException e) {
+      e.printStackTrace();
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User Not Found");
+    } catch (Exception e){
+      e.printStackTrace();
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
+    }
+
+    return ResponseEntity.status(HttpStatus.OK).body("operation success");
+
+  }
+
+  @PostMapping("admin/profile/reactivate")
+  public ResponseEntity<Object> reactivateUser(
+    Model model,
+    Long uid,
+    HttpServletRequest httpServletRequest
+  ){
+    logger.info("Reactivate request for user with id {}", uid);
+
+    try {
+      UserInfo userInfo = userService.getUserInfoByID(uid);
+      if(userInfo == null){
+        throw new UserNotFoundException();
+      }
+      userAccountControlService.reactivateUser(userInfo);
+    } catch (UserNotFoundException e) {
+      e.printStackTrace();
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User Not Found");
+    } catch (Exception e){
+      e.printStackTrace();
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
+    }
+
+    return ResponseEntity.status(HttpStatus.OK).body("operation success");
+
+  }
+
+  @PostMapping("admin/profile/verify")
+  public ResponseEntity<Object> verifyUser(
+    Model model,
+    Long uid,
+    HttpServletRequest httpServletRequest
+  ){
+    logger.info("Verify request for user with id {}", uid);
+
+    try {
+      UserInfo userInfo = userService.getUserInfoByID(uid);
+      if(userInfo == null){
+        throw new UserNotFoundException();
+      }
+      userAccountControlService.verifyUser(userInfo);
+    } catch (UserNotFoundException e) {
+      e.printStackTrace();
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User Not Found");
+    } catch (Exception e){
+      e.printStackTrace();
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
+    }
+
+    return ResponseEntity.status(HttpStatus.OK).body("operation success");
+
+  }
+
 
   private boolean isEditable(Long id) {
     UserRole role = userSessionService.getRole();

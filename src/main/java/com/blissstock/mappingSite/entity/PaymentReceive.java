@@ -1,7 +1,7 @@
 package com.blissstock.mappingSite.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -9,13 +9,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+
+import com.blissstock.mappingSite.enums.PaymentStatus;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
 @Setter
@@ -32,17 +35,16 @@ public class PaymentReceive {
   @Column(name = "slip")
   private String slip;
 
-  @NotNull
+  //@NotNull
   @Column(name = "payment_status", length = 15)
-  private String paymentStatus;
+  private String paymentStatus=PaymentStatus.REQUESTED.getValue();
 
-  @NotNull
+  //@NotNull
   @DateTimeFormat(pattern = "yyyy-MM-dd")
   @Column(name = "payment_receive_date")
   private Date paymentReceiveDate;
 
-  @ManyToOne(fetch = FetchType.EAGER, optional = false)
-  @JoinColumn(name = "join_fkey")
-  @JsonIgnore
-  private JoinCourseUser join;
+  @OneToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "join_id")
+  JoinCourseUser join;
 }
