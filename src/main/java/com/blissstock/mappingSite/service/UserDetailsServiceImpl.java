@@ -2,6 +2,7 @@ package com.blissstock.mappingSite.service;
 
 import com.blissstock.mappingSite.entity.CustomUser;
 import com.blissstock.mappingSite.entity.UserAccount;
+import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
 import java.util.HashSet;
 import java.util.Set;
@@ -33,7 +34,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     Set<SimpleGrantedAuthority> grantedAuthorities = new HashSet<>();
     grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole()));
-    
 
     return new CustomUser(
       user.getAccountId(),

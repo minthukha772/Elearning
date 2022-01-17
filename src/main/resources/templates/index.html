@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -14,9 +13,8 @@
   <title>Mapping Site</title>
 </head>
 
-
 <body>
-  <div th:replace="fragments/usernav"></div>
+  <div th:replace="fragments/nav-home"></div>
 
   <nav class="py-3 sticky-top container-fluid" style="background-color: #5eba7d"
     th:unless="${#authorization.expression('isAuthenticated()')}">
@@ -140,7 +138,7 @@
             the younger generation. By using the "Mapping Site", meet 10
             million students and give them a proper gift.
           </p>
-          <a href="/check_email/register/teacher" class="btn btn-lg btn-primary">Register Now</a>
+          <a th:href="@{/check_email/register/teacher}" class="btn btn-lg btn-primary">Register Now</a>
         </div>
       </div>
     </div>
@@ -192,7 +190,7 @@
         anywhere. We believe that the marketplace model is the best way to
         deliver valuable educational content to our users. Rules are needed to
         secure our platform and services to our customers, our company, and
-        our community of students and teachers. <a href="">For More</a>.
+        our community of students and teachers. <a th:href="@{/guest/terms_and_conditions}">For More</a>.
         <!-- TODO add term and service link -->
       </p>
     </div>

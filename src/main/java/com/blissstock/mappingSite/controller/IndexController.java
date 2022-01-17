@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import com.blissstock.mappingSite.repository.CourseRepository;
+import com.blissstock.mappingSite.repository.CourseInfoRepository;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
 import com.blissstock.mappingSite.service.StorageService;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
@@ -26,7 +26,7 @@ public class IndexController {
     @Autowired
     UserAccountRepository userAccRepo;
     @Autowired
-    private CourseRepository courseRepo;
+    private CourseInfoRepository courseRepo;
     @Autowired
     StorageService storageService;
 
@@ -49,7 +49,7 @@ public class IndexController {
                 dto.setPrice(info.getFees());
                 dto.setTeacherName(info.getUserInfo().getUserName());
                 dto.setCourseName(info.getCourseName());
-                FileInfo fileInfo = loadProfile(info.getUserInfo().getUid());
+                FileInfo fileInfo = storageService.loadProfileAsFileInfo(info.getUserInfo());
 
                 // if profile is not found set as place holder
                 if (fileInfo == null) {
@@ -68,8 +68,8 @@ public class IndexController {
                 dto.setPrice(info.getFees());
                 dto.setCourseName(info.getCourseName());
                 dto.setTeacherName(info.getUserInfo().getUserName());
-                dto.setProfilePic(loadProfile(info.getUserInfo().getUid()));
-                FileInfo fileInfo = loadProfile(info.getUserInfo().getUid());
+
+                FileInfo fileInfo = storageService.loadProfileAsFileInfo(info.getUserInfo());
 
                 // if profile is not found set as place holder
                 if (fileInfo == null) {
@@ -97,23 +97,5 @@ public class IndexController {
 
     // from Profile Controller;
     // Get profile photo
-    private FileInfo loadProfile(long userId) {
-        try {
-            UserAccount userAcc = userAccRepo.findById(userId).orElse(null);
-            Path path = storageService.loadProfile(userAcc.getPhoto());
-            String name = path.getFileName().toString();
-            String url = MvcUriComponentsBuilder
-                    .fromMethodName(
-                            FileController.class,
-                            "getProfile",
-                            path.getFileName().toString())
-                    .build()
-                    .toString();
-
-            return new FileInfo(name, url);
-        } catch (Exception e) {
-            return null;
-        }
-    }
 
 }

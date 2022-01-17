@@ -29,66 +29,16 @@
                     <button class="btn btn-primary">Upload Course</button>
                 </div>
                 <div>
+
+
+                    <div th:if="${something}">
                     <div class="card">
                         <div class="card-body courseInfo">
-<<<<<<< HEAD
                             <div class="row" th:each="course : ${courseList}">
-=======
-                            <div class="row">
                                 <div class="col-lg-4">
                                     <img src="images/course.jpg" alt="Course">
                                 </div>
                                 <div class="col-lg-6 courseInfoText">
-                                    <h4>Basic Programming</h4>
-                                    <p>Beginner Level</p>
-                                    <h5>Dr. Nay Min Khant</h5>
-                                    <p>This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                                    <h5>18.1.2021 - 20-3.2022</h5>
-                                    <p>Live Ongoing</p>
-                                </div>
-                                <div class="col-lg-2 courseInfoPrice">
-                                    <div>
-                                        <h5 class="centerText">$ 35</h5>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <div class="card">
-                        <div class="card-body courseInfo">
-                            <div class="row">
-                                <div class="col-lg-4">
-                                    <img src="images/course.jpg" alt="Course">
-                                </div>
-                                <div class="col-lg-6 courseInfoText">
-                                    <h4>Basic Programming</h4>
-                                    <p>Beginner Level</p>
-                                    <h5>Dr. Nay Min Khant</h5>
-                                    <p>This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                                    <h5>18.1.2021 - 20-3.2022</h5>
-                                    <p>Live Ongoing</p>
-                                </div>
-                                <div class="col-lg-2 courseInfoPrice">
-                                    <div>
-                                        <h5 class="centerText">$ 35</h5>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <div class="card">
-                        <div class="card-body courseInfo">
-                            <div class="row">
->>>>>>> user-token
-                                <div class="col-lg-4">
-                                    <img src="images/course.jpg" alt="Course">
-                                </div>
-                                <div class="col-lg-6 courseInfoText">
-<<<<<<< HEAD
                                     <h4 th:text="${course.courseName}"></h4>
                                     <p th:text="${course.level}"></p>
                                     <p th:text="${course.aboutCourse}"></p>
@@ -98,29 +48,18 @@
                                 <div class="col-lg-2 courseInfoPrice">
                                     <div>
                                         <h5 class="centerText" th:text="'$ ' + ${course.fees}"></h5>
-=======
-                                    <h4>Basic Programming</h4>
-                                    <p>Beginner Level</p>
-                                    <h5>Dr. Nay Min Khant</h5>
-                                    <p>This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                                    <h5>18.1.2021 - 20-3.2022</h5>
-                                    <p>Live Ongoing</p>
-                                </div>
-                                <div class="col-lg-2 courseInfoPrice">
-                                    <div>
-                                        <h5 class="centerText">$ 35</h5>
->>>>>>> user-token
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    </div>
+
+
+
                 </div>
-<<<<<<< HEAD
                
                 
-=======
->>>>>>> user-token
                 <div class="page">
                     <ul class="pagination">
                         <li class="page-item disabled">

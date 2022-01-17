@@ -47,10 +47,10 @@ public class MailCheckController {
             } else {
 
                 System.out.println("mail verified");
-                userService.setAsUsedToken(token);
+
                 userAccount.setMailVerified(true);
                 userService.updateUserAccount(userAccount);
-
+                userService.setAsUsedToken(token);
                 String header3 = "Mail verification success ";
                 String header5 = "Acknowledgement!";
                 String paragraph = "You have successfully verified mail! Please login to start using the service.";

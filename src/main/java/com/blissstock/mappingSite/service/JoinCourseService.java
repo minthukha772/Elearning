@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 import com.blissstock.mappingSite.dto.JoinCourseDTO;
-import com.blissstock.mappingSite.repository.CourseRepository;
+import com.blissstock.mappingSite.repository.CourseInfoRepository;
 import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
 import com.blissstock.mappingSite.repository.UserInfoRepository;
 import com.blissstock.mappingSite.repository.UserRepository;
@@ -33,7 +33,7 @@ public class JoinCourseService {
     @Autowired
     UserRepository userRepository;
     @Autowired
-    private CourseRepository courseRepository;
+    private CourseInfoRepository courseRepository;
 
     @Autowired
 

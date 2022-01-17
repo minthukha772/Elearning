@@ -40,7 +40,7 @@ public class Review {
   // @Min(value = 1, message = "Please fill rating")
   // @Max(value = 5, message = "Please fill rating")
   @Column(name = "star")
-  private int star = 0;
+  private int star=0;
 
   @Column(name = "review_type")
   private int reviewType;

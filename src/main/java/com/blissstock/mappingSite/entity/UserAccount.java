@@ -46,7 +46,7 @@ public class UserAccount {
 	private Long accountId;
 	
 	@Column(name = "mail", length = 255)
-	@NotBlank(message="Please enter email address")
+	//@NotBlank(message="Please enter email address")
 	private String mail;
 	
 	@Column(name= "isMailVerified", nullable = false)
@@ -55,7 +55,7 @@ public class UserAccount {
 	@Column(name="photo")
 	private String photo;
 	
-	@NotBlank(message="Please enter password.")
+	//@NotBlank(message="Please enter password.")
 	@Column(name = "password",length = 64)
 	private String password;
   
@@ -65,7 +65,7 @@ public class UserAccount {
 	@Column(name = "account_status", length = 10)
 	private String accountStatus;
 	
-	@NotNull
+	//@NotNull
 	@Past
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "registered_date")

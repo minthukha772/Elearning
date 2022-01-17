@@ -5,7 +5,6 @@ import com.blissstock.mappingSite.entity.JoinCourseUser;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.exceptions.UserNotFoundException;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
-import com.blissstock.mappingSite.repository.CourseRepository;
 import com.blissstock.mappingSite.repository.UserInfoRepository;
 import com.blissstock.mappingSite.repository.UserRepository;
 import com.blissstock.mappingSite.service.UserService;
@@ -28,12 +27,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
+
 @NoArgsConstructor
 public class JoinCourseDTO {
     @Autowired
     UserService userService;
-    @Autowired
-    private CourseRepository courseRepository;
+    
     @Autowired
     UserRepository userRepository;
 

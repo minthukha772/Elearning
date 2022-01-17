@@ -15,6 +15,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -48,6 +50,9 @@ public class CourseInfo {
   //@NotBlank(message="Please choose category")
   private String category;
 
+  @Column(name = "class_link")
+	private String classLink;
+
   @Column(name = "level", length = 15)
   //@NotBlank(message="Please choose course level")
   private String level;
@@ -56,8 +61,11 @@ public class CourseInfo {
   //@NotBlank(message="Please enter about course")
   private String aboutCourse;
 
-  @Column(name = "student_num", length = 20)
-  private int stuNum;
+  @Column(name = "prerequisite")
+	private String prerequisite;
+
+  @Column(name = "max_stu")
+  private Integer maxStu;
 
   //@NotNull
   @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -109,9 +117,24 @@ public class CourseInfo {
   @JsonIgnore
   private List<JoinCourseUser> join = new ArrayList<>();
 
+  @Transient
+  private Long uid;
+
   @ManyToOne(fetch = FetchType.EAGER, optional = false)
   @JoinColumn(name = "uid_fkey")
   @JsonIgnore
   private UserInfo userInfo;
+
+  public void setIsCourseApproved(Boolean isCourseApproved) {
+		this.isCourseApproved = isCourseApproved;
+	}
+
+  // public String getTitle() {
+	// 	return this.title;
+	// }
+
+	// public void setTitle(String title) {
+	// 	this.title = title;
+	// }
 
 }

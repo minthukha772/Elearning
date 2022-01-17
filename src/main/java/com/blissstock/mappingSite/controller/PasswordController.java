@@ -8,7 +8,6 @@ import javax.validation.Valid;
 import com.blissstock.mappingSite.dto.PasswordDTO;
 import com.blissstock.mappingSite.entity.Token;
 import com.blissstock.mappingSite.entity.UserAccount;
-import com.blissstock.mappingSite.entity.VerificationToken;
 import com.blissstock.mappingSite.enums.PasswordResetType;
 import com.blissstock.mappingSite.enums.TokenType;
 import com.blissstock.mappingSite.service.MailServiceImpl;
@@ -49,14 +48,13 @@ public class PasswordController {
   @Autowired
   private PasswordEncoder passwordEncoder;
 
-  /*
-   * @GetMapping("/password/encrypt")
-   * public String encrpty(Model model, String pass) {
-   * String password = passwordEncoder.encode(pass);
-   * ////system.out.println(password);
-   * return "redirect:/";
-   * }
-   */
+  
+    @GetMapping("/password/encrypt")
+    public String encrpty(Model model, String pass) {
+    String password = passwordEncoder.encode(pass);
+    System.out.println(password);
+     return "redirect:/";
+    }
   /*
    * @GetMapping("/token")
    * public String createToken(Model model) {

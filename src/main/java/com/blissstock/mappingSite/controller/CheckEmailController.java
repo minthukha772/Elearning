@@ -5,9 +5,7 @@ import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.service.UserService;
 import com.blissstock.mappingSite.service.UserSessionService;
-
 import javax.validation.Valid;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +21,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class CheckEmailController {
 
   private static final Logger logger = LoggerFactory.getLogger(CheckEmailController.class);
-  @Autowired
-  UserSessionService userSessionService;
+
   @Autowired
   UserService userService;
+
+  @Autowired
+  UserSessionService userSessionService;
 
   /// A Get Method For Email Check Before Register
   @GetMapping(path = { "/check_email/register/{role}" })
@@ -94,6 +94,10 @@ public class CheckEmailController {
       @Valid @ModelAttribute("emailCheck") EmailCheckRegisterDTO emailRegister,
       BindingResult bindingResult) {
     if (bindingResult.hasErrors()) {
+      logger.warn(
+          "Invalid Form Field error {},  error count:{}",
+          bindingResult.getFieldError(),
+          bindingResult.getFieldErrorCount());
       model.addAttribute("action", "register");
       /*
        * // For Rendering the title
@@ -102,19 +106,30 @@ public class CheckEmailController {
       // render
       return "ST0000_check_email.html";
     }
-    if (userService.getUserAccountByEmail(emailRegister.getEmail()) != null) {
-      // User already exists
-      model.addAttribute("action", "register");
-      /*
-       * // For Rendering the title
-       * model.addAttribute("role", emailRegister.getRole());
-       */
-      // For displaying error message
-      model.addAttribute("error", true);
+    try {
+      UserAccount userAccount = userService.getUserAccountByEmail(
+          emailRegister.getEmail());
+      logger.debug("userAccount: ", userAccount);
+      if (userService.getUserAccountByEmail(emailRegister.getEmail()) != null) {
+        logger.warn(
+            "user with {} email already exists",
+            emailRegister.getEmail());
+        // User already exists
+        model.addAttribute("action", "register");
+        /*
+         * // For Rendering the title
+         * model.addAttribute("role", emailRegister.getRole());
+         */
+        model.addAttribute("error", true);
+        // render
+        return "ST0000_check_email.html";
+        // For displaying error message
 
-      // render
-      return "ST0000_check_email.html";
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
     }
+
     // Redirect to Register
     // Two Valid Address:
     // 1. /register/student/email@gmail.com
