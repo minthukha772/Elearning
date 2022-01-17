@@ -1,5 +1,5 @@
 
-SELECT * FROM course_info;
+-- SELECT * FROM course_info;
 
-SELECT * FROM user_account;
+SELECT * FROM course_info;
 
