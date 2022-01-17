@@ -1,6 +1,19 @@
 version: '3.3'
 
-services:  
+services:
+  mappingsite:
+    image: mappingsite
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    depends_on:
+      - postgres
+    links: 
+      - postgres
+    ports:
+      - 8080:8080
+    restart: on-failure
+  
   postgres:
     image: postgres:14.0-alpine
     environment:
@@ -9,11 +22,11 @@ services:
       PGDATA: ${PGDATA}
       POSTGRES_DB: ${POSTGRES_DB}
     volumes:
-       - db-data:${PGDATA}
+        - db-data:${PGDATA}
     ports:
       - "5432:5432"
     restart: unless-stopped
-  
+    
   pgadmin:
     depends_on: 
       - postgres

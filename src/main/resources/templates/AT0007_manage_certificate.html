@@ -24,7 +24,7 @@
 
   <body style="background-color: #f0f0f0">
     <!-- TODO Add Teacher Navi -->
-    <div th:replace="fragments/nav"></div>
+    <div th:replace="@{fragments/nav}"></div>
    
 
     <div class="container mt-5">
@@ -209,7 +209,7 @@
       crossorigin="anonymous"
     ></script>
 
-    <div th:replace="fragments/footer"></div>
+    <div th:replace="@{fragments/footer}"></div>
     <!-- the main fileinput plugin script JS file -->
     <script th:inline="javascript">
       const uri = /*[[@{__${#httpServletRequest.requestURI}__}]]*/ "uri    ";

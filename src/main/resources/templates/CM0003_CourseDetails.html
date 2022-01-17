@@ -16,7 +16,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js}" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
 </head>
 <body>
-    <div th:replace="fragments/nav">
+    <div th:replace="@{fragments/nav}">
         
     </div>
     
@@ -139,7 +139,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
 </div>
 
 
-    <div th:replace="fragments/footer"></div>
+    <div th:replace="@{fragments/footer}"></div>
 
        
 

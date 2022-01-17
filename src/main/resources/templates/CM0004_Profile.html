@@ -29,7 +29,7 @@
 
   <body style="background-color: #f0f0f0">
     <!-- guest user navi bar -->
-    <div th:replace="fragments/nav"></div>
+    <div th:replace="@{fragments/nav}"></div>
     
     <div class="container-custom mt-5">
       <!-- Successfully -->
@@ -555,7 +555,7 @@
 
    <!-- Delete Confirm Modal End -->
 
-    <div th:replace="fragments/footer"></div>
+    <div th:replace="@{fragments/footer}"></div>
     <script th:inline="javascript">
       const isEditable = /*[[${isEditable}]]*/ false;
       const uid = /*[[${id}]]*/ false;
