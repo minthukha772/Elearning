@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -63,7 +64,7 @@
         </button>
       </li>
       <li class="nav-item" role="presentation">
-        <button class="nav-link" id="recorded-tab" data-bs-toggle="tab" data-bs-target="#recorded" type="button"
+        <button class="nav-link" id="recorded-tab" data-bs-toggle="tab" data-bs-target="#record" type="button"
           role="tab" aria-controls="recorded" aria-selected="false">
           Recorded Class
         </button>
@@ -107,8 +108,31 @@
         </div>
 
       </div>
-      <div class="tab-pane fade" id="" role="tabpanel" aria-labelledby="recorded-tab">
-        <div class="coursesSlider" id="recordedCourse">
+
+
+
+      <div class="tab-pane fade " id="record" role="tabpanel" aria-labelledby="recorded-tab">
+        <div class="row justify-content-end">
+          <div class="btn-group my-3 col-auto" role="group" aria-label="Recorded Courses">
+            <button type="button" class="btn btn-primary btn-sm" id="recordPrev">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                class="bi bi-chevron-left" viewBox="0 0 16 16">
+                <path fill-rule="evenodd"
+                  d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z">
+                </path>
+              </svg>
+            </button>
+            <button type="button" class="btn btn-primary btn-sm" id="recordNext">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                class="bi bi-chevron-right" viewBox="0 0 16 16">
+                <path fill-rule="evenodd"
+                  d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="coursesSlider" id="recordedCourseSlider">
           <div class="card" th:each="courseInfo:${recordedCourse}">
             <img th:src="${courseInfo.profilePic.url}" class="card-img-top" th:alt="${courseInfo.profilePic.name}" />
             <div class="card-body">
@@ -122,7 +146,14 @@
             </div>
           </div>
         </div>
+
       </div>
+
+
+
+
+
+
   </section>
 
   <section id="hiring" class="mt-5 py-3">

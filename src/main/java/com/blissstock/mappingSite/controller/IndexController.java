@@ -8,6 +8,8 @@ import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.model.FileInfo;
 import java.nio.file.Path;
+
+import org.apache.commons.lang3.SystemUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,9 +68,8 @@ public class IndexController {
                 HomeCourseInfoDTO dto = new HomeCourseInfoDTO();
                 dto.setCourseID(info.getCourseId());
                 dto.setPrice(info.getFees());
-                dto.setCourseName(info.getCourseName());
                 dto.setTeacherName(info.getUserInfo().getUserName());
-
+                dto.setCourseName(info.getCourseName());
                 FileInfo fileInfo = storageService.loadProfileAsFileInfo(info.getUserInfo());
 
                 // if profile is not found set as place holder
@@ -80,11 +81,13 @@ public class IndexController {
                     dto.setProfilePic(fileInfo);
                 }
                 videoInfoDTOs.add(dto);
+
             }
 
+            System.out.println(videoInfoDTOs.toString());
             model.addAttribute("liveCourse", liveInfoDTOs);
             // todo change to video lsit
-            model.addAttribute("recordedCourse", liveInfoDTOs);
+            model.addAttribute("recordedCourse", videoInfoDTOs);
 
             // System.out.print(liveList.toString());
         } catch (Exception e) {
@@ -94,8 +97,5 @@ public class IndexController {
 
         return "index.html";
     }
-
-    // from Profile Controller;
-    // Get profile photo
 
 }
