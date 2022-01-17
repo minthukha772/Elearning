@@ -1,5 +1,5 @@
 
--- SELECT * FROM course_info;
+SELECT * FROM course_info where uid_fkey = 10014;
 
-SELECT * FROM course_info;
+-- SELECT * FROM user_account;
 
