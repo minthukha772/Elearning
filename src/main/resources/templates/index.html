@@ -13,7 +13,7 @@
 </head>
 
 <body>
-  <div th:replace="fragments/nav-home"></div>
+  <div th:replace="@{fragments/nav-home}"></div>
 
   <nav class="py-3 sticky-top container-fluid" style="background-color: #5eba7d"
     th:unless="${#authorization.expression('isAuthenticated()')}">
