@@ -295,7 +295,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4">
                                                                                                             <tbody>
                                                                                                                 <tr th:each="dr,index:${sAllStudentList}">
                                                                                                                     <td></td>
-                                                                                                                    <td th:text="${dr.userName}"></td>
+                                                                                                                    <td ><a th:href="@{'/admin/browse/profile/' + ${dr.uid}}" th:text="${dr.userName}"></a></td>
                                                                                                                     <td th:text="${dr.userAccount.mail}"></td>
                                                                                                                     <td th:text="${dr.phoneNo}"></td>
                                                                                                                     <td th:text="${dr.userAccount.accountStatus}"></td>
