@@ -21,9 +21,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-public class CourseRegistrationController {
+public class courseRegistrationController {
 
-    private static final Logger logger = LoggerFactory.getLogger(CourseRegistrationController.class);
+    private static final Logger logger = LoggerFactory.getLogger(courseRegistrationController.class);
 
     @Autowired
     private CourseInfoRepository courseRepo;

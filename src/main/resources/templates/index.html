@@ -102,7 +102,8 @@
               <p class=" card-text" th:text="${courseInfo.price}">Price</p>
             </div>
             <div class=" card-footer">
-              <a href="#" class="btn btn-primary d-block">See More</a>
+              <a th:href="@{/guest/course-detail/{id}(id=${courseInfo.CourseID})}" class="btn btn-primary d-block">See
+                More</a>
             </div>
           </div>
         </div>
@@ -142,7 +143,8 @@
               <p class=" card-text" th:text="${courseInfo.price}">Price</p>
             </div>
             <div class=" card-footer">
-              <a href="#" class="btn btn-primary d-block">See More</a>
+              <a th:href="@{/guest/course-detail/{id}(id=${courseInfo.CourseID})}" class="btn btn-primary d-block">See
+                More</a>
             </div>
           </div>
         </div>
