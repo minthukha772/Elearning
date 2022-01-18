@@ -71,5 +71,5 @@ jobs:
           connect_timeout: 10s
           script: |
             cd $WORKDIR/MappingSite
-            sudo docker-compose up -d
+            docker-compose -f "docker-compose.yml" up -d --build
             
