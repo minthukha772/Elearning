@@ -43,11 +43,5 @@ $(function () {
   $("#liveNext").click(() => {
     $("#liveCourseSlider").slick('slickNext');
   })
-  $("#recordPrev").click(() => {
-    $("#recordedCourseSlider").slick('slickPrev');
-  })
 
-  $("#recordNext").click(() => {
-    $("#recordedCourseSlider").slick('slickNext');
-  })
 });
