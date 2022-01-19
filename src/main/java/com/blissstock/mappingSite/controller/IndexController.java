@@ -5,11 +5,10 @@ import java.util.*;
 
 import com.blissstock.mappingSite.dto.HomeCourseInfoDTO;
 import com.blissstock.mappingSite.entity.CourseInfo;
-import com.blissstock.mappingSite.entity.UserAccount;
-import com.blissstock.mappingSite.model.FileInfo;
-import java.nio.file.Path;
 
-import org.apache.commons.lang3.SystemUtils;
+import com.blissstock.mappingSite.enums.ClassType;
+import com.blissstock.mappingSite.model.FileInfo;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
 import com.blissstock.mappingSite.service.StorageService;
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 @Controller
 @RequestMapping("/")
@@ -37,9 +35,9 @@ public class IndexController {
         try {
             logger.info("GET request");
 
-            List<CourseInfo> liveList = courseRepo.findByClassType("Live");
+            List<CourseInfo> liveList = courseRepo.findByClassType(ClassType.LIVE.getValue());
 
-            List<CourseInfo> videoList = courseRepo.findByClassType("Video");
+            List<CourseInfo> videoList = courseRepo.findByClassType(ClassType.VIDEO.getValue());
 
             List<HomeCourseInfoDTO> liveInfoDTOs = new ArrayList<HomeCourseInfoDTO>();
             List<HomeCourseInfoDTO> videoInfoDTOs = new ArrayList<HomeCourseInfoDTO>();
@@ -86,7 +84,7 @@ public class IndexController {
 
             System.out.println(videoInfoDTOs.toString());
             model.addAttribute("liveCourse", liveInfoDTOs);
-            // todo change to video lsit
+            // todo change to video list
             model.addAttribute("recordedCourse", videoInfoDTOs);
 
             // System.out.print(liveList.toString());
