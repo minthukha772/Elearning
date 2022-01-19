@@ -118,14 +118,14 @@
   <div class="wrapper">
     <div th:replace="${nav_type}"></div>
     
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <th:block th:each="bc : ${breadcrumbList}">
-            <!-- TODO change last route color -->
-            <li class="breadcrumb-item"><a href="#" th:utext="${bc}" style="text-decoration: none;color: #7749F8;"></a></li> 
-            <!-- <li class="breadcrumb-item active"><a href="#" th:utext="${state.last}"></a></li> -->
-            </th:block>
-        </ol>
+    <nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: '>'">
+      <ol class="breadcrumb">
+          <th:block th:each="bc : ${breadcrumbList}">
+          <!-- TODO change last route color -->
+          <li class="breadcrumb-item"><a th:href="@{/}" th:utext="${bc}" style="text-decoration: none;"></a></li> 
+          <!-- <li class="breadcrumb-item active"><a href="#" th:utext="${state.last}"></a></li> -->
+          </th:block>
+      </ol>
     </nav>
     
     

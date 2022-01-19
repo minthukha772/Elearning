@@ -189,9 +189,9 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4">
                                                                         </ul>
                                                                     </div> -->
                                                                     <div th:replace="${nav_type}"></div>
-                                                                    <nav aria-label="breadcrumb" class="bg-light" style="padding: 0 10px;">
+                                                                    <nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: '>'">
                                                                         <ol class="breadcrumb">
-                                                                            <li class="breadcrumb-item"><a href="#">Top</a></li>
+                                                                            <li class="breadcrumb-item"><a th:href="@{/admin/top/}">Top</a></li>
                                                                             <li class="breadcrumb-item active" aria-current="page">Payment List</li>
                                                                         </ol>
                                                                     </nav>
@@ -264,11 +264,11 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4">
                                                                         <label class="text-muted">Payment Status</label>
                                                                         <select class="form-select" aria-label=".form-select-sm example" id="payment_status"
                                                                         style="width: 100%;">
-                                                                        <option value="">All</option>
-                                                                        <option value="Request">Request</option>
-                                                                        <option value="Pending">Pending</option>
-                                                                        <option value="Complete">Complete</option>
-                                                                        <option value="Error">Error</option>
+                                                                        <option value="">ALL</option>
+                                                                        <option value="Request">REQUESTED</option>
+                                                                        <option value="Pending">PENDING</option>
+                                                                        <option value="Complete">COMPLETE</option>
+                                                                        <option value="Error">ERROR</option>
                                                                     </select>
                                                                 </div>
                                                                 
