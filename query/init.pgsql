@@ -169,6 +169,35 @@ INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (28
 INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (29, 50008,10016);
 
 
+-- join course teacher
+
+-- Course info
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (30,50001, 10014);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (31,50002, 10015);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (32,50003, 10016);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (33,50004, 20001);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (34,50005, 20002);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (35,50006, 20003);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (36,50007, 20004);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (37,50008, 20005);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (38,50009, 20006);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (39,50010, 20007);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (40,50011, 20008);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (41,50012, 10014);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (42,50013, 10015);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (43,50014, 10016);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (44,50015, 20001);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (45,50016, 20002);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (46,50017, 20003);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (47,50018, 20004);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (48,50019, 20005);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (49,50020, 20006);
+
+
+
+
+
+
 --syllabus
 INSERT INTO public.syllabus(syllabus_id, title, course_id_fkey) VALUES (52001,'Chapter 1 : Introduction',50001);
 INSERT INTO public.syllabus(syllabus_id, title, course_id_fkey) VALUES (52002,'Chapter 2 : Basic Programming',50001);
