@@ -15,4 +15,9 @@ public class ErrorController {
     public String internal(Model model) {
         return "error/500";
     }
+
+    @GetMapping("/403")
+    public String accessForbidden(Model model) {
+        return "error/403";
+    }
 }
