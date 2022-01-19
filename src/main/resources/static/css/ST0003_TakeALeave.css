@@ -15,12 +15,12 @@ body {
     background-color: #f0f0f0;
 }
 
-.breadcrumb li a {
+/* .breadcrumb li a { */
     /* background-color: #FFFFFF; */
-    color: #5227CC;
+    /* color: #5227CC;
     background-color: transparent;
     text-decoration: none;
-}
+} */
 
 .push {
     height: 50px;

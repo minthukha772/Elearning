@@ -27,7 +27,7 @@
           <form id="contactForm" th:action="@{/sign_in}" th:object="${userInfo}" method="post">
             <!--   -->
             <div th:if="${error != null}" class="alert alert-danger fade show" role="alert">
-              <span th:text="${error}"></span>
+              <span class="text-danger" th:text="${error}"></span>
             </div>
             <div th:if="${success != null}" class="alert alert-success fade show" role="alert">
               <span th:text="${success}"></span>

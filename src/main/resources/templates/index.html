@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -62,7 +63,7 @@
         </button>
       </li>
       <li class="nav-item" role="presentation">
-        <button class="nav-link" id="recorded-tab" data-bs-toggle="tab" data-bs-target="#recorded" type="button"
+        <button class="nav-link" id="recorded-tab" data-bs-toggle="tab" data-bs-target="#record" type="button"
           role="tab" aria-controls="recorded" aria-selected="false">
           Recorded Class
         </button>
@@ -91,37 +92,69 @@
         </div>
 
         <div class="coursesSlider" id="liveCourseSlider">
-          <div class="card" th:each="courseInof:${liveCourse}">
-            <img th:src="@{/images/top-1.jpg}" class="card-img-top" alt="..." />
+          <div class="card" th:each="courseInfo:${liveCourse}">
+            <img th:src="${courseInfo.profilePic.url}" class="card-img-top" th:alt="${courseInfo.profilePic.name}" />
             <div class="card-body">
-              <h5 class="card-title" th:text="${courseInof.courseName}">Course Name</h5>
+              <h5 class="card-title" th:text="${courseInfo.courseName}">Course Name</h5>
 
-              <p class="card-text" th:text="${courseInof.level}">Teacher Name</p>
-              <p class=" card-text" th:text="${courseInof.fees}">Price</p>
+              <p class="card-text" th:text="${courseInfo.teacherName}">Teacher Name</p>
+              <p class=" card-text" th:text="${courseInfo.price}">Price</p>
             </div>
             <div class=" card-footer">
-              <a href="#" class="btn btn-primary d-block">See More</a>
+              <a th:href="@{/guest/course-detail/{id}(id=${courseInfo.CourseID})}" class="btn btn-primary d-block">See
+                More</a>
             </div>
           </div>
         </div>
 
       </div>
-      <div class="tab-pane fade" id="" role="tabpanel" aria-labelledby="recorded-tab">
-        <div class="coursesSlider" id="recordedCourse">
-          <div class="card" th:each="courseInof:${recordedCourse}">
-            <img th:src="@{/images/top-1.jpg}" class="card-img-top" alt="..." />
-            <div class="card-body">
-              <h5 class="card-title" th:text="${courseInof.courseName}">Course Name</h5>
 
-              <p class="card-text" th:text="${courseInof.level}">Teacher Name</p>
-              <p class=" card-text" th:text="${courseInof.fees}">Price</p>
+
+
+      <div class="tab-pane fade " id="record" role="tabpanel" aria-labelledby="recorded-tab">
+        <div class="row justify-content-end">
+          <div class="btn-group my-3 col-auto" role="group" aria-label="Recorded Courses">
+            <button type="button" class="btn btn-primary btn-sm" id="recordPrev">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                class="bi bi-chevron-left" viewBox="0 0 16 16">
+                <path fill-rule="evenodd"
+                  d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z">
+                </path>
+              </svg>
+            </button>
+            <button type="button" class="btn btn-primary btn-sm" id="recordNext">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                class="bi bi-chevron-right" viewBox="0 0 16 16">
+                <path fill-rule="evenodd"
+                  d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="RecordedcoursesSlider" id="recordedCourseSlider">
+          <div class="card" th:each="courseInfo:${recordedCourse}">
+            <img th:src="${courseInfo.profilePic.url}" class="card-img-top" th:alt="${courseInfo.profilePic.name}" />
+            <div class="card-body">
+              <h5 class="card-title" th:text="${courseInfo.courseName}">Course Name</h5>
+
+              <p class="card-text" th:text="${courseInfo.teacherName}">Teacher Name</p>
+              <p class=" card-text" th:text="${courseInfo.price}">Price</p>
             </div>
             <div class=" card-footer">
-              <a href="#" class="btn btn-primary d-block">See More</a>
+              <a th:href="@{/guest/course-detail/{id}(id=${courseInfo.CourseID})}" class="btn btn-primary d-block">See
+                More</a>
             </div>
           </div>
         </div>
+
       </div>
+
+
+
+
+
+
   </section>
 
   <section id="hiring" class="mt-5 py-3" th:unless="${#authorization.expression('isAuthenticated()')}">
@@ -230,6 +263,73 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
   <script src="js/index.js"></script>
+
+
+  <script>
+
+    $(document).ready($(function () {
+      console.log("init");
+      $('.RecordedcoursesSlider').slick({
+        with: 100,
+        innerHeight: 100,
+        arrows: false,
+        infinite: false,
+        slidesToShow: 4,
+        slidesToScroll: 4,
+        dots: false,
+        responsive: [
+          {
+            breakpoint: 1024,
+            settings: {
+              slidesToShow: 3,
+              slidesToScroll: 3,
+              infinite: true,
+              dots: true
+            }
+          },
+          {
+            breakpoint: 600,
+            settings: {
+              slidesToShow: 2,
+              slidesToScroll: 2
+            }
+          },
+          {
+            breakpoint: 480,
+            settings: {
+              slidesToShow: 1,
+              slidesToScroll: 1
+            }
+          }
+          // You can unslick at a given breakpoint now by adding:
+          // settings: "unslick"
+          // instead of a settings object
+        ]
+      });
+
+
+      $("#recordPrev").click(() => {
+        console.log("prev");
+        $("#recordedCourseSlider").slick('slickPrev');
+      })
+
+      $("#recorded-tab").click(() => {
+        console.log("prev");
+        $("#recordedCourseSlider").slick('slickPrev');
+      })
+      $("#recordNext").click(() => {
+        console.log("next");
+        $("#recordedCourseSlider").slick('slickNext');
+      })
+    }));
+
+
+  </script>
+
+
+
+
+
 </body>
 
 </html>

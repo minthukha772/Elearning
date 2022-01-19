@@ -188,9 +188,9 @@
                                                                                     <body>
                                                                                         <div style="position: relative;">
                                                                                             <div th:replace="${nav_type}"></div>
-                                                                                            <nav aria-label="breadcrumb" class="bg-light" style="padding: 0 10px;">
+                                                                                            <nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: '>'">
                                                                                                 <ol class="breadcrumb">
-                                                                                                    <li class="breadcrumb-item"><a href="#">Top</a></li>
+                                                                                                    <li class="breadcrumb-item"><a th:href="@{/admin/top/}">Top</a></li>
                                                                                                     <li class="breadcrumb-item active" aria-current="page">Admin List</li>
                                                                                                 </ol>
                                                                                             </nav>
@@ -246,7 +246,7 @@
                                                                                                     
                                                                                                 </div>
                                                                                                 <div style="padding-left: 100px;float: right;">
-                                                                                                    <button type="button" class="btn btn-primary newbtn" id="addadmin" th:onclick="|window.location.href='/register'|">
+                                                                                                    <button type="button" class="btn btn-primary newbtn" id="addadmin" th:onclick="|window.location.href='/check_email/register/admin'|">
                                                                                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                                                                                         class="bi bi-person-plus-fill" viewBox="0 0 16 16">
                                                                                                         <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
@@ -319,10 +319,10 @@
                                                                                                     <label class="text-muted">Account Status</label>
                                                                                                     <select class="form-select" aria-label=".form-select-sm example" id="account_status"
                                                                                                     style="width: 100%;">
-                                                                                                    <option value="">All</option>
-                                                                                                    <option value="Request">Request</option>
-                                                                                                    <option value="Registered">Registered</option>
-                                                                                                    <option value="Suspended">Suspended</option>
+                                                                                                    <option value="">ALL</option>
+                                                                                                    <!-- <option value="Request">Request</option> -->
+                                                                                                    <option value="Registered">REGISTERED</option>
+                                                                                                    <option value="Suspended">SUSPENDED</option>
                                                                                                 </select>
                                                                                             </div>
                                                                                             
