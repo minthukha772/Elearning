@@ -38,7 +38,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Setter
 @Data
 @NoArgsConstructor
-@ToString(exclude = {"courseInfo"})
+@ToString(exclude = {"courseInfo","paymentAccount"})
 @Entity
 @Table(name = "user_info")
 public class UserInfo implements Profile {

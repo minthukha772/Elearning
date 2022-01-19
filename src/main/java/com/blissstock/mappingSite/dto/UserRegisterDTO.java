@@ -82,7 +82,7 @@ public class UserRegisterDTO extends PasswordData implements Confirmable {
   private boolean acceptTerm;
 
   // zmt
-  @NotBlank(message = ConstrainMessage.EMPTY_CONSTRAIN_MESSAGE)
+  // @NotBlank(message = ConstrainMessage.EMPTY_CONSTRAIN_MESSAGE)
   private String role;
   private Boolean isMailVerified = false;
 

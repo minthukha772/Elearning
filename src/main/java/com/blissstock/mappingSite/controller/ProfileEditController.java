@@ -178,7 +178,7 @@ public class ProfileEditController {
 
     //Information For Randering Confirm
     model.addAttribute("infoMap", userInfo.toMap());
-    System.out.println(userInfo.toMap());
+    //System.out.println(userInfo.toMap());
     return "ST0001_register";
   }
 
