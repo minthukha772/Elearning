@@ -33,6 +33,9 @@ public interface CourseInfoRepository extends JpaRepository<CourseInfo, Long> {
     @Query(nativeQuery = true, value="select * from course_info where first_name ilike %:courseName%")
 	public List<CourseInfo> findByCourseName(@Param("courseName")String courseName);
 
+    @Query(nativeQuery = true, value="select * from course_info where course_id=:courseID")
+	public CourseInfo findByCourseID(@Param("courseID")Long courseID);
+
     @Query(value = "SELECT * FROM course_info WHERE course_id=:courseID AND uid_fkey=:uid",nativeQuery = true)
     public CourseInfo findByCourseIDUID(@Param("courseID") Long courseID,@Param("uid") Long uid);
 
