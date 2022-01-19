@@ -41,7 +41,7 @@ public class StorageServiceImpl implements StorageService {
       StorageServiceImpl.class);
 
   private static final Path root = Paths
-      .get(System.getProperty("user.home") + File.separator + "mappingsiteadmin" + File.separator + "uploads");
+      .get(System.getProperty("user.home") + File.separator + "uploads");
   public static final Path CERTIFICATE_PATH = Paths.get(
       root + File.separator + "certificates");
   public static final Path PROFILE_PATH = Paths.get(
@@ -54,6 +54,7 @@ public class StorageServiceImpl implements StorageService {
 
   @Override
   public void init() {
+    logger.info("Initiating {}",root.toAbsolutePath().toString());
     try {
       if (!Files.exists(root)) {
         Files.createDirectory(root);
