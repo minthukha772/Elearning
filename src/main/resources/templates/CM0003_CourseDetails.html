@@ -53,7 +53,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
                 <a th:if="${teacherRegistered}" th:href="@{'/teacher/edit/'+ ${courseInfo.courseId}}"><button class="btn btn-primary">Edit Course</button></a>
                     <a th:if="${teacherRegistered}" th:href="@{'/teacher/leave/'+ ${courseInfo.courseId} +'?course_name='+${courseInfo.courseName}+'&teacher_name='+ ${courseInfo.UserInfo.userName}}"><button class="btn btn-primary">Take a Leave</button></a>
                <a th:href="@{'/teacher/student-list/'+ ${courseInfo.courseId}}"> <button class="btn btn-primary">Student List</button></a>
-                <button class="btn btn-primary">Review List</button>
+               <a th:href="@{'/teacher/review-list/course_id/'+ ${courseInfo.courseId}}"><button class="btn btn-primary">Review List</button></a>
 
                 <p class="prerequisites">Class Link</p>
                 
