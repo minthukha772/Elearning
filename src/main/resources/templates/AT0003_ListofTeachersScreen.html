@@ -258,7 +258,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4">
                                                                                                     <td th:text="${dr.userAccount.mail}"></td>
                                                                                                     <td th:text="${dr.userAccount.accountStatus}"></td>
                                                                                                     <td>
-                                                                                                        <a th:href="@{'/admin/course-registration/' + ${dr.uid}}" class='btn btn-primary' style='float: center;'>Add Course</a>
+                                                                                                        <a th:href="@{'/admin/course-registration/' + ${dr.uid}}" class='btn btn-primary' style='float: center;' th:classappend="${dr.userAccount.accountStatus != accountStatus}? 'disabled'">Add Course</a>
                                                                                                     </td>
                                                                                                     <!-- <td></td> -->
                                                                                                 </tr>
