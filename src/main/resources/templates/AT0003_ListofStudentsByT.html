@@ -156,11 +156,11 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4">
                                                                             </div>
                                                                         </nav> -->
                                                                         
-                                                                        <nav aria-label="breadcrumb" class="bg-light" style="padding: 0 10px;">
+                                                                        <nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: '>'">
                                                                             <ol class="breadcrumb">
-                                                                                <li class="breadcrumb-item"><a href="#">Top</a></li>
-                                                                                <li class="breadcrumb-item"><a href="#">Course List</a></li>
-                                                                                <li class="breadcrumb-item"><a href="#">Course Detail</a></li>
+                                                                                <li class="breadcrumb-item"><a th:href="@{/teacher/my-course}">Top</a></li>
+                                                                                <!-- <li class="breadcrumb-item"><a href="#">Course List</a></li> -->
+                                                                                <li class="breadcrumb-item"><a th:href="@{|teacher/course-details/${courseInfo.courseId}|}">Course Detail</a></li>
                                                                                 <li class="breadcrumb-item active" aria-current="page">Student List</li>
                                                                             </ol>
                                                                         </nav>

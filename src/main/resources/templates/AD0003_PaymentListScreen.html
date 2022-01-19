@@ -189,9 +189,9 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4">
                                                                         </ul>
                                                                     </div> -->
                                                                     <div th:replace="${nav_type}"></div>
-                                                                    <nav aria-label="breadcrumb" class="bg-light" style="padding: 0 10px;">
+                                                                    <nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: '>'">
                                                                         <ol class="breadcrumb">
-                                                                            <li class="breadcrumb-item"><a href="#">Top</a></li>
+                                                                            <li class="breadcrumb-item"><a th:href="@{/admin/top/}">Top</a></li>
                                                                             <li class="breadcrumb-item active" aria-current="page">Payment List</li>
                                                                         </ol>
                                                                     </nav>
