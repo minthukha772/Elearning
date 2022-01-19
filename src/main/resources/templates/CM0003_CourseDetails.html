@@ -38,7 +38,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
                 <p class="p12size" th:text="${courseInfo.category} + ' > ' + ${courseInfo.level}"></p>
                 <p class="p16normal" th:text="${courseInfo.aboutCourse}"></p>
                 <p class="prerequisites">Prerequisites</p>
-                <p class="p16normal">This is prerequisites.</p>
+                <p class="p16normal" th:text="${courseInfo.prerequisite}"></p>
                 <p class="prerequisites" th:text="'$ ' + ${courseInfo.fees}"></p>
 
                 <!-- For Student/Guest -->
