@@ -106,7 +106,7 @@ public class ListOfUserController {
         // breadcrumbList.add("Top");
         // breadcrumbList.add("Admin List");
         // model.addAttribute("breadcrumbList",breadcrumbList);
-        String nav_type = "fragments/superadminnav";
+        String nav_type = "fragments/adminnav";
         model.addAttribute("nav_type",nav_type);
 
         return "AT0003_ListofAdminsScreen";

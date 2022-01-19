@@ -115,12 +115,12 @@ div.info p:first-child {
 	margin-top: 0;
 }
 
-div.footer {
+/* div.footer {
 	position: relative;
 	margin-top: 3em;
 	border-top: 1px solid #999;
 	background-color: #eee;
-}
+} */
 
 div.footer > div.liner {
 	max-width: 960px;
