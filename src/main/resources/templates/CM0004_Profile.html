@@ -356,26 +356,26 @@
       <!-- If Role is ROLE_TEACHER -->
       <div
         class="d-flex justify-content-between"
-        th:if="${role=='ROLE_TEACHER'}"
+        
       >
         <div>
           <div th:if="${isEditable}">
             <a
               th:if="${#authorization.expression('hasRole(''ROLE_TEACHER'')')}"
               class="btn btn-primary mt-3 text-end"
-              th:href="@{teacher/change_password}"
-              >Change Password</a
-            >
+              th:href="@{/teacher/change_password}"
+              >Change Password</a>
+            
             <a
               th:if="${#authorization.expression('hasRole(''ROLE_STUDENT'')')}"
               class="btn btn-primary mt-3 text-end"
-              th:href="@{student/change_password}"
-              >Change Password</a
-            >
+              th:href="@{/student/change_password}"
+              >Change Password</a>
+            
 
           </div>
         </div>
-        <div>
+        <div th:if="${role=='ROLE_TEACHER'}">
           <!-- TODO redirect to Course List -->
           <a
             class="btn btn-primary mt-3 text-end"
