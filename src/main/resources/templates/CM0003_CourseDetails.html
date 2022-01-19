@@ -46,13 +46,14 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
                 <button class="btn btn-primary">Enroll</button>
                 <a th:href="@{'/admin/payment-upload/course_id/' + ${courseInfo.courseId} + '/student_id/' + ${courseInfo.UserInfo.uid}}"><button class="btn btn-primary">Online Payment</button></a>
                 <a th:if="${studentRegistered}" th:href="@{'/student/leave/'+ ${courseInfo.courseId} +'?course_name='+${courseInfo.courseName}+'&teacher_name='+ ${courseInfo.UserInfo.userName}}"><button class="btn btn-primary">Take a Leave</button></a>
+                <a th:href="@{'/student/review-list/course_id/'+ ${courseInfo.courseId}}"><button class="btn btn-primary">Review List</button></a>
                 </div>
 
                 <!-- Teacher -->
                 <div th:if="${teacher == 'TEACHER'}">
                 <a th:if="${teacherRegistered}" th:href="@{'/teacher/edit/'+ ${courseInfo.courseId}}"><button class="btn btn-primary">Edit Course</button></a>
                     <a th:if="${teacherRegistered}" th:href="@{'/teacher/leave/'+ ${courseInfo.courseId} +'?course_name='+${courseInfo.courseName}+'&teacher_name='+ ${courseInfo.UserInfo.userName}}"><button class="btn btn-primary">Take a Leave</button></a>
-               <a th:href="@{'/teacher/student-list/'+ ${courseInfo.courseId}}"> <button class="btn btn-primary">Student List</button></a>
+               <a th:if="${teacherRegistered}" th:href="@{'/teacher/student-list/'+ ${courseInfo.courseId}}"> <button class="btn btn-primary">Student List</button></a>
                <a th:href="@{'/teacher/review-list/course_id/'+ ${courseInfo.courseId}}"><button class="btn btn-primary">Review List</button></a>
 
                 <p class="prerequisites">Class Link</p>
