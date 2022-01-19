@@ -18,12 +18,13 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@ToString
 @Entity
 @Table(name = "payment_account")
 public class PaymentAccount {
