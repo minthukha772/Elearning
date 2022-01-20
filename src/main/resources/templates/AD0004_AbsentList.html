@@ -11,13 +11,27 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
     <!-- CSS -->
     <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
     <link href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" type="text/css" href="css/absent_list.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/absent_list.css}">
 </head>
 <body>
 
+    <div th:replace="@{fragments/nav}"></div>
+
     <div class="container first-section">
-        <button class="btn btn-primary">Register Teacher's leave</button>
-        <button class="btn btn-primary">Register Teacher's leave</button>
+        <div class="row">
+            <div class="col-lg-9">
+                <!-- <a th:href="@{/admin/leave/${}}"></a><button class="btn btn-primary">Register Teacher's leave</button>
+                <button class="btn btn-primary">Register Student's leave</button> -->
+            </div>
+            <div class="col-lg-3">
+                <div class="searchGroup">
+                    <label for="searchBox">Search: </label>
+                    <input type="text" id="searchBox" placeholder="Search Anything">
+                </div>
+            </div>
+        </div>
+        
+        
     </div>
 
     <div class="container second-section">
@@ -28,34 +42,24 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
                 <th>Email</th>
                 <th>Requested Course</th>
                 <th>Date</th>
+                <th>Role</th>
             </thead>
             <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Phyo Sithu Kyaw</td>
-                    <td>pstk@gmail.com</td>
-                    <td>Basic Programming</td>
-                    <td>2021-11-11</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>abc</td>
-                    <td>abc@gmail.com</td>
-                    <td>Basic Programming</td>
-                    <td>2021-11-11</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>haha</td>
-                    <td>pstk@gmail.com</td>
-                    <td>Basic Programming</td>
-                    <td>2021-11-11</td>
+
+                <tr th:each="absent,myIndex : ${absentList}">
+                    <td th:text="${myIndex.index + 1}"></td>
+                    <td th:text="${absent.join.userInfo.userName}"></td>
+                    <td th:text="${absent.join.userInfo.userAccount.mail}"></td>
+                    <td th:text="${absent.join.courseInfo.courseName}"></td>
+                    <td th:text="${#strings.substringBefore(absent.leaveDate, ' ')}"></td>
+                    <td th:utext="${#strings.substringAfter(absent.join.userInfo.userAccount.role, '_')}"></td>
                 </tr>
             </tbody>
         </table>
     </div>
 
        
+    <div th:replace="@{fragments/footer}"></div>
 
 
     <!-- JS -->
@@ -64,9 +68,23 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 
     <script>
-        $(document).ready(function() {
-            $('#studentListTable').DataTable();
-        });
+        // $(document).ready(function() {
+        //     $('#studentListTable').DataTable();
+        //     $('#studentListTable')({searching: false, paging: false, info: false});
+        // });
+       
+    </script>
+
+    <script>
+
+        // $('table').dataTable({searching: false, info: false});
+        $('table').dataTable({dom: 'lrtp'});
+
+        oTable = $('#studentListTable').DataTable();   
+        $('#searchBox').keyup(function(){
+            oTable.search($(this).val()).draw() ;
+        })
+        
     </script>
     
 </body>
