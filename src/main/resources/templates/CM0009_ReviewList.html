@@ -44,8 +44,15 @@
                         <div class="tab-content">
                             <div class="tab-pane fade show active" id="course">
 
+                                <div th:if="${courseReviewListEmpty}">
+                                    <div class="mb-4 p-3 text-center">
+                                        <span class="letterpress">There is no current reviews from students.</span>
+                                    </div>
+
+                                </div>
+
                                 <!-- code to implement-->
-                                <li class="list-group-item">
+                                <li th:if="${courseReviewListNotEmpty}" class="list-group-item">
                                     <div class="media align-items-lg-center flex-column flex-lg-row p-3">
                                         <div class="d-flex align-items-center justify-content-between mt-1">
                                             <h5 class="font-weight-bold my-2 col-md-10" style="color: #87281A;">Course
@@ -152,8 +159,15 @@
                             <hr style="width:140px; ">
                         </li>
 
+                        <div th:if="${courseReviewListEmpty}">
+                            <div class="mb-4 p-3 text-center">
+                                <span class="letterpress">There is no current reviews from students.</span>
+                            </div>
+
+                        </div>
+
                         <!-- code to implement-->
-                        <li class="list-group-item">
+                        <li th:if="${courseReviewListNotEmpty}" class="list-group-item">
                             <div class="media align-items-lg-center flex-column flex-lg-row p-3">
                                 <div class="d-flex align-items-center justify-content-between mt-1">
                                     <h5 class="font-weight-bold my-2 col-md-10" style="color: #87281A;">Course Average
