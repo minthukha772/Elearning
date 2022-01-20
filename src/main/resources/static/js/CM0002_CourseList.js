@@ -110,6 +110,8 @@ const renderCourseList = (courseList) => {
       $("#courseList").hide();
       $("#courseList").empty();
       data.forEach((e)=>{
+        const startDate = new Date(e.startDate).toLocaleDateString();
+        const endDate = new Date(e.endDate).toLocaleDateString();
         const template = `
         <div class="card col-12 col-xl-6 col-xxl-4">
           <div class="card-body">
@@ -119,7 +121,7 @@ const renderCourseList = (courseList) => {
               <h6 class="mt-1">${e.category} &gt;${e.level}</h6>
               <p>${e.aboutCourse}</p>
               <h4>Date</h4>
-              <i>${e.startDate.substring(0,10)} - ${e.endDate.substring(0,10)}</i>
+              <i>${startDate} - ${endDate}</i>
               <h4 class="mt-2">${e.fees} MMK</h4>
 
           
