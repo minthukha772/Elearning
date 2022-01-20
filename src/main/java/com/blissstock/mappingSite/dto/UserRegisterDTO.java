@@ -186,7 +186,7 @@ public class UserRegisterDTO extends PasswordData implements Confirmable {
     } else {
       userRole = UserRole.STUDENT.getValue();
     }
-    if (userRegisterDTO.getRole().equals("admin")) {
+    if (userRegisterDTO.getRole()!=null && userRegisterDTO.getRole().equals("admin")) {
       userRole = UserRole.ADMIN.getValue();
     }
     userAccount.setMailVerified(userRegisterDTO.getMailVerified());
