@@ -40,7 +40,7 @@ public class ProfileEditController {
       "/student/profile_edit",
       "/teacher/profile_edit",
       "admin/profile_edit/student/{id}",
-      "admin/profile_edit/teacher/{id}",
+      "admin/profile_edit/teacher/{id}"
     }
   )
   public String editProfileView(
@@ -50,20 +50,17 @@ public class ProfileEditController {
     String role;
     System.out.println("id is " + id);
 
-    if (id != null) {
-      //Id only present on admin side
-      UserInfo userInfo = userService.getUserInfoByID(id);
-      id = userInfo.getUserAccount().getAccountId();
-      role = "admin";
-    } else {
+    if (id == null) {
       id = userSessionService.getUserAccount().getAccountId();
-      role =
-        userSessionService.getRole() == UserRole.TEACHER
-          ? "teacher"
-          : "student";
     }
+    
 
     UserInfo userInfo = userService.getUserInfoByID(id);
+    role = userInfo.getUserAccount().getRole().equals(UserRole.TEACHER.getValue())
+          ? "teacher"
+          : "student";
+
+    
     
     
     UserRegisterDTO userRegisterDTO = UserRegisterDTO.fromUserInfo(userInfo);
@@ -128,7 +125,7 @@ public class ProfileEditController {
   }
 
   @PostMapping(
-    path = { "/teacher/profile_edit", "/admin/profile_edit/teacher" }
+    path = { "/teacher/profile_edit", "/admin/profile_edit/teacher/{id}" }
   )
   public String editTeacherProfile(
     Model model,

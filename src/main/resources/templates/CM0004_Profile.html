@@ -147,9 +147,16 @@
               >
                 <a
                   class="btn btn-link"
-                  th:href="@{/admin/profile_edit/{id}(id=${id})}"
+                  th:if="${role=='ROLE_TEACHER'}"
+                  th:href="@{/admin/profile_edit/teacher/{id}(id=${id})}"
                   >Edit</a
                 >
+                <a
+                class="btn btn-link"
+                th:if="${role=='ROLE_STUDENT'}"
+                th:href="@{/admin/profile_edit/student/{id}(id=${id})}"
+                >Edit</a
+              >
               </div>
             </div>
           </div>
@@ -186,7 +193,7 @@
               >
                 <a
                   class="btn btn-link"
-                  th:href="@{/admin/profile_edit/{id}(id=${id})}"
+                  th:href="@{/admin/manage_certificate/{id}(id=${id})}"
                   >Edit</a
                 >
               </div>
