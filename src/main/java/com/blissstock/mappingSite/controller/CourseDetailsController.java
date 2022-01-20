@@ -15,6 +15,7 @@ import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
 import com.blissstock.mappingSite.repository.SyllabusRepository;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
 import com.blissstock.mappingSite.repository.UserInfoRepository;
+import com.blissstock.mappingSite.service.JoinCourseService;
 import com.blissstock.mappingSite.service.UserService;
 import com.blissstock.mappingSite.service.UserSessionService;
 
@@ -25,10 +26,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Controller
 public class CourseDetailsController {
     
+    private static final Logger logger = LoggerFactory.getLogger(CourseDetailsController.class);
+
     @Autowired
     UserSessionService userSessionService;
 
@@ -48,8 +53,12 @@ public class CourseDetailsController {
     JoinCourseUserRepository joinCourseUserRepository;
 
     @Autowired
+<<<<<<< HEAD
     SyllabusRepository syllabusRepository;
 
+=======
+    JoinCourseService joinCourseService;
+>>>>>>> f1096845fe74e465a6c2ac4b87900d4bee06e5fe
 
     @GetMapping(
         value =  {"/student/course-details/{courseId}", "/teacher/course-details/{courseId}", "/admin/course-details/{courseId}","/guest/course-detail/{courseId}"}
@@ -86,11 +95,26 @@ public class CourseDetailsController {
 
         if(userSessionService.getRole()== UserRole.TEACHER){
             userId = userSessionService.getUserAccount().getAccountId();
+            logger.info("The user id is {} ", userId);
+            Long registered = courseInfo.getUserInfo().getUid();
+            logger.info("The teacher id is {} ", userId);
+            boolean teacherRegistered = false;
+            if(userId.equals(registered)){
+                teacherRegistered = true;
+            }
+            model.addAttribute("teacherRegistered", teacherRegistered);
             model.addAttribute("teacher", "TEACHER");
             model.addAttribute("classlink", courseInfo.getClassLink());
 
         }
         else if(userSessionService.getRole()== UserRole.STUDENT){
+            userId = userSessionService.getUserAccount().getAccountId();
+            boolean studentRegistered = true;
+            List<JoinCourseUser> join = joinCourseService.getJoinCourseUser(userId, courseId);
+            studentRegistered = join != null && !join.isEmpty();
+
+            logger.info("The boolean value for student registered is {} ", studentRegistered);
+            model.addAttribute("studentRegistered", studentRegistered);
             model.addAttribute("student", "STUDENT");
         }
        

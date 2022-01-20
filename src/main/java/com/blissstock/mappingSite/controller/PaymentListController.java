@@ -66,10 +66,12 @@ public class PaymentListController {
 
             UserInfo payUserInfo = joinCourseUser.getUserInfo();
             String userName = payUserInfo.getUserName();
+            Long userId = payUserInfo.getUid();
             CourseInfo payCouresInfo = joinCourseUser.getCourseInfo();
             String courseName = payCouresInfo.getCourseName();
+            Long courseId = payCouresInfo.getCourseId();
             int courseFees = payCouresInfo.getFees();
-            payUserList.add(new PaymentLists(paymentDate, paymentStatus, userName, courseName, courseFees));
+            payUserList.add(new PaymentLists(paymentDate, paymentStatus, userName, courseName, courseFees,userId,courseId));
         }
 
         logger.info("Payment Receive List including user's information {}",payUserList);

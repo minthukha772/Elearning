@@ -39,23 +39,27 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
                 <p class="p12size" th:text="${courseInfo.category} + ' > ' + ${courseInfo.level}"></p>
                 <p class="p16normal" th:text="${courseInfo.aboutCourse}"></p>
                 <p class="prerequisites">Prerequisites</p>
-                <p class="p16normal">Basic Understand in Computer Terms</p>
+                <p class="p16normal" th:text="${courseInfo.prerequisite}"></p>
                 <p class="prerequisites" th:text="'$ ' + ${courseInfo.fees}"></p>
 
                 <!-- For Student/Guest -->
                 <div th:if="${student == 'STUDENT'}">
+
                 <!-- <button class="btn btn-primary">Enroll</button> -->
                 <a th:href="@{'/student/payment-upload/course_id/' + ${courseInfo.courseId}}"><button class="btn btn-primary">Enroll</button></a>
                 <a th:href="@{'/student/review-list/course_id/' + ${courseInfo.courseId}}"><button class="btn btn-primary">Review List</button></a>
                 <a th:href="@{'/student/student-review/'+${courseInfo.courseId}}"><button class="btn btn-primary"> <i class="fas fa-plus"></i> Write Review</button></a>
+
                 </div>
 
                 <!-- Teacher -->
                 <div th:if="${teacher == 'TEACHER'}">
+
                 <a th:href="@{'/teacher/edit/'+ ${courseInfo.courseId}}"><button class="btn btn-primary">Edit Course</button></a>
                     <a th:href="@{'/teacher/leave/'+ ${courseInfo.courseId} +'?course_name='+${courseInfo.courseName}+'&teacher_name='+ ${courseInfo.UserInfo.userName}}"><button class="btn btn-primary">Take a Leave</button></a>
                <a th:href="@{'/teacher/student-list/'+ ${courseInfo.courseId}}"> <button class="btn btn-primary">Student List</button></a>
                 <a th:href="@{'/teacher/review-list/course_id/' + ${courseInfo.courseId}}"><button class="btn btn-primary">Review List</button></a>
+
 
                 <p class="prerequisites">Class Link</p>
                 
