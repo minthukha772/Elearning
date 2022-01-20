@@ -155,6 +155,7 @@ public class ListOfUserController {
         model.addAttribute("teacherName", teacherName);
         model.addAttribute("courseTimeList", courseTimeList);
         model.addAttribute("allStudentList", userList);
+        model.addAttribute("postAction", "/teacher/course-details/" + courseId);
         
         List<UserInfo> tAllRecord = userRepo.findByUserRoleI("ROLE_TEACHER");
         System.out.println("Teacher List"+tAllRecord);
