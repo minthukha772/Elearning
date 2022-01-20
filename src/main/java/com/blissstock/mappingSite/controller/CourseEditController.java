@@ -288,12 +288,6 @@ public class CourseEditController {
             String nav_type = "fragments/adminnav";
             model.addAttribute("nav_type",nav_type);
         }
-
-
-        
-        // System.out.println("Heehee" + day0 + " " + startTime0 + " " + endTime0 + " " + day1 + " " + startTime1 + " " + endTime1);
-        // System.out.println("Haahaa " + courseTimeList.get(0).getCourseDays() + courseTimeList.size());
-        
         return "AT0002_EditCourseConfirm";
     }
 

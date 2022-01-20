@@ -129,10 +129,15 @@
                         <label class="form-label" for="ccategory">Course Category</label>
                         <select name="ccategory" th:field="*{category}" class="form-select" required>
                             <option value="" selected="selected">Select Category</option>
-                            <option value="Japanese">Japanese</option>
-                            <option value="English">English</option>
-                            <option value="Python">Python</option>
-                            <option value="Java">Java</option>
+                            <option value="Business">Business</option>
+                            <option value="Engineering & Construction">Engineering & Construction</option>
+                            <option value="Health">Health</option>
+                            <option value="IT">IT</option>
+                            <option value="Language">Language</option>
+                            <option value="Management">Management</option>
+                            <option value="Personal Development">Personal Development</option>
+                            <option value="Sales & Marketing">Sales & Marketing</option>
+                            <option value="Teaching & Academics">Teaching & Academics</option>
                         </select>
                         <div class="invalid-feedback" th:if="${#fields.hasErrors('category')}" th:errors="*{category}">
                             This field is required.
@@ -437,6 +442,39 @@
     <div th:replace="@{fragments/footer}"></div>
 
       <script>
+          function btnRegister_Click() {
+            
+            // $("#datepicker9").prop('required', true);
+            // $("#datepicker10").prop('required', true);
+
+        var startDate = $('#datepicker9').val();   
+        var endDate   = $('#datepicker10').val();
+        if(startDate > endDate){
+        alert("Start date must be later than end date");
+        return false;
+        }
+
+        for (i = 0; i < 7; i++){
+            var startTime=$('#startTime'+i).val();
+            var endTime=$('#endTime'+i).val();
+
+            st = minFromMidnight(startTime);
+            et = minFromMidnight(endTime);
+            if(st>et){
+            alert("Start time must be later than end time");
+            return false;
+            }
+
+            function minFromMidnight(tm){
+            var ampm= tm.substr(-2)
+            var clk = tm.substr(0, 5);
+            var m  = parseInt(clk.match(/\d+$/)[0], 10);
+            var h  = parseInt(clk.match(/^\d+/)[0], 10);
+            h += (ampm.match(/pm/i))? 12: 0;
+            return h*60+m;
+            }  
+        }
+    }
             // $("#time1").timepicker()({
             //     pickTime: false
             // });
