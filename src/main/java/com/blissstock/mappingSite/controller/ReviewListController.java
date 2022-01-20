@@ -14,6 +14,8 @@ import com.blissstock.mappingSite.repository.UserRepository;
 import com.blissstock.mappingSite.service.UserService;
 import com.blissstock.mappingSite.service.UserSessionService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +24,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class ReviewListController {
+
+    private static final Logger logger = LoggerFactory.getLogger(ReviewListController.class);
 
     @Autowired
     UserSessionService userSessionService;
@@ -76,6 +80,11 @@ public class ReviewListController {
                 model.addAttribute("courseReviewList", courseReviewList);
             }
         }
+        boolean courseReviewListEmpty = courseReviewList.isEmpty();
+        boolean courseReveiwListNotEmpty = !courseReviewListEmpty;
+        logger.info("The boolean of courseReviewListEmpty is {}", courseReviewListEmpty);
+        model.addAttribute("courseReviewListEmpty", courseReviewListEmpty);
+        model.addAttribute("courseReviewListNotEmpty", courseReveiwListNotEmpty);
 
         //calculate average star rating for the course
         int total_stars = 0;
@@ -83,8 +92,19 @@ public class ReviewListController {
         for(Review review : courseReviewList){
             total_stars += review.getStar();
         }
-        int average = (int)total_stars/numCourseReviewList;
-        String averageFloat = String.format("%.2f", (double)total_stars/numCourseReviewList);
+        int average = 0;
+        double averageDouble = 0;
+        try{
+            average = (int)total_stars/numCourseReviewList;
+        }catch(ArithmeticException e){
+            average = 0;
+        }
+        try{
+            averageDouble = (double)total_stars/numCourseReviewList;
+        }catch(ArithmeticException e){
+            averageDouble = 0;
+        }
+        String averageFloat = String.format("%.2f", averageDouble);
         model.addAttribute("average", average);
         model.addAttribute("averageFloat", averageFloat);
 
