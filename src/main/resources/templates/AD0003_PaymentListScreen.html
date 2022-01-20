@@ -292,15 +292,15 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4">
                                                                                     <tbody>
                                                                                         <tr th:each="dr,index:${allPaymentList}">
                                                                                             <td></td>
-                                                                                            <td th:text="${dr.userName}"></td>
+                                                                                            <td ><a th:href="@{'/admin/browse/profile/' + ${dr.userId}}" th:text="${dr.userName}"></a></td>
                                                                                             <!-- change to "@{/CourseDetail/{id}(id=${course_id})}" or @{|/edit-mentor/${mentor.id}|} -->
-                                                                                            <a th:href="@{|/test|}"></a>
+                                                                                            <!-- <a th:href="@{|/test|}"></a> -->
                                                                                             <td th:text="${dr.courseName}"></td></a>
                                                                                             <td th:text="${dr.paymentDate}"></td>
                                                                                             <td th:text="${dr.courseFees}"></td>
                                                                                             <td th:text="${dr.paymentStatus}"></td>
                                                                                             <td>
-                                                                                                <a th:href="@{'/admin/payment/' + ${dr.userName}}" class='btn btn-primary' style='float: center;'>Payment Details</a>
+                                                                                                <a th:href="@{/admin/payment-upload/course_id/{courseId}/student_id/{id}(courseId = ${dr.courseId}, id = ${dr.userId})}" class='btn btn-primary' style='float: center;'>Payment Details</a>
                                                                                             </td>
                                                                                         </tr>
                                                                                     </tbody>

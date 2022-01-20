@@ -129,10 +129,15 @@
                         <label class="form-label" for="ccategory">Course Category</label>
                         <select name="ccategory" th:field="*{category}" class="form-select" required>
                             <option value="" selected="selected">Select Category</option>
-                            <option value="Japanese">Japanese</option>
-                            <option value="English">English</option>
-                            <option value="Python">Python</option>
-                            <option value="Java">Java</option>
+                            <option value="Business">Business</option>
+                            <option value="Engineering & Construction">Engineering & Construction</option>
+                            <option value="Health">Health</option>
+                            <option value="IT">IT</option>
+                            <option value="Language">Language</option>
+                            <option value="Management">Management</option>
+                            <option value="Personal Development">Personal Development</option>
+                            <option value="Sales & Marketing">Sales & Marketing</option>
+                            <option value="Teaching & Academics">Teaching & Academics</option>
                         </select>
                         <div class="invalid-feedback" th:if="${#fields.hasErrors('category')}" th:errors="*{category}">
                             This field is required.
@@ -264,14 +269,14 @@
                             <div class="col-lg-4">
                                 <label for="time">From</label>
 
-                                <input type="time" th:name="startTime0" id="time1" class="form-control" />
+                                <input type="time" th:name="startTime0" id="startTime0" class="form-control" />
 
 
                             </div>
                             <div class="col-lg-1"></div>
                             <div class="col-lg-4">
                                 <label for="time">To</label>
-                                <input type="time" id="time2" th:name="endTime0" class="form-control" />
+                                <input type="time" id="endTime0" th:name="endTime0" class="form-control" />
 
                             </div>
                         </div>
@@ -289,13 +294,13 @@
                         <div class="col-lg-8 row">
                             <div class="col-lg-4">
                                 <label for="time">From</label>
-                                <input type="time" th:name="startTime1" id="time3" class="form-control" />
+                                <input type="time" th:name="startTime1" id="startTime1" class="form-control" />
 
                             </div>
                             <div class="col-lg-1"></div>
                             <div class="col-lg-4">
                                 <label for="time">To</label>
-                                <input type="time" th:name="endTime1" id="time4" class="form-control" />
+                                <input type="time" th:name="endTime1" id="endTime1" class="form-control" />
 
                             </div>
                         </div>
@@ -313,13 +318,13 @@
                         <div class="col-lg-8 row">
                             <div class="col-lg-4">
                                 <label for="time">From</label>
-                                <input type="time" th:name="startTime2" id="time5" class="form-control" />
+                                <input type="time" th:name="startTime2" id="startTime2" class="form-control" />
 
                             </div>
                             <div class="col-lg-1"></div>
                             <div class="col-lg-4">
                                 <label for="time">To</label>
-                                <input type="time" th:name="endTime2" id="time6" class="form-control" />
+                                <input type="time" th:name="endTime2" id="endTime2" class="form-control" />
 
                             </div>
                         </div>
@@ -335,13 +340,13 @@
                         <div class="col-lg-8 row">
                             <div class="col-lg-4">
                                 <label for="time">From</label>
-                                <input type="time" th:name="startTime3" id="time7" class="form-control" />
+                                <input type="time" th:name="startTime3" id="startTime3" class="form-control" />
 
                             </div>
                             <div class="col-lg-1"></div>
                             <div class="col-lg-4">
                                 <label for="time">To</label>
-                                <input type="time" th:name="endTime3" id="time8" class="form-control" />
+                                <input type="time" th:name="endTime3" id="endTime3" class="form-control" />
 
                             </div>
                         </div>
@@ -357,13 +362,13 @@
                         <div class="col-lg-8 row">
                             <div class="col-lg-4">
                                 <label for="time">From</label>
-                                <input type="time" th:name="startTime4" id="time9" class="form-control" />
+                                <input type="time" th:name="startTime4" id="startTime4" class="form-control" />
 
                             </div>
                             <div class="col-lg-1"></div>
                             <div class="col-lg-4">
                                 <label for="time">To</label>
-                                <input type="time" th:name="endTime4" id="time10" class="form-control" />
+                                <input type="time" th:name="endTime4" id="endTime4" class="form-control" />
 
                             </div>
                         </div>
@@ -379,13 +384,13 @@
                         <div class="col-lg-8 row">
                             <div class="col-lg-4">
                                 <label for="time">From</label>
-                                <input type="time" th:name="startTime5" id="time11" class="form-control" />
+                                <input type="time" th:name="startTime5" id="startTime5" class="form-control" />
 
                             </div>
                             <div class="col-lg-1"></div>
                             <div class="col-lg-4">
                                 <label for="time">To</label>
-                                <input type="time" th:name="endTime5" id="time12" class="form-control" />
+                                <input type="time" th:name="endTime5" id="endTime5" class="form-control" />
 
                             </div>
                         </div>
@@ -401,13 +406,13 @@
                         <div class="col-lg-8 row">
                             <div class="col-lg-4">
                                 <label for="time">From</label>
-                                <input type="time" th:name="startTime6" id="time13" class="form-control" />
+                                <input type="time" th:name="startTime6" id="startTime6" class="form-control" />
 
                             </div>
                             <div class="col-lg-1"></div>
                             <div class="col-lg-4">
                                 <label for="time">To</label>
-                                <input type="time" th:name="endTime6" id="time14" class="form-control" />
+                                <input type="time" th:name="endTime6" id="endTime6" class="form-control" />
 
                             </div>
                         </div>
@@ -425,7 +430,7 @@
                         <button id="btnReset" type="reset" class="btn btn-spacing btn-secondary center-block" Style="width: 100px;" OnClick="btnClear_Click">Reset</button>
                     
                     
-                        <button id="btnReg" class="btn btn-spacing btn-primary center-block" Style="width: 150px;" OnClick="btnRegister_Click">Update</button>
+                        <button id="btnReg" class="btn btn-spacing btn-primary center-block" Style="width: 150px;" onclick="return btnRegister_Click()">Update</button>
 
                     
                 </div>
@@ -437,6 +442,39 @@
     <div th:replace="@{fragments/footer}"></div>
 
       <script>
+          function btnRegister_Click() {
+            
+            // $("#datepicker9").prop('required', true);
+            // $("#datepicker10").prop('required', true);
+
+        var startDate = $('#datepicker9').val();   
+        var endDate   = $('#datepicker10').val();
+        if(startDate > endDate){
+        alert("Start date must be later than end date");
+        return false;
+        }
+
+        for (i = 0; i < 7; i++){
+            var startTime=$('#startTime'+i).val();
+            var endTime=$('#endTime'+i).val();
+
+            st = minFromMidnight(startTime);
+            et = minFromMidnight(endTime);
+            if(st>et){
+            alert("Start time must be later than end time");
+            return false;
+            }
+
+            function minFromMidnight(tm){
+            var ampm= tm.substr(-2)
+            var clk = tm.substr(0, 5);
+            var m  = parseInt(clk.match(/\d+$/)[0], 10);
+            var h  = parseInt(clk.match(/^\d+/)[0], 10);
+            h += (ampm.match(/pm/i))? 12: 0;
+            return h*60+m;
+            }  
+        }
+    }
             // $("#time1").timepicker()({
             //     pickTime: false
             // });
