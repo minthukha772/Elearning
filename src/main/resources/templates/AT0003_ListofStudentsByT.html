@@ -160,7 +160,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4">
                                                                             <ol class="breadcrumb">
                                                                                 <li class="breadcrumb-item"><a th:href="@{/teacher/my-course}">Top</a></li>
                                                                                 <!-- <li class="breadcrumb-item"><a href="#">Course List</a></li> -->
-                                                                                <li class="breadcrumb-item"><a th:href="@{|teacher/course-details/${courseInfo.courseId}|}">Course Detail</a></li>
+                                                                                <li class="breadcrumb-item"><a th:href="@{${postAction}}">Course Detail</a></li>
                                                                                 <li class="breadcrumb-item active" aria-current="page">Student List</li>
                                                                             </ol>
                                                                         </nav>
@@ -206,7 +206,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4">
                                                                                 
                                                                                 <div class="card text-center mx-auto p-3 mb-3" style="max-width: 800px;">
                                                                                     <div class="card-header studentListHeader">
-                                                                                        Student List
+                                                                                        Student List (Testing)
                                                                                     </div>
                                                                                     <div class="card-body">
                                                                                         <section>
