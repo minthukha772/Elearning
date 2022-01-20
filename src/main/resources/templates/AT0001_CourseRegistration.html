@@ -22,8 +22,6 @@
     <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
-
-
     <title>Mapping Site</title>
 
     <script type="text/javascript">
@@ -31,20 +29,202 @@
             
             $("#noCheck").prop("checked", true);
 
+            
+            var checkbox = $("#yesCheck");
+            var hidden = $("#iflive");
+            // var hidden2 = $("#datepicker10");
+            hidden.hide();
+            // hidden1.hide();
+            // hidden2.hide();
+            checkbox.change(function() {
+                if (checkbox.is(':checked')) {
+                hidden.show();
+                // hidden2.show();
+                $('#datepicker9').prop('required', true); //to add required
+                $('#datepicker10').prop('required', true);
+                } else {
+                hidden.hide();
+                // $("#username").val("");
+                $('#datepicker9').prop('required', false); //to remove required
+                $('#datepicker10').prop('required', false);
+                }
+            });
+
+            // $("#datepicker9").datepicker({
+            //     format: 'dd-mm-yyyy',
+            //     autoclose: true,
+            // }).on('changeDate', function (selected) {
+            //     var minDate = new Date(selected.date.valueOf());
+            //     $('#datepicker10').datepicker('setStartDate', minDate);
+            // });
+
+            // $("#datepicker10").datepicker({
+            //     format: 'dd-mm-yyyy',
+            //     autoclose: true,
+            // }).on('changeDate', function (selected) {
+            //         var minDate = new Date(selected.date.valueOf());
+            //         $('#datepicker9').datepicker('setEndDate', minDate);
+            // });
+
+            // $("#datepicker9, #datepicker10").datepicker();
+
+            // $("#datepicker10").change(function () {
+            //     var startDate = document.getElementById("datepicker9").value;
+            //     var endDate = document.getElementById("datepicker10").value;
+            
+            //     if ((Date.parse(endDate) <= Date.parse(startDate))) {
+            //         alert("End date should be greater than Start date");
+            //         document.getElementById("datepicker10").value = "";
+            //     }
+            // });
+
         });
     
+        // function compareDate() {
+        //     var str = document.getElementById("datepicker9").value;
+        //     var end = document.getElementById("datepicker10").value;
+        //     var year = str.substring(0,4);
+        //     var month = str.substring(5,7);
+        //     var date = str.substring(8,10);
+        //     var endYear = end.substring(0,4);
+        //     var endMonth = end.substring(5,7);
+        //     var endDate = end.substring(8,10);
+        //     var startDate = new Date(year, month-1, date);
+        //     var endDate = new Date(endYear, endMonth-1, endDate);
 
+        //     if (startDate > endDate) {
+        //     alert('start date should be less than end date');
+        //     return false;
+        //     } 
+        //     else { return true; }
+        // }
+
+        // $(function() {
+        //     var checkbox = $("#yesCheck");
+        //     var hidden = $("#iflive");
+        //     // var hidden2 = $("#datepicker10");
+        //     hidden.hide();
+        //     // hidden1.hide();
+        //     // hidden2.hide();
+        //     checkbox.change(function() {
+        //         if (checkbox.is(':checked')) {
+        //         hidden.show();
+        //         // hidden2.show();
+        //         $('#datepicker9').prop('required', true); //to add required
+        //         $('#datepicker10').prop('required', true);
+        //         } else {
+        //         hidden.hide();
+        //         // $("#username").val("");
+        //         $('#datepicker9').prop('required', false); //to remove required
+        //         $('#datepicker10').prop('required', false);
+        //         }
+        //     });
+        // });
+
+        // $('input[type=radio][name=yesno]').on('change', function() {
+        //     switch ($(this).val()) {
+        //         case 'live':
+        //         alert("Allot Thai Gayo Bhai");
+        //         // $("#datepicker9").prop('required', true);
+        //         // $("#datepicker10").prop('required', true);
+        //         break;
+        //         case 'video':
+        //         alert("Transfer Thai Gayo");
+        //         // $("#datepicker9").prop('required', false);
+        //         // $("#datepicker10").prop('required', false);
+        //         break;
+        //     }
+        // });
     
         function yesnoCheck() {
             if (document.getElementById('yesCheck').checked) {
                 document.getElementById('iflive').style.display = 'block';
                 document.getElementById('ifvideo').style.display = 'none';
+                // document.getElementById("datepicker9").required = true;
+                // document.getElementById("datepicker10").required = true;
+                // $("#datepicker9").prop('required', true);
+                // $("#datepicker10").prop('required', true);
+                
+
             } else {
                 document.getElementById('iflive').style.display = 'none';
                 document.getElementById('ifvideo').style.display = 'block';
+                // document.getElementById("datepicker9").required = false;
+                // document.getElementById("datepicker10").required = false;
+                // $("#datepicker9").prop('required', false);
+                // $("#datepicker10").prop('required', false);
             }
 
         }
+
+        // $(function() {
+        //     $("#datepicker9").datepicker({
+        //         dateFormat: "yy-mm-dd",
+        //         numberOfMonths: 2,
+        //         onSelect: function(selected) {
+        //             var dt = new Date(selected);
+        //             dt.setDate(dt.getDate() + 1);
+        //             $("#datepicker10").datepicker("option", "minDate", dt);
+        //         }
+        //     });
+        //     $("#datepicker10").datepicker({
+        //         dateFormat: "yy-mm-dd",
+        //         numberOfMonths: 2,
+        //         onSelect: function(selected) {
+        //             var dt = new Date(selected);
+        //             dt.setDate(dt.getDate() - 1);
+        //             $("#datepicker9").datepicker("option", "maxDate", dt);
+        //         }
+        //     });
+        // });
+
+        // $('#datepicker9').datepicker({
+        //     onSelect: function(dateText, inst){
+        //         $('#datepicker10').datepicker('option', 'minDate', new Date(dateText));
+        //     },
+        // });
+
+        // $('#datepicker10').datepicker({
+        //     onSelect: function(dateText, inst){
+        //         $('#datepicker9').datepicker('option', 'maxDate', new Date(dateText));
+        //     }
+        // });
+
+        // $("#datepicker10").change(function () {
+        //     var startDate = document.getElementById("datepicker9").value;
+        //     var endDate = document.getElementById("datepicker10").value;
+
+        //     if ((Date.parse(endDate) <= Date.parse(startDate))) {
+        //         alert("End date should be greater than Start date");
+        //         document.getElementById("datepicker10").value = "";
+        //     }
+        // });
+
+        // set default dates
+        // var start = new Date();
+        // // set end date to max one year period:
+        // var end = new Date(new Date().setYear(start.getFullYear()+1));
+
+        // $('#datepicker9').datepicker({
+        //     startDate : start,
+        //     endDate   : end
+        // // update "toDate" defaults whenever "fromDate" changes
+        // }).on('changeDate', function(){
+        //     // set the "toDate" start to not be later than "fromDate" ends:
+        //     $('#toDate').datepicker('setStartDate', new Date($(this).val()));
+        // }); 
+
+        // $('#datepicker10').datepicker({
+        //     startDate : start,
+        //     endDate   : end
+        // // update "fromDate" defaults whenever "toDate" changes
+        // }).on('changeDate', function(){
+        //     // set the "fromDate" end to not be later than "toDate" starts:
+        //     $('#fromDate').datepicker('setEndDate', new Date($(this).val()));
+        // });
+
+        
+
     </script>
 
     <style>
@@ -114,7 +294,7 @@
                     <div class="mb-3">
                         <label class="form-label" for="cname">Course Name</label>
 
-                        <input th:field="*{courseName}" th:classappend="${#fields.hasErrors('courseName')}?'is-invalid':''"  class="form-control" id="cname" type="text" placeholder="Japanese Language" required/>
+                        <input th:field="*{courseName}" th:classappend="${#fields.hasErrors('courseName')}?'is-invalid':''"  class="form-control" id="cname" type="text" placeholder="Enter Course Name" required/>
                         <div class="invalid-feedback" th:if="${#fields.hasErrors('courseName')}" th:errors="*{courseName}">This field is required.</div>
                     </div>
 
@@ -123,10 +303,15 @@
                         <label class="form-label" for="ccategory">Course Category</label>
                         <select name="ccategory" th:field="*{category}" class="form-select" required>
                             <option value="" selected="selected">Select Category</option>
-                            <option value="Japanese">Japanese</option>
-                            <option value="English">English</option>
-                            <option value="Python">Python</option>
-                            <option value="Java">Java</option>
+                            <option value="Business">Business</option>
+                            <option value="Engineering & Construction">Engineering & Construction</option>
+                            <option value="Health">Health</option>
+                            <option value="IT">IT</option>
+                            <option value="Language">Language</option>
+                            <option value="Management">Management</option>
+                            <option value="Personal Development">Personal Development</option>
+                            <option value="Sales & Marketing">Sales & Marketing</option>
+                            <option value="Teaching & Academics">Teaching & Academics</option>
                         </select>
                         <div class="invalid-feedback" th:if="${#fields.hasErrors('category')}" th:errors="*{category}">
                             This field is required.
@@ -178,7 +363,6 @@
                 
 
                 <div id="iflive" style="display: none;">
-
                     <div th:object="${course}">
                         <div class="mb-3">
                             <label class="form-label" for="maxStu">Student Numbers</label>
@@ -226,14 +410,14 @@
                             <div class="col-lg-4">
                                 <label for="time">From</label>
 
-                                <input type="time" th:name="startTime0" id="time1" class="form-control" />
+                                <input type="time" th:name="startTime0" id="startTime0" class="form-control" />
 
 
                             </div>
                             <div class="col-lg-1"></div>
                             <div class="col-lg-4">
                                 <label for="time">To</label>
-                                <input type="time" id="time2" th:name="endTime0" class="form-control" />
+                                <input type="time" th:name="endTime0" id="endTime0"  class="form-control" />
 
                             </div>
                         </div>
@@ -251,13 +435,13 @@
                         <div class="col-lg-8 row">
                             <div class="col-lg-4">
                                 <label for="time">From</label>
-                                <input type="time" th:name="startTime1" id="time3" class="form-control" />
+                                <input type="time" th:name="startTime1" id="startTime1" class="form-control" />
 
                             </div>
                             <div class="col-lg-1"></div>
                             <div class="col-lg-4">
                                 <label for="time">To</label>
-                                <input type="time" th:name="endTime1" id="time4" class="form-control" />
+                                <input type="time" th:name="endTime1" id="endTime1" class="form-control" />
 
                             </div>
                         </div>
@@ -275,13 +459,13 @@
                         <div class="col-lg-8 row">
                             <div class="col-lg-4">
                                 <label for="time">From</label>
-                                <input type="time" th:name="startTime2" id="time5" class="form-control" />
+                                <input type="time" th:name="startTime2" id="startTime2" class="form-control" />
 
                             </div>
                             <div class="col-lg-1"></div>
                             <div class="col-lg-4">
                                 <label for="time">To</label>
-                                <input type="time" th:name="endTime2" id="time6" class="form-control" />
+                                <input type="time" th:name="endTime2" id="endTime2" class="form-control" />
 
                             </div>
                         </div>
@@ -297,13 +481,13 @@
                         <div class="col-lg-8 row">
                             <div class="col-lg-4">
                                 <label for="time">From</label>
-                                <input type="time" th:name="startTime3" id="time7" class="form-control" />
+                                <input type="time" th:name="startTime3" id="startTime3" class="form-control" />
 
                             </div>
                             <div class="col-lg-1"></div>
                             <div class="col-lg-4">
                                 <label for="time">To</label>
-                                <input type="time" th:name="endTime3" id="time8" class="form-control" />
+                                <input type="time" th:name="endTime3" id="endTime3" class="form-control" />
 
                             </div>
                         </div>
@@ -319,13 +503,13 @@
                         <div class="col-lg-8 row">
                             <div class="col-lg-4">
                                 <label for="time">From</label>
-                                <input type="time" th:name="startTime4" id="time9" class="form-control" />
+                                <input type="time" th:name="startTime4" id="startTime4" class="form-control" />
 
                             </div>
                             <div class="col-lg-1"></div>
                             <div class="col-lg-4">
                                 <label for="time">To</label>
-                                <input type="time" th:name="endTime4" id="time10" class="form-control" />
+                                <input type="time" th:name="endTime4" id="endTime4" class="form-control" />
 
                             </div>
                         </div>
@@ -341,13 +525,13 @@
                         <div class="col-lg-8 row">
                             <div class="col-lg-4">
                                 <label for="time">From</label>
-                                <input type="time" th:name="startTime5" id="time11" class="form-control" />
+                                <input type="time" th:name="startTime5" id="startTime5" class="form-control" />
 
                             </div>
                             <div class="col-lg-1"></div>
                             <div class="col-lg-4">
                                 <label for="time">To</label>
-                                <input type="time" th:name="endTime5" id="time12" class="form-control" />
+                                <input type="time" th:name="endTime5" id="endTime5" class="form-control" />
 
                             </div>
                         </div>
@@ -363,13 +547,13 @@
                         <div class="col-lg-8 row">
                             <div class="col-lg-4">
                                 <label for="time">From</label>
-                                <input type="time" th:name="startTime6" id="time13" class="form-control" />
+                                <input type="time" th:name="startTime6" id="startTime6" class="form-control" />
 
                             </div>
                             <div class="col-lg-1"></div>
                             <div class="col-lg-4">
                                 <label for="time">To</label>
-                                <input type="time" th:name="endTime6" id="time14" class="form-control" />
+                                <input type="time" th:name="endTime6" id="endTime6" class="form-control" />
 
                             </div>
                         </div>
@@ -382,23 +566,54 @@
                 </div>
 
 
-                <div class="d-grid gap-2 d-flex justify-content-around">
+                <div class="d-grid gap-2 d-flex justify-content-around buttons">
+                        <button id="btnReset" type="reset" class="btn btn-spacing btn-secondary center-block btnSubmit" Style="width: 100px;" OnClick="btnClear_Click">Reset</button>
                     
-                        <button id="btnReset" type="reset" class="btn btn-spacing btn-secondary center-block" Style="width: 100px;" OnClick="btnClear_Click">Reset</button>
                     
-                    
-                        <button id="btnReg" class="btn btn-spacing btn-primary center-block" Style="width: 150px;" OnClick="btnRegister_Click">Register</button>
-
-                    
+                        <button id="btnReg" class="btn btn-spacing btn-primary center-block" Style="width: 150px;" onclick="return btnRegister_Click()">Register</button>
                 </div>
                 <div class="form-group row"></div>
             </form>
         </div>
     </div>
 
-    <div th:replace="@{fragments/footer}"></div>
+    <div th:replace="fragments/footer"></div>
 
-      <script>
+        <script>
+           function btnRegister_Click() {
+            
+                // $("#datepicker9").prop('required', true);
+                // $("#datepicker10").prop('required', true);
+
+            var startDate = $('#datepicker9').val();   
+            var endDate   = $('#datepicker10').val();
+            if(startDate > endDate){
+            alert("Start date must be later than end date");
+            return false;
+            }
+
+            for (i = 0; i < 7; i++){
+                var startTime=$('#startTime'+i).val();
+                var endTime=$('#endTime'+i).val();
+
+                st = minFromMidnight(startTime);
+                et = minFromMidnight(endTime);
+                if(st>et){
+                alert("Start time must be later than end time");
+                return false;
+                }
+    
+                function minFromMidnight(tm){
+                var ampm= tm.substr(-2)
+                var clk = tm.substr(0, 5);
+                var m  = parseInt(clk.match(/\d+$/)[0], 10);
+                var h  = parseInt(clk.match(/^\d+/)[0], 10);
+                h += (ampm.match(/pm/i))? 12: 0;
+                return h*60+m;
+                }  
+            }
+        }
+
             // $("#time1").timepicker()({
             //     pickTime: false
             // });

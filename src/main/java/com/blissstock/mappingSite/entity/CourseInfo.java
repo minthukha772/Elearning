@@ -79,7 +79,7 @@ public class CourseInfo {
 
   //@NotBlank(message="Please enter course fees")
   @Column(name = "course_fees")
-  private int fees;
+  private Integer fees;
 
   @Column(name = "isCourseApproved", nullable = false)
   private boolean isCourseApproved = false;

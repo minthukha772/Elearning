@@ -1,5 +1,6 @@
 package com.blissstock.mappingSite.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -66,6 +67,10 @@ public class JoinCourseService {
 
     public boolean isUserAlraedyJoined(Long uid, Long courseId) {
         return joinCourseUserRepository.findByCourseUser(courseId, uid) == null;
+    }
+
+    public List<JoinCourseUser> getJoinCourseUser(Long uid, Long courseId){
+        return joinCourseUserRepository.findByCourseUser(courseId, uid);
     }
 
 }
