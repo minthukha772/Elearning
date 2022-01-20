@@ -30,7 +30,7 @@
   <body style="background-color: #f0f0f0">
     <!-- guest user navi bar -->
     <div th:replace="@{fragments/nav}"></div>
-    
+
     <div class="container-custom mt-5">
       <!-- Successfully -->
       <div th:if="${message!=null}">
@@ -285,56 +285,70 @@
         <div class="card">
           <div class="card-header">User Account Control</div>
           <div class="card-body">
-
             <!-- verify button -->
-            <div class="d-flex justify-content-between mb-3" th:if="${role=='ROLE_TEACHER' and status == 'REQUESTED'}">
+            <div
+              class="d-flex justify-content-between mb-3"
+              th:if="${role=='ROLE_TEACHER' and status == 'REQUESTED'}"
+            >
               <p>Verify requested user</p>
               <button
-              class="btn btn-primary"
-              data-bs-action="Verify"
-              data-bs-toggle="modal"
-              data-bs-target="#actionConfirmationModal"
-            >Verify
+                class="btn btn-primary"
+                data-bs-action="Verify"
+                data-bs-toggle="modal"
+                data-bs-target="#actionConfirmationModal"
+              >
+                Verify
               </button>
             </div>
 
             <!-- suspend button -->
-            <div class="d-flex justify-content-between mb-3" th:if="${(role=='ROLE_TEACHER' or role == 'ROLE_STUDENT') and (status == 'REGISTERED' or status == 'VERIFIED' or status == 'REQUESTED')}">
+            <div
+              class="d-flex justify-content-between mb-3"
+              th:if="${(role=='ROLE_TEACHER' or role == 'ROLE_STUDENT') and (status == 'REGISTERED' or status == 'VERIFIED' or status == 'REQUESTED')}"
+            >
               <p>Suspend User For A While</p>
               <button
-              class="btn btn-danger"
-              data-bs-action="Suspend"
-              data-bs-toggle="modal"
-              data-bs-target="#actionConfirmationModal"
-            >Suspend
+                class="btn btn-danger"
+                data-bs-action="Suspend"
+                data-bs-toggle="modal"
+                data-bs-target="#actionConfirmationModal"
+              >
+                Suspend
               </button>
             </div>
 
             <!-- reactivate button -->
-            <div class="d-flex justify-content-between mb-3" th:if="${(role=='ROLE_TEACHER' or role == 'ROLE_STUDENT') and status == 'SUSPENDED'}">
+            <div
+              class="d-flex justify-content-between mb-3"
+              th:if="${(role=='ROLE_TEACHER' or role == 'ROLE_STUDENT') and status == 'SUSPENDED'}"
+            >
               <p>Re-activate User</p>
-              
+
               <button
-              class="btn btn-primary"
-              data-bs-action="Re-activate"
-              data-bs-toggle="modal"
-              data-bs-target="#actionConfirmationModal"
-            >Re-activate
+                class="btn btn-primary"
+                data-bs-action="Re-activate"
+                data-bs-toggle="modal"
+                data-bs-target="#actionConfirmationModal"
+              >
+                Re-activate
               </button>
             </div>
 
             <!-- delete button -->
-            <div class="d-flex justify-content-between mb-3" th:if="${(role=='ROLE_TEACHER' or role == 'ROLE_STUDENT') and (status == 'REGISTERED' or status == 'VERIFIED' or status == 'REQUESTED' or status == 'SUSPENDED')}">
+            <div
+              class="d-flex justify-content-between mb-3"
+              th:if="${(role=='ROLE_TEACHER' or role == 'ROLE_STUDENT') and (status == 'REGISTERED' or status == 'VERIFIED' or status == 'REQUESTED' or status == 'SUSPENDED')}"
+            >
               <p>Delete User Account</p>
               <button
-              class="btn btn-danger"
-              data-bs-action="Delete"
-              data-bs-toggle="modal"
-              data-bs-target="#actionConfirmationModal"
-            >Delete Account
+                class="btn btn-danger"
+                data-bs-action="Delete"
+                data-bs-toggle="modal"
+                data-bs-target="#actionConfirmationModal"
+              >
+                Delete Account
               </button>
             </div>
-
           </div>
         </div>
       </div>
@@ -342,13 +356,33 @@
       <!-- If Role is ROLE_TEACHER -->
       <div
         class="d-flex justify-content-between"
-        th:if="${role=='ROLE_TEACHER'}"
+        
       >
-        <div></div>
         <div>
-          <!-- TODO redirect to Course List -->
-          <a class="btn btn-primary mt-3 text-end" th:if="${#authorization.expression('isAuthenticated()')}" th:href="@{/guest/explore/teacher/{id}(id=${id})}">Browse Course</a>
+          <div th:if="${isEditable}">
+            <a
+              th:if="${#authorization.expression('hasRole(''ROLE_TEACHER'')')}"
+              class="btn btn-primary mt-3 text-end"
+              th:href="@{/teacher/change_password}"
+              >Change Password</a>
+            
+            <a
+              th:if="${#authorization.expression('hasRole(''ROLE_STUDENT'')')}"
+              class="btn btn-primary mt-3 text-end"
+              th:href="@{/student/change_password}"
+              >Change Password</a>
+            
 
+          </div>
+        </div>
+        <div th:if="${role=='ROLE_TEACHER'}">
+          <!-- TODO redirect to Course List -->
+          <a
+            class="btn btn-primary mt-3 text-end"
+            th:if="${#authorization.expression('isAuthenticated()')}"
+            th:href="@{/guest/explore/teacher/{id}(id=${id})}"
+            >Browse Course</a
+          >
         </div>
       </div>
     </div>
@@ -507,53 +541,46 @@
 
     <!-- Modals:End -->
 
+    <!-- Action Confirm Modal -->
+    <div
+      class="modal fade"
+      id="actionConfirmationModal"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="certificateFormModalLabel">
+              Delete User
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure to continue the operation?</p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" id="actionBtn" class="btn btn-danger">
+              DELETE
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    
-
-     <!-- Action Confirm Modal -->
-     <div
-     class="modal fade"
-     id="actionConfirmationModal"
-     tabindex="-1"
-     aria-hidden="true"
-   >
-     <div class="modal-dialog">
-       <div class="modal-content">
-         <div class="modal-header">
-           <h5 class="modal-title" id="certificateFormModalLabel">Delete User</h5>
-           <button
-             type="button"
-             class="btn-close"
-             data-bs-dismiss="modal"
-             aria-label="Close"
-           ></button>
-         </div>
-         <div class="modal-body">
-           <p>
-            Are you sure to continue the operation?
-           </p>
-         </div>
-         <div class="modal-footer">
-           <button
-             type="button"
-             class="btn btn-secondary"
-             data-bs-dismiss="modal"
-           >
-             Close
-           </button>
-           <button
-             type="button"
-             id="actionBtn"
-             class="btn btn-danger"
-           >
-             DELETE
-           </button>
-         </div>
-       </div>
-     </div>
-   </div>
-
-   <!-- Delete Confirm Modal End -->
+    <!-- Delete Confirm Modal End -->
 
     <div th:replace="@{fragments/footer}"></div>
     <script th:inline="javascript">
@@ -573,7 +600,7 @@
     ></script>
     <script src="/js/photoPlaceHolder.js"></script>
     <script src="/js/CM0004_profile.js"></script>
-    
+
     <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
   </body>
 </html>

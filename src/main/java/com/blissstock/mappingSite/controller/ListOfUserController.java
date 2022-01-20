@@ -57,6 +57,8 @@ public class ListOfUserController {
         // model.addAttribute("breadcrumbList",breadcrumbList);
         String nav_type = "fragments/adminnav";
         model.addAttribute("nav_type",nav_type);
+        String accountStatus = "VERIFIED";
+        model.addAttribute("accountStatus", accountStatus);
         return "AT0003_ListofTeachersScreen";
     }
     @RequestMapping(value = "/admin/student-list",method = RequestMethod.GET)
@@ -153,6 +155,7 @@ public class ListOfUserController {
         model.addAttribute("teacherName", teacherName);
         model.addAttribute("courseTimeList", courseTimeList);
         model.addAttribute("allStudentList", userList);
+        model.addAttribute("postAction", "/teacher/course-details/" + courseId);
         
         List<UserInfo> tAllRecord = userRepo.findByUserRoleI("ROLE_TEACHER");
         System.out.println("Teacher List"+tAllRecord);

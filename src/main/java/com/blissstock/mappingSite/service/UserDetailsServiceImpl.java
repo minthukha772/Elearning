@@ -5,9 +5,11 @@ import java.util.Set;
 
 import com.blissstock.mappingSite.entity.CustomUser;
 import com.blissstock.mappingSite.entity.UserAccount;
+import com.blissstock.mappingSite.enums.AccountStatus;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -35,7 +37,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     Set<SimpleGrantedAuthority> grantedAuthorities = new HashSet<>();
     grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole()));
-
+    if(user.getAccountStatus().equals(AccountStatus.SUSPENDED.getValue())){
+      throw new DisabledException("Account id "+user.getAccountId()+" is Suspended");
+    }
     return new CustomUser(
       user.getAccountId(),
       user.getMail(),

@@ -6,8 +6,10 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.JoinCourseUser;
 import com.blissstock.mappingSite.entity.LeaveInfo;
+import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
 // import com.blissstock.mappingSite.entity.LeaveTest;
@@ -21,10 +23,14 @@ import com.blissstock.mappingSite.service.UserSessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+// import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -65,8 +71,13 @@ public class TakeALeaveController {
 
 	@Valid
     @GetMapping(value={"/student/leave/{courseId}","/teacher/leave/{courseId}","/admin/leave/{courseId}/{userId}"})
-    private String getTakeALeaveForm(@PathVariable Long courseId, @PathVariable(required = false) Long userId, @RequestParam(value = "course_name") String course, @RequestParam(value = "teacher_name") String name,Model model) {
-		  LeaveInfo leaveInfo = new LeaveInfo();
+    private String getTakeALeaveForm(@PathVariable Long courseId, @PathVariable(required = false) Long userId,Model model) {
+		  CourseInfo courseInfo = courseInfoRepo.findByCourseID(courseId);
+      String course = courseInfo.getCourseName();
+      UserInfo userInfo = courseInfo.getUserInfo();
+      String name = userInfo.getUserName();
+
+      LeaveInfo leaveInfo = new LeaveInfo();
       
 		  model.addAttribute("course",course);
 		  model.addAttribute("name", name);
@@ -74,7 +85,7 @@ public class TakeALeaveController {
       UserRole role = userSessionService.getRole();
 
         if(role == UserRole.STUDENT){
-          model.addAttribute("postAction", "/student/leave/"+courseId+"/confirm?course_name="+course+"&teacher_name="+name);  
+          model.addAttribute("postAction", "/student/leave/"+courseId+"/confirm");  
           List<String> breadcrumbList = new ArrayList<>();
           breadcrumbList.add("My Course");
           breadcrumbList.add("Course Detail");
@@ -85,7 +96,7 @@ public class TakeALeaveController {
 
         }
         else if(role ==UserRole.TEACHER){
-          model.addAttribute("postAction", "/teacher/leave/"+courseId+"/confirm?course_name="+course+"&teacher_name="+name);  
+          model.addAttribute("postAction", "/teacher/leave/"+courseId+"/confirm");  
           List<String> breadcrumbList = new ArrayList<>();
           breadcrumbList.add("My Course");
           breadcrumbList.add("Course Detail");
@@ -96,7 +107,7 @@ public class TakeALeaveController {
         }
         else{
           
-          model.addAttribute("postAction", "/admin/leave/"+courseId+"/"+userId+"/confirm?course_name="+course+"&teacher_name="+name);
+          model.addAttribute("postAction", "/admin/leave/"+courseId+"/"+userId+"/confirm");
           List<String> breadcrumbList = new ArrayList<>();
           breadcrumbList.add("Top");
           breadcrumbList.add("User List");
@@ -110,18 +121,23 @@ public class TakeALeaveController {
     }
 
     @PostMapping(value={"/student/leave/{courseId}/confirm","/teacher/leave/{courseId}/confirm","/admin/leave/{courseId}/{userId}/confirm"})
-	  public String postCourseInfoForm(@Valid @ModelAttribute("leave") LeaveInfo leaveInfo, @PathVariable Long courseId, Model model, @PathVariable(required = false) Long userId, @RequestParam(value = "course_name") String course, @RequestParam(value = "teacher_name") String name) {
+	  public String postCourseInfoForm(@Valid @ModelAttribute("leave") LeaveInfo leaveInfo, @PathVariable Long courseId, Model model, @PathVariable(required = false) Long userId) {
 	  //if(bindingResult.hasErrors()) {
      //return "AT00001_CourseRegisteration";
         //}
         // System.out.print("Take A Leave ID in confirm screen:"+leaveInfo.getLeaveId());
+      CourseInfo courseInfo = courseInfoRepo.findByCourseID(courseId);
+      String course = courseInfo.getCourseName();
+      UserInfo userInfo = courseInfo.getUserInfo();
+      String name = userInfo.getUserName();
+      
       model.addAttribute("course",course);
       model.addAttribute("name", name);
       UserRole role = userSessionService.getRole();
 
         if(role == UserRole.STUDENT){
           model.addAttribute("postAction", "/student/leave/"+courseId+"/complete");
-          model.addAttribute("previousAction", "/student/leave/"+courseId+"/confirm?course_name="+course+"&teacher_name="+name);    
+          model.addAttribute("previousAction", "/student/leave/"+courseId+"/confirm");    
           List<String> breadcrumbList = new ArrayList<>();
           breadcrumbList.add("My Course");
           breadcrumbList.add("Course Detail");
@@ -132,7 +148,7 @@ public class TakeALeaveController {
         }
         else if(role ==UserRole.TEACHER){
           model.addAttribute("postAction", "/teacher/leave/"+courseId+"/complete");
-          model.addAttribute("previousAction", "/teacher/leave/"+courseId+"/confirm?course_name="+course+"&teacher_name="+name);   
+          model.addAttribute("previousAction", "/teacher/leave/"+courseId+"/confirm");   
           List<String> breadcrumbList = new ArrayList<>();
           breadcrumbList.add("My Course");
           breadcrumbList.add("Course Detail");
@@ -143,7 +159,7 @@ public class TakeALeaveController {
         }
         else{
           model.addAttribute("postAction", "/admin/leave/"+courseId+"/"+userId+"/complete");
-          model.addAttribute("previousAction", "/admin/leave/"+courseId+"/"+userId+"/confirm?course_name="+course+"&teacher_name="+name);
+          model.addAttribute("previousAction", "/admin/leave/"+courseId+"/"+userId+"/confirm");
           List<String> breadcrumbList = new ArrayList<>();
           breadcrumbList.add("Top");
           breadcrumbList.add("User List");

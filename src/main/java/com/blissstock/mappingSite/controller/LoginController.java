@@ -45,7 +45,10 @@ public class LoginController {
     if (error != null) {
       if (error.isBlank()) {
         model.addAttribute("error", "Your email and password is invalid.");
-      } else {
+      } else if(error.equals("suspended")){
+        model.addAttribute("error", "Your account has been suspended.");
+      }     
+      else {
         model.addAttribute("error", error);
       }
     }

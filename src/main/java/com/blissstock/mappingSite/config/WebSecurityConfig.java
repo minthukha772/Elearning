@@ -15,6 +15,7 @@ import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 /**
@@ -83,7 +84,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .usernameParameter("email") // リクエストパラメータのname属性を明示
         .passwordParameter("password")
         .successForwardUrl("/home")
-        .failureUrl("/login?error") // ログインURL失敗した時実行する
+        .failureHandler(authenticationFailureHandler()) // ログインURL失敗した時実行する
         .permitAll()
         .and()
         .logout()
@@ -131,5 +132,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Bean
   public SessionRegistry sessionRegistry() {
     return new SessionRegistryImpl();
+  }
+
+  @Bean
+  public AuthenticationFailureHandler authenticationFailureHandler() {
+      return new MyAuthenticationFailureHandler();
   }
 }
