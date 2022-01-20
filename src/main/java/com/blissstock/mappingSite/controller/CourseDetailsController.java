@@ -80,7 +80,6 @@ public class CourseDetailsController {
         List<Syllabus> syllabusList = courseInfo.getSyllabus();
         model.addAttribute("syllabusList", syllabusList);
 
-        System.out.println("heehee" + syllabusList.size());
 
         //Get the remaining number of students who can join course 
         Integer maxStudent = courseInfo.getMaxStu();
