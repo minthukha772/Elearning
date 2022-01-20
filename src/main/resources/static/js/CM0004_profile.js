@@ -28,7 +28,7 @@ $(function () {
                 data: { uid },
             }).done(function () {
                 //reload page
-                window.location.href = '/admin';
+                location.reload();
             }).fail(function () {
                 alert("Something went wrong");
             });
@@ -43,7 +43,7 @@ const suspendUser = (uid) =>{
               data: { uid },
           }).done(function () {
               //reload page
-              window.location.href = '/admin';
+              location.reload();
           }).fail(function () {
               alert("Something went wrong");
           });
@@ -58,7 +58,7 @@ const reactivateUser = (uid) =>{
               data: { uid },
           }).done(function () {
               //reload page
-              window.location.href = '/admin';
+              location.reload();
           }).fail(function () {
               alert("Something went wrong");
           });
@@ -73,7 +73,7 @@ const verifyUser = (uid) =>{
               data: { uid },
           }).done(function () {
               //reload page
-              window.location.href = '/admin';
+              location.reload();
           }).fail(function () {
               alert("Something went wrong");
           });
