@@ -20,12 +20,14 @@
     th:unless="${#authorization.expression('isAuthenticated()')}">
     <ul class="nav justify-content-center row gx-3 gy-2">
       <li class="nav-item col-auto text-center">
-        <a class="btn btn-light btn-lg active" style="background-color: white;"  aria-current="page" th:href="@{/check_email/register/student}">Register
+        <a class="btn btn-light btn-lg active" style="background-color: white;" aria-current="page"
+          th:href="@{/check_email/register/student}">Register
           as
           Student</a>
       </li>
       <li class="nav-item col-auto text-center">
-        <a class="btn btn-light btn-lg active" style="background-color: white;" aria-current="page" th:href="@{/check_email/register/teacher}">Register
+        <a class="btn btn-light btn-lg active" style="background-color: white;" aria-current="page"
+          th:href="@{/check_email/register/teacher}">Register
           as
           Teacher</a>
       </li>
@@ -93,7 +95,8 @@
 
         <div class="coursesSlider" id="liveCourseSlider">
           <div class="card" th:each="courseInfo:${liveCourse}">
-            <img th:src="${courseInfo.profilePic.url}" class="card-img-top" th:alt="${courseInfo.profilePic.name}" />
+            <img width="230" height="230" th:src="${courseInfo.profilePic.url}" class="card-img-top"
+              th:alt="${courseInfo.profilePic.name}" />
             <div class="card-body">
               <h5 class="card-title" th:text="${courseInfo.courseName}">Course Name</h5>
 
@@ -134,7 +137,8 @@
 
         <div class="RecordedcoursesSlider" id="recordedCourseSlider">
           <div class="card" th:each="courseInfo:${recordedCourse}">
-            <img th:src="${courseInfo.profilePic.url}" class="card-img-top" th:alt="${courseInfo.profilePic.name}" />
+            <img width="230" height="230" th:src="${courseInfo.profilePic.url}" class="card-img-top"
+              th:alt="${courseInfo.profilePic.name}" />
             <div class="card-body">
               <h5 class="card-title" th:text="${courseInfo.courseName}">Course Name</h5>
 
@@ -194,7 +198,7 @@
                 <input type="date" class="form-control" aria-label="Start Date" name="startDate" />
               </div>
               <div class="col-md-6 col-sm-12 mt-sm-3 mt-md-0">
-                <input type="date" class="form-control" aria-label="End Date" name="endDate"/>
+                <input type="date" class="form-control" aria-label="End Date" name="endDate" />
               </div>
             </div>
             <div class="row justify-content-end">
@@ -203,7 +207,7 @@
                     col-auto
                     me-sm-3 me-md-2
                     mt-md-2 mt-sm-3
-                  " id="submitButton" name="action" type="submit" >
+                  " id="submitButton" name="action" type="submit">
                 Search
               </button>
             </div>
