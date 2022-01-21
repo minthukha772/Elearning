@@ -128,6 +128,9 @@ public class CourseDetailsController {
 
 
         }
+        else if(userSessionService.getRole()== UserRole.GUEST_USER){
+            model.addAttribute("guest", "GUEST");
+        }
 
         return "CM0003_CourseDetails";
     }
