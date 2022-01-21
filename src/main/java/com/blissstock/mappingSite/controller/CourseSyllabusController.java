@@ -56,6 +56,7 @@ public class CourseSyllabusController {
     // For the purpose of display
     logger.info("user requested syllabus of course_id: {}", id);
 
+    //Sort by title
     List<Syllabus> syllabusList = syllabusService.getAllSyllabus(id).stream()
         .sorted((p1, p2) -> p1.getTitle().compareTo(p2.getTitle())).collect(Collectors.toList());
 
