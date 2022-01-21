@@ -34,9 +34,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 
-public class courseRegistrationController {
+public class CourseRegistrationController {
 
-    private static final Logger logger = LoggerFactory.getLogger(courseRegistrationController.class);
+    private static final Logger logger = LoggerFactory.getLogger(CourseRegistrationController.class);
 
     // @Autowired
     // private CourseRepository courseRepo;

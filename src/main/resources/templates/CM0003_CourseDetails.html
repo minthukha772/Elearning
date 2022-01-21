@@ -24,12 +24,16 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
     <div class="container card-position">
         <div class="row">
             <div class="col-lg-4 left">
-               
-                <p class="p16size" th:utext="${#strings.substringBefore(courseInfo.startDate, ' ')} + ' ~ ' + ${#strings.substringBefore(courseInfo.endDate, ' ')}"></p>
-                <div th:each="time : ${courseTimeList}">
-                    <p class="p16normal" th:text="${time.courseDays} + ' : ' + ${time.courseStartTime} + '~' + ${time.courseEndTime}"></p>
-                </div>
-                <p class="fw-normal customp1 customcolor" th:text="'Only ' + ${availableStuList} + ' more students!'"></p>
+               <div th:if="${isLiveClass}">
+                    <p class="p16size" th:utext="${#strings.substringBefore(courseInfo.startDate, ' ')} + ' ~ ' + ${#strings.substringBefore(courseInfo.endDate, ' ')}"></p>
+                    <div th:each="time : ${courseTimeList}">
+                        <p class="p16normal" th:text="${time.courseDays} + ' : ' + ${time.courseStartTime} + '~' + ${time.courseEndTime}"></p>
+                    </div>
+                    <p class="fw-normal customp1 customcolor" th:text="'Only ' + ${availableStuList} + ' more students!'"></p>
+               </div>
+               <div>
+                    <p class="fw-normal customp1 customcolor" th:text="${currentAttending} + ' students have taken this course!!'"></p>
+               </div>
             </div>
             <div class="col-lg-8 right" >
                 <h4 th:text="${courseInfo.courseName}"></h4>
