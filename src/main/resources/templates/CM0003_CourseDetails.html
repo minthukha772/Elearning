@@ -81,9 +81,23 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
           <p class="p16normal" th:text="${courseInfo.prerequisite}"></p>
           <p class="prerequisites" th:text="'$ ' + ${courseInfo.fees}"></p>
 
-          <!-- For Student/Guest -->
+            <!-- For guest user -->
+          <div th:if="${guest == 'GUEST'}">
+              
+            <a
+              th:href="@{/login}"
+              ><button class="btn btn-primary">Enroll</button></a
+            >
+
+            <a
+              th:href="@{'/student/review-list/course_id/' + ${courseInfo.courseId}}"
+              ><button class="btn btn-primary">Reviews</button></a
+            >
+            
+          </div>
+
+          <!-- For Student -->
           <div th:if="${student == 'STUDENT'}">
-            <!-- <button class="btn btn-primary">Enroll</button> -->
 
             <a
               th:if="${studentNotRegistered}"
