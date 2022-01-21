@@ -1,6 +1,7 @@
 package com.blissstock.mappingSite.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -35,8 +36,7 @@ public class CourseSyllabusController {
   UserSessionService userSessionService;
 
   private static Logger logger = LoggerFactory.getLogger(
-    CourseSyllabusController.class
-  );
+      CourseSyllabusController.class);
 
   @ExceptionHandler(CourseNotFoundException.class)
   @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -44,27 +44,25 @@ public class CourseSyllabusController {
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body("");
   }
 
-  @GetMapping(
-    path = {
+  @GetMapping(path = {
       "/teacher/course_syllabus/course_id/{id}",
       "/admin/course_syllabus/course_id/{id}",
-    }
-  )
+  })
   public String contextView(
-    Model model,
-    @PathVariable("id") long id,
-    HttpServletRequest httpServletRequest
-  )
-    throws CourseNotFoundException {
-    //For the purpose of display
+      Model model,
+      @PathVariable("id") long id,
+      HttpServletRequest httpServletRequest)
+      throws CourseNotFoundException {
+    // For the purpose of display
     logger.info("user requested syllabus of course_id: {}", id);
 
-    List<Syllabus> syllabusList = syllabusService.getAllSyllabus(id);
+    //Sort by title
+    List<Syllabus> syllabusList = syllabusService.getAllSyllabus(id).stream()
+        .sorted((p1, p2) -> p1.getTitle().compareTo(p2.getTitle())).collect(Collectors.toList());
 
     model.addAttribute(
-      "deleteAction",
-      httpServletRequest.getRequestURL().toString() + "/delete"
-    );
+        "deleteAction",
+        httpServletRequest.getRequestURL().toString() + "/delete");
     model.addAttribute("syllabusList", syllabusList);
 
     model.addAttribute("postAction", httpServletRequest.getRequestURL());
@@ -72,56 +70,48 @@ public class CourseSyllabusController {
     return "course_context";
   }
 
-  @PostMapping(
-    path = {
+  @PostMapping(path = {
       "/teacher/course_syllabus/course_id/{id}",
       "/admin/course_syllabus/course_id/{id}",
-    }
-  )
+  })
   public String addSyllabus(
-    Model model,
-    @ModelAttribute Syllabus syllabus,
-    @PathVariable(name = "id") Long id,
-    HttpServletRequest httpServletRequest
-  ) {
+      Model model,
+      @ModelAttribute Syllabus syllabus,
+      @PathVariable(name = "id") Long id,
+      HttpServletRequest httpServletRequest) {
 
-    logger.info("user added syllabus {}",syllabus);
-
-
+    logger.info("user added syllabus {}", syllabus);
 
     try {
-      //syllabusService.deleteSyllabus(id);
-      syllabusService.addSyllabus(syllabus,id);
+      // syllabusService.deleteSyllabus(id);
+      syllabusService.addSyllabus(syllabus, id);
     } catch (InsuffientPermssionException e) {
       //
     } catch (Exception e) {
       //
     }
 
-    /* 
-    if(userRole==UserRole.ADMIN){
-
-      return "redirect:/teacher/course_syllabus/"+id+"/";
-    }else if(userRole == UserRole.TEACHER){
-      return "redirect:/teacher/course_syllabus/"+id+"/";
-    }
+    /*
+     * if(userRole==UserRole.ADMIN){
+     * 
+     * return "redirect:/teacher/course_syllabus/"+id+"/";
+     * }else if(userRole == UserRole.TEACHER){
+     * return "redirect:/teacher/course_syllabus/"+id+"/";
+     * }
      */
 
     return "redirect:" + httpServletRequest.getRequestURI();
   }
 
-  @DeleteMapping(
-    path = {
+  @DeleteMapping(path = {
       "/teacher/course_syllabus/course_id/{id}",
       "/admin/course_syllabus/course_id/{id}",
-    }
-  )
+  })
   public ResponseEntity<Object> deleteSyllabus(
-    Model model,
-    Long id,
-    HttpServletRequest httpServletRequest
-  ) {
-    
+      Model model,
+      Long id,
+      HttpServletRequest httpServletRequest) {
+
     try {
       syllabusService.deleteSyllabus(id);
     } catch (Exception e) {
@@ -129,13 +119,13 @@ public class CourseSyllabusController {
       return ResponseEntity.status(HttpStatus.OK).body("operation success");
     }
 
-    /* 
-    if(userRole==UserRole.ADMIN){
-
-      return "redirect:/teacher/course_syllabus/"+id+"/";
-    }else if(userRole == UserRole.TEACHER){
-      return "redirect:/teacher/course_syllabus/"+id+"/";
-    }
+    /*
+     * if(userRole==UserRole.ADMIN){
+     * 
+     * return "redirect:/teacher/course_syllabus/"+id+"/";
+     * }else if(userRole == UserRole.TEACHER){
+     * return "redirect:/teacher/course_syllabus/"+id+"/";
+     * }
      */
 
     return ResponseEntity.status(HttpStatus.OK).body("operation success");
