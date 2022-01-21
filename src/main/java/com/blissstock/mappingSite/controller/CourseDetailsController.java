@@ -55,6 +55,7 @@ public class CourseDetailsController {
     @Autowired
     SyllabusRepository syllabusRepository;
 
+    @Autowired
     JoinCourseService joinCourseService;
 
     @GetMapping(
