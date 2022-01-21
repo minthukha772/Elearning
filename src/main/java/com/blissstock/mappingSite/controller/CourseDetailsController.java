@@ -55,6 +55,7 @@ public class CourseDetailsController {
     @Autowired
     SyllabusRepository syllabusRepository;
 
+    @Autowired
     JoinCourseService joinCourseService;
 
     @GetMapping(
@@ -67,6 +68,9 @@ public class CourseDetailsController {
         CourseInfo courseInfo = courseInfoRepository.findById(courseId).get();
         model.addAttribute("courseInfo", courseInfo);
 
+        String classType = courseInfo.getClassType();
+        boolean isLiveClass = classType.equals("LIVE");
+        model.addAttribute("isLiveClass", isLiveClass);
 
         //Get Time segments for course
         List<CourseTime> courseTimeList = courseInfo.getCourseTime();
@@ -85,7 +89,14 @@ public class CourseDetailsController {
             studentList.add(joinCourseUser.getUserInfo());
         }
         Integer stuListSize = studentList.size();
-            Integer availableStuList = maxStudent - stuListSize;
+            Integer availableStuList;
+            try{
+                availableStuList = maxStudent - stuListSize;
+            }catch(NullPointerException e){
+                availableStuList = 0;
+            }
+            Integer currentAttending = studentList.size();
+            model.addAttribute("currentAttending", currentAttending);
             model.addAttribute("availableStuList", availableStuList);
          
 
@@ -127,6 +138,9 @@ public class CourseDetailsController {
 
 
 
+        }
+        else if(userSessionService.getRole()== UserRole.GUEST_USER){
+            model.addAttribute("guest", "GUEST");
         }
 
         return "CM0003_CourseDetails";
