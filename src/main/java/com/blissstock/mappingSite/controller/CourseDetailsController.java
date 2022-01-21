@@ -53,12 +53,9 @@ public class CourseDetailsController {
     JoinCourseUserRepository joinCourseUserRepository;
 
     @Autowired
-<<<<<<< HEAD
     SyllabusRepository syllabusRepository;
 
-=======
     JoinCourseService joinCourseService;
->>>>>>> f1096845fe74e465a6c2ac4b87900d4bee06e5fe
 
     @GetMapping(
         value =  {"/student/course-details/{courseId}", "/teacher/course-details/{courseId}", "/admin/course-details/{courseId}","/guest/course-detail/{courseId}"}
