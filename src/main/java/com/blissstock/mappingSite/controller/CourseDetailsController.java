@@ -6,11 +6,13 @@ import java.util.List;
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.CourseTime;
 import com.blissstock.mappingSite.entity.JoinCourseUser;
+import com.blissstock.mappingSite.entity.Syllabus;
 import com.blissstock.mappingSite.entity.Test;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
 import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
+import com.blissstock.mappingSite.repository.SyllabusRepository;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
 import com.blissstock.mappingSite.repository.UserInfoRepository;
 import com.blissstock.mappingSite.service.JoinCourseService;
@@ -51,7 +53,12 @@ public class CourseDetailsController {
     JoinCourseUserRepository joinCourseUserRepository;
 
     @Autowired
+<<<<<<< HEAD
+    SyllabusRepository syllabusRepository;
+
+=======
     JoinCourseService joinCourseService;
+>>>>>>> f1096845fe74e465a6c2ac4b87900d4bee06e5fe
 
     @GetMapping(
         value =  {"/student/course-details/{courseId}", "/teacher/course-details/{courseId}", "/admin/course-details/{courseId}","/guest/course-detail/{courseId}"}
@@ -59,12 +66,30 @@ public class CourseDetailsController {
     private String getCourseDetails(@PathVariable Long courseId, Model model){
         Long userId;
 
+        //Get course by ID
         CourseInfo courseInfo = courseInfoRepository.findById(courseId).get();
         model.addAttribute("courseInfo", courseInfo);
 
+
+        //Get Time segments for course
         List<CourseTime> courseTimeList = courseInfo.getCourseTime();
         model.addAttribute("courseTimeList", courseTimeList);
 
+
+        //Get syllabus
+        List<Syllabus> syllabusList = courseInfo.getSyllabus();
+        model.addAttribute("syllabusList", syllabusList);
+
+
+        //Get the remaining number of students who can join course 
+        Integer maxStudent = courseInfo.getMaxStu();
+        List<UserInfo> studentList = new ArrayList<>();
+        for(JoinCourseUser joinCourseUser: courseInfo.getJoin()){
+            studentList.add(joinCourseUser.getUserInfo());
+        }
+        Integer stuListSize = studentList.size();
+            Integer availableStuList = maxStudent - stuListSize;
+            model.addAttribute("availableStuList", availableStuList);
          
 
         if(userSessionService.getRole()== UserRole.TEACHER){
@@ -94,24 +119,19 @@ public class CourseDetailsController {
             model.addAttribute("studentRegistered", studentRegistered);
             model.addAttribute("student", "STUDENT");
         }
-        else if(userSessionService.getRole()== UserRole.ADMIN){
+       
+        else if(userSessionService.getRole()== UserRole.ADMIN || userSessionService.getRole() == UserRole.SUPER_ADMIN){
 
-            Integer maxStudent = courseInfo.getMaxStu();
+           
             model.addAttribute("admin", "ADMIN");
             model.addAttribute("classlink", courseInfo.getClassLink());
-
-            List<UserInfo> studentList = new ArrayList<>();
-            for(JoinCourseUser joinCourseUser: courseInfo.getJoin()){
-                studentList.add(joinCourseUser.getUserInfo());
-            }
             model.addAttribute("studentList", studentList);
-            Integer stuListSize = studentList.size();
-            Integer availableStuList = maxStudent - stuListSize;
-            model.addAttribute("availableStuList", availableStuList);
+            
 
 
 
         }
+
         return "CM0003_CourseDetails";
     }
 
