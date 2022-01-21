@@ -109,10 +109,13 @@ public class CourseDetailsController {
         else if(userSessionService.getRole()== UserRole.STUDENT){
             userId = userSessionService.getUserAccount().getAccountId();
             boolean studentRegistered = true;
+            
             List<JoinCourseUser> join = joinCourseService.getJoinCourseUser(userId, courseId);
             studentRegistered = join != null && !join.isEmpty();
 
             logger.info("The boolean value for student registered is {} ", studentRegistered);
+            boolean studentNotRegistered = !studentRegistered;
+            model.addAttribute("studentNotRegistered", studentNotRegistered);
             model.addAttribute("studentRegistered", studentRegistered);
             model.addAttribute("student", "STUDENT");
         }
