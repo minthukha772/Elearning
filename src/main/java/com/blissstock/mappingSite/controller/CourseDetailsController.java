@@ -3,6 +3,8 @@ package com.blissstock.mappingSite.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.CourseTime;
 import com.blissstock.mappingSite.entity.JoinCourseUser;
@@ -10,18 +12,23 @@ import com.blissstock.mappingSite.entity.Syllabus;
 import com.blissstock.mappingSite.entity.Test;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.enums.UserRole;
+import com.blissstock.mappingSite.exceptions.CourseNotFoundException;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
 import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
 import com.blissstock.mappingSite.repository.SyllabusRepository;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
 import com.blissstock.mappingSite.repository.UserInfoRepository;
+import com.blissstock.mappingSite.service.CourseService;
 import com.blissstock.mappingSite.service.JoinCourseService;
 import com.blissstock.mappingSite.service.UserService;
 import com.blissstock.mappingSite.service.UserSessionService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -57,6 +64,9 @@ public class CourseDetailsController {
 
     @Autowired
     JoinCourseService joinCourseService;
+
+    @Autowired
+    CourseService courseService;
 
     @GetMapping(
         value =  {"/student/course-details/{courseId}", "/teacher/course-details/{courseId}", "/admin/course-details/{courseId}","/guest/course-detail/{courseId}"}
@@ -179,5 +189,30 @@ public class CourseDetailsController {
     //     return "hello";
     //}
 
+    @DeleteMapping("/admin/course-details/delete/")
+    public ResponseEntity<Object> deleteCourse(
+        Model model,
+        Long courseId,
+        HttpServletRequest httpServletRequest
+    ) {
+        logger.info("DELETE Request for course {}",courseId);
+        try {
+        //UserInfo userInfo = userService.getUserInfoByID(uid);
+        CourseInfo courseInfo = courseInfoRepository.findById(courseId).get();
+        if(courseInfo == null){
+            throw new CourseNotFoundException();
+        }
+        courseService.deleteCourseInfo(courseInfo);
+        } catch (CourseNotFoundException e) {
+        e.printStackTrace();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Course Not Found");
+        } catch (Exception e){
+        e.printStackTrace();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body("operation success");
+        
+    }
 
 }
