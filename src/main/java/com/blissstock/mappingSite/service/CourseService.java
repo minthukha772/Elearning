@@ -11,5 +11,5 @@ public interface CourseService {
     
     public List<CourseInfo> getCourseList(CourseInfoDTO courseInfoDTO);
 
-    public void deleteCourseInfo(CourseInfo courseInfo) throws CourseNotFoundException, SyllabusNotFoundException;
+    public void deleteCourseInfo(CourseInfo courseInfo);
 }

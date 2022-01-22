@@ -56,19 +56,19 @@ public class CourseServiceImpl implements CourseService{
     }
 
     @Override
-    public void deleteCourseInfo(CourseInfo courseInfo) throws CourseNotFoundException, SyllabusNotFoundException {
+    public void deleteCourseInfo(CourseInfo courseInfo) {
         logger.info("delete course {}", courseInfo.getCourseId());
         courseInfoRepository.delete(courseInfo);
-        if(courseInfo.getClassType() == "live"){
-            courseTimeRepository.deleteByCourseID(courseInfo.getCourseId());
-        }
+        // if(courseInfo.getClassType() == "live"){
+        //     courseTimeRepository.deleteByCourseID(courseInfo.getCourseId());
+        // }
         
         // if (!syllabusServiceImpl.getAllSyllabus(courseInfo.getCourseId().isPresent()) {
         //     logger.error("Course_id: {} is not found", courseInfo.getCourseId());
         //     throw new CourseNotFoundException(courseInfo.getCourseId());
         //   }
 
-        List<Syllabus> syllabusList;
+        // List<Syllabus> syllabusList;
         // syllabusList = syllabusServiceImpl.getAllSyllabus(courseInfo.getCourseId());
         // if(!syllabusList.isEmpty()){
 
@@ -80,26 +80,26 @@ public class CourseServiceImpl implements CourseService{
 
         // }
 
-        try{
-            syllabusList = syllabusServiceImpl.getAllSyllabus(courseInfo.getCourseId());
-            logger.info("Get syllabus list of courseid {}", courseInfo.getCourseId());
-        }catch(CourseNotFoundException e){
-            syllabusList = null;
-            logger.error("Syllabus of Course not found {}", courseInfo.getCourseId());
-        }
-        // List<Syllabus> syllabusList = syllabusServiceImpl.getAllSyllabus(courseInfo.getCourseId());
-        if(syllabusList != null){
-            for(Syllabus syllabus: syllabusList){
-                syllabusServiceImpl.deleteSyllabus(syllabus.getSyllabusId());
-            }
-        }
+        // try{
+        //     syllabusList = syllabusServiceImpl.getAllSyllabus(courseInfo.getCourseId());
+        //     logger.info("Get syllabus list of courseid {}", courseInfo.getCourseId());
+        // }catch(CourseNotFoundException e){
+        //     syllabusList = null;
+        //     logger.error("Syllabus of Course not found {}", courseInfo.getCourseId());
+        // }
+        // // List<Syllabus> syllabusList = syllabusServiceImpl.getAllSyllabus(courseInfo.getCourseId());
+        // if(syllabusList != null){
+        //     for(Syllabus syllabus: syllabusList){
+        //         syllabusServiceImpl.deleteSyllabus(syllabus.getSyllabusId());
+        //     }
+        // }
         
-        List<JoinCourseUser> joinUserInfo = joinCourseUserRepository.findByCourseID(courseInfo.getCourseId());
-        if(joinUserInfo != null){
-            for(JoinCourseUser joinuserList: joinUserInfo){
-                joinCourseUserRepository.deleteById(joinuserList.getJoinId());
-            }
-        }
+        // List<JoinCourseUser> joinUserInfo = joinCourseUserRepository.findByCourseID(courseInfo.getCourseId());
+        // if(joinUserInfo != null){
+        //     for(JoinCourseUser joinuserList: joinUserInfo){
+        //         joinCourseUserRepository.deleteById(joinuserList.getJoinId());
+        //     }
+        // }
         
         
     }
