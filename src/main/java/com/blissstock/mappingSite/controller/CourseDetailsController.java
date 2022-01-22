@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
 
 @Controller
 public class CourseDetailsController {
-    
+
     private static final Logger logger = LoggerFactory.getLogger(CourseDetailsController.class);
 
     @Autowired
@@ -50,7 +50,7 @@ public class CourseDetailsController {
     @Autowired
     CourseInfoRepository courseInfoRepository;
 
-    @Autowired 
+    @Autowired
     UserInfoRepository userInfoRepository;
 
     @Autowired
@@ -68,13 +68,12 @@ public class CourseDetailsController {
     @Autowired
     CourseService courseService;
 
-    @GetMapping(
-        value =  {"/student/course-details/{courseId}", "/teacher/course-details/{courseId}", "/admin/course-details/{courseId}","/guest/course-detail/{courseId}"}
-    )
-    private String getCourseDetails(@PathVariable Long courseId, Model model){
+    @GetMapping(value = { "/student/course-details/{courseId}", "/teacher/course-details/{courseId}",
+            "/admin/course-details/{courseId}", "/guest/course-detail/{courseId}" })
+    private String getCourseDetails(@PathVariable Long courseId, Model model) {
         Long userId;
 
-        //Get course by ID
+        // Get course by ID
         CourseInfo courseInfo = courseInfoRepository.findById(courseId).get();
         model.addAttribute("courseInfo", courseInfo);
 
@@ -82,52 +81,48 @@ public class CourseDetailsController {
         boolean isLiveClass = classType.equals("LIVE");
         model.addAttribute("isLiveClass", isLiveClass);
 
-        //Get Time segments for course
+        // Get Time segments for course
         List<CourseTime> courseTimeList = courseInfo.getCourseTime();
         model.addAttribute("courseTimeList", courseTimeList);
 
-
-        //Get syllabus
+        // Get syllabus
         List<Syllabus> syllabusList = courseInfo.getSyllabus();
         model.addAttribute("syllabusList", syllabusList);
 
-
-        //Get the remaining number of students who can join course 
+        // Get the remaining number of students who can join course
         Integer maxStudent = courseInfo.getMaxStu();
         List<UserInfo> studentList = new ArrayList<>();
-        for(JoinCourseUser joinCourseUser: courseInfo.getJoin()){
+        for (JoinCourseUser joinCourseUser : courseInfo.getJoin()) {
             studentList.add(joinCourseUser.getUserInfo());
         }
         Integer stuListSize = studentList.size();
-            Integer availableStuList;
-            try{
-                availableStuList = maxStudent - stuListSize;
-            }catch(NullPointerException e){
-                availableStuList = 0;
-            }
-            Integer currentAttending = studentList.size();
-            model.addAttribute("currentAttending", currentAttending);
-            model.addAttribute("availableStuList", availableStuList);
-         
+        Integer availableStuList;
+        try {
+            availableStuList = maxStudent - stuListSize;
+        } catch (NullPointerException e) {
+            availableStuList = 0;
+        }
+        Integer currentAttending = studentList.size();
+        model.addAttribute("currentAttending", currentAttending);
+        model.addAttribute("availableStuList", availableStuList);
 
-        if(userSessionService.getRole()== UserRole.TEACHER){
+        if (userSessionService.getRole() == UserRole.TEACHER) {
             userId = userSessionService.getUserAccount().getAccountId();
             logger.info("The user id is {} ", userId);
             Long registered = courseInfo.getUserInfo().getUid();
             logger.info("The teacher id is {} ", userId);
             boolean teacherRegistered = false;
-            if(userId.equals(registered)){
+            if (userId.equals(registered)) {
                 teacherRegistered = true;
             }
             model.addAttribute("teacherRegistered", teacherRegistered);
             model.addAttribute("teacher", "TEACHER");
             model.addAttribute("classlink", courseInfo.getClassLink());
 
-        }
-        else if(userSessionService.getRole()== UserRole.STUDENT){
+        } else if (userSessionService.getRole() == UserRole.STUDENT) {
             userId = userSessionService.getUserAccount().getAccountId();
             boolean studentRegistered = true;
-            
+
             List<JoinCourseUser> join = joinCourseService.getJoinCourseUser(userId, courseId);
             studentRegistered = join != null && !join.isEmpty();
 
@@ -137,37 +132,33 @@ public class CourseDetailsController {
             model.addAttribute("studentRegistered", studentRegistered);
             model.addAttribute("student", "STUDENT");
         }
-       
-        else if(userSessionService.getRole()== UserRole.ADMIN || userSessionService.getRole() == UserRole.SUPER_ADMIN){
 
-           
+        else if (userSessionService.getRole() == UserRole.ADMIN
+                || userSessionService.getRole() == UserRole.SUPER_ADMIN) {
+
             model.addAttribute("admin", "ADMIN");
             model.addAttribute("classlink", courseInfo.getClassLink());
             model.addAttribute("studentList", studentList);
-            
 
-
-
-        }
-        else if(userSessionService.getRole()== UserRole.GUEST_USER){
+        } else if (userSessionService.getRole() == UserRole.GUEST_USER) {
             model.addAttribute("guest", "GUEST");
         }
 
         return "CM0003_CourseDetails";
     }
 
-    @PostMapping(
-        value = {"/teacher/course-details/insert-class-link", "/admin/course-details/insert-class-link"}
-    )
-    private String courseDetailsLink(@ModelAttribute("class-link") String classLink,  @ModelAttribute("courseId") Long courseId, @ModelAttribute("roleLink") String roleLink,Model model){
+    @PostMapping(value = { "/teacher/course-details/insert-class-link", "/admin/course-details/insert-class-link" })
+    private String courseDetailsLink(@ModelAttribute("class-link") String classLink,
+            @ModelAttribute("courseId") Long courseId, @ModelAttribute("roleLink") String roleLink, Model model) {
         CourseInfo courseInfo = courseInfoRepository.findById(courseId).get();
         courseInfo.setClassLink(classLink);
         courseInfoRepository.save(courseInfo);
-        return "redirect:/" + roleLink  + "/course-details/" + courseId;
+        return "redirect:/" + roleLink + "/course-details/" + courseId;
     }
 
     @PostMapping("/admin/course-details/insert-test-link")
-    private String courseTestLink(@ModelAttribute("test-link") String testLink, @ModelAttribute("courseId") Long courseId, Model model){
+    private String courseTestLink(@ModelAttribute("test-link") String testLink,
+            @ModelAttribute("courseId") Long courseId, Model model) {
         CourseInfo courseInfo = courseInfoRepository.findById(courseId).get();
         List<Test> testList = courseInfo.getTest();
         Test test = new Test();
@@ -176,43 +167,41 @@ public class CourseDetailsController {
         testList.add(test);
         courseInfo.setTest(testList);
         courseInfoRepository.save(courseInfo);
-        
 
-        return "redirect:/admin/course-details/" + courseId; 
+        return "redirect:/admin/course-details/" + courseId;
     }
 
     // @GetMapping("/admin/hello")
     // private String helloWorld(){
-    //     Long myId = (long) 1;
-    //     CourseInfo courseInfo = courseInfoRepository.findById(myId).get();
-    //     System.out.println("BlaBla" + courseInfo.getTest().size());
-    //     return "hello";
-    //}
+    // Long myId = (long) 1;
+    // CourseInfo courseInfo = courseInfoRepository.findById(myId).get();
+    // System.out.println("BlaBla" + courseInfo.getTest().size());
+    // return "hello";
+    // }
 
     @DeleteMapping("/admin/course-details/delete/")
     public ResponseEntity<Object> deleteCourse(
-        Model model,
-        Long courseId,
-        HttpServletRequest httpServletRequest
-    ) {
-        logger.info("DELETE Request for course {}",courseId);
+            Model model,
+            Long courseId,
+            HttpServletRequest httpServletRequest) {
+        logger.info("DELETE Request for course {}", courseId);
         try {
-        //UserInfo userInfo = userService.getUserInfoByID(uid);
-        CourseInfo courseInfo = courseInfoRepository.findById(courseId).get();
-        if(courseInfo == null){
-            throw new CourseNotFoundException();
-        }
-        courseService.deleteCourseInfo(courseInfo);
+            // UserInfo userInfo = userService.getUserInfoByID(uid);
+            CourseInfo courseInfo = courseInfoRepository.findById(courseId).get();
+            if (courseInfo == null) {
+                throw new CourseNotFoundException();
+            }
+            courseService.deleteCourseInfo(courseInfo);
         } catch (CourseNotFoundException e) {
-        e.printStackTrace();
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Course Not Found");
-        } catch (Exception e){
-        e.printStackTrace();
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Course Not Found");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
         }
 
         return ResponseEntity.status(HttpStatus.OK).body("operation success");
-        
+
     }
 
 }

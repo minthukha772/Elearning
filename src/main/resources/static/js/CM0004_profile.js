@@ -28,7 +28,7 @@ $(function () {
                 data: { uid },
             }).done(function () {
                 //reload page
-                location.href = "/admin/home";
+                location.href = "/admin/top/";
             }).fail(function () {
                 alert("Something went wrong");
             });

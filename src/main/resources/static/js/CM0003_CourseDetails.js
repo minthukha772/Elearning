@@ -10,11 +10,11 @@ $(function(){
         modal.find("#deleteCourse").click((e) => {
           $.ajax({
             type: "delete",
-            url: "/admin/course-details/delete",
+            url: "/admin/course-details/delete/",
             data: { courseId },
           }).done(function () {
             //reload page
-            window.location.href = "/home";
+            window.location.href = "/admin/top/";
           }).fail(function () {
             alert("Something went wrong");
           });
