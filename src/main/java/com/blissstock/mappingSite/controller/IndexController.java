@@ -82,7 +82,6 @@ public class IndexController {
 
             }
 
-            System.out.println(videoInfoDTOs.toString());
             model.addAttribute("liveCourse", liveInfoDTOs);
             // todo change to video list
             model.addAttribute("recordedCourse", videoInfoDTOs);
