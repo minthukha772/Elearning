@@ -103,8 +103,12 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
 
             <a
               th:if="${studentNotRegistered}"
+              th:href="@{/student/enroll/{courseId}/{userId}(courseId = ${courseInfo.courseId}, userId = ${userId})}"
+              ><button class="btn btn-primary" th:classappend="${studentRegistered == true}? 'disabled'">Enroll</button></a
+            >
+            <a
               th:href="@{'/student/payment-upload/course_id/' + ${courseInfo.courseId}}"
-              ><button class="btn btn-primary">Enroll</button></a
+              ><button class="btn btn-primary" th:classappend="${studentRegistered == false}? 'disabled'">Payment</button></a
             >
             <a
               th:if="${studentRegistered}"

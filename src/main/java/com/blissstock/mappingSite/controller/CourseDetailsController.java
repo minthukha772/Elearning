@@ -34,6 +34,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -132,6 +133,9 @@ public class CourseDetailsController {
             model.addAttribute("studentNotRegistered", studentNotRegistered);
             model.addAttribute("studentRegistered", studentRegistered);
             model.addAttribute("student", "STUDENT");
+            model.addAttribute("userId", userId);
+
+            
         }
 
         else if (userSessionService.getRole() == UserRole.ADMIN
@@ -206,6 +210,15 @@ public class CourseDetailsController {
 
         return ResponseEntity.status(HttpStatus.OK).body("operation success");
 
+    }
+
+    @RequestMapping("/student/enroll/{courseId}/{userId}")
+    public String enrollStudent(@PathVariable Long courseId, @PathVariable Long userId, Model model){
+        JoinCourseUser joins = new JoinCourseUser();
+        joins.setCourseInfo(courseInfoRepository.findByCourseID(courseId));
+        joins.setUserInfo(userInfoRepository.findById(userId).get());
+        joinCourseUserRepository.save(joins);
+        return "redirect:/student/course-details/" + courseId;
     }
 
 }
