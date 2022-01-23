@@ -147,6 +147,12 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
               ><button class="btn btn-primary">Review List</button></a
             >
 
+            <a
+              th:if="${teacherRegistered}"
+              th:href="@{'/teacher/course_syllabus/course_id/' + ${courseInfo.courseId}}"
+              ><button class="btn btn-primary">Manage Syllabus</button></a
+            >
+
             <div th:if="${teacherRegistered}">
               <p class="prerequisites my-3">Class Link</p>
 
@@ -234,6 +240,10 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
               th:href="@{'/admin/review-list/course_id/'+${courseInfo.courseId}+'/student_id/'+${courseInfo.userInfo.uid}}"
               ><button class="btn btn-primary">Review List</button></a
             >
+            <a
+              th:href="@{'/admin/course_syllabus/course_id/' + ${courseInfo.courseId}}"
+              ><button class="btn btn-primary">Manage Syllabus</button></a
+            >
             <div>
               <p class="prerequisites my-3">Class Link</p>
               <form th:action="@{insert-class-link}" method="POST">
@@ -262,7 +272,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
     </div>
 
     <div class="container fifth-section">
-      <table>
+      <!-- <table>
         <thead>
           <th>Syllabus</th>
         </thead>
@@ -271,7 +281,36 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
             <td th:text="${syllabus.title}"></td>
           </tr>
         </tbody>
-      </table>
+      </table> -->
+      <div class="my-3"><h3>Syllabus</h3></div>
+
+      <div class="mt-3 row row-cols-1 row-cols-md-3 g-4">
+        <div class="col" th:each="syllabusList, stats : ${syllabusList}">
+          <div class="card" th:id="|card-${stats.index}|">
+            <div class="card-body">
+              <h5
+                class="card-title"
+                th:text="${syllabusList.title}"
+                th:data-id="${syllabusList.syllabusId}"
+              >
+                Card title
+              </h5>
+
+              <ul class="list-group list-group-flush">
+                <li
+                  style="background-color: #9FDBB3;"
+                  class="list-group-item"
+                  th:each="content, index : ${syllabusList.content}"
+                  th:text="${content.content}"
+                  th:data-id="${content.contentId}"
+                >
+                  Cras justo odio
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div th:if="${admin == 'ADMIN'}">
