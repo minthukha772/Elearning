@@ -42,6 +42,14 @@ public class CourseSpecification {
                 predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("endDate"), courseInfoDTO.getEndDate()));
             }
 
+            if( courseInfoDTO.getLowestFee()>0){
+                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("fees"), courseInfoDTO.getLowestFee()));
+            }
+
+            if( courseInfoDTO.getHighestFee()>0){
+                predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("fees"), courseInfoDTO.getHighestFee()));
+            }
+
             //Only get approved course
             predicates.add(criteriaBuilder.equal(root.get("isCourseApproved"), true));
             query.orderBy(criteriaBuilder.desc(root.get("startDate")));
