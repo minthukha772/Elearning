@@ -74,9 +74,9 @@ public class CheckEmailController {
         return "error/404";
       }
     }
-    if (role == null || !role.equals("teacher") || !role.equals("admin")) {
-      role = "student";
-    }
+    // if (role == null || !role.equals("teacher") || !role.equals("admin")) {
+    //   role = "student";
+    // }
     logger.debug("Role is {}", role);
 
     emailCheckRegisterDTO.setEmail(email);
