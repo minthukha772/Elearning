@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.CourseTime;
 import com.blissstock.mappingSite.entity.JoinCourseUser;
+import com.blissstock.mappingSite.entity.Review;
 import com.blissstock.mappingSite.entity.Syllabus;
 import com.blissstock.mappingSite.entity.Test;
 import com.blissstock.mappingSite.entity.UserInfo;
@@ -78,6 +79,23 @@ public class CourseDetailsController {
         // Get course by ID
         CourseInfo courseInfo = courseInfoRepository.findById(courseId).get();
         model.addAttribute("courseInfo", courseInfo);
+
+        //Get joinlist of the course
+        List<JoinCourseUser> joinList=courseInfo.getJoin();
+        List<Review> reviewList=new ArrayList<Review>();
+        for(JoinCourseUser join:joinList){
+            reviewList.addAll(join.getReview());  
+        }
+
+        List<Review> courseReviewList= new ArrayList<Review>(); 
+        for (Review courseReview:reviewList){
+            if(courseReview.getReviewType()==0){
+                courseReviewList.add(courseReview); 
+                model.addAttribute("courseReviewList", courseReviewList);
+            }
+        }
+
+        logger.info("The review list is {}", courseReviewList.size());
 
         String classType = courseInfo.getClassType();
         boolean isLiveClass = classType.equals("LIVE");
