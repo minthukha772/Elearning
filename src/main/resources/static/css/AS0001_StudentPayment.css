@@ -12,8 +12,8 @@ p {
     color: #7749f8;
 }
 
-.btn {
-    /* font-family: 游ゴシック, "Yu Gothic", 游ゴシック体, YuGothic, sans-serif; */
+.btnColor {
+    
     font-size: 16px;
     letter-spacing: 1px;
     display: inline-block;
@@ -39,8 +39,8 @@ p {
     background: #68717a;
 }
 
-.btn:hover,
-.btn:focus {
+.btnColor:hover,
+.btnColor:focus {
     color: #7749f8;
     background: #fff;
     border-color: #7749f8;
