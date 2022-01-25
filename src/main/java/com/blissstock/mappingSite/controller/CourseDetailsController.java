@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.blissstock.mappingSite.dto.JoinCourseDTO;
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.CourseTime;
 import com.blissstock.mappingSite.entity.JoinCourseUser;
@@ -135,7 +136,6 @@ public class CourseDetailsController {
             model.addAttribute("student", "STUDENT");
             model.addAttribute("userId", userId);
 
-            
         }
 
         else if (userSessionService.getRole() == UserRole.ADMIN
@@ -202,7 +202,7 @@ public class CourseDetailsController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Course Not Found");
         } catch (ObjectOptimisticLockingFailureException e) {
             e.printStackTrace();
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
@@ -213,11 +213,22 @@ public class CourseDetailsController {
     }
 
     @RequestMapping("/student/enroll/{courseId}/{userId}")
-    public String enrollStudent(@PathVariable Long courseId, @PathVariable Long userId, Model model){
-        JoinCourseUser joins = new JoinCourseUser();
-        joins.setCourseInfo(courseInfoRepository.findByCourseID(courseId));
-        joins.setUserInfo(userInfoRepository.findById(userId).get());
-        joinCourseUserRepository.save(joins);
+    public String enrollStudent(@PathVariable Long courseId, @PathVariable Long userId, Model model) {
+
+        JoinCourseDTO joinCourseDTO = new JoinCourseDTO();
+        joinCourseDTO.setUid(userId);
+        joinCourseDTO.setCourseId(courseId);
+        try {
+            joinCourseService.enrollStudent(joinCourseDTO);
+        } catch (Exception e) {
+            logger.info(e.toString());
+
+            return "redirect:/student/course-details/" + courseId;
+        }
+
+        // joins.setCourseInfo(courseInfoRepository.findByCourseID(courseId));
+        // joins.setUserInfo(userInfoRepository.findById(userId).get());
+        // joinCourseUserRepository.save(joins);
         return "redirect:/student/course-details/" + courseId;
     }
 
