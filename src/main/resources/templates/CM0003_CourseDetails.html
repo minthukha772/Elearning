@@ -275,6 +275,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
       </div>
     </div>
 
+    <!-- syllabus -->
     <div class="container fifth-section">
       <!-- <table>
         <thead>
@@ -317,10 +318,11 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
       </div>
     </div>
 
+    <!-- reviews -->
     <div class="container fifth-section">
       <div class="my-3"><h3>Reviews</h3></div>
 
-      <div class="mt-3 row row-cols-1 row-cols-md-3 g-4">
+      <div th:if="${courseReviewListNotEmpty}" class="mt-3 row row-cols-1 row-cols-md-3 g-4">
         <div class="col" th:each="courseReviewList, stats : ${courseReviewList}">
           <div class="card" th:id="|card-${stats.index}|">
             <div class="card-body">
@@ -346,6 +348,10 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
             </div>
           </div>
         </div>
+      </div>
+
+      <div th:if="${courseReviewListEmpty}">
+        <p class="px-5 py-3">There is no review about this course yet!</p>
       </div>
     </div>
 

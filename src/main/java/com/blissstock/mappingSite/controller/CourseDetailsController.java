@@ -87,6 +87,7 @@ public class CourseDetailsController {
             reviewList.addAll(join.getReview());  
         }
 
+        //Get reveiwlist 
         List<Review> courseReviewList= new ArrayList<Review>(); 
         for (Review courseReview:reviewList){
             if(courseReview.getReviewType()==0){
@@ -96,6 +97,12 @@ public class CourseDetailsController {
         }
 
         logger.info("The review list is {}", courseReviewList.size());
+
+        boolean courseReviewListEmpty = courseReviewList.isEmpty();
+        boolean courseReveiwListNotEmpty = !courseReviewListEmpty;
+        logger.info("The boolean of courseReviewListEmpty is {}", courseReviewListEmpty);
+        model.addAttribute("courseReviewListEmpty", courseReviewListEmpty);
+        model.addAttribute("courseReviewListNotEmpty", courseReveiwListNotEmpty);
 
         String classType = courseInfo.getClassType();
         boolean isLiveClass = classType.equals("LIVE");
