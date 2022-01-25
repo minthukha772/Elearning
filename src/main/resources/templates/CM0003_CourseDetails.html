@@ -20,6 +20,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
+    
     <link
       rel="stylesheet"
       type="text/css"
@@ -29,6 +30,8 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
+    <link rel="stylesheet" type="text/css" href="/css/CM0009_ReviewList.css">
+    <!-- <link rel="stylesheet" type="text/css" href="/css/ReviewListTab.css"> -->
     
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
@@ -91,10 +94,10 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
               ><button class="btn btn-primary">Enroll</button></a
             >
 
-            <a
+            <!-- <a
               th:href="@{'/student/review-list/course_id/' + ${courseInfo.courseId}}"
               ><button class="btn btn-primary">Reviews</button></a
-            >
+            > -->
             
           </div>
 
@@ -115,10 +118,10 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
               th:href="@{'/student/leave/'+ ${courseInfo.courseId} +'?course_name='+${courseInfo.courseName}+'&teacher_name='+ ${courseInfo.UserInfo.userName}}"
               ><button class="btn btn-primary">Take a Leave</button></a
             >
-            <a
+            <!-- <a
               th:href="@{'/student/review-list/course_id/' + ${courseInfo.courseId}}"
               ><button class="btn btn-primary">Reviews</button></a
-            >
+            > -->
             <a
               th:if="${studentRegistered}"
               th:href="@{'/student/student-review/'+${courseInfo.courseId}}"
@@ -146,10 +149,10 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
             >
               <button class="btn btn-primary">Student List</button></a
             >
-            <a
+            <!-- <a
               th:href="@{'/teacher/review-list/course_id/' + ${courseInfo.courseId}}"
               ><button class="btn btn-primary">Review List</button></a
-            >
+            > -->
 
             <a
               th:if="${teacherRegistered}"
@@ -240,10 +243,10 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
             </div>
           </div>
 
-            <a
+            <!-- <a
               th:href="@{'/admin/review-list/course_id/'+${courseInfo.courseId}+'/student_id/'+${courseInfo.userInfo.uid}}"
               ><button class="btn btn-primary">Review List</button></a
-            >
+            > -->
             <a
               th:href="@{'/admin/course_syllabus/course_id/' + ${courseInfo.courseId}}"
               ><button class="btn btn-primary">Manage Syllabus</button></a
@@ -277,16 +280,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
 
     <!-- syllabus -->
     <div class="container fifth-section">
-      <!-- <table>
-        <thead>
-          <th>Syllabus</th>
-        </thead>
-        <tbody>
-          <tr th:each="syllabus : ${syllabusList}">
-            <td th:text="${syllabus.title}"></td>
-          </tr>
-        </tbody>
-      </table> -->
+
       <div class="my-3"><h3>Syllabus</h3></div>
 
       <div class="mt-3 row row-cols-1 row-cols-md-3 g-4">
@@ -319,59 +313,107 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
     </div>
 
     <!-- reviews -->
-    <div class="container fifth-section">
-      <div class="my-3"><h3>Reviews</h3></div>
 
-      <div th:if="${courseReviewListNotEmpty}" class="mt-3 row row-cols-1 row-cols-md-3 g-4">
-        <div class="col" th:each="courseReviewList, stats : ${courseReviewList}">
-          <div class="card" th:id="|card-${stats.index}|">
-            <div class="card-body">
-              <h5
-                class="card-title"
-                th:text="${courseReviewList.feedback}"
-                
-              >
-                Card title
-              </h5>
+    <div class="container py-5">
+      <div class="row">
+          <div class="col-lg-8 mx-auto">
+              <!-- List group-->
+              <ul class="list-group shadow">
+                  <!-- list group item-->
+                  <li class="list-group-item">
+                      <!-- Custom content-->
+                      <div class="course-info">
+                          <h5 class="font-weight-bold mt-3">[[${courseName}]]</h5>
+                          <p class="font-weight-light">[[${trName}]]</p>
+                      </div>
+                      <h5 style="color: #7749F8;" class="mt-5">Course Review</h5>
+                      <hr style="width:140px; ">
+                  </li>
 
-              <ul class="list-group list-group-flush">
-                <li
-                  style="background-color: #9FDBB3;"
-                  class="list-group-item"
-                  th:each="courseReviewList.join.userInfo.userName, index : ${courseReviewList.join.userInfo.userName}"
-                  th:text="${courseReviewList.join.userInfo.userName}"
+                  <div th:if="${courseReviewListEmpty}">
+                      <div class="mb-4 p-3 text-center">
+                          <span class="letterpress">There is no current reviews from students.</span>
+                      </div>
+
+                  </div>
+
+                  <!-- code to implement-->
+                  <li th:if="${courseReviewListNotEmpty}" class="list-group-item">
+                      <div class="media align-items-lg-center flex-column flex-lg-row p-3">
+                          <div class="d-flex align-items-center justify-content-between mt-1">
+                              <h5 class="font-weight-bold my-2 col-md-10" style="color: #87281A;">Course Average
+                                  Rating</h5>
+
+                              <ul class="list-inline large">
+                                  <p class="mx-4" style="color: #87281A;">[[${averageFloat}]]</p>
+                                  <li class="list-inline-item m-0"><i class="fa fa-star text-success"
+                                          th:each="i : ${#numbers.sequence(1, average)}"></i></li>
+                                  <li class="list-inline-item m-0 gray-star"><i class="fa fa-star-o text-gray"
+                                          th:unless="${average} == 5"
+                                          th:each="i : ${#numbers.sequence(1, 5-average)}"></i></li>
+                              </ul>
+                          </div>
+                      </div>
+                  </li>
+
+
+                  <li class="list-group-item" th:each="review:${courseReviewList}">
+                      <div class="media align-items-lg-center flex-column flex-lg-row p-3">
+                          <div class="media-body order-2 order-lg-1">
+
+                              <p class="font-italic text-muted mb-0 small"
+                                  th:text="${#dates.format(review.assignedDate, 'yyyy-MM-dd')}"></p>
+                              <div sec:authorize="hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SUPER_ADMIN')">
+                                  <a th:href="@{'/admin/edit-student-review/'+${review.reviewId}}">Edit</a>
+                              </div>
+                          </div>
+                          <h5 class="mt-0 font-weight-bold mb-2" th:text="${review.join.userInfo.userName}"></h5>
+                          <div class="d-flex align-items-center justify-content-between mt-1">
+                              <h6 class="font-weight-bold my-2 col-md-10" th:text="${review.feedback}"></h6>
+                              <ul class="list-inline small">
+                                  <li class="list-inline-item m-0"><i class="fa fa-star text-warning"
+                                          th:each="i : ${#numbers.sequence(1, review.star)}"></i></li>
+                                  <li class="list-inline-item m-0 gray-star"><i class="fa fa-star-o text-gray"
+                                          th:unless="${review.star} == 5"
+                                          th:each="i : ${#numbers.sequence(1, 5-review.star)}"></i></li>
+                              </ul>
+                          </div>
+                      </div>
+                  </li>
+
                   
-                >
-                  Cras justo odio
-                </li>
+                  <!-- see more -->
+                  <div class="list list-group-item" th:if="${courseReviewListNotEmpty}">
+                    <div class="py-3">
+                      <div th:if="${student == 'STUDENT'}">
+                        <a th:href="@{'/student/review-list/course_id/' + ${courseInfo.courseId}}">
+                          <button class="btn btn-primary">See more</button>  
+                        </a>  
+                      </div>
+                      <div th:if="${teacher == 'TEACHER'}">
+                        <a th:href="@{'/teacher/review-list/course_id/' + ${courseInfo.courseId}}">
+                          <button class="btn btn-primary">See more</button>  
+                        </a>  
+                      </div>
+                      <div th:if="${admin == 'ADMIN'}">
+                        <a th:href="@{'/admin/review-list/course_id/'+${courseInfo.courseId}+'/student_id/'+${courseInfo.userInfo.uid}}">
+                          <button class="btn btn-primary">See more</button>  
+                        </a>  
+                      </div>
+                      <div th:if="${guest == 'GUEST'}">
+                        <a th:href="@{/login}">
+                          <button class="btn btn-primary">See more</button>  
+                        </a>  
+                      </div>
+                    </div>
+
+                  </div>
+
               </ul>
-            </div>
-          </div>
-        </div>
+          </div> <!-- End -->
+          <!-- </li>                       -->
       </div>
-
-      <div th:if="${courseReviewListEmpty}">
-        <p class="px-5 py-3">There is no review about this course yet!</p>
-      </div>
-
-      <div th:if="${courseReviewListNotEmpty}" class="py-5">
-        <div th:if="${student == 'STUDENT'}">
-          <a th:href="@{'/student/review-list/course_id/' + ${courseInfo.courseId}}">
-            <button class="btn btn-primary">See more</button>  
-          </a>  
-        </div>
-        <div th:if="${teacher == 'TEACHER'}">
-          <a th:href="@{'/teacher/review-list/course_id/' + ${courseInfo.courseId}}">
-            <button class="btn btn-primary">See more</button>  
-          </a>  
-        </div>
-        <div th:if="${admin == 'ADMIN'}">
-          <a th:href="@{'/admin/review-list/course_id/'+${courseInfo.courseId}+'/student_id/'+${courseInfo.userInfo.uid}}">
-            <button class="btn btn-primary">See more</button>  
-          </a>  
-        </div>
-      </div>
-    </div>
+  </div>
 
     <div th:if="${admin == 'ADMIN'}">
       <div class="container second-section">
@@ -433,6 +475,12 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
     </div>
 
     <div th:replace="@{fragments/footer}"></div>
+    <!-- <script type="text/javascript">
+      $('#myTab a').on('click', function (e) {
+          e.preventDefault()
+          $(this).tab('show')
+      })
+  </script> -->
 
     <!-- JS -->
     <script
