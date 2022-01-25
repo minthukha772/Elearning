@@ -92,9 +92,18 @@ public class CourseDetailsController {
         for (Review courseReview:reviewList){
             if(courseReview.getReviewType()==0){
                 courseReviewList.add(courseReview); 
-                model.addAttribute("courseReviewList", courseReviewList);
             }
         }
+
+        if(courseReviewList.size() >= 3){
+            List<Review> threeCourseReviewList = new ArrayList<>();
+            threeCourseReviewList.add(courseReviewList.get(0));
+            threeCourseReviewList.add(courseReviewList.get(1));
+            threeCourseReviewList.add(courseReviewList.get(2));
+            model.addAttribute("courseReviewList", threeCourseReviewList);
+        }else{
+            model.addAttribute("courseReviewList", courseReviewList);
+        } 
 
         logger.info("The review list is {}", courseReviewList.size());
 
