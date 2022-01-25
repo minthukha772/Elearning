@@ -6,24 +6,25 @@
 
 <head>
     <meta charset="utf-8">
-    <!-- <link rel="shortcut icon" type="image/ico" href="http://www.datatables.net/favicon.ico"> -->
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, user-scalable=no">
     <title>Mapping Site</title>
-    <!-- <link rel="stylesheet" type="text/css"
-        href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css"> -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <!-- Important for DropDown -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script> -->
+
     <link rel="stylesheet" type="text/css" href="/css/dataTables.bootstrap5.css">
     <link rel="stylesheet" type="text/css" href="/css/shCore.css">
     <link rel="stylesheet" type="text/css" href="/css/demo.css">
-    <!-- <link rel="stylesheet" type="text/css" href="/css/AT0003_ListofStudentsByA.css"> -->
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
+    <title>Mapping Site</title>
+    <link rel="stylesheet" type="text/css" href="css/CM0001_Complete.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+        th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js}"
+        integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+        crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="/css/AD0002_EnrollStudent.css">
-    <!-- <link rel="stylesheet" type="text/css" href="css/dataTableManual.css">
-            <link rel="stylesheet" type="text/css" href="css/dataTableSCSSMaual.css"> -->
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+        th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js}"
+        integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+        crossorigin="anonymous"></script>
 
 
     <title>Mapping Site</title>
@@ -75,45 +76,17 @@
     </script>
 
 </head>
+<div th:replace="@{fragments/nav}"></div>
 
 <body>
+
     <div style="position: relative;">
-        <div id="mySidebar" class="sidebar" style="float:left;">
 
-            <div class="text">
-                Menu
-            </div>
-            <!-- check href  -->
-            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
-            <ul class="main_side">
-                <li class="active"><a href="#">Profile</a></li>
-                <li> <a href="#" id="1">User List <span class="fas fa-caret-down"></span> </a>
-                    <ul class="item-show-1">
-                        <li><a href="/StudentList">Student List</a></li>
-                        <li><a href="#">Teacher List</a></li>
-                    </ul>
-                </li>
-                <li class="active"><a href="#">Payment Record</a></li>
-                <li> <a href="#" id="2">Course <span class="fas fa-caret-down"></span> </a>
-                    <ul class="item-show-2">
-                        <li><a href="#">Course List</a></li>
-                    </ul>
-                </li>
-                <li><a href="#">Review List</a></li>
-                <li><a href="#">Absence List</a></li>
-                <li><a href="#">Log Out</a></li>
-            </ul>
-        </div>
 
-        <div id="main" style="margin-left: 250px;">
-            <span class="fas fa-bars openbtn" id="sidebutton" onclick="openNav()"
-                style="display: none;float: left;"></span>
-            <header class="header navbar-light bg-light" id="header">
-                <a class="navbar-brand" href="#" style="float: left;left: 0;top: 0;">Mapping Site</a>
-                <div class="header_img">
-                    <img src="/images/admin_profile.jpg" alt="people-profile" onclick="location.href='/test'">
-                </div>
-            </header>
+        <div id="main">
+
+
+
 
             <nav aria-label="breadcrumb" class="bg-light" style="padding: 0 10px;">
                 <ol class="breadcrumb">
@@ -139,7 +112,7 @@
             <div class="container mx-auto" style="max-width:1000px ;">
 
             </div>
-            <div class="container mx-auto" style="max-width: 800px;">
+            <div class="container mx-auto" style="max-width: 1000px;">
                 <div class="col-lg-7">
                     <div th:if="${status == 'success'}" class="alert alert-success" role="alert">
                         <h5 class="text-center" th:text="${Msg}">
@@ -182,145 +155,80 @@
 
                 </div>
             </div>
-            <div class="container mx-auto" style="max-width: 800px;">
-                <div class="col-lg-7">
-                    <div class="input-group mb-3">
-                        <!-- <div class="input-group-prepend" style="width: 25%;">
-                                                                                                            <select class="form-select" aria-label=".form-select-sm example" id="account_status"
-                                                                                                            style="width: 100%;">
-                                                                                                            <option value="">All</option>
-                                                                                                            <option value="Registered">Registered</option>
-                                                                                                            <option value="Request">Request</option>
-                                                                                                            <option value="Suspended">Suspended</option>
-                                                                                                        </select>
-                                                                                                    </div> -->
-
-
-                        <input type="text" class="form-control" id="mySearchText" placeholder="Search in Student List"
-                            aria-label="Search in Student List" aria-describedby="mySearchButton">
-                        <button class="btn btn-outline-secondary fw-bold" id="mySearchButton"
-                            type="button">Search</button>
-                    </div>
-                </div>
-                <!-- 
-                <div class="input-group-prepend mb-3" style="width: 135px;">
-                    <label class="text-muted">Account Status</label>
-                    <select class="form-select" aria-label=".form-select-sm example" id="account_status"
-                        style="width: 100%;">
-                        <option value="">All</option>
-                        <option value="Request">Request</option>
-                        <option value="Registered">Registered</option>
-                        <option value="Suspended">Suspended</option>
-                    </select>
-                </div> -->
-
-                <div class="card mx-auto p-3" style="max-width: 800px;">
-                    <div class="card-body">
-                        <section>
-                            <div class="demo-html">
-                                <div th:if="${isCourseFound}">
-                                    <table id="example" class="table table-striped" style="width:100%">
-                                        <thead>
-                                            <tr>
-                                                <th>No</th>
-                                                <th>Name</th>
-                                                <th>Email</th>
-                                                <th>Phone Number</th>
-                                                <th>Enroll Studnet</th>
-
-
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr th:each="student:${students}">
-                                                <td th:text="${studentStat.index+1}"></td>
-
-                                                <td th:text="${student.name}"></td>
+            <div class="container mx-auto" style="max-width: 1000px;">
+                <div class="col-lg-7" style="display: inline">
 
 
 
-                                                <td th:text="${student.email}"></td>
-                                                <td th:text="${student.phone}"></td>
-                                                <td>
-
-
-                                                    <button class="EnrollButton"
-                                                        th:attr="onclick=|Enrollstudent('${student.uid}')|">Enroll</button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                        <tfoot>
-                                            <tr>
-                                                <th>No</th>
-                                                <th>Name</th>
-                                                <th>Email</th>
-                                                <th>Phone Number</th>
-                                                <th>Enroll Studnet</th>
-
-                                            </tr>
-                                        </tfoot>
-                                    </table>
-                                </div>
-                            </div>
-                        </section>
-                    </div>
+                    <input style="margin-bottom: 20px;" type="text" class="form-control" id="mySearchText"
+                        placeholder="Search in Student List" aria-label="Search in Student List"
+                        aria-describedby="mySearchButton">
+                    </input>
+                    <!-- <button class="btn btn-outline-secondary fw-bold" id="mySearchButton" type="button">Search</button> -->
                 </div>
             </div>
 
+
+            <div class="card mx-auto p-3" style="max-width: 1000px;">
+                <div class="card-body">
+                    <section>
+                        <div class="demo-html">
+                            <div th:if="${isCourseFound}">
+                                <table id="example" class="table table-striped" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Phone Number</th>
+                                            <th>Enroll Studnet</th>
+
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="student:${students}">
+                                            <td th:text="${studentStat.index+1}"></td>
+
+                                            <td th:text="${student.name}"></td>
+
+
+
+                                            <td th:text="${student.email}"></td>
+                                            <td th:text="${student.phone}"></td>
+                                            <td>
+
+
+                                                <button class="EnrollButton"
+                                                    th:attr="onclick=|Enrollstudent('${student.uid}')|">Enroll</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Phone Number</th>
+                                            <th>Enroll Studnet</th>
+
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
         </div>
+
+    </div>
     </div>
 
 
-    <footer>
-        <section class="justify-content-center justify-content-lg-between border-bottom">
-            <div class="container text-center text-md-start mt-5">
-                <!-- Grid row -->
-                <div class="row mt-3">
-                    <!-- Grid column -->
-                    <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
-                        <!-- Content -->
-                        <h6 class="text-uppercase fw-bold mb-4 footerhead">
-                            Address
-                        </h6>
-                        <p class="footertext">
-                            Building “16/6” Bawzin Street, Thuwanna Lann Sone Bus Stop, Thingangyun Township .
-                        </p>
-                    </div>
-                    <!-- Grid column -->
-
-                    <!-- Grid column -->
-                    <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
-                        <!-- Links -->
-                        <h6 class="text-uppercase fw-bold mb-4 footerhead">
-                            Contact Us
-                        </h6>
-                        <p class="footertext"><i class="fas fa-envelope me-3"></i>Email : someone@bliss-stock.com</p>
-                        <p class="footertext"><i class="fas fa-phone me-3"></i>Phone: +959 259 123 123</p>
-                    </div>
-                    <!-- Grid column -->
-
-
-                </div>
-                <!-- Grid row -->
-            </div>
-        </section>
-        <p>© 2021 BlissStock,Ltd. All rights reserved</p>
-    </footer>
-
+    <div th:replace="@{fragments/footer}"></div>
     <script>
-        function openNav() {
-            document.getElementById("mySidebar").style.width = "250px";
-            document.getElementById("main").style.marginLeft = "250px";
-            document.getElementById("sidebutton").style.display = "none";
-            document.getElementById("mySidebar").style.position = "fixed";
-        }
 
-        function closeNav() {
-            document.getElementById("mySidebar").style.width = "0";
-            document.getElementById("main").style.marginLeft = "0";
-            document.getElementById("sidebutton").style.display = "block";
-            document.getElementById("sidebutton").style.width = "5px";
-        }
         function Enrollstudent(uid) {
             console.log(window.location.href + "/enroll/" + uid);
             if (confirm("Do you want to enroll this student?")) {
