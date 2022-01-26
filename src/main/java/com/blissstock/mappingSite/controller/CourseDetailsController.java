@@ -2,6 +2,7 @@ package com.blissstock.mappingSite.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -312,7 +313,11 @@ public class CourseDetailsController {
                 logger.info("null user");
                 return "redirect:/student/course-details/" + courseId+"/?error";
             }
-        } catch (Exception e) {
+        }catch(NoSuchElementException e){
+            e.printStackTrace();
+            return "redirect:/student/course-details/" + courseId+"/?error";
+        }
+        catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
             return "redirect:/student/course-details/" + courseId+"/?error";

@@ -39,35 +39,36 @@ public class JoinCourseService {
     }
 
     public JoinCourseUser enrollStudent(JoinCourseDTO joinCourseDTO) throws Exception {
-         logger.info("course_id: {}  user_id:{}",joinCourseDTO.getCourseId(),joinCourseDTO.getUid());
+        logger.info("course_id: {}  user_id:{}", joinCourseDTO.getCourseId(), joinCourseDTO.getUid());
 
-        if (this.isUserAlreadyJoined(joinCourseDTO.getUid(), joinCourseDTO.getCourseId())) {
+        UserInfo userInfo = userRepository.findById(joinCourseDTO.getUid()).orElseThrow();
+        CourseInfo courseInfo = courseRepository.findById(joinCourseDTO.getCourseId()).orElseThrow();
+
+        if (this.isUserAlreadyJoined(userInfo, courseInfo)) {
             logger.warn("User with {} email already exists" + joinCourseDTO.getUid() + " cid"
                     + joinCourseDTO.getCourseId());
             throw new UserAlreadyExistException();
         }
-        logger.info("enroll student");
-        Optional<UserInfo> getUserInfo = userRepository.findById(joinCourseDTO.getUid());
 
-        Optional<CourseInfo> getCourseInfo = courseRepository.findById(joinCourseDTO.getCourseId());
+        logger.info("enroll student");
+
         // logger.info(getUserInfo.toString());
         // logger.info(getCourseInfo.toString());
-        if (getUserInfo.isPresent() && getCourseInfo.isPresent()) {
-            JoinCourseUser joinCourseUser = new JoinCourseUser();
-            joinCourseUser.setUserInfo(getUserInfo.get());
-            joinCourseUser.setCourseInfo(getCourseInfo.get());
-            // logger.info("user is " + user.toString());
-            JoinCourseUser savedJoinCourseUser = joinCourseUserRepository.save(joinCourseUser);
-            return savedJoinCourseUser;
-        }
-        return null;
+
+        JoinCourseUser joinCourseUser = new JoinCourseUser();
+        joinCourseUser.setUserInfo(userInfo);
+        joinCourseUser.setCourseInfo(courseInfo);
+        // logger.info("user is " + user.toString());
+        JoinCourseUser savedJoinCourseUser = joinCourseUserRepository.save(joinCourseUser);
+        return savedJoinCourseUser;
+
     }
 
-    public boolean isUserAlreadyJoined(Long uid, Long courseId) {
-        return joinCourseUserRepository.findByCourseUser(courseId, uid) != null;
+    public boolean isUserAlreadyJoined(UserInfo userInfo, CourseInfo courseInfo) {
+        return joinCourseUserRepository.findByUserInfoAndCourseInfo(userInfo, courseInfo) != null;
     }
 
-    public List<JoinCourseUser> getJoinCourseUser(Long uid, Long courseId){
+    public List<JoinCourseUser> getJoinCourseUser(Long uid, Long courseId) {
         return joinCourseUserRepository.findByCourseUser(courseId, uid);
     }
 
