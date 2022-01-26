@@ -73,7 +73,7 @@ const onSubmit = () => {
     $(form).addClass("was-validated");
     let isFormValid = checkDate();
     isFormValid= checkTime() && isFormValid;
-    if (!form[0].checkValidity() && isFormValid) {
+    if (!(form[0].checkValidity() && isFormValid)) {
       event.preventDefault();
       event.stopPropagation();
     }
