@@ -39,25 +39,24 @@ public class JoinCourseService {
     }
 
     public JoinCourseUser enrollStudent(JoinCourseDTO joinCourseDTO) throws Exception {
-        System.out.println(joinCourseDTO.toString());
-        System.out.println(joinCourseDTO.getCourseId() + " " + joinCourseDTO.getUid());
+         logger.info("course_id: {}  user_id:{}",joinCourseDTO.getCourseId(),joinCourseDTO.getUid());
 
         if (this.isUserAlreadyJoined(joinCourseDTO.getUid(), joinCourseDTO.getCourseId())) {
             logger.warn("User with {} email already exists" + joinCourseDTO.getUid() + " cid"
                     + joinCourseDTO.getCourseId());
             throw new UserAlreadyExistException();
         }
-        System.out.println("enroll student");
+        logger.info("enroll student");
         Optional<UserInfo> getUserInfo = userRepository.findById(joinCourseDTO.getUid());
 
         Optional<CourseInfo> getCourseInfo = courseRepository.findById(joinCourseDTO.getCourseId());
-        // System.out.println(getUserInfo.toString());
-        // System.out.println(getCourseInfo.toString());
+        // logger.info(getUserInfo.toString());
+        // logger.info(getCourseInfo.toString());
         if (getUserInfo.isPresent() && getCourseInfo.isPresent()) {
             JoinCourseUser joinCourseUser = new JoinCourseUser();
             joinCourseUser.setUserInfo(getUserInfo.get());
             joinCourseUser.setCourseInfo(getCourseInfo.get());
-            // System.out.println("user is " + user.toString());
+            // logger.info("user is " + user.toString());
             JoinCourseUser savedJoinCourseUser = joinCourseUserRepository.save(joinCourseUser);
             return savedJoinCourseUser;
         }

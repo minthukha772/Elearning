@@ -303,11 +303,13 @@ public class CourseDetailsController {
 
     @RequestMapping("/student/enroll/{courseId}/{userId}")
     public String enrollStudent(@PathVariable Long courseId, @PathVariable Long userId, Model model){
+        logger.info("Request");
         JoinCourseDTO joinCourseDTO = new JoinCourseDTO();
         joinCourseDTO.setUid(userId);
         joinCourseDTO.setCourseId(courseId);
         try {
             if(joinCourseService.enrollStudent(joinCourseDTO) == null){
+                logger.info("null user");
                 return "redirect:/student/course-details/" + courseId+"/?error";
             }
         } catch (Exception e) {
