@@ -33,7 +33,7 @@ public class JoinCourseUser {
 
   @Column(name = "join_id")
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long joinId;
 
   // mapping
