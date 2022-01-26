@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.blissstock.mappingSite.dto.JoinCourseDTO;
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.CourseTime;
 import com.blissstock.mappingSite.entity.JoinCourseUser;
@@ -302,10 +303,18 @@ public class CourseDetailsController {
 
     @RequestMapping("/student/enroll/{courseId}/{userId}")
     public String enrollStudent(@PathVariable Long courseId, @PathVariable Long userId, Model model){
-        JoinCourseUser joins = new JoinCourseUser();
-        joins.setCourseInfo(courseInfoRepository.findByCourseID(courseId));
-        joins.setUserInfo(userInfoRepository.findById(userId).get());
-        joinCourseUserRepository.save(joins);
+        JoinCourseDTO joinCourseDTO = new JoinCourseDTO();
+        joinCourseDTO.setUid(userId);
+        joinCourseDTO.setCourseId(courseId);
+        try {
+            if(joinCourseService.enrollStudent(joinCourseDTO) == null){
+                return "redirect:/student/course-details/" + courseId+"/?error";
+            }
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return "redirect:/student/course-details/" + courseId+"/?error";
+        }
         return "redirect:/student/course-details/" + courseId;
     }
 

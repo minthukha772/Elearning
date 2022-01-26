@@ -42,7 +42,7 @@ public class JoinCourseService {
         System.out.println(joinCourseDTO.toString());
         System.out.println(joinCourseDTO.getCourseId() + " " + joinCourseDTO.getUid());
 
-        if (this.isUserAlraedyJoined(joinCourseDTO.getUid(), joinCourseDTO.getCourseId())) {
+        if (this.isUserAlreadyJoined(joinCourseDTO.getUid(), joinCourseDTO.getCourseId())) {
             logger.warn("User with {} email already exists" + joinCourseDTO.getUid() + " cid"
                     + joinCourseDTO.getCourseId());
             throw new UserAlreadyExistException();
@@ -57,7 +57,6 @@ public class JoinCourseService {
             JoinCourseUser joinCourseUser = new JoinCourseUser();
             joinCourseUser.setUserInfo(getUserInfo.get());
             joinCourseUser.setCourseInfo(getCourseInfo.get());
-
             // System.out.println("user is " + user.toString());
             JoinCourseUser savedJoinCourseUser = joinCourseUserRepository.save(joinCourseUser);
             return savedJoinCourseUser;
@@ -65,8 +64,8 @@ public class JoinCourseService {
         return null;
     }
 
-    public boolean isUserAlraedyJoined(Long uid, Long courseId) {
-        return joinCourseUserRepository.findByCourseUser(courseId, uid) == null;
+    public boolean isUserAlreadyJoined(Long uid, Long courseId) {
+        return joinCourseUserRepository.findByCourseUser(courseId, uid) != null;
     }
 
     public List<JoinCourseUser> getJoinCourseUser(Long uid, Long courseId){
