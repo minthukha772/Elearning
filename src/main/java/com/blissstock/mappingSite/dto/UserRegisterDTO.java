@@ -20,6 +20,7 @@ import com.blissstock.mappingSite.utils.DateFormatter;
 import com.blissstock.mappingSite.validation.ConstrainMessage;
 import com.blissstock.mappingSite.validation.constrains.PasswordData;
 import com.blissstock.mappingSite.validation.constrains.PasswordMatch;
+import com.blissstock.mappingSite.validation.constrains.ValidDob;
 import com.blissstock.mappingSite.validation.constrains.ValidEmail;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -60,7 +61,7 @@ public class UserRegisterDTO extends PasswordData implements Confirmable {
   private String phone;
 
   @DateTimeFormat(pattern = "yyyy-MM-dd")
-  @Past
+  @ValidDob
   private Date dob = new Date();
 
   @Max(value = 99999, message = ConstrainMessage.INVALID_FORMAT_CONSTRAIN_MESSAGE)
