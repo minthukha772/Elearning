@@ -35,7 +35,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
         th:object="${courseInfoDTO}"
         class="form-floating"
       >
-        <div class="row g-2 mb-3 justify-content-end">
+        <div class="row g-2 mb-3 justify-content-start">
           <div class="col-md-3 col-sm-6 col-12">
             <div class="form-floating">
               <input
@@ -71,24 +71,42 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
               <label for="endDate">End Date</label>
             </div>
           </div>
+          <div class="col-md-3 col-sm-6 col-12">
+            <div class="form-floating">
+              <input type="number" class="form-control" th:field="*{lowestFee}" min="0" step="1000" />
+              <label for="lowestFee">Lowest Fee</label>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-12">
+            <div class="form-floating">
+              <input type="number" class="form-control" th:field="*{highestFee}"  min="0" step="1000"/>
+              <label for="highestFee">Highest Fee</label>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-12">
+          
+          </div>
+          <div class="col-md-3 col-sm-6 col-12 text-end">
+            <button type="submit" class="btn btn-primary btn-lg">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                class="bi bi-search"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"
+                ></path>
+              </svg>
+              Search
+            </button>
+          </div>
         </div>
         <div class="pb-3 d-grid gap-2 d-md-flex justify-content-md-end">
           <!-- <button type="submit" class="btn btn-lg btn-primary">Search</button> -->
-          <button type="submit" class="btn btn-primary">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              class="bi bi-search"
-              viewBox="0 0 16 16"
-            >
-              <path
-                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"
-              ></path>
-            </svg>
-            Search
-          </button>
+          
         </div>
 
         <!-- End of row -->
@@ -139,12 +157,15 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
         <div class="col-sm-auto col-12 mb-3">
             
           <div class="card">
-            <div class="card-header">Reduce Result by:</div>
+            <div class="card-header">See the filtered Result</div>
             <ul class="list-group list-group-flush filterContainer"></ul>
             <div class="card-body">
-              <button class="btn btn-primary filterBtn" type="submit" >
-                Apply
-              </button>
+                <button class="btn btn-primary filterBtn" type="submit" >
+                  Apply
+                </button>
+                <button class="btn btn-danger clearBtn" type="submit" >
+                  Clear 
+                </button>
             </div>
           </div>
         </div>

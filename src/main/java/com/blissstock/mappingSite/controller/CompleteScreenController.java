@@ -19,7 +19,8 @@ public class CompleteScreenController {
     @Autowired
     UserSessionService userSessionService;
 
-    // private static final Logger logger = LoggerFactory.getLogger(CompleteScreenController.class);
+    // private static final Logger logger =
+    // LoggerFactory.getLogger(CompleteScreenController.class);
 
     @RequestMapping("/card")
     public String CardSample() {
@@ -45,7 +46,7 @@ public class CompleteScreenController {
     }
 
     // TODO Change NavBars
-    @RequestMapping("/student/register/complete")
+    @RequestMapping("/studentAccount/register/complete")
     public String StudentRegisterComplete(Model model) {
         String header3 = "Student Register Complete";
         String header5 = "Congratulation!";
@@ -82,7 +83,7 @@ public class CompleteScreenController {
         return "CM0001_CompleteScreen";
     }
 
-    @RequestMapping("/teacher/register/complete")
+    @RequestMapping("/teacherAccount/register/complete")
     public String TeacherRegisterComplete(Model model) {
         String header3 = "Teacher Register Complete";
         String header5 = "Congratulation!";
@@ -104,7 +105,7 @@ public class CompleteScreenController {
     public String ReviewComplete(Model model) {
         String header3 = "Review Complete";
         String header5 = "Congratulation!";
-        String paragraph = "You have reached the final step of registration! Please check the email to start using the service.";
+        String paragraph = "Thank you for using our services! We have received your feedback.";
         model.addAttribute("header3", header3);
         model.addAttribute("header5", header5);
         model.addAttribute("paragraph", paragraph);
@@ -113,15 +114,14 @@ public class CompleteScreenController {
         breadcrumbList.add("Complete");
         model.addAttribute("breadcrumbList", breadcrumbList);
         UserRole role = userSessionService.getRole();
-        if(role ==UserRole.STUDENT){
+        if (role == UserRole.STUDENT) {
             String nav_type = "fragments/student-nav";
             model.addAttribute("nav_type", nav_type);
-        }
-        else{
+        } else {
             String nav_type = "fragments/teacher-nav";
             model.addAttribute("nav_type", nav_type);
         }
-        
+
         return "CM0001_CompleteScreen";
     }
 
@@ -173,21 +173,19 @@ public class CompleteScreenController {
         breadcrumbList.add("Complete");
         model.addAttribute("breadcrumbList", breadcrumbList);
         UserRole role = userSessionService.getRole();
-        if(role == UserRole.STUDENT){
+        if (role == UserRole.STUDENT) {
             String nav_type = "fragments/student-nav";
             model.addAttribute("nav_type", nav_type);
-        }
-        else if(role == UserRole.TEACHER){
+        } else if (role == UserRole.TEACHER) {
             String nav_type = "fragments/teacher-nav";
             model.addAttribute("nav_type", nav_type);
-        }
-        else{
+        } else {
             String nav_type = "fragments/adminnav";
             model.addAttribute("nav_type", nav_type);
         }
         return "CM0001_CompleteScreen";
     }
-    
+
     @RequestMapping("/teacher/course-upload/complete")
     public String UploadCourseComplete(Model model) {
         String header3 = "Course Upload Complete";
