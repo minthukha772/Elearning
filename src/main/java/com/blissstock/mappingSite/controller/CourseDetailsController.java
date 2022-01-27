@@ -166,7 +166,8 @@ public class CourseDetailsController {
         Integer maxStudent = courseInfo.getMaxStu();
         List<UserInfo> studentList = new ArrayList<>();
         for (JoinCourseUser joinCourseUser : courseInfo.getJoin()) {
-            studentList.add(joinCourseUser.getUserInfo());
+            if(joinCourseUser.getUserInfo().getUserAccount().getRole().equals(UserRole.STUDENT.getValue()))
+                studentList.add(joinCourseUser.getUserInfo());
         }
         Integer stuListSize = studentList.size();
         Integer availableStuList;
