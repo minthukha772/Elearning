@@ -77,29 +77,16 @@ public class CourseRegistrationController {
             long uid = id;
             courseInfo.setUid(uid);
             logger.info("Teacher ID for course registration {}",uid);
-            // model.addAttribute("teacherID", uid);
-            System.out.print("Admin registration : "+uid);
-            List<String> breadcrumbList = new ArrayList<>();
-            breadcrumbList.add("Top");
-            breadcrumbList.add("Teacher List");
-            breadcrumbList.add("Course Registration");
-            model.addAttribute("breadcrumbList",breadcrumbList);
-            String nav_type = "fragments/adminnav";
-            model.addAttribute("nav_type",nav_type);
+
         }
         else{
             long uid =userSessionService.getId();
             courseInfo.setUid(uid);
             logger.info("Teacher ID for course registration {}",uid);
-            // model.addAttribute("teacherID", uid);
-            System.out.print("Teacher Registration"+uid);
-            List<String> breadcrumbList = new ArrayList<>();
-            breadcrumbList.add("My Course");
-            breadcrumbList.add("Course Registration");
-            model.addAttribute("breadcrumbList",breadcrumbList);
-            String nav_type = "fragments/teacher-nav";
-            model.addAttribute("nav_type",nav_type);
+
         }
+
+        courseInfo.setClassType("video");
         
         model.addAttribute("course", courseInfo);
         
@@ -201,7 +188,6 @@ public class CourseRegistrationController {
 
             model.addAttribute("courseTimeList", courseTimeList);
             ctList = courseTimeList;
-            System.out.println("Heehee" + ctList);
             
         }else {
             model.addAttribute("classActiveVideo", true);
@@ -213,24 +199,11 @@ public class CourseRegistrationController {
 
         if(role == UserRole.TEACHER){
             model.addAttribute("postAction", "/teacher/save-course-register");
-            List<String> breadcrumbList = new ArrayList<>();
-            breadcrumbList.add("My Course");
-            breadcrumbList.add("Course Registration");
-            breadcrumbList.add("Confirm");
-            model.addAttribute("breadcrumbList",breadcrumbList);
-            String nav_type = "fragments/teacher-nav";
-            model.addAttribute("nav_type",nav_type);
+           
         }
         else{
             model.addAttribute("postAction", "/admin/save-course-register");
-            List<String> breadcrumbList = new ArrayList<>();
-            breadcrumbList.add("Top");
-            breadcrumbList.add("Teacher List");
-            breadcrumbList.add("Course Registration");
-            breadcrumbList.add("Confirm");
-            model.addAttribute("breadcrumbList",breadcrumbList);
-            String nav_type = "fragments/adminnav";
-            model.addAttribute("nav_type",nav_type);
+          
         }
         
         // System.out.println("Heehee" + day0 + " " + startTime0 + " " + endTime0 + " " + day1 + " " + startTime1 + " " + endTime1);

@@ -379,10 +379,10 @@ public class CourseEditController {
         UserRole role = userSessionService.getRole();
 
         if(role == UserRole.TEACHER){
-            return "redirect:/teacher/course-upload/complete";
+            return "redirect:/teacher/course-edit/complete";
         }
         else{
-            return "redirect:/admin/course-upload/complete";
+            return "redirect:/admin/course-edit/complete";
         }
         //return "takealeave";
     }

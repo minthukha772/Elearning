@@ -9,6 +9,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
     <link rel="stylesheet" href="/css/ST0001_register.css" />
     <title>Register</title>
@@ -456,130 +457,32 @@
                       </div>
                     </div>
 
-                    <!-- <fieldset>
-                    <legend>Payment</legend>
-    
-                    <div>
-                      <div class="row mb-3">
-                        <h5>Primary Account</h5>
-                        <div class="col-sm-3">
-                          <label class="form-label" for="primaryServiceName"
-                            >Service</label
-                          >
-                          <select
-                            class="form-select"
-                            th:field="*{primaryServiceName}"
-                          >
-                            <option
-                              th:each="method, stats : ${paymentMethodList}"
-                              th:text="${method}"
-                              th:value="${method}"
-                            ></option>
-                          </select>
-                        </div>
-    
-                        <div class="col-sm-5">
-                          <label class="form-label" for="primaryAccountName"
-                            >Account Name</label
-                          >
-                          <input
-                            th:field="*{primaryAccountName}"
-                            class="form-control"
-                            th:classappend="${#fields.hasErrors('primaryAccountName')}?'is-invalid':''"
-                            id="primaryAccountName"
-                            type="text"
-                            placeholder="Account Name"
-                          />
-                          <div
-                            class="invalid-feedback"
-                            th:if="${#fields.hasErrors('primaryAccountName')}"
-                            th:errors="*{primaryAccountName}"
-                          >
-                            This field is required.
-                          </div>
-                        </div>
-    
-                        <div class="col-sm-4">
-                          <label class="form-label" for="primaryAccountNumber"
-                            >Account Number</label
-                          >
-                          <input
-                            th:field="*{primaryAccountNumber}"
-                            class="form-control"
-                            th:classappend="${#fields.hasErrors('primaryAccountNumber')}?'is-invalid':''"
-                            id="primaryAccountNumber"
-                            type="text"
-                            placeholder="Account Number"
-                          />
-                          <div
-                            class="invalid-feedback"
-                            th:if="${#fields.hasErrors('primaryAccountNumber')}"
-                            th:errors="*{primaryAccountNumber}"
-                          >
-                            This field is required.
-                          </div>
-                        </div>
-                      </div>
-    
-                      <div class="row mb-3">
-                        <h5>Secondary Account</h5>
-                        <div class="col-sm-3">
-                          <label class="form-label" for="secondaryServiceName"
-                            >Service</label
-                          >
-                          <select
-                            class="form-select"
-                            th:field="*{secondaryServiceName}"
-                          >
-                            <option
-                              th:each="method, stats : ${paymentMethodList}"
-                              th:text="${method}"
-                              th:value="${method}"
-                            ></option>
-                          </select>
-                        </div>
-    
-                        <div class="col-sm-5">
-                          <label class="form-label" for="secondaryAccountName"
-                            >Account Name</label
-                          >
-                          <input
-                            th:field="*{secondaryAccountName}"
-                            class="form-control"
-                            th:classappend="${#fields.hasErrors('secondaryAccountName')}?'is-invalid':''"
-                            id="secondaryAccountName"
-                            type="text"
-                            placeholder="Account Name"
-                          />
-                          <div
-                            class="invalid-feedback"
-                            th:if="${#fields.hasErrors('secondaryAccountName')}"
-                            th:errors="*{secondaryAccountName}"
-                          >
-                            This field is required.
-                          </div>
-                        </div>
-    
-                        <div class="col-sm-4">
-                          <label class="form-label" for="secondaryAccountNumber"
-                            >Account Number</label
-                          >
-                          <input
-                            th:field="*{secondaryAccountNumber}"
-                            class="form-control"
-                            th:classappend="${#fields.hasErrors('secondaryAccountNumber')}?'is-invalid':''"
-                            id="secondaryAccountNumber"
-                            type="text"
-                            placeholder="City"
-                          />
-                          <div
-                            class="invalid-feedback"
-                            th:if="${#fields.hasErrors('secondaryAccountNumber')}"
-                            th:errors="*{secondaryAccountNumber}"
-                          >
-                            This field is required.
-                          </div>
-                        </div>
+
+                <!-- Profile Edit Do not need Password Related information -->
+                <div th:classappend="${task=='Register'}?'':'visually-hidden'">
+                  <div class="mb-3">
+                    <label class="form-label d-block"></label>
+                    <div class="form-check form-check-inline">
+                      <input
+                        class="form-check-input"
+                        id="iAgreeToTermCondition"
+                        type="checkbox"
+                        th:field="*{acceptTerm}"
+                        th:classappend="${#fields.hasErrors('acceptTerm')}?'is-invalid':''"
+                        name=""
+                      />
+                      <label class="form-check-label" for="acceptTerm"
+                        ><a th:href="@{/guest/terms_and_conditions}" th:target="_blank" class="btn-link">
+                        I agree to Term &amp; Condition</a></label
+                      >
+                      <div
+                        class="invalid-feedback"
+                        for="iAgreeToTermCondition"
+                        th:if="${#fields.hasErrors('acceptTerm')}"
+                        th:errors="*{acceptTerm}"
+                      >
+                        This field is required.
+
                       </div>
                     </div>
                     </fieldset> -->
