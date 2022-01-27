@@ -186,7 +186,7 @@ public class RegisterController {
         mailService.sendVerificationMail(
             savedUserInfo.getUserAccount(),
             appUrl);
-        return "redirect:/register/student/complete";
+        return "redirect:/studentAccount/register/complete";
       } catch (UserAlreadyExistException e) {
         e.printStackTrace();
         model.addAttribute("userExistError", true);
@@ -228,7 +228,7 @@ public class RegisterController {
           mailService.sendVerificationMail(
               savedUserInfo.getUserAccount(),
               appUrl);
-          return "redirect:/register/teacher/complete";
+          return "redirect:/teacherAccount/register/complete";
         } catch (UserAlreadyExistException e) {
           e.printStackTrace();
           model.addAttribute("userExistError", true);
