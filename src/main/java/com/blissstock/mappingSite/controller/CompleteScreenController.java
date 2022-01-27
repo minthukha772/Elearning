@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.blissstock.mappingSite.enums.UserRole;
+import com.blissstock.mappingSite.model.BreadcrumbLists;
 import com.blissstock.mappingSite.service.UserSessionService;
 
 // import org.slf4j.Logger;
@@ -19,7 +20,8 @@ public class CompleteScreenController {
     @Autowired
     UserSessionService userSessionService;
 
-    // private static final Logger logger = LoggerFactory.getLogger(CompleteScreenController.class);
+    // private static final Logger logger =
+    // LoggerFactory.getLogger(CompleteScreenController.class);
 
     @RequestMapping("/card")
     public String CardSample() {
@@ -34,10 +36,16 @@ public class CompleteScreenController {
         model.addAttribute("header3", header3);
         model.addAttribute("header5", header5);
         model.addAttribute("paragraph", paragraph);
-        List<String> breadcrumbList = new ArrayList<>();
-        breadcrumbList.add("Admin");
-        breadcrumbList.add("Register");
-        breadcrumbList.add("Complete");
+        // List<String> breadcrumbList = new ArrayList<>();
+        // breadcrumbList.add("Admin");
+        // breadcrumbList.add("Register");
+        // breadcrumbList.add("Complete");
+        // model.addAttribute("breadcrumbList", breadcrumbList);
+        List<BreadcrumbLists> breadcrumbList = new ArrayList<>();
+        breadcrumbList.add(new BreadcrumbLists("Email","/check_email/register/admin",""));
+        breadcrumbList.add(new BreadcrumbLists("Registration","","back2"));
+        breadcrumbList.add(new BreadcrumbLists("Confirmation","","back"));
+        model.addAttribute("Complete", "Complete");
         model.addAttribute("breadcrumbList", breadcrumbList);
         String nav_type = "fragments/guestnav";
         model.addAttribute("nav_type", nav_type);
@@ -45,7 +53,7 @@ public class CompleteScreenController {
     }
 
     // TODO Change NavBars
-    @RequestMapping("/student/register/complete")
+    @RequestMapping("/studentAccount/register/complete")
     public String StudentRegisterComplete(Model model) {
         String header3 = "Student Register Complete";
         String header5 = "Congratulation!";
@@ -53,10 +61,16 @@ public class CompleteScreenController {
         model.addAttribute("header3", header3);
         model.addAttribute("header5", header5);
         model.addAttribute("paragraph", paragraph);
-        List<String> breadcrumbList = new ArrayList<>();
-        breadcrumbList.add("Student");
-        breadcrumbList.add("Register");
-        breadcrumbList.add("Complete");
+        // List<String> breadcrumbList = new ArrayList<>();
+        // breadcrumbList.add("Student");
+        // breadcrumbList.add("Register");
+        // breadcrumbList.add("Complete");
+        // model.addAttribute("breadcrumbList", breadcrumbList);
+        List<BreadcrumbLists> breadcrumbList = new ArrayList<>();
+        breadcrumbList.add(new BreadcrumbLists("Email","/check_email/register/student",""));
+        breadcrumbList.add(new BreadcrumbLists("Registration","","back2"));
+        breadcrumbList.add(new BreadcrumbLists("Confirmation","","back"));
+        model.addAttribute("Complete", "Complete");
         model.addAttribute("breadcrumbList", breadcrumbList);
         String nav_type = "fragments/guestnav";
         model.addAttribute("nav_type", nav_type);
@@ -71,18 +85,26 @@ public class CompleteScreenController {
         model.addAttribute("header3", header3);
         model.addAttribute("header5", header5);
         model.addAttribute("paragraph", paragraph);
-        List<String> breadcrumbList = new ArrayList<>();
-        breadcrumbList.add("Admin");
-        breadcrumbList.add("StudentList");
-        breadcrumbList.add("Register");
-        breadcrumbList.add("Complete");
+        // List<String> breadcrumbList = new ArrayList<>();
+        // breadcrumbList.add("Admin");
+        // breadcrumbList.add("StudentList");
+        // breadcrumbList.add("Register");
+        // breadcrumbList.add("Complete");
+        // model.addAttribute("breadcrumbList", breadcrumbList);
+        List<BreadcrumbLists> breadcrumbList = new ArrayList<>();
+        breadcrumbList.add(new BreadcrumbLists("Top","/admin/top/",""));
+            breadcrumbList.add(new BreadcrumbLists("Student List","/admin/student-list",""));
+        breadcrumbList.add(new BreadcrumbLists("Email","/check_email/register/student",""));
+        breadcrumbList.add(new BreadcrumbLists("Registration","","back2"));
+        breadcrumbList.add(new BreadcrumbLists("Confirmation","","back"));
+        model.addAttribute("Complete", "Complete");
         model.addAttribute("breadcrumbList", breadcrumbList);
         String nav_type = "fragments/adminnav";
         model.addAttribute("nav_type", nav_type);
         return "CM0001_CompleteScreen";
     }
 
-    @RequestMapping("/teacher/register/complete")
+    @RequestMapping("/teacherAccount/register/complete")
     public String TeacherRegisterComplete(Model model) {
         String header3 = "Teacher Register Complete";
         String header5 = "Congratulation!";
@@ -90,10 +112,16 @@ public class CompleteScreenController {
         model.addAttribute("header3", header3);
         model.addAttribute("header5", header5);
         model.addAttribute("paragraph", paragraph);
-        List<String> breadcrumbList = new ArrayList<>();
-        breadcrumbList.add("Teacher");
-        breadcrumbList.add("Register");
-        breadcrumbList.add("Complete");
+        // List<String> breadcrumbList = new ArrayList<>();
+        // breadcrumbList.add("Teacher");
+        // breadcrumbList.add("Register");
+        // breadcrumbList.add("Complete");
+        // model.addAttribute("breadcrumbList", breadcrumbList);
+        List<BreadcrumbLists> breadcrumbList = new ArrayList<>();
+        breadcrumbList.add(new BreadcrumbLists("Email","/check_email/register/teacher",""));
+        breadcrumbList.add(new BreadcrumbLists("Registration","","back2"));
+        breadcrumbList.add(new BreadcrumbLists("Confirmation","","back"));
+        model.addAttribute("Complete", "Complete");
         model.addAttribute("breadcrumbList", breadcrumbList);
         String nav_type = "fragments/guestnav";
         model.addAttribute("nav_type", nav_type);
@@ -104,24 +132,42 @@ public class CompleteScreenController {
     public String ReviewComplete(Model model) {
         String header3 = "Review Complete";
         String header5 = "Congratulation!";
-        String paragraph = "You have reached the final step of registration! Please check the email to start using the service.";
+        String paragraph = "Thank you for using our services! We have received your feedback.";
         model.addAttribute("header3", header3);
         model.addAttribute("header5", header5);
         model.addAttribute("paragraph", paragraph);
-        List<String> breadcrumbList = new ArrayList<>();
-        breadcrumbList.add("Review");
-        breadcrumbList.add("Complete");
-        model.addAttribute("breadcrumbList", breadcrumbList);
+        // List<String> breadcrumbList = new ArrayList<>();
+        // breadcrumbList.add("Review");
+        // breadcrumbList.add("Complete");
+        // model.addAttribute("breadcrumbList", breadcrumbList);
         UserRole role = userSessionService.getRole();
-        if(role ==UserRole.STUDENT){
+        if (role == UserRole.STUDENT) {
             String nav_type = "fragments/student-nav";
             model.addAttribute("nav_type", nav_type);
+
+
+            List<BreadcrumbLists> breadcrumbList = new ArrayList<>();
+            breadcrumbList.add(new BreadcrumbLists("My Course","/student/my-course",""));
+            breadcrumbList.add(new BreadcrumbLists("Course Details","/student/course-details/",""));
+            breadcrumbList.add(new BreadcrumbLists("Review","","back2"));
+            breadcrumbList.add(new BreadcrumbLists("Confirm","","back"));
+            model.addAttribute("Complete", "Complete");
+            model.addAttribute("breadcrumbList", breadcrumbList);
         }
         else{
+
             String nav_type = "fragments/teacher-nav";
             model.addAttribute("nav_type", nav_type);
+
+            List<BreadcrumbLists> breadcrumbList = new ArrayList<>();
+            breadcrumbList.add(new BreadcrumbLists("My Course","/teacher/my-course",""));
+            breadcrumbList.add(new BreadcrumbLists("Course Details","/teacher/course-details/",""));
+            breadcrumbList.add(new BreadcrumbLists("Review","","back2"));
+            breadcrumbList.add(new BreadcrumbLists("Confirm","","back"));
+            model.addAttribute("Complete", "Complete");
+            model.addAttribute("breadcrumbList", breadcrumbList);
         }
-        
+
         return "CM0001_CompleteScreen";
     }
 
@@ -133,10 +179,18 @@ public class CompleteScreenController {
         model.addAttribute("header3", header3);
         model.addAttribute("header5", header5);
         model.addAttribute("paragraph", paragraph);
-        List<String> breadcrumbList = new ArrayList<>();
-        breadcrumbList.add("Admin");
-        breadcrumbList.add("Review");
-        breadcrumbList.add("Complete");
+        // List<String> breadcrumbList = new ArrayList<>();
+        // breadcrumbList.add("Admin");
+        // breadcrumbList.add("Review");
+        // breadcrumbList.add("Complete");
+        // model.addAttribute("breadcrumbList", breadcrumbList);
+        List<BreadcrumbLists> breadcrumbList = new ArrayList<>();
+        breadcrumbList.add(new BreadcrumbLists("Top","/admin/top/",""));
+        breadcrumbList.add(new BreadcrumbLists("Courses","/guest/explore",""));
+        breadcrumbList.add(new BreadcrumbLists("Course Details","/guest/course-details/",""));
+        breadcrumbList.add(new BreadcrumbLists("Review","","back2"));
+        breadcrumbList.add(new BreadcrumbLists("Confirm","","back"));
+        model.addAttribute("Complete", "Complete");
         model.addAttribute("breadcrumbList", breadcrumbList);
         String nav_type = "fragments/adminnav";
         model.addAttribute("nav_type", nav_type);
@@ -151,10 +205,18 @@ public class CompleteScreenController {
         model.addAttribute("header3", header3);
         model.addAttribute("header5", header5);
         model.addAttribute("paragraph", paragraph);
-        List<String> breadcrumbList = new ArrayList<>();
-        breadcrumbList.add("Payment");
-        breadcrumbList.add("Complete");
+        // List<String> breadcrumbList = new ArrayList<>();
+        // breadcrumbList.add("Payment");
+        // breadcrumbList.add("Complete");
+        // model.addAttribute("breadcrumbList", breadcrumbList);
+        List<BreadcrumbLists> breadcrumbList = new ArrayList<>();
+        breadcrumbList.add(new BreadcrumbLists("My Course","/student/my-course",""));
+        breadcrumbList.add(new BreadcrumbLists("Course Details","/student/course-details/",""));
+        breadcrumbList.add(new BreadcrumbLists("Payment","","back2"));
+        breadcrumbList.add(new BreadcrumbLists("Confirm","","back"));
+        model.addAttribute("Complete", "Complete");
         model.addAttribute("breadcrumbList", breadcrumbList);
+
         String nav_type = "fragments/usernav";
         model.addAttribute("nav_type", nav_type);
         return "CM0001_CompleteScreen";
@@ -168,26 +230,51 @@ public class CompleteScreenController {
         model.addAttribute("header3", header3);
         model.addAttribute("header5", header5);
         model.addAttribute("paragraph", paragraph);
-        List<String> breadcrumbList = new ArrayList<>();
-        breadcrumbList.add("TakeALeave");
-        breadcrumbList.add("Complete");
-        model.addAttribute("breadcrumbList", breadcrumbList);
+        // List<BreadcrumbLists> breadcrumbList = new ArrayList<>();
+        
+        // model.addAttribute("breadcrumbList", breadcrumbList);
         UserRole role = userSessionService.getRole();
-        if(role == UserRole.STUDENT){
+        if (role == UserRole.STUDENT) {
             String nav_type = "fragments/student-nav";
             model.addAttribute("nav_type", nav_type);
+
+            
+            List<BreadcrumbLists> breadcrumbList = new ArrayList<>();
+            breadcrumbList.add(new BreadcrumbLists("My Course","/student/my-course",""));
+            breadcrumbList.add(new BreadcrumbLists("Course Details","/student/course-details/",""));
+            breadcrumbList.add(new BreadcrumbLists("Absent","","back2"));
+            breadcrumbList.add(new BreadcrumbLists("Confirm","","back"));
+            model.addAttribute("Complete", "Complete");
+            model.addAttribute("breadcrumbList", breadcrumbList);
         }
         else if(role == UserRole.TEACHER){
             String nav_type = "fragments/teacher-nav";
             model.addAttribute("nav_type", nav_type);
+
+            List<BreadcrumbLists> breadcrumbList = new ArrayList<>();
+            breadcrumbList.add(new BreadcrumbLists("My Course","/teacher/my-course",""));
+            breadcrumbList.add(new BreadcrumbLists("Course Details","/teacher/course-details/",""));
+            breadcrumbList.add(new BreadcrumbLists("Absent","","back2"));
+            breadcrumbList.add(new BreadcrumbLists("Confirm","","back"));
+            model.addAttribute("Complete", "Complete");
+            model.addAttribute("breadcrumbList", breadcrumbList);
         }
         else{
+
             String nav_type = "fragments/adminnav";
             model.addAttribute("nav_type", nav_type);
+
+            List<BreadcrumbLists> breadcrumbList = new ArrayList<>();
+            breadcrumbList.add(new BreadcrumbLists("Top","/admin/top/",""));
+            breadcrumbList.add(new BreadcrumbLists("User List","/admin/user-list/",""));
+            breadcrumbList.add(new BreadcrumbLists("Absent","","back2"));
+            breadcrumbList.add(new BreadcrumbLists("Confirm","","back"));
+            model.addAttribute("Complete", "Complete");
+            model.addAttribute("breadcrumbList", breadcrumbList);
         }
         return "CM0001_CompleteScreen";
     }
-    
+
     @RequestMapping("/teacher/course-upload/complete")
     public String UploadCourseComplete(Model model) {
         String header3 = "Course Upload Complete";
@@ -196,10 +283,12 @@ public class CompleteScreenController {
         model.addAttribute("header3", header3);
         model.addAttribute("header5", header5);
         model.addAttribute("paragraph", paragraph);
-        List<String> breadcrumbList = new ArrayList<>();
-        breadcrumbList.add("My Course");
-        breadcrumbList.add("Course Registration");
-        breadcrumbList.add("Complete");
+        List<BreadcrumbLists> breadcrumbList = new ArrayList<>();
+        breadcrumbList.add(new BreadcrumbLists("My Course","/teacher/my-course",""));
+        breadcrumbList.add(new BreadcrumbLists("Course Registration","","back2"));
+        breadcrumbList.add(new BreadcrumbLists("Confirmation","","back"));
+        // breadcrumbList.add(new BreadcrumbLists("Complete","","active"));
+        model.addAttribute("Complete", "Complete");
         model.addAttribute("breadcrumbList", breadcrumbList);
         String nav_type = "fragments/teacher-nav";
         model.addAttribute("nav_type", nav_type);
@@ -214,14 +303,57 @@ public class CompleteScreenController {
         model.addAttribute("header3", header3);
         model.addAttribute("header5", header5);
         model.addAttribute("paragraph", paragraph);
-        List<String> breadcrumbList = new ArrayList<>();
-        breadcrumbList.add("Top");
-        breadcrumbList.add("Teacher List");
-        breadcrumbList.add("Course Registration");
-        breadcrumbList.add("Complete");
+        List<BreadcrumbLists> breadcrumbList = new ArrayList<>();
+        breadcrumbList.add(new BreadcrumbLists("Top","/admin/top/",""));
+        breadcrumbList.add(new BreadcrumbLists("Teacher List","/admin/teacher-list",""));
+        breadcrumbList.add(new BreadcrumbLists("Course Registration","","back2"));
+        breadcrumbList.add(new BreadcrumbLists("Confirmation","","back"));
+        // breadcrumbList.add(new BreadcrumbLists("Complete","","active"));
         model.addAttribute("breadcrumbList", breadcrumbList);
         String nav_type = "fragments/adminnav";
         model.addAttribute("nav_type", nav_type);
+        model.addAttribute("Complete", "Complete");
+        return "CM0001_CompleteScreen";
+    }
+
+    @RequestMapping("/teacher/course-edit/complete")
+    public String EditCourseComplete(Model model) {
+        String header3 = "Course edit Complete";
+        String header5 = "Acknowledgement!";
+        String paragraph = "Course edit has been successful.";
+        model.addAttribute("header3", header3);
+        model.addAttribute("header5", header5);
+        model.addAttribute("paragraph", paragraph);
+        List<BreadcrumbLists> breadcrumbList = new ArrayList<>();
+        breadcrumbList.add(new BreadcrumbLists("My Course","/teacher/my-course",""));
+        breadcrumbList.add(new BreadcrumbLists("Course Edit","","back2"));
+        breadcrumbList.add(new BreadcrumbLists("Confirmation","","back"));
+        // breadcrumbList.add(new BreadcrumbLists("Complete","","active"));
+        model.addAttribute("Complete", "Complete");
+        model.addAttribute("breadcrumbList", breadcrumbList);
+        String nav_type = "fragments/teacher-nav";
+        model.addAttribute("nav_type", nav_type);
+        return "CM0001_CompleteScreen";
+    }
+
+    @RequestMapping("/admin/course-edit/complete")
+    public String EditCourseCompleteByAdmin(Model model) {
+        String header3 = "Course Edit Complete";
+        String header5 = "Acknowledgement!";
+        String paragraph = "Course edit has been successful.";
+        model.addAttribute("header3", header3);
+        model.addAttribute("header5", header5);
+        model.addAttribute("paragraph", paragraph);
+        List<BreadcrumbLists> breadcrumbList = new ArrayList<>();
+        breadcrumbList.add(new BreadcrumbLists("Top","/admin/top/",""));
+        breadcrumbList.add(new BreadcrumbLists("Teacher List","/admin/teacher-list",""));
+        breadcrumbList.add(new BreadcrumbLists("Course Edit","","back2"));
+        breadcrumbList.add(new BreadcrumbLists("Confirmation","","back"));
+        // breadcrumbList.add(new BreadcrumbLists("Complete","","active"));
+        model.addAttribute("breadcrumbList", breadcrumbList);
+        String nav_type = "fragments/adminnav";
+        model.addAttribute("nav_type", nav_type);
+        model.addAttribute("Complete", "Complete");
         return "CM0001_CompleteScreen";
     }
 

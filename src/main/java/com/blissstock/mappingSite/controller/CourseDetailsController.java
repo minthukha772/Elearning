@@ -2,6 +2,7 @@ package com.blissstock.mappingSite.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -9,6 +10,7 @@ import com.blissstock.mappingSite.dto.JoinCourseDTO;
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.CourseTime;
 import com.blissstock.mappingSite.entity.JoinCourseUser;
+import com.blissstock.mappingSite.entity.Review;
 import com.blissstock.mappingSite.entity.Syllabus;
 import com.blissstock.mappingSite.entity.Test;
 import com.blissstock.mappingSite.entity.UserInfo;
@@ -19,6 +21,7 @@ import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
 import com.blissstock.mappingSite.repository.SyllabusRepository;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
 import com.blissstock.mappingSite.repository.UserInfoRepository;
+import com.blissstock.mappingSite.repository.UserRepository;
 import com.blissstock.mappingSite.service.CourseService;
 import com.blissstock.mappingSite.service.JoinCourseService;
 import com.blissstock.mappingSite.service.UserService;
@@ -43,6 +46,9 @@ import org.slf4j.LoggerFactory;
 public class CourseDetailsController {
 
     private static final Logger logger = LoggerFactory.getLogger(CourseDetailsController.class);
+
+    @Autowired
+    UserRepository userRepository;
 
     @Autowired
     UserSessionService userSessionService;
@@ -79,6 +85,70 @@ public class CourseDetailsController {
         // Get course by ID
         CourseInfo courseInfo = courseInfoRepository.findById(courseId).get();
         model.addAttribute("courseInfo", courseInfo);
+
+        //Get trname and course name
+        String trName = courseInfo.getUserInfo().getUserName();
+        model.addAttribute("trName", trName);
+        String courseName=courseInfo.getCourseName();
+        model.addAttribute("courseName", courseName);
+
+        //Get joinlist of the course
+        List<JoinCourseUser> joinList=courseInfo.getJoin();
+        List<Review> reviewList=new ArrayList<Review>();
+        for(JoinCourseUser join:joinList){
+            reviewList.addAll(join.getReview());  
+        }
+
+        //Get reveiwlist 
+        List<Review> courseReviewList= new ArrayList<Review>(); 
+        for (Review courseReview:reviewList){
+            if(courseReview.getReviewType()==0){
+                courseReviewList.add(courseReview);
+                model.addAttribute("courseReviewList", courseReviewList); 
+            }
+        }
+
+        //first 3 reviews
+        if(courseReviewList.size() >= 3){
+            List<Review> threeCourseReviewList = new ArrayList<>();
+            threeCourseReviewList.add(courseReviewList.get(0));
+            threeCourseReviewList.add(courseReviewList.get(1));
+            threeCourseReviewList.add(courseReviewList.get(2));
+            model.addAttribute("courseReviewList", threeCourseReviewList);
+        }else{
+            model.addAttribute("courseReviewList", courseReviewList);
+        } 
+
+        logger.info("The review list is {}", courseReviewList.size());
+
+        //reviewlist empty or not
+        boolean courseReviewListEmpty = courseReviewList.isEmpty();
+        boolean courseReveiwListNotEmpty = !courseReviewListEmpty;
+        logger.info("The boolean of courseReviewListEmpty is {}", courseReviewListEmpty);
+        model.addAttribute("courseReviewListEmpty", courseReviewListEmpty);
+        model.addAttribute("courseReviewListNotEmpty", courseReveiwListNotEmpty);
+
+        //average rating
+        int total_stars = 0;
+        int numCourseReviewList = courseReviewList.size();
+        for(Review review : courseReviewList){
+            total_stars += review.getStar();
+        }
+        int average = 0;
+        double averageDouble = 0;
+        try{
+            average = (int)total_stars/numCourseReviewList;
+        }catch(ArithmeticException e){
+            average = 0;
+        }
+        try{
+            averageDouble = (double)total_stars/numCourseReviewList;
+        }catch(ArithmeticException e){
+            averageDouble = 0;
+        }
+        String averageFloat = String.format("%.2f", averageDouble);
+        model.addAttribute("average", average);
+        model.addAttribute("averageFloat", averageFloat);
 
         String classType = courseInfo.getClassType();
         boolean isLiveClass = classType.equals("LIVE");
@@ -124,6 +194,7 @@ public class CourseDetailsController {
 
         } else if (userSessionService.getRole() == UserRole.STUDENT) {
             userId = userSessionService.getUserAccount().getAccountId();
+            UserInfo user=userRepository.findById(userId).orElse(null);
             boolean studentRegistered = true;
 
             List<JoinCourseUser> join = joinCourseService.getJoinCourseUser(userId, courseId);
@@ -135,6 +206,21 @@ public class CourseDetailsController {
             model.addAttribute("studentRegistered", studentRegistered);
             model.addAttribute("student", "STUDENT");
             model.addAttribute("userId", userId);
+     //Get stuReviews
+            List<JoinCourseUser> joinUserList=user.getJoin();
+            List<Review> stuReviews=new ArrayList<Review>(); 
+            for(JoinCourseUser joinlist:joinUserList){
+                if(joinlist.getCourseInfo().getCourseId().equals(courseId)){
+                stuReviews.addAll(joinlist.getReview());
+                }
+            }
+            List<Review> studentReviewList= new ArrayList<Review>();
+            for(Review studentReview:stuReviews) {
+                if(studentReview.getStar()==0){
+                    studentReviewList.add(studentReview);
+                    model.addAttribute("stuReviews", studentReviewList);
+                }
+            }
 
         }
 
@@ -148,6 +234,10 @@ public class CourseDetailsController {
         } else if (userSessionService.getRole() == UserRole.GUEST_USER) {
             model.addAttribute("guest", "GUEST");
         }
+
+        
+
+        
 
         return "CM0003_CourseDetails";
     }
@@ -213,22 +303,29 @@ public class CourseDetailsController {
     }
 
     @RequestMapping("/student/enroll/{courseId}/{userId}")
-    public String enrollStudent(@PathVariable Long courseId, @PathVariable Long userId, Model model) {
+
+    public String enrollStudent(@PathVariable Long courseId, @PathVariable Long userId, Model model){
+        logger.info("Request");
 
         JoinCourseDTO joinCourseDTO = new JoinCourseDTO();
         joinCourseDTO.setUid(userId);
         joinCourseDTO.setCourseId(courseId);
         try {
-            joinCourseService.enrollStudent(joinCourseDTO);
-        } catch (Exception e) {
-            logger.info(e.toString());
 
-            return "redirect:/student/course-details/" + courseId;
+            if(joinCourseService.enrollStudent(joinCourseDTO) == null){
+                logger.info("null user");
+                return "redirect:/student/course-details/" + courseId+"/?error";
+            }
+        }catch(NoSuchElementException e){
+            e.printStackTrace();
+            return "redirect:/student/course-details/" + courseId+"/?error";
+        }
+        catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return "redirect:/student/course-details/" + courseId+"/?error";
         }
 
-        // joins.setCourseInfo(courseInfoRepository.findByCourseID(courseId));
-        // joins.setUserInfo(userInfoRepository.findById(userId).get());
-        // joinCourseUserRepository.save(joins);
         return "redirect:/student/course-details/" + courseId;
     }
 

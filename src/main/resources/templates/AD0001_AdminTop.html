@@ -22,11 +22,12 @@
     />
     <link rel="stylesheet" href="/css/CM0004_Student Profile.css" />
     <link rel="stylesheet" href="/css/AD0001_AdminTop.css" />
+    <link rel="stylesheet" type="text/css" href="/css/main.css" />
     
     <title>Mapping Site</title>
   </head>
 
-  <body style="background-color: #f0f0f0">
+  <body>
     <div th:replace="@{fragments/adminnav}"></div>
     <!-- guest user navi bar -->
 
@@ -43,7 +44,7 @@
     </div> -->
 
       <div class="container-custom my-5">
-        <div class="card" style="background-color: #DEE2E6" id="adminProfile">
+        <div class="card" id="adminProfile">
           <div class="card-header">Personal Information</div>
           <div class="card-body">
             <div class="container">
@@ -63,7 +64,7 @@
                       </div>
                     </div>
                   </div>
-                  <table class="table table-borderless table-hover">
+                  <table class="table table-borderless">
                     <!-- <tr>
                       <td class="text-end">User Name</td>
                       <td>:</td>
@@ -93,7 +94,7 @@
         <div class="visually-hidden">
         <div id="update-admin">
        
-        <div class="card" style="background-color: #DEE2E6">
+        <div class="card">
           <div class="card-header">Personal Information</div>
           <div class="card-body">
             <div class="container">
@@ -145,7 +146,7 @@
                   <div class="text-center">
                     <button class="btn btn-primary mb-3"  type="submit" name="action" value="pic-edit">Save</button>
                   </div>
-                  <table class="table table-borderless table-hover">
+                  <table class="table table-borderless">
                       <tr>
                         <td class="text-end">Email</td>
                         <td>:</td>

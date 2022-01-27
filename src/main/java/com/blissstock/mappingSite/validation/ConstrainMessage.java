@@ -8,6 +8,7 @@ public class ConstrainMessage {
     public static final String INVALID_FORMAT_CONSTRAIN_MESSAGE = "Invalid format";
     public static final String INVALID_EMAIL_FORMAT_CONSTRAIN_MESSAGE = "Invalid email format";
     public static final String PASSWORD_MATCH_CONSTRAIN_MESSAGE = "Passwords must be matched";
+    public static final String DOB_CONSTRAIN_MESSAGE = "You must be at least 13 years old to use the service";
    
 
 }
