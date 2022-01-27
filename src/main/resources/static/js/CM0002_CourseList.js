@@ -5,11 +5,42 @@ $(function () {
     e.preventDefault();
     filterAction(courseList);
   });
+  $(".clearBtn").click(function (e) {
+    e.preventDefault();
+    clearAction(courseList);
+  });
+  LowestFeeInput =  $("#lowestFee");
+  HighestFeeInput =  $("#highestFee");
+  LowestFeeInput.on('input', function () {
+    // To prevent Highest value from being less than Lowest value
+    // Update Highest value every time the lower value is higher them itself.
+    lowestValue = parseInt($(LowestFeeInput).val()); 
+    highestValue = parseInt($(HighestFeeInput).val());
+     console.log(lowestValue,highestValue);
+    if(lowestValue > highestValue){
+      console.log(lowestValue,">",highestValue);
+      $(HighestFeeInput).val(lowestValue);
+    }
+  });
+  HighestFeeInput.on('input', function () {
+    // To prevent Lowest value from being more than Lowest value
+    // Update Lowest value every time the highest value is higher them itself.
+    lowestValue = parseInt($(LowestFeeInput).val()); 
+    highestValue = parseInt($(HighestFeeInput).val());
+    if(highestValue < lowestValue){
+      $(LowestFeeInput).val(highestValue);
+    }
+  });
 });
+
+const clearAction = (courseList) => {
+  clearCheckInputs();
+  renderCourseList(courseList);
+};
 
 const filterAction = (courseList) => {
   const inputFilters = structureInputFilters();
-  console.log(inputFilters);
+
   const filteredCourseList = courseList.filter((e) => {
     let condition = true;
     if (inputFilters["levels"]) {
@@ -24,6 +55,12 @@ const filterAction = (courseList) => {
     return condition;
   });
   renderCourseList(filteredCourseList);
+};
+
+const clearCheckInputs = () => {
+  $(".filterContainer")
+    .find("input:checked")
+    .prop('checked', false);
 };
 
 const structureInputFilters = () => {
@@ -68,7 +105,6 @@ const getFilterItems = (courseList) => {
 };
 
 const renderFilterItems = (filterItems) => {
-  console.log("rendering");
   const keys = Object.keys(filterItems);
   keys.forEach((key, index) => {
     const filterContainer = $(".filterContainer");
@@ -82,7 +118,7 @@ const renderFilterItems = (filterItems) => {
     const filterKeys = Object.keys(filterItems[key]);
     filterKeys.forEach((item, j) => {
       const count = filterItems[key][item];
-      console.log(item, count);
+
       //const checkBoxId = `${id}-item`;
       checkBoxContainer.append(
         `
@@ -97,19 +133,19 @@ const renderFilterItems = (filterItems) => {
 };
 
 const renderCourseList = (courseList) => {
-  console.log(courseList);
   $("#course").pagination({
     dataSource: courseList,
-    pageSize: 5,
+    pageSize: 24,
     showNavigator: true,
-    position:"top",
-    className: 'paginationjs-theme-blue',
-    formatNavigator: '<span style="color: #f00"><%= currentPage %></span> of <%= totalPage %> pages, <%= totalNumber %> entries',
+    position: "top",
+    className: "paginationjs-theme-blue",
+    formatNavigator:
+      '<span style="color: #f00"><%= currentPage %></span> of <%= totalPage %> pages, <%= totalNumber %> entries',
     callback: function (data, pagination) {
       // template method of yourself
       $("#courseList").hide();
       $("#courseList").empty();
-      data.forEach((e)=>{
+      data.forEach((e) => {
         const startDate = new Date(e.startDate).toLocaleDateString();
         const endDate = new Date(e.endDate).toLocaleDateString();
         const template = `
@@ -126,26 +162,24 @@ const renderCourseList = (courseList) => {
 
           
             </div>
-            <a href="/guest/course-detail/${e.courseId}" class="btn btn-primary">Detail</a>
+            <a href="/guest/course-detail/${e.courseId}" class="btn btn-primary">See Detail</a>
           </div>
           
         </div>
         `;
         $(template).appendTo($("#courseList"));
 
-        $("#courseList").fadeIn('slow');
-      
+        $("#courseList").fadeIn("slow");
       });
-     
     },
   });
 };
 // const renderCourseList = (courseList) => {
-//   console.log("rendering");
+//
 //   $("#courseList").hide();
 //   $("#courseList").empty();
 //   courseList.forEach((e, index) => {
-//     console.log(e);
+//
 
 //     const template =`
 //         <div class="card" >
