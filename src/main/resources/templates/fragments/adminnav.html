@@ -22,7 +22,12 @@
         ></path>
       </svg>
     </button>
-    <a class="navbar-brand" href="#">Mapping Site</a>
+    <a class="navbar-brand" th:href="@{/}">
+
+      <img src="/images/logo.svg" alt="logo">
+      Mapping Site
+
+    </a>
     <button
       class="navbar-toggler"
       type="button"
@@ -50,8 +55,9 @@
     <h5>
       <a href="#" style="text-decoration: none;" class="nav_logo">
         <div class="my-3" style="color: #28A745">
-          
-          <span class="nav_name">Menu</span>
+
+            <a th:href="@{/admin/top/}" style="text-decoration: none; color: #28A745"><span class="nav_name">Menu</span></a>
+
         </div>
       </a>
     </h5>
