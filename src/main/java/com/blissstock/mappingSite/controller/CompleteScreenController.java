@@ -105,7 +105,7 @@ public class CompleteScreenController {
     public String ReviewComplete(Model model) {
         String header3 = "Review Complete";
         String header5 = "Congratulation!";
-        String paragraph = "You have reached the final step of registration! Please check the email to start using the service.";
+        String paragraph = "Thank you for using our services! We have received your feedback.";
         model.addAttribute("header3", header3);
         model.addAttribute("header5", header5);
         model.addAttribute("paragraph", paragraph);
