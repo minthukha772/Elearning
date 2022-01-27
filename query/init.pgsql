@@ -1,10 +1,10 @@
 -- Bank Info
-INSERT INTO public.bank_mst(bank_id, bank_name)VALUES (1,'Kpay');
-INSERT INTO public.bank_mst(bank_id, bank_name)VALUES (2,'Cbpay');
-INSERT INTO public.bank_mst(bank_id, bank_name)VALUES (3,'Wave');
-INSERT INTO public.bank_mst(bank_id, bank_name)VALUES (4,'KBZ');
-INSERT INTO public.bank_mst(bank_id, bank_name)VALUES (5,'CB');
-INSERT INTO public.bank_mst(bank_id, bank_name)VALUES (6,'AYA');
+INSERT INTO public.bank_mst(bank_id, bank_name)VALUES (90001,'Kpay');
+INSERT INTO public.bank_mst(bank_id, bank_name)VALUES (90002,'Cbpay');
+INSERT INTO public.bank_mst(bank_id, bank_name)VALUES (90003,'Wave');
+INSERT INTO public.bank_mst(bank_id, bank_name)VALUES (90004,'KBZ');
+INSERT INTO public.bank_mst(bank_id, bank_name)VALUES (90005,'CB');
+INSERT INTO public.bank_mst(bank_id, bank_name)VALUES (90006,'AYA');
 
 
 
@@ -138,60 +138,60 @@ INSERT INTO public.course_time(course_time_id, course_days, course_start_time, c
 
 
 --join course user
-INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (1, 50001,10001);
-INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (2, 50001,10002);
-INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (3, 50001,10003);
-INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (4, 50002,10004);
-INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (5, 50002,10005);
-INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (6, 50002,10006);
-INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (7, 50002,10007);
-INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (8, 50003,10007);
-INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (9, 50004,10007);
-INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (10, 50004,10008);
-INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (11, 50005,10008);
-INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (12, 50005,10009);
-INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (13, 50003,10009);
-INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (14, 50004,10009);
-INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (15, 50006,10010);
-INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (16, 50007,10010);
-INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (17, 50006,10011);
-INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (18, 50007,10011);
-INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (19, 50008,10011);
-INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (20, 50009,10011);
-INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (21, 50006,10012);
-INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (22, 50005,10012);
-INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (23, 50004,10013);
-INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (24, 50010,10014);
-INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (25, 50011,10014);
-INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (26, 50010,10015);
-INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (27, 50011,10016);
-INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (28, 50009,10016);
-INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (29, 50008,10016);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (90001, 50001,10001);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (90002, 50001,10002);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (90003, 50001,10003);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (90004, 50002,10004);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (90005, 50002,10005);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (90006, 50002,10006);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (90007, 50002,10007);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (90008, 50003,10007);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (90009, 50004,10007);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (90010, 50004,10008);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (90011, 50005,10008);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (90012, 50005,10009);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (90013, 50003,10009);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (90014, 50004,10009);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (90015, 50006,10010);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (90016, 50007,10010);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (90017, 50006,10011);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (90018, 50007,10011);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (90019, 50008,10011);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (90020, 50009,10011);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (90021, 50006,10012);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (90022, 50005,10012);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (90023, 50004,10013);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (90024, 50010,10014);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (90025, 50011,10014);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (90026, 50010,10015);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (90027, 50011,10016);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (90028, 50009,10016);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey)VALUES (90029, 50008,10016);
 
 
 -- join course teacher
 
 -- Course info
-INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (30,50001, 10014);
-INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (31,50002, 10015);
-INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (32,50003, 10016);
-INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (33,50004, 20001);
-INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (34,50005, 20002);
-INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (35,50006, 20003);
-INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (36,50007, 20004);
-INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (37,50008, 20005);
-INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (38,50009, 20006);
-INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (39,50010, 20007);
-INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (40,50011, 20008);
-INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (41,50012, 10014);
-INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (42,50013, 10015);
-INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (43,50014, 10016);
-INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (44,50015, 20001);
-INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (45,50016, 20002);
-INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (46,50017, 20003);
-INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (47,50018, 20004);
-INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (48,50019, 20005);
-INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (49,50020, 20006);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (90030,50001, 10014);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (90031,50002, 10015);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (90032,50003, 10016);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (90033,50004, 20001);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (90034,50005, 20002);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (90035,50006, 20003);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (90036,50007, 20004);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (90037,50008, 20005);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (90038,50009, 20006);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (90039,50010, 20007);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (90040,50011, 20008);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (90041,50012, 10014);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (90042,50013, 10015);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (90043,50014, 10016);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (90044,50015, 20001);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (90045,50016, 20002);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (90046,50017, 20003);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (90047,50018, 20004);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (90048,50019, 20005);
+INSERT INTO public.join_course_user(join_id, course_id_fkey, uid_fkey) VALUES (90049,50020, 20006);
 
 
 
@@ -285,191 +285,191 @@ INSERT INTO public.content(content_id, content, syllabus_id) VALUES (54040,'Engl
 
 
 --Payment account
-INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81001,'Khaing Inzali','0978626754',10001,1);
-INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81002,'Ag Phyo','0943055467',10001,3);
-INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81003,'Myint Eindra Hlaing','0976543554',10002,1);
-INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81004,'Htun Naing ','1156785453',10003,4);
-INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81005,'Inzali Nandar','786736753',10003,6);
-INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81006,'Nyan Phone','0986523134',10004,2);
-INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81007,'Lin Thu','0945689723',10005,2);
-INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81008,'Yi Thawdar','0344536728',10006,5);
-INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81009,'Lin Tun Ko Thura','0378675613',10006,6);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81001,'Khaing Inzali','0978626754',10001,90001);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81002,'Ag Phyo','0943055467',10001,90003);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81003,'Myint Eindra Hlaing','0976543554',10002,90001);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81004,'Htun Naing ','1156785453',10003,90004);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81005,'Inzali Nandar','786736753',10003,90006);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81006,'Nyan Phone','0986523134',10004,90002);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81007,'Lin Thu','0945689723',10005,90002);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81008,'Yi Thawdar','0344536728',10006,90005);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81009,'Lin Tun Ko Thura','0378675613',10006,90006);
 INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81010,'Lei Myitzu','095105674',10007,1);
-INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81011,'Thuta Pyay Zeyar Soe','0976544889',10008,1);
-INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81012,'Thuta Pyay Zeyar Soe','0986546677',10009,1);
-INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81013,'Phyo Lin Myint','0975478634',10010,1);
-INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81014,'Tun Htet Soe Tun','0978756476',10011,2);
-INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81015,'Tun Htet Soe Tun','0945546786',10012,2);
-INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81016,'Tun Htet Soe Tun','0945377889',10013,2);
-INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81017,'Kay Hnin Oo','1000987657',10013,6);
-INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81018,'Thandar Naing Aye','876786756',10014,5);
-INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81019,'Aung Nyan','878656645',10014,6);
-INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81020,'Aung Nyan','0973454367',10015,1);
-INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81021,'Ohmar Thi','0945673322',10016,2);
-INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81022,'Ohmar Thi','0945344889',20001,3);
-INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81023,'Ohmar Thi','095107886',20002,3);
-INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81024,'Hlaing Yee','0979966542',20003,3);
-INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81025,'Thura Ko','576849337',20004,4);
-INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81026,'Ye Thuta ','85769473',20005,5);
-INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81027,'Ye Thuta ','00274639067',20006,5);
-INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81028,'Htun Thiha ','2007465789',20007,5);
-INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81029,'Tun Khin','1000564789',20008,4);
-INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81030,'Su Pwint Ohnmar ','2000987677',20008,4);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81011,'Thuta Pyay Zeyar Soe','0976544889',10008,90001);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81012,'Thuta Pyay Zeyar Soe','0986546677',10009,90001);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81013,'Phyo Lin Myint','0975478634',10010,90001);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81014,'Tun Htet Soe Tun','0978756476',10011,90002);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81015,'Tun Htet Soe Tun','0945546786',10012,90002);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81016,'Tun Htet Soe Tun','0945377889',10013,90002);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81017,'Kay Hnin Oo','1000987657',10013,90006);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81018,'Thandar Naing Aye','876786756',10014,90005);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81019,'Aung Nyan','878656645',10014,90006);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81020,'Aung Nyan','0973454367',10015,90001);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81021,'Ohmar Thi','0945673322',10016,90002);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81022,'Ohmar Thi','0945344889',20001,90003);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81023,'Ohmar Thi','095107886',20002,90003);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81024,'Hlaing Yee','0979966542',20003,90003);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81025,'Thura Ko','576849337',20004,90004);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81026,'Ye Thuta ','85769473',20005,90005);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81027,'Ye Thuta ','00274639067',20006,90005);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81028,'Htun Thiha ','2007465789',20007,90005);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81029,'Tun Khin','1000564789',20008,90004);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81030,'Su Pwint Ohnmar ','2000987677',20008,90004);
 
 
 --Leave info
-INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70001,'2021-11-10','9:00','11:00','Sick', 1);
-INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70002,'2021-11-10','9:00','11:00','High Fever', 2);
-INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70003,'2021-11-10','9:00','10:00','A relative is going to live abroad.', 2);
-INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70004,'2021-11-11','1:00','3:00','A dentist’s appointment.', 4);
-INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70005,'2021-11-11','1:30','3:00','Excessive job-related stress.', 4);
-INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70006,'2021-11-12','2:00','3:00','Bereavement leave.', 4);
-INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70007,'2021-11-13','1:00','3:00','Emergency medical procedure', 5);
-INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70008,'2021-11-13','11:00','2:00','You have an important appointment with your doctor that you totally forgot about.', 8);
-INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70009,'2021-11-13','11:00','2:00','Daycare child problems', 8);
-INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70010,'2021-11-13','11:00','2:00','Relative’s wedding.', 10);
-INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70011,'2021-11-13','5:00','7:30','Suffered from an accident.', 10);
-INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70012,'2021-11-14','9:00','11:00','Loss or theft.', 11);
-INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70013,'2021-11-15','9:00','10:00','Due to illness or injury ', 12);
-INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70014,'2021-11-15','1:00','2:00','Family emergency', 17);
-INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70015,'2021-11-16','1:00','3:00','Days of mourning for the death of a relative', 15);
-INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70016,'2021-11-18','1:00','3:00','For vehicle or transportation problems', 17);
-INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70017,'2021-11-18','1:00','3:00','For taking a mental health Day', 21);
-INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70018,'2021-11-20','2:00','3:00','For emergency at home', 15);
-INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70019,'2021-11-20','2:00','3:00','For medical appointments', 21);
-INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70020,'2021-11-20','11:00','12:00','By Jury duty/ Duties of a citizen', 16);
-INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70021,'2021-11-20','11:00','12:00','For unforeseen events', 18);
-INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70022,'2021-11-20','5:00','7:30','For falling asleep', 19);
-INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70023,'2021-11-23','5:00','6:00','Medical tests',  27);
-INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70024,'2021-11-23','5:00','7:30','Pets emergencies', 26);
-INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70025,'2021-11-23','5:00','7:30','Deaths and funerals', 23);
-INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70026,'2021-11-27','9:00','11:00','Shipments of packages, furniture, etc.', 14);
-INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70027,'2021-11-28','9:00','11:00','Tragedy at home', 20);
-INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70028,'2021-11-28','9:00','10:00','Personal reasons.', 22);
-INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70029,'2021-12-01','1:00','3:00','Family emergency', 25);
-INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70030,'2021-12-02','1:00','3:00','Medical emergency', 28);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70001,'2021-11-10','9:00','11:00','Sick', 90001);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70002,'2021-11-10','9:00','11:00','High Fever', 90002);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70003,'2021-11-10','9:00','10:00','A relative is going to live abroad.', 90002);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70004,'2021-11-11','1:00','3:00','A dentist’s appointment.', 90004);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70005,'2021-11-11','1:30','3:00','Excessive job-related stress.', 90004);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70006,'2021-11-12','2:00','3:00','Bereavement leave.', 90004);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70007,'2021-11-13','1:00','3:00','Emergency medical procedure', 90005);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70008,'2021-11-13','11:00','2:00','You have an important appointment with your doctor that you totally forgot about.', 90008);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70009,'2021-11-13','11:00','2:00','Daycare child problems', 90008);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70010,'2021-11-13','11:00','2:00','Relative’s wedding.', 90010);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70011,'2021-11-13','5:00','7:30','Suffered from an accident.', 90010);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70012,'2021-11-14','9:00','11:00','Loss or theft.', 90011);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70013,'2021-11-15','9:00','10:00','Due to illness or injury ', 90012);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70014,'2021-11-15','1:00','2:00','Family emergency', 90017);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70015,'2021-11-16','1:00','3:00','Days of mourning for the death of a relative', 90015);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70016,'2021-11-18','1:00','3:00','For vehicle or transportation problems', 90017);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70017,'2021-11-18','1:00','3:00','For taking a mental health Day', 90021);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70018,'2021-11-20','2:00','3:00','For emergency at home', 90015);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70019,'2021-11-20','2:00','3:00','For medical appointments', 90021);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70020,'2021-11-20','11:00','12:00','By Jury duty/ Duties of a citizen', 90016);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70021,'2021-11-20','11:00','12:00','For unforeseen events', 90018);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70022,'2021-11-20','5:00','7:30','For falling asleep', 90019);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70023,'2021-11-23','5:00','6:00','Medical tests',  90027);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70024,'2021-11-23','5:00','7:30','Pets emergencies', 90026);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70025,'2021-11-23','5:00','7:30','Deaths and funerals', 90023);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70026,'2021-11-27','9:00','11:00','Shipments of packages, furniture, etc.', 90014);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70027,'2021-11-28','9:00','11:00','Tragedy at home', 90020);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70028,'2021-11-28','9:00','10:00','Personal reasons.', 90022);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70029,'2021-12-01','1:00','3:00','Family emergency', 90025);
+INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_time, reason, join_fkey)VALUES (70030,'2021-12-02','1:00','3:00','Medical emergency', 90028);
 
 
 --Payment receive
 INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80001,'1.1.2021','Completed','https://www.w26schools.com/images/picture.jpg', 1);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80002,'2.1.2021','Completed','https://www.w27schools.com/images/picture.jpg', 2);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80003,'3.1.2021','Completed','https://www.w28schools.com/images/picture.jpg', 3);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80004,'4.1.2021','Completed','https://www.w29schools.com/images/picture.jpg', 4);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80005,'5.1.2021','Completed','https://www.w30schools.com/images/picture.jpg', 5);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80006,'6.1.2021','Completed','https://www.w31schools.com/images/picture.jpg', 6);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80007,'7.1.2021','Completed','https://www.w32schools.com/images/picture.jpg', 7);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80008,'8.1.2021','Pending','https://www.w33schools.com/images/picture.jpg', 8);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80009,'9.1.2021','Request','https://www.w34schools.com/images/picture.jpg', 9);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80010,'1.1.2021','Error','https://www.w35schools.com/images/picture.jpg', 10);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80011,'1.1.2021','Pending','https://www.w36schools.com/images/picture.jpg', 11);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80012,'2.1.2021','Pending','https://www.w37schools.com/images/picture.jpg', 12);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80013,'3.1.2021','Pending','https://www.w38schools.com/images/picture.jpg', 13);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80014,'4.1.2021','Pending','https://www.w39schools.com/images/picture.jpg', 14);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80015,'5.1.2021','Pending','https://www.w40schools.com/images/picture.jpg', 15);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80016,'6.1.2021','Pending','https://www.w41schools.com/images/picture.jpg', 16);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80017,'7.1.2021','Request','https://www.w42schools.com/images/picture.jpg', 17);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80018,'8.1.2021','Error','https://www.w43schools.com/images/picture.jpg', 18);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80019,'9.1.2021','Completed','https://www.w44schools.com/images/picture.jpg', 19);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80020,'2.2.2021','Completed','https://www.w45schools.com/images/picture.jpg', 20);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80021,'1.2.2021','Completed','https://www.w46schools.com/images/picture.jpg', 21);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80022,'3.1.2021','Completed','https://www.w47schools.com/images/picture.jpg', 22);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80023,'4.1.2021','Completed','https://www.w48schools.com/images/picture.jpg', 23);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80024,'5.1.2021','Completed','https://www.w49schools.com/images/picture.jpg', 24);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80025,'6.1.2021','Completed','https://www.w50schools.com/images/picture.jpg', 25);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80026,'6.1.2021','Pending','https://www.w51schools.com/images/picture.jpg', 26);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80027,'7.1.2021','Pending','https://www.w52schools.com/images/picture.jpg', 27);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80028,'8.1.2021','Pending','https://www.w53schools.com/images/picture.jpg', 28);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80029,'9.1.2021','Completed','https://www.w54schools.com/images/picture.jpg', 29);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80002,'2.1.2021','Completed','https://www.w27schools.com/images/picture.jpg', 90002);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80003,'3.1.2021','Completed','https://www.w28schools.com/images/picture.jpg', 90003);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80004,'4.1.2021','Completed','https://www.w29schools.com/images/picture.jpg', 90004);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80005,'5.1.2021','Completed','https://www.w30schools.com/images/picture.jpg', 90005);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80006,'6.1.2021','Completed','https://www.w31schools.com/images/picture.jpg', 90006);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80007,'7.1.2021','Completed','https://www.w32schools.com/images/picture.jpg', 90007);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80008,'8.1.2021','Pending','https://www.w33schools.com/images/picture.jpg', 90008);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80009,'9.1.2021','Request','https://www.w34schools.com/images/picture.jpg', 90009);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80010,'1.1.2021','Error','https://www.w35schools.com/images/picture.jpg', 90010);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80011,'1.1.2021','Pending','https://www.w36schools.com/images/picture.jpg', 90011);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80012,'2.1.2021','Pending','https://www.w37schools.com/images/picture.jpg', 90012);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80013,'3.1.2021','Pending','https://www.w38schools.com/images/picture.jpg', 90013);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80014,'4.1.2021','Pending','https://www.w39schools.com/images/picture.jpg', 90014);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80015,'5.1.2021','Pending','https://www.w40schools.com/images/picture.jpg', 90015);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80016,'6.1.2021','Pending','https://www.w41schools.com/images/picture.jpg', 90016);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80017,'7.1.2021','Request','https://www.w42schools.com/images/picture.jpg', 90017);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80018,'8.1.2021','Error','https://www.w43schools.com/images/picture.jpg', 90018);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80019,'9.1.2021','Completed','https://www.w44schools.com/images/picture.jpg', 90019);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80020,'2.2.2021','Completed','https://www.w45schools.com/images/picture.jpg', 90020);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80021,'1.2.2021','Completed','https://www.w46schools.com/images/picture.jpg', 90021);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80022,'3.1.2021','Completed','https://www.w47schools.com/images/picture.jpg', 90022);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80023,'4.1.2021','Completed','https://www.w48schools.com/images/picture.jpg', 90023);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80024,'5.1.2021','Completed','https://www.w49schools.com/images/picture.jpg', 90024);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80025,'6.1.2021','Completed','https://www.w50schools.com/images/picture.jpg', 90025);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80026,'6.1.2021','Pending','https://www.w51schools.com/images/picture.jpg', 90026);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80027,'7.1.2021','Pending','https://www.w52schools.com/images/picture.jpg', 90027);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80028,'8.1.2021','Pending','https://www.w53schools.com/images/picture.jpg', 90028);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80029,'9.1.2021','Completed','https://www.w54schools.com/images/picture.jpg', 90029);
 
 
 --Review
 INSERT INTO public.review(
  review_id, assigned_date, feedback, review_type, star, join_fkey)
- VALUES (60001,'2021-11-10','This class is very helpful to me. Currently, I am still learning this class which makes up a lot of basic music knowledge.',0,5,1);
+ VALUES (60001,'2021-11-10','This class is very helpful to me. Currently, I am still learning this class which makes up a lot of basic music knowledge.',0,5,90001);
 INSERT INTO public.review(
  review_id, assigned_date, feedback, review_type, star, join_fkey)
- VALUES (60002,'2021-11-10','like!Prof and TAs are helpful and the discussion among students are quite active. Very rewarding learning experience!',0,5,2);
+ VALUES (60002,'2021-11-10','like!Prof and TAs are helpful and the discussion among students are quite active. Very rewarding learning experience!',0,5,90002);
 INSERT INTO public.review(
  review_id, assigned_date, feedback, review_type, star, join_fkey)
- VALUES (60003,'2021-11-10','Excellent score!',2,0,3);
+ VALUES (60003,'2021-11-10','Excellent score!',2,0,9003);
 INSERT INTO public.review(
  review_id, assigned_date, feedback, review_type, star, join_fkey)
- VALUES (60004,'2021-11-11','Retake exam on December 1st',1,0,4);
+ VALUES (60004,'2021-11-11','Retake exam on December 1st',1,0,90004);
 INSERT INTO public.review(
  review_id, assigned_date, feedback, review_type, star, join_fkey)
- VALUES (60005,'2021-11-11','Check up twice before uploading the assignment It all wrong',1,0,5);
+ VALUES (60005,'2021-11-11','Check up twice before uploading the assignment It all wrong',1,0,90005);
 INSERT INTO public.review(
  review_id, assigned_date, feedback, review_type, star, join_fkey)
- VALUES (60006,'2021-11-12','One of the most useful course on IT Management!',0,5,6);
+ VALUES (60006,'2021-11-12','One of the most useful course on IT Management!',0,5,90006);
 INSERT INTO public.review(
  review_id, assigned_date, feedback, review_type, star, join_fkey)
- VALUES (60007,'2021-11-13','I was disappointed because the name is misleading. The course provides a good introduction & overview of the responsibilities of the CTO, but has very little specifically digital content.',0,5,7);
+ VALUES (60007,'2021-11-13','I was disappointed because the name is misleading. The course provides a good introduction & overview of the responsibilities of the CTO, but has very little specifically digital content.',0,5,90007);
 INSERT INTO public.review(
  review_id, assigned_date, feedback, review_type, star, join_fkey)
- VALUES (60008,'2021-11-13','Super content. I will definitely re-do the course',0,3,8);
+ VALUES (60008,'2021-11-13','Super content. I will definitely re-do the course',0,3,90008);
 INSERT INTO public.review(
  review_id, assigned_date, feedback, review_type, star, join_fkey)
- VALUES (60009,'2021-11-13','Scores keep getting declined Try better',1,0,9);
+ VALUES (60009,'2021-11-13','Scores keep getting declined Try better',1,0,90009);
 INSERT INTO public.review(
  review_id, assigned_date, feedback, review_type, star, join_fkey)
- VALUES (60010,'2021-11-13','Is there any reason why you should not apply the course by BCG?)Its content is pretty unique and includes a high level analysis and a wide range of knowledge needed to cover all detailed aspects.Best regards,Oleg Serov',0,5,10);
+ VALUES (60010,'2021-11-13','Is there any reason why you should not apply the course by BCG?)Its content is pretty unique and includes a high level analysis and a wide range of knowledge needed to cover all detailed aspects.Best regards,Oleg Serov',0,5,90010);
 INSERT INTO public.review(
  review_id, assigned_date, feedback, review_type, star, join_fkey)
- VALUES (60011,'2021-11-13','Excellent course and teachers. Congratulations!!',0,5,11);
+ VALUES (60011,'2021-11-13','Excellent course and teachers. Congratulations!!',0,5,90011);
 INSERT INTO public.review(
  review_id, assigned_date, feedback, review_type, star, join_fkey)
- VALUES (60012,'2021-11-14','This is a good course for an CIO in a non technical company.',0,5,12);
+ VALUES (60012,'2021-11-14','This is a good course for an CIO in a non technical company.',0,5,90012);
 INSERT INTO public.review(
  review_id, assigned_date, feedback, review_type, star, join_fkey)
- VALUES (60013,'2021-11-15','Good content, but the course setting does (at least for me) not allow learn the content long term due to missing reading material.',0,5,13);
+ VALUES (60013,'2021-11-15','Good content, but the course setting does (at least for me) not allow learn the content long term due to missing reading material.',0,5,90013);
 INSERT INTO public.review(
  review_id, assigned_date, feedback, review_type, star, join_fkey)
- VALUES (60014,'2021-11-15','Very structured approach. Thank you for sharing with me.',0,3,14);
+ VALUES (60014,'2021-11-15','Very structured approach. Thank you for sharing with me.',0,3,90014);
 INSERT INTO public.review(
  review_id, assigned_date, feedback, review_type, star, join_fkey)
  VALUES (60015,'2021-11-16','Program demystifies the evolving world of CIOs in a typical global corporation.Coverage being introductory familiarizes participants nicely through some of the nuances & emerging trends.',0,5,15);
 INSERT INTO public.review(
  review_id, assigned_date, feedback, review_type, star, join_fkey)
- VALUES (60016,'2021-11-18','Very relevant and useful course designed for CIOs',0,4,16);
+ VALUES (60016,'2021-11-18','Very relevant and useful course designed for CIOs',0,4,90016);
 INSERT INTO public.review(
  review_id, assigned_date, feedback, review_type, star, join_fkey)
- VALUES (60017,'2021-11-18','This course does not say anything about digitization which is the core subject of the digital wave.',0,2,17);
+ VALUES (60017,'2021-11-18','This course does not say anything about digitization which is the core subject of the digital wave.',0,2,90017);
 INSERT INTO public.review(
  review_id, assigned_date, feedback, review_type, star, join_fkey)
- VALUES (60018,'2021-11-20','Well done keep going',2,0,18);
+ VALUES (60018,'2021-11-20','Well done keep going',2,0,90018);
 INSERT INTO public.review(
  review_id, assigned_date, feedback, review_type, star, join_fkey)
- VALUES (60019,'2021-11-20','Absent too much',1,0,19);
+ VALUES (60019,'2021-11-20','Absent too much',1,0,90019);
 INSERT INTO public.review(
  review_id, assigned_date, feedback, review_type, star, join_fkey)
- VALUES (60020,'2021-11-20','Great piece of work, I especially liked a few lifehacks for the CIO',0,3,20);
+ VALUES (60020,'2021-11-20','Great piece of work, I especially liked a few lifehacks for the CIO',0,3,90020);
 INSERT INTO public.review(
  review_id, assigned_date, feedback, review_type, star, join_fkey)
- VALUES (60021,'2021-11-20','Focus more on lesson',1,0,21);
+ VALUES (60021,'2021-11-20','Focus more on lesson',1,0,90021);
 INSERT INTO public.review(
  review_id, assigned_date, feedback, review_type, star, join_fkey)
- VALUES (60022,'2021-11-20','One of the excellent courses at Coursera for information technology bosses and managers.',0,5,22);
+ VALUES (60022,'2021-11-20','One of the excellent courses at Coursera for information technology bosses and managers.',0,5,90022);
 INSERT INTO public.review(
  review_id, assigned_date, feedback, review_type, star, join_fkey)
- VALUES (60023,'2021-11-23','Dont be late on class',1,0,23);
+ VALUES (60023,'2021-11-23','Dont be late on class',1,0,90023);
 INSERT INTO public.review(
  review_id, assigned_date, feedback, review_type, star, join_fkey)
- VALUES (60024,'2021-11-23','Easy to follow and includes a lot basic and important techniques to use sketchup.',0,5,24);
+ VALUES (60024,'2021-11-23','Easy to follow and includes a lot basic and important techniques to use sketchup.',0,5,90024);
 INSERT INTO public.review(
  review_id, assigned_date, feedback, review_type, star, join_fkey)
- VALUES (60025,'2021-11-23','Really nice teacher!I could got the point eazliy but the v',0,5,25);
+ VALUES (60025,'2021-11-23','Really nice teacher!I could got the point eazliy but the v',0,5,90025);
 INSERT INTO public.review(
  review_id, assigned_date, feedback, review_type, star, join_fkey)
- VALUES (60026,'2021-11-27','Great course - I recommend it for all, especially IT and Business Managers!',0,4,26);
+ VALUES (60026,'2021-11-27','Great course - I recommend it for all, especially IT and Business Managers!',0,4,90026);
 INSERT INTO public.review(
  review_id, assigned_date, feedback, review_type, star, join_fkey)
- VALUES (60027,'2021-11-28','Congratulations for receiving highest mark',2,0,27);
+ VALUES (60027,'2021-11-28','Congratulations for receiving highest mark',2,0,90027);
 INSERT INTO public.review(
  review_id, assigned_date, feedback, review_type, star, join_fkey)
- VALUES (60028,'2021-11-28','Videos that are presented in French could have been translated to English.',0,2,28);
+ VALUES (60028,'2021-11-28','Videos that are presented in French could have been translated to English.',0,2,90028);
 INSERT INTO public.review(
  review_id, assigned_date, feedback, review_type, star, join_fkey)
- VALUES (60029,'2021-12-01','The course content is quite good, though it could have been deeper in some areas.But its peer review system is not working well, if at all.Regards, An Le.',0,4,29);
+ VALUES (60029,'2021-12-01','The course content is quite good, though it could have been deeper in some areas.But its peer review system is not working well, if at all.Regards, An Le.',0,4,90029);
 -- INSERT INTO public.review(
 --  review_id, assigned_date, feedback, review_type, star, join_fkey)
 --  VALUES (60030,'2021-12-02','Keep up with deadlines',1,0,50010,20008);
