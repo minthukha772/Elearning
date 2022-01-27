@@ -4,6 +4,7 @@ import com.blissstock.mappingSite.model.AddAdmin;
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.CourseTime;
 import com.blissstock.mappingSite.entity.UserInfo;
+import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.entity.JoinCourseUser;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
@@ -132,7 +133,8 @@ public class ListOfUserController {
         for(JoinCourseUser joinCU:joinCourseUser)
         {
             UserInfo userinfo = joinCU.getUserInfo();
-            userList.add(userinfo);
+            if(userinfo.getUserAccount().getRole().equals(UserRole.STUDENT.getValue()))
+                userList.add(userinfo);
         }
         // List<JoinCourseUser> joinCourseUser = joinCourseUserRepo.findByCourseID(courseID);
         

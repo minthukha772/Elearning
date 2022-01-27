@@ -166,7 +166,8 @@ public class CourseDetailsController {
         Integer maxStudent = courseInfo.getMaxStu();
         List<UserInfo> studentList = new ArrayList<>();
         for (JoinCourseUser joinCourseUser : courseInfo.getJoin()) {
-            studentList.add(joinCourseUser.getUserInfo());
+            if(joinCourseUser.getUserInfo().getUserAccount().getRole().equals(UserRole.STUDENT.getValue()))
+                studentList.add(joinCourseUser.getUserInfo());
         }
         Integer stuListSize = studentList.size();
         Integer availableStuList;
@@ -206,8 +207,7 @@ public class CourseDetailsController {
             model.addAttribute("studentRegistered", studentRegistered);
             model.addAttribute("student", "STUDENT");
             model.addAttribute("userId", userId);
-
-            //Get stuReviews
+     //Get stuReviews
             List<JoinCourseUser> joinUserList=user.getJoin();
             List<Review> stuReviews=new ArrayList<Review>(); 
             for(JoinCourseUser joinlist:joinUserList){
@@ -222,6 +222,7 @@ public class CourseDetailsController {
                     model.addAttribute("stuReviews", studentReviewList);
                 }
             }
+
         }
 
         else if (userSessionService.getRole() == UserRole.ADMIN
@@ -292,7 +293,7 @@ public class CourseDetailsController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Course Not Found");
         } catch (ObjectOptimisticLockingFailureException e) {
             e.printStackTrace();
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
@@ -303,12 +304,15 @@ public class CourseDetailsController {
     }
 
     @RequestMapping("/student/enroll/{courseId}/{userId}")
+
     public String enrollStudent(@PathVariable Long courseId, @PathVariable Long userId, Model model){
         logger.info("Request");
+
         JoinCourseDTO joinCourseDTO = new JoinCourseDTO();
         joinCourseDTO.setUid(userId);
         joinCourseDTO.setCourseId(courseId);
         try {
+
             if(joinCourseService.enrollStudent(joinCourseDTO) == null){
                 logger.info("null user");
                 return "redirect:/student/course-details/" + courseId+"/?error";
@@ -322,6 +326,7 @@ public class CourseDetailsController {
             e.printStackTrace();
             return "redirect:/student/course-details/" + courseId+"/?error";
         }
+
         return "redirect:/student/course-details/" + courseId;
     }
 
