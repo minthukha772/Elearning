@@ -63,6 +63,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .permitAll()
         .antMatchers("/guest/**", "/**/change_password", "/change_password")
         .permitAll()
+        .antMatchers("/teacherAccount/register/complete", "/studentAccount/register/complete")
+        .permitAll()
         .antMatchers("/check_email/**", "/check_email/admin/register", "confirmation")
         .permitAll()
         .antMatchers("/images/**", "/css/**", "/js/**")
@@ -136,6 +138,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Bean
   public AuthenticationFailureHandler authenticationFailureHandler() {
-      return new MyAuthenticationFailureHandler();
+    return new MyAuthenticationFailureHandler();
   }
 }
