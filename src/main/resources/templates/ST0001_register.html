@@ -75,7 +75,7 @@
                 <div class="mb-2">
                   Fields with <span style="color: red;">*</span> are required.
                 </div>
-                <div class="form-group row">
+                <div class="form-group row mt-md-4 ">
                   <div class="col-lg-3">
                     <label class="form-label" for="emailAddress">
                       Email Address<span style="color: red;">*</span></label>
@@ -89,7 +89,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="form-group row">
+                <div class="form-group row mt-md-4  ">
                   <div class="col-lg-3">
                     <label class="form-label" for="name">Name<span style="color: red;">*</span></label>
                   </div>
@@ -104,7 +104,7 @@
 
                 <!-- Profile Edit Do not need Password Related information -->
                 <div th:if="${task=='Register'}">
-                  <div class="form-group row">
+                  <div class="form-group row mt-md-4">
                     <div class="col-lg-3"></div>
                     <div class="col-lg-6">
                       <div class="mb-2">
@@ -118,7 +118,7 @@
                     </div>
                   </div>
 
-                  <div class="form-group row">
+                  <div class="form-group row mt-md-4">
                     <div class="col-lg-3">
                       <label class="form-label" for="password">Password<span style="color: red;">*</span></label>
                     </div>
@@ -130,7 +130,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="form-group row">
+                  <div class="form-group row mt-md-4">
                     <div class="col-lg-3">
                       <label class="form-label" for="confirmPassword">Confirm Password<span
                           style="color: red;">*</span></label>
@@ -146,7 +146,7 @@
                   </div>
                 </div>
 
-                <div class="form-group row">
+                <div class="form-group row mt-md-4">
                   <div class="col-lg-3">
                     <label class="form-label" for="phone">Phone Number<span style="color: red;">*</span></label>
                   </div>
@@ -159,7 +159,7 @@
                   </div>
                 </div>
 
-                <div class="form-group row">
+                <div class="form-group row mt-md-4">
                   <div class="col-lg-3">
                     <label class="form-label d-block">Gender<span style="color: red;">*</span></label>
                   </div>
@@ -178,7 +178,7 @@
                 </div>
 
 
-                <div class="form-group row">
+                <div class="form-group row mt-md-4">
                   <div class="col-lg-3">
                     <label class="form-label" for="dob">Date of birth<span style="color: red;">*</span></label>
                   </div>
@@ -190,7 +190,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="form-group row">
+                <div class="form-group row mt-md-4">
                   <div class="col-lg-3"></div>
                   <div class="col-lg-6">
                     <span class="badge bg-info">Notice</span> For customer who
@@ -200,7 +200,7 @@
                     ZipCode: 05061, 10011, 1164
                   </div>
                 </div>
-                <div class="form-group row">
+                <div class="form-group row mt-md-4">
                   <div class="col-lg-3"></div>
                   <div class="col-lg-6">
                     <div class="mb-3 row g-6">
@@ -235,7 +235,7 @@
                   </div>
                 </div>
 
-                <div class="form-group row">
+                <div class="form-group row mt-md-4">
                   <div class="col-lg-3">
                     <label class="form-label" for="address">Address<span style="color: red;">*</span></label>
                   </div>
@@ -248,7 +248,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="form-group row">
+                <div class="form-group row mt-md-4">
                   <div class="col-lg-3">
                     <label class="form-label" for="education">Education<span style="color: red;">*</span></label>
                   </div>
@@ -272,26 +272,34 @@
 
                 <!-- Visible only on teacher registeration -->
                 <div th:if="${role == 'teacher'}">
-                  <div class="mb-3">
-                    <label class="form-label" for="nrc">NRC<span style="color: red;">*</span></label>
-                    <input th:field="*{nrc}" class="form-control"
-                      th:classappend="${#fields.hasErrors('nrc')}?'is-invalid':''" id="nrc" type="text"
-                      placeholder="NRC" />
-                    <div class="invalid-feedback" th:if="${#fields.hasErrors('nrc')}" th:errors="*{nrc}">
-                      This field is required.
+                  <div class="form-group row mt-md-4">
+                    <div class="col-lg-3">
+                      <label class="form-label" for="nrc">NRC<span style="color: red;">*</span></label>
+                    </div>
+                    <div class="col-lg-6">
+                      <input th:field="*{nrc}" class="form-control"
+                        th:classappend="${#fields.hasErrors('nrc')}?'is-invalid':''" id="nrc" type="text"
+                        placeholder="NRC" />
+                      <div class="invalid-feedback" th:if="${#fields.hasErrors('nrc')}" th:errors="*{nrc}">
+                        This field is required.
+                      </div>
                     </div>
                   </div>
 
 
-                  <div class="mb-3">
-                    <label class="form-label" for="selfDescription">Describe about yourself<span
-                        style="color: red;">*</span></label>
-                    <textarea th:field="*{selfDescription}" class="form-control"
-                      th:classappend="${#fields.hasErrors('selfDescription')}?'is-invalid':''"
-                      id="describeAboutYourself" type="text" placeholder="Describe about yourself"></textarea>
-                    <div class="invalid-feedback" th:if="${#fields.hasErrors('selfDescription')}"
-                      th:errors="*{selfDescription}">
-                      This field is required. is required.
+                  <div class="form-group row mt-md-4">
+                    <div class="col-lg-3">
+                      <label class="form-label" for="selfDescription">Describe about yourself<span
+                          style="color: red;">*</span></label>
+                    </div>
+                    <div class="col-lg-6">
+                      <textarea th:field="*{selfDescription}" class="form-control"
+                        th:classappend="${#fields.hasErrors('selfDescription')}?'is-invalid':''"
+                        id="describeAboutYourself" type="text" placeholder="Describe about yourself"></textarea>
+                      <div class="invalid-feedback" th:if="${#fields.hasErrors('selfDescription')}"
+                        th:errors="*{selfDescription}">
+                        This field is required. is required.
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -300,18 +308,21 @@
 
                 <!-- Profile Edit Do not need Password Related information -->
                 <div th:classappend="${task=='Register'}?'':'visually-hidden'">
-                  <div class="mb-3">
-                    <label class="form-label d-block"></label>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" id="iAgreeToTermCondition" type="checkbox"
-                        th:field="*{acceptTerm}" th:classappend="${#fields.hasErrors('acceptTerm')}?'is-invalid':''"
-                        name="" />
-                      <label class="form-check-label" for="acceptTerm">I agree to <a
-                          th:href="@{/guest/terms_and_conditions}" th:target="@{_blank}"> Term &amp;
-                          Condition</a><span style="color: red;">*</span></label>
-                      <div class="invalid-feedback" for="iAgreeToTermCondition"
-                        th:if="${#fields.hasErrors('acceptTerm')}" th:errors="*{acceptTerm}">
-                        This field is required.
+                  <div class="form-group row mt-md-4">
+                    <div class="col-lg-3"></div>
+                    <div class="col-lg-6">
+                      <label class="form-label d-block"></label>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" id="iAgreeToTermCondition" type="checkbox"
+                          th:field="*{acceptTerm}" th:classappend="${#fields.hasErrors('acceptTerm')}?'is-invalid':''"
+                          name="" />
+                        <label class="form-check-label" for="acceptTerm">I agree to <a
+                            th:href="@{/guest/terms_and_conditions}" th:target="@{_blank}"> Term &amp;
+                            Condition</a><span style="color: red;">*</span></label>
+                        <div class="invalid-feedback" for="iAgreeToTermCondition"
+                          th:if="${#fields.hasErrors('acceptTerm')}" th:errors="*{acceptTerm}">
+                          This field is required.
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -375,9 +386,6 @@
 
   }
 
-  .form-group row {
-    margin: 100px;
-  }
 
 
 
