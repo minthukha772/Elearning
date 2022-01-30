@@ -68,3 +68,7 @@
   font-size: 80px;
   font-weight: 500px;
 }
+
+.carousel-caption p{
+  font-size: 20px;
+}
