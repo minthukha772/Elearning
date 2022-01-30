@@ -16,7 +16,7 @@
 <body>
   <div th:replace="@{fragments/nav-home}"></div>
 
-  <!-- <nav class="py-3 sticky-top container-fluid" style="background-color: #5eba7d"
+  <nav class="py-3 sticky-top container-fluid" style="background-color: #5eba7d"
     th:unless="${#authorization.expression('isAuthenticated()')}">
     <ul class="nav justify-content-center row gx-3 gy-2">
       <li class="nav-item col-auto text-center">
@@ -32,7 +32,7 @@
           Teacher</a>
       </li>
     </ul>
-  </nav> -->
+  </nav>
 
   <!-- <div id="carouselIndicators" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-indicators">
@@ -68,7 +68,7 @@
         <div class="carousel-caption d-none d-md-block">
           <h5>Start learning now!</h5>
           <p class="pb-3">Register today and start learning on our platform.</p>
-          <a class="btn btn-primary btn-lg active" aria-current="page"
+          <a class="btn btn-outline-light btn-lg" aria-current="page"
           th:href="@{/check_email/register/student}">Register
           as
           Student</a>
@@ -79,7 +79,7 @@
         <div class="carousel-caption d-none d-md-block">
           <h5>Start teaching now!</h5>
           <p class="pb-3">Register today and start teaching on our platform.</p>
-          <a class="btn btn-primary btn-lg active" aria-current="page"
+          <a class="btn btn-outline-light btn-lg" aria-current="page"
           th:href="@{/check_email/register/teacher}">Register
           as
           Teacher</a>
@@ -90,7 +90,7 @@
         <div class="carousel-caption d-none d-md-block">
           <h5>Explore our courses!</h5>
           <p class="pb-3">Search our finest courses by the top mentors.</p>
-          <a class="btn btn-primary btn-lg active" aria-current="page" th:href="@{/guest/explore}">
+          <a class="btn btn-outline-light btn-lg" aria-current="page" th:href="@{/guest/explore}">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="16"
