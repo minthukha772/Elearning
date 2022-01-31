@@ -129,6 +129,9 @@ public class CourseInfo {
 		this.isCourseApproved = isCourseApproved;
 	}
 
+  public boolean getIsCourseApproved(){
+    return this.isCourseApproved;
+  }
   // public String getTitle() {
 	// 	return this.title;
 	// }

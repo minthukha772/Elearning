@@ -131,7 +131,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
           <a th:href="@{'/admin/edit/course/' + ${courseInfo.courseId} + '/' + ${courseInfo.userInfo.uid}}"><button
               class="btn btn-primary">Edit Course</button></a>
               <!-- verify -->
-          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#verifyCourseConfirmModal"
+          <button th:if="${courseNotApprove}" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#verifyCourseConfirmModal"
               th:attr="data-bs-id=${courseInfo.courseId}" th:attrappend="data-bs-title=${courseInfo.courseName}">
               Verify Course
           </button>

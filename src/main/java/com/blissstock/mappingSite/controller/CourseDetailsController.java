@@ -86,6 +86,10 @@ public class CourseDetailsController {
         CourseInfo courseInfo = courseInfoRepository.findById(courseId).get();
         model.addAttribute("courseInfo", courseInfo);
 
+        //isCourseApprove
+        boolean courseNotApprove = courseInfo.getIsCourseApproved() == false;
+        model.addAttribute("courseNotApprove", courseNotApprove);
+
         //Get trname and course name
         String trName = courseInfo.getUserInfo().getUserName();
         model.addAttribute("trName", trName);
