@@ -4502,7 +4502,7 @@ textarea.form-control-lg {
   content: var(--bs-breadcrumb-divider, "/") /* rtl: var(--bs-breadcrumb-divider, "/") */;
 }
 .breadcrumb-item.active {
-  color: #0d19c0;
+  color: #6c757d;
 }
 
 .pagination {

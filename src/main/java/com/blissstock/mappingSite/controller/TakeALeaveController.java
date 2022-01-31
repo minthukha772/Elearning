@@ -89,7 +89,8 @@ public class TakeALeaveController {
           List<String> breadcrumbList = new ArrayList<>();
           breadcrumbList.add("My Course");
           breadcrumbList.add("Course Detail");
-          breadcrumbList.add("Take A Leave");
+          // breadcrumbList.add("Take A Leave");
+          model.addAttribute("Absent", "Absent");
           model.addAttribute("breadcrumbList",breadcrumbList);
           String nav_type = "fragments/student-nav";
           model.addAttribute("nav_type",nav_type);
@@ -100,7 +101,8 @@ public class TakeALeaveController {
           List<String> breadcrumbList = new ArrayList<>();
           breadcrumbList.add("My Course");
           breadcrumbList.add("Course Detail");
-          breadcrumbList.add("Take A Leave");
+          // breadcrumbList.add("Take A Leave");
+          model.addAttribute("Absent", "Absent");
           model.addAttribute("breadcrumbList",breadcrumbList);
           String nav_type = "fragments/teacher-nav";
           model.addAttribute("nav_type",nav_type);    
@@ -111,7 +113,8 @@ public class TakeALeaveController {
           List<String> breadcrumbList = new ArrayList<>();
           breadcrumbList.add("Top");
           breadcrumbList.add("User List");
-          breadcrumbList.add("Take A Leave");
+          // breadcrumbList.add("Take A Leave");
+          model.addAttribute("Absent", "Absent");
           model.addAttribute("breadcrumbList",breadcrumbList);
           String nav_type = "fragments/adminnav";
           model.addAttribute("nav_type",nav_type);
@@ -142,6 +145,7 @@ public class TakeALeaveController {
           breadcrumbList.add("My Course");
           breadcrumbList.add("Course Detail");
           breadcrumbList.add("Take A Leave");
+          model.addAttribute("Confirm", "Confirm");
           model.addAttribute("breadcrumbList",breadcrumbList);
           String nav_type = "fragments/student-nav";
           model.addAttribute("nav_type",nav_type);  
@@ -153,6 +157,7 @@ public class TakeALeaveController {
           breadcrumbList.add("My Course");
           breadcrumbList.add("Course Detail");
           breadcrumbList.add("Take A Leave");
+          model.addAttribute("Confirm", "Confirm");
           model.addAttribute("breadcrumbList",breadcrumbList);
           String nav_type = "fragments/teacher-nav";
           model.addAttribute("nav_type",nav_type);      
@@ -164,6 +169,7 @@ public class TakeALeaveController {
           breadcrumbList.add("Top");
           breadcrumbList.add("User List");
           breadcrumbList.add("Take A Leave");
+          model.addAttribute("Confirm", "Confirm");
           model.addAttribute("breadcrumbList",breadcrumbList);
           String nav_type = "fragments/adminnav";
           model.addAttribute("nav_type",nav_type);

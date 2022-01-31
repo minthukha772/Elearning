@@ -2,9 +2,11 @@ package com.blissstock.mappingSite.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.blissstock.mappingSite.dto.JoinCourseDTO;
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.CourseTime;
 import com.blissstock.mappingSite.entity.JoinCourseUser;
@@ -164,7 +166,8 @@ public class CourseDetailsController {
         Integer maxStudent = courseInfo.getMaxStu();
         List<UserInfo> studentList = new ArrayList<>();
         for (JoinCourseUser joinCourseUser : courseInfo.getJoin()) {
-            studentList.add(joinCourseUser.getUserInfo());
+            if(joinCourseUser.getUserInfo().getUserAccount().getRole().equals(UserRole.STUDENT.getValue()))
+                studentList.add(joinCourseUser.getUserInfo());
         }
         Integer stuListSize = studentList.size();
         Integer availableStuList;
@@ -204,8 +207,7 @@ public class CourseDetailsController {
             model.addAttribute("studentRegistered", studentRegistered);
             model.addAttribute("student", "STUDENT");
             model.addAttribute("userId", userId);
-
-            //Get stuReviews
+     //Get stuReviews
             List<JoinCourseUser> joinUserList=user.getJoin();
             List<Review> stuReviews=new ArrayList<Review>(); 
             for(JoinCourseUser joinlist:joinUserList){
@@ -220,6 +222,7 @@ public class CourseDetailsController {
                     model.addAttribute("stuReviews", studentReviewList);
                 }
             }
+
         }
 
         else if (userSessionService.getRole() == UserRole.ADMIN
@@ -290,7 +293,7 @@ public class CourseDetailsController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Course Not Found");
         } catch (ObjectOptimisticLockingFailureException e) {
             e.printStackTrace();
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
@@ -301,11 +304,29 @@ public class CourseDetailsController {
     }
 
     @RequestMapping("/student/enroll/{courseId}/{userId}")
+
     public String enrollStudent(@PathVariable Long courseId, @PathVariable Long userId, Model model){
-        JoinCourseUser joins = new JoinCourseUser();
-        joins.setCourseInfo(courseInfoRepository.findByCourseID(courseId));
-        joins.setUserInfo(userInfoRepository.findById(userId).get());
-        joinCourseUserRepository.save(joins);
+        logger.info("Request");
+
+        JoinCourseDTO joinCourseDTO = new JoinCourseDTO();
+        joinCourseDTO.setUid(userId);
+        joinCourseDTO.setCourseId(courseId);
+        try {
+
+            if(joinCourseService.enrollStudent(joinCourseDTO) == null){
+                logger.info("null user");
+                return "redirect:/student/course-details/" + courseId+"/?error";
+            }
+        }catch(NoSuchElementException e){
+            e.printStackTrace();
+            return "redirect:/student/course-details/" + courseId+"/?error";
+        }
+        catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return "redirect:/student/course-details/" + courseId+"/?error";
+        }
+
         return "redirect:/student/course-details/" + courseId;
     }
 
