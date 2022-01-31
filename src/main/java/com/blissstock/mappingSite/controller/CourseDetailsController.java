@@ -89,6 +89,7 @@ public class CourseDetailsController {
         //isCourseApprove
         boolean courseNotApprove = courseInfo.getIsCourseApproved() == false;
         model.addAttribute("courseNotApprove", courseNotApprove);
+        logger.info("The requested course approve boolean is {} ", courseNotApprove);
 
         //Get trname and course name
         String trName = courseInfo.getUserInfo().getUserName();

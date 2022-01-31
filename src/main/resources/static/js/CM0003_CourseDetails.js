@@ -39,7 +39,7 @@ $(function(){
             data: { courseId },
           }).done(function () {
             //reload page
-            window.location.href = "/admin/top/";
+            window.location.href = "/guest/course-detail/" + courseId;
           }).fail(function () {
             alert("Something went wrong");
           });
