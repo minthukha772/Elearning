@@ -53,14 +53,24 @@ public class CourseListController {
     JoinCourseUserService joinCourseUserService;
 
     @GetMapping("/guest/explore")
-    private String getCourseListGuest(Model model, @ModelAttribute("courseInfoDTO") CourseInfoDTO courseInfoDTO ) {
+    private String getCourseListGuest(Model model, @ModelAttribute("courseInfoDTO") CourseInfoDTO courseInfoDTO) {
         logger.info("GET request");
 
         // CourseInfoDTO courseInfoDTO = new CourseInfoDTO(courseName, teacherName,
-        //         StringToDateConvert.stringToDate(startDate), StringToDateConvert.stringToDate(endDate));
+        // StringToDateConvert.stringToDate(startDate),
+        // StringToDateConvert.stringToDate(endDate));
 
         logger.debug("couresInfoDto {} ", courseInfoDTO);
         model.addAttribute("courseInfoDTO", courseInfoDTO);
+
+        // set login user role
+        UserRole userRole = userSessionService.getRole();
+        courseInfoDTO.setLogInUser(userRole.getValue());
+        logger.warn("current teacher is :{}", userSessionService.getId());
+        if (userRole.getValue().equals(UserRole.TEACHER.getValue())) {
+            logger.warn("current teacher is :{}", userSessionService.getId());
+            courseInfoDTO.setLogInUserId(userSessionService.getId());
+        }
 
         List<CourseInfo> courseList = courseService.getCourseList(courseInfoDTO);
         // Encasulate Data

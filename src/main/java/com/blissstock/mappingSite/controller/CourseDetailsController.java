@@ -86,6 +86,11 @@ public class CourseDetailsController {
         CourseInfo courseInfo = courseInfoRepository.findById(courseId).get();
         model.addAttribute("courseInfo", courseInfo);
 
+        //isCourseApprove
+        boolean courseNotApprove = courseInfo.getIsCourseApproved() == false;
+        model.addAttribute("courseNotApprove", courseNotApprove);
+        logger.info("The requested course approve boolean is {} ", courseNotApprove);
+
         //Get trname and course name
         String trName = courseInfo.getUserInfo().getUserName();
         model.addAttribute("trName", trName);
@@ -288,6 +293,34 @@ public class CourseDetailsController {
                 throw new CourseNotFoundException();
             }
             courseService.deleteCourseInfo(courseInfo);
+        } catch (CourseNotFoundException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Course Not Found");
+        } catch (ObjectOptimisticLockingFailureException e) {
+            e.printStackTrace();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body("operation success");
+
+    }
+
+    @PostMapping("/admin/course-details/verify/")
+    public ResponseEntity<Object> verifyCourse(
+            Model model,
+            Long courseId,
+            HttpServletRequest httpServletRequest) {
+        logger.info("VERIFY Request for course {}", courseId);
+        try {
+            // UserInfo userInfo = userService.getUserInfoByID(uid);
+            CourseInfo courseInfo = courseInfoRepository.findById(courseId).get();
+            if (courseInfo == null) {
+                throw new CourseNotFoundException();
+            }
+            courseService.verifyCourseInfo(courseInfo);
         } catch (CourseNotFoundException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Course Not Found");
