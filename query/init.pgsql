@@ -1,10 +1,10 @@
 -- Bank Info
-INSERT INTO public.bank_mst(bank_id, bank_name)VALUES (1,'Kpay');
-INSERT INTO public.bank_mst(bank_id, bank_name)VALUES (2,'Cbpay');
-INSERT INTO public.bank_mst(bank_id, bank_name)VALUES (3,'Wave');
-INSERT INTO public.bank_mst(bank_id, bank_name)VALUES (4,'KBZ');
-INSERT INTO public.bank_mst(bank_id, bank_name)VALUES (5,'CB');
-INSERT INTO public.bank_mst(bank_id, bank_name)VALUES (6,'AYA');
+INSERT INTO public.bank_mst(bank_id, bank_name)VALUES (90001,'Kpay');
+INSERT INTO public.bank_mst(bank_id, bank_name)VALUES (90002,'Cbpay');
+INSERT INTO public.bank_mst(bank_id, bank_name)VALUES (90003,'Wave');
+INSERT INTO public.bank_mst(bank_id, bank_name)VALUES (90004,'KBZ');
+INSERT INTO public.bank_mst(bank_id, bank_name)VALUES (90005,'CB');
+INSERT INTO public.bank_mst(bank_id, bank_name)VALUES (90006,'AYA');
 
 
 
@@ -294,7 +294,7 @@ INSERT INTO public.payment_account(payment_account_id, account_name, account_num
 INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81007,'Lin Thu','0945689723',10005,90002);
 INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81008,'Yi Thawdar','0344536728',10006,90005);
 INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81009,'Lin Tun Ko Thura','0378675613',10006,90006);
-INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81010,'Lei Myitzu','095105674',10007,1);
+INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81010,'Lei Myitzu','095105674',10007,90001);
 INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81011,'Thuta Pyay Zeyar Soe','0976544889',10008,90001);
 INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81012,'Thuta Pyay Zeyar Soe','0986546677',10009,90001);
 INSERT INTO public.payment_account(payment_account_id, account_name, account_number, uid_fkey,bank_id_fkey)VALUES (81013,'Phyo Lin Myint','0975478634',10010,90001);
@@ -351,7 +351,7 @@ INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_
 
 
 --Payment receive
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80001,'1.1.2021','Completed','https://www.w26schools.com/images/picture.jpg', 1);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80001,'1.1.2021','Completed','https://www.w26schools.com/images/picture.jpg', 90001);
 INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80002,'2.1.2021','Completed','https://www.w27schools.com/images/picture.jpg', 90002);
 INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80003,'3.1.2021','Completed','https://www.w28schools.com/images/picture.jpg', 90003);
 INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80004,'4.1.2021','Completed','https://www.w29schools.com/images/picture.jpg', 90004);
@@ -391,7 +391,7 @@ INSERT INTO public.review(
  VALUES (60002,'2021-11-10','like!Prof and TAs are helpful and the discussion among students are quite active. Very rewarding learning experience!',0,5,90002);
 INSERT INTO public.review(
  review_id, assigned_date, feedback, review_type, star, join_fkey)
- VALUES (60003,'2021-11-10','Excellent score!',2,0,9003);
+ VALUES (60003,'2021-11-10','Excellent score!',2,0,90003);
 INSERT INTO public.review(
  review_id, assigned_date, feedback, review_type, star, join_fkey)
  VALUES (60004,'2021-11-11','Retake exam on December 1st',1,0,90004);
@@ -427,7 +427,7 @@ INSERT INTO public.review(
  VALUES (60014,'2021-11-15','Very structured approach. Thank you for sharing with me.',0,3,90014);
 INSERT INTO public.review(
  review_id, assigned_date, feedback, review_type, star, join_fkey)
- VALUES (60015,'2021-11-16','Program demystifies the evolving world of CIOs in a typical global corporation.Coverage being introductory familiarizes participants nicely through some of the nuances & emerging trends.',0,5,15);
+ VALUES (60015,'2021-11-16','Program demystifies the evolving world of CIOs in a typical global corporation.Coverage being introductory familiarizes participants nicely through some of the nuances & emerging trends.',0,5,90015);
 INSERT INTO public.review(
  review_id, assigned_date, feedback, review_type, star, join_fkey)
  VALUES (60016,'2021-11-18','Very relevant and useful course designed for CIOs',0,4,90016);

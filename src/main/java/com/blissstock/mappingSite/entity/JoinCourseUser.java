@@ -55,8 +55,7 @@ public class JoinCourseUser {
   @JsonIgnore
   private List<LeaveInfo> leaveInfo = new ArrayList<>();
 
-  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="join")
-	@JsonIgnore
-	private PaymentReceive paymentReceive;
+  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "join")
+  @JsonIgnore
+  private PaymentReceive paymentReceive;
 }
-

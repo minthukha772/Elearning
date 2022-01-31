@@ -20,65 +20,71 @@ $(function () {
     }
   });
 
-  const deleteUser = (uid) =>{
+  const deleteUser = (uid) => {
     console.log("deleting user ", uid);
     $.ajax({
-                type: "delete",
-                url: "/admin/profile/delete",
-                data: { uid },
-            }).done(function () {
-                //reload page
-                location.href = "/admin/top/";
-            }).fail(function () {
-                alert("Something went wrong");
-            });
+      type: "delete",
+      url: "/admin/profile/delete",
+      data: { uid },
+    }).done(function () {
+      //reload page\
+      console.log(userRole)
+      if (userRole == 'ROLE_STUDENT') {
+        location.href = "/admin/student-list";
+      }
+      if (userRole == 'ROLE_TEACHER') {
+        location.href = "/admin/teacher-list";
+      }
+    }).fail(function () {
+      alert("Something went wrong");
+    });
 
-} 
+  }
 
-const suspendUser = (uid) =>{
-  console.log("suspending user ", uid);
-  $.ajax({
-              type: "post",
-              url: "/admin/profile/suspend",
-              data: { uid },
-          }).done(function () {
-              //reload page
-              location.reload();
-          }).fail(function () {
-              alert("Something went wrong");
-          });
+  const suspendUser = (uid) => {
+    console.log("suspending user ", uid);
+    $.ajax({
+      type: "post",
+      url: "/admin/profile/suspend",
+      data: { uid },
+    }).done(function () {
+      //reload page
+      location.reload();
+    }).fail(function () {
+      alert("Something went wrong");
+    });
 
-} 
+  }
 
-const reactivateUser = (uid) =>{
-  console.log("reactivating user ", uid);
-  $.ajax({
-              type: "post",
-              url: "/admin/profile/reactivate",
-              data: { uid },
-          }).done(function () {
-              //reload page
-              location.reload();
-          }).fail(function () {
-              alert("Something went wrong");
-          });
+  const reactivateUser = (uid) => {
+    console.log("reactivating user ", uid);
+    $.ajax({
+      type: "post",
+      url: "/admin/profile/reactivate",
+      data: { uid },
+    }).done(function () {
+      //reload page
+      location.reload();
+    }).fail(function () {
+      alert("Something went wrong");
+    });
 
-} 
+  }
 
-const verifyUser = (uid) =>{
-  console.log("verifying user ", uid);
-  $.ajax({
-              type: "post",
-              url: "/admin/profile/verify",
-              data: { uid },
-          }).done(function () {
-              //reload page
-              location.reload();
-          }).fail(function () {
-              alert("Something went wrong");
-          });
+  const verifyUser = (uid) => {
+    console.log("verifying user ", uid);
+    $.ajax({
+      type: "post",
+      url: "/admin/profile/verify",
+      data: { uid },
+    }).done(function () {
+      //reload page
+      location.reload();
+    }).fail(function () {
+      alert("Something went wrong");
+    });
 
-} 
+  }
 
   $("#actionConfirmationModal").on("show.bs.modal", function (event) {
     const button = $(event.relatedTarget);
@@ -100,7 +106,7 @@ const verifyUser = (uid) =>{
       } else if (action == "Re-activate") {
         console.log("perform re-active operation");
         reactivateUser(uid);
-      }else if(action == "Verify"){
+      } else if (action == "Verify") {
         console.log("perform verify operation");
         verifyUser(uid);
       }
@@ -124,5 +130,5 @@ const verifyUser = (uid) =>{
 
 
 
- 
+
 });
