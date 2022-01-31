@@ -126,7 +126,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
 
         <!-- Admin -->
         <div th:if="${admin == 'ADMIN'}">
-          <a th:href="@{'/admin/enrollStudent/course/' + ${courseInfo.courseId} }"><button
+          <a th:if="${!courseNotApprove}" th:href="@{'/admin/enrollStudent/course/' + ${courseInfo.courseId} }"><button
               class="btn btn-primary">Enroll students</button></a>
           <a th:href="@{'/admin/edit/course/' + ${courseInfo.courseId} + '/' + ${courseInfo.userInfo.uid}}"><button
               class="btn btn-primary">Edit Course</button></a>
