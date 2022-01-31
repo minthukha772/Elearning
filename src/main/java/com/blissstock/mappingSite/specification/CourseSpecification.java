@@ -60,7 +60,8 @@ public class CourseSpecification {
 
             // logger.warn("{}",
             // courseInfoDTO.getLogInUser().equals(UserRole.ADMIN.getValue()));
-            if (!courseInfoDTO.getLogInUser().equals(UserRole.ADMIN.getValue())) {
+            if (!(courseInfoDTO.getLogInUser().equals(UserRole.ADMIN.getValue())
+                    || courseInfoDTO.getLogInUser().equals(UserRole.SUPER_ADMIN.getValue()))) {
 
                 if (courseInfoDTO.getLogInUser().equals(UserRole.TEACHER.getValue())) {
                     Predicate predicateForTeacherCourse = criteriaBuilder.equal(root.get("userInfo").get("uid"),
