@@ -23,3 +23,7 @@ INSERT INTO public.user_info(account_id, address, birth_date, city, division, ed
 INSERT INTO public.user_info(account_id, address, birth_date, city, division, education, gender, nrc, phone_no, photo, postal_code, self_description, user_name)VALUES (9223372036854775805,'149st','1994-10-01','Yangon','Yangon','Graduated','male','12/TTT(Naing)111137','9420100025',null,'11237','About myself','Bhone');
 INSERT INTO public.user_info(account_id, address, birth_date, city, division, education, gender, nrc, phone_no, photo, postal_code, self_description, user_name)VALUES (9223372036854775806,'150st','1992-11-25','Yangon','Yangon','Graduated','female','12/TTT(Naing)111138','9420100026',null,'11238','About myself','Lisa');
 INSERT INTO public.user_info(account_id, address, birth_date, city, division, education, gender, nrc, phone_no, photo, postal_code, self_description, user_name)VALUES (9223372036854775807,'151st','1999-06-01','Yangon','Yangon','Graduated','male','12/TTT(Naing)111139','9420100027',null,'11239','About myself','Juila');
+
+Select * From bank_mst;
+Select * From user_account;
+Select * From user_info;
