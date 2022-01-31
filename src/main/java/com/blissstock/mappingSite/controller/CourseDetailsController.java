@@ -303,6 +303,34 @@ public class CourseDetailsController {
 
     }
 
+    @PostMapping("/admin/course-details/verify/")
+    public ResponseEntity<Object> verifyCourse(
+            Model model,
+            Long courseId,
+            HttpServletRequest httpServletRequest) {
+        logger.info("VERIFY Request for course {}", courseId);
+        try {
+            // UserInfo userInfo = userService.getUserInfoByID(uid);
+            CourseInfo courseInfo = courseInfoRepository.findById(courseId).get();
+            if (courseInfo == null) {
+                throw new CourseNotFoundException();
+            }
+            courseService.verifyCourseInfo(courseInfo);
+        } catch (CourseNotFoundException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Course Not Found");
+        } catch (ObjectOptimisticLockingFailureException e) {
+            e.printStackTrace();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body("operation success");
+
+    }
+
     @RequestMapping("/student/enroll/{courseId}/{userId}")
 
     public String enrollStudent(@PathVariable Long courseId, @PathVariable Long userId, Model model){

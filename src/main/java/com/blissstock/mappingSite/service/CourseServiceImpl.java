@@ -103,5 +103,10 @@ public class CourseServiceImpl implements CourseService{
         
         
     }
-    
+
+    @Override
+    public void verifyCourseInfo(CourseInfo courseInfo) {
+        logger.info("verify course {}", courseInfo.getCourseId());
+        courseInfo.setIsCourseApproved(true);
+    }
 }
