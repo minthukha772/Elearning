@@ -217,7 +217,13 @@ public class CourseRegistrationController {
         // course.setUserInfo(userInfoRepository.findById(userSessionService.getId()).get());
         course.setUserInfo(userInfoRepository.findById(course.getUid()).get());
         logger.info("Post Requested");
-        course.setIsCourseApproved(true); //was string "true"
+        UserRole role = userSessionService.getRole();
+        if (role == UserRole.ADMIN || role == UserRole.SUPER_ADMIN) {
+            course.setIsCourseApproved(true);
+        }
+        else{
+            course.setIsCourseApproved(false);
+        }
         courseInfoRepo.save(course);
 
         JoinCourseUser joins = new JoinCourseUser();
@@ -233,7 +239,7 @@ public class CourseRegistrationController {
             courseTimeRepo.save(courseTime);
         }
 
-        UserRole role = userSessionService.getRole();
+        // UserRole role = userSessionService.getRole();
 
         if(role == UserRole.TEACHER){
             return "redirect:/teacher/course-upload/complete";

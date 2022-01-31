@@ -14,7 +14,6 @@ import com.blissstock.mappingSite.repository.CourseTimeRepository;
 import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
 import com.blissstock.mappingSite.specification.CourseSpecification;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +23,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CourseServiceImpl implements CourseService{
+public class CourseServiceImpl implements CourseService {
 
     private static Logger logger = LoggerFactory.getLogger(CourseServiceImpl.class);
-
 
     @Autowired
     CourseInfoRepository courseInfoRepository;
@@ -44,14 +42,14 @@ public class CourseServiceImpl implements CourseService{
     @Autowired
     JoinCourseUserRepository joinCourseUserRepository;
 
-    //TODO Get from application.properties
+    // TODO Get from application.properties
     @Value("${com.blissstock.mapping-site.config.courseSearchLimit}")
     Integer DEFAULT_COURSE_LIMIT = 0;
 
     @Override
     public List<CourseInfo> getCourseList(CourseInfoDTO courseInfoDTO) {
-        logger.debug("DEFAULT_COURSE_LIMIT: {}",DEFAULT_COURSE_LIMIT);
-        Pageable paging = PageRequest.of(0,DEFAULT_COURSE_LIMIT);
+        logger.debug("DEFAULT_COURSE_LIMIT: {}", DEFAULT_COURSE_LIMIT);
+        Pageable paging = PageRequest.of(0, DEFAULT_COURSE_LIMIT);
         return courseInfoRepository.findAll(courseSpecification.getCourses(courseInfoDTO), paging);
     }
 
@@ -60,13 +58,14 @@ public class CourseServiceImpl implements CourseService{
         logger.info("delete course {}", courseInfo.getCourseId());
         courseInfoRepository.delete(courseInfo);
         // if(courseInfo.getClassType() == "live"){
-        //     courseTimeRepository.deleteByCourseID(courseInfo.getCourseId());
+        // courseTimeRepository.deleteByCourseID(courseInfo.getCourseId());
         // }
-        
-        // if (!syllabusServiceImpl.getAllSyllabus(courseInfo.getCourseId().isPresent()) {
-        //     logger.error("Course_id: {} is not found", courseInfo.getCourseId());
-        //     throw new CourseNotFoundException(courseInfo.getCourseId());
-        //   }
+
+        // if (!syllabusServiceImpl.getAllSyllabus(courseInfo.getCourseId().isPresent())
+        // {
+        // logger.error("Course_id: {} is not found", courseInfo.getCourseId());
+        // throw new CourseNotFoundException(courseInfo.getCourseId());
+        // }
 
         // List<Syllabus> syllabusList;
         // syllabusList = syllabusServiceImpl.getAllSyllabus(courseInfo.getCourseId());
@@ -74,34 +73,43 @@ public class CourseServiceImpl implements CourseService{
 
         // }
 
-        // Optional<List<Syllabus>> optionalSyllabus = syllabusServiceImpl.getAllSyllabus(courseInfo.getCourseId());
+        // Optional<List<Syllabus>> optionalSyllabus =
+        // syllabusServiceImpl.getAllSyllabus(courseInfo.getCourseId());
 
         // if (optionalSyllabus.isPresent()){
 
         // }
 
         // try{
-        //     syllabusList = syllabusServiceImpl.getAllSyllabus(courseInfo.getCourseId());
-        //     logger.info("Get syllabus list of courseid {}", courseInfo.getCourseId());
+        // syllabusList = syllabusServiceImpl.getAllSyllabus(courseInfo.getCourseId());
+        // logger.info("Get syllabus list of courseid {}", courseInfo.getCourseId());
         // }catch(CourseNotFoundException e){
-        //     syllabusList = null;
-        //     logger.error("Syllabus of Course not found {}", courseInfo.getCourseId());
+        // syllabusList = null;
+        // logger.error("Syllabus of Course not found {}", courseInfo.getCourseId());
         // }
-        // // List<Syllabus> syllabusList = syllabusServiceImpl.getAllSyllabus(courseInfo.getCourseId());
+        // // List<Syllabus> syllabusList =
+        // syllabusServiceImpl.getAllSyllabus(courseInfo.getCourseId());
         // if(syllabusList != null){
-        //     for(Syllabus syllabus: syllabusList){
-        //         syllabusServiceImpl.deleteSyllabus(syllabus.getSyllabusId());
-        //     }
+        // for(Syllabus syllabus: syllabusList){
+        // syllabusServiceImpl.deleteSyllabus(syllabus.getSyllabusId());
         // }
-        
-        // List<JoinCourseUser> joinUserInfo = joinCourseUserRepository.findByCourseID(courseInfo.getCourseId());
+        // }
+
+        // List<JoinCourseUser> joinUserInfo =
+        // joinCourseUserRepository.findByCourseID(courseInfo.getCourseId());
         // if(joinUserInfo != null){
-        //     for(JoinCourseUser joinuserList: joinUserInfo){
-        //         joinCourseUserRepository.deleteById(joinuserList.getJoinId());
-        //     }
+        // for(JoinCourseUser joinuserList: joinUserInfo){
+        // joinCourseUserRepository.deleteById(joinuserList.getJoinId());
         // }
-        
-        
+        // }
+
     }
-    
+
+    @Override
+    public void verifyCourseInfo(CourseInfo courseInfo) {
+        logger.info("verify course {}", courseInfo.getCourseId());
+        courseInfo.setIsCourseApproved(true);
+        courseInfoRepository.save(courseInfo);
+
+    }
 }

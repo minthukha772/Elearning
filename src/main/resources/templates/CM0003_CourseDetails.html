@@ -126,12 +126,42 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
 
         <!-- Admin -->
         <div th:if="${admin == 'ADMIN'}">
-          <a th:href="@{'/admin/enrollStudent/course/' + ${courseInfo.courseId} + '/' + ${courseInfo.userInfo.uid}}"><button
+          <a th:if="${!courseNotApprove}" th:href="@{'/admin/enrollStudent/course/' + ${courseInfo.courseId} }"><button
               class="btn btn-primary">Enroll students</button></a>
           <a th:href="@{'/admin/edit/course/' + ${courseInfo.courseId} + '/' + ${courseInfo.userInfo.uid}}"><button
               class="btn btn-primary">Edit Course</button></a>
-          <a th:href="@{'/admin/edit/course/' + ${courseInfo.courseId} + '/' + ${courseInfo.userInfo.uid}}"><button
-              class="btn btn-primary">Edit Course</button></a>
+          <!-- verify -->
+          <button th:if="${courseNotApprove}" type="button" class="btn btn-primary" data-bs-toggle="modal"
+            data-bs-target="#verifyCourseConfirmModal" th:attr="data-bs-id=${courseInfo.courseId}"
+            th:attrappend="data-bs-title=${courseInfo.courseName}">
+            Verify Course
+          </button>
+
+          <!-- Verify Confirm Modal -->
+          <div class="modal fade" id="verifyCourseConfirmModal" tabindex="-1" aria-labelledby="courseFormModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="courseFormModalLabel">Verify Course</h5>
+                  <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <p>Are you sure to verify this course?</p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    Close
+                  </button>
+                  <button type="button" id="verifyCourse" class="btn btn-danger">
+                    VERIFY
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
           <!-- <a
               th:href="@{'/admin/course-details/delete/' + ${courseInfo.courseId}}"
               ><button class="btn btn-primary" id="deleteCourse">Delete Course</button></a> -->

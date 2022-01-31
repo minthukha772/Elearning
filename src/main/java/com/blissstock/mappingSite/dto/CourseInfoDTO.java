@@ -17,7 +17,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CourseInfoDTO {
-    
+
     public String courseName;
 
     public String teacherName;
@@ -31,5 +31,8 @@ public class CourseInfoDTO {
     public int lowestFee;
 
     public int highestFee;
-    
+
+    public String logInUser;
+    public Long logInUserId;
+
 }
