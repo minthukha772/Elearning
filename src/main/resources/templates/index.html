@@ -58,9 +58,12 @@
 
   <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-indicators">
-      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
-      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
+        aria-current="true" aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
+        aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
+        aria-label="Slide 3"></button>
     </div>
     <div class="carousel-inner">
       <div class="carousel-item active">
@@ -69,9 +72,9 @@
           <h5>Start learning now!</h5>
           <p class="pb-3">Register today and start learning on our platform.</p>
           <a class="btn btn-outline-light btn-lg" aria-current="page"
-          th:href="@{/check_email/register/student}">Register
-          as
-          Student</a>
+            th:href="@{/check_email/register/student}">Register
+            as
+            Student</a>
         </div>
       </div>
       <div class="carousel-item">
@@ -80,9 +83,9 @@
           <h5>Start teaching now!</h5>
           <p class="pb-3">Register today and start teaching on our platform.</p>
           <a class="btn btn-outline-light btn-lg" aria-current="page"
-          th:href="@{/check_email/register/teacher}">Register
-          as
-          Teacher</a>
+            th:href="@{/check_email/register/teacher}">Register
+            as
+            Teacher</a>
         </div>
       </div>
       <div class="carousel-item">
@@ -91,17 +94,10 @@
           <h5>Explore our courses!</h5>
           <p class="pb-3">Search our finest courses by the top mentors.</p>
           <a class="btn btn-outline-light btn-lg" aria-current="page" th:href="@{/guest/explore}">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              class="bi bi-search"
-              viewBox="0 0 16 16"
-            >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search"
+              viewBox="0 0 16 16">
               <path
-                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"
-              />
+                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
             </svg>
 
             Search the Course Now
@@ -173,7 +169,12 @@
             </div>
             <div class=" card-footer">
               <a th:href="@{/guest/course-detail/{id}(id=${courseInfo.CourseID})}" class="btn btn-primary d-block">See
-                More</a>
+                More<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                  class="bi bi-three-dots" viewBox="0 0 16 16">
+                  <path
+                    d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
+                </svg>
+              </a>
             </div>
           </div>
         </div>
@@ -215,7 +216,11 @@
             </div>
             <div class=" card-footer">
               <a th:href="@{/guest/course-detail/{id}(id=${courseInfo.CourseID})}" class="btn btn-primary d-block">See
-                More</a>
+                More <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                  class="bi bi-three-dots" viewBox="0 0 16 16">
+                  <path
+                    d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
+                </svg></a>
             </div>
           </div>
         </div>
@@ -267,14 +272,14 @@
                   <input type="date" class="form-control" aria-label="Start Date" name="startDate" />
                   <label for="startDate">Start Date</label>
                 </div>
-                
+
               </div>
               <div class="col-md-6 col-sm-12 ">
                 <div class="form-floating">
                   <input type="date" class="form-control" aria-label="End Date" name="endDate" />
                   <label for="endDate">End Date</label>
                 </div>
-                
+
               </div>
               <button class="
                     btn btn-primary
@@ -282,15 +287,19 @@
                     me-sm-2 me-md-1
                    
                   " id="submitButton" name="action" type="submit">
-                Search
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search"
+                  viewBox="0 0 16 16">
+                  <path
+                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                </svg> Search
               </button>
             </div>
-            
-              
-            </div>
-          </form>
+
+
         </div>
+        </form>
       </div>
+    </div>
     </div>
   </section>
 
