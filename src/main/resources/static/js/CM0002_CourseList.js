@@ -133,6 +133,13 @@ const renderFilterItems = (filterItems) => {
 };
 
 const renderCourseList = (courseList) => {
+  $("#zero-result-msg").hide();
+  // If list empty display text
+  if(courseList == null, courseList.length == 0){
+    $("#zero-result-msg").show();
+    return;
+  }
+
   $("#course").pagination({
     dataSource: courseList,
     pageSize: 24,
