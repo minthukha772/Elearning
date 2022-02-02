@@ -318,23 +318,39 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
             <div class="py-3">
               <div th:if="${student == 'STUDENT'}">
                 <a th:href="@{'/student/review-list/course_id/' + ${courseInfo.courseId}}">
-                  <button class="btn btn-primary">See more</button>
+                  <button class="btn btn-primary">See more <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                      height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                      <path
+                        d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
+                    </svg></button>
                 </a>
               </div>
               <div th:if="${teacher == 'TEACHER'}">
                 <a th:href="@{'/teacher/review-list/course_id/' + ${courseInfo.courseId}}">
-                  <button class="btn btn-primary">See more</button>
+                  <button class="btn btn-primary">See more <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                      height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                      <path
+                        d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
+                    </svg></button>
                 </a>
               </div>
               <div th:if="${admin == 'ADMIN'}">
                 <a
                   th:href="@{'/admin/review-list/course_id/'+${courseInfo.courseId}+'/student_id/'+${courseInfo.userInfo.uid}}">
-                  <button class="btn btn-primary">See more</button>
+                  <button class="btn btn-primary">See more <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                      height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                      <path
+                        d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
+                    </svg></button>
                 </a>
               </div>
               <div th:if="${guest == 'GUEST'}">
                 <a th:href="@{/login}">
-                  <button class="btn btn-primary">See more</button>
+                  <button class="btn btn-primary">See more <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                      height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                      <path
+                        d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
+                    </svg></button>
                 </a>
               </div>
             </div>
