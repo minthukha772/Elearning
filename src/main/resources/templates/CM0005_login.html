@@ -19,7 +19,30 @@
     </div> -->
 
     <div class="container-custom">
-      <div class="card mt-5">
+      <!-- TODO -->
+      <div
+        th:if="${error != null}"
+        class="alert alert-danger fade show mt-5"
+        role="alert"
+      >
+        <span class="text-danger" th:text="${error}"></span>
+      </div>
+      <div
+        th:if="${success != null}"
+        class="alert alert-success fade show mt-5"
+        role="alert"
+      >
+        <span th:text="${success}"></span>
+      </div>
+      <div
+        th:if="${message != null}"
+        class="alert alert-success fade show mt-5"
+        role="alert"
+      >
+        <span th:text="${message}"></span>
+      </div>
+
+      <div class="card mt-3">
         <div class="card-header">Login</div>
         <div class="card-body">
           <div class="container">
@@ -30,7 +53,7 @@
               method="post"
             >
               <!--   -->
-              <div
+              <!-- <div
                 th:if="${error != null}"
                 class="alert alert-danger fade show"
                 role="alert"
@@ -50,8 +73,7 @@
                 role="alert"
               >
                 <span th:text="${message}"></span>
-              </div>
-
+              </div> -->
               <div>
                 <div class="mb-3 has-validation">
                   <label class="form-label" for="emailAddress">
