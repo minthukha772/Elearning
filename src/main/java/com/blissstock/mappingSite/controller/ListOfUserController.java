@@ -6,6 +6,7 @@ import com.blissstock.mappingSite.entity.CourseTime;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.entity.JoinCourseUser;
+import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
 import com.blissstock.mappingSite.repository.UserRepository;
@@ -94,7 +95,7 @@ public class ListOfUserController {
         System.out.println(adminRole);
         AddAdmin newAdmin = new AddAdmin();
         
-        List<UserInfo> aAllRecord = userRepo.findByUserRoleI("ROLE_ADMIN");
+        List<UserAccount> aAllRecord = userAccountRepo.findByRole("ROLE_ADMIN");
 
         logger.info("Admin List of Mapping Site {}",aAllRecord);
 
