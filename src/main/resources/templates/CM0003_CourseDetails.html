@@ -218,7 +218,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
   </div>
 
   <!-- syllabus -->
-  <div class="container fifth-section">
+  <!-- <div class="container fifth-section">
 
     <div class="my-3">
       <h3>Syllabus</h3>
@@ -241,6 +241,33 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
             </ul>
           </div>
         </div>
+      </div>
+    </div>
+  </div> -->
+
+  <!-- TODO -->
+  <div class="container">
+    <div class="fifth-section">
+      <div class="my-3">
+        <h3>Syllabus</h3>
+      </div>
+    <!-- accordian -->
+    <div class="accordion" id="accordionExample">
+        <div th:each="sl:${syllabusList}">
+            <div class="accordion-item">
+                <h4 class="accordion-header" th:id="${sl.syllabusId}">
+                  <button class="accordion-button" type="button" data-bs-toggle="collapse" th:data-bs-target="${sl.syllabusId}" aria-expanded="true" th:aria-controls="${sl.syllabusId}" th:text="${sl.title}">
+                    Accordion Item #1
+                  </button>
+                </h4>
+                <div th:id="${sl.syllabusId}" class="accordion-collapse collapse show" th:aria-labelledby="${sl.syllabusId}" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+                    <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                  </div>
+                </div>
+            </div>
+        </div>
+        
       </div>
     </div>
   </div>
