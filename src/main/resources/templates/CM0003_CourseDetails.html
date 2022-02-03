@@ -345,7 +345,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
                 </a>
               </div>
               <div th:if="${guest == 'GUEST'}">
-                <a th:href="@{/login}">
+                <a th:href="@{'/guest/review-list/course_id/' + ${courseInfo.courseId}}">
                   <button class="btn btn-primary">See more <svg xmlns="http://www.w3.org/2000/svg" width="16"
                       height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
                       <path

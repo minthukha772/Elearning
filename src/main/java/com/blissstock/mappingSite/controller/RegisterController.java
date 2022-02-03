@@ -126,6 +126,7 @@ public class RegisterController {
   @PreAuthorize("isAnonymous()")
   @GetMapping("/register/{role}/{email}")
   public String registerForm(
+
       @PathVariable(name = "role", required = false) String role,
       @PathVariable(name = "email") String email,
       Model model) {
@@ -140,12 +141,12 @@ public class RegisterController {
       role = "student";
     }
 
-    // Initialize UserInfo
     UserRegisterDTO userInfo;
-
+    // Initialize UserInfo
     userInfo = role.equals("student") ? new UserRegisterDTO() : new TeacherRegisterDTO();
     userInfo.setEmail(email);
     model.addAttribute("userInfo", userInfo);
+
     //
 
     model.addAttribute("task", "Register");
@@ -164,6 +165,19 @@ public class RegisterController {
       HttpServletRequest request,
       Errors errors) {
     logger.info("POST Request, action: {}", action);
+
+    // back action redirects to register form
+    logger.info("Action value is {}", action);
+    if (action.equals("Back")) {
+      model.addAttribute("userInfo", userInfo);
+      model.addAttribute("task", "Register");
+      model.addAttribute("role", userInfo.getRole());
+      model.addAttribute("postAction", "/register/" + userInfo.getRole());
+
+      return "ST0001_register.html";
+    }
+
+    //
     String role = "student";
     model.addAttribute("task", "Register");
     model.addAttribute("role", role);
@@ -208,6 +222,16 @@ public class RegisterController {
       @RequestParam(value = "action", required = true) String action,
       HttpServletRequest request,
       Errors errors) {
+    // back action redirects to register form
+    logger.info("Action value is {}", action);
+    if (action.equals("Back")) {
+      model.addAttribute("userInfo", userInfo);
+      model.addAttribute("task", "Register");
+      model.addAttribute("role", userInfo.getRole());
+      model.addAttribute("postAction", "/register/" + userInfo.getRole());
+
+      return "ST0001_register.html";
+    }
     String role = "teacher";
     model.addAttribute("task", "Register");
     model.addAttribute("role", role);
