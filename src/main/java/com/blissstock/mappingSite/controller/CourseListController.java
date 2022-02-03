@@ -80,6 +80,7 @@ public class CourseListController {
         model.addAttribute("courseList", courseDataList);
         // Enable Advance Search Function
         model.addAttribute("searchable", true);
+        model.addAttribute("emptyMessage", "Sorry, No Search Result Found!");
         // model.addAttribute("courseList", new ArrayList<>());
         return "CM0002_CourseList";
     }
@@ -115,6 +116,9 @@ public class CourseListController {
         model.addAttribute("courseList", courseDataList);
         // Enable Disable Search Function
         model.addAttribute("searchable", false);
+        if(model.getAttribute("emptyMessage") == null){
+            model.addAttribute("emptyMessage", "Sorry, No Search Result Found!");
+        }
         // model.addAttribute("courseList", new ArrayList<>());
         return "CM0002_CourseList";
     }
@@ -122,6 +126,7 @@ public class CourseListController {
     @GetMapping(value = "/teacher/my-course")
     public String teacherCourse(Model model) {
         Long uid = userSessionService.getId();
+        model.addAttribute("emptyMessage", "You have not registered any course.");
         return getCourseListByTeacherID(model, uid);
 
     }
@@ -155,6 +160,7 @@ public class CourseListController {
         model.addAttribute("courseList", courseDataList);
         // Disable Advance Search Function
         model.addAttribute("searchable", false);
+        model.addAttribute("emptyMessage", "You haven't enrolled a course.");
 
         return "CM0002_CourseList";
     }
