@@ -299,7 +299,7 @@
         <div style="padding-left: 100px; float: right">
           <button
             type="button"
-            class="btn btn-primary mb-3"
+            class="btn btn-primary mb-3 me-3"
             id="addadmin"
             th:onclick="|window.location.href='/check_email/register/admin'|"
           >
@@ -403,8 +403,8 @@
           </div>
         </div>
 
-        <div class="container mx-auto" style="max-width: 800px">
-          <div class="col-lg-7">
+        <div class="container" >
+          <div class="">
             <div class="input-group mb-3">
               <!-- <div class="input-group-prepend" style="width: 25%;">
                                                                                                                 <select class="form-select" aria-label=".form-select-sm example" id="account_status"
@@ -449,10 +449,10 @@
             </select>
           </div>
 
-          <div class="mx-auto p-3" style="max-width: 800px">
-            <div>
-              <section>
-                <div class="demo-html">
+          <div class="card">
+            <div class="card-body">
+              
+                <div class="table-responsive">
                   <table
                     id="example"
                     class="table table-striped"
@@ -461,36 +461,39 @@
                     <thead>
                       <tr>
                         <th>No</th>
-                        <th>Name</th>
+                        <!-- <th>Name</th> -->
                         <th>Email</th>
-                        <th>Phone Number</th>
+                        <!-- <th>Phone Number</th> -->
                         <th>Account Status</th>
+                        <th>Registered Date</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr th:each="dr,index:${aAllAdminList}">
                         <td></td>
-                        <td
+                        <!-- <td
                           th:text="${dr.userName}"
                           style="font-weight: bold"
-                        ></td>
-                        <td th:text="${dr.userAccount.mail}"></td>
-                        <td th:text="${dr.phoneNo}"></td>
-                        <td th:text="${dr.userAccount.accountStatus}"></td>
+                        ></td> -->
+                        <td th:text="${dr.mail}"></td>
+                        <!-- <td th:text="${dr.phoneNo}"></td> -->
+                        <td th:text="${dr.accountStatus}"></td>
+                        <td th:text="${dr.registeredDate}"></td>
                       </tr>
                     </tbody>
                     <tfoot>
                       <tr>
                         <th>No</th>
-                        <th>Name</th>
+                        <!-- <th>Name</th> -->
                         <th>Email</th>
-                        <th>Phone Number</th>
+                        <!-- <th>Phone Number</th> -->
                         <th>Account Status</th>
+                        <th>Registered Date</th>
                       </tr>
                     </tfoot>
                   </table>
                 </div>
-              </section>
+              
             </div>
           </div>
         </div>
