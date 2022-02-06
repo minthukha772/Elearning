@@ -11,6 +11,8 @@ public interface CourseService {
     
     public List<CourseInfo> getCourseList(CourseInfoDTO courseInfoDTO);
 
+    public CourseInfo getCourseById(long id);
+
     public void deleteCourseInfo(CourseInfo courseInfo);
 
     public void verifyCourseInfo(CourseInfo courseInfo);
