@@ -165,7 +165,9 @@ public class CourseDetailsController {
 
         // Get syllabus
         List<Syllabus> syllabusList = courseInfo.getSyllabus();
+        int syllabusSize = syllabusList.size();
         model.addAttribute("syllabusList", syllabusList);
+        model.addAttribute("syllabusSize", syllabusSize);
 
         // Get the remaining number of students who can join course
         Integer maxStudent = courseInfo.getMaxStu();
