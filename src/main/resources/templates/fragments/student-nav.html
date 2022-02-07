@@ -1,45 +1,50 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-      <a class="navbar-brand" th:href="@{/}">
-        <img src="/images/logo.svg" alt="logo">
-        Mapping Site
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" th:href="@{/}">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#" th:href="@{/home}">My Course</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" th:href="@{/guest/explore}">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                class="bi bi-search"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"
-                />
-              </svg>
-  
-              Search the Course Now!
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" th:href="@{/student/profile/}">Profile</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" th:href="@{/logout}" style="color: red;">Log out</a>
-          </li>
-        </ul>
-      </div>
+  <div class="container-fluid">
+    <a class="navbar-brand" th:href="@{/}">
+      <img src="/images/logo.svg" alt="logo">
+      Mapping Site
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+      aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" th:href="@{/}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" th:href="@{/home}">My Course</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/guest/explore}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search"
+              viewBox="0 0 16 16">
+              <path
+                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+            </svg>
+
+            Search the Course Now!
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link"
+            th:href="@{https://drive.google.com/file/d/1mrarzmhrAMq4xxwnE592pYRXcbNlhtRa/view?usp=sharing}"
+            th:target="_blank"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+              class="bi bi-download" viewBox="0 0 16 16">
+              <path
+                d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
+              <path
+                d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
+            </svg> User Manual</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/student/profile/}">Profile</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/logout}" style="color: red;">Log out</a>
+        </li>
+      </ul>
     </div>
-  </nav>
+  </div>
+</nav>

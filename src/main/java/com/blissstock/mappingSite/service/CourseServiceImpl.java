@@ -112,4 +112,9 @@ public class CourseServiceImpl implements CourseService {
         courseInfoRepository.save(courseInfo);
 
     }
+
+    @Override
+    public CourseInfo getCourseById(long id) {
+        return courseInfoRepository.findByCourseID(id);
+    }
 }
