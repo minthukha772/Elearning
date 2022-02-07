@@ -171,8 +171,8 @@ public class RegisterController {
     if (action.equals("Back")) {
       model.addAttribute("userInfo", userInfo);
       model.addAttribute("task", "Register");
-      model.addAttribute("role", userInfo.getRole());
-      model.addAttribute("postAction", "/register/" + userInfo.getRole());
+      model.addAttribute("role", "student");
+      model.addAttribute("postAction", "/register/" + "student");
 
       return "ST0001_register.html";
     }
@@ -225,10 +225,11 @@ public class RegisterController {
     // back action redirects to register form
     logger.info("Action value is {}", action);
     if (action.equals("Back")) {
+
       model.addAttribute("userInfo", userInfo);
       model.addAttribute("task", "Register");
-      model.addAttribute("role", userInfo.getRole());
-      model.addAttribute("postAction", "/register/" + userInfo.getRole());
+      model.addAttribute("role", "teacher");
+      model.addAttribute("postAction", "/register/" + "teacher");
 
       return "ST0001_register.html";
     }
