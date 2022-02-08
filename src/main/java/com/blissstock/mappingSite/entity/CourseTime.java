@@ -13,14 +13,17 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
+@Data
 @Table(name = "course_time")
 public class CourseTime {
 	
@@ -47,6 +50,7 @@ public class CourseTime {
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "courseId_fkey")
     @JsonIgnore
+    @ToString.Exclude
     private CourseInfo courseInfo;
     
     public CourseTime(String courseDays, String courseStartTime, String courseEndTime){
