@@ -1,6 +1,12 @@
 package com.blissstock.mappingSite.controller;
 
+import java.io.IOException;
+import java.util.Locale;
+
+import javax.mail.MessagingException;
+
 import com.blissstock.mappingSite.entity.UserAccount;
+import com.blissstock.mappingSite.service.MailServiceImpl;
 import com.blissstock.mappingSite.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,13 +14,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("/")
 public class MailCheckController {
     @Autowired
     UserService userService;
+
+    @Autowired
+    MailServiceImpl mailServiceImpl;
 
     @GetMapping(path = { "/verify_password" })
     public String mailVerify(
@@ -68,6 +79,27 @@ public class MailCheckController {
 
         // System.out.println(token);
         // System.out.println(userAccount.toString());
+
+    }
+
+    //test impl
+    @RequestMapping("/sendMailWithInlineImage"
+    // , method = RequestMethod.POST
+    )
+    public String sendMailWithInline(
+    // @RequestParam("recipientName") final String recipientName,
+    // @RequestParam("recipientEmail") final String recipientEmail,
+    // @RequestParam("image") final MultipartFile image,
+    // final Locale locale
+    )
+    throws MessagingException, IOException {
+
+        mailServiceImpl.sendMailWithInline(
+            "kyaw", "tinhuat38@gmail.com"
+            // , image.getName(),
+            // image.getBytes(), image.getContentType(), locale
+            );
+        return "sent";
 
     }
 }

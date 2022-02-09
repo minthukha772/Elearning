@@ -1,0 +1,75 @@
+"<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title th:remove="all">Template for HTML email with inline image</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
+  </head>
+  <style>
+    body{
+      color: black;
+    }
+  </style>
+  <body>
+    Hello 
+    <!-- <p th:text="#{greeting(${name})}">
+      Hello, Peter Static!
+    </p>
+    <p th:if="${name.length() > 10}">
+      Wow! You've got a long name (more than 10 chars)!
+    </p>
+    <p>
+      You have been successfully subscribed to the <b>Fake newsletter</b> on
+      <span th:text="${#dates.format(subscriptionDate)}">28-12-2012</span>
+    </p>
+    <p>Your hobbies are:</p>
+    <ul th:remove="all-but-first">
+      <li th:each="hobby : ${hobbies}" th:text="${hobby}">Reading</li>
+      <li>Writing</li>
+      <li>Bowling</li>
+    </ul>
+    <p>
+      You can find <b>your inlined image</b> just below this text.
+    </p>
+    <p>
+      Regards, <br />
+      <em>The Thymeleaf Team</em>
+    </p> -->
+
+    
+
+    <!-- real code -->
+    <!-- <div class="container" >
+      <div class="row">
+        <div class="col-lg-5 mx-auto" style="background-color: #5EBA7D;">
+          <div class="d-flex justify-content-between mb-3">
+            <div class="p-2"><h5>Pyinnyar Subuu</h5></div>
+            <div class="p-2">Date</div>
+          </div>
+          <header class="p-3">
+            Hi there!
+          </header>
+          <article class="p-4 mt-3">
+            You have successfully created account with your email. But wait, We are not done yet...
+            <br><br>To finish verifying your email address and securing your account, click the button below.
+          </article>
+          <div class="d-flex justify-content-center my-4">
+            <div>
+              <button class="btn btn-primary">Verify Email Address</button>
+            </div>
+          </div>
+          <footer class="px-4 py-3">
+            We wish you learn or earn something valuable using our platform!
+          </footer>
+          <div class="px-5 py-3">
+            Best of luck!<br>
+            Bliss Stock JP
+          </div>
+        </div>
+      </div>
+    </div> -->
+
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script> -->
+  </body>
+</html>"

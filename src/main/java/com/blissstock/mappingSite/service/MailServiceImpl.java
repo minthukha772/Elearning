@@ -1,7 +1,15 @@
 package com.blissstock.mappingSite.service;
 
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.UUID;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+
+import com.blissstock.mappingSite.config.GmailConfig;
 import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.enums.TokenType;
 
@@ -13,6 +21,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.context.Context;
 
 @Service
 public class MailServiceImpl implements MailService {
@@ -28,6 +37,8 @@ public class MailServiceImpl implements MailService {
   @Autowired
   private UserService userService;
 
+  @Autowired
+  GmailConfig gmailConfig;
 /*   @Autowired
   private MessageSource messages;
  */
@@ -89,5 +100,54 @@ public class MailServiceImpl implements MailService {
     System.out.println(confirmationUrl.toString());
     sendMail(subject, recipientAddress, "", "", body);
     
+  }
+
+  //test impl
+  public void sendMailWithInline(
+  final String recipientName, final String recipientEmail
+  // final String imageResourceName,
+  // final byte[] imageBytes, final String imageContentType, final Locale locale
+  )
+  throws MessagingException {
+
+    // Prepare the evaluation context
+    final Context ctx = new Context();
+    ctx.setVariable("name", recipientName);
+    ctx.setVariable("subscriptionDate", new Date());
+    ctx.setVariable("hobbies", Arrays.asList("Cinema", "Sports", "Music"));
+    // ctx.setVariable("imageResourceName", imageResourceName);
+     // so that we can reference it from HTML
+
+    // Prepare message using a Spring helper
+    final MimeMessage mimeMessage = this.mailSender.createMimeMessage();
+    final MimeMessageHelper message =
+        new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
+    message.setSubject("Example HTML email with inline image");
+    message.setFrom("mappingsite0@gmail.com");
+    message.setTo(recipientEmail);
+
+    // Create the HTML body using Thymeleaf
+    try{
+      FileReader fr=new FileReader("src\\main\\resources\\templates\\mail\\registration_complete.html");
+      int i;
+      while((i=fr.read())!=-1)    
+      logger.info("The character is {}", (char)i);
+      logger.info("Oki Toki");
+      fr.close();
+    }catch(IOException e){
+      logger.error("File not found!");
+    }
+    
+    final String htmlContent = gmailConfig.emailTemplateEngine().process("registration_complete.html", ctx);
+    message.setText(htmlContent, true); // true = isHtml
+
+    System.out.println("the name of the recipient is " + ctx);
+    // Add the inline image, referenced from the HTML code as "cid:${imageResourceName}"
+    // final InputStreamSource imageSource = new ByteArrayResource(imageBytes);
+    // message.addInline(imageResourceName, imageSource, imageContentType);
+
+    // Send mail
+    this.mailSender.send(mimeMessage);
+
   }
 }
