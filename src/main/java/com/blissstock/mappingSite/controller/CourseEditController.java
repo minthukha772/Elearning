@@ -68,7 +68,7 @@ public class CourseEditController {
                 model.addAttribute("classActiveLive", true);
 
                 List<CourseTime> courseTimeList = courseTimeRepo.searchTimeByCourseID(courseId);
-                logger.warn("course times are :{}", courseTimeList.toString());
+              
 
                 // fill the days from database
                 List<CourseTime> sorted_list = new ArrayList<CourseTime>();
@@ -100,9 +100,7 @@ public class CourseEditController {
                         sorted_list.set(6, courseTime);
                     }
                 }
-                for (CourseTime courseTime : sorted_list) {
-                    logger.info(courseTime.toString());
-                }
+                
                 model.addAttribute("courseTimeList", sorted_list);
                 ctList = courseTimeList;
                 // System.out.println("Heehee" + ctList);
