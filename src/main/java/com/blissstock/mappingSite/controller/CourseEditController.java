@@ -72,9 +72,9 @@ public class CourseEditController {
 
                 // fill the days from database
                 List<CourseTime> sorted_list = new ArrayList<CourseTime>();
-                for(int i=0;i<=6;i++){
-                   
-                    sorted_list.add(i, new  CourseTime());
+                for (int i = 0; i <= 6; i++) {
+
+                    sorted_list.add(i, new CourseTime());
                 }
 
                 for (CourseTime courseTime : courseTimeList) {
@@ -86,24 +86,34 @@ public class CourseEditController {
                     }
                     if (courseTime.getCourseDays().equals(Days_of_the_week.Wednesday.getValue())) {
                         sorted_list.set(2, courseTime);
-                    }  if (courseTime.getCourseDays().equals(Days_of_the_week.Thursday.getValue())) {
+                    }
+                    if (courseTime.getCourseDays().equals(Days_of_the_week.Thursday.getValue())) {
                         sorted_list.set(3, courseTime);
-                    }  if (courseTime.getCourseDays().equals(Days_of_the_week.Friday.getValue())) {
+                    }
+                    if (courseTime.getCourseDays().equals(Days_of_the_week.Friday.getValue())) {
                         sorted_list.set(4, courseTime);
-                    }  if (courseTime.getCourseDays().equals(Days_of_the_week.Saturday.getValue())) {
+                    }
+                    if (courseTime.getCourseDays().equals(Days_of_the_week.Saturday.getValue())) {
                         sorted_list.set(5, courseTime);
-                    }  if (courseTime.getCourseDays().equals(Days_of_the_week.Sunday.getValue())) {
+                    }
+                    if (courseTime.getCourseDays().equals(Days_of_the_week.Sunday.getValue())) {
                         sorted_list.set(6, courseTime);
-                    }  
-                }   
-for (CourseTime courseTime : sorted_list) {
-    System.out.println(courseTime.toString());
-}
+                    }
+                }
+                for (CourseTime courseTime : sorted_list) {
+                    logger.info(courseTime.toString());
+                }
                 model.addAttribute("courseTimeList", sorted_list);
                 ctList = courseTimeList;
                 // System.out.println("Heehee" + ctList);
 
             } else {
+                List<CourseTime> sorted_list = new ArrayList<CourseTime>();
+                for (int i = 0; i <= 6; i++) {
+
+                    sorted_list.add(i, new CourseTime());
+                }
+                model.addAttribute("courseTimeList", sorted_list);
                 model.addAttribute("classActiveVideo", true);
             }
 
@@ -319,7 +329,7 @@ for (CourseTime courseTime : sorted_list) {
             }
         }
 
-        updateCourse.setClassType(course.getClassType());
+        updateCourse.setClassType(course.getClassType().toUpperCase());
         updateCourse.setCourseName(course.getCourseName());
         updateCourse.setCategory(course.getCategory());
         updateCourse.setLevel(course.getLevel());

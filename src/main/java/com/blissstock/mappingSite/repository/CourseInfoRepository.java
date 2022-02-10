@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 public interface CourseInfoRepository extends JpaRepository<CourseInfo, Long> {
 
     public List<CourseInfo> findByClassType(String classType);
+    public List<CourseInfo> findByClassTypeIgnoreCase(String classType);
     public List<CourseInfo> findAll(Specification<CourseInfo> spec, Pageable pageable);
 
         

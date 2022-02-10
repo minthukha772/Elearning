@@ -35,9 +35,9 @@ public class IndexController {
         try {
             logger.info("GET request");
 
-            List<CourseInfo> liveList = courseRepo.findByClassType(ClassType.LIVE.getValue());
+            List<CourseInfo> liveList = courseRepo.findByClassTypeIgnoreCase(ClassType.LIVE.getValue());
 
-            List<CourseInfo> videoList = courseRepo.findByClassType(ClassType.VIDEO.getValue());
+            List<CourseInfo> videoList = courseRepo.findByClassTypeIgnoreCase(ClassType.VIDEO.getValue());
 
             List<HomeCourseInfoDTO> liveInfoDTOs = new ArrayList<HomeCourseInfoDTO>();
             List<HomeCourseInfoDTO> videoInfoDTOs = new ArrayList<HomeCourseInfoDTO>();
