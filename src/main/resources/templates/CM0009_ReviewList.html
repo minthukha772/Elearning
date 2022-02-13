@@ -54,23 +54,28 @@
                                 <!-- code to implement-->
                                 <li th:if="${courseReviewListNotEmpty}" class="list-group-item">
                                     <div class="media align-items-lg-center flex-column flex-lg-row p-3">
-                                        <div class="d-flex align-items-center justify-content-between mt-1">
-                                            <h5 class="font-weight-bold my-2 col-md-10" style="color: #87281A;">Course
-                                                Average Rating</h5>
-
-                                            <ul class="list-inline large">
+                                        <div>
+                                            <div class="row">
+                                                <div class="col-lg-10 col-sm-8">
+                                                    <h5 class="font-weight-bold my-2 col-md-10" style="color: #87281A;">Course
+                                                        Average Rating</h5>
+                                                </div>
+                                                <div class="col-lg-2 col-sm-4">
+                                                    <ul class="list-inline large">
                                                 
-                                                <p class="mx-4" style="color: #87281A;">[[${averageFloat}]]</p>
-                                            
-                                            
-                                                <li class="list-inline-item m-0"><i class="fa fa-star text-success"
-                                                    th:each="i : ${#numbers.sequence(1, average)}"></i></li>
-                                                <li class="list-inline-item m-0 gray-star"><i
-                                                        class="fa fa-star-o text-gray" th:unless="${average} == 5"
-                                                        th:each="i : ${#numbers.sequence(1, 5-average)}"></i></li>
+                                                        <p class="mx-4" style="color: #87281A;">[[${averageFloat}]]</p>
+                                                    
+                                                    
+                                                        <li class="list-inline-item m-0"><i class="fa fa-star text-success"
+                                                            th:each="i : ${#numbers.sequence(1, average)}"></i></li>
+                                                        <li class="list-inline-item m-0 gray-star"><i
+                                                                class="fa fa-star-o text-gray" th:unless="${average} == 5"
+                                                                th:each="i : ${#numbers.sequence(1, 5-average)}"></i></li>
+                                                                
                                                         
-                                                
-                                            </ul>
+                                                    </ul>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </li>
@@ -182,18 +187,23 @@
                         <!-- code to implement-->
                         <li th:if="${courseReviewListNotEmpty}" class="list-group-item">
                             <div class="media align-items-lg-center flex-column flex-lg-row p-3">
-                                <div class="d-flex align-items-center justify-content-between mt-1">
-                                    <h5 class="font-weight-bold my-2 col-md-10" style="color: #87281A;">Course Average
-                                        Rating</h5>
-
-                                    <ul class="list-inline large">
-                                        <p class="mx-4" style="color: #87281A;">[[${averageFloat}]]</p>
-                                        <li class="list-inline-item m-0"><i class="fa fa-star text-success"
-                                                th:each="i : ${#numbers.sequence(1, average)}"></i></li>
-                                        <li class="list-inline-item m-0 gray-star"><i class="fa fa-star-o text-gray"
-                                                th:unless="${average} == 5"
-                                                th:each="i : ${#numbers.sequence(1, 5-average)}"></i></li>
-                                    </ul>
+                                <div>
+                                    <div class="row">
+                                        <div class="col-lg-10 col-sm-8">
+                                            <h5 class="font-weight-bold my-2 col-md-10" style="color: #87281A;">Course Average
+                                                Rating</h5>
+                                        </div>
+                                        <div class="col-lg-2 col-sm-4">
+                                            <ul class="list-inline large">
+                                                <p class="mx-4" style="color: #87281A;">[[${averageFloat}]]</p>
+                                                <li class="list-inline-item m-0"><i class="fa fa-star text-success"
+                                                        th:each="i : ${#numbers.sequence(1, average)}"></i></li>
+                                                <li class="list-inline-item m-0 gray-star"><i class="fa fa-star-o text-gray"
+                                                        th:unless="${average} == 5"
+                                                        th:each="i : ${#numbers.sequence(1, 5-average)}"></i></li>
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </li>
