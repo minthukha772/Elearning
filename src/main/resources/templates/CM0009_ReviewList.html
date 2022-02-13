@@ -59,12 +59,17 @@
                                                 Average Rating</h5>
 
                                             <ul class="list-inline large">
+                                                
                                                 <p class="mx-4" style="color: #87281A;">[[${averageFloat}]]</p>
+                                            
+                                            
                                                 <li class="list-inline-item m-0"><i class="fa fa-star text-success"
-                                                        th:each="i : ${#numbers.sequence(1, average)}"></i></li>
+                                                    th:each="i : ${#numbers.sequence(1, average)}"></i></li>
                                                 <li class="list-inline-item m-0 gray-star"><i
                                                         class="fa fa-star-o text-gray" th:unless="${average} == 5"
                                                         th:each="i : ${#numbers.sequence(1, 5-average)}"></i></li>
+                                                        
+                                                
                                             </ul>
                                         </div>
                                     </div>
@@ -73,7 +78,7 @@
                                 <li class="list-group-item" th:each="review:${courseReviewList}">
                                     <div class="media align-items-lg-center flex-column flex-lg-row p-3">
                                         <div class="media-body order-2 order-lg-1">
-                                            <div class="d-flex align-items-center justify-content-between mt-1">
+                                            <!-- <div class="d-flex align-items-center justify-content-between mt-1"> -->
                                                 <p class="font-italic text-muted mb-0 small"
                                                     th:text="${#dates.format(review.assignedDate, 'yyyy-MM-dd')}"></p>
                                                 <div
@@ -81,23 +86,31 @@
                                                     <a
                                                         th:href="@{'/admin/edit-student-review/'+${review.reviewId}}">Edit</a>
                                                 </div>
-                                            </div>
+                                            <!-- </div> -->
+                                        </div>
                                             <h5 class="mt-0 font-weight-bold mb-2"
                                                 th:text="${review.join.userInfo.userName}"></h5>
-                                            <div class="d-flex align-items-center justify-content-between mt-1">
-                                                <h6 class="font-weight-bold my-2 col-md-10"
-                                                    th:text="${review.feedback}"></h6>
-                                                <ul class="list-inline small">
-                                                    <li class="list-inline-item m-0"><i class="fa fa-star text-warning"
-                                                            th:each="i : ${#numbers.sequence(1, review.star)}"></i></li>
-                                                    <li class="list-inline-item m-0 gray-star"><i
-                                                            class="fa fa-star-o text-gray"
-                                                            th:unless="${review.star} == 5"
-                                                            th:each="i : ${#numbers.sequence(1, 5-review.star)}"></i>
-                                                    </li>
-                                                </ul>
+                                            <div >
+                                                <div class="row">
+                                                    <div class="col-lg-10 col-md-8">
+                                                        <h6 class="font-weight-bold my-2 "
+                                                        th:text="${review.feedback}"></h6>
+                                                    </div>
+                                                    <div class="col-lg-2 col-md-4">
+                                                        <ul class="list-inline small">
+                                                            <li class="list-inline-item m-0"><i class="fa fa-star text-warning"
+                                                                    th:each="i : ${#numbers.sequence(1, review.star)}"></i></li>
+                                                            <li class="list-inline-item m-0 gray-star"><i
+                                                                    class="fa fa-star-o text-gray"
+                                                                    th:unless="${review.star} == 5"
+                                                                    th:each="i : ${#numbers.sequence(1, 5-review.star)}"></i>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+
                                             </div>
-                                        </div>
+                                        <!-- </div> -->
                                     </div> <!-- End -->
                                 </li> <!-- End -->
                             </div>
@@ -185,7 +198,7 @@
                             </div>
                         </li>
 
-
+                        <!-- new -->
                         <li class="list-group-item" th:each="review:${courseReviewList}">
                             <div class="media align-items-lg-center flex-column flex-lg-row p-3">
                                 <div class="media-body order-2 order-lg-1">
@@ -197,15 +210,22 @@
                                     </div>
                                 </div>
                                 <h5 class="mt-0 font-weight-bold mb-2" th:text="${review.join.userInfo.userName}"></h5>
-                                <div class="d-flex align-items-center justify-content-between mt-1">
-                                    <h6 class="font-weight-bold my-2 col-md-10" th:text="${review.feedback}"></h6>
-                                    <ul class="list-inline small">
-                                        <li class="list-inline-item m-0"><i class="fa fa-star text-warning"
-                                                th:each="i : ${#numbers.sequence(1, review.star)}"></i></li>
-                                        <li class="list-inline-item m-0 gray-star"><i class="fa fa-star-o text-gray"
-                                                th:unless="${review.star} == 5"
-                                                th:each="i : ${#numbers.sequence(1, 5-review.star)}"></i></li>
-                                    </ul>
+                                <div >
+                                    <div class="row">
+                                        <div class="col-lg-10 col-md-8">
+                                            <h6 class="font-weight-bold my-2 " th:text="${review.feedback}"></h6>
+                                        </div>
+                                        <div class="col-lg-2 col-md-4">
+                                            <ul class="list-inline small">
+                                                <li class="list-inline-item m-0"><i class="fa fa-star text-warning"
+                                                        th:each="i : ${#numbers.sequence(1, review.star)}"></i></li>
+                                                <li class="list-inline-item m-0 gray-star"><i class="fa fa-star-o text-gray"
+                                                        th:unless="${review.star} == 5"
+                                                        th:each="i : ${#numbers.sequence(1, 5-review.star)}"></i></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
                                 </div>
                             </div>
                         </li>

@@ -577,6 +577,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
               </div>
             </li>
 
+            <!-- here -->
             <li class="list-group-item" th:each="review:${courseReviewList}">
               <div
                 class="media align-items-lg-center flex-column flex-lg-row p-3"
@@ -600,9 +601,36 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
                   th:text="${review.join.userInfo.userName}"
                 ></h5>
                 <div
-                  class="d-flex align-items-center justify-content-between mt-1"
+                  class="d-flex align-items-center justify-content-lg-between mt-1"
                 >
-                  <h6
+                <!-- <div class="row"> -->
+                  <!-- <div class="col-lg-10 col-md-4"> -->
+                    <h6
+                    class="font-weight-bold my-2"
+                    th:text="${review.feedback}"
+                  ></h6>
+                  <!-- </div> -->
+                  <!-- <div class="col-lg-2 col-md-4"> -->
+                    <ul class="list-inline small">
+                      <li class="list-inline-item m-0">
+                        <i
+                          class="fa fa-star text-warning"
+                          th:each="i : ${#numbers.sequence(1, review.star)}"
+                        ></i>
+                      </li>
+                      <li class="list-inline-item m-0 gray-star">
+                        <i
+                          class="fa fa-star text-gray"
+                          th:unless="${review.star} == 5"
+                          th:each="i : ${#numbers.sequence(1, 5-review.star)}"
+                        ></i>
+                      </li>
+                    </ul>
+                  <!-- </div> -->
+                <!-- </div> -->
+
+
+                  <!-- <h6
                     class="font-weight-bold my-2 col-md-10"
                     th:text="${review.feedback}"
                   ></h6>
@@ -620,7 +648,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
                         th:each="i : ${#numbers.sequence(1, 5-review.star)}"
                       ></i>
                     </li>
-                  </ul>
+                  </ul> -->
                 </div>
               </div>
             </li>
