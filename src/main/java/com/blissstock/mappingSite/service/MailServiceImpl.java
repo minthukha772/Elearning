@@ -114,7 +114,7 @@ public class MailServiceImpl implements MailService {
 
     // Prepare the evaluation context
     final Context ctx = new Context();
-    // ctx.setVariable("name", recipientName);
+    ctx.setVariable("name", "Sai Horm Kham");
     // ctx.setVariable("subscriptionDate", new Date());
     // ctx.setVariable("hobbies", Arrays.asList("Cinema", "Sports", "Music"));
     // ctx.setVariable("imageResourceName", imageResourceName);
