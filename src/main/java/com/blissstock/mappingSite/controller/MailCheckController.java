@@ -9,6 +9,8 @@ import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.service.MailServiceImpl;
 import com.blissstock.mappingSite.service.UserService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +23,9 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller
 @RequestMapping("/")
 public class MailCheckController {
+
+    private static Logger logger = LoggerFactory.getLogger(MailCheckController.class);
+
     @Autowired
     UserService userService;
 
@@ -93,7 +98,7 @@ public class MailCheckController {
     // final Locale locale
     )
     throws MessagingException, IOException {
-
+        logger.info("Requested");
         mailServiceImpl.sendMailWithInline(
             "kyaw", "lycuzmarki@gmail.com"
             // , image.getName(),

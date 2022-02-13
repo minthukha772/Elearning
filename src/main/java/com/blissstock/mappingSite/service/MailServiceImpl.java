@@ -142,7 +142,7 @@ public class MailServiceImpl implements MailService {
     final String htmlContent = templateEngine.process("simple-mail", ctx);
     message.setText(htmlContent, true); // true = isHtml
 
-    System.out.println("the name of the recipient is " + ctx);
+  
     // Add the inline image, referenced from the HTML code as
     // "cid:${imageResourceName}"
     // final InputStreamSource imageSource = new ByteArrayResource(imageBytes);
