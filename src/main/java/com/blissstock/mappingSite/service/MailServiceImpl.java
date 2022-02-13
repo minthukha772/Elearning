@@ -22,6 +22,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
+import org.thymeleaf.spring5.SpringTemplateEngine;
 
 @Service
 public class MailServiceImpl implements MailService {
@@ -35,6 +36,9 @@ public class MailServiceImpl implements MailService {
 
   @Autowired
   private UserService userService;
+
+  @Autowired
+  private SpringTemplateEngine templateEngine;
 
   @Autowired
   GmailConfig gmailConfig;
@@ -110,14 +114,14 @@ public class MailServiceImpl implements MailService {
 
     // Prepare the evaluation context
     final Context ctx = new Context();
-    ctx.setVariable("name", recipientName);
-    ctx.setVariable("subscriptionDate", new Date());
-    ctx.setVariable("hobbies", Arrays.asList("Cinema", "Sports", "Music"));
+    // ctx.setVariable("name", recipientName);
+    // ctx.setVariable("subscriptionDate", new Date());
+    // ctx.setVariable("hobbies", Arrays.asList("Cinema", "Sports", "Music"));
     // ctx.setVariable("imageResourceName", imageResourceName);
     // so that we can reference it from HTML
 
     // Prepare message using a Spring helper
-    final MimeMessage mimeMessage = this.mailSender.createMimeMessage();
+    final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
     message.setSubject("Example HTML email with inline image");
     message.setFrom("mappingsite0@gmail.com");
@@ -134,15 +138,8 @@ public class MailServiceImpl implements MailService {
     // } catch (IOException e) {
     //   logger.error("File not found!");
     // }
-    try {
-      final String htmlContent = gmailConfig.emailTemplateEngine().process("registration_complete", ctx);
-      message.setText(htmlContent, true); // true = isHtml
 
-    } catch (Exception e) {
-      logger.debug("{}",e);
-    }
-
-    final String htmlContent = gmailConfig.emailTemplateEngine().process("registration_complete", ctx);
+    final String htmlContent = templateEngine.process("simple-mail", ctx);
     message.setText(htmlContent, true); // true = isHtml
 
     System.out.println("the name of the recipient is " + ctx);

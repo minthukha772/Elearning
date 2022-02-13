@@ -95,11 +95,11 @@ public class MailCheckController {
     throws MessagingException, IOException {
 
         mailServiceImpl.sendMailWithInline(
-            "kyaw", "tinhuat38@gmail.com"
+            "kyaw", "lycuzmarki@gmail.com"
             // , image.getName(),
             // image.getBytes(), image.getContentType(), locale
             );
-        return "/home";
+        return "redirect:/home";
 
     }
 }
