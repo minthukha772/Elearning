@@ -41,9 +41,11 @@
   width: 20%;
 }
 
-.carousel-item{
-  height: 90vh;
-  min-height: 90vh;
+@media (min-width: 1200px) { 
+  .carousel-item{
+    height: 90vh;
+    min-height: 90vh;
+  }
 }
 
 .carousel-item::before{
@@ -58,17 +60,23 @@
   opacity: 0.7;
 }
 
-.carousel-caption{
-  bottom: 250px;
-  padding-left: 100px;
-  padding-right: 100px;
+@media (min-width: 1300px) { 
+  .carousel-caption{
+    bottom: 250px;
+    padding-left: 100px;
+    padding-right: 100px;
+  }
+  .carousel-caption h5{
+    font-size: 80px;
+    font-weight: 500px;
+  }
+  .carousel-caption p{
+    font-size: 20px;
+  }
 }
 
-.carousel-caption h5{
-  font-size: 80px;
-  font-weight: 500px;
-}
-
-.carousel-caption p{
-  font-size: 20px;
-}
+/* @media (max-width: 600px) { 
+  .carousel-caption h5, p{
+    display: none;
+  }
+} */
