@@ -10,8 +10,26 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Course Details</title>
     <!-- CSS -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="css/dataTables.bootstrap5.css"
+      th:href="@{/css/dataTables.bootstrap5.css}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="css/shCore.css"
+      th:href="@{/css/shCore.css}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="css/demo.css"
+      th:href="@{/css/demo.css}"
+    />
     <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
-    <link href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css">
+    <!-- <link href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css"> -->
     <!-- <link rel="stylesheet" type="text/css" th:href="@{/css/absent_list.css}"> -->
 </head>
 
@@ -19,7 +37,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
 
     <div th:replace="@{fragments/nav}"></div>
 
-    <div class="container first-section">
+    <div class="container first-section mt-3">
         <div class="row">
             
             <div class="col-lg-3">
@@ -38,10 +56,10 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
 
     </div>
 
-    <div class="container">
+    <div class="container mt-4">
         <div class="card">
             <div class="card-body table-responsive">
-                <table id="studentListTable" class="table table-striped dt-responsive nowrap">
+                <table class="table table-striped dt-responsive nowrap">
                     <thead>
                         <th>No</th>
                         <th>Name</th>
@@ -76,7 +94,31 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
         crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script
+      type="text/javascript"
+      language="javascript"
+      src="js/dataTables.bootstrap5.js"
+      th:src="@{/js/dataTables.bootstrap5.js}"
+    ></script>
+    <script
+      type="text/javascript"
+      language="javascript"
+      src="js/shCore.js"
+      th:src="@{/js/shCore.js}"
+    ></script>
+    <script
+      type="text/javascript"
+      language="javascript"
+      src="js/demo.js"
+      th:src="@{/js/demo.js}"
+    ></script>
+    <!-- <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script> -->
+    <script
+      type="text/javascript"
+      language="javascript"
+      src="js/jquery.dataTables.js"
+      th:src="@{/js/jquery.dataTables.js}"
+    ></script>
 
     <script>
         // $(document).ready(function() {
