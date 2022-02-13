@@ -37,45 +37,29 @@
       background-color: #f0f0f0;
     }
     
-    /* .breadcrumb li a { */
-      /* background-color: #FFFFFF; */
-      /* color: #5227CC;
-      background-color: transparent;
-      text-decoration: none;
-    } */
+
     
     .push {
       height: 50px;
     }
     
-    .completecard {
+    /* .completecard {
       box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
       margin-left: auto;
       margin-right: auto;
       width: 50%;
       border-radius: 10px;
       width: 800px;
-    }
+    } */
     
     .card-header {
       text-align: center;
       background-color: whitesmoke;
       height: 50px;
-      /* border-radius: 10px; */
+   
     }
     
-    /* .btn-primary,
-    .btn-primary:hover,
-    .btn-primary:active,
-    .btn-primary:visited {
-      background-color: #7749F8 !important;
-    } */
-    /* .formborder{
-      border:1px solid #DAD9D9;
-      padding: 10px;
-      width: 250px;
-    } */
-    /*footer*/
+  
     
     .footer-link {
       margin-top: 40px;
@@ -138,116 +122,122 @@
       </ol>
   </nav>
     
-    
-    <div class="card mx-auto completecard">
-      <h3 class="card-header" style="border-radius: 10px 10px 0 0;">Take A Leave</h3>
-      <div class="card-body">
-        <form id="inquiry-form" method="post" th:action="@{${postAction}}" th:object="${leave}">
-          <div class="row form-sec-header">
-            <div class="col-lg-12 text-center">
-              <p></p>
-            </div>
-          </div>
-          
-          <div class="form-group row mb-3">
-            <div class="col-lg-1"></div>
-            <label for="coursename" class="col-lg-2 col-form-label">Course Name</label>
-            
-            <div class="col-lg-6">
-              <label for="coursename" class="col-form-label" th:text="${course}"></label>
-            </div>
-            <!--div class="col-lg-3">
-              <input type="email" class="form-control" id="inputEmail" placeholder="姓" required>
-            </div-->
-          </div>
-          
-          <div class="form-group row mb-3">
-            <div class="col-lg-1"></div>
-            <label for="teachername" class="col-lg-2 col-form-label">Teacher Name</label>
-            
-            <div class="col-lg-6">
-              <label for="teachername" class="col-form-label" th:text="${name}"></label>
-            </div>
-          </div>
-          
-          <div class="form-group row mb-3">
-            <div class="col-lg-1"></div>
-            <label for="about" class="col-lg-2 col-form-label">Date</label>
-            
-            <div class="col-lg-3">
-              <!-- <input id="datepicker9" class="form-control" placeholder="yyyy-mm-dd"> -->
-              <input type="date" id="date9" class="form-control" placeholder="dd-mm-yyy" name="leaveDate" th:field="*{leaveDate}" required>
-              
-            </div>
-            <!-- <label for="date" class="col-lg-2 col-form-label">To Date</label>
-              
-              <div class="col-lg-3"> -->
-                <!-- <input id="datepicker10" class="form-control" placeholder="yyyy-mm-dd"> -->
-                <!-- <input type="date" id="date10" class="form-control" placeholder="dd-mm-yyy" name="leaveEndDate" th:field="*{leaveEndDate}" required> -->
-                
-                
-                <!-- </div> -->
-                
-              </div>
-              
-              <div class="form-group row mb-3">
-                <div class="col-lg-1"></div>
-                <label for="time" class="col-lg-2 col-form-label">Time</label>
-                
-                <div class="col-lg-8 row">
-                  <div class="col-lg-4">
-                    <label for="time" class="col-form-label">From</label>
-                    <input type="time" id="startTime" class="form-control" th:field="*{leaveStartTime}" name="leaveStartTime" />
-                    
-                  </div>
-                  <div class="col-lg-1"></div>
-                  <div class="col-lg-4">
-                    <label for="time" class="col-form-label">To</label>
-                    <input type="time" id="endTime" class="form-control" th:field="*{leaveEndTime}" name="leaveEndTime" />
-                    
-                  </div>
+  <!-- new code -->
+    <div class="row">
+      <div class="col-lg-5 col-sm-8 mx-auto">
+        <div class="card completecard">
+          <h3 class="card-header" style="border-radius: 10px 10px 0 0;">Take A Leave</h3>
+          <div class="card-body">
+            <form id="inquiry-form" method="post" th:action="@{${postAction}}" th:object="${leave}">
+              <div class="row form-sec-header">
+                <div class="col-lg-12 text-center">
+                  <p></p>
                 </div>
               </div>
               
               <div class="form-group row mb-3">
                 <div class="col-lg-1"></div>
-                <label for="reason" class="col-lg-2 col-form-label">Reason</label>
+                <label for="coursename" class="col-lg-2 col-form-label">Course Name</label>
                 
                 <div class="col-lg-6">
-                  <textarea class="form-control" id="inputEmail" placeholder="reason" th:field="*{reason}" name="reason" required></textarea>
-
-                  <!-- <input type="hidden" id="LeaveID" th:field="*{leaveId}"> -->
-
+                  <label for="coursename" class="col-form-label" th:text="${course}"></label>
                 </div>
+                <!--div class="col-lg-3">
+                  <input type="email" class="form-control" id="inputEmail" placeholder="姓" required>
+                </div-->
               </div>
               
-
-
               <div class="form-group row mb-3">
-                <div class="col-lg-3"></div>
+                <div class="col-lg-1"></div>
+                <label for="teachername" class="col-lg-2 col-form-label">Teacher Name</label>
                 
-                
-                <div class="row col-lg-8">
-                  <div class="col-lg-4">
-                    <button id="btnReset" type="reset" class="btn btn-spacing btn-secondary center-block" Style="width: 125px;" OnClick="btnClear_Click">Reset</button>
-                    
-                  </div>
-                  <div class="col-lg-4">
-                    <button id="btnReg" type="submit" class="btn btn-spacing btn-primary center-block" Style="width: 150px;" onclick="return btnRegister_Click()">Submit</button>
-                    
-                    
-                  </div>
+                <div class="col-lg-6">
+                  <label for="teachername" class="col-form-label" th:text="${name}"></label>
                 </div>
               </div>
               
-              
-              
-              <!--div class="form-group row text-center">
-                <button type="submit" class="btn">お問い合わせする</button>
-              </div-->
-            </form>
-          </div>
-        </div>
+              <div class="form-group row mb-3">
+                <div class="col-lg-1"></div>
+                <label for="about" class="col-lg-2 col-form-label">Date</label>
+                
+                <div class="col-lg-3">
+                  <!-- <input id="datepicker9" class="form-control" placeholder="yyyy-mm-dd"> -->
+                  <input type="date" id="date9" class="form-control" placeholder="dd-mm-yyy" name="leaveDate" th:field="*{leaveDate}" required>
+                  
+                </div>
+                <!-- <label for="date" class="col-lg-2 col-form-label">To Date</label>
+                  
+                  <div class="col-lg-3"> -->
+                    <!-- <input id="datepicker10" class="form-control" placeholder="yyyy-mm-dd"> -->
+                    <!-- <input type="date" id="date10" class="form-control" placeholder="dd-mm-yyy" name="leaveEndDate" th:field="*{leaveEndDate}" required> -->
+                    
+                    
+                    <!-- </div> -->
+                    
+                  </div>
+                  
+                  <div class="form-group row mb-3">
+                    <div class="col-lg-1"></div>
+                    <label for="time" class="col-lg-2 col-form-label">Time</label>
+                    
+                    <div class="col-lg-8 row">
+                      <div class="col-lg-4">
+                        <label for="time" class="col-form-label">From</label>
+                        <input type="time" id="startTime" class="form-control" th:field="*{leaveStartTime}" name="leaveStartTime" />
+                        
+                      </div>
+                      <div class="col-lg-1"></div>
+                      <div class="col-lg-4">
+                        <label for="time" class="col-form-label">To</label>
+                        <input type="time" id="endTime" class="form-control" th:field="*{leaveEndTime}" name="leaveEndTime" />
+                        
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="form-group row mb-3">
+                    <div class="col-lg-1"></div>
+                    <label for="reason" class="col-lg-2 col-form-label">Reason</label>
+                    
+                    <div class="col-lg-6">
+                      <textarea class="form-control" id="inputEmail" placeholder="reason" th:field="*{reason}" name="reason" required></textarea>
+    
+                      <!-- <input type="hidden" id="LeaveID" th:field="*{leaveId}"> -->
+    
+                    </div>
+                  </div>
+                  
+    
+    
+                  <div class="form-group row mb-3">
+                    <div class="col-lg-3"></div>
+                    
+                    
+                    <div class="row col-lg-8">
+                      <div class="col-lg-4">
+                        <button id="btnReset" type="reset" class="btn btn-spacing btn-secondary center-block" Style="width: 125px;" OnClick="btnClear_Click">Reset</button>
+                        
+                      </div>
+                      <div class="col-lg-4">
+                        <button id="btnReg" type="submit" class="btn btn-spacing btn-primary center-block" Style="width: 150px;" onclick="return btnRegister_Click()">Submit</button>
+                        
+                        
+                      </div>
+                    </div>
+                  </div>
+                  
+                  
+                  
+                  <!--div class="form-group row text-center">
+                    <button type="submit" class="btn">お問い合わせする</button>
+                  </div-->
+                </form>
+              </div>
+            </div>
+      </div>
+    </div>
+
+    
         
         <div class="push"></div>
       </div>
