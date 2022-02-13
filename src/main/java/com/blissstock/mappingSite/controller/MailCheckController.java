@@ -99,7 +99,7 @@ public class MailCheckController {
             // , image.getName(),
             // image.getBytes(), image.getContentType(), locale
             );
-        return "sent";
+        return "/home";
 
     }
 }

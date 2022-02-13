@@ -27,8 +27,7 @@ import org.thymeleaf.context.Context;
 public class MailServiceImpl implements MailService {
 
   private static final Logger logger = LoggerFactory.getLogger(
-    MailServiceImpl.class
-  );
+      MailServiceImpl.class);
 
   @Autowired
   @Qualifier("gmail")
@@ -39,35 +38,36 @@ public class MailServiceImpl implements MailService {
 
   @Autowired
   GmailConfig gmailConfig;
-/*   @Autowired
-  private MessageSource messages;
- */
+  /*
+   * @Autowired
+   * private MessageSource messages;
+   */
   private String email = "mappingsite0@gmail.com";
   private String fromName = "Mapping Site";
 
   public void sendMail(
-    String subject,
-    String toAddresses,
-    String ccAddresses,
-    String bccAddresses,
-    String body
-  ) {
+      String subject,
+      String toAddresses,
+      String ccAddresses,
+      String bccAddresses,
+      String body) {
     MimeMessagePreparator preparator = mimeMessage -> {
       MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
       message.setTo(toAddresses.split("[,;]"));
       message.setFrom(email, fromName);
       message.setSubject(subject);
-      if (!ccAddresses.isBlank()) message.setCc(ccAddresses.split("[;,]"));
-      if (!bccAddresses.isBlank()) message.setBcc(bccAddresses.split("[;,]"));
+      if (!ccAddresses.isBlank())
+        message.setCc(ccAddresses.split("[;,]"));
+      if (!bccAddresses.isBlank())
+        message.setBcc(bccAddresses.split("[;,]"));
       message.setText(body, false);
     };
     mailSender.send(preparator);
     logger.info(
-      "Email sent successfully To {},{} with Subject {}",
-      toAddresses,
-      ccAddresses,
-      subject
-    );
+        "Email sent successfully To {},{} with Subject {}",
+        toAddresses,
+        ccAddresses,
+        subject);
   }
 
   public void sendVerificationMail(UserAccount userAccount, String appUrl) {
@@ -78,8 +78,7 @@ public class MailServiceImpl implements MailService {
     String subject = "Registration Confirmation";
 
     String confirmationUrl = appUrl + "/verify_password?token=" + token;
-    String message =
-      "Congratulations, your account has been successfully created. Please go to the following link to confirm the account";
+    String message = "Congratulations, your account has been successfully created. Please go to the following link to confirm the account";
     String body = message + "\r\n" + confirmationUrl;
     System.out.println(confirmationUrl.toString());
     sendMail(subject, recipientAddress, "", "", body);
@@ -94,21 +93,20 @@ public class MailServiceImpl implements MailService {
     String subject = "Reset Password";
 
     String confirmationUrl = appUrl + "/password/verify_password?token=" + token;
-    String message =
-      "You have requested to reset password. Please click the following link to continue: ";
+    String message = "You have requested to reset password. Please click the following link to continue: ";
     String body = message + "\r\n" + confirmationUrl;
     System.out.println(confirmationUrl.toString());
     sendMail(subject, recipientAddress, "", "", body);
-    
+
   }
 
-  //test impl
+  // test impl
   public void sendMailWithInline(
-  final String recipientName, final String recipientEmail
+      final String recipientName, final String recipientEmail
   // final String imageResourceName,
   // final byte[] imageBytes, final String imageContentType, final Locale locale
   )
-  throws MessagingException {
+      throws MessagingException {
 
     // Prepare the evaluation context
     final Context ctx = new Context();
@@ -116,33 +114,40 @@ public class MailServiceImpl implements MailService {
     ctx.setVariable("subscriptionDate", new Date());
     ctx.setVariable("hobbies", Arrays.asList("Cinema", "Sports", "Music"));
     // ctx.setVariable("imageResourceName", imageResourceName);
-     // so that we can reference it from HTML
+    // so that we can reference it from HTML
 
     // Prepare message using a Spring helper
     final MimeMessage mimeMessage = this.mailSender.createMimeMessage();
-    final MimeMessageHelper message =
-        new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
+    final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
     message.setSubject("Example HTML email with inline image");
     message.setFrom("mappingsite0@gmail.com");
     message.setTo(recipientEmail);
 
     // Create the HTML body using Thymeleaf
-    try{
-      FileReader fr=new FileReader("src\\main\\resources\\templates\\mail\\registration_complete.html");
-      int i;
-      while((i=fr.read())!=-1)    
-      logger.info("The character is {}", (char)i);
-      logger.info("Oki Toki");
-      fr.close();
-    }catch(IOException e){
-      logger.error("File not found!");
+    // try {
+    //   FileReader fr = new FileReader("src\\main\\resources\\templates\\mail\\registration_complete.html");
+    //   int i;
+    //   while ((i = fr.read()) != -1)
+    //     logger.info("The character is {}", (char) i);
+    //   logger.info("Oki Toki");
+    //   fr.close();
+    // } catch (IOException e) {
+    //   logger.error("File not found!");
+    // }
+    try {
+      final String htmlContent = gmailConfig.emailTemplateEngine().process("registration_complete", ctx);
+      message.setText(htmlContent, true); // true = isHtml
+
+    } catch (Exception e) {
+      logger.debug("{}",e);
     }
-    
-    final String htmlContent = gmailConfig.emailTemplateEngine().process("registration_complete.html", ctx);
+
+    final String htmlContent = gmailConfig.emailTemplateEngine().process("registration_complete", ctx);
     message.setText(htmlContent, true); // true = isHtml
 
     System.out.println("the name of the recipient is " + ctx);
-    // Add the inline image, referenced from the HTML code as "cid:${imageResourceName}"
+    // Add the inline image, referenced from the HTML code as
+    // "cid:${imageResourceName}"
     // final InputStreamSource imageSource = new ByteArrayResource(imageBytes);
     // message.addInline(imageResourceName, imageSource, imageContentType);
 
