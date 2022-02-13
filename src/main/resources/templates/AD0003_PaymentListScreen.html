@@ -196,7 +196,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4">
                                                                     </nav>
                                                                     
                                                                     <!-- <div id="main" style="margin-left: 250px;"> -->
-                                                                        <div id="main">
+                                                                        <!-- <div id="main"> -->
                                                                         <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
                                                                             <div class="container-fluid">
                                                                                 <div style="justify-content: space-between;">
@@ -226,9 +226,9 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4">
                                                                         
                                                                         
                                                                         
-                                                                        <div class="col-sm-9">
+                                                                        <!-- <div class="col-sm-9">
                                                                             
-                                                                        </div>
+                                                                        </div> -->
                                                                         <!-- <div style="padding-left: 100px;float: right;">
                                                                             <button type="button" class="btn btn-primary newbtn" id="addadmin" onclick="location.href='/test'">
                                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -283,54 +283,59 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4">
                                                                     </select>
                                                                 </div>
                                                                 
-                                                                <div class="mx-auto p-3" style="max-width: 1000px;">
-                                                                    <div>
-                                                                        <section>
-                                                                            <div class="demo-html">
-                                                                                <table id="example" class="table table-striped" style="width:100%">
-                                                                                    <thead>
-                                                                                        <tr>
-                                                                                            <th>No</th>
-                                                                                            <th>Name</th>
-                                                                                            <th>Requested Course</th>
-                                                                                            <th>Date</th>
-                                                                                            <th>Amount</th>
-                                                                                            <th>Payment Status</th>
-                                                                                            <th></th>
-                                                                                            
-                                                                                        </tr>
-                                                                                    </thead>
-                                                                                    <tbody>
-                                                                                        <tr th:each="dr,index:${allPaymentList}">
-                                                                                            <td></td>
-                                                                                            <td><b><a th:href="@{'/admin/browse/profile/' + ${dr.userId}}" th:text="${dr.userName}" style="text-decoration: none;"></a></b></td>
-                                                                                            <!-- change to "@{/CourseDetail/{id}(id=${course_id})}" or @{|/edit-mentor/${mentor.id}|} -->
-                                                                                            <!-- <a th:href="@{|/test|}"></a> -->
-                                                                                            <td th:text="${dr.courseName}"></td></a>
-                                                                                            <td th:text="${dr.paymentDate}"></td>
-                                                                                            <td th:text="${dr.courseFees}"></td>
-                                                                                            <td th:text="${dr.paymentStatus}"></td>
-                                                                                            <td>
-                                                                                                <a th:href="@{/admin/payment-upload/course_id/{courseId}/student_id/{id}(courseId = ${dr.courseId}, id = ${dr.userId})}" class='btn btn-primary' style='float: center;'>Payment Details</a>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                    </tbody>
-                                                                                    <tfoot>
-                                                                                        <tr>
-                                                                                            <th>No</th>
-                                                                                            <th>Name</th>
-                                                                                            <th>Requested Course</th>
-                                                                                            <th>Date</th>
-                                                                                            <th>Amount</th>
-                                                                                            <th>Payment Status</th>
-                                                                                            <td></td>
-                                                                                        </tr>
-                                                                                    </tfoot>
-                                                                                </table>
+                                                                <!-- <div class="mx-auto p-3" > -->
+                                                                    <!-- <div>
+                                                                        <section> -->
+                                                                            <div class="container">
+                                                                                <div class="card">
+                                                                                    <div class="card-body table-responsive">
+                                                                                        <table id="example" class="table table-striped" >
+                                                                                            <thead>
+                                                                                                <tr>
+                                                                                                    <th>No</th>
+                                                                                                    <th>Name</th>
+                                                                                                    <th>Requested Course</th>
+                                                                                                    <th>Date</th>
+                                                                                                    <th>Amount</th>
+                                                                                                    <th>Payment Status</th>
+                                                                                                    <th></th>
+                                                                                                    
+                                                                                                </tr>
+                                                                                            </thead>
+                                                                                            <tbody>
+                                                                                                <tr th:each="dr,index:${allPaymentList}">
+                                                                                                    <td></td>
+                                                                                                    <td><b><a th:href="@{'/admin/browse/profile/' + ${dr.userId}}" th:text="${dr.userName}" style="text-decoration: none;"></a></b></td>
+                                                                                                    <!-- change to "@{/CourseDetail/{id}(id=${course_id})}" or @{|/edit-mentor/${mentor.id}|} -->
+                                                                                                    <!-- <a th:href="@{|/test|}"></a> -->
+                                                                                                    <td th:text="${dr.courseName}"></td></a>
+                                                                                                    <td th:text="${dr.paymentDate}"></td>
+                                                                                                    <td th:text="${dr.courseFees}"></td>
+                                                                                                    <td th:text="${dr.paymentStatus}"></td>
+                                                                                                    <td>
+                                                                                                        <a th:href="@{/admin/payment-upload/course_id/{courseId}/student_id/{id}(courseId = ${dr.courseId}, id = ${dr.userId})}" class='btn btn-primary' style='float: center;'>Payment Details</a>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                            </tbody>
+                                                                                            <tfoot>
+                                                                                                <tr>
+                                                                                                    <th>No</th>
+                                                                                                    <th>Name</th>
+                                                                                                    <th>Requested Course</th>
+                                                                                                    <th>Date</th>
+                                                                                                    <th>Amount</th>
+                                                                                                    <th>Payment Status</th>
+                                                                                                    <td></td>
+                                                                                                </tr>
+                                                                                            </tfoot>
+                                                                                        </table>
+                                                                                    </div>
+                                                                                </div>
+                                                                                
                                                                             </div>
-                                                                        </section>
-                                                                    </div>
-                                                                </div>
+                                                                        <!-- </section>
+                                                                    </div> -->
+                                                                <!-- </div> -->
                                                                 
                                                                 
                                                             </div>

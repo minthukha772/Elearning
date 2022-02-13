@@ -12,7 +12,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
     <!-- CSS -->
     <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
     <link href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/absent_list.css}">
+    <!-- <link rel="stylesheet" type="text/css" th:href="@{/css/absent_list.css}"> -->
 </head>
 
 <body>
@@ -39,27 +39,32 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
     </div>
 
     <div class="container">
-        <table id="studentListTable" class="table table-striped">
-            <thead>
-                <th>No</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Requested Course</th>
-                <th>Date</th>
-                <th>Role</th>
-            </thead>
-            <tbody>
-
-                <tr th:each="absent,myIndex : ${absentList}">
-                    <td th:text="${myIndex.index + 1}"></td>
-                    <td th:text="${absent.join.userInfo.userName}"></td>
-                    <td th:text="${absent.join.userInfo.userAccount.mail}"></td>
-                    <td th:text="${absent.join.courseInfo.courseName}"></td>
-                    <td th:text="${#strings.substringBefore(absent.leaveDate, ' ')}"></td>
-                    <td th:utext="${#strings.substringAfter(absent.join.userInfo.userAccount.role, '_')}"></td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="card">
+            <div class="card-body table-responsive">
+                <table id="studentListTable" class="table table-striped dt-responsive nowrap">
+                    <thead>
+                        <th>No</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Requested Course</th>
+                        <th>Date</th>
+                        <th>Role</th>
+                    </thead>
+                    <tbody>
+        
+                        <tr th:each="absent,myIndex : ${absentList}">
+                            <td th:text="${myIndex.index + 1}"></td>
+                            <td th:text="${absent.join.userInfo.userName}"></td>
+                            <td th:text="${absent.join.userInfo.userAccount.mail}"></td>
+                            <td th:text="${absent.join.courseInfo.courseName}"></td>
+                            <td th:text="${#strings.substringBefore(absent.leaveDate, ' ')}"></td>
+                            <td th:text="${#strings.substringAfter(absent.join.userInfo.userAccount.role, '_')}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
     </div>
 
 
