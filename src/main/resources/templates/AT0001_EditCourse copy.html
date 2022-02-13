@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4">
+
+<head>
+  <meta charset="utf-8" />
+  <!-- <link rel="shortcut icon" type="image/ico" href="http://www.datatables.net/favicon.ico"> -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, user-scalable=no" />
+  <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
+  <title>Course Registration</title>
+</head>
+
+<body>
+  <div th:replace="@{fragments/nav}"></div>
+
+  <nav class="p-2" aria-label="breadcrumb" style="--bs-breadcrumb-divider: '>'">
+    <ol class="breadcrumb" th:if="${#authorization.expression('hasRole(''ROLE_TEACHER'')')}">
+      <li class="breadcrumb-item">
+        <a th:href="@{/teacher/my-course}">My Course</a>
+      </li>
+      <li class="breadcrumb-item active">Update Course</li>
+      <li class="breadcrumb-item">Confirmation</li>
+      <li class="breadcrumb-item">Complete</li>
+    </ol>
+    <ol class="breadcrumb" th:unless="${#authorization.expression('hasRole(''ROLE_TEACHER'')')}">
+      <li class="breadcrumb-item">
+        <a th:href="@{/admin/top/}">Top</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a th:href="@{/admin/teacher-list}">Teacher List</a>
+      </li>
+      <li class="breadcrumb-item active">Update Course</li>
+      <li class="breadcrumb-item">Confirmation</li>
+      <li class="breadcrumb-item">Complete</li>
+    </ol>
+  </nav>
+
+  <div class="container">
+    <div class="card mx-auto" style="max-width: 700px">
+      <div class="card-header">Update Course</div>
+
+      <div class="card-body">
+        <form th:action="@{${postAction}}" method="post" novalidate>
+          <div th:object="${course}">
+            <div class="form-group row mb-2">
+              <p class="col-sm-3 col-form-label">Class Type</p>
+
+              <div class="col-sm-9 mt-2">
+                <div class="form-check form-check-inline">
+                  <input type="radio" onclick="javascript:onClassTypeCheckBoxClicked();" name="liveCheck" id="liveCheck"
+                    value="live" th:field="*{classType}" />
+                  <label for="liveCheck">Live</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input type="radio" onclick="javascript:onClassTypeCheckBoxClicked();" name="videoCheck"
+                    id="videoCheck" value="video" th:field="*{classType}" />
+                  <label for="videoCheck">Video</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-3 row">
+              <label class="col-form-label col-sm-3" for="cname">Course Name</label>
+
+              <div class="col-sm-9">
+                <input th:field="*{courseName}" th:classappend="${#fields.hasErrors('courseName')}?'is-invalid':''"
+                  class="form-control" id="cname" type="text" placeholder="Enter Course Name" required />
+                <div class="invalid-feedback">This field is required.</div>
+              </div>
+            </div>
+
+            <div class="mb-3 row">
+              <label class="col-form-label col-sm-3" for="ccategory">Course Category</label>
+              <div class="col-sm-9">
+                <select name="ccategory" th:field="*{category}" class="form-select" required>
+                  <option value="" selected="selected">
+                    Select Category
+                  </option>
+                  <option value="Business">Business</option>
+                  <option value="Engineering & Construction">
+                    Engineering & Construction
+                  </option>
+                  <option value="Health">Health</option>
+                  <option value="IT">IT</option>
+                  <option value="Language">Language</option>
+                  <option value="Management">Management</option>
+                  <option value="Personal Development">
+                    Personal Development
+                  </option>
+                  <option value="Sales & Marketing">Sales & Marketing</option>
+                  <option value="Teaching & Academics">
+                    Teaching & Academics
+                  </option>
+                </select>
+                <div class="invalid-feedback">This field is required.</div>
+              </div>
+            </div>
+
+            <div class="mb-3 row">
+              <label class="col-form-label col-sm-3" for="clevel">Course Level</label>
+
+              <div class="col-sm-9">
+                <input th:field="*{level}" th:classappend="${#fields.hasErrors('level')}?'is-invalid':''"
+                  class="form-control" id="clevel" type="text"
+                  placeholder="Enter Course Level(For example : Japanese Basic)" required />
+                <div class="invalid-feedback">This field is required.</div>
+              </div>
+            </div>
+
+            <div class="mb-3 row">
+              <label class="col-form-label col-sm-3" for="cfee">Course Fee</label>
+
+              <div class="col-sm-9">
+                <input th:field="*{fees}" th:classappend="${#fields.hasErrors('fees')}?'is-invalid':''"
+                  class="form-control" id="cfee" type="number" min="0" placeholder="Enter Course Fee(Kyats)" required />
+                <div class="invalid-feedback">This field is required.</div>
+              </div>
+            </div>
+
+            <div class="mb-3 row">
+              <label class="col-form-label col-sm-3" for="cabout">About Course</label>
+
+              <div class="col-sm-9">
+                <textarea th:field="*{aboutCourse}" th:classappend="${#fields.hasErrors('aboutCourse')}?'is-invalid':''"
+                  class="form-control" id="cabout" type="text" placeholder="Enter detail about your course here."
+                  required></textarea>
+                <div class="invalid-feedback">This field is required.</div>
+              </div>
+            </div>
+
+            <div class="mb-3 row">
+              <label class="col-form-label col-sm-3" for="prerequisites">Prerequisites</label>
+
+              <div class="col-sm-9">
+                <textarea th:field="*{prerequisite}"
+                  th:classappend="${#fields.hasErrors('prerequisite')}?'is-invalid':''" class="form-control"
+                  id="cprequisites" type="text" placeholder="Enter Prerequisites for the course." required></textarea>
+                <div class="invalid-feedback">This field is required.</div>
+              </div>
+            </div>
+
+            <div class="mb-3 row">
+              <label class="col-form-label col-sm-3" for="classlink">Class Link</label>
+
+              <div class="col-sm-9">
+                <input th:field="*{classLink}" th:classappend="${#fields.hasErrors('classLink')}?'is-invalid':''"
+                  class="form-control" id="cclasslink" type="text"
+                  placeholder="Enter Class Link(Video link or Live link)" required />
+                <div class="invalid-feedback">This field is required.</div>
+              </div>
+            </div>
+            <input type="hidden" class="form-control" id="teacherid" th:field="*{uid}"
+              style="border: none transparent" />
+
+            <input type="hidden" class="col-auto" id="courseid" th:field="*{courseId}" readonly />
+          </div>
+
+          <div id="iflive" style="display: none">
+            <div th:object="${course}">
+              <div class="mb-3 row">
+                <label class="col-form-label col-sm-3" for="maxStu">Student Numbers</label>
+
+                <div class="col-sm-9">
+                  <input th:field="*{maxStu}" th:classappend="${#fields.hasErrors('maxStu')}?'is-invalid':''"
+                    class="form-control" id="maxStu" type="number" min="0" placeholder="Enter the number of students" />
+                  <div class="invalid-feedback">This field is required.</div>
+                </div>
+              </div>
+
+              <div class="form-group row mb-3">
+                <!-- <input id="datepicker9" class="form-control" placeholder="yyyy-mm-dd"> -->
+                <label class="col-6 col-sm-2 col-form-label" for="startDate">Start Date</label>
+                <div class="col-6 col-sm-4">
+                  <input type="date" th:field="*{startDate}" class="form-control" />
+                  <div class="invalid-feedback date-feedback">
+                    This field is required.
+                  </div>
+                </div>
+
+                <label class="col-6 col-sm-2 mt-3 mt-sm-0 col-form-label" for="endDate">End Date</label>
+                <div class="col-6 col-sm-4 mt-3 mt-sm-0">
+                  <input type="date" th:field="*{endDate}" class="form-control" />
+                  <div class="invalid-feedback date-feedback">
+                    This field is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="shadow p-3 mb-5 rounded" style="background-color: #ffc107">
+              <div class="col-lg-1"></div>
+              <label class="col-lg-4 col-form-label">Previous Date and Time</label>
+              <div th:each="courseTime : ${courseTimeList}">
+                <div class="form-group row mb-3">
+                  <div class="col-lg-3">
+                    <!-- <input type="text" th:name="courseDays" th:value="${courseTime.courseDays}" readonly style="border: none;font-weight: bold;"> -->
+                    <label class="col-form-label" th:text="${courseTime.courseDays}" style="color: #dc3545"></label>
+                  </div>
+
+                  <div class="col-lg-8 row">
+                    <div class="col-lg-4">
+                      <label for="time">From</label>
+                      <input type="text" th:name="courseStartTime" th:value="${courseTime.courseStartTime}" id="time3"
+                        style="color: #dc3545; font-weight: bold" readonly />
+                    </div>
+                    <div class="col-lg-3"></div>
+                    <div class="col-lg-4">
+                      <label for="time">To</label>
+                      <input type="text" th:name="courseEndTime" th:value="${courseTime.courseEndTime}" id="time4"
+                        style="color: #dc3545; font-weight: bold" readonly />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <label class="col-form-label" style="color: #dc3545">***If you want to keep previous Date and Time in
+                Update,
+                please refill below.***</label>
+            </div>
+
+            <h5>Choose Date and Time</h5>
+
+            <div class="form-group row mb-3">
+              <div class="col-md-3">
+                <input type="checkbox" value="Monday" id="day0" name="day0" />
+                <label class="col-form-label">Monday</label>
+              </div>
+
+              <div class="col-md-9 row">
+                <div class="col-6">
+                  <label for="time">From</label>
+
+                  <input type="time" th:name="startTime0" id="startTime0" class="form-control" data-disabled />
+                  <div class="invalid-feedback day0-feedback">
+                    This field is required.
+                  </div>
+                </div>
+
+                <div class="col-6">
+                  <label for="time">To</label>
+                  <input type="time" th:name="endTime0" id="endTime0" class="form-control" data-disabled />
+                  <div class="invalid-feedback day0-feedback">
+                    This field is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row mb-3">
+              <div class="col-md-3">
+                <input type="checkbox" value="Tuesday" id="day1" name="day1" />
+                <label class="col-form-label">Tuesday</label>
+              </div>
+
+              <div class="col-md-9 row">
+                <div class="col-6">
+                  <label for="time">From</label>
+                  <input type="time" th:name="startTime1" id="startTime1" class="form-control" data-disabled />
+                  <div class="invalid-feedback day1-feedback">
+                    This field is required.
+                  </div>
+                </div>
+
+                <div class="col-6">
+                  <label for="time">To</label>
+                  <input type="time" th:name="endTime1" id="endTime1" class="form-control" data-disabled />
+                  <div class="invalid-feedback day1-feedback">
+                    This field is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row mb-3">
+              <div class="col-md-3">
+                <input type="checkbox" value="Wednesday" id="day2" name="day2" />
+                <label class="col-form-label">Wednesday</label>
+              </div>
+
+              <div class="col-md-9 row">
+                <div class="col-6">
+                  <label for="time">From</label>
+                  <input type="time" th:name="startTime2" id="startTime2" class="form-control" data-disabled />
+                  <div class="invalid-feedback day2-feedback">
+                    This field is required.
+                  </div>
+                </div>
+
+                <div class="col-6">
+                  <label for="time">To</label>
+                  <input type="time" th:name="endTime2" id="endTime2" class="form-control" data-disabled />
+                  <div class="invalid-feedback day2-feedback">
+                    This field is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row mb-3">
+              <div class="col-md-3">
+                <input type="checkbox" value="Thursday" id="day3" name="day3" />
+                <label class="col-form-label">Thursday</label>
+              </div>
+
+              <div class="col-md-9 row">
+                <div class="col-6">
+                  <label for="time">From</label>
+                  <input type="time" th:name="startTime3" id="startTime3" class="form-control" data-disabled />
+                  <div class="invalid-feedback day3-feedback">
+                    This field is required.
+                  </div>
+                </div>
+
+                <div class="col-6">
+                  <label for="time">To</label>
+                  <input type="time" th:name="endTime3" id="endTime3" class="form-control" data-disabled />
+                  <div class="invalid-feedback day3-feedback">
+                    This field is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row mb-3">
+              <div class="col-md-3">
+                <input type="checkbox" value="Friday" id="day4" name="day4" />
+                <label class="col-form-label">Friday</label>
+              </div>
+
+              <div class="col-md-9 row">
+                <div class="col-6">
+                  <label for="time">From</label>
+                  <input type="time" th:name="startTime4" id="startTime4" class="form-control" data-disabled />
+                  <div class="invalid-feedback day4-feedback">
+                    This field is required.
+                  </div>
+                </div>
+
+                <div class="col-6">
+                  <label for="time">To</label>
+                  <input type="time" th:name="endTime4" id="endTime4" class="form-control" data-disabled />
+                  <div class="invalid-feedback day4-feedback">
+                    This field is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row mb-3">
+              <div class="col-md-3">
+                <input type="checkbox" value="Saturday" id="day5" name="day5" />
+                <label class="col-form-label">Saturday</label>
+              </div>
+
+              <div class="col-md-9 row">
+                <div class="col-6">
+                  <label for="time">From</label>
+                  <input type="time" th:name="startTime5" id="startTime5" class="form-control" data-disabled />
+                  <div class="invalid-feedback day5-feedback">
+                    This field is required.
+                  </div>
+                </div>
+
+                <div class="col-6">
+                  <label for="time">To</label>
+                  <input type="time" th:name="endTime5" id="endTime5" class="form-control" data-disabled />
+                  <div class="invalid-feedback day5-feedback">
+                    This field is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row mb-3">
+              <div class="col-md-3">
+                <input type="checkbox" value="Sunday" id="day6" name="day6" />
+                <label class="col-form-label">Sunday</label>
+              </div>
+
+              <div class="col-md-9 row">
+                <div class="col-6">
+                  <label for="time">From</label>
+                  <input type="time" th:name="startTime6" id="startTime6" class="form-control" data-disabled />
+                  <div class="invalid-feedback day6-feedback">
+                    This field is required.
+                  </div>
+                </div>
+
+                <div class="col-6">
+                  <label for="time">To</label>
+                  <input type="time" th:name="endTime6" id="endTime6" class="form-control" data-disabled />
+                  <div class="invalid-feedback day6-feedback">
+                    This field is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="input_fields_wrap"></div>
+          </div>
+
+          <div class="d-grid gap-2 d-flex justify-content-around buttons">
+            <button id="btnReset" type="reset" class="btn btn-spacing btn-secondary center-block btnSubmit"
+              style="width: 100px" OnClick="btnClear_Click">
+              Reset
+            </button>
+
+            <button id="btnReg" type="submit" class="btn btn-primary">
+              Update
+            </button>
+          </div>
+          <div class="form-group row"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div th:replace="fragments/footer"></div>
+
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+  <script th:src="@{/js/AT0001_CourseRegistration.js}"></script>
+</body>
+
+</html>
