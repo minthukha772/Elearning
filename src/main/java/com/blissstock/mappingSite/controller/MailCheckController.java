@@ -88,23 +88,16 @@ public class MailCheckController {
     }
 
     //test impl
-    @RequestMapping("/sendMailWithInlineImage"
-    // , method = RequestMethod.POST
-    )
-    public String sendMailWithInline(
-    // @RequestParam("recipientName") final String recipientName,
-    // @RequestParam("recipientEmail") final String recipientEmail,
-    // @RequestParam("image") final MultipartFile image,
-    // final Locale locale
-    )
-    throws MessagingException, IOException {
-        logger.info("Requested");
-        mailServiceImpl.sendMailWithInline(
-            "kyaw", "lycuzmarki@gmail.com"
-            // , image.getName(),
-            // image.getBytes(), image.getContentType(), locale
-            );
-        return "redirect:/home";
+    // @RequestMapping("/sendMailWithInlineImage"
+    // )
+    // public String sendMailWithInline(
+    // )
+    // throws MessagingException, IOException {
+    //     logger.info("Requested");
+    //     mailServiceImpl.sendMailWithInline(
+    //         "kyaw", "lycuzmarki@gmail.com"
+    //         );
+    //     return "redirect:/home";
 
-    }
+    // }
 }

@@ -74,7 +74,7 @@ public class MailServiceImpl implements MailService {
         subject);
   }
 
-  public void sendVerificationMail(UserAccount userAccount, String appUrl) {
+  public void sendVerificationMail(UserAccount userAccount, String appUrl) throws MessagingException{
     String token = UUID.randomUUID().toString();
     userService.createToken(userAccount, token, TokenType.VERIFICATION);
 
@@ -82,10 +82,27 @@ public class MailServiceImpl implements MailService {
     String subject = "Registration Confirmation";
 
     String confirmationUrl = appUrl + "/verify_password?token=" + token;
-    String message = "Congratulations, your account has been successfully created. Please go to the following link to confirm the account";
-    String body = message + "\r\n" + confirmationUrl;
-    System.out.println(confirmationUrl.toString());
-    sendMail(subject, recipientAddress, "", "", body);
+    // String message = "Congratulations, your account has been successfully created. Please go to the following link to confirm the account";
+    // String body = message + "\r\n" + confirmationUrl;
+    // System.out.println(confirmationUrl.toString());
+    // sendMail(subject, recipientAddress, "", "", body);
+
+    //implementation
+
+    final Context ctx = new Context();
+    ctx.setVariable("confirmationUrl", confirmationUrl);
+    ctx.setVariable("Date", new Date());
+
+    final MimeMessage mimeMessage = mailSender.createMimeMessage();
+    final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
+    message.setSubject(subject);
+    message.setFrom("mappingsite0@gmail.com");
+    message.setTo(recipientAddress);
+
+    final String htmlContent = templateEngine.process("simple-mail", ctx);
+    message.setText(htmlContent, true); // true = isHtml
+
+    this.mailSender.send(mimeMessage);
   }
 
   @Override
@@ -105,51 +122,26 @@ public class MailServiceImpl implements MailService {
   }
 
   // test impl
-  public void sendMailWithInline(
-      final String recipientName, final String recipientEmail
-  // final String imageResourceName,
-  // final byte[] imageBytes, final String imageContentType, final Locale locale
-  )
-      throws MessagingException {
+  // public void sendMailWithInline(
+  //     final String recipientName, final String recipientEmail
+  // )
+  //     throws MessagingException {
 
-    // Prepare the evaluation context
-    final Context ctx = new Context();
-    ctx.setVariable("name", "Sai Horm Kham");
-    // ctx.setVariable("subscriptionDate", new Date());
-    // ctx.setVariable("hobbies", Arrays.asList("Cinema", "Sports", "Music"));
-    // ctx.setVariable("imageResourceName", imageResourceName);
-    // so that we can reference it from HTML
+  //   final Context ctx = new Context();
+  //   ctx.setVariable("name", "Sai Horm Kham");
 
-    // Prepare message using a Spring helper
-    final MimeMessage mimeMessage = mailSender.createMimeMessage();
-    final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
-    message.setSubject("Example HTML email with inline image");
-    message.setFrom("mappingsite0@gmail.com");
-    message.setTo(recipientEmail);
 
-    // Create the HTML body using Thymeleaf
-    // try {
-    //   FileReader fr = new FileReader("src\\main\\resources\\templates\\mail\\registration_complete.html");
-    //   int i;
-    //   while ((i = fr.read()) != -1)
-    //     logger.info("The character is {}", (char) i);
-    //   logger.info("Oki Toki");
-    //   fr.close();
-    // } catch (IOException e) {
-    //   logger.error("File not found!");
-    // }
+  //   // Prepare message using a Spring helper
+  //   final MimeMessage mimeMessage = mailSender.createMimeMessage();
+  //   final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
+  //   message.setSubject("Example HTML email with inline image");
+  //   message.setFrom("mappingsite0@gmail.com");
+  //   message.setTo(recipientEmail);
 
-    final String htmlContent = templateEngine.process("simple-mail", ctx);
-    message.setText(htmlContent, true); // true = isHtml
+  //   final String htmlContent = templateEngine.process("simple-mail", ctx);
+  //   message.setText(htmlContent, true); 
 
-  
-    // Add the inline image, referenced from the HTML code as
-    // "cid:${imageResourceName}"
-    // final InputStreamSource imageSource = new ByteArrayResource(imageBytes);
-    // message.addInline(imageResourceName, imageSource, imageContentType);
+  //   this.mailSender.send(mimeMessage);
 
-    // Send mail
-    this.mailSender.send(mimeMessage);
-
-  }
+  // }
 }
