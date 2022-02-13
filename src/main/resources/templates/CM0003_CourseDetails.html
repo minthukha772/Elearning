@@ -546,33 +546,39 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
                 class="media align-items-lg-center flex-column flex-lg-row p-3"
               >
                 <div
-                  class="d-flex align-items-center justify-content-between mt-1"
+                  
                 >
-                  <h5
+                <div class="row">
+                  <div class="col-lg-10 col-sm-8">
+                    <h5
                     class="font-weight-bold my-2 col-md-10"
                     style="color: #87281a"
                   >
                     Course Average Rating
-                  </h5>
+                  </h5>                    
+                  </div>
+                  <div class="col-lg-2 col-sm-4">
+                    <ul class="list-inline large">
+                      <p class="mx-4" style="color: #87281a">
+                        [[${averageFloat}]]
+                      </p>
+                      <li class="list-inline-item m-0">
+                        <i
+                          class="fa fa-star text-success"
+                          th:each="i : ${#numbers.sequence(1, average)}"
+                        ></i>
+                      </li>
+                      <li class="list-inline-item m-0 gray-star">
+                        <i
+                          class="fa fa-star text-gray"
+                          th:unless="${average} == 5"
+                          th:each="i : ${#numbers.sequence(1, 5-average)}"
+                        ></i>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
 
-                  <ul class="list-inline large">
-                    <p class="mx-4" style="color: #87281a">
-                      [[${averageFloat}]]
-                    </p>
-                    <li class="list-inline-item m-0">
-                      <i
-                        class="fa fa-star text-success"
-                        th:each="i : ${#numbers.sequence(1, average)}"
-                      ></i>
-                    </li>
-                    <li class="list-inline-item m-0 gray-star">
-                      <i
-                        class="fa fa-star text-gray"
-                        th:unless="${average} == 5"
-                        th:each="i : ${#numbers.sequence(1, 5-average)}"
-                      ></i>
-                    </li>
-                  </ul>
                 </div>
               </div>
             </li>
@@ -601,16 +607,16 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
                   th:text="${review.join.userInfo.userName}"
                 ></h5>
                 <div
-                  class="d-flex align-items-center justify-content-lg-between mt-1"
+                  
                 >
-                <!-- <div class="row"> -->
-                  <!-- <div class="col-lg-10 col-md-4"> -->
+                <div class="row">
+                  <div class="col-lg-10 col-md-8">
                     <h6
                     class="font-weight-bold my-2"
                     th:text="${review.feedback}"
                   ></h6>
-                  <!-- </div> -->
-                  <!-- <div class="col-lg-2 col-md-4"> -->
+                  </div>
+                  <div class="col-lg-2 col-md-4">
                     <ul class="list-inline small">
                       <li class="list-inline-item m-0">
                         <i
@@ -626,29 +632,9 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
                         ></i>
                       </li>
                     </ul>
-                  <!-- </div> -->
-                <!-- </div> -->
+                  </div>
+                </div>
 
-
-                  <!-- <h6
-                    class="font-weight-bold my-2 col-md-10"
-                    th:text="${review.feedback}"
-                  ></h6>
-                  <ul class="list-inline small">
-                    <li class="list-inline-item m-0">
-                      <i
-                        class="fa fa-star text-warning"
-                        th:each="i : ${#numbers.sequence(1, review.star)}"
-                      ></i>
-                    </li>
-                    <li class="list-inline-item m-0 gray-star">
-                      <i
-                        class="fa fa-star text-gray"
-                        th:unless="${review.star} == 5"
-                        th:each="i : ${#numbers.sequence(1, 5-review.star)}"
-                      ></i>
-                    </li>
-                  </ul> -->
                 </div>
               </div>
             </li>
