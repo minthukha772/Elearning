@@ -63,12 +63,11 @@ public class CourseEditController {
         if (course != null) {
             // List<CourseTime> courseTimeList = new ArrayList<>();
 
-            if (course.getClassType().equals("live")) {
+            if (course.getClassType().equals("LIVE")) {
 
                 model.addAttribute("classActiveLive", true);
 
                 List<CourseTime> courseTimeList = courseTimeRepo.searchTimeByCourseID(courseId);
-              
 
                 // fill the days from database
                 List<CourseTime> sorted_list = new ArrayList<CourseTime>();
@@ -100,7 +99,7 @@ public class CourseEditController {
                         sorted_list.set(6, courseTime);
                     }
                 }
-                
+
                 model.addAttribute("courseTimeList", sorted_list);
                 ctList = courseTimeList;
                 // System.out.println("Heehee" + ctList);
@@ -196,7 +195,7 @@ public class CourseEditController {
         CourseTime courseTime4 = new CourseTime();
         CourseTime courseTime5 = new CourseTime();
         CourseTime courseTime6 = new CourseTime();
-        if (course.getClassType().equals("live")) {
+        if (course.getClassType().equals("LIVE")) {
 
             model.addAttribute("classActiveLive", true);
 
@@ -299,7 +298,7 @@ public class CourseEditController {
         CourseInfo updateCourse = courseInfoRepo.findById(course.getCourseId()).get();
         logger.info("Get Requested {}", updateCourse);
         System.out.print("Update Info: " + updateCourse);
-        if (classType.equals("live")) {
+        if (classType.equals("LIVE")) {
             System.out.print("It works!");
             updateCourse.setMaxStu(course.getMaxStu());
             updateCourse.setStartDate(course.getStartDate());
