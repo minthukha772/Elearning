@@ -199,9 +199,9 @@ public class ProfileEditController {
 
     try {
       paymentInfoServiceImpl.deletePaymentInfo(paymentInfoId);
-      logger.warn("payment information delete success");
+      logger.info("payment information delete success ");
     } catch (UserNotFoundException e) {
-      logger.warn("payment information not found");
+      logger.info("payment information not found");
       e.printStackTrace();
     }
     System.out.println(Uid);

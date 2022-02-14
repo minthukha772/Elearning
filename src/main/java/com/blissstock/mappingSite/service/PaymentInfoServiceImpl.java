@@ -46,8 +46,9 @@ public class PaymentInfoServiceImpl implements PaymentInfoService {
     Optional<PaymentAccount> paymentAccount = paymentAccountRepository.findById(paymentId);
 
     if (paymentAccount.isPresent()) {
-      // paymentAccountRepository.deleteById(paymentId);
-      paymentAccountRepository.delete(paymentAccount.get());
+
+      paymentAccountRepository.deletePaymentInfo(paymentId);
+
     } else {
       throw new UserNotFoundException();
     }
