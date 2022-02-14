@@ -200,16 +200,26 @@
                   <th scope="col">Service</th>
                   <th scope="col">Name</th>
                   <th scope="col">Number</th>
+                  <th scope="col">Delete</th>
                 </tr>
               </thead>
               <tbody>
                 <tr class="col" th:each="paymentAccount, stats : ${paymentAccounts}">
-                  <!-- <div class="card h-100"> -->
+                  <!-- <div class="card h-100"> -->paymentAccountId
 
                   <th scope="row" th:text="${stats.index}">1</th>
                   <td th:text="${paymentAccount.bankInfo.bankName}"></td>
                   <td th:text="${paymentAccount.accountName}"></td>
                   <td th:text="${paymentAccount.accountNumber}"></td>
+
+                  <td>
+                    <form th:action="@{/delete/paymentMethod/{id}(id=${paymentAccount.paymentAccountId})}"
+                      th:method="post">
+                      <input type="hidden" th:value="${id}" id="id" name="id" hidden />
+
+                      <Button type="submit" id="submitButton" class="btn btn-danger">Delete</Button>
+                  </td>
+                  </form>
                 </tr>
               </tbody>
             </table>

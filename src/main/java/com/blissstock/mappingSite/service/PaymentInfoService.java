@@ -7,8 +7,6 @@ import com.blissstock.mappingSite.entity.PaymentAccount;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.exceptions.UserNotFoundException;
 
-
-
 public interface PaymentInfoService {
 
     public List<BankInfo> getSupportedPaymentMethods();
@@ -17,5 +15,6 @@ public interface PaymentInfoService {
 
     public void updatePayment(List<PaymentAccount> paymentAccounts, Long uid) throws UserNotFoundException;
 
+    public void deletePaymentInfo(Long paymentId) throws UserNotFoundException;
 
 }
