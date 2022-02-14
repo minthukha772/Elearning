@@ -99,7 +99,7 @@ public class MailServiceImpl implements MailService {
     message.setFrom("mappingsite0@gmail.com");
     message.setTo(recipientAddress);
 
-    final String htmlContent = templateEngine.process("simple-mail", ctx);
+    final String htmlContent = templateEngine.process("sent", ctx);
     message.setText(htmlContent, true); // true = isHtml
 
     this.mailSender.send(mimeMessage);
