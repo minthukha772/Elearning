@@ -86,12 +86,19 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
 
           <!-- For guest user -->
           <div th:if="${guest == 'GUEST'}">
-            <form
-              th:action="@{/guest/save/course-id/{courseId}(courseId = ${courseInfo.courseId})}"
-              method="post"
-            >
-              <button class="btn btn-primary" type="submit">Enroll</button>
-            </form>
+            <span th:if="${!isCourseDateValid}">
+              <div class="text-danger">
+                This course is no longer valid to enroll
+              </div>
+            </span>
+            <span th:if="${isCourseDateValid}">
+              <form
+                th:action="@{/guest/save/course-id/{courseId}(courseId = ${courseInfo.courseId})}"
+                method="post"
+              >
+                <button class="btn btn-primary" type="submit">Enroll</button>
+              </form>
+            </span>
 
             <!-- <a
               th:href="@{'/student/review-list/course_id/' + ${courseInfo.courseId}}"
@@ -101,16 +108,23 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
 
           <!-- For Student -->
           <div th:if="${student == 'STUDENT'}">
-            <a
-              th:if="${studentNotRegistered}"
-              th:href="@{/student/enroll/{courseId}/{userId}(courseId = ${courseInfo.courseId}, userId = ${userId})}"
-              ><button
-                class="btn btn-primary"
-                th:classappend="${studentRegistered == true}? 'disabled'"
+            <span th:if="${isCourseDateValid}">
+              <a
+                th:if="${studentNotRegistered}"
+                th:href="@{/student/enroll/{courseId}/{userId}(courseId = ${courseInfo.courseId}, userId = ${userId})}"
+                ><button
+                  class="btn btn-primary"
+                  th:classappend="${studentRegistered == true}? 'disabled'"
+                >
+                  Enroll
+                </button></a
               >
-                Enroll
-              </button></a
-            >
+            </span>
+            <span th:if="${!isCourseDateValid}">
+              <div class="text-danger">
+                This course is no longer valid to enroll
+              </div>
+            </span>
             <a
               th:href="@{'/student/payment-upload/course_id/' + ${courseInfo.courseId}}"
               ><button
@@ -194,6 +208,11 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
 
           <!-- Admin -->
           <div th:if="${admin == 'ADMIN'}">
+            <span th:if="${!isCourseDateValid}">
+              <div class="text-danger">
+                This course has already passed the starting date
+              </div>
+            </span>
             <a
               th:if="${!courseNotApprove}"
               th:href="@{'/admin/enrollStudent/course/' + ${courseInfo.courseId} }"
@@ -396,13 +415,17 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
         <div class="media align-items-lg-center flex-column flex-lg-row p-3">
           <div class="d-flex align-items-center justify-content-between mt-1">
             <div th:text="${'Chapters : ' + syllabusSize}"></div>
-            <div><a th:href="@{'/syllabus_details/course_id/' + ${courseInfo.courseId}}">Show detailed of all Chapter</a></div>
+            <div>
+              <a
+                th:href="@{'/syllabus_details/course_id/' + ${courseInfo.courseId}}"
+                >Show detailed of all Chapter</a
+              >
+            </div>
           </div>
         </div>
 
         <!-- accordian fix-->
         <div class="accordion" id="syllabusAccordion">
-
           <div class="accordion-item" th:if="${syllabusSize > 0}">
             <h4 class="accordion-header" id="headingOne">
               <button
@@ -423,17 +446,14 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
               aria-labelledby="headingOne"
               data-bs-parent="#syllabusAccordion"
             >
-              <div
-                class="accordion-body"
-                th:text="${firstContent}"
-              >
-                <strong>This is the first item's accordion body.</strong> It
-                is shown by default, until the collapse plugin adds the
-                appropriate classes that we use to style each element. These
-                classes control the overall appearance, as well as the showing
-                and hiding via CSS transitions. You can modify any of this
-                with custom CSS or overriding our default variables. It's also
-                worth noting that just about any HTML can go within the
+              <div class="accordion-body" th:text="${firstContent}">
+                <strong>This is the first item's accordion body.</strong> It is
+                shown by default, until the collapse plugin adds the appropriate
+                classes that we use to style each element. These classes control
+                the overall appearance, as well as the showing and hiding via
+                CSS transitions. You can modify any of this with custom CSS or
+                overriding our default variables. It's also worth noting that
+                just about any HTML can go within the
                 <code>.accordion-body</code>, though the transition does limit
                 overflow.
               </div>
@@ -545,40 +565,37 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
               <div
                 class="media align-items-lg-center flex-column flex-lg-row p-3"
               >
-                <div
-                  
-                >
-                <div class="row">
-                  <div class="col-lg-10 col-sm-8">
-                    <h5
-                    class="font-weight-bold my-2 col-md-10"
-                    style="color: #87281a"
-                  >
-                    Course Average Rating
-                  </h5>                    
+                <div>
+                  <div class="row">
+                    <div class="col-lg-10 col-sm-8">
+                      <h5
+                        class="font-weight-bold my-2 col-md-10"
+                        style="color: #87281a"
+                      >
+                        Course Average Rating
+                      </h5>
+                    </div>
+                    <div class="col-lg-2 col-sm-4">
+                      <ul class="list-inline large">
+                        <p class="mx-4" style="color: #87281a">
+                          [[${averageFloat}]]
+                        </p>
+                        <li class="list-inline-item m-0">
+                          <i
+                            class="fa fa-star text-success"
+                            th:each="i : ${#numbers.sequence(1, average)}"
+                          ></i>
+                        </li>
+                        <li class="list-inline-item m-0 gray-star">
+                          <i
+                            class="fa fa-star text-gray"
+                            th:unless="${average} == 5"
+                            th:each="i : ${#numbers.sequence(1, 5-average)}"
+                          ></i>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
-                  <div class="col-lg-2 col-sm-4">
-                    <ul class="list-inline large">
-                      <p class="mx-4" style="color: #87281a">
-                        [[${averageFloat}]]
-                      </p>
-                      <li class="list-inline-item m-0">
-                        <i
-                          class="fa fa-star text-success"
-                          th:each="i : ${#numbers.sequence(1, average)}"
-                        ></i>
-                      </li>
-                      <li class="list-inline-item m-0 gray-star">
-                        <i
-                          class="fa fa-star text-gray"
-                          th:unless="${average} == 5"
-                          th:each="i : ${#numbers.sequence(1, 5-average)}"
-                        ></i>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-
                 </div>
               </div>
             </li>
@@ -606,35 +623,32 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
                   class="mt-0 font-weight-bold mb-2"
                   th:text="${review.join.userInfo.userName}"
                 ></h5>
-                <div
-                  
-                >
-                <div class="row">
-                  <div class="col-lg-10 col-md-8">
-                    <h6
-                    class="font-weight-bold my-2"
-                    th:text="${review.feedback}"
-                  ></h6>
+                <div>
+                  <div class="row">
+                    <div class="col-lg-10 col-md-8">
+                      <h6
+                        class="font-weight-bold my-2"
+                        th:text="${review.feedback}"
+                      ></h6>
+                    </div>
+                    <div class="col-lg-2 col-md-4">
+                      <ul class="list-inline small">
+                        <li class="list-inline-item m-0">
+                          <i
+                            class="fa fa-star text-warning"
+                            th:each="i : ${#numbers.sequence(1, review.star)}"
+                          ></i>
+                        </li>
+                        <li class="list-inline-item m-0 gray-star">
+                          <i
+                            class="fa fa-star text-gray"
+                            th:unless="${review.star} == 5"
+                            th:each="i : ${#numbers.sequence(1, 5-review.star)}"
+                          ></i>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
-                  <div class="col-lg-2 col-md-4">
-                    <ul class="list-inline small">
-                      <li class="list-inline-item m-0">
-                        <i
-                          class="fa fa-star text-warning"
-                          th:each="i : ${#numbers.sequence(1, review.star)}"
-                        ></i>
-                      </li>
-                      <li class="list-inline-item m-0 gray-star">
-                        <i
-                          class="fa fa-star text-gray"
-                          th:unless="${review.star} == 5"
-                          th:each="i : ${#numbers.sequence(1, 5-review.star)}"
-                        ></i>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-
                 </div>
               </div>
             </li>
