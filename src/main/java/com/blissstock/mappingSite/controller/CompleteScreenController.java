@@ -93,6 +93,7 @@ public class CompleteScreenController {
         // breadcrumbList.add("Complete");
         // model.addAttribute("breadcrumbList", breadcrumbList);
         List<BreadcrumbLists> breadcrumbList = new ArrayList<>();
+        model.addAttribute("backButton", "/admin/student-list");
         breadcrumbList.add(new BreadcrumbLists("Top", "/admin/top/", ""));
         breadcrumbList.add(new BreadcrumbLists("Student List", "/admin/student-list", ""));
         breadcrumbList.add(new BreadcrumbLists("Email", "/check_email/register/student", ""));
@@ -148,11 +149,13 @@ public class CompleteScreenController {
             model.addAttribute("nav_type", nav_type);
 
             List<BreadcrumbLists> breadcrumbList = new ArrayList<>();
+            model.addAttribute("backButton", "/student/my-course");
             breadcrumbList.add(new BreadcrumbLists("My Course", "/student/my-course", ""));
             breadcrumbList.add(new BreadcrumbLists("Course Details", "/student/course-details/", ""));
             breadcrumbList.add(new BreadcrumbLists("Review", "", "back2"));
             breadcrumbList.add(new BreadcrumbLists("Confirm", "", "back"));
             model.addAttribute("Complete", "Complete");
+
             model.addAttribute("breadcrumbList", breadcrumbList);
         } else {
 
@@ -185,6 +188,7 @@ public class CompleteScreenController {
         // breadcrumbList.add("Complete");
         // model.addAttribute("breadcrumbList", breadcrumbList);
         List<BreadcrumbLists> breadcrumbList = new ArrayList<>();
+        model.addAttribute("backButton", "/guest/explore");
         breadcrumbList.add(new BreadcrumbLists("Top", "/admin/top/", ""));
         breadcrumbList.add(new BreadcrumbLists("Courses", "/guest/explore", ""));
         breadcrumbList.add(new BreadcrumbLists("Course Details", "/guest/course-details/", ""));
@@ -210,6 +214,7 @@ public class CompleteScreenController {
         // breadcrumbList.add("Complete");
         // model.addAttribute("breadcrumbList", breadcrumbList);
         List<BreadcrumbLists> breadcrumbList = new ArrayList<>();
+        model.addAttribute("backButton", "/student/my-course");
         breadcrumbList.add(new BreadcrumbLists("My Course", "/student/my-course", ""));
         breadcrumbList.add(new BreadcrumbLists("Course Details", "/student/course-details/", ""));
         breadcrumbList.add(new BreadcrumbLists("Payment", "", "back2"));
@@ -239,6 +244,7 @@ public class CompleteScreenController {
             model.addAttribute("nav_type", nav_type);
 
             List<BreadcrumbLists> breadcrumbList = new ArrayList<>();
+            model.addAttribute("backButton", "/student/my-course");
             breadcrumbList.add(new BreadcrumbLists("My Course", "/student/my-course", ""));
             breadcrumbList.add(new BreadcrumbLists("Course Details", "/student/course-details/", ""));
             breadcrumbList.add(new BreadcrumbLists("Absent", "", "back2"));
@@ -250,6 +256,7 @@ public class CompleteScreenController {
             model.addAttribute("nav_type", nav_type);
 
             List<BreadcrumbLists> breadcrumbList = new ArrayList<>();
+            model.addAttribute("backButton", "/teacher/my-course");
             breadcrumbList.add(new BreadcrumbLists("My Course", "/teacher/my-course", ""));
             breadcrumbList.add(new BreadcrumbLists("Course Details", "/teacher/course-details/", ""));
             breadcrumbList.add(new BreadcrumbLists("Absent", "", "back2"));
@@ -262,6 +269,7 @@ public class CompleteScreenController {
             model.addAttribute("nav_type", nav_type);
 
             List<BreadcrumbLists> breadcrumbList = new ArrayList<>();
+            model.addAttribute("backButton", "/admin/top/");
             breadcrumbList.add(new BreadcrumbLists("Top", "/admin/top/", ""));
             breadcrumbList.add(new BreadcrumbLists("User List", "/admin/user-list/", ""));
             breadcrumbList.add(new BreadcrumbLists("Absent", "", "back2"));
@@ -280,7 +288,9 @@ public class CompleteScreenController {
         model.addAttribute("header3", header3);
         model.addAttribute("header5", header5);
         model.addAttribute("paragraph", paragraph);
+        model.addAttribute("backButton", "/teacher/my-course");
         List<BreadcrumbLists> breadcrumbList = new ArrayList<>();
+
         breadcrumbList.add(new BreadcrumbLists("My Course", "/teacher/my-course", ""));
         breadcrumbList.add(new BreadcrumbLists("Course Registration", "", "back2"));
         breadcrumbList.add(new BreadcrumbLists("Confirmation", "", "back"));
@@ -300,6 +310,7 @@ public class CompleteScreenController {
         model.addAttribute("header3", header3);
         model.addAttribute("header5", header5);
         model.addAttribute("paragraph", paragraph);
+        model.addAttribute("backButton", "/admin/top/");
         List<BreadcrumbLists> breadcrumbList = new ArrayList<>();
         breadcrumbList.add(new BreadcrumbLists("Top", "/admin/top/", ""));
         breadcrumbList.add(new BreadcrumbLists("Teacher List", "/admin/teacher-list", ""));
@@ -321,7 +332,7 @@ public class CompleteScreenController {
         model.addAttribute("header3", header3);
         model.addAttribute("header5", header5);
         model.addAttribute("paragraph", paragraph);
-        model.addAttribute("backButton", "/guest/explore");
+        model.addAttribute("backButton", "/teacher/my-course");
         List<BreadcrumbLists> breadcrumbList = new ArrayList<>();
         breadcrumbList.add(new BreadcrumbLists("My Course", "/teacher/my-course", ""));
         breadcrumbList.add(new BreadcrumbLists("Course Edit", "", "back2"));
