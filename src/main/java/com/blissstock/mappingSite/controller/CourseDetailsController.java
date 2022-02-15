@@ -1,5 +1,12 @@
 package com.blissstock.mappingSite.controller;
 
+import java.sql.Date;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -86,69 +93,77 @@ public class CourseDetailsController {
         CourseInfo courseInfo = courseInfoRepository.findById(courseId).get();
         model.addAttribute("courseInfo", courseInfo);
 
-        //isCourseApprove
+        // isCourseApprove
         boolean courseNotApprove = courseInfo.getIsCourseApproved() == false;
         model.addAttribute("courseNotApprove", courseNotApprove);
         logger.info("The requested course approve boolean is {} ", courseNotApprove);
 
-        //Get trname and course name
+        // compare course start date to find course can be enrolled
+
+        LocalDateTime now = LocalDateTime.now();
+        Instant currentDate = now.toInstant(ZoneOffset.UTC);
+        Instant startDate = courseInfo.getStartDate().toInstant();
+
+        logger.info("Is current date is before start date {}", currentDate.isBefore(startDate));
+        model.addAttribute("isCourseDateValid", currentDate.isBefore(startDate));
+        // Get trname and course name
         String trName = courseInfo.getUserInfo().getUserName();
         model.addAttribute("trName", trName);
-        String courseName=courseInfo.getCourseName();
+        String courseName = courseInfo.getCourseName();
         model.addAttribute("courseName", courseName);
 
-        //Get joinlist of the course
-        List<JoinCourseUser> joinList=courseInfo.getJoin();
-        List<Review> reviewList=new ArrayList<Review>();
-        for(JoinCourseUser join:joinList){
-            reviewList.addAll(join.getReview());  
+        // Get joinlist of the course
+        List<JoinCourseUser> joinList = courseInfo.getJoin();
+        List<Review> reviewList = new ArrayList<Review>();
+        for (JoinCourseUser join : joinList) {
+            reviewList.addAll(join.getReview());
         }
 
-        //Get reveiwlist 
-        List<Review> courseReviewList= new ArrayList<Review>(); 
-        for (Review courseReview:reviewList){
-            if(courseReview.getReviewType()==0){
+        // Get reveiwlist
+        List<Review> courseReviewList = new ArrayList<Review>();
+        for (Review courseReview : reviewList) {
+            if (courseReview.getReviewType() == 0) {
                 courseReviewList.add(courseReview);
-                model.addAttribute("courseReviewList", courseReviewList); 
+                model.addAttribute("courseReviewList", courseReviewList);
             }
         }
 
-        //first 3 reviews
-        if(courseReviewList.size() >= 3){
+        // first 3 reviews
+        if (courseReviewList.size() >= 3) {
             List<Review> threeCourseReviewList = new ArrayList<>();
             threeCourseReviewList.add(courseReviewList.get(0));
             threeCourseReviewList.add(courseReviewList.get(1));
             threeCourseReviewList.add(courseReviewList.get(2));
             model.addAttribute("courseReviewList", threeCourseReviewList);
-        }else{
+        } else {
             model.addAttribute("courseReviewList", courseReviewList);
-        } 
+        }
 
         logger.info("The review list is {}", courseReviewList.size());
 
-        //reviewlist empty or not
+        // reviewlist empty or not
         boolean courseReviewListEmpty = courseReviewList.isEmpty();
         boolean courseReveiwListNotEmpty = !courseReviewListEmpty;
         logger.info("The boolean of courseReviewListEmpty is {}", courseReviewListEmpty);
         model.addAttribute("courseReviewListEmpty", courseReviewListEmpty);
         model.addAttribute("courseReviewListNotEmpty", courseReveiwListNotEmpty);
 
-        //average rating
+        // average rating
         int total_stars = 0;
         int numCourseReviewList = courseReviewList.size();
-        for(Review review : courseReviewList){
+        for (Review review : courseReviewList) {
             total_stars += review.getStar();
         }
         int average = 0;
         double averageDouble = 0;
-        try{
-            average = (int)total_stars/numCourseReviewList;
-        }catch(ArithmeticException e){
+        try {
+            average = (int) total_stars / numCourseReviewList;
+        } catch (ArithmeticException e) {
             average = 0;
         }
-        try{
-            averageDouble = (double)total_stars/numCourseReviewList;
-        }catch(ArithmeticException e){
+        try {
+            averageDouble = (double) total_stars / numCourseReviewList;
+        } catch (ArithmeticException e) {
             averageDouble = 0;
         }
         String averageFloat = String.format("%.2f", averageDouble);
@@ -169,8 +184,8 @@ public class CourseDetailsController {
         // model.addAttribute("syllabusList", syllabusList);
         model.addAttribute("syllabusSize", syllabusSize);
 
-        //first syllabus
-        if(syllabusSize > 0){
+        // first syllabus
+        if (syllabusSize > 0) {
             Syllabus firstSyllabus = syllabusList.get(0);
             String firstContent = firstSyllabus.getContent().get(0).getContent();
             model.addAttribute("firstSyllabus", firstSyllabus);
@@ -180,12 +195,11 @@ public class CourseDetailsController {
 
         model.addAttribute("syllabusList", syllabusList);
 
-
         // Get the remaining number of students who can join course
         Integer maxStudent = courseInfo.getMaxStu();
         List<UserInfo> studentList = new ArrayList<>();
         for (JoinCourseUser joinCourseUser : courseInfo.getJoin()) {
-            if(joinCourseUser.getUserInfo().getUserAccount().getRole().equals(UserRole.STUDENT.getValue()))
+            if (joinCourseUser.getUserInfo().getUserAccount().getRole().equals(UserRole.STUDENT.getValue()))
                 studentList.add(joinCourseUser.getUserInfo());
         }
         Integer stuListSize = studentList.size();
@@ -214,7 +228,7 @@ public class CourseDetailsController {
 
         } else if (userSessionService.getRole() == UserRole.STUDENT) {
             userId = userSessionService.getUserAccount().getAccountId();
-            UserInfo user=userRepository.findById(userId).orElse(null);
+            UserInfo user = userRepository.findById(userId).orElse(null);
             boolean studentRegistered = true;
 
             List<JoinCourseUser> join = joinCourseService.getJoinCourseUser(userId, courseId);
@@ -226,17 +240,17 @@ public class CourseDetailsController {
             model.addAttribute("studentRegistered", studentRegistered);
             model.addAttribute("student", "STUDENT");
             model.addAttribute("userId", userId);
-     //Get stuReviews
-            List<JoinCourseUser> joinUserList=user.getJoin();
-            List<Review> stuReviews=new ArrayList<Review>(); 
-            for(JoinCourseUser joinlist:joinUserList){
-                if(joinlist.getCourseInfo().getCourseId().equals(courseId)){
-                stuReviews.addAll(joinlist.getReview());
+            // Get stuReviews
+            List<JoinCourseUser> joinUserList = user.getJoin();
+            List<Review> stuReviews = new ArrayList<Review>();
+            for (JoinCourseUser joinlist : joinUserList) {
+                if (joinlist.getCourseInfo().getCourseId().equals(courseId)) {
+                    stuReviews.addAll(joinlist.getReview());
                 }
             }
-            List<Review> studentReviewList= new ArrayList<Review>();
-            for(Review studentReview:stuReviews) {
-                if(studentReview.getStar()==0){
+            List<Review> studentReviewList = new ArrayList<Review>();
+            for (Review studentReview : stuReviews) {
+                if (studentReview.getStar() == 0) {
                     studentReviewList.add(studentReview);
                     model.addAttribute("stuReviews", studentReviewList);
                 }
@@ -254,10 +268,6 @@ public class CourseDetailsController {
         } else if (userSessionService.getRole() == UserRole.GUEST_USER) {
             model.addAttribute("guest", "GUEST");
         }
-
-        
-
-        
 
         return "CM0003_CourseDetails";
     }
@@ -352,7 +362,7 @@ public class CourseDetailsController {
 
     @RequestMapping("/student/enroll/{courseId}/{userId}")
 
-    public String enrollStudent(@PathVariable Long courseId, @PathVariable Long userId, Model model){
+    public String enrollStudent(@PathVariable Long courseId, @PathVariable Long userId, Model model) {
         logger.info("Request");
 
         JoinCourseDTO joinCourseDTO = new JoinCourseDTO();
@@ -360,18 +370,17 @@ public class CourseDetailsController {
         joinCourseDTO.setCourseId(courseId);
         try {
 
-            if(joinCourseService.enrollStudent(joinCourseDTO) == null){
+            if (joinCourseService.enrollStudent(joinCourseDTO) == null) {
                 logger.info("null user");
-                return "redirect:/student/course-details/" + courseId+"/?error";
+                return "redirect:/student/course-details/" + courseId + "/?error";
             }
-        }catch(NoSuchElementException e){
+        } catch (NoSuchElementException e) {
             e.printStackTrace();
-            return "redirect:/student/course-details/" + courseId+"/?error";
-        }
-        catch (Exception e) {
+            return "redirect:/student/course-details/" + courseId + "/?error";
+        } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-            return "redirect:/student/course-details/" + courseId+"/?error";
+            return "redirect:/student/course-details/" + courseId + "/?error";
         }
 
         return "redirect:/student/course-details/" + courseId;
