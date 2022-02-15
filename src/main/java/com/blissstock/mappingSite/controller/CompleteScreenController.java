@@ -321,6 +321,7 @@ public class CompleteScreenController {
         model.addAttribute("header3", header3);
         model.addAttribute("header5", header5);
         model.addAttribute("paragraph", paragraph);
+        model.addAttribute("backButton", "/guest/explore");
         List<BreadcrumbLists> breadcrumbList = new ArrayList<>();
         breadcrumbList.add(new BreadcrumbLists("My Course", "/teacher/my-course", ""));
         breadcrumbList.add(new BreadcrumbLists("Course Edit", "", "back2"));
@@ -341,6 +342,7 @@ public class CompleteScreenController {
         model.addAttribute("header3", header3);
         model.addAttribute("header5", header5);
         model.addAttribute("paragraph", paragraph);
+        model.addAttribute("backButton", "/guest/explore");
         List<BreadcrumbLists> breadcrumbList = new ArrayList<>();
         breadcrumbList.add(new BreadcrumbLists("Top", "/admin/top/", ""));
         breadcrumbList.add(new BreadcrumbLists("Teacher List", "/admin/teacher-list", ""));
