@@ -4,6 +4,9 @@ import com.blissstock.mappingSite.dto.TeacherRegisterDTO;
 import com.blissstock.mappingSite.dto.UserRegisterDTO;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.enums.UserRole;
+import com.blissstock.mappingSite.exceptions.UserNotFoundException;
+import com.blissstock.mappingSite.repository.PaymentRepository;
+import com.blissstock.mappingSite.service.PaymentInfoServiceImpl;
 import com.blissstock.mappingSite.service.UserService;
 import com.blissstock.mappingSite.service.UserSessionService;
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,7 +30,8 @@ public class ProfileEditController {
 
   @Autowired
   UserSessionService userSessionService;
-
+  @Autowired
+  PaymentInfoServiceImpl paymentInfoServiceImpl;
   @Autowired
   UserService userService;
 
@@ -186,5 +191,25 @@ public class ProfileEditController {
       throw new RuntimeException("user authetication fail");
     }
     return uid;
+  }
+
+  @PostMapping(path = "/delete/paymentMethod/{paymentInfoId}")
+  private String DeleteTeacherPaymentInfo(@PathVariable(name = "paymentInfoId", required = false) Long paymentInfoId,
+      @ModelAttribute("id") Long Uid) {
+
+    try {
+      paymentInfoServiceImpl.deletePaymentInfo(paymentInfoId);
+      logger.info("payment information delete success ");
+    } catch (UserNotFoundException e) {
+      logger.info("payment information not found");
+      e.printStackTrace();
+    }
+    System.out.println(Uid);
+    if (userSessionService.getUserAccount().getRole().equals(UserRole.ADMIN.getValue())
+        ||
+        userSessionService.getUserAccount().getRole().equals(UserRole.SUPER_ADMIN.getValue())) {
+      return "redirect:/admin/browse/profile/" + Uid;
+    }
+    return "redirect:/teacher/profile/";
   }
 }

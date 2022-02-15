@@ -63,18 +63,17 @@ public class CourseEditController {
         if (course != null) {
             // List<CourseTime> courseTimeList = new ArrayList<>();
 
-            if (course.getClassType().equals("live")) {
+            if (course.getClassType().equals("LIVE")) {
 
                 model.addAttribute("classActiveLive", true);
 
                 List<CourseTime> courseTimeList = courseTimeRepo.searchTimeByCourseID(courseId);
-                logger.warn("course times are :{}", courseTimeList.toString());
 
                 // fill the days from database
                 List<CourseTime> sorted_list = new ArrayList<CourseTime>();
-                for(int i=0;i<=6;i++){
-                   
-                    sorted_list.add(i, new  CourseTime());
+                for (int i = 0; i <= 6; i++) {
+
+                    sorted_list.add(i, new CourseTime());
                 }
 
                 for (CourseTime courseTime : courseTimeList) {
@@ -86,24 +85,32 @@ public class CourseEditController {
                     }
                     if (courseTime.getCourseDays().equals(Days_of_the_week.Wednesday.getValue())) {
                         sorted_list.set(2, courseTime);
-                    }  if (courseTime.getCourseDays().equals(Days_of_the_week.Thursday.getValue())) {
+                    }
+                    if (courseTime.getCourseDays().equals(Days_of_the_week.Thursday.getValue())) {
                         sorted_list.set(3, courseTime);
-                    }  if (courseTime.getCourseDays().equals(Days_of_the_week.Friday.getValue())) {
+                    }
+                    if (courseTime.getCourseDays().equals(Days_of_the_week.Friday.getValue())) {
                         sorted_list.set(4, courseTime);
-                    }  if (courseTime.getCourseDays().equals(Days_of_the_week.Saturday.getValue())) {
+                    }
+                    if (courseTime.getCourseDays().equals(Days_of_the_week.Saturday.getValue())) {
                         sorted_list.set(5, courseTime);
-                    }  if (courseTime.getCourseDays().equals(Days_of_the_week.Sunday.getValue())) {
+                    }
+                    if (courseTime.getCourseDays().equals(Days_of_the_week.Sunday.getValue())) {
                         sorted_list.set(6, courseTime);
-                    }  
-                }   
-for (CourseTime courseTime : sorted_list) {
-    System.out.println(courseTime.toString());
-}
+                    }
+                }
+
                 model.addAttribute("courseTimeList", sorted_list);
                 ctList = courseTimeList;
                 // System.out.println("Heehee" + ctList);
 
             } else {
+                List<CourseTime> sorted_list = new ArrayList<CourseTime>();
+                for (int i = 0; i <= 6; i++) {
+
+                    sorted_list.add(i, new CourseTime());
+                }
+                model.addAttribute("courseTimeList", sorted_list);
                 model.addAttribute("classActiveVideo", true);
             }
 
@@ -188,7 +195,7 @@ for (CourseTime courseTime : sorted_list) {
         CourseTime courseTime4 = new CourseTime();
         CourseTime courseTime5 = new CourseTime();
         CourseTime courseTime6 = new CourseTime();
-        if (course.getClassType().equals("live")) {
+        if (course.getClassType().equals("LIVE")) {
 
             model.addAttribute("classActiveLive", true);
 
@@ -291,7 +298,7 @@ for (CourseTime courseTime : sorted_list) {
         CourseInfo updateCourse = courseInfoRepo.findById(course.getCourseId()).get();
         logger.info("Get Requested {}", updateCourse);
         System.out.print("Update Info: " + updateCourse);
-        if (classType.equals("live")) {
+        if (classType.equals("LIVE")) {
             System.out.print("It works!");
             updateCourse.setMaxStu(course.getMaxStu());
             updateCourse.setStartDate(course.getStartDate());
@@ -319,7 +326,7 @@ for (CourseTime courseTime : sorted_list) {
             }
         }
 
-        updateCourse.setClassType(course.getClassType());
+        updateCourse.setClassType(course.getClassType().toUpperCase());
         updateCourse.setCourseName(course.getCourseName());
         updateCourse.setCategory(course.getCategory());
         updateCourse.setLevel(course.getLevel());

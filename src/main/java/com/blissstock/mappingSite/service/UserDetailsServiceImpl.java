@@ -6,6 +6,7 @@ import java.util.Set;
 import com.blissstock.mappingSite.entity.CustomUser;
 import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.enums.AccountStatus;
+import com.blissstock.mappingSite.exceptions.NonMailVerifiedUserException;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole()));
     if(user.getAccountStatus().equals(AccountStatus.SUSPENDED.getValue())){
       throw new DisabledException("Account id "+user.getAccountId()+" is Suspended");
+    }
+    if(!user.isMailVerified()){
+      throw new NonMailVerifiedUserException("Account id "+user.getAccountId()+" has not verified the email yet!");
     }
     return new CustomUser(
       user.getAccountId(),
