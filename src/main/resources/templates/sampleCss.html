@@ -210,8 +210,9 @@
                               bgcolor="#1a82e2"
                               style="border-radius: 6px"
                             >
+                            <!-- url -->
                               <a
-                                th:href="@{__${confirmationUrl}__}"
+                                th:href="@{'localhost:8080/verify_password'(token=${token})}"
                                 target="_blank"
                                 style="
                                   display: inline-block;
@@ -251,6 +252,7 @@
                     If that doesn't work, copy and paste the following link in
                     your browser:
                   </p>
+                  <!-- url -->
                   <p style="margin: 0">
                     <a th:href="@{__${confirmationUrl}__}" target="_blank" th:text="${confirmationUrl}"
                       >https://same-link-as-button.url/xxx-xxx-xxxx</a
