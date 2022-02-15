@@ -92,6 +92,7 @@ public class MailServiceImpl implements MailService {
     final Context ctx = new Context();
     ctx.setVariable("confirmationUrl", confirmationUrl);
     ctx.setVariable("Date", new Date());
+    ctx.setVariable("token", token);
 
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
@@ -99,7 +100,7 @@ public class MailServiceImpl implements MailService {
     message.setFrom("mappingsite0@gmail.com");
     message.setTo(recipientAddress);
 
-    final String htmlContent = templateEngine.process("sent", ctx);
+    final String htmlContent = templateEngine.process("sampleCss", ctx);
     message.setText(htmlContent, true); // true = isHtml
 
     this.mailSender.send(mimeMessage);
