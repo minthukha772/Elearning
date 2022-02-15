@@ -1,5 +1,7 @@
 package com.blissstock.mappingSite.service;
 
+import javax.mail.MessagingException;
+
 import com.blissstock.mappingSite.entity.UserAccount;
 
 
@@ -12,6 +14,6 @@ public interface MailService {
     String body
   );
 
-  public void sendVerificationMail(UserAccount userAccount, String appUrl);
+  public void sendVerificationMail(UserAccount userAccount, String appUrl) throws MessagingException;
   public void sendResetPasswordMail(UserAccount userAccount, String appUrl);
 }
