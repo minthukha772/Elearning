@@ -21,6 +21,7 @@ import com.blissstock.mappingSite.entity.Review;
 import com.blissstock.mappingSite.entity.Syllabus;
 import com.blissstock.mappingSite.entity.Test;
 import com.blissstock.mappingSite.entity.UserInfo;
+import com.blissstock.mappingSite.enums.ClassType;
 import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.exceptions.CourseNotFoundException;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
@@ -100,12 +101,6 @@ public class CourseDetailsController {
 
         // compare course start date to find course can be enrolled
 
-        LocalDateTime now = LocalDateTime.now();
-        Instant currentDate = now.toInstant(ZoneOffset.UTC);
-        Instant startDate = courseInfo.getStartDate().toInstant();
-
-        logger.info("Is current date is before start date {}", currentDate.isBefore(startDate));
-        model.addAttribute("isCourseDateValid", currentDate.isBefore(startDate));
         // Get trname and course name
         String trName = courseInfo.getUserInfo().getUserName();
         model.addAttribute("trName", trName);
@@ -173,6 +168,15 @@ public class CourseDetailsController {
         String classType = courseInfo.getClassType();
         boolean isLiveClass = classType.equals("LIVE");
         model.addAttribute("isLiveClass", isLiveClass);
+
+        if (classType.equals(ClassType.LIVE.getValue())) {
+            LocalDateTime now = LocalDateTime.now();
+            Instant currentDate = now.toInstant(ZoneOffset.UTC);
+            Instant startDate = courseInfo.getStartDate().toInstant();
+
+            logger.info("Is current date is before start date {}", currentDate.isBefore(startDate));
+            model.addAttribute("isCourseDateValid", currentDate.isBefore(startDate));
+        }
 
         // Get Time segments for course
         List<CourseTime> courseTimeList = courseInfo.getCourseTime();

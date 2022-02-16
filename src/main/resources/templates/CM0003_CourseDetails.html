@@ -86,12 +86,22 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
 
           <!-- For guest user -->
           <div th:if="${guest == 'GUEST'}">
-            <span th:if="${!isCourseDateValid}">
-              <div class="text-danger">
-                This course is no longer valid to enroll
-              </div>
+            <span th:if="${isCourseDateValid}!=null">
+              <span th:if="${!isCourseDateValid}">
+                <div class="text-danger">
+                  This course is no longer valid to enroll
+                </div>
+              </span>
+              <span th:if="${isCourseDateValid}">
+                <form
+                  th:action="@{/guest/save/course-id/{courseId}(courseId = ${courseInfo.courseId})}"
+                  method="post"
+                >
+                  <button class="btn btn-primary" type="submit">Enroll</button>
+                </form>
+              </span>
             </span>
-            <span th:if="${isCourseDateValid}">
+            <span th:if="${isCourseDateValid}==null">
               <form
                 th:action="@{/guest/save/course-id/{courseId}(courseId = ${courseInfo.courseId})}"
                 method="post"
@@ -108,22 +118,33 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
 
           <!-- For Student -->
           <div th:if="${student == 'STUDENT'}">
-            <span th:if="${isCourseDateValid}">
-              <a
-                th:if="${studentNotRegistered}"
-                th:href="@{/student/enroll/{courseId}/{userId}(courseId = ${courseInfo.courseId}, userId = ${userId})}"
-                ><button
-                  class="btn btn-primary"
-                  th:classappend="${studentRegistered == true}? 'disabled'"
+            <span th:if="${isCourseDateValid}!=null">
+              <span th:if="${isCourseDateValid}">
+                <a
+                  th:if="${studentNotRegistered}"
+                  th:href="@{/student/enroll/{courseId}/{userId}(courseId = ${courseInfo.courseId}, userId = ${userId})}"
+                  ><button
+                    class="btn btn-primary"
+                    th:classappend="${studentRegistered == true}? 'disabled'"
+                  >
+                    Enroll
+                  </button></a
                 >
-                  Enroll
-                </button></a
-              >
+              </span>
+
+              <span th:if="${!isCourseDateValid}">
+                <div class="text-danger">
+                  This course is no longer valid to enroll
+                </div>
+              </span>
             </span>
-            <span th:if="${!isCourseDateValid}">
-              <div class="text-danger">
-                This course is no longer valid to enroll
-              </div>
+            <span th:if="${isCourseDateValid}==null">
+              <form
+                th:action="@{/guest/save/course-id/{courseId}(courseId = ${courseInfo.courseId})}"
+                method="post"
+              >
+                <button class="btn btn-primary" type="submit">Enroll</button>
+              </form>
             </span>
             <a
               th:href="@{'/student/payment-upload/course_id/' + ${courseInfo.courseId}}"
