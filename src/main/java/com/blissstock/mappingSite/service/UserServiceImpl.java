@@ -71,6 +71,8 @@ public class UserServiceImpl implements UserService {
       userAccount.setAccountStatus(AccountStatus.REGISTERED.getValue());
     }else if(userAccount.getRole().equals(UserRole.TEACHER.getValue())){
       userAccount.setAccountStatus(AccountStatus.REQUESTED.getValue());
+    }else if(userAccount.getRole().equals(UserRole.ADMIN.getValue())){
+      userAccount.setAccountStatus(AccountStatus.REGISTERED.getValue());
     }
 
     if (this.isUserAccountPresent(userAccount.getMail())) {
