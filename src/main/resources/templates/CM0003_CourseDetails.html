@@ -229,11 +229,13 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
 
           <!-- Admin -->
           <div th:if="${admin == 'ADMIN'}">
-            <span th:if="${!isCourseDateValid}">
-              <div class="text-danger">
-                This course has already passed the starting date
-              </div>
-            </span>
+            <span th:if="${isCourseDateValid}!=null">
+              <span th:if="${!isCourseDateValid}">
+                <div class="text-danger">
+                  This course has already passed the starting date
+                </div>
+              </span></span
+            >
             <a
               th:if="${!courseNotApprove}"
               th:href="@{'/admin/enrollStudent/course/' + ${courseInfo.courseId} }"
