@@ -126,6 +126,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
               </div>
             </span>
             <a
+            th:if="${!paymentComplete}"
               th:href="@{'/student/payment-upload/course_id/' + ${courseInfo.courseId}}"
               ><button
                 class="btn btn-primary"

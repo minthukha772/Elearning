@@ -21,6 +21,7 @@ import com.blissstock.mappingSite.entity.Review;
 import com.blissstock.mappingSite.entity.Syllabus;
 import com.blissstock.mappingSite.entity.Test;
 import com.blissstock.mappingSite.entity.UserInfo;
+import com.blissstock.mappingSite.enums.PaymentStatus;
 import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.exceptions.CourseNotFoundException;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
@@ -234,6 +235,25 @@ public class CourseDetailsController {
             List<JoinCourseUser> join = joinCourseService.getJoinCourseUser(userId, courseId);
             studentRegistered = join != null && !join.isEmpty();
 
+            //payment status
+            boolean paymentComplete = false;
+            for (JoinCourseUser jcu : join) {
+                //logging
+                logger.info("the uid of joinlist is {} and session id is {}",jcu.getUserInfo().getUid(), userId);
+                logger.info("The status of joinlist of outter scope is {}",jcu.getPaymentReceive().getPaymentStatus());
+
+                //comparing two long values reference safe
+                if(String.valueOf(jcu.getUserInfo().getUid()).equals(String.valueOf(userId))){
+                    logger.info("The status of joinlist of scope id compare is {}",jcu.getPaymentReceive().getPaymentStatus());
+                    if(jcu.getPaymentReceive().getPaymentStatus().equals(PaymentStatus.COMPLETE.getValue())){
+                        logger.info("The status of joinlist of scope status compare is {}",jcu.getPaymentReceive().getPaymentStatus());
+                        paymentComplete = true;                            
+                    } 
+                }
+            }
+            model.addAttribute("paymentComplete", paymentComplete);
+            logger.info("the boolean value for paymentComplete is {}", paymentComplete);
+            
             logger.info("The boolean value for student registered is {} ", studentRegistered);
             boolean studentNotRegistered = !studentRegistered;
             model.addAttribute("studentNotRegistered", studentNotRegistered);
