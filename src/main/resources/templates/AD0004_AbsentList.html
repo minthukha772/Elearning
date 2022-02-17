@@ -58,7 +58,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
         t.search($("#mySearchText").val()).draw();
       });
 
-      $("#account_status").on("change", function () {
+      $("#user_role").on("change", function () {
         t.search(this.value).draw();
       });
      
@@ -112,6 +112,21 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
                         Search
                       </button>
                     </div>
+                  </div>
+
+                  <div class="input-group-prepend mb-3" style="width: 135px">
+                    <label class="text-muted">User Role</label>
+                    <select
+                      class="form-select"
+                      aria-label=".form-select-sm example"
+                      id="user_role"
+                      style="width: 100%"
+                    >
+                      <option value="">ALL</option>
+                      <!-- <option value="Request">VERIFIED</option> -->
+                      <option value="student">STUDENT</option>
+                      <option value="teacher">TEACHER</option>
+                    </select>
                   </div>
 
                   <!-- card -->
@@ -181,7 +196,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
     <!-- <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script> -->
     
 
-    <script>
+    <!-- <script>
 
         // $('table').dataTable({searching: false, info: false});
         $('table').dataTable({ dom: 'lrtp' });
@@ -191,8 +206,8 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
             oTable.search($(this).val()).draw();
         })
 
-    </script>
-
+    </script> -->
+    
 </body>
 
 </html>
