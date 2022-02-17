@@ -135,6 +135,8 @@ const renderCourseList = (courseList) => {
   // If list empty display text
   if ((courseList == null, courseList.length == 0)) {
     $("#zero-result-msg").show();
+    $("#courseList").hide();
+    $("#courseList").empty();
     return;
   }
 
