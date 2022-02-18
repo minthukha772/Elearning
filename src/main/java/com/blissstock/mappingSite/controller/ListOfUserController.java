@@ -51,7 +51,7 @@ public class ListOfUserController {
     {
         List<UserInfo> tAllRecord = userRepo.findByUserRoleI("ROLE_TEACHER");
         // System.out.println(tAllRecord);
-        logger.info("Teacher List of Mapping Site {}",tAllRecord);
+        logger.info("Teacher List of Pyinnyar Subuu {}",tAllRecord);
         model.addAttribute("tAllTeacherList", tAllRecord);
         // List<String> breadcrumbList = new ArrayList<>();
         // breadcrumbList.add("Top");
@@ -71,7 +71,7 @@ public class ListOfUserController {
         List<UserInfo> sAllRecord = userRepo.findByUserRoleI("ROLE_STUDENT");
         // System.out.println("Student List Console"+sAllRecord);
         
-        logger.info("Student List of Mapping Site {}",sAllRecord);
+        logger.info("Student List of Pyinnyar Subuu {}",sAllRecord);
 
         model.addAttribute("sAllStudentList", sAllRecord);
         // System.out.println(sAllRecord);
@@ -97,7 +97,7 @@ public class ListOfUserController {
         
         List<UserAccount> aAllRecord = userAccountRepo.findByRole("ROLE_ADMIN");
 
-        logger.info("Admin List of Mapping Site {}",aAllRecord);
+        logger.info("Admin List of Pyinnyar Subuu {}",aAllRecord);
 
 
         

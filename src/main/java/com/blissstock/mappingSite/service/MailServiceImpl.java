@@ -47,7 +47,7 @@ public class MailServiceImpl implements MailService {
    * private MessageSource messages;
    */
   private String email = "mappingsite0@gmail.com";
-  private String fromName = "Mapping Site";
+  private String fromName = "Pyinnyar Subuu";
 
   public void sendMail(
       String subject,
