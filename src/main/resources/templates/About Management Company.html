@@ -1,72 +1,137 @@
 <!DOCTYPE html>
 <html lang="en">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+  <html
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:th="http://www.thymeleaf.org"
     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4">
+    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"
+  >
+    <head>
+      <meta charset="UTF-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link
+        href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css"
+        rel="stylesheet"
+      />
+      <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
+      <title>Pyinnyar Subuu</title>
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
-    <title>Pyinnyar Subuu</title>
+    </head>
 
+    <body>
+      <div th:replace="@{fragments/nav}"></div>
 
-</head>
+      <!-- toggle button -->
 
-<body>
-    <div th:replace="@{fragments/nav}"></div>
-    <!-- Hello -->
-    <div class="wrapper">
-
-
-        <div class=" d-flex justify-content-center ">
-
-            <div class="card " style="width: 70%; max-width: 800px; margin-top: 25px;">
-                <h3 class="card-header text-center" style="font-size:2.5vw;">About Management Company</h3>
-                <div class="card-body">
-                    <form>
-                        <div class="card-text text-wrap">
-                            <div class="text-wrap">
-                                <p>ＩＴ技術分野15年の現場実績をもとに、ミャンマーにフォーカスした活動をしています。 <br>それが株式会社
-                                    Bliss
-                                    Stockです。
-                                    <br>創業以来、株式会社BlissStock
-                                    は「ミャンマーと日本の結びつき」をテーマに掲げて海外の人材とシステム開発から成長し、幅広い分野で活躍して行こうとしています。
-                                    高い技術力と確かな品質を、 扱う人のことを常に考えたきめ細やかなサービスを提供し、お客様から高い信頼と喜びを頂いております。
-                                    グローバル化やAI、IoTの発展など、かつてないスピードで変化する時代の中で、社会基盤を支える
-                                    人々の働き方は大きな変革を求められています。 仕事をし対価を頂く根底である、 不便を解消するということ。 人が人にモノ（サービス）を売り、人に買ってもらうこと。
-                                    そんな当たり前を喜びにできる人材の集まりにしたいと思っています。 日本のため、ミャンマーのため 社会に必要とされる企業を目指してまいります。
-                                    今後ともより一層のお引きたてをご支援を賜りますようお願い申し上げます。
-
-
-
-                                </p>
-                                <p> 以下のリンクから会社の詳細内容をご覧ください。<br> <a href="https://bliss-stock.co.jp/">Bliss
-                                        Stock.co.jp</a>
-                                </p>
-                            </div>
-                        </div>
-                </div>
+      <!-- Burmese version -->
+      <div class="row">
+        <div class="card col-lg-6 mx-auto mt-5">
+          <h3 class="card-title text-center mt-4">
+            စီမံခန့်ခွဲမှုကုမ္ပဏီအကြောင်း
+          </h3>
+          <div class="card-body">
+            <div class="card-text text-wrap">
+              <div class="text-wrap">
+                <p class="lh-lg">
+                  <!-- ＩＴ技術分野15年の現場実績をもとに、ミャンマーにフォーカスした活動をしています。
+                  <br />それが株式会社 Bliss Stockです。
+                  <br />創業以来、株式会社BlissStock
+                  は「ミャンマーと日本の結びつき」をテーマに掲げて海外の人材とシステム開発から成長し、幅広い分野で活躍して行こうとしています。
+                  高い技術力と確かな品質を、
+                  扱う人のことを常に考えたきめ細やかなサービスを提供し、お客様から高い信頼と喜びを頂いております。
+                  グローバル化やAI、IoTの発展など、かつてないスピードで変化する時代の中で、社会基盤を支える
+                  人々の働き方は大きな変革を求められています。
+                  仕事をし対価を頂く根底である、 不便を解消するということ。
+                  人が人にモノ（サービス）を売り、人に買ってもらうこと。
+                  そんな当たり前を喜びにできる人材の集まりにしたいと思っています。
+                  日本のため、ミャンマーのため
+                  社会に必要とされる企業を目指してまいります。
+                  今後ともより一層のお引きたてをご支援を賜りますようお願い申し上げます。 -->
+                  ပညာစုဗူး(Pyinnyar Subuu) သည် ဂျပန်နိုင်ငံအခြေစိုက် Bliss Stock
+                  ကုမ္ပဏီမှ အဖွဲ့ဝင်များမှ တည်ဆောက်ထားသော မြန်မာနိုင်ငံရှိ
+                  ‌ကျောင်းသား၊ ကျောင်းသူများ အတွက် သင်ကြားရေးနယ်ပယ်တွင်
+                  တဖက်တလမ်းမှ အထောက်အကူဖြစ်စေရန် ရည်ရွယ်ထားသော
+                  အွန်လိုင်းသင်ကြားရေး ဝက်ဆိုဒ် (online learning website)
+                  တစ်ခုဖြစ်ပါသည်။ Bliss Stock ကုမ္ပဏီသည် အိုင်တီ (IT)
+                  နည်းပညာနယ်ပယ်တွင် (၁၅) နှစ်ကြာ အတွေ့အကြုံကို အခြေခံ၍
+                  မြန်မာနိုင်ငံအတွက်လည်း၊ အိုင်တီဝန်ဆောင်မှု (IT solution
+                  services) များကို လုပ်ဆောင်နေပါသည်။ မြန်မာ အိုင်တီ (IT)
+                  တက္ကသိုလ်များမှ လူငယ်များ၊ အိုင်တီ (IT)
+                  နှင့်ဂျပန်စာကျွမ်းကျင်သော လူငယ်များ၊
+                  ဂျပန်နိုင်ငံသို့သွားရောက်၍ နည်းပညာပိုင်းဆိုင်ရာ
+                  အလုပ်လုပ်ကိုင်လိုသော လူငယ်များကိုလည်း ခေါ်ယူ၍
+                  ပြုစုပျိုးထောင်ပေးနေပါသည်။ ယခုလို သင်ကြားရေးဆိုင်ရာ
+                  ဝက်ဆိုဒ်များကို ဖန်တီးပြီး၊ မြန်မာနိုင်ငံနှင့် ဂျပန်နိုင်ငံ၊
+                  အကြားကွာဟနေသော လူမှုပတ်ဝန်းကျင် လိုအပ်ချက်များကို
+                  ဖြည့်ဆည်းပေးနိုင်သော ကုမ္ပဏီတစ်ခုဖြစ်စေရန် ရည်ရွယ်ပါသည်။
+                  အနာဂတ်တွင်လည်း နယ်ပယ်အသီးသီးမှ မြန်မာလူငယ်၊
+                  ‌ကျောင်းသားကျောင်းသူ၊ သက်မွေးပညာ၊ နည်းပညာ ဆရာ၊ ဆရာမ
+                  သုံးစွဲသူများ၏ အားပေးထောက်ခံမှုများကို မျှော်လင့်နေပါသည်။
+                </p>
+                <br />
+                <p class="lh-base">
+                  ကုမ္ပဏီ ၏ အသေးစိတ်အချက်အလက်များကို အောက်ပါလင့်ခ်မှ
+                  ကြည့်ရှုနိုင်ပါသည်။<br />
+                  <a href="https://bliss-stock.co.jp/" target="_blank"
+                    >Bliss Stock.co.jp</a
+                  >
+                </p>
+              </div>
             </div>
-
-
-
-
-
-
-
-
-
-
+          </div>
         </div>
+      </div>
 
-    </div>
+      <!-- English version -->
+      <div class="row">
+        <div class="card col-lg-6 mx-auto mt-5">
+          <h3 class="card-title text-center mt-4">
+            About Pyinnyar Subuu Operation
+          </h3>
+          <div class="card-body">
+            <div class="card-text text-wrap">
+              <div class="text-wrap">
+                <p class="lh-lg">
+                  <!-- ＩＴ技術分野15年の現場実績をもとに、ミャンマーにフォーカスした活動をしています。
+                  <br />それが株式会社 Bliss Stockです。
+                  <br />創業以来、株式会社BlissStock
+                  は「ミャンマーと日本の結びつき」をテーマに掲げて海外の人材とシステム開発から成長し、幅広い分野で活躍して行こうとしています。
+                  高い技術力と確かな品質を、
+                  扱う人のことを常に考えたきめ細やかなサービスを提供し、お客様から高い信頼と喜びを頂いております。
+                  グローバル化やAI、IoTの発展など、かつてないスピードで変化する時代の中で、社会基盤を支える
+                  人々の働き方は大きな変革を求められています。
+                  仕事をし対価を頂く根底である、 不便を解消するということ。
+                  人が人にモノ（サービス）を売り、人に買ってもらうこと。
+                  そんな当たり前を喜びにできる人材の集まりにしたいと思っています。
+                  日本のため、ミャンマーのため
+                  社会に必要とされる企業を目指してまいります。
+                  今後ともより一層のお引きたてをご支援を賜りますようお願い申し上げます。 -->
+                  PyinNyarSuBuu is an online learning website developed by
+                  members of Bliss Stock company. Bliss Stock company is also
+                  providing IT solution services for Myanmar based on 15 years
+                  of experience in the IT field. Young people from Myanmar IT
+                  universities, young people who are proficient in IT and
+                  Japanese, we are also bringing in to those young people who
+                  want to go to Japan to work in technology. We aim to be a
+                  company that is needed by society for Japan and for Myanmar.
+                  We look forward to your continued support in the future.
+                </p>
+                <br />
+                <p class="lh-base">
+                  Please see the details of the company from the link below.<br />
+                  <a href="https://bliss-stock.co.jp/" target="_blank"
+                    >Bliss Stock.co.jp</a
+                  >
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-    <div th:replace="@{fragments/footer}"></div>
-
-
-
-</body>
-
+      <div th:replace="@{fragments/footer}"></div>
+      <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+    </body>
+  </html>
 </html>
