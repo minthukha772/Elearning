@@ -169,11 +169,19 @@
                       th:field="*{level}"
                       th:classappend="${#fields.hasErrors('level')}?'is-invalid':''"
                       class="form-control"
-                      id="clevel"
+                      list="clevel"
                       type="text"
                       placeholder="Enter Course Level(For example : Japanese Basic)"
                       required
                     />
+                    <datalist id="clevel">
+                      <option th:value="'Basic'" th:text="Basic"></option>
+                      <option
+                        th:value="'Intermediate'"
+                        th:text="Intermediate"
+                      ></option>
+                      <option th:value="'Advance'" th:text="Advance"></option>
+                    </datalist>
                   </div>
                 </div>
 
