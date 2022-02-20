@@ -16,16 +16,29 @@
       />
       <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
       <title>Pyinnyar Subuu</title>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     </head>
 
     <body>
       <div th:replace="@{fragments/nav}"></div>
 
       <!-- toggle button -->
+      <div class="row">
+        <div class="col-lg-6 mx-auto">
+          <button class="btn btn-primary mt-3 englishBtn">
+            <img src="/images/language-svgrepo-com.svg" alt="" height="20" width="20" style="filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(118%) contrast(119%);">
+            Change to English
+          </button>
+          <button class="btn btn-primary mt-3 burmeseBtn" style="display: none;">
+            <img src="/images/language-svgrepo-com.svg" alt="" height="20" width="20" style="filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(118%) contrast(119%);">
+            Change to Burmese
+          </button>
+        </div>
+      </div>
 
       <!-- Burmese version -->
-      <div class="row">
-        <div class="card col-lg-6 mx-auto mt-5">
+      <div class="row burmese">
+        <div class="card col-lg-6 mx-auto mt-3">
           <h3 class="card-title text-center mt-4">
             စီမံခန့်ခွဲမှုကုမ္ပဏီအကြောင်း
           </h3>
@@ -83,8 +96,8 @@
       </div>
 
       <!-- English version -->
-      <div class="row">
-        <div class="card col-lg-6 mx-auto mt-5">
+      <div class="row english" style="display: none;">
+        <div class="card col-lg-6 mx-auto mt-3">
           <h3 class="card-title text-center mt-4">
             About Pyinnyar Subuu Operation
           </h3>
@@ -135,6 +148,23 @@
 
       <div th:replace="@{fragments/footer}"></div>
       <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+      <script>
+        $(function(){
+          $(".burmeseBtn").click(function(){
+              $(".englishBtn").show();
+              $(this).css("display","none");
+              $(".english").css("display","none");
+              $(".burmese").show();
+          })
+
+          $(".englishBtn").click(function(){
+            $(".burmeseBtn").css("display","block");
+            $(this).hide();
+            $(".english").css("display","block");
+            $(".burmese").hide();
+          })
+        });
+      </script>
     </body>
   </html>
 </html>
