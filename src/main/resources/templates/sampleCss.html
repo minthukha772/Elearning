@@ -211,8 +211,9 @@
                               style="border-radius: 6px"
                             >
                             <!-- url -->
+                            <!-- temporary local url change to real domain when release -->
                               <a
-                                th:href="@{'localhost:8080/verify_password'(token=${token})}"
+                                th:href="@{http://localhost:8080/verify_password(token=${token})}"
                                 target="_blank"
                                 style="
                                   display: inline-block;
@@ -254,7 +255,8 @@
                   </p>
                   <!-- url -->
                   <p style="margin: 0">
-                    <a th:href="@{__${confirmationUrl}__}" target="_blank" th:text="${confirmationUrl}"
+                    <!-- temporary local url change to real domain when release -->
+                    <a th:href="@{http://localhost:8080/verify_password(token=${token})}" target="_blank" th:text="${confirmationUrl}"
                       >https://same-link-as-button.url/xxx-xxx-xxxx</a
                     >
                   </p>
