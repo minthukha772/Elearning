@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import javax.mail.MessagingException;
+import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import com.blissstock.mappingSite.config.GmailConfig;
@@ -46,8 +47,10 @@ public class MailServiceImpl implements MailService {
    * @Autowired
    * private MessageSource messages;
    */
-  private String email = "mappingsite0@gmail.com";
-  private String fromName = "Pyinnyar Subuu";
+
+  private String email = "sys@pyinnyar-subuu.com";
+  private String fromName = "PyinnyarSubuu";
+
 
   public void sendMail(
       String subject,
@@ -56,9 +59,10 @@ public class MailServiceImpl implements MailService {
       String bccAddresses,
       String body) {
     MimeMessagePreparator preparator = mimeMessage -> {
+      InternetAddress fromAddress = new InternetAddress(email, fromName);
       MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
       message.setTo(toAddresses.split("[,;]"));
-      message.setFrom(email, fromName);
+      message.setFrom(fromAddress);
       message.setSubject(subject);
       if (!ccAddresses.isBlank())
         message.setCc(ccAddresses.split("[;,]"));
@@ -74,7 +78,7 @@ public class MailServiceImpl implements MailService {
         subject);
   }
 
-  public void sendVerificationMail(UserAccount userAccount, String appUrl) throws MessagingException{
+  public void sendVerificationMail(UserAccount userAccount, String appUrl) throws MessagingException {
     String token = UUID.randomUUID().toString();
     userService.createToken(userAccount, token, TokenType.VERIFICATION);
 
@@ -82,12 +86,13 @@ public class MailServiceImpl implements MailService {
     String subject = "Registration Confirmation";
 
     String confirmationUrl = appUrl + "/verify_password?token=" + token;
-    // String message = "Congratulations, your account has been successfully created. Please go to the following link to confirm the account";
+    // String message = "Congratulations, your account has been successfully
+    // created. Please go to the following link to confirm the account";
     // String body = message + "\r\n" + confirmationUrl;
     // System.out.println(confirmationUrl.toString());
     // sendMail(subject, recipientAddress, "", "", body);
 
-    //implementation
+    // implementation
 
     final Context ctx = new Context();
     ctx.setVariable("confirmationUrl", confirmationUrl);
@@ -124,25 +129,25 @@ public class MailServiceImpl implements MailService {
 
   // test impl
   // public void sendMailWithInline(
-  //     final String recipientName, final String recipientEmail
+  // final String recipientName, final String recipientEmail
   // )
-  //     throws MessagingException {
+  // throws MessagingException {
 
-  //   final Context ctx = new Context();
-  //   ctx.setVariable("name", "Sai Horm Kham");
+  // final Context ctx = new Context();
+  // ctx.setVariable("name", "Sai Horm Kham");
 
+  // // Prepare message using a Spring helper
+  // final MimeMessage mimeMessage = mailSender.createMimeMessage();
+  // final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true,
+  // "UTF-8"); // true = multipart
+  // message.setSubject("Example HTML email with inline image");
+  // message.setFrom("mappingsite0@gmail.com");
+  // message.setTo(recipientEmail);
 
-  //   // Prepare message using a Spring helper
-  //   final MimeMessage mimeMessage = mailSender.createMimeMessage();
-  //   final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
-  //   message.setSubject("Example HTML email with inline image");
-  //   message.setFrom("mappingsite0@gmail.com");
-  //   message.setTo(recipientEmail);
+  // final String htmlContent = templateEngine.process("simple-mail", ctx);
+  // message.setText(htmlContent, true);
 
-  //   final String htmlContent = templateEngine.process("simple-mail", ctx);
-  //   message.setText(htmlContent, true); 
-
-  //   this.mailSender.send(mimeMessage);
+  // this.mailSender.send(mimeMessage);
 
   // }
 }
