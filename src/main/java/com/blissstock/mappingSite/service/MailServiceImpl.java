@@ -47,8 +47,10 @@ public class MailServiceImpl implements MailService {
    * @Autowired
    * private MessageSource messages;
    */
+
   private String email = "sys@pyinnyar-subuu.com";
   private String fromName = "PyinnyarSubuu";
+
 
   public void sendMail(
       String subject,
