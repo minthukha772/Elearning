@@ -102,7 +102,7 @@ public class MailServiceImpl implements MailService {
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
     message.setSubject(subject);
-    message.setFrom("mappingsite0@gmail.com");
+    message.setFrom("sys@pyinnyar-subuu.com");
     message.setTo(recipientAddress);
 
     final String htmlContent = templateEngine.process("sampleCss", ctx);
