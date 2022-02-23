@@ -98,6 +98,7 @@ public class MailServiceImpl implements MailService {
     ctx.setVariable("confirmationUrl", confirmationUrl);
     ctx.setVariable("Date", new Date());
     ctx.setVariable("token", token);
+    ctx.setVariable("appUrl", appUrl);
 
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart

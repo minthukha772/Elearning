@@ -189,8 +189,11 @@
                     line-height: 24px;
                   "
                 >
+                <p style="margin: 0">
+                  Hello, We are form Pyinnyar Subuu team.
+                </p><br>
                   <p style="margin: 0">
-                    You have successfully created account with your email. But wait, We are not done yet...
+                    Congratulations, you have successfully created account with your email. But wait, We are not done yet...
                     To finish verifying your email address and securing your account, click the button below.
                   </p>
                 </td>
@@ -213,7 +216,7 @@
                             <!-- url -->
                             <!-- temporary local url change to real domain when release -->
                               <a
-                                th:href="@{http://localhost:8080/verify_password(token=${token})}"
+                                th:href="@{'http://' + ${appUrl} + '/verify_password'(token=${token})}"
                                 target="_blank"
                                 style="
                                   display: inline-block;
@@ -256,7 +259,7 @@
                   <!-- url -->
                   <p style="margin: 0">
                     <!-- temporary local url change to real domain when release -->
-                    <a th:href="@{http://localhost:8080/verify_password(token=${token})}" target="_blank" th:text="${confirmationUrl}"
+                    <a th:href="@{'http://' + ${appUrl} + '/verify_password'(token=${token})}" target="_blank" th:text="${confirmationUrl}"
                       >https://same-link-as-button.url/xxx-xxx-xxxx</a
                     >
                   </p>
@@ -278,8 +281,8 @@
                   "
                 >
                   <p style="margin: 0">
-                    Cheers,<br />
-                    PyinnyarSubuu<br>
+                    Thank you for using our service!<br /><br>
+                    Pyinnyar Subuu<br>
                     Bliss Stock JP<br>
                     <span th:text="${#dates.format(Date)}">Date</span>
                   </p>
