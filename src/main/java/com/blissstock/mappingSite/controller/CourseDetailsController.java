@@ -95,6 +95,15 @@ public class CourseDetailsController {
         CourseInfo courseInfo = courseInfoRepository.findById(courseId).get();
         model.addAttribute("courseInfo", courseInfo);
 
+        //get classlink
+        String classLink = courseInfo.getClassLink();
+        model.addAttribute("classLink", classLink);
+
+        //get test links
+        List<Test> testList = courseInfo.getTest();
+        model.addAttribute("testList", testList);
+        model.addAttribute("testListSize", testList.size());
+
         // isCourseApprove
         boolean courseNotApprove = courseInfo.getIsCourseApproved() == false;
         model.addAttribute("courseNotApprove", courseNotApprove);
