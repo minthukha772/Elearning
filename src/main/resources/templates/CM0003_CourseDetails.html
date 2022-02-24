@@ -175,7 +175,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
 
             <!-- class link -->
             <div th:if="${studentRegistered}" class="mt-3">
-              <a th:href="@{${classLink}}">Link to the course</a>
+              <a th:href="@{${classLink}}" target="_blank">Link to the course</a>
             </div>
           </div>
 
@@ -413,8 +413,17 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
     <!-- assignment link of student -->
     <div th:if="${student == 'STUDENT'}">
       <div th:if="${studentRegistered} AND ${testListSize > 0}" class="container second-section">
+        
         <p class="link">Assignment link of the course</p>
-        <a th:href="@{${classlink}}">Assignment link</a>
+        <div class="mt-3 row row-cols-1 row-cols-md-3 g-4">
+          <div class="col" th:each="testList, stats : ${testList}">
+            <div class="card" th:id="|card-${stats.index}|">
+              <div class="card-body">
+                <a th:href="@{${testList.testLink}}" th:text="${testList.testLink}" target="_blank">Test Link</a>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
