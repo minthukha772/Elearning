@@ -313,6 +313,7 @@ public class CourseDetailsController {
             @ModelAttribute("courseId") Long courseId, Model model) {
         CourseInfo courseInfo = courseInfoRepository.findById(courseId).get();
         List<Test> testList = courseInfo.getTest();
+        logger.info("The size of test list is {}" + testList.size());
         Test test = new Test();
         test.setTestLink(testLink);
         test.setCourseInfo(courseInfo);

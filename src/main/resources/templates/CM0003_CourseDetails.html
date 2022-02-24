@@ -206,7 +206,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
             <div th:if="${teacherRegistered}">
               <p class="prerequisites my-3">Class Link</p>
 
-              <form th:action="@{insert-class-link}" method="POST">
+              <form th:action="@{/teacher/course-details/insert-class-link}" method="POST">
                 <input
                   type="hidden"
                   name="courseId"
@@ -374,7 +374,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
             >
             <div>
               <p class="prerequisites my-3">Class Link</p>
-              <form th:action="@{insert-class-link}" method="POST">
+              <form th:action="@{/admin/course-details/insert-class-link}" method="POST">
                 <input
                   type="hidden"
                   name="courseId"
@@ -777,7 +777,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
     <div th:if="${admin == 'ADMIN'}">
       <div class="container second-section">
         <p class="link">Assign Test to Students</p>
-        <form th:action="@{insert-test-link}" method="POST">
+        <form th:action="@{/admin/course-details/insert-test-link}" method="POST">
           <input
             type="hidden"
             name="courseId"
