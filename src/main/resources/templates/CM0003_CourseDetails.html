@@ -138,16 +138,16 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
                 </div>
               </span>
             </span>
-            <span th:if="${isCourseDateValid}==null">
-              <form
-                th:action="@{/student/enroll/{courseId}/{userId}(courseId = ${courseInfo.courseId}, userId = ${userId})}"
-                method="post"
-              >
-                <button class="btn btn-primary" type="submit">Enroll</button>
-              </form>
-            </span>
+
             <a
-            th:if="${!paymentComplete}"
+              th:if="${isCourseDateValid}==null"
+              th:href="@{/student/enroll/{courseId}/{userId}(courseId = ${courseInfo.courseId}, userId = ${userId})}"
+            >
+              <button class="btn btn-primary" type="submit">Enroll</button>
+            </a>
+            
+            <a
+              th:if="${!paymentComplete}"
               th:href="@{'/student/payment-upload/course_id/' + ${courseInfo.courseId}}"
               ><button
                 class="btn btn-primary"
