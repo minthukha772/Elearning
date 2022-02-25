@@ -1,5 +1,6 @@
 package com.blissstock.mappingSite.controller;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -45,13 +46,13 @@ public class PasswordController {
   @Autowired
   private PasswordEncoder passwordEncoder;
 
-  
-    @GetMapping("/password/encrypt")
-    public String encrypt(Model model, String pass) {
+  @GetMapping("/password/encrypt")
+  public String encrypt(Model model, String pass) {
     String password = passwordEncoder.encode(pass);
     System.out.println(password);
-     return "redirect:/";
-    }
+    return "redirect:/";
+  }
+
   /*
    * @GetMapping("/token")
    * public String createToken(Model model) {
@@ -64,7 +65,7 @@ public class PasswordController {
    * return "redirect:/";
    * }
    */
-  @GetMapping("password/verify_password")
+  @GetMapping("resetPassword")
   public String verifyPassword(Model model, @RequestParam(value = "token", required = true) String token) {
     logger.info("GET requested");
     logger.info("Reset password by token called");
@@ -75,7 +76,7 @@ public class PasswordController {
 
     }
     UserAccount userAccount = userService.getUserAccountByToken(token,
-        "PASSWORD_RESET");
+        TokenType.PASSWORD_RESET.getValue());
     if (userAccount == null) {
       System.out.println("Invalid token");
       String header3 = "Invalid token";
@@ -111,7 +112,7 @@ public class PasswordController {
     // return "redirect:/home";
   }
 
-  @PostMapping("password/verify_password")
+  @PostMapping("resetPassword")
   public String changePassword(Model model, @Valid @ModelAttribute("passwordDTO") PasswordDTO passwordDTO,
       @ModelAttribute("token") String token,
       BindingResult bindingResult) {
@@ -135,7 +136,7 @@ public class PasswordController {
       model.addAttribute("error", "password and confirm password should match");
       return "CM006_reset_password_screen";
     } else {
-      UserAccount userAccount = userService.getUserAccountByToken(token, "PASSWORD_RESET");
+      UserAccount userAccount = userService.getUserAccountByToken(token, TokenType.PASSWORD_RESET.getValue());
       if (userAccount == null) {
 
         model.addAttribute("error", "The password reset mail is invalid! Please check the mail again.");
@@ -168,7 +169,11 @@ public class PasswordController {
         ":" +
         request.getServerPort();
     /* userService.createToken(user, token, TokenType.PASSWORD_RESET); */
-    mailService.sendResetPasswordMail(user, appUrl);
+    try {
+      mailService.sendResetPasswordMail(user, appUrl);
+    } catch (MessagingException e) {
+      logger.info(e.toString());
+    }
     return "redirect:/login?resetSuccess=true";
   }
 
