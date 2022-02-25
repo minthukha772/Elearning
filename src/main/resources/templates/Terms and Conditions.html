@@ -2,244 +2,466 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Help and Support</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Details Policy</title>
+    <!-- <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    /> -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
 </head>
 
 <body>
     <!-- nav -->
     <div th:replace="@{fragments/nav}"></div>
-    <div class="container justify-content-center" style="max-width: 900px;">
-        <!-- heading -->
-        <div class="d-flex justify-content-center ">
-
-
-            <div class=" text-center">
-                <h3>Terms And Conditions </h3>
-            </div>
-
-
+    <div class="row mt-5">
+        <div class="col-lg-6 mx-auto">
+            <button style="float: right" class="btn btn-primary mb-3" id="toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-translate" viewBox="0 0 16 16">
+                    <path
+                        d="M4.545 6.714 4.11 8H3l1.862-5h1.284L8 8H6.833l-.435-1.286H4.545zm1.634-.736L5.5 3.956h-.049l-.679 2.022H6.18z" />
+                    <path
+                        d="M0 2a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v3h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-3H2a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H2zm7.138 9.995c.193.301.402.583.63.846-.748.575-1.673 1.001-2.768 1.292.178.217.451.635.555.867 1.125-.359 2.08-.844 2.886-1.494.777.665 1.739 1.165 2.93 1.472.133-.254.414-.673.629-.89-1.125-.253-2.057-.694-2.82-1.284.681-.747 1.222-1.651 1.621-2.757H14V8h-3v1.047h.765c-.318.844-.74 1.546-1.272 2.13a6.066 6.066 0 0 1-.415-.492 1.988 1.988 0 0 1-.94.31z" />
+                </svg>
+                Change to English
+            </button>
         </div>
-
-        <!-- accordian -->
-        <div class="d-flex justify-content-center ">
-
-
-            <!-- accordian column -->
-
-            <div class="accordion" id="accordionExample">
-                <!-- item 1 -->
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingOne">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                            Taking Leave
-                        </button>
-                    </h2>
-                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
-                        data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            When teacher took a leave, admin will send mail that the class is cancelled and admin
-                            will rearrange new schedule if teacher wants to replace the absent class. When student
-                            took a leave, admin will record as absence.
-                        </div>
-                    </div>
-                </div>
-
-                <!-- item 2 -->
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingTwo">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                            Class cancellation and Refund
-                        </button>
-                    </h2>
-                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
-                        data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            If the class is cancelled by the admin side.We will refund payment to the
-                            students who have already paid for the course.
-                            If the class is cancelled by the student side after payment, there will be no refund for
-                            this.
-                            If the payment slip is wrong,an admin will call the student to upload the slip again.
-                        </div>
-                    </div>
-                </div>
-
-
-                <!-- item 3 -->
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="heading4">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
-                            Courses
-                        </button>
-                    </h2>
-                    <div id="collapse4" class="accordion-collapse collapse" aria-labelledby="heading4"
-                        data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            (i) Enroll the course you want to be registered in.An admin will
-                            confirm registration through phone call and after payment, the course will be
-                            successfully
-                            registered. Can view own purchased course through
-                            "my course".<br>(ii)Live session course<br>Student have to fill survey form before class
-                            started. Receive zoom invitation link for each course from
-                            admin.
-                            <br> (iii)Video session<br>Student will be invited to google classroom link created by
-                            admin for each course, they can learn courses through recorded lecture videos and can
-                            make discussion with teacher through comment session.
-                            <br>(iv)Course Request<br>Course can be requested at most 3 times per day.Course request
-                            confirmation call will be within 24 hours.Teacher registration confirmation call will be
-                            within 3days
-                        </div>
-                    </div>
-                </div> <!-- item 5 -->
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingThree">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
-                            Limit course registration period
-                        </button>
-                    </h2>
-                    <div id="collapse5" class="accordion-collapse collapse" aria-labelledby="headingThree"
-                        data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            (i) Course registration from students shall be
-                            available until one day before the scheduled class has started.<br>(ii) If the number of
-                            registered student is lower than minimum required
-                            students, the class schedule will be postponed and new schedule will be rearranged
-                        </div>
-                    </div>
-                </div> <!-- item 5.1 -->
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingThree">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapse51" aria-expanded="false" aria-controls="collapse51">
-                            Payment
-                        </button>
-                    </h2>
-                    <div id="collapse51" class="accordion-collapse collapse" aria-labelledby="headingThree"
-                        data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            Student Payment<br>(i) Payment method by online<br>Information for
-                            available online payment accounts (KBZPay, WaveMoney,etc.) will be displayed on screen.
-                            Students can choose their preferred Payment method;
-                            <br>(ii) Payment method by cash<br>Can pay at the provided address according to the
-                            payment method information.<br>(iii) Upload payment slip<br>Need to upload payment slip
-                            image for online payment.<br>
-                            <br>After receiving the payment successful mail and student can enter and view the
-                            registered courses.
-                        </div>
-                    </div>
-                </div> <!-- item 6 -->
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingThree">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapse6" aria-expanded="false" aria-controls="collapse6">
-                            Teacher Receiving Payment
-                        </button>
-                    </h2>
-                    <div id="collapse6" class="accordion-collapse collapse" aria-labelledby="headingThree"
-                        data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            (i) Payment Account confirmation phone call<br>Receive phone call
-                            to confirm the registered payment information<br>(ii) Payment method<br>Payment method
-                            will be available both online and cash. For online
-                            payment teacher need to provide banking information.For cash payment teacher will need
-                            to provide address<br>(iii) Payment complete mail<br>After transferring payment
-                            process is done, teacher will receive payment complete
-                            mail along with voucher slip.
-                        </div>
-                    </div>
-                </div> <!-- item 7 -->
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingThree">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapse7" aria-expanded="false" aria-controls="collapse7">
-                            Review and Discounts
-                        </button>
-                    </h2>
-                    <div id="collapse7" class="accordion-collapse collapse" aria-labelledby="headingThree"
-                        data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            After completing the course, student can give review to the
-                            course via the link provided by admin(The students who gave host review will receive
-                            discounts
-                            for next courses).
-                        </div>
-                    </div>
-                </div> <!-- item 8-->
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingThree">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapse8" aria-expanded="false" aria-controls="collapse8">
-                            Intellectual Property
-                        </button>
-                    </h2>
-                    <div id="collapse8" class="accordion-collapse collapse" aria-labelledby="headingThree"
-                        data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            You are not authorized to:<br>(i) copy, modify, reproduce,
-                            re-publish, sub-license, sell, upload, broadcast, post, transmit or distribute any of
-                            the Course Materials without prior written permission;<br>(ii)
-                            record on video or audio tape, relay by videophone or other means the Online Course or
-                            Taught Course given
-                            <br>(iii) use the Course Materials in the provision of any other course or training
-                            whether given by us or any third party trainer;<br>(iv) remove any copyright or other
-                            notice of OLMS on the Course Materials;<br>(v) modify,
-                            adapt, merge, translate, disassemble, recompile, reverse engineer (save to the extent
-                            permitted by law) any software forming part of the Online Courses.
-                            <br>Breaching of these claws allow us to immediately terminate these terms and
-                            conditions with you and cease to provide you with any Services, including but not
-                            limited to access to the Online Courses.
-                        </div>
-                    </div>
-                </div>
-                <!-- item 9-->
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingThree">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapse9" aria-expanded="false" aria-controls="collapse9">
-                            Termination
-                        </button>
-                    </h2>
-                    <div id="collapse9" class="accordion-collapse collapse" aria-labelledby="headingThree"
-                        data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            We shall be entitled to terminate these terms and conditions and cease
-                            to provide you with any Services with immediate effect in the event that you:<br>(i)
-                            fail to pay when due your course fees;<br>(ii) act
-                            in an aggressive, bullying, offensive, threatening or harassing manner towards any
-                            employee of OLMS , any teacher or lecturer who provides the taught courses or any
-                            student who attends any courses;<br>(iii) cheat or plagiaries
-                            any work which you are required to prepare or submit in connection with the Services or
-                            during any examination taken in connection with the Services;<br>(iv) steal or act in
-                            fraudulent or deceitful manner towards us or
-                            our employees or any other students who may be on our premises or attending our taught
-                            courses;<br>(vi) are intoxicated through alcohol or illegal drugs while on our
-                            premises;<br>(vii)commit any criminal offence committed
-                            on our premises or where the victim is our employee or student;<br>are in breach of
-                            these terms and conditions.
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-
-        </div>
-
-
-
-
     </div>
 
+    <div class="row">
+        <div class="col-lg-6 mx-auto">
+            <!-- <div class="container justify-content-center"> -->
+            <!-- heading -->
+            <div class="d-flex justify-content-center">
+                <div class="text-center mb-3">
+                    <h3>Details Policy</h3>
+                </div>
+            </div>
 
+            <!-- accordian -->
+            <div id="LanguageEnglish" style="display: none">
+
+
+                <div class="accordion" id="accordionExampleEnglish">
+                    <!-- item 1 -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                1. Rules to follow
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                            data-bs-parent="#accordionExampleEnglish">
+                            <div class="accordion-body">
+                                <p>
+                                    Please read these Terms and Conditions ("Agreement", "Terms
+                                    and Conditions") carefully before using Pyinnyar Subuu
+                                    Platform ("the website") and in these terms and conditions,
+                                    "pyinnyar-subuu.com" will be referred to as (Pyinnyar Subuu,
+                                    or “we”, or “us”, or “our”, “website”).
+                                </p>
+                                <li>
+                                    (i) “You”, or “Users” are referred to as the teachers and
+                                    the students who are using this website .
+                                </li>
+                                <li>
+                                    (ii) “Teachers” are referred to as the teachers who are
+                                    teaching in the online class on this Pyinnyar Subuu website.
+                                </li>
+                                <li>
+                                    (iii)”Students” are referred to as the students who are
+                                    learning in the online class on this Pyinnyar Subuu website.
+                                </li>
+                                <p>
+                                    If you use this website you will need to read and understand
+                                    the following terms and conditions carefully and agree to
+                                    that. If you do not agree to any of the following terms and
+                                    conditions, please do not use this website.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- item 2 -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingTwo">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                2.Terms of use
+                            </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                            data-bs-parent="#accordionExampleEnglish">
+                            <div class="accordion-body">
+                                <li>
+                                    2.1 The user is required to input specific personal
+                                    information when applying for use of the web service of
+                                    Pyinnyar Subuu. In addition, any data changes need to be
+                                    updated immediately.
+                                </li>
+                                <li>
+                                    2.2 In addition, you will need to provide proof of the
+                                    authenticity of the information you have submitted, as
+                                    requested by Pyinnyar Subuu.
+                                </li>
+                                <li>
+                                    2.3 Keep your password somewhere safe, because you’re
+                                    responsible for all activity associated with your account.
+                                    Do not share your User Account and Password to others. If
+                                    you suspect someone else is using your account, let us know
+                                    by contacting us.
+                                </li>
+                                <li>
+                                    2.4 If the user account's password or password is misused by
+                                    another person or is attacked because of your carelessness,
+                                    Pyinnyar Subuu shall not be held responsible in any way. No
+                                    liability will be given.
+                                </li>
+                                <li>
+                                    2.5 You must have reached the age of consent for online
+                                    services in your country to use Pyinnyar Subuu.
+                                </li>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- item 3 -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="heading4">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
+                                3. Things users should avoid
+                            </button>
+                        </h2>
+                        <div id="collapse4" class="accordion-collapse collapse" aria-labelledby="heading4"
+                            data-bs-parent="#accordionExampleEnglish">
+                            <div class="accordion-body">
+                                <li>
+                                    3.1 The user must abide by not only all applicable laws and
+                                    regulations but also the telecommunications law in Myanmar.
+                                </li>
+                                <li>
+                                    3.2 The user must agree to all terms and conditions relating
+                                    to web services. Statements and procedures must be followed.
+                                </li>
+                                <li>
+                                    3.3 The user does not have any copyrights or licenses, name,
+                                    and reputation rights (or) any other legal rights and no
+                                    violation shall be made against the interests of any third
+                                    party.
+                                </li>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- item 5 -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
+                                4. Modifications and additions
+                            </button>
+                        </h2>
+                        <div id="collapse5" class="accordion-collapse collapse" aria-labelledby="headingThree"
+                            data-bs-parent="#accordionExampleEnglish">
+                            <div class="accordion-body">
+                                <p>
+                                    Under the sole discretion of Pyinnyar Subuu, the following
+                                    actions may be taken in a timely manner.
+                                </p>
+                                <li>4.1 Amendments to this Agreement;</li>
+                                <li>
+                                    4.2 Additions to the Terms and Conditions of this Agreement.
+                                    The above amended and supplemented; Additional terms and
+                                    conditions will be posted on the website from the effective
+                                    date.
+                                </li>
+                                <p>
+                                    We will notify you if there are any amendments to this
+                                    Agreement. If you continue to use the website after these
+                                    modifications, we assume that you understand and accept the
+                                    updated information and agree to that.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- item 5.1 -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapse51" aria-expanded="false" aria-controls="collapse51">
+                                5. Pyinnyar Subuu’s Rights
+                            </button>
+                        </h2>
+                        <div id="collapse51" class="accordion-collapse collapse" aria-labelledby="headingThree"
+                            data-bs-parent="#accordionExampleEnglish">
+                            <div class="accordion-body">
+                                <li>
+                                    5.1 We can make changes to our website and services at any
+                                    time.
+                                </li>
+                                <li>
+                                    5.2 If you break our terms and conditions, your
+                                    account/payment, etc. can be cancelled at any time.
+                                </li>
+                                <li>5.3 We can change our standards at any time.</li>
+                                <li>
+                                    5.4 If teachers’ accounts are found to be in violation of
+                                    our terms and conditions, they may be expelled.
+                                </li>
+                                <li>
+                                    5.5 Online courses, comments, that do not comply with
+                                    certain rules and regulations can be deleted at any time.
+                                </li>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- item 6 -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapse6" aria-expanded="false" aria-controls="collapse6">
+                                6. Commitment of Pyinnyar Subuu’s students
+                            </button>
+                        </h2>
+                        <div id="collapse6" class="accordion-collapse collapse" aria-labelledby="headingThree"
+                            data-bs-parent="#accordionExampleEnglish">
+                            <div class="accordion-body">
+                                <p></p>
+                                By enrolling in an online course, students are expected to
+                                adhere to the following guidelines.
+                                </p>
+                                <li>
+                                    6.1 Do your own projects and lesson-related assignments by
+                                    yourself.
+                                </li>
+                                <li>
+                                    6.2 Use your own user account and do not share your username
+                                    and password with others.
+                                </li>
+                                <li>
+                                    6.3 Do not do to increase your score by fraudulent methods
+                                    related to exam results and assignments and do not do to
+                                    decrease other students’ score.
+                                </li>
+                                <li>6.4 Lesson answers are not posted on social media.</li>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- item 7 -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapse7" aria-expanded="false" aria-controls="collapse7">
+                                7. Terms and conditions for students
+                            </button>
+                        </h2>
+                        <div id="collapse7" class="accordion-collapse collapse" aria-labelledby="headingThree"
+                            data-bs-parent="#accordionExampleEnglish">
+                            <div class="accordion-body">
+                                <p>
+                                    Students will be considered for agreement to any of the
+                                    followings if they are enrolled in one of the online class
+                                    of Pyinnyar Subuu.
+                                </p>
+                                <li>
+                                    7.1 We assume that the student agrees to the terms of use,
+                                    commitment, rules and regulations, policies of Pyinnyar
+                                    Subuu.
+                                </li>
+                                <li>
+                                    7.2 If you break the commitment, you will not get the score
+                                    for your assignments, dismissal from the class ၊ blocking
+                                    the use of Pyinnyar Subuu
+                                </li>
+                                <li>
+                                    7.3 We assume that you will follow the rules set by the
+                                    teachers and there is no harassment of other students.
+                                </li>
+                                <li>
+                                    7.4 Do not copy and redistribute the course materials in
+                                    your own or someone else’s class.
+                                </li>
+                                <li>
+                                    7.5 If you break any of the rules, you will be terminate
+                                    your account at any time.
+                                </li>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- item 8-->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapse8" aria-expanded="false" aria-controls="collapse8">
+                                8. Payment from Students
+                            </button>
+                        </h2>
+                        <div id="collapse8" class="accordion-collapse collapse" aria-labelledby="headingThree"
+                            data-bs-parent="#accordionExampleEnglish">
+                            <div class="accordion-body">
+
+                                <li> 8.1 Students can make class fees payment via online banking account (Kpay,
+                                    Wavepay,... etc) or other banking accounts.
+                                </li>
+                            </div>
+                        </div>
+                    </div>
+                     <!-- item 9-->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapse9" aria-expanded="false" aria-controls="collapse9">
+                                9. Payment to Teachers
+                           
+                            </button>
+                        </h2>
+                        <div id="collapse9" class="accordion-collapse collapse" aria-labelledby="headingThree"
+                            data-bs-parent="#accordionExampleEnglish">
+                            <div class="accordion-body">
+
+                                <li> 9.1 Pyinnyar Subuu Admin team will send updated student list to teachers and will
+                                    transfer monthly fees to teachers’ bank account at every end of the months.
+                                </li>
+                                <li> 9.2 If a teacher commits any act that is inconsistent to the contract payment will
+                                    be canceled or suspended from Pyinnyar Subuu side
+                                </li>
+                            </div>
+                        </div>
+                    </div>
+                     <!-- item 10-->
+                     <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapse10" aria-expanded="false" aria-controls="collapse10">
+                                10. Refunding Payment
+                            </button>
+                        </h2>
+                        <div id="collapse10" class="accordion-collapse collapse" aria-labelledby="headingThree"
+                            data-bs-parent="#accordionExampleEnglish">
+                            <div class="accordion-body">
+
+                               
+                                <li> 10.1 We cannot refund the class fees if you cancel the class within 3 days before
+                                    the
+                                    class
+                                    start date. If you cancel the class over 3 days before the class start date and you
+                                    have
+                                    valid reason for your cancellation, we will refund 50% of your class fees. We,
+                                    Pyinnyar
+                                    Subuu
+                                    team, can make judgement towards your reason of cancellation
+                                </li>
+                            </div>
+                        </div>
+                    </div> <!-- item 11-->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapse11" aria-expanded="false" aria-controls="collapse11">
+                                11. Fixing Class Fees
+                            </button>
+                        </h2>
+                        <div id="collapse11" class="accordion-collapse collapse" aria-labelledby="headingThree"
+                            data-bs-parent="#accordionExampleEnglish">
+                            <div class="accordion-body">
+
+                                <li> 11.1 Pyinnyar Subuu Team can fix the class fees or service charges and can
+                                    decide
+                                    whether
+                                    classes are free or paid anytime. Thus, the fees can be changed depending on the
+                                    time of
+                                    each student makes purchases.
+                                </li>
+                                <li> 11.2 Students will be notified for any changes in class fees with mail or any
+                                    other
+                                    suitable way
+                                </li>
+                            </div>
+                        </div>
+                    </div> <!-- item 12-->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapse12" aria-expanded="false" aria-controls="collapse12">
+                                12. Submitting Reviews and Receiving Discount
+                            
+                            </button>
+                        </h2>
+                        <div id="collapse12" class="accordion-collapse collapse" aria-labelledby="headingThree"
+                            data-bs-parent="#accordionExampleEnglish">
+                            <div class="accordion-body">
+
+                                <li> 12.1 After students received course completion mail, they can submit review to
+                                    the
+                                    course
+                                    and can receive discount for future courses.
+                                </li>
+                            </div>
+                        </div>
+                    </div> <!-- item 13-->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapse13" aria-expanded="false" aria-controls="collapse13">
+                                13. Service Charges
+                            </button>
+                        </h2>
+                        <div id="collapse13" class="accordion-collapse collapse" aria-labelledby="headingThree"
+                            data-bs-parent="#accordionExampleEnglish">
+                            <div class="accordion-body">
+                                <li> 13.1 Teachers have to pay 10 percent of total class fees of each class to
+                                    Pyinnyar
+                                    Subuu as
+                                    service charge.</li>
+                            </div>
+                        </div>
+                    </div> <!-- item14-->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapse14" aria-expanded="false" aria-controls="collapse14">
+                                14. Termination
+                            </button>
+                        </h2>
+                        <div id="collapse14" class="accordion-collapse collapse" aria-labelledby="headingThree"
+                            data-bs-parent="#accordionExampleEnglish">
+                            <div class="accordion-body">
+
+                                <li> 14.1 We can temporarily or permanently terminate your account if there is any
+                                    act
+                                    that is
+                                    inconsistent to rules and regulation of our website.
+                                </li>
+                                <li> 14.2 If there is any violation to the rules occur, we can terminate your access
+                                    to
+                                    our
+                                    website and can erase all your related data either whether we receive your
+                                    suitable
+                                    reason
+                                    for violation or not.
+                                </li>
+                            </div>
+                        </div>
+                    </div> 
+                    
+
+
+                    <!-- </div> -->
+
+
+
+
+                </div>
+            </div>
+            <div id="LanguageBurmese" style="display: none"></div>
+        </div>
+    </div>
     <!-- footer -->
     <div th:replace="@{fragments/footer}"></div>
 
@@ -248,5 +470,28 @@
         crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/d7fbea9359.js" crossorigin="anonymous"></script>
 </body>
+<script>
+    const burmese = document.getElementById("LanguageBurmese");
+    const english = document.getElementById("LanguageEnglish");
+
+    const btn = document.getElementById("toggle");
+    btn.onclick = function () {
+        if (burmese.style.display !== "none") {
+            btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-translate" viewBox="0 0 16 16">
+  <path d="M4.545 6.714 4.11 8H3l1.862-5h1.284L8 8H6.833l-.435-1.286H4.545zm1.634-.736L5.5 3.956h-.049l-.679 2.022H6.18z"/>
+  <path d="M0 2a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v3h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-3H2a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H2zm7.138 9.995c.193.301.402.583.63.846-.748.575-1.673 1.001-2.768 1.292.178.217.451.635.555.867 1.125-.359 2.08-.844 2.886-1.494.777.665 1.739 1.165 2.93 1.472.133-.254.414-.673.629-.89-1.125-.253-2.057-.694-2.82-1.284.681-.747 1.222-1.651 1.621-2.757H14V8h-3v1.047h.765c-.318.844-.74 1.546-1.272 2.13a6.066 6.066 0 0 1-.415-.492 1.988 1.988 0 0 1-.94.31z"/>
+</svg>  မြန်မာစာသို့ပြောင်းပါ`;
+            burmese.style.display = "none";
+            english.style.display = "block";
+        } else {
+            btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-translate" viewBox="0 0 16 16">
+  <path d="M4.545 6.714 4.11 8H3l1.862-5h1.284L8 8H6.833l-.435-1.286H4.545zm1.634-.736L5.5 3.956h-.049l-.679 2.022H6.18z"/>
+  <path d="M0 2a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v3h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-3H2a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H2zm7.138 9.995c.193.301.402.583.63.846-.748.575-1.673 1.001-2.768 1.292.178.217.451.635.555.867 1.125-.359 2.08-.844 2.886-1.494.777.665 1.739 1.165 2.93 1.472.133-.254.414-.673.629-.89-1.125-.253-2.057-.694-2.82-1.284.681-.747 1.222-1.651 1.621-2.757H14V8h-3v1.047h.765c-.318.844-.74 1.546-1.272 2.13a6.066 6.066 0 0 1-.415-.492 1.988 1.988 0 0 1-.94.31z"/>
+</svg>    Change to English `;
+            english.style.display = "none";
+            burmese.style.display = "block";
+        }
+    };
+</script>
 
 </html>
