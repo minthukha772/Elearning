@@ -18,7 +18,7 @@
       <i><span sec:authentication="principal.authorities">Roles</span></i>
     </div> -->
 
-    <div class="container-custom">
+    <div class="container-custom mt-5">
       <!-- TODO -->
       <div
         th:if="${error != null}"
@@ -150,6 +150,8 @@
       <!---End of Card-->
     </div>
     <!-- End of Container -->
+
+    <div style="height: 100px;"></div>
 
     <div th:replace="@{fragments/footer}"></div>
 
