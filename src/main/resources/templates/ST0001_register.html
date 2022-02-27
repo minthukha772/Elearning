@@ -516,8 +516,7 @@
                       You Must read
                       <a
                         onclick="ClickedTermsAndConditions()"
-                        th:href="@{/guest/terms_and_conditions}"
-                        th:target="@{_blank}"
+                        style="text-decoration: underline"
                       >
                         Term &amp; Condition</a
                       >
@@ -535,12 +534,14 @@
                           th:classappend="${#fields.hasErrors('acceptTerm')}?'is-invalid':''"
                           name=""
                         />
-                        <label class="form-check-label" for="acceptTerm"
+                        <label
+                          onclick="ClickedTermsAndConditions()"
+                          class="form-check-label"
+                          for="acceptTerm"
                           >I agree to
                           <a
                             onclick="ClickedTermsAndConditions()"
-                            th:href="@{/guest/terms_and_conditions}"
-                            th:target="@{_blank}"
+                            style="text-decoration: underline"
                           >
                             Term &amp; Condition</a
                           ><span style="color: red">*</span>
@@ -661,6 +662,7 @@
   </style>
   <script>
     function ClickedTermsAndConditions() {
+      window.open("/guest/terms_and_conditions", "_blank");
       TAC = document.getElementById("iAgreeToTermCondition");
       TAC.disabled = false;
       console.log("button clicked");
