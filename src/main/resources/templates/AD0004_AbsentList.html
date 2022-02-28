@@ -39,6 +39,9 @@
 
     <title>Pyinnyar Subuu</title>
 
+    <link rel="icon" type="image/x-icon" href="/images/fav.png" />
+    <link rel="icon" type="image/x-icon" href="/images/fav.png" />
+
     <script
       type="text/javascript"
       language="javascript"
@@ -154,7 +157,7 @@
 
   <body>
     <div style="position: relative">
-        <div th:replace="@{fragments/nav}"></div>
+      <div th:replace="@{fragments/nav}"></div>
       <nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: '>'">
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a th:href="@{/admin/top/}">Top</a></li>
@@ -167,8 +170,6 @@
       <div class="container mx-auto">
         <div>
           <div class="input-group mb-3">
-  
-
             <input
               type="text"
               class="form-control"
@@ -232,8 +233,12 @@
                     <td th:text="${dr.join.userInfo.userName}"></td>
                     <td th:text="${dr.join.userInfo.userAccount.mail}"></td>
                     <td th:text="${dr.join.courseInfo.courseName}"></td>
-                    <td th:text="${#strings.substringBefore(dr.leaveDate, ' ')}"></td>
-                    <td th:text="${#strings.substringAfter(dr.join.userInfo.userAccount.role, '_')}"></td>
+                    <td
+                      th:text="${#strings.substringBefore(dr.leaveDate, ' ')}"
+                    ></td>
+                    <td
+                      th:text="${#strings.substringAfter(dr.join.userInfo.userAccount.role, '_')}"
+                    ></td>
                   </tr>
                 </tbody>
                 <tfoot>

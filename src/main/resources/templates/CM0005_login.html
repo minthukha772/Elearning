@@ -8,9 +8,11 @@
     <link rel="stylesheet" th:href="@{/css/CM0005_login.css}" />
     <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
     <title>Login</title>
+
+    <link rel="icon" type="image/x-icon" href="/images/fav.png" />
   </head>
 
-  <body style="background-color: #f0f0f0;">
+  <body style="background-color: #f0f0f0">
     <div th:replace="fragments/guestnav"></div>
 
     <!--     <div sec:authorize="isAuthenticated()">
@@ -110,7 +112,6 @@
                     placeholder="ExamplePassword001"
                     data-toggle="password"
                   />
-                  
 
                   <div
                     class="invalid-feedback"
@@ -151,7 +152,7 @@
     </div>
     <!-- End of Container -->
 
-    <div style="height: 100px;"></div>
+    <div style="height: 100px"></div>
 
     <div th:replace="@{fragments/footer}"></div>
 

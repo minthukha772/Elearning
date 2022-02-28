@@ -15,9 +15,11 @@
       integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
       crossorigin="anonymous"
     /> -->
-    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/bootstrap.css" />
     <link rel="stylesheet" href="/css/ST0001_register.css" />
     <title>Register</title>
+
+    <link rel="icon" type="image/x-icon" href="/images/fav.png" />
   </head>
 
   <body style="background-color: #f0f0f0">
@@ -186,7 +188,7 @@
 
               <ul class="list-group list-group-flush">
                 <li
-                  style="background-color: #9FDBB3;"
+                  style="background-color: #9fdbb3"
                   class="list-group-item"
                   th:each="content, index : ${syllabusList.content}"
                   th:text="${content.content}"
