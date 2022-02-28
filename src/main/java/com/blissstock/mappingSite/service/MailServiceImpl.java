@@ -51,7 +51,6 @@ public class MailServiceImpl implements MailService {
   private String email = "sys@pyinnyar-subuu.com";
   private String fromName = "PyinnyarSubuu";
 
-
   public void sendMail(
       String subject,
       String toAddresses,
@@ -86,13 +85,6 @@ public class MailServiceImpl implements MailService {
     String subject = "Registration Confirmation";
 
     String confirmationUrl = appUrl + "/verify_password?token=" + token;
-    // String message = "Congratulations, your account has been successfully
-    // created. Please go to the following link to confirm the account";
-    // String body = message + "\r\n" + confirmationUrl;
-    // System.out.println(confirmationUrl.toString());
-    // sendMail(subject, recipientAddress, "", "", body);
-
-    // implementation
 
     final Context ctx = new Context();
     ctx.setVariable("confirmationUrl", confirmationUrl);
@@ -113,42 +105,30 @@ public class MailServiceImpl implements MailService {
   }
 
   @Override
-  public void sendResetPasswordMail(UserAccount userAccount, String appUrl) {
+  public void sendResetPasswordMail(UserAccount userAccount, String appUrl) throws MessagingException {
     String token = UUID.randomUUID().toString();
     userService.createToken(userAccount, token, TokenType.PASSWORD_RESET);
 
     String recipientAddress = userAccount.getMail();
     String subject = "Reset Password";
+    String confirmationUrl = appUrl + "/resetPassword?token=" + token;
+    final Context ctx = new Context();
+    ctx.setVariable("confirmationUrl", confirmationUrl);
+    ctx.setVariable("Date", new Date());
+    ctx.setVariable("token", token);
+    ctx.setVariable("appUrl", appUrl);
+    final MimeMessage mimeMessage = mailSender.createMimeMessage();
+    final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
+    message.setSubject(subject);
+    message.setFrom("sys@pyinnyar-subuu.com");
+    message.setTo(recipientAddress);
 
-    String confirmationUrl = appUrl + "/password/verify_password?token=" + token;
-    String message = "You have requested to reset password. Please click the following link to continue: ";
-    String body = message + "\r\n" + confirmationUrl;
-    System.out.println(confirmationUrl.toString());
-    sendMail(subject, recipientAddress, "", "", body);
+    final String htmlContent = templateEngine.process("PasswordResetMail", ctx);
+
+    message.setText(htmlContent, true); // true = isHtml
+
+    this.mailSender.send(mimeMessage);
 
   }
 
-  // test impl
-  // public void sendMailWithInline(
-  // final String recipientName, final String recipientEmail
-  // )
-  // throws MessagingException {
-
-  // final Context ctx = new Context();
-  // ctx.setVariable("name", "Sai Horm Kham");
-
-  // // Prepare message using a Spring helper
-  // final MimeMessage mimeMessage = mailSender.createMimeMessage();
-  // final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true,
-  // "UTF-8"); // true = multipart
-  // message.setSubject("Example HTML email with inline image");
-  // message.setFrom("mappingsite0@gmail.com");
-  // message.setTo(recipientEmail);
-
-  // final String htmlContent = templateEngine.process("simple-mail", ctx);
-  // message.setText(htmlContent, true);
-
-  // this.mailSender.send(mimeMessage);
-
-  // }
 }

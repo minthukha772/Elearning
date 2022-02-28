@@ -95,6 +95,15 @@ public class CourseDetailsController {
         CourseInfo courseInfo = courseInfoRepository.findById(courseId).get();
         model.addAttribute("courseInfo", courseInfo);
 
+        //get classlink
+        String classLink = courseInfo.getClassLink();
+        model.addAttribute("classLink", classLink);
+
+        //get test links
+        List<Test> testList = courseInfo.getTest();
+        model.addAttribute("testList", testList);
+        model.addAttribute("testListSize", testList.size());
+
         // isCourseApprove
         boolean courseNotApprove = courseInfo.getIsCourseApproved() == false;
         model.addAttribute("courseNotApprove", courseNotApprove);
@@ -244,13 +253,16 @@ public class CourseDetailsController {
             for (JoinCourseUser jcu : join) {
                 //logging
                 logger.info("the uid of joinlist is {} and session id is {}",jcu.getUserInfo().getUid(), userId);
-                logger.info("The status of joinlist of outter scope is {}",jcu.getPaymentReceive().getPaymentStatus());
+                // logger.info("The status of joinlist of outter scope is {}",jcu.getPaymentReceive().getPaymentStatus());
 
                 //comparing two long values reference safe
                 if(String.valueOf(jcu.getUserInfo().getUid()).equals(String.valueOf(userId))){
-                    logger.info("The status of joinlist of scope id compare is {}",jcu.getPaymentReceive().getPaymentStatus());
-                    if(jcu.getPaymentReceive().getPaymentStatus().equals(PaymentStatus.COMPLETE.getValue())){
-                        logger.info("The status of joinlist of scope status compare is {}",jcu.getPaymentReceive().getPaymentStatus());
+                    // logger.info("The status of joinlist of scope id compare is {}",jcu.getPaymentReceive().getPaymentStatus());
+                    if(jcu.getPaymentReceive() == null){
+                        paymentComplete = false;
+                    }
+                    else if(jcu.getPaymentReceive().getPaymentStatus().equals(PaymentStatus.COMPLETE.getValue())){
+                        // logger.info("The status of joinlist of scope status compare is {}",jcu.getPaymentReceive().getPaymentStatus());
                         paymentComplete = true;                            
                     } 
                 }
@@ -310,6 +322,7 @@ public class CourseDetailsController {
             @ModelAttribute("courseId") Long courseId, Model model) {
         CourseInfo courseInfo = courseInfoRepository.findById(courseId).get();
         List<Test> testList = courseInfo.getTest();
+        logger.info("The size of test list is {}" + testList.size());
         Test test = new Test();
         test.setTestLink(testLink);
         test.setCourseInfo(courseInfo);
