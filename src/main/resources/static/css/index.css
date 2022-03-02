@@ -56,9 +56,13 @@
   left: 0;
   bottom: 0;
   right: 0;
-  background: rgb(43, 40, 40);
+  /* background: rgb(43, 40, 40); */
   opacity: 0.7;
 }
+
+/* div.carousel-caption{
+  background: rgb(185, 170, 170);
+} */
 
 @media (min-width: 1300px) { 
   .carousel-caption{
