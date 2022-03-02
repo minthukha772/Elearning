@@ -48,6 +48,9 @@
 
     <title>Pyinnyar Subuu</title>
 
+    <link rel="icon" type="image/x-icon" href="/images/fav.png" />
+    <link rel="icon" type="image/x-icon" href="/images/fav.png" />
+
     <script
       type="text/javascript"
       language="javascript"
@@ -403,7 +406,7 @@
           </div>
         </div>
 
-        <div class="container" >
+        <div class="container">
           <div class="">
             <div class="input-group mb-3">
               <!-- <div class="input-group-prepend" style="width: 25%;">
@@ -451,49 +454,47 @@
 
           <div class="card">
             <div class="card-body">
-              
-                <div class="table-responsive">
-                  <table
-                    id="example"
-                    class="table table-striped"
-                    style="width: 100%"
-                  >
-                    <thead>
-                      <tr>
-                        <th>No</th>
-                        <!-- <th>Name</th> -->
-                        <th>Email</th>
-                        <!-- <th>Phone Number</th> -->
-                        <th>Account Status</th>
-                        <th>Registered Date</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr th:each="dr,index:${aAllAdminList}">
-                        <td></td>
-                        <!-- <td
+              <div class="table-responsive">
+                <table
+                  id="example"
+                  class="table table-striped"
+                  style="width: 100%"
+                >
+                  <thead>
+                    <tr>
+                      <th>No</th>
+                      <!-- <th>Name</th> -->
+                      <th>Email</th>
+                      <!-- <th>Phone Number</th> -->
+                      <th>Account Status</th>
+                      <th>Registered Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr th:each="dr,index:${aAllAdminList}">
+                      <td></td>
+                      <!-- <td
                           th:text="${dr.userName}"
                           style="font-weight: bold"
                         ></td> -->
-                        <td th:text="${dr.mail}"></td>
-                        <!-- <td th:text="${dr.phoneNo}"></td> -->
-                        <td th:text="${dr.accountStatus}"></td>
-                        <td th:text="${dr.registeredDate}"></td>
-                      </tr>
-                    </tbody>
-                    <tfoot>
-                      <tr>
-                        <th>No</th>
-                        <!-- <th>Name</th> -->
-                        <th>Email</th>
-                        <!-- <th>Phone Number</th> -->
-                        <th>Account Status</th>
-                        <th>Registered Date</th>
-                      </tr>
-                    </tfoot>
-                  </table>
-                </div>
-              
+                      <td th:text="${dr.mail}"></td>
+                      <!-- <td th:text="${dr.phoneNo}"></td> -->
+                      <td th:text="${dr.accountStatus}"></td>
+                      <td th:text="${dr.registeredDate}"></td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <th>No</th>
+                      <!-- <th>Name</th> -->
+                      <th>Email</th>
+                      <!-- <th>Phone Number</th> -->
+                      <th>Account Status</th>
+                      <th>Registered Date</th>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
             </div>
           </div>
         </div>

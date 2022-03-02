@@ -17,6 +17,9 @@
         content="width=device-width, initial-scale=1, minimum-scale=1.0, user-scalable=no"
       />
       <title>Pyinnyar Subuu</title>
+
+      <link rel="icon" type="image/x-icon" href="/images/fav.png" />
+      <link rel="icon" type="image/x-icon" href="/images/fav.png" />
       <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
 
       <script
@@ -31,6 +34,8 @@
       ></script>
 
       <title>Course Registration Confirmation</title>
+
+      <link rel="icon" type="image/x-icon" href="/images/fav.png" />
 
       <script type="text/javascript">
         $(document).ready(function () {
@@ -67,7 +72,7 @@
       </script>
     </head>
   </html>
-  <body style="background-color: #f0f0f0;">
+  <body style="background-color: #f0f0f0">
     <div th:replace="@{fragments/nav}"></div>
 
     <nav
@@ -285,7 +290,6 @@
               </div>
               <div th:each="courseTime : ${courseTimeList}">
                 <div class="form-group row mb-3">
-                  
                   <div class="col-12 col-sm-3">
                     <b th:text="${courseTime.courseDays}"></b>
                   </div>
@@ -301,7 +305,7 @@
                         readonly
                       />
                     </div>
-                   
+
                     <div class="col-6">
                       <label for="time">To</label>
                       <input
