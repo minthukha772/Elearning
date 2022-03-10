@@ -8,6 +8,8 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Course List</title>
+
+    <link rel="icon" type="image/x-icon" href="/images/fav.png" />
     <!-- CSS -->
     <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
     <link
@@ -73,19 +75,29 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
           </div>
           <div class="col-md-3 col-sm-6 col-12">
             <div class="form-floating">
-              <input type="number" class="form-control" th:field="*{lowestFee}" min="0" step="1000" />
+              <input
+                type="number"
+                class="form-control"
+                th:field="*{lowestFee}"
+                min="0"
+                step="1000"
+              />
               <label for="lowestFee">Lowest Fee</label>
             </div>
           </div>
           <div class="col-md-3 col-sm-6 col-12">
             <div class="form-floating">
-              <input type="number" class="form-control" th:field="*{highestFee}"  min="0" step="1000"/>
+              <input
+                type="number"
+                class="form-control"
+                th:field="*{highestFee}"
+                min="0"
+                step="1000"
+              />
               <label for="highestFee">Highest Fee</label>
             </div>
           </div>
-          <div class="col-md-3 col-sm-6 col-12">
-          
-          </div>
+          <div class="col-md-3 col-sm-6 col-12"></div>
           <div class="col-md-3 col-sm-6 col-12 text-end">
             <button type="submit" class="btn btn-primary btn-lg">
               <svg
@@ -106,7 +118,6 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
         </div>
         <div class="pb-3 d-grid gap-2 d-md-flex justify-content-md-end">
           <!-- <button type="submit" class="btn btn-lg btn-primary">Search</button> -->
-          
         </div>
 
         <!-- End of row -->
@@ -143,7 +154,11 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
           <p th:text="${userInfo.selfDescription}"></p>
           <div sec:authorize="hasAuthority('ROLE_TEACHER')">
             <div th:if="${userInfo.userAccount.accountStatus == 'VERIFIED'}">
-              <a th:href="@{/teacher/course-registration}" class="btn btn-primary">Add Course</a>
+              <a
+                th:href="@{/teacher/course-registration}"
+                class="btn btn-primary"
+                >Add Course</a
+              >
             </div>
           </div>
         </div>
@@ -155,30 +170,35 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
       <div class="row">
         <!-- Filter -->
         <div class="col-sm-auto col-12 mb-3">
-            
           <div class="card">
             <div class="card-header">See the filtered Result</div>
             <ul class="list-group list-group-flush filterContainer"></ul>
             <div class="card-body">
-                <button class="btn btn-primary filterBtn" type="submit" >
-                  Apply
-                </button>
-                <button class="btn btn-danger clearBtn" type="submit" >
-                  Clear 
-                </button>
+              <button class="btn btn-primary filterBtn" type="submit">
+                Apply
+              </button>
+              <button class="btn btn-danger clearBtn" type="submit">
+                Clear
+              </button>
             </div>
           </div>
         </div>
         <!-- End: Filter -->
         <div class="col" id="course">
-          <p id="zero-result-msg" class="text-center text-danger mt-5" style="display: none;" th:text="${emptyMessage}">Sorry, No Search Result Found!</p>
+          <p
+            id="zero-result-msg"
+            class="text-center text-danger mt-5"
+            style="display: none"
+            th:text="${emptyMessage}"
+          >
+            Sorry, No Search Result Found!
+          </p>
           <div id="courseList" class="row g-2 my-3"></div>
         </div>
       </div>
     </div>
 
     <div th:replace="@{fragments/footer}"></div>
-
 
     <!-- JS -->
     <script

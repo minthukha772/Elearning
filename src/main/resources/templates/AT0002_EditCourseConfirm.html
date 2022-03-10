@@ -17,6 +17,9 @@
         content="width=device-width, initial-scale=1, minimum-scale=1.0, user-scalable=no"
       />
       <title>Pyinnyar Subuu</title>
+
+      <link rel="icon" type="image/x-icon" href="/images/fav.png" />
+      <link rel="icon" type="image/x-icon" href="/images/fav.png" />
       <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
 
       <script
@@ -31,6 +34,8 @@
       ></script>
 
       <title>Course Registration Confirmation</title>
+
+      <link rel="icon" type="image/x-icon" href="/images/fav.png" />
 
       <script type="text/javascript">
         $(document).ready(function () {
@@ -64,7 +69,6 @@
             document.getElementById("ifvideo").style.display = "block";
           }
         }
-
       </script>
     </head>
   </html>
@@ -105,7 +109,6 @@
         <li class="breadcrumb-item">Confirmation</li>
         <li class="breadcrumb-item">Complete</li>
       </ol>
-
     </nav>
 
     <div class="card mx-auto mt-3" style="max-width: 800px">
@@ -245,9 +248,7 @@
               th:field="*{courseId}"
               readonly
             />
-
           </div>
-          
 
           <div th:if="${classActiveLive}">
             <div th:object="${course}">
@@ -297,7 +298,6 @@
               </div>
               <div th:each="courseTime : ${courseTimeList}">
                 <div class="form-group row mb-3">
-                  
                   <div class="col-12 col-sm-3">
                     <b th:text="${courseTime.courseDays}"></b>
                   </div>
@@ -313,7 +313,7 @@
                         readonly
                       />
                     </div>
-                   
+
                     <div class="col-6">
                       <label for="time">To</label>
                       <input
