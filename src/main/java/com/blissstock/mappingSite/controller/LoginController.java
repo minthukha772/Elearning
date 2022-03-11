@@ -28,6 +28,7 @@ public class LoginController {
       String error,
       String logout,
       String message,
+      String changeSuccess,
       String resetSuccess,
       String tokenError) {
     /*
@@ -37,6 +38,9 @@ public class LoginController {
      */
     if (resetSuccess != null) {
       message = "A password reset link has been sent to your email. Please check your email to continue.";
+    }
+    if (changeSuccess != null) {
+      message = "Your password has been changed successfully please login with new password to continue.";
     }
     if (tokenError != null) {
       error = "invalid token";
