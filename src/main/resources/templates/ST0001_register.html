@@ -517,8 +517,8 @@
                       <span class="badge bg-info">Notice</span>
                       You Must read
                       <a
-                        onclick="ClickedTermsAndConditions()"
-                        style="text-decoration: underline"
+                        th:attr="onclick=|ClickedTermsAndConditions()|"
+                        style="text-decoration: underline; cursor: pointer"
                       >
                         Term &amp; Condition</a
                       >
@@ -529,21 +529,21 @@
                       <div class="form-check form-check-inline">
                         <input
                           class="form-check-input"
-                          disabled
+                          th:attr="onclick=|AgreedTC()|"
                           id="iAgreeToTermCondition"
                           type="checkbox"
                           th:field="*{acceptTerm}"
                           th:classappend="${#fields.hasErrors('acceptTerm')}?'is-invalid':''"
-                          name=""
                         />
                         <label
-                          onclick="ClickedTermsAndConditions()"
+                          th:attr="onclick=|ClickedTermsAndConditions()|"
                           class="form-check-label"
                           for="acceptTerm"
+                          style="cursor: pointer"
                           >I agree to
                           <a
-                            onclick="ClickedTermsAndConditions()"
-                            style="text-decoration: underline"
+                            th:attr="onclick=|ClickedTermsAndConditions()|"
+                            style="text-decoration: underline; cursor: pointer"
                           >
                             Term &amp; Condition</a
                           ><span style="color: red">*</span>
@@ -663,11 +663,56 @@
   } */
   </style>
   <script>
+    window.onload = function () {
+      TAC = document.getElementById("iAgreeToTermCondition");
+      console.log(sessionGet("TC"));
+      if (sessionGet("TC") === "True") {
+        TAC.disabled = false;
+        TAC.checked = true;
+      } else {
+        console.log(sessionGet("TC"));
+        TAC.disabled = true;
+      }
+    };
+    function AgreedTC() {
+      TAC = document.getElementById("iAgreeToTermCondition");
+      if(TAC.checked==true){
+      sessionSet("TC", "True");}
+      else{
+
+        sessionSet("TC", "False");
+      }
+    }
     function ClickedTermsAndConditions() {
       window.open("/guest/terms_and_conditions", "_blank");
       TAC = document.getElementById("iAgreeToTermCondition");
       TAC.disabled = false;
+
       console.log("button clicked");
+    } //set sessionStorage expire time
+    function sessionSet(key, value, expirationInMin = 5) {
+      let expirationDate = new Date(
+        new Date().getTime() + 60000 * expirationInMin
+      );
+      let newValue = {
+        value: value,
+        expirationDate: expirationDate.toISOString(),
+      };
+      window.sessionStorage.setItem(key, JSON.stringify(newValue));
+    }
+    // get from session (if the value expired it is destroyed)
+    function sessionGet(key) {
+      let stringValue = window.sessionStorage.getItem(key);
+      if (stringValue !== null) {
+        let value = JSON.parse(stringValue);
+        let expirationDate = new Date(value.expirationDate);
+        if (expirationDate > new Date()) {
+          return value.value;
+        } else {
+          window.sessionStorage.removeItem(key);
+        }
+      }
+      return null;
     }
   </script>
 </html>

@@ -165,7 +165,7 @@ public class RegisterController {
       HttpServletRequest request,
       Errors errors) {
     logger.info("POST Request, action: {}", action);
-
+    
     // back action redirects to register form
     logger.info("Action value is {}", action);
     if (action.equals("Back")) {
@@ -183,14 +183,10 @@ public class RegisterController {
     model.addAttribute("role", role);
     model.addAttribute("postAction", "/register/" + role);
 
-    if (bindingResult.hasErrors()) {
-      logger.info("Validation Error: ", bindingResult.getFieldError());
-      return "ST0001_register.html";
-    }
-
     logger.trace("Entered User Info: {}", userInfo.toString());
 
     if (action.equals("submit")) {
+      userInfo.setAcceptTerm(true);
       try {
         UserInfo savedUserInfo = userService.addUser(userInfo);
 
@@ -208,9 +204,12 @@ public class RegisterController {
         e.printStackTrace();
       }
     }
-
+    if (bindingResult.hasErrors()) {
+      logger.info("Validation Error: ", bindingResult.getFieldError());
+      return "ST0001_register.html";
+    }
     // Information For Randering Confirm
-    model.addAttribute("infoMap", userInfo.toMap());
+  model.addAttribute("infoMap", userInfo.toMap());
     return "ST0001_register.html";
   }
 
@@ -238,12 +237,11 @@ public class RegisterController {
     model.addAttribute("role", role);
     model.addAttribute("postAction", "/register/" + role);
 
-    if (bindingResult.hasErrors()) {
-      return "ST0001_register.html";
-    }
+    
 
     try {
       if (action.equals("submit")) {
+        userInfo.setAcceptTerm(true);
         try {
           UserInfo savedUserInfo = userService.addUser(userInfo);
 
@@ -264,7 +262,9 @@ public class RegisterController {
     } catch (Exception e) {
       System.out.println(e);
     }
-
+if (bindingResult.hasErrors()) {
+      return "ST0001_register.html";
+    }
     // Information For Randering Confirm
     model.addAttribute("infoMap", userInfo.toMap());
     return "ST0001_register.html";
