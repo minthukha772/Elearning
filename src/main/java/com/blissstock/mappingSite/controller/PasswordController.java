@@ -1,6 +1,7 @@
 package com.blissstock.mappingSite.controller;
 
 import javax.mail.MessagingException;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -33,9 +34,16 @@ import org.springframework.web.server.ResponseStatusException;
 @Controller
 public class PasswordController {
 
+  /**
+   *
+   */
+  private static final String REDIRECT_LOGIN_RESET_SUCCESS_TRUE = "redirect:/login?resetSuccess=true";
+
   private static final Logger logger = LoggerFactory.getLogger(
       PasswordController.class);
 
+      @Autowired
+      HttpServletRequest httpServletRequest;
   @Autowired
   UserService userService;
   @Autowired
@@ -118,8 +126,7 @@ public class PasswordController {
       BindingResult bindingResult) {
     logger.info("Post Method");
     model.addAttribute("title", "Change");
-    System.out.println(passwordDTO.toString());
-    System.out.println(token);
+   
     model.addAttribute("passwordDTO", passwordDTO);
     // System.out.println(passwordDTO.toString());
     if (bindingResult.hasErrors()) {
@@ -174,7 +181,7 @@ public class PasswordController {
     } catch (MessagingException e) {
       logger.info(e.toString());
     }
-    return "redirect:/login?resetSuccess=true";
+    return REDIRECT_LOGIN_RESET_SUCCESS_TRUE;
   }
 
   @GetMapping(path = { "{role}/change_password" })
@@ -236,8 +243,7 @@ public class PasswordController {
       Model model,
       @Valid @ModelAttribute("passwordDTO") PasswordDTO passwordDTO,
       BindingResult bindingResult) {
-    logger.info("POST request, {}", passwordDTO);
-
+  
     String title = "Change Password";
     model.addAttribute("type", "OLD_PASSWORD");
     model.addAttribute("title", title);
@@ -265,10 +271,7 @@ public class PasswordController {
     // get user email
 
     UserAccount userAccount = userSessionService.getUserAccount();
-    // System.out.println("stored psw is " + userAccount.getPassword());
-    // System.out.println(userAccount.getPassword());
-    // System.out.println(passwordEncoder.encode(passwordDTO.getOldPassword()));
-    // System.out.println(passwordEncoder.encode("a1111111"));
+  
 
     if (passwordEncoder.matches(passwordDTO.getOldPassword(), userAccount.getPassword())) {
 
@@ -279,7 +282,14 @@ public class PasswordController {
       model.addAttribute("message", "Please login with new password to continue");
       // todo navigate to complete screen;
       // model.addAttribute("title", "Login");
-      return "CM0006_change_password_screen";
+      try {
+        httpServletRequest.logout();
+        return "redirect:/login?changeSuccess=true";
+      } catch (ServletException e) {
+      
+        return "CM0006_change_password_screen";
+      }
+     
       // return "CM0005_login.html";
     } else {
       logger.info(" Password and stored password do not match");
