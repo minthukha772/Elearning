@@ -99,7 +99,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
                   th:action="@{/guest/save/course-id/{courseId}(courseId = ${courseInfo.courseId})}"
                   method="post"
                 >
-                  <button class="btn btn-primary" type="submit">Enroll</button>
+                  <button th:if="${availableStuList > 0}" class="btn btn-primary" type="submit">Enroll</button>
                 </form>
               </span>
             </span>
@@ -108,7 +108,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
                 th:action="@{/guest/save/course-id/{courseId}(courseId = ${courseInfo.courseId})}"
                 method="post"
               >
-                <button class="btn btn-primary" type="submit">Enroll</button>
+                <button th:if="${availableStuList > 0}" class="btn btn-primary" type="submit">Enroll</button>
               </form>
             </span>
 
@@ -126,6 +126,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
                   th:if="${studentNotRegistered}"
                   th:href="@{/student/enroll/{courseId}/{userId}(courseId = ${courseInfo.courseId}, userId = ${userId})}"
                   ><button
+                    th:if="${availableStuList > 0}"
                     class="btn btn-primary"
                     th:classappend="${studentRegistered == true}? 'disabled'"
                   >
@@ -145,7 +146,9 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
               th:if="${isCourseDateValid}==null"
               th:href="@{/student/enroll/{courseId}/{userId}(courseId = ${courseInfo.courseId}, userId = ${userId})}"
             >
-              <button th:if="${studentNotRegistered}" class="btn btn-primary" type="submit">Enroll</button>
+              <button th:if="${studentNotRegistered}" class="btn btn-primary" type="submit">
+              <span th:if="${availableStuList > 0}">Enroll</span>
+              </button>
             </a>
 
             <a
@@ -252,7 +255,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
             <a
               th:if="${!courseNotApprove}"
               th:href="@{'/admin/enrollStudent/course/' + ${courseInfo.courseId} }"
-              ><button class="btn btn-primary">Enroll students</button></a
+              ><button th:if="${availableStuList > 0}" class="btn btn-primary">Enroll students</button></a
             >
             <a
               th:href="@{'/admin/edit/course/' + ${courseInfo.courseId} + '/' + ${courseInfo.userInfo.uid}}"
