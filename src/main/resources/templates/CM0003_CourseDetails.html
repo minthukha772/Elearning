@@ -99,7 +99,13 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
                   th:action="@{/guest/save/course-id/{courseId}(courseId = ${courseInfo.courseId})}"
                   method="post"
                 >
-                  <button th:if="${availableStuList > 0}" class="btn btn-primary" type="submit">Enroll</button>
+                  <button
+                    th:if="${availableStuList > 0}"
+                    class="btn btn-primary"
+                    type="submit"
+                  >
+                    Enroll
+                  </button>
                 </form>
               </span>
             </span>
@@ -108,7 +114,13 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
                 th:action="@{/guest/save/course-id/{courseId}(courseId = ${courseInfo.courseId})}"
                 method="post"
               >
-                <button th:if="${availableStuList > 0}" class="btn btn-primary" type="submit">Enroll</button>
+                <button
+                  th:if="${availableStuList > 0}"
+                  class="btn btn-primary"
+                  type="submit"
+                >
+                  Enroll
+                </button>
               </form>
             </span>
 
@@ -146,8 +158,12 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
               th:if="${isCourseDateValid}==null"
               th:href="@{/student/enroll/{courseId}/{userId}(courseId = ${courseInfo.courseId}, userId = ${userId})}"
             >
-              <button th:if="${studentNotRegistered}" class="btn btn-primary" type="submit">
-              <span th:if="${availableStuList > 0}">Enroll</span>
+              <button
+                th:if="${studentNotRegistered}"
+                class="btn btn-primary"
+                type="submit"
+              >
+                <span th:if="${availableStuList > 0}">Enroll</span>
               </button>
             </a>
 
@@ -245,18 +261,43 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
 
           <!-- Admin -->
           <div th:if="${admin == 'ADMIN'}">
+
+            <!-- live class  -->
             <span th:if="${isCourseDateValid}!=null">
               <span th:if="${!isCourseDateValid}">
                 <div class="text-danger">
                   This course has already passed the starting date
                 </div>
-              </span></span
-            >
-            <a
-              th:if="${!courseNotApprove}"
-              th:href="@{'/admin/enrollStudent/course/' + ${courseInfo.courseId} }"
-              ><button th:if="${availableStuList > 0}" class="btn btn-primary">Enroll students</button></a
-            >
+              </span>
+
+              <span th:if="${isCourseDateValid}">
+                <a
+                  th:if="${!courseNotApprove}"
+                  th:href="@{'/admin/enrollStudent/course/' + ${courseInfo.courseId} }"
+                  ><button
+                    th:if="${availableStuList > 0}"
+                    class="btn btn-primary"
+                  >
+                    Enroll students
+                  </button></a
+                >
+              </span>
+            </span>
+
+            <!-- video class -->
+            <span th:if="${isCourseDateValid}==null">
+              <a
+                th:if="${!courseNotApprove}"
+                th:href="@{'/admin/enrollStudent/course/' + ${courseInfo.courseId} }"
+                ><button
+                  th:if="${availableStuList > 0}"
+                  class="btn btn-primary"
+                >
+                  Enroll students
+                </button></a
+              >
+            </span>
+
             <a
               th:href="@{'/admin/edit/course/' + ${courseInfo.courseId} + '/' + ${courseInfo.userInfo.uid}}"
               ><button class="btn btn-primary">Edit Course</button></a
