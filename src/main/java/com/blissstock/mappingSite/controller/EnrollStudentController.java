@@ -1,11 +1,13 @@
 package com.blissstock.mappingSite.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import com.blissstock.mappingSite.dto.JoinCourseDTO;
 import com.blissstock.mappingSite.dto.UserRegisterDTO;
 import com.blissstock.mappingSite.entity.CourseInfo;
+import com.blissstock.mappingSite.entity.JoinCourseUser;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
@@ -107,6 +109,28 @@ public class EnrollStudentController {
         // System.out.println("uid and cid is :" + uid + " " + cid);
 
         UserRole userRole = userSessionService.getRole();
+
+        //admin enroll course limit
+        CourseInfo courseInfo = courseRepo.findById(cid).get();
+        Integer maxStudent = courseInfo.getMaxStu();
+        List<UserInfo> studentList = new ArrayList<>();
+        for (JoinCourseUser joinCourseUser : courseInfo.getJoin()) {
+            if (joinCourseUser.getUserInfo().getUserAccount().getRole().equals(UserRole.STUDENT.getValue()))
+                studentList.add(joinCourseUser.getUserInfo());
+        }
+        Integer stuListSize = studentList.size();
+        Integer availableStuList;
+        try {
+            availableStuList = maxStudent - stuListSize;
+        } catch (NullPointerException e) {
+            availableStuList = 0;
+        }
+
+        if(availableStuList <= 0){
+            return "redirect:/error/404";
+        }
+
+
         if (userRole.equals(UserRole.SUPER_ADMIN) || userRole.equals(UserRole.ADMIN)) {
             JoinCourseDTO joinCourseDTO = new JoinCourseDTO();
             joinCourseDTO.setUid(uid);
