@@ -67,11 +67,14 @@ public class PaymentInfoServiceImpl implements PaymentInfoService {
     for (PaymentAccount paymentAccount : paymentAccounts) {
       paymentAccount.setUserInfo(userInfo);
       for (BankInfo bankInfo : bankInfos) {
-        if (bankInfo.getBankId() == paymentAccount.getCheckedBank()) {
+        logger.info("I was here outside the bank loop!");
+        if (String.valueOf(bankInfo.getBankId()).equals(String.valueOf(paymentAccount.getCheckedBank()))) {
+          logger.info("I was here inside the bank loop!");
           paymentAccount.setBankInfo(bankInfo);
         }
       }
     }
+    logger.debug("The bank accounts are {} and {}", paymentAccounts.get(0).getBankInfo(), paymentAccounts.get(1).getBankInfo());
     paymentAccountRepository.saveAll(paymentAccounts);
   }
 }

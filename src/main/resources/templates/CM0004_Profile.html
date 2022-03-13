@@ -319,7 +319,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form id="paymentPost" method="post" th:action="@{__${#httpServletRequest.requestURI}__/edit/payment/}"
+          <form id="paymentPost" method="post" th:action="@{__${#httpServletRequest.requestURI}__edit/payment/}"
             th:object="${paymentInfoDTO}">
             <input type="hidden" th:field="*{primaryAccount.paymentAccountId}" />
             <input type="hidden" th:field="*{secondaryAccount.paymentAccountId}" />
