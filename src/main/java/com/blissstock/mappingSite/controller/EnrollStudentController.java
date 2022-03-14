@@ -126,6 +126,7 @@ public class EnrollStudentController {
             availableStuList = 0;
         }
 
+        //TODO
         if(availableStuList <= 0){
             return "redirect:/error/404";
         }
