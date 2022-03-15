@@ -158,11 +158,13 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
                 Payment
               </button></a
             >
-            <a
+
+            <!-- Disable Take A Leave -->
+            <!-- <a
               th:if="${studentRegistered}"
               th:href="@{'/student/leave/'+ ${courseInfo.courseId} +'?course_name='+${courseInfo.courseName}+'&teacher_name='+ ${courseInfo.UserInfo.userName}}"
               ><button class="btn btn-primary">Take a Leave</button></a
-            >
+            > -->
             <!-- <a
               th:href="@{'/student/review-list/course_id/' + ${courseInfo.courseId}}"
               ><button class="btn btn-primary">Reviews</button></a
@@ -190,11 +192,12 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
               th:href="@{'/teacher/edit/'+ ${courseInfo.courseId}}"
               ><button class="btn btn-primary">Edit Course</button></a
             >
-            <a
+             <!-- Disable Take A Leave -->
+            <!-- <a
               th:if="${teacherRegistered}"
               th:href="@{'/teacher/leave/'+ ${courseInfo.courseId} +'?course_name='+${courseInfo.courseName}+'&teacher_name='+ ${courseInfo.UserInfo.userName}}"
               ><button class="btn btn-primary">Take a Leave</button></a
-            >
+            > -->
             <a
               th:if="${teacherRegistered}"
               th:href="@{'/teacher/student-list/'+ ${courseInfo.courseId}}"
@@ -835,12 +838,13 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
                   <i class="fa-solid fa-trash-can"></i>
                 </button>
               </td>
-              <td>
+               <!-- Disable Take A Leave --> 
+              <!-- <td>
                 <a
                   th:href="@{'/admin/leave/'+${courseInfo.courseId}+'/'+${courseInfo.UserInfo.uid}+'?course_name='+${courseInfo.courseName}+'&teacher_name='+${courseInfo.UserInfo.userName}}"
                   ><button class="btn btn-primary">Take a Leave</button></a
                 >
-              </td>
+              </td> -->
             </tr>
           </tbody>
         </table>

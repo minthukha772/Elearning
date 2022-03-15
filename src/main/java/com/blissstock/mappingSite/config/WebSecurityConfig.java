@@ -69,6 +69,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .permitAll()
         .antMatchers("/images/**", "/css/**", "/js/**")
         .permitAll()
+        .antMatchers("/syllabus_details/course_id/**")
+        .permitAll()
         .antMatchers("/student/**")
         .hasAnyAuthority(UserRole.STUDENT.getValue())
         .antMatchers("/teacher/**")
