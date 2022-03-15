@@ -153,9 +153,14 @@ public class PasswordController {
       userAccount.setPassword(passwordEncoder.encode(passwordDTO.getPassword()));
       userService.updateUserAccount(userAccount);
       userService.setAsUsedToken(token);
-      model.addAttribute("success", "Password Change Success");
-      model.addAttribute("message", "Please login with new password to continue");
-      return "CM006_reset_password_screen";
+      //
+      try {
+        httpServletRequest.logout();
+        return "redirect:/login?changeSuccess=true";
+      } catch (ServletException e) {
+      
+        return "CM0006_change_password_screen";
+      }
     }
 
   }
