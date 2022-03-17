@@ -176,10 +176,10 @@ public class CourseDetailsController {
         model.addAttribute("averageFloat", averageFloat);
 
         String classType = courseInfo.getClassType();
-        boolean isLiveClass = classType.equals("LIVE");
+        boolean isLiveClass = classType.toUpperCase().equals("LIVE");
         model.addAttribute("isLiveClass", isLiveClass);
 
-        if (classType.equals(ClassType.LIVE.getValue())) {
+        if (classType.toUpperCase().equals(ClassType.LIVE.getValue())) {
             LocalDateTime now = LocalDateTime.now();
             Instant currentDate = now.toInstant(ZoneOffset.UTC);
             Instant startDate = courseInfo.getStartDate().toInstant();

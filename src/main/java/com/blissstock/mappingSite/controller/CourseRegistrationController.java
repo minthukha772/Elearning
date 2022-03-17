@@ -86,6 +86,8 @@ public class CourseRegistrationController {
 
         }
 
+// TODO WHY 
+
         courseInfo.setClassType("VIDEO");
         
         model.addAttribute("course", courseInfo);
@@ -139,7 +141,8 @@ public class CourseRegistrationController {
         CourseTime courseTime4 = new CourseTime();
         CourseTime courseTime5 = new CourseTime();
         CourseTime courseTime6 = new CourseTime();
-        if(course.getClassType().equals("LIVE")){
+
+        if(course.getClassType().toLowerCase().equals("live")){
 
             model.addAttribute("classActiveLive", true);
             
@@ -235,6 +238,8 @@ public class CourseRegistrationController {
 
         System.out.println("HoeHoe" + ctList);
         for(CourseTime courseTime : ctList){
+            //set to upper case
+            course.setClassType(course.getClassType().toUpperCase());
             courseTime.setCourseInfo(course);
             courseTimeRepo.save(courseTime);
         }
