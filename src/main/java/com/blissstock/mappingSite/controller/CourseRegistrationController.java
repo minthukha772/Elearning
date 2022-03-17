@@ -85,7 +85,9 @@ public class CourseRegistrationController {
             logger.info("Teacher ID for course registration {}",uid);
 
         }
+
 // TODO WHY 
+
         courseInfo.setClassType("VIDEO");
         
         model.addAttribute("course", courseInfo);
@@ -139,6 +141,7 @@ public class CourseRegistrationController {
         CourseTime courseTime4 = new CourseTime();
         CourseTime courseTime5 = new CourseTime();
         CourseTime courseTime6 = new CourseTime();
+
         if(course.getClassType().toLowerCase().equals("live")){
 
             model.addAttribute("classActiveLive", true);
