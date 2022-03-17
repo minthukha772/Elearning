@@ -86,7 +86,7 @@ public class CourseRegistrationController {
 
         }
 
-        courseInfo.setClassType("video");
+        courseInfo.setClassType("VIDEO");
         
         model.addAttribute("course", courseInfo);
         
@@ -139,7 +139,7 @@ public class CourseRegistrationController {
         CourseTime courseTime4 = new CourseTime();
         CourseTime courseTime5 = new CourseTime();
         CourseTime courseTime6 = new CourseTime();
-        if(course.getClassType().equals("live")){
+        if(course.getClassType().equals("LIVE")){
 
             model.addAttribute("classActiveLive", true);
             
