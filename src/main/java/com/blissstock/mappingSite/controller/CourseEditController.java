@@ -63,7 +63,7 @@ public class CourseEditController {
         if (course != null) {
             // List<CourseTime> courseTimeList = new ArrayList<>();
 
-            if (course.getClassType().toUpperCase().equals("LIVE")) {
+            if (course.getClassType().equals("LIVE")) {
 
                 model.addAttribute("classActiveLive", true);
 
@@ -195,7 +195,7 @@ public class CourseEditController {
         CourseTime courseTime4 = new CourseTime();
         CourseTime courseTime5 = new CourseTime();
         CourseTime courseTime6 = new CourseTime();
-        if (course.getClassType().toUpperCase().equals("LIVE")) {
+        if (course.getClassType().equals("LIVE")) {
 
             model.addAttribute("classActiveLive", true);
 
@@ -298,7 +298,7 @@ public class CourseEditController {
         CourseInfo updateCourse = courseInfoRepo.findById(course.getCourseId()).get();
         logger.info("Get Requested {}", updateCourse);
         System.out.print("Update Info: " + updateCourse);
-        if (classType.toUpperCase().equals("LIVE")) {
+        if (classType.equals("LIVE")) {
             System.out.print("It works!");
             updateCourse.setMaxStu(course.getMaxStu());
             updateCourse.setStartDate(course.getStartDate());
