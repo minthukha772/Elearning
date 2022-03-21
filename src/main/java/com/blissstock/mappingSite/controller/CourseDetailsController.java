@@ -199,15 +199,16 @@ public class CourseDetailsController {
         model.addAttribute("syllabusSize", syllabusSize);
 
         // first syllabus
-        if (syllabusSize > 0) {
-            Syllabus firstSyllabus = syllabusList.get(0);
+        if (syllabusSize > 0 ) {
+            Syllabus firstSyllabus = syllabusList.get(0);  
             String firstContent = firstSyllabus.getContent().get(0).getContent();
             model.addAttribute("firstSyllabus", firstSyllabus);
             model.addAttribute("firstContent", firstContent);
-            syllabusList.remove(0);
+            syllabusList.remove(0);    
         }
-
         model.addAttribute("syllabusList", syllabusList);
+
+        
 
         // Get the remaining number of students who can join course
         Integer maxStudent = courseInfo.getMaxStu();

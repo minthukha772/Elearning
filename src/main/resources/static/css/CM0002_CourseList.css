@@ -103,6 +103,11 @@
   vertical-align: middle\9;
 }
 
+/* Error Message fro btn */
+.not-allowed {
+  font-size: 15px;
+  cursor: default;  
+}
 
 /* }
 .paginationjs.paginationjs-theme-blue

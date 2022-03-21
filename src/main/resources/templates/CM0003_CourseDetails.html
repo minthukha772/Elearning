@@ -464,15 +464,18 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
 
         <!-- accordian fix-->
         <div class="accordion" id="syllabusAccordion">
+          
           <div class="accordion-item" th:if="${syllabusSize > 0}">
+            
             <h4 class="accordion-header" id="headingOne">
               <button
-                class="accordion-button"
+                class="accordion-button collapsed"
                 type="button"
                 data-bs-toggle="collapse"
                 data-bs-target="#collapseOne"
+                data-parent="#accordion"
                 aria-expanded="true"
-                aria-controls="collapseOne"
+                aria-controls="#collapseOne"
                 th:text="${firstSyllabus.title}"
               >
                 Accordion Item #1
@@ -484,7 +487,11 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
               aria-labelledby="headingOne"
               data-bs-parent="#syllabusAccordion"
             >
-              <div class="accordion-body" th:text="${firstContent}">
+            
+              <div class="accordion-body" 
+              th:each="fct:${firstSyllabus.content}"
+              th:text= "${fct.content}" > 
+
                 <strong>This is the first item's accordion body.</strong> It is
                 shown by default, until the collapse plugin adds the appropriate
                 classes that we use to style each element. These classes control
@@ -498,8 +505,8 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
             </div>
           </div>
 
-          <div th:each="sl:${syllabusList}">
-            <div class="accordion-item">
+          <div th:each="sl:${syllabusList}" >
+            <div class="accordion-item" >
               <h4 class="accordion-header" th:id="${'heading' + sl.syllabusId}">
                 <button
                   class="accordion-button collapsed"

@@ -160,6 +160,16 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
                 >Add Course</a
               >
             </div>
+
+            <div th:if="${userInfo.userAccount.accountStatus != 'VERIFIED'}">
+              <div
+                th:href="@{/teacher/course-registration}"
+                class=" btn btn-dark btn-sm btn-block  text-danger rounded not-allowed">
+                You can't create courses yet.
+                Please wait for admin verification.
+                </div>
+            </div>
+
           </div>
         </div>
       </div>
