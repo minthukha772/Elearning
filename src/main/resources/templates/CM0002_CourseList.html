@@ -164,9 +164,9 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
             <div th:if="${userInfo.userAccount.accountStatus != 'VERIFIED'}">
               <div
                 th:href="@{/teacher/course-registration}"
-                class=" btn btn-dark btn-sm btn-block  text-danger rounded not-allowed">
-                You can't create courses yet.
-                Please wait for admin verification.
+                class=" btn  btn-sm btn-block  rounded not-allowed errmessages">
+<pre>It will takes 1 or 2 days for the Admin Confirmation. 
+       After the Admin confirmation, you can proceed the course registration.</pre>
                 </div>
             </div>
 
