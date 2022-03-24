@@ -302,21 +302,20 @@
                                       </div>
                                 </div>
                             </div>
-                                <div class="form-group row">
+                                <div class="form-group row" > 
                                     <div class="col-lg-12 text-center">
-                                        <button id="btnReg" type="submit"
-                                            class="btnColor btn btn-spacing btn-primary center-block" style="width: 150px;"
-                                            OnClick="btnRegister_Click">Submit</button>
-
-                                    </div>
+                                        <a th:href="@{/admin/payment-list}"
+                                        id="btnReg" type="submit"
+                                        class="btnColor btn btn-spacing btn-primary center-block" style="width: 150px;"
+                                            OnClick="btnRegister_Click">
+                                            Submit
+                                        </a>
+                                    </div>   
                                 </div>
                         </form>
-
                     <br>
-
                 </div>
             </div>
-
     </div>
 
     <div th:replace="@{fragments/footer}"></div>

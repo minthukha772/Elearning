@@ -368,3 +368,13 @@ li {
   background: #eee;
   color: #666;
 }
+
+
+/* errmessages can't verification */
+.errmessages{
+  font-size: 25px;
+  color: #6e3d02;
+  font-weight: 600;
+  background:linear-gradient(270deg,#d569f0,#69e2f0);
+  /* background: linear-gradient(#b8dce6,#dfa5f2); */
+}
