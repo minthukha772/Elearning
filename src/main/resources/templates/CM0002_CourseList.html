@@ -3,6 +3,10 @@
   <!-- <html xmlns:th="http://www.thymeleaf.org"
 xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
+
+
+
+
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -160,16 +164,6 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
                 >Add Course</a
               >
             </div>
-
-            <div th:if="${userInfo.userAccount.accountStatus != 'VERIFIED'}">
-              <div
-                th:href="@{/teacher/course-registration}"
-                class=" btn btn-dark btn-sm btn-block  text-danger rounded not-allowed">
-                You can't create courses yet.
-                Please wait for admin verification.
-                </div>
-            </div>
-
           </div>
         </div>
       </div>
@@ -179,7 +173,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
     <div class="container-fluid">
       <div class="row">
         <!-- Filter -->
-        <div class="col-sm-auto col-12 mb-3">
+        <div class="col-sm-auto col-6 mb-3">
           <div class="card">
             <div class="card-header">See the filtered Result</div>
             <ul class="list-group list-group-flush filterContainer"></ul>
@@ -194,19 +188,32 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
           </div>
         </div>
         <!-- End: Filter -->
-        <div class="col" id="course">
-          <p
-            id="zero-result-msg"
-            class="text-center text-danger mt-5"
-            style="display: none"
-            th:text="${emptyMessage}"
-          >
-            Sorry, No Search Result Found!
-          </p>
-          <div id="courseList" class="row g-2 my-3"></div>
+
+      <div class="col-sm-auto col-6 mb-3">
+        <div th:if="${userInfo.userAccount.accountStatus != 'VERIFIED'}">
+            <div
+              th:href="@{/teacher/course-registration}"
+              class=" btnbtn-sm btn-block  rounded not-allowed ms-5 errormessages1" >
+              <img src="/images/warning.png" style="width: 75px; height: 70px;">     
+              <div class="ms-5" style="display: inline;">It will take 1 or 2 days for the Admin Confirmation.<br/>
+                  <span class="ms-4">After the Admin confirmation, you can proceed the course registration.</span>
+              </div>
+            </div>
+          <div class="col " id="course">
+            <p
+              id="zero-result-msg"
+              class="text-center text-danger mt-5 ms-5 errormessages2"
+              style="display: none"
+              th:text="${emptyMessage}"
+            >
+              Sorry, No Search Result Found!
+            </p>
+            <div id="courseList" class="row g-2 my-3"></div>
+          </div>
         </div>
       </div>
     </div>
+  </div>
 
     <div th:replace="@{fragments/footer}"></div>
 

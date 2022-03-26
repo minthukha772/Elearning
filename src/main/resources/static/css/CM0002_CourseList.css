@@ -368,3 +368,17 @@ li {
   background: #eee;
   color: #666;
 }
+
+/* errormessges */
+
+.errormessages1{
+  background-color: #fccb77;
+  color: red;
+  font-size: 130%;
+  margin-left: 150px !important;
+}
+
+.errormessages2{
+  font-size: 130%;
+  margin-left: 150px !important;
+}

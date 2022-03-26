@@ -108,13 +108,13 @@ public class CompleteScreenController {
 
     @RequestMapping("/teacherAccount/register/complete")
     public String TeacherRegisterComplete(Model model) {
-        String header3 = "Teacher Register Complete";
-        String header5 = "Congratulation!";
-        String paragraph = "Thank you very much for your registration. You are completed in registration process. Please check your email to start using your account.";
+        String header3 = "Please Check Your Email";
+        String paragraph = "Thank you very much for your registration at Pyinnyar Subuu website.";
+        String header4 = "Please check your eamil to start using your account";
         model.addAttribute("header3", header3);
-        model.addAttribute("header5", header5);
         model.addAttribute("paragraph", paragraph);
-        model.addAttribute("buttonName", "Go to Top Page");
+        model.addAttribute("header4", header4);
+        // model.addAttribute("buttonName", "Go to Top Page");
         // List<String> breadcrumbList = new ArrayList<>();
         // breadcrumbList.add("Teacher");
         // breadcrumbList.add("Register");
