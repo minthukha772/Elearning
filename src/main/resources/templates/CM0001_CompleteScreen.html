@@ -56,8 +56,18 @@
           const regExp = new RegExp(location.host);
           return regExp.test(prevPage);
         }
+
+      
+
       </script>
     </head>
+
+    <style>
+       .parcolors{
+        color: red;
+        font-size: 21px;
+ }
+    </style>
 
     <body>
       <div th:replace="@{fragments/nav}"></div>
@@ -100,19 +110,23 @@
           </ol>
         </nav>
 
+
         <h3 class="text-center " th:text="${header3}">
           <!-- <span class="badge bg-secondary">New</span> -->
         </h3><br />
+
         <div
           class="card mx-auto shadow-sm rounded bg-body"
           style="max-width: 540px"
         >
           <!-- <h5 class="card-header">Featured</h5> -->
           <div class="card-body">
+
            
             <p class="card-text text-center fontsizes" th:text="${paragraph}" style="font-size: 22px;"></p>
             <h5 class="text-center " th:text="${header4}" style="color: red;"></h5><br/>
             <!-- <span th:if="${backButton!=null}">
+
               <a
                 th:href="@{${backButton}}"
                 class="btn btn-primary"

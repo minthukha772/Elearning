@@ -511,7 +511,10 @@
                   </div>
                 </div>
 
-                <div th:classappend="${task=='Register'}?'':'visually-hidden'">
+                <div
+                  th:classappend="${task=='Register'}?'':'visually-hidden'"
+                  id="TC"
+                >
                   <div class="form-group mt-md-4">
                     <div class="mb-2">
                       <span class="badge bg-info">Notice</span>
@@ -664,7 +667,16 @@
   </style>
   <script>
     window.onload = function () {
+      tc = document.getElementById("TC");
+
       TAC = document.getElementById("iAgreeToTermCondition");
+
+      if (tc.className === "visually-hidden") {
+    
+        TAC.checked = true;
+        return;
+      }
+
       console.log(sessionGet("TC"));
       if (sessionGet("TC") === "True") {
         TAC.disabled = false;
@@ -676,10 +688,9 @@
     };
     function AgreedTC() {
       TAC = document.getElementById("iAgreeToTermCondition");
-      if(TAC.checked==true){
-      sessionSet("TC", "True");}
-      else{
-
+      if (TAC.checked == true) {
+        sessionSet("TC", "True");
+      } else {
         sessionSet("TC", "False");
       }
     }
