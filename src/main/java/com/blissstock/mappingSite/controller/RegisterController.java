@@ -1,5 +1,6 @@
 package com.blissstock.mappingSite.controller;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
@@ -165,7 +166,7 @@ public class RegisterController {
       HttpServletRequest request,
       Errors errors) {
     logger.info("POST Request, action: {}", action);
-    
+
     // back action redirects to register form
     logger.info("Action value is {}", action);
     if (action.equals("Back")) {
@@ -209,7 +210,7 @@ public class RegisterController {
       return "ST0001_register.html";
     }
     // Information For Randering Confirm
-  model.addAttribute("infoMap", userInfo.toMap());
+    model.addAttribute("infoMap", userInfo.toMap());
     return "ST0001_register.html";
   }
 
@@ -237,20 +238,30 @@ public class RegisterController {
     model.addAttribute("role", role);
     model.addAttribute("postAction", "/register/" + role);
 
-    
-
     try {
       if (action.equals("submit")) {
         userInfo.setAcceptTerm(true);
         try {
           UserInfo savedUserInfo = userService.addUser(userInfo);
 
-          String appUrl = request.getServerName() + // "localhost"
-              ":" +
-              request.getServerPort(); // "8080"
-          mailService.sendVerificationMail(
-              savedUserInfo.getUserAccount(),
-              appUrl);
+          new Thread(new Runnable() {
+            public void run() {
+              try {
+
+                String appUrl = request.getServerName() + // "localhost"
+                    ":" +
+                    request.getServerPort(); // "8080"
+                mailService.sendVerificationMail(
+                    savedUserInfo.getUserAccount(),
+                    appUrl);
+
+                mailService.SendAdminNewTeacher(appUrl);
+              } catch (MessagingException e) {
+                logger.info(e.toString());
+              }
+            }
+          }).start();
+
           return "redirect:/teacherAccount/register/complete";
         } catch (UserAlreadyExistException e) {
           e.printStackTrace();
@@ -262,7 +273,7 @@ public class RegisterController {
     } catch (Exception e) {
       System.out.println(e);
     }
-if (bindingResult.hasErrors()) {
+    if (bindingResult.hasErrors()) {
       return "ST0001_register.html";
     }
     // Information For Randering Confirm

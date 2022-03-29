@@ -64,7 +64,6 @@ public class CompleteScreenController {
         model.addAttribute("paragraph", paragraph);
         model.addAttribute("header4", header4);
 
-        
         model.addAttribute("buttonName", "Go to Top Page");
         // List<String> breadcrumbList = new ArrayList<>();
         // breadcrumbList.add("Student");
@@ -122,7 +121,6 @@ public class CompleteScreenController {
         model.addAttribute("header3", header3);
         model.addAttribute("paragraph", paragraph);
 
-        model.addAttribute("header4", header4);
         // model.addAttribute("buttonName", "Go to Top Page");
 
         // List<String> breadcrumbList = new ArrayList<>();
