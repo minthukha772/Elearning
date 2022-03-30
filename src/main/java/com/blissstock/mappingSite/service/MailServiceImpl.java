@@ -48,7 +48,7 @@ public class MailServiceImpl implements MailService {
    * private MessageSource messages;
    */
 
-  private String email = "sys@pyinnyar-subuu.com";
+  private String email = "shwe.poe.eain.x23@bliss-stock.com";
   private String fromName = "PyinnyarSubuu";
 
   public void sendMail(
@@ -95,7 +95,7 @@ public class MailServiceImpl implements MailService {
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
     message.setSubject(subject);
-    message.setFrom("sys@pyinnyar-subuu.com");
+    message.setFrom("shwe.poe.eain.x23@bliss-stock.com");
     message.setTo(recipientAddress);
 
     final String htmlContent = templateEngine.process("sampleCss", ctx);
@@ -106,7 +106,7 @@ public class MailServiceImpl implements MailService {
 
   public void SendAdminNewTeacher(String appUrl) throws MessagingException {
 
-    String recipientAddress = "sys@pyinnyar-subuu.com";
+    String recipientAddress = "shwe.poe.eain.x23@bliss-stock.com";
     String subject = "New Teacher Has Registered";
 
     appUrl = appUrl + "/admin/teacher-list";
@@ -120,10 +120,36 @@ public class MailServiceImpl implements MailService {
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
     message.setSubject(subject);
-    message.setFrom("sys@pyinnyar-subuu.com");
+    message.setFrom("shwe.poe.eain.x23@bliss-stock.com");
     message.setTo(recipientAddress);
 
     final String htmlContent = templateEngine.process("NewTeacherRegisteMail", ctx);
+    message.setText(htmlContent, true); // true = isHtml
+
+    this.mailSender.send(mimeMessage);
+  }
+
+  //SendAdminNewStudent
+  public void SendAdminNewStudent(String appUrl) throws MessagingException {
+
+    String recipientAddress = "shwe.poe.eain.x23@bliss-stock.com";
+    String subject = "New Student Has Registered";
+
+    appUrl = appUrl + "/admin/student-list";
+
+    final Context ctx = new Context();
+    ctx.setVariable("confirmationUrl", "");
+    ctx.setVariable("Date", new Date());
+
+    ctx.setVariable("appUrl", appUrl);
+
+    final MimeMessage mimeMessage = mailSender.createMimeMessage();
+    final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
+    message.setSubject(subject);
+    message.setFrom("shwe.poe.eain.x23@bliss-stock.com");
+    message.setTo(recipientAddress);
+
+    final String htmlContent = templateEngine.process("NewStudentRegisterMail", ctx);
     message.setText(htmlContent, true); // true = isHtml
 
     this.mailSender.send(mimeMessage);
@@ -133,7 +159,9 @@ public class MailServiceImpl implements MailService {
   public void sendResetPasswordMail(UserAccount userAccount, String appUrl) throws MessagingException {
     String token = UUID.randomUUID().toString();
     userService.createToken(userAccount, token, TokenType.PASSWORD_RESET);
+
     logger.info("Password resst requesst from :" + userAccount.getMail());
+
     String recipientAddress = userAccount.getMail();
     String subject = "Reset Password";
     String confirmationUrl = appUrl + "/resetPassword?token=" + token;
@@ -145,7 +173,7 @@ public class MailServiceImpl implements MailService {
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
     message.setSubject(subject);
-    message.setFrom("sys@pyinnyar-subuu.com");
+    message.setFrom("shwe.poe.eain.x23@bliss-stock.com");
     message.setTo(recipientAddress);
 
     final String htmlContent = templateEngine.process("PasswordResetMail", ctx);

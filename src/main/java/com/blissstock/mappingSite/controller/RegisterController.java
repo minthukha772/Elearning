@@ -165,7 +165,7 @@ public class RegisterController {
       @RequestParam(value = "action", required = true) String action,
       HttpServletRequest request,
       Errors errors) {
-    logger.info("POST Request, action: {}", action);
+    // logger.info("POST Request, action: {}", action);
 
     // back action redirects to register form
     logger.info("Action value is {}", action);
@@ -178,25 +178,37 @@ public class RegisterController {
       return "ST0001_register.html";
     }
 
-    //
+    
     String role = "student";
     model.addAttribute("task", "Register");
     model.addAttribute("role", role);
     model.addAttribute("postAction", "/register/" + role);
 
-    logger.trace("Entered User Info: {}", userInfo.toString());
+    try{  
 
     if (action.equals("submit")) {
       userInfo.setAcceptTerm(true);
+
       try {
         UserInfo savedUserInfo = userService.addUser(userInfo);
+        new Thread(new Runnable() {
+          public void run(){
+            try{
 
-        String appUrl = request.getServerName() + // "localhost"
-            ":" +
-            request.getServerPort(); // "8080"
-        mailService.sendVerificationMail(
-            savedUserInfo.getUserAccount(),
-            appUrl);
+              String appUrl = request.getServerName() + // "localhost"
+              ":" +
+              request.getServerPort(); // "8080"
+              mailService.sendVerificationMail(
+              savedUserInfo.getUserAccount(),
+              appUrl);
+
+              mailService.SendAdminNewStudent(appUrl);
+            }catch (MessagingException e){
+              logger.info(e.toString());
+            }
+          }
+        }).start();
+  
         return "redirect:/studentAccount/register/complete";
       } catch (UserAlreadyExistException e) {
         e.printStackTrace();
@@ -205,6 +217,10 @@ public class RegisterController {
         e.printStackTrace();
       }
     }
+  }catch (Exception e) {
+      System.out.println(e);
+    }
+  
     if (bindingResult.hasErrors()) {
       logger.info("Validation Error: ", bindingResult.getFieldError());
       return "ST0001_register.html";
@@ -230,7 +246,6 @@ public class RegisterController {
       model.addAttribute("task", "Register");
       model.addAttribute("role", "teacher");
       model.addAttribute("postAction", "/register/" + "teacher");
-
       return "ST0001_register.html";
     }
     String role = "teacher";
@@ -256,6 +271,7 @@ public class RegisterController {
                     appUrl);
 
                 mailService.SendAdminNewTeacher(appUrl);
+                
               } catch (MessagingException e) {
                 logger.info(e.toString());
               }
