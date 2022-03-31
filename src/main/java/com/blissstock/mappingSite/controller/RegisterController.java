@@ -184,30 +184,31 @@ public class RegisterController {
     model.addAttribute("role", role);
     model.addAttribute("postAction", "/register/" + role);
 
-    try{  
+    try {
+      if (action.equals("submit")) {
+        userInfo.setAcceptTerm(true);
+        try {
+          UserInfo savedUserInfo = userService.addUser(userInfo);
 
-    if (action.equals("submit")) {
-      userInfo.setAcceptTerm(true);
+          new Thread(new Runnable() {
+            public void run() {
+              try {
 
-      try {
-        UserInfo savedUserInfo = userService.addUser(userInfo);
-        new Thread(new Runnable() {
-          public void run(){
-            try{
+                String appUrl = request.getServerName() + // "localhost"
+                    ":" +
+                    request.getServerPort(); // "8080"
+                mailService.sendVerificationMail(
+                    savedUserInfo.getUserAccount(),
+                    appUrl);
 
-              String appUrl = request.getServerName() + // "localhost"
-              ":" +
-              request.getServerPort(); // "8080"
-              mailService.sendVerificationMail(
-              savedUserInfo.getUserAccount(),
-              appUrl);
-
-              mailService.SendAdminNewStudent(appUrl);
-            }catch (MessagingException e){
-              logger.info(e.toString());
+                mailService.SendAdminNewStudent(appUrl);
+                
+              } catch (MessagingException e) {
+                logger.info(e.toString());
+              }
             }
-          }
-        }).start();
+          }).start();
+
   
         return "redirect:/studentAccount/register/complete";
       } catch (UserAlreadyExistException e) {
