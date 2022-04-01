@@ -178,7 +178,6 @@ public class RegisterController {
       return "ST0001_register.html";
     }
 
-    
     String role = "student";
     model.addAttribute("task", "Register");
     model.addAttribute("role", role);
@@ -202,26 +201,25 @@ public class RegisterController {
                     appUrl);
 
                 mailService.SendAdminNewStudent(appUrl);
-                
+
               } catch (MessagingException e) {
                 logger.info(e.toString());
               }
             }
           }).start();
 
-  
-        return "redirect:/studentAccount/register/complete";
-      } catch (UserAlreadyExistException e) {
-        e.printStackTrace();
-        model.addAttribute("userExistError", true);
-      } catch (Exception e) {
-        e.printStackTrace();
+          return "redirect:/studentAccount/register/complete";
+        } catch (UserAlreadyExistException e) {
+          e.printStackTrace();
+          model.addAttribute("userExistError", true);
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
       }
-    }
-  }catch (Exception e) {
+    } catch (Exception e) {
       System.out.println(e);
     }
-  
+
     if (bindingResult.hasErrors()) {
       logger.info("Validation Error: ", bindingResult.getFieldError());
       return "ST0001_register.html";
@@ -272,7 +270,7 @@ public class RegisterController {
                     appUrl);
 
                 mailService.SendAdminNewTeacher(appUrl);
-                
+
               } catch (MessagingException e) {
                 logger.info(e.toString());
               }
