@@ -17,4 +17,6 @@ public interface MailService {
   public void sendResetPasswordMail(UserAccount userAccount, String appUrl) throws MessagingException;
 
   public void SendAdminNewTeacher(String appUrl) throws MessagingException;
+
+  public void SendAdminNewStudent(String appUrl) throws MessagingException;
 }
