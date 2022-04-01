@@ -211,7 +211,7 @@
                     <div class="col-lg-9">
                       <input
                         th:field="*{confirmPassword}"
-                        th:attr="data-value=*{password}"
+                        th:attr="data-value=*{confirmPassword}"
                         class="form-control"
                         th:classappend="${#fields.hasErrors('confirmPassword')}?'is-invalid':''"
                         id="confirmPassword"
@@ -672,7 +672,6 @@
       TAC = document.getElementById("iAgreeToTermCondition");
 
       if (tc.className === "visually-hidden") {
-    
         TAC.checked = true;
         return;
       }
