@@ -3,8 +3,12 @@ package com.blissstock.mappingSite.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,20 +18,32 @@ import com.blissstock.mappingSite.entity.CourseTime;
 import com.blissstock.mappingSite.entity.JoinCourseUser;
 import com.blissstock.mappingSite.entity.Syllabus;
 import com.blissstock.mappingSite.enums.UserRole;
+import com.blissstock.mappingSite.exceptions.UserAlreadyExistException;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
 // import com.blissstock.mappingSite.repository.CourseRepository;
 import com.blissstock.mappingSite.repository.CourseTimeRepository;
 import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
 import com.blissstock.mappingSite.repository.UserInfoRepository;
 import com.blissstock.mappingSite.service.UserSessionServiceImpl;
+import com.blissstock.mappingSite.service.MailService;
+import com.blissstock.mappingSite.service.UserService;
+import com.blissstock.mappingSite.service.UserSessionService;
+import com.blissstock.mappingSite.validation.validators.EmailValidator;
+import com.blissstock.mappingSite.service.CourseService;
+import com.blissstock.mappingSite.service.CourseServiceImpl;
+import com.blissstock.mappingSite.entity.UserInfo;
+import com.blissstock.mappingSite.dto.TeacherRegisterDTO;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -58,7 +74,8 @@ public class CourseRegistrationController {
 
     private List<CourseTime> ctList = new ArrayList<>(); 
     
-    
+    @Autowired
+  MailService mailService;
     @RequestMapping(value={"/teacher/course-registration","/admin/course-registration/{id}"})
     private String courseRegistration(Model model,@PathVariable(required = false) Long id){
         logger.info("GET Requested");
@@ -86,9 +103,7 @@ public class CourseRegistrationController {
 
         }
 
-// TODO WHY 
-
-        courseInfo.setClassType("VIDEO");
+        courseInfo.setClassType("video");
         
         model.addAttribute("course", courseInfo);
         
@@ -141,8 +156,7 @@ public class CourseRegistrationController {
         CourseTime courseTime4 = new CourseTime();
         CourseTime courseTime5 = new CourseTime();
         CourseTime courseTime6 = new CourseTime();
-
-        if(course.getClassType().toLowerCase().equals("live")){
+        if(course.getClassType().equals("live")){
 
             model.addAttribute("classActiveLive", true);
             
@@ -215,18 +229,18 @@ public class CourseRegistrationController {
         return "AT0002_CourseRegistrationConfirm";
     }
 
-    @PostMapping(value = {"/teacher/save-course-register","/admin/save-course-register"})
-    private String saveCourseRegister(@ModelAttribute("course") CourseInfo course){
+    @PostMapping(value = {"/teacher/save-course-register/{dummyEmail}","/admin/save-course-register/{dummyEmail}"})
+    public String saveCourseRegister(
+        Model model,
+        @Valid @ModelAttribute("course") CourseInfo course,
+        BindingResult bindingResult,
+        @RequestParam(value = "action", required = true) String action,
+        HttpServletRequest request, 
+        Error errors ){
         // course.setUserInfo(userInfoRepository.findById(userSessionService.getId()).get());
         course.setUserInfo(userInfoRepository.findById(course.getUid()).get());
         logger.info("Post Requested");
-        UserRole role = userSessionService.getRole();
-        if (role == UserRole.ADMIN || role == UserRole.SUPER_ADMIN) {
-            course.setIsCourseApproved(true);
-        }
-        else{
-            course.setIsCourseApproved(false);
-        }
+        course.setIsCourseApproved(true); //was string "true"
         courseInfoRepo.save(course);
 
         JoinCourseUser joins = new JoinCourseUser();
@@ -238,23 +252,60 @@ public class CourseRegistrationController {
 
         System.out.println("HoeHoe" + ctList);
         for(CourseTime courseTime : ctList){
-            //set to upper case
-            course.setClassType(course.getClassType().toUpperCase());
             courseTime.setCourseInfo(course);
             courseTimeRepo.save(courseTime);
         }
 
-        // UserRole role = userSessionService.getRole();
+        UserRole role = userSessionService.getRole();
 
         if(role == UserRole.TEACHER){
             return "redirect:/teacher/course-upload/complete";
         }
         else{
             return "redirect:/admin/course-upload/complete";
-        }
+         }
         //return "takealeave";
-    }
+        try {
+            if (action.equals("submit")) {
+              CourseInfo.setAcceptTerm(true);
+              try {
+                     CourseInfo savedUserInfo = CourseService.getCourseList(course);    
+              new Thread(new Runnable() {
+                public void run() {
+                  try {
 
+                    String appUrl = request.getServerName() + // "localhost"
+                    ":" +
+                    request.getServerPort(); // "8080"
+                    mailService.sendVerificationMail(
+                    savedUserInfo.getUserInfo(),
+                    appUrl);
+
+                    mailService.SendAdminNewCourseByTeacher(appUrl);
+
+                  } catch (MessagingException e){
+                    logger.info(e.toString());
+                    }
+                  }
+                }).start();
+                return "redirect:/teacher/course-upload/complete";
+            }catch (UserAlreadyExistException e) {
+                e.printStackTrace();
+                model.addAttribute("userExistError", true);
+              } catch (Exception e) {
+                e.printStackTrace();
+              }
+            }
+          } catch (Exception e) {
+            System.out.println(e);
+          }
+          if (bindingResult.hasErrors()) {
+            return "AT0002_CourseRegistrationConfirm.html";
+          }
+          model.addAttribute("infoMap",CourseInfo.getCourseList());
+          return "ST0001_register.html";
+        }
+}
     // @RequestMapping("/admin/course")
     // public String courseTest()
     // {
@@ -263,4 +314,3 @@ public class CourseRegistrationController {
 
     
     
-}

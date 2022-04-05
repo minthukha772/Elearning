@@ -28,12 +28,12 @@ import lombok.ToString;
 import org.apache.commons.lang3.builder.ToStringExclude;
 import org.springframework.format.annotation.DateTimeFormat;
 
-@NoArgsConstructor
+// @NoArgsConstructor
 
-@AllArgsConstructor
-@Entity
-@Data
-@Getter
+// @AllArgsConstructor
+// @Entity
+// UserAccount
+// UserAccount
 @Setter
 
 @Table(name = "course_info")
@@ -129,9 +129,44 @@ public class CourseInfo {
   public boolean getIsCourseApproved() {
     return this.isCourseApproved;
   }
+
+public static void setAcceptTerm(boolean b) {
+}
   // public String getTitle() {
   // return this.title;
   // }
+
+public UserAccount getUserInfo() {
+    return null;
+}
+
+public Long getUid() {
+    return null;
+}
+
+public void setUserInfo(UserInfo userInfo2) {
+}
+
+public void setCourseTime(List<CourseTime> courseTimeList) {
+}
+
+public void setUid(long uid2) {
+}
+
+public void setClassType(String string) {
+}
+
+public Object getClassType() {
+    return null;
+}
+
+public Object getCourseId() {
+  return null;
+}
+
+public Object toMap() {
+  return null;
+}
 
   // public void setTitle(String title) {
   // this.title = title;
