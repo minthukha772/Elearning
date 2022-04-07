@@ -183,7 +183,7 @@ public class MailServiceImpl implements MailService {
   public void sendResetPasswordMail(UserAccount userAccount, String appUrl) throws MessagingException {
     String token = UUID.randomUUID().toString();
     userService.createToken(userAccount, token, TokenType.PASSWORD_RESET);
-    logger.info("Password resst requesst from :" + userAccount.getMail());
+    logger.info("Password  resst requesst from :" + userAccount.getMail());
     String recipientAddress = userAccount.getMail();
     String subject = "Reset Password";
     String confirmationUrl = appUrl + "/resetPassword?token=" + token;
