@@ -36,6 +36,8 @@ public class CourseSessionServiceImpl implements CourseSessionService {
         } catch (Exception e) {
             e.printStackTrace();
             throw new CourseNotFoundException(courseId);
+
+           
         }
 
         return courseId;

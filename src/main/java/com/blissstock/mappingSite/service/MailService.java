@@ -19,4 +19,6 @@ public interface MailService {
   public void SendAdminNewTeacher(String appUrl) throws MessagingException;
 
   public void SendAdminNewStudent(String appUrl) throws MessagingException;
+
+  public void SendAdminNewCourseByTeacher(String appUrl) throws MessagingException;
 }

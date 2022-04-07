@@ -35,7 +35,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Data
 @Getter
 @Setter
-
 @Table(name = "course_info")
 
 public class CourseInfo {

@@ -53,9 +53,9 @@
                 <div class="card-footer">
                   <a
                     th:href="${fileInfo.url}"
-                    class="btn btn-primary"
+                    class="btn colors"
                     target="_blank"
-                    >Open</a
+                    >View Certificate</a
                   >
                   <button
                     class="btn btn-outline-danger"
@@ -63,7 +63,7 @@
                     data-bs-toggle="modal"
                     data-bs-target="#deleteConfirmModal"
                   >
-                    Delete
+                    Delete Certificate
                   </button>
                 </div>
               </div>
@@ -171,15 +171,18 @@
       </div>
 
       <div class="card">
-        <h5 class="card-header">Upload Files</h5>
+        <h5 class="card-header">If you have another certificate to upload, please choose the photo of certificate from your computer and upload by clicking the Upload certificate button.</h5>
         <div class="card-body">
           <form
             th:action="@{__${#httpServletRequest.requestURI}__}"
             method="post"
             enctype="multipart/form-data"
           >
-            <div class="mb-3">
-              <label for="files" class="form-label">Certificate Photo</label>
+            <div class=" col-auto mb-3">
+              <label for="files" class="form-label">Please Upload your remaining certificate</label>
+
+              
+              <div class="input-group col-auto mb-3">
               <input
                 class="form-control"
                 type="file"
@@ -187,11 +190,23 @@
                 name="files"
                 required
               />
+            
+
+            <div class="input-group-append">
+              <button type="submit" class="btn  ms-4 colors">Upload Certificate</button>
             </div>
-            <div class="row justify-content-end px-3">
-              <button class="btn btn-primary col-auto" type="submit">
-                Submit
-              </button>
+          </div>
+
+            </div>
+
+            
+            <!-- row justify-content-end px-3 -->
+            <div class="input-group col-auto mb-3">
+              <h5 class="ms-5 p-1">If you are completed certificate uploading, you can review your information in Profile page</h5>
+              <div class="input-group-append">
+                <button type="submit" class="btn ms-5 colors">Go to Profile</button>
+              </div>
+            </div>
             </div>
           </form>
         </div>

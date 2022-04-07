@@ -3,3 +3,8 @@
     height: 15vw;
     object-fit: cover;
 }
+
+.colors{
+    color: #fff;
+    background-color: #5ea818;
+}
