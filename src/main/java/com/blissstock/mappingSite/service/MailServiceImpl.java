@@ -157,7 +157,7 @@ public class MailServiceImpl implements MailService {
   public void SendAdminNewCourseByTeacher(String appUrl) throws MessagingException {
 
     String recipientAddress = "sys@pyinnyar-subuu.com";
-    String subject = "New Student Has Registered";
+    String subject = "New Course Has Registered";
 
     appUrl = appUrl + "/admin/course-info";
 
