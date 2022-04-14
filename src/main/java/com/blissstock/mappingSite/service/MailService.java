@@ -15,4 +15,10 @@ public interface MailService {
   public void sendVerificationMail(UserAccount userAccount, String appUrl) throws MessagingException;
 
   public void sendResetPasswordMail(UserAccount userAccount, String appUrl) throws MessagingException;
+
+  public void SendAdminNewTeacher(String appUrl) throws MessagingException;
+
+  public void SendAdminNewStudent(String appUrl) throws MessagingException;
+
+  public void SendAdminNewCourseByTeacher(String appUrl) throws MessagingException;
 }

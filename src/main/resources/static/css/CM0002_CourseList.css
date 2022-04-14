@@ -103,6 +103,11 @@
   vertical-align: middle\9;
 }
 
+/* Error Message fro btn */
+.not-allowed {
+  font-size: 15px;
+  cursor: default;  
+}
 
 /* }
 .paginationjs.paginationjs-theme-blue
@@ -362,4 +367,19 @@ li {
   padding: 5px 10px;
   background: #eee;
   color: #666;
+}
+
+/* errormessges */
+
+.errormessages1{
+  background-color: #fccb77;
+  color: red;
+  font-size: 130%;
+  margin-left: 150px !important;
+}
+
+.errormessages2{
+  font-size: 130%;
+  margin-left: 150px !important;
+
 }

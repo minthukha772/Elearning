@@ -104,11 +104,86 @@ public class MailServiceImpl implements MailService {
     this.mailSender.send(mimeMessage);
   }
 
+  public void SendAdminNewTeacher(String appUrl) throws MessagingException {
+
+    String recipientAddress = "sys@pyinnyar-subuu.com";
+    String subject = "New Teacher Has Registered";
+
+    appUrl = appUrl + "/admin/teacher-list";
+
+    final Context ctx = new Context();
+    ctx.setVariable("confirmationUrl", "");
+    ctx.setVariable("Date", new Date());
+
+    ctx.setVariable("appUrl", appUrl);
+
+    final MimeMessage mimeMessage = mailSender.createMimeMessage();
+    final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
+    message.setSubject(subject);
+    message.setFrom("sys@pyinnyar-subuu.com");
+    message.setTo(recipientAddress);
+
+    final String htmlContent = templateEngine.process("NewTeacherRegisteMail", ctx);
+    message.setText(htmlContent, true); // true = isHtml
+
+    this.mailSender.send(mimeMessage);
+  }
+
+  public void SendAdminNewStudent(String appUrl) throws MessagingException {
+
+    String recipientAddress = "sys@pyinnyar-subuu.com";
+    String subject = "New Student Has Registered";
+
+    appUrl = appUrl + "/admin/student-list";
+
+    final Context ctx = new Context();
+    ctx.setVariable("confirmationUrl", "");
+    ctx.setVariable("Date", new Date());
+
+    ctx.setVariable("appUrl", appUrl);
+
+    final MimeMessage mimeMessage = mailSender.createMimeMessage();
+    final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
+    message.setSubject(subject);
+    message.setFrom("sys@pyinnyar-subuu.com");
+    message.setTo(recipientAddress);
+
+    final String htmlContent = templateEngine.process("NewStudentRegisterMail", ctx);
+    message.setText(htmlContent, true); // true = isHtml
+
+    this.mailSender.send(mimeMessage);
+  }
+
+  public void SendAdminNewCourseByTeacher(String appUrl) throws MessagingException {
+
+    String recipientAddress = "sys@pyinnyar-subuu.com";
+    String subject = "New Course Has Registered";
+
+    appUrl = appUrl + "/admin/course-info";
+
+    final Context ctx = new Context();
+    ctx.setVariable("confirmationUrl", "");
+    ctx.setVariable("Date", new Date());
+
+    ctx.setVariable("appUrl", appUrl);
+
+    final MimeMessage mimeMessage = mailSender.createMimeMessage();
+    final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
+    message.setSubject(subject);
+    message.setFrom("sys@pyinnyar-subuu.com");
+    message.setTo(recipientAddress);
+
+    final String htmlContent = templateEngine.process("NewCourseByTeacher", ctx);
+    message.setText(htmlContent, true); // true = isHtml
+
+    this.mailSender.send(mimeMessage);
+  }
+
   @Override
   public void sendResetPasswordMail(UserAccount userAccount, String appUrl) throws MessagingException {
     String token = UUID.randomUUID().toString();
     userService.createToken(userAccount, token, TokenType.PASSWORD_RESET);
-
+    logger.info("Password  resst requesst from :" + userAccount.getMail());
     String recipientAddress = userAccount.getMail();
     String subject = "Reset Password";
     String confirmationUrl = appUrl + "/resetPassword?token=" + token;

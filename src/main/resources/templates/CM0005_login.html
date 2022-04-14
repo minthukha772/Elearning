@@ -27,7 +27,7 @@
         class="alert alert-danger fade show mt-5"
         role="alert"
       >
-        <span class="text-danger" th:text="${error}"></span>
+        <span class="text-danger errormessages" th:text="${error}"></span>
       </div>
       <div
         th:if="${success != null}"
@@ -78,7 +78,7 @@
               </div> -->
               <div>
                 <div class="mb-3 has-validation">
-                  <label class="form-label" for="emailAddress">
+                  <label class="form-label " for="emailAddress"  >
                     Email Address</label
                   >
                   <input

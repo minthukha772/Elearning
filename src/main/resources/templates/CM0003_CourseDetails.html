@@ -84,7 +84,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
           <p class="p16normal" th:text="${courseInfo.aboutCourse}"></p>
           <p class="prerequisites">Prerequisites</p>
           <p class="p16normal" th:text="${courseInfo.prerequisite}"></p>
-          <p class="prerequisites" th:text="'$ ' + ${courseInfo.fees}"></p>
+          <p class="prerequisites" th:text="'MMK ' + ${courseInfo.fees}"></p>
 
           <!-- For guest user -->
           <div th:if="${guest == 'GUEST'}">
@@ -99,7 +99,13 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
                   th:action="@{/guest/save/course-id/{courseId}(courseId = ${courseInfo.courseId})}"
                   method="post"
                 >
-                  <button class="btn btn-primary" type="submit">Enroll</button>
+                  <button
+                    th:if="${availableStuList > 0}"
+                    class="btn btn-primary"
+                    type="submit"
+                  >
+                    Enroll
+                  </button>
                 </form>
               </span>
             </span>
@@ -108,7 +114,13 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
                 th:action="@{/guest/save/course-id/{courseId}(courseId = ${courseInfo.courseId})}"
                 method="post"
               >
-                <button class="btn btn-primary" type="submit">Enroll</button>
+                <button
+                  th:if="${availableStuList > 0}"
+                  class="btn btn-primary"
+                  type="submit"
+                >
+                  Enroll
+                </button>
               </form>
             </span>
 
@@ -126,6 +138,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
                   th:if="${studentNotRegistered}"
                   th:href="@{/student/enroll/{courseId}/{userId}(courseId = ${courseInfo.courseId}, userId = ${userId})}"
                   ><button
+                    th:if="${availableStuList > 0}"
                     class="btn btn-primary"
                     th:classappend="${studentRegistered == true}? 'disabled'"
                   >
@@ -145,7 +158,13 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
               th:if="${isCourseDateValid}==null"
               th:href="@{/student/enroll/{courseId}/{userId}(courseId = ${courseInfo.courseId}, userId = ${userId})}"
             >
-              <button th:if="${studentNotRegistered}" class="btn btn-primary" type="submit">Enroll</button>
+              <button
+                th:if="${studentNotRegistered}"
+                class="btn btn-primary"
+                type="submit"
+              >
+                <span th:if="${availableStuList > 0}">Enroll</span>
+              </button>
             </a>
 
             <a
@@ -158,11 +177,13 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
                 Payment
               </button></a
             >
-            <a
+
+            <!-- Disable Take A Leave -->
+            <!-- <a
               th:if="${studentRegistered}"
               th:href="@{'/student/leave/'+ ${courseInfo.courseId} +'?course_name='+${courseInfo.courseName}+'&teacher_name='+ ${courseInfo.UserInfo.userName}}"
               ><button class="btn btn-primary">Take a Leave</button></a
-            >
+            > -->
             <!-- <a
               th:href="@{'/student/review-list/course_id/' + ${courseInfo.courseId}}"
               ><button class="btn btn-primary">Reviews</button></a
@@ -190,11 +211,12 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
               th:href="@{'/teacher/edit/'+ ${courseInfo.courseId}}"
               ><button class="btn btn-primary">Edit Course</button></a
             >
-            <a
+             <!-- Disable Take A Leave -->
+            <!-- <a
               th:if="${teacherRegistered}"
               th:href="@{'/teacher/leave/'+ ${courseInfo.courseId} +'?course_name='+${courseInfo.courseName}+'&teacher_name='+ ${courseInfo.UserInfo.userName}}"
               ><button class="btn btn-primary">Take a Leave</button></a
-            >
+            > -->
             <a
               th:if="${teacherRegistered}"
               th:href="@{'/teacher/student-list/'+ ${courseInfo.courseId}}"
@@ -242,18 +264,43 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
 
           <!-- Admin -->
           <div th:if="${admin == 'ADMIN'}">
+
+            <!-- live class  -->
             <span th:if="${isCourseDateValid}!=null">
               <span th:if="${!isCourseDateValid}">
                 <div class="text-danger">
                   This course has already passed the starting date
                 </div>
-              </span></span
-            >
-            <a
-              th:if="${!courseNotApprove}"
-              th:href="@{'/admin/enrollStudent/course/' + ${courseInfo.courseId} }"
-              ><button class="btn btn-primary">Enroll students</button></a
-            >
+              </span>
+
+              <span th:if="${isCourseDateValid}">
+                <a
+                  th:if="${!courseNotApprove}"
+                  th:href="@{'/admin/enrollStudent/course/' + ${courseInfo.courseId} }"
+                  ><button
+                    th:if="${availableStuList > 0}"
+                    class="btn btn-primary"
+                  >
+                    Enroll students
+                  </button></a
+                >
+              </span>
+            </span>
+
+            <!-- video class -->
+            <span th:if="${isCourseDateValid}==null">
+              <a
+                th:if="${!courseNotApprove}"
+                th:href="@{'/admin/enrollStudent/course/' + ${courseInfo.courseId} }"
+                ><button
+                  th:if="${availableStuList > 0}"
+                  class="btn btn-primary"
+                >
+                  Enroll students
+                </button></a
+              >
+            </span>
+
             <a
               th:href="@{'/admin/edit/course/' + ${courseInfo.courseId} + '/' + ${courseInfo.userInfo.uid}}"
               ><button class="btn btn-primary">Edit Course</button></a
@@ -461,15 +508,18 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
 
         <!-- accordian fix-->
         <div class="accordion" id="syllabusAccordion">
+          
           <div class="accordion-item" th:if="${syllabusSize > 0}">
+            
             <h4 class="accordion-header" id="headingOne">
               <button
-                class="accordion-button"
+                class="accordion-button collapsed"
                 type="button"
                 data-bs-toggle="collapse"
                 data-bs-target="#collapseOne"
+                data-parent="#accordion"
                 aria-expanded="true"
-                aria-controls="collapseOne"
+                aria-controls="#collapseOne"
                 th:text="${firstSyllabus.title}"
               >
                 Accordion Item #1
@@ -481,7 +531,11 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
               aria-labelledby="headingOne"
               data-bs-parent="#syllabusAccordion"
             >
-              <div class="accordion-body" th:text="${firstContent}">
+            
+              <div class="accordion-body" 
+              th:each="fct:${firstSyllabus.content}"
+              th:text= "${fct.content}" > 
+
                 <strong>This is the first item's accordion body.</strong> It is
                 shown by default, until the collapse plugin adds the appropriate
                 classes that we use to style each element. These classes control
@@ -495,8 +549,8 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
             </div>
           </div>
 
-          <div th:each="sl:${syllabusList}">
-            <div class="accordion-item">
+          <div th:each="sl:${syllabusList}" >
+            <div class="accordion-item" >
               <h4 class="accordion-header" th:id="${'heading' + sl.syllabusId}">
                 <button
                   class="accordion-button collapsed"
@@ -835,12 +889,13 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
                   <i class="fa-solid fa-trash-can"></i>
                 </button>
               </td>
-              <td>
+               <!-- Disable Take A Leave --> 
+              <!-- <td>
                 <a
                   th:href="@{'/admin/leave/'+${courseInfo.courseId}+'/'+${courseInfo.UserInfo.uid}+'?course_name='+${courseInfo.courseName}+'&teacher_name='+${courseInfo.UserInfo.userName}}"
                   ><button class="btn btn-primary">Take a Leave</button></a
                 >
-              </td>
+              </td> -->
             </tr>
           </tbody>
         </table>
