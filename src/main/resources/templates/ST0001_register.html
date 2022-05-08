@@ -492,7 +492,7 @@
                           >*</span
                         ></label
                       >
-                    </div>
+                    </div><br/>
                     <div class="col-lg-9">
                       <textarea
                         th:field="*{selfDescription}"
@@ -506,9 +506,9 @@
                         class="invalid-feedback"
                         th:if="${#fields.hasErrors('selfDescription')}"
                         th:errors="*{selfDescription}"
-                      >
-                        This field is required. is required.
+                      >  
                       </div>
+                        <span style="color: red;">* Please write less than 100 words</span>
                     </div>
                   </div>
                 </div>

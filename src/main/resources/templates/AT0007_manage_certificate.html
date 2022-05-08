@@ -198,17 +198,16 @@
           </div>
 
             </div>
+          </div>
+        </form>
 
-            
-            <!-- row justify-content-end px-3 -->
-            <div class="input-group col-auto mb-3">
-              <h5 class="ms-5 p-1">If you are completed certificate uploading, you can review your information in Profile page</h5>
-              <div class="input-group-append">
-                <button type="submit" class="btn ms-5 colors">Go to Profile</button>
-              </div>
-            </div>
-            </div>
-          </form>
+          <div class="input-group col-auto mb-3">
+            <h5 class="ms-5 p-1">If you are completed certificate uploading, you can review your information in Profile page</h5>
+              <a class="input-group-append" th:href="@{/teacher/profile/}">
+                <button type="submit" class="btn ms-5 colors"  >Go to Profile</button>
+              </a>
+          </div>
+          
         </div>
       </div>
     </div>

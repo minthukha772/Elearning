@@ -12,7 +12,4 @@ public enum PaymentStatus {
     ERROR("ERROR");
     
     @Getter private String value;
-
-   
-
 }
