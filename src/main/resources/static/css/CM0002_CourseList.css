@@ -107,6 +107,16 @@
 .not-allowed {
   font-size: 15px;
   cursor: default;  
+  
+}
+
+.errormessage1{
+  width:50%;
+  height: 50%;
+  background: #fcbe12;
+  color: #fff;
+  font-size: 16px;
+ 
 }
 
 /* }
