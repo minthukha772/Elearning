@@ -24,7 +24,7 @@
     <div th:if="${message!=null}">
       <div class="alert alert-dismissible fade show alert-success" th:classappend="${message.isError?'alert-danger':'alert-success'}"
         role="alert"> 
-        <strong>Successful! </strong>
+        <strong>Successful!</strong>
         You have uploaded your profile successfully
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
@@ -76,14 +76,18 @@
                 </div>
 
                 <!-- TODO Come back for profile Upload -->
+
+                
               </div>
+                
             </div>
+           
           </div>
-          <div class="text-center" th:if="${isEditable}">
-            <button id="photoSubmit" class="btn btn-primary mb-3">
-              Save
-            </button>
-          </div>
+            <div class="text-center" th:if="${isEditable}" >
+              <button id="photoSubmit" class="btn btn-primary mb-3" >
+                Save
+              </button>
+            </div>
         </form>
 
         <div class="d-flex justify-content-between">
@@ -443,7 +447,11 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"
     integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
   <script src="/js/photoPlaceHolder.js"></script>
-  <script src="/js/CM0004_profile.js"></script>
+  <script src="/js/CM0004_profile.js">
+
+
+
+  </script>
 
   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
 </body>

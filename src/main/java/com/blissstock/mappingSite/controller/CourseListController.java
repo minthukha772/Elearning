@@ -141,6 +141,7 @@ public class CourseListController {
         List<JoinCourseUser> joinCourseUsers = joinCourseUserService.findByUserInfo(userInfo);
         if (joinCourseUsers == null) {
             joinCourseUsers = new ArrayList<>();
+            
         }
         List<CourseData> courseDataList = joinCourseUsers.stream().map((e) -> {
             return CourseData.construct(e.getCourseInfo());

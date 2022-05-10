@@ -294,7 +294,9 @@
                 <div class="form-group row mt-md-4">
                   <div class="col-lg-3">
                     <label class="col-form-label" for="dob"
-                      >Date of birth<span style="color: red">*</span></label
+                      >Date of birth<span style="color: red">*</span>
+                      <br>
+                      (mm/dd/yyyy)</label
                     >
                   </div>
                   <div class="col-lg-9">
@@ -490,7 +492,7 @@
                           >*</span
                         ></label
                       >
-                    </div>
+                    </div><br/>
                     <div class="col-lg-9">
                       <textarea
                         th:field="*{selfDescription}"
@@ -504,9 +506,9 @@
                         class="invalid-feedback"
                         th:if="${#fields.hasErrors('selfDescription')}"
                         th:errors="*{selfDescription}"
-                      >
-                        This field is required. is required.
+                      >  
                       </div>
+                        <span style="color: red;">* Please write less than 100 words</span>
                     </div>
                   </div>
                 </div>
@@ -575,6 +577,13 @@
                     Next
                   </button>
                 </div>
+
+                <div class="row justify-content-end">
+                  <button class="btn btn-primary col-auto" id="nextButton" name="action" type="submit" value="next">
+                    Next
+                  </button>
+                </div>
+
               </div>
 
               <!-- Profile Edit Do not need Password Related information -->
