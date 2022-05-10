@@ -248,6 +248,7 @@ public class RegisterController {
       return "ST0001_register.html";
     }
     String role = "teacher";
+    model.addAttribute("userInfo", userInfo);
     model.addAttribute("task", "Register");
     model.addAttribute("role", role);
     model.addAttribute("postAction", "/register/" + role);
