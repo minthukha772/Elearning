@@ -128,8 +128,8 @@ public class CourseListController {
     public String teacherCourse(Model model) {
         Long uid = userSessionService.getId();
         
-        model.addAttribute("emptyMessage", "You have not registered any course.");
-        // model.addAttribute("emptyMessage", "It will take 1 or 2 days for the Admin Confirmation.After the Admin confirmation, you can proceed the course registration.");
+        // model.addAttribute("emptyMessage", "You have not registered any course.");
+        model.addAttribute("emptyMessage", "It will take 1 or 2 days for the Admin Confirmation.After the Admin confirmation, you can proceed the course registration.");
         return getCourseListByTeacherID(model, uid);
 
     }

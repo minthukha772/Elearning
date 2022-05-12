@@ -189,7 +189,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
     
         <div class="col " id="course">
 
-          <div sec:authorize="hasAuthority('ROLE_TEACHER')">
+          <!-- <div sec:authorize="hasAuthority('ROLE_TEACHER')">
             <div th:if="${userInfo.userAccount.accountStatus != 'VERIFIED'}">
               <div th:href="@{/teacher/course-registration}"
                     class="btn-sm btn-block rounded not-allowed mx-auto errormessage1">
@@ -199,7 +199,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
                 </div>
               </div>
              </div>
-         </div>
+         </div> -->
         
           <p
             id="zero-result-msg"

@@ -16,6 +16,7 @@ import com.blissstock.mappingSite.enums.PaymentStatus;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,6 +25,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
+
 @Table(name = "payment_receive")
 public class PaymentReceive {
 
@@ -35,11 +37,11 @@ public class PaymentReceive {
   @Column(name = "slip")
   private String slip;
 
-  //@NotNull
+  // @NotNull
   @Column(name = "payment_status", length = 15)
-  private String paymentStatus=PaymentStatus.REQUESTED.getValue();
+  private String paymentStatus = PaymentStatus.REQUESTED.getValue();
 
-  //@NotNull
+  // @NotNull
   @DateTimeFormat(pattern = "yyyy-MM-dd")
   @Column(name = "payment_receive_date")
   private Date paymentReceiveDate;
