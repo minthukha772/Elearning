@@ -168,11 +168,10 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
             </a>
 
             <a
-              th:if="${!paymentComplete}"
+              th:if="${!paymentComplete && studentRegistered}"
               th:href="@{'/student/payment-upload/course_id/' + ${courseInfo.courseId}}"
               ><button
                 class="btn btn-primary"
-                th:classappend="${studentRegistered == false}? 'disabled'"
               >Payment</button></a>
 
             <!-- Disable Take A Leave -->
