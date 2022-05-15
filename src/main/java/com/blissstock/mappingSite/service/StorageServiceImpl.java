@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.blissstock.mappingSite.controller.FileController;
+import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.PaymentReceive;
 import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.entity.UserInfo;
@@ -48,6 +49,8 @@ public class StorageServiceImpl implements StorageService {
       root + File.separator + "profiles");
   public final static Path SLIP_PATH = Paths.get(
       root + File.separator + "slip");
+  public final static Path COURSE_PATH = Paths.get(
+        root + File.separator + "cphotos");
 
   @Autowired
   UserSessionService userSessionService;
@@ -67,6 +70,9 @@ public class StorageServiceImpl implements StorageService {
       }
       if (!Files.exists(SLIP_PATH)) {
         Files.createDirectory(SLIP_PATH);
+      }
+      if (!Files.exists(COURSE_PATH)) {
+        Files.createDirectory(COURSE_PATH);
       }
     } catch (IOException e) {
       throw new RuntimeException("Could not initialize folder for upload!");
@@ -301,6 +307,25 @@ public class StorageServiceImpl implements StorageService {
     return new FileInfo(name, url);
   }
 
+  @Override
+  public FileInfo loadCoursePhoto(CourseInfo courseInfo) {
+
+    String name = courseInfo.getCoursePhoto();
+    if (name == null || name.isEmpty()) {
+      return new FileInfo("default", "/images/profile.png");
+    }
+    String url = MvcUriComponentsBuilder
+        .fromMethodName(
+            FileController.class,
+            "getResource",
+            "profiles",
+            courseInfo.getCourseId(),
+            name)
+        .build()
+        .toString();
+    logger.info("Get Data as Resource name: {}, url: {}", name, url);
+    return new FileInfo(name, url);
+  }
   @Override
   public void storeSlip(MultipartFile file, String fileName) {
     try {

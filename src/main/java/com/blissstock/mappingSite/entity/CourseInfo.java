@@ -44,12 +44,15 @@ public class CourseInfo {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long courseId;
 
+  @Column(name = "course_photo")
+	private String coursePhoto;
+
   @Column(name = "course_name", length = 100)
   // @NotBlank(message="Please enter course name")
   private String courseName;
 
   @Column(name = "class_type", length = 20)
-  @NotBlank(message = "Please enter class type")
+  //@NotBlank(message = "Please enter class type")
   private String classType;
 
   @Column(name = "category", length = 100)
