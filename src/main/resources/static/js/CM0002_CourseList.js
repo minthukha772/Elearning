@@ -173,7 +173,7 @@ const renderCourseList = (courseList) => {
               <p>${e.aboutCourse}</p>
 
              <span>${dates}</span>
-              <h4 class="mt-2">${e.fees} MMK</h4>
+              <h4 class="mt-2">${e.fees ? e.fees + 'MMK' : 'FREE'}</h4>
 
           
             </div>
