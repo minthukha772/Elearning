@@ -3,6 +3,7 @@ package com.blissstock.mappingSite.service;
 import javax.mail.MessagingException;
 
 import com.blissstock.mappingSite.entity.UserAccount;
+import com.blissstock.mappingSite.entity.UserInfo;
 
 public interface MailService {
   public void sendMail(
@@ -16,7 +17,7 @@ public interface MailService {
 
   public void sendResetPasswordMail(UserAccount userAccount, String appUrl) throws MessagingException;
 
-  public void SendAdminNewTeacher(String appUrl) throws MessagingException;
+  public void SendAdminNewTeacher(UserInfo userInfo, String appUrl) throws MessagingException;
 
   public void SendAdminNewStudent(String appUrl) throws MessagingException;
 
