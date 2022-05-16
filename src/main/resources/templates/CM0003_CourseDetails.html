@@ -102,25 +102,18 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
                   <button
                     th:if="${availableStuList > 0}"
                     class="btn btn-primary"
-                    type="submit"
-                  >
-                    Enroll
-                  </button>
+                    type="submit">Enroll</button>
                 </form>
               </span>
             </span>
             <span th:if="${isCourseDateValid}==null">
               <form
                 th:action="@{/guest/save/course-id/{courseId}(courseId = ${courseInfo.courseId})}"
-                method="post"
-              >
+                method="post">
                 <button
                   th:if="${availableStuList > 0}"
                   class="btn btn-primary"
-                  type="submit"
-                >
-                  Enroll
-                </button>
+                  type="submit">Enroll</button>
               </form>
             </span>
 
