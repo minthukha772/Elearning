@@ -66,11 +66,11 @@ public class CourseInfo {
   // @NotBlank(message="Please choose course level")
   private String level;
 
-  @Column(name = "about_course", length = 250)
+  @Column(name = "about_course", length = 2500)
   // @NotBlank(message="Please enter about course")
   private String aboutCourse;
 
-  @Column(name = "prerequisite")
+  @Column(name = "prerequisite", length=2500)
   private String prerequisite;
 
   @Column(name = "max_stu")
