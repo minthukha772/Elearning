@@ -171,7 +171,7 @@
               <h5 class="card-title" th:text="${courseInfo.courseName}">Course Name</h5>
 
               <p class="card-text" th:text="${courseInfo.teacherName}">Teacher Name</p>
-              <p class=" card-text" th:text="${courseInfo.price} ? 'MMK' + ${courseInfo.price} : 'FREE'">Price</p>
+              <p class=" card-text" th:text="${courseInfo.price}">Price</p>
             </div>
             <div class=" card-footer">
               <a th:href="@{/guest/course-detail/{id}(id=${courseInfo.CourseID})}" class="btn btn-primary d-block">See
@@ -218,7 +218,7 @@
               <h5 class="card-title" th:text="${courseInfo.courseName}">Course Name</h5>
 
               <p class="card-text" th:text="${courseInfo.teacherName}">Teacher Name</p>
-              <p class=" card-text" th:text="${courseInfo.price} ? 'MMK' + ${courseInfo.price} : 'FREE'">Price</p>
+              <p class=" card-text" th:text="${courseInfo.price}">Price</p>
             </div>
             <div class=" card-footer">
               <a th:href="@{/guest/course-detail/{id}(id=${courseInfo.CourseID})}" class="btn btn-primary d-block">See
