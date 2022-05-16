@@ -226,7 +226,7 @@ public class CourseRegistrationController {
     }
 
     @PostMapping(value = { "/teacher/save-course-register", "/admin/save-course-register" })
-    private String saveCourseRegister(HttpServletRequest request, @ModelAttribute("course") CourseInfo course,@RequestParam("profile_pic") MultipartFile cphoto,   @RequestParam(value = "action", required = true) String action,HttpServletRequest httpServletRequest) {
+    private String saveCourseRegister(HttpServletRequest request, @ModelAttribute("course") CourseInfo course,@RequestParam("course_pic") MultipartFile cphoto,HttpServletRequest httpServletRequest) {
         // course.setUserInfo(userInfoRepository.findById(userSessionService.getId()).get());
         course.setUserInfo(userInfoRepository.findById(course.getUid()).get());
         logger.info("Post Requested");
@@ -236,31 +236,30 @@ public class CourseRegistrationController {
         } else {
             course.setIsCourseApproved(false);
         }
-        if (action.equals("pic-edit")) {
-            if (!cphoto.isEmpty() && CheckUploadFileType.checkType(cphoto)) {
-              // get original photo name and generate a new file name
-              String originalFileName = StringUtils.cleanPath(
-                  cphoto.getOriginalFilename());
-              // String saveFileName = FileNameGenerator.renameFileName(
-              //     originalFileName,
-              //     uid.toString());
-      
-              // upload photo
-              try {
-                storageService.store(course.getCourseId(), cphoto, StorageServiceImpl.COURSE_PATH, true);
-              } catch (UnauthorizedFileAccessException e) {
-                e.printStackTrace();
-              }
-              // insert photo
-              course.setCoursePhoto(originalFileName);
-              courseInfoRepo.save(course);
-      
-              logger.info("profile photo {} stored", originalFileName);
-              return  "redirect:/teacher/course-upload/complete";
-            }
-        }
             
-        courseInfoRepo.save(course);
+        CourseInfo savedCourse=courseInfoRepo.save(course);
+
+        if (!cphoto.isEmpty() && CheckUploadFileType.checkType(cphoto)) {
+            // get original photo name and generate a new file name
+            String originalFileName = StringUtils.cleanPath(
+                cphoto.getOriginalFilename());
+            // String saveFileName = FileNameGenerator.renameFileName(
+            //     originalFileName,
+            //     uid.toString());
+    
+            // upload photo
+            try {
+              storageService.store(savedCourse.getCourseId(), cphoto, StorageServiceImpl.COURSE_PATH, true);
+            } catch (UnauthorizedFileAccessException e) {
+              e.printStackTrace();
+            }
+            // insert photo
+            course.setCoursePhoto(originalFileName);
+            courseInfoRepo.save(course);
+    
+            logger.info("profile photo {} stored", originalFileName);
+            //return  "redirect:/teacher/course-registration";
+          }
 
         JoinCourseUser joins = new JoinCourseUser();
         joins.setCourseInfo(course);

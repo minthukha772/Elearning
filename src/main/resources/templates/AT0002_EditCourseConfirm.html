@@ -114,9 +114,10 @@
     <div class="card mx-auto mt-3" style="max-width: 800px">
       <div class="card-header">Update Course Confirmation</div>
       <div class="card-body">
-        <form th:action="@{${postAction}}" method="post">
+        <form th:action="@{${postAction}}" method="post" enctype="multipart/form-data">
           <div th:object="${course}">
             <div class="mb-3 row">
+
               <label for="classtype" class="col-form-label col-sm-3"
                 >Class Type</label
               >

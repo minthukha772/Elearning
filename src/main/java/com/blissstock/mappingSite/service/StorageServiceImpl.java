@@ -312,13 +312,13 @@ public class StorageServiceImpl implements StorageService {
 
     String name = courseInfo.getCoursePhoto();
     if (name == null || name.isEmpty()) {
-      return new FileInfo("default", "/images/profile.png");
+      return new FileInfo("default", "/images/course.png");
     }
     String url = MvcUriComponentsBuilder
         .fromMethodName(
             FileController.class,
             "getResource",
-            "profiles",
+            "cphotos",
             courseInfo.getCourseId(),
             name)
         .build()

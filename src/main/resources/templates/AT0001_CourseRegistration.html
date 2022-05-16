@@ -62,12 +62,17 @@
           <form th:action="@{${postAction}}" method="post" enctype="multipart/form-data" novalidate >
             <div th:object="${course}">
               <div class="form-group row">
+
+                <div class="text-center">
+                  <p class="form-label">Add an Image to a Course</p>
+                </div>
+
                 <div id="profile">
                   <div class="profile-pic-wrapper">
-                    <div class="pic-holder">
+                    <div class="pic-holder"  style="border-radius: 0px;">
                       <div class="d-flex justify-content-center">
                         <div class="profile-pic-wrapper">
-                          <div class="pic-holder">
+
                             <!-- uploaded pic shown here -->
                             <img id="profilePic"
                             class="pic" th:src="${cphoto.url}"  th:alt="${cphoto.name}" />
@@ -78,15 +83,15 @@
                                     <i class="fa fa-camera fa-2x"></i>
                                   </div>
                                   <div class="text-uppercase">
-                                    Update <br />
-                                    Course Photo
+                                    Upload <br />
+                                    Image
                                   </div>
                                 </div>
                               </label>
                               <input
                               class="uploadProfileInput"
                               type="file"
-                              name="profile_pic"
+                              name="course_pic"
                               id="newProfilePhoto"
                               accept="image/*"
                               style="display: none;"
@@ -94,25 +99,14 @@
                               th:alt="${cphoto.name}"
                             />
   
-                          </div>
+
                         </div>
                         <!-- TODO Come back for profile Upload -->
                       </div>
                     </div>
                   </div>
-                    <div class="text-center">
-                      <button class="btn btn-primary mb-3"  type="submit" name="action" value="pic-edit">Save</button>
-                    </div>
-
-                    <!-- <div class="mb-3">
-                      <label class="form-label" for="name">User Name</label>
-                      <input th:field="*{userInfo.userName}" class="form-control" id="name" type="text" placeholder="Name"/>
-                    </div>
-                    <div class="mb-3">
-                      <label class="form-label" for="name">Email</label>
-                      <input th:field="*{mail}" class="form-control" type="text" placeholder="Name"/>
-                    </div> -->
                 </div>
+                
                 <div class="row">
                   <div class="col-lg-3">
                     <p class="form-label">Class Type</p>
@@ -279,7 +273,7 @@
                       placeholder="Enter detail about your course here."
                       required
                     ></textarea>
-                      <span style="color: red;">* Please write less than 100 words</span>
+                      <span style="color: red;">* Please write less than 2500 words</span>
                   </div>
                 </div>
                 
@@ -302,7 +296,7 @@
                       placeholder="Enter Prerequisites for the course."
                       required
                     ></textarea>
-                    <span style="color: red;">* Please write less than 100 words</span>
+                    <span style="color: red;">* Please write less than 2500 words</span>
                   </div>
                 </div>
                 
