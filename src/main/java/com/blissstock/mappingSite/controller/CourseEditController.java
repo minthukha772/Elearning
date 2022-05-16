@@ -166,7 +166,7 @@ public class CourseEditController {
             }
 
             if (role == UserRole.TEACHER) {
-                model.addAttribute("postAction", "/teacher/edit/course/confirm");
+                model.addAttribute("postAction", "/teacher/edit/complete");
             } else {
                 model.addAttribute("postAction", "/admin/edit/course/" + userId + "/confirm");
             }
@@ -329,8 +329,8 @@ public class CourseEditController {
               e.printStackTrace();
             }
             // insert photo
-            course.setCoursePhoto(originalFileName);
-            courseInfoRepo.save(course);
+            updateCourse.setCoursePhoto(originalFileName);
+            courseInfoRepo.save(updateCourse);
     
             logger.info("profile photo {} stored", originalFileName);
             //return  "redirect:/teacher/course-registration";
