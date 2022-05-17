@@ -191,38 +191,37 @@
                   <br />
                   <p style="margin: 0">
                     There is a new Teacher Registration at Pyinnyar-subuu website.
-                  </p> <br/><br/>
+                  </p> 
                 </td>
               </tr>
               <!-- end copy -->
 
-              <tr>
-                <td>1. Name</td>
-                <td th:text="${name}"></td>
+              <tr bgcolor="#ffffff">
+                <td>1. Name : <span th:text="${name}"></span></td>
               </tr>
-              <tr>
-                <td>2. Email</td>
-                <td th:text="${email}"></td>
+
+              <tr bgcolor="#ffffff">
+                <td>2. Email : <span th:text="${email}"></span></td> 
               </tr>
-              <tr>
-                <td>3. Phone Number</td>
-                <td th:text="${phone}"></td>
+
+              <tr bgcolor="#ffffff">
+                <td>3. Phone Number :  <span th:text="${phone}" ></span></td>
               </tr>
-              <tr>
-                <td>4. Education</td>
-                <td th:text="${education}"></td>
+
+              <tr bgcolor="#ffffff">
+                <td>4. Education : <span  th:text="${education}" ></span></td>
               </tr>
-              <tr>
-                <td>5. Description</td>
-                <td th:text="${description}"></td>
+
+              <tr bgcolor="#ffffff">
+                <td>5. Description : <span  th:text="${description}" ></span></td>
               </tr>
-              <tr>
-                <td>6. Account Status</td>
-                <td th:text="${status}"></td>
+
+              <tr bgcolor="#ffffff">
+                <td>6. Account Status : <span  th:text="${status}" ></span></td>
               </tr>
-              <tr>
-                <td>7. Registraion Time</td>
-                <td th:text="${registerTime}"></td>
+
+              <tr bgcolor="#ffffff">
+                <td>7. Registraion Time : <span th:text="${registerTime}" ></span></td>
               </tr>
 
               <!-- start button -->
@@ -330,11 +329,8 @@
                     Viber: +959 98-656-3091<br />
                     Telegram: +959 98-656-3091<br />
                     Line: +959 98-656-3091<br />
-                    <span th:text="${#dates.format(Date)}">Date</span>
+                    <!-- <span th:text="${#dates.format(Date)}">Date</span> -->
                     <!-- <span th:if="${infoMap != null}" th:object="${userInfo}" th:text="${userInfo.emai}"></span> --
-
-                   
-
                   </p>
                 </td>
               </tr>
