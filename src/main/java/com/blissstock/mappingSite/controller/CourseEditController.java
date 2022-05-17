@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+// Test for git rules
 @Controller
 
 public class CourseEditController {
@@ -58,7 +59,7 @@ public class CourseEditController {
 
     @Autowired
     public CourseEditController(StorageService storageService) {
-      this.storageService = storageService;
+        this.storageService = storageService;
     }
 
     private List<CourseTime> ctList = new ArrayList<>();
@@ -299,7 +300,8 @@ public class CourseEditController {
     }
 
     @PostMapping(value = { "/teacher/edit/complete", "/admin/edit/course/complete" })
-    private String editCourseComplete(@ModelAttribute("course") CourseInfo course,@RequestParam("course_pic") MultipartFile cphoto,HttpServletRequest httpServletRequest) {
+    private String editCourseComplete(@ModelAttribute("course") CourseInfo course,
+            @RequestParam("course_pic") MultipartFile cphoto, HttpServletRequest httpServletRequest) {
         // course.setUserInfo(userInfoRepository.findById(userSessionService.getId()).get());
 
         course.setUserInfo(userInfoRepository.findById(course.getUid()).get());
@@ -321,21 +323,21 @@ public class CourseEditController {
         if (!cphoto.isEmpty() && CheckUploadFileType.checkType(cphoto)) {
             // get original photo name and generate a new file name
             String originalFileName = StringUtils.cleanPath(
-                cphoto.getOriginalFilename());
+                    cphoto.getOriginalFilename());
 
             try {
-              storageService.store(updateCourse.getCourseId(), cphoto, StorageServiceImpl.COURSE_PATH, true);
+                storageService.store(updateCourse.getCourseId(), cphoto, StorageServiceImpl.COURSE_PATH, true);
             } catch (UnauthorizedFileAccessException e) {
-              e.printStackTrace();
+                e.printStackTrace();
             }
             // insert photo
             updateCourse.setCoursePhoto(originalFileName);
             courseInfoRepo.save(updateCourse);
-    
+
             logger.info("profile photo {} stored", originalFileName);
-            //return  "redirect:/teacher/course-registration";
-          }
-          
+            // return "redirect:/teacher/course-registration";
+        }
+
         if (classType.toUpperCase().equals("LIVE")) {
 
             updateCourse.setMaxStu(course.getMaxStu());
