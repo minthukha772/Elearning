@@ -3,26 +3,37 @@ package com.blissstock.mappingSite.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.CourseTime;
 import com.blissstock.mappingSite.enums.Days_of_the_week;
 import com.blissstock.mappingSite.enums.UserRole;
+import com.blissstock.mappingSite.exceptions.UnauthorizedFileAccessException;
+import com.blissstock.mappingSite.model.FileInfo;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
 // import com.blissstock.mappingSite.repository.CourseRepository;
 import com.blissstock.mappingSite.repository.CourseTimeRepository;
 import com.blissstock.mappingSite.repository.UserInfoRepository;
+import com.blissstock.mappingSite.service.StorageService;
+import com.blissstock.mappingSite.service.StorageServiceImpl;
 import com.blissstock.mappingSite.service.UserSessionServiceImpl;
+import com.blissstock.mappingSite.utils.CheckUploadFileType;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+// Test for git rules
 @Controller
 
 public class CourseEditController {
@@ -43,6 +54,14 @@ public class CourseEditController {
     @Autowired
     private UserInfoRepository userInfoRepository;
 
+    @Autowired
+    StorageService storageService;
+
+    @Autowired
+    public CourseEditController(StorageService storageService) {
+        this.storageService = storageService;
+    }
+
     private List<CourseTime> ctList = new ArrayList<>();
 
     @RequestMapping(value = { "/teacher/edit/{courseId}", "/admin/edit/course/{courseId}/{userId}" })
@@ -62,6 +81,9 @@ public class CourseEditController {
 
         if (course != null) {
             // List<CourseTime> courseTimeList = new ArrayList<>();
+
+            FileInfo cphoto = storageService.loadCoursePhoto(course);
+            model.addAttribute("cphoto", cphoto);
 
             if (course.getClassType().toUpperCase().equals("LIVE")) {
 
@@ -145,7 +167,7 @@ public class CourseEditController {
             }
 
             if (role == UserRole.TEACHER) {
-                model.addAttribute("postAction", "/teacher/edit/course/confirm");
+                model.addAttribute("postAction", "/teacher/edit/complete");
             } else {
                 model.addAttribute("postAction", "/admin/edit/course/" + userId + "/confirm");
             }
@@ -278,7 +300,8 @@ public class CourseEditController {
     }
 
     @PostMapping(value = { "/teacher/edit/complete", "/admin/edit/course/complete" })
-    private String editCourseComplete(@ModelAttribute("course") CourseInfo course) {
+    private String editCourseComplete(@ModelAttribute("course") CourseInfo course,
+            @RequestParam("course_pic") MultipartFile cphoto, HttpServletRequest httpServletRequest) {
         // course.setUserInfo(userInfoRepository.findById(userSessionService.getId()).get());
 
         course.setUserInfo(userInfoRepository.findById(course.getUid()).get());
@@ -297,9 +320,26 @@ public class CourseEditController {
 
         CourseInfo updateCourse = courseInfoRepo.findById(course.getCourseId()).get();
         logger.info("Get Requested {}", updateCourse);
-        System.out.print("Update Info: " + updateCourse);
+        if (!cphoto.isEmpty() && CheckUploadFileType.checkType(cphoto)) {
+            // get original photo name and generate a new file name
+            String originalFileName = StringUtils.cleanPath(
+                    cphoto.getOriginalFilename());
+
+            try {
+                storageService.store(updateCourse.getCourseId(), cphoto, StorageServiceImpl.COURSE_PATH, true);
+            } catch (UnauthorizedFileAccessException e) {
+                e.printStackTrace();
+            }
+            // insert photo
+            updateCourse.setCoursePhoto(originalFileName);
+            courseInfoRepo.save(updateCourse);
+
+            logger.info("profile photo {} stored", originalFileName);
+            // return "redirect:/teacher/course-registration";
+        }
+
         if (classType.toUpperCase().equals("LIVE")) {
-            System.out.print("It works!");
+
             updateCourse.setMaxStu(course.getMaxStu());
             updateCourse.setStartDate(course.getStartDate());
             updateCourse.setEndDate(course.getEndDate());

@@ -49,7 +49,7 @@ public class IndexController {
                 dto.setPrice(info.getFees());
                 dto.setTeacherName(info.getUserInfo().getUserName());
                 dto.setCourseName(info.getCourseName());
-                FileInfo fileInfo = storageService.loadProfileAsFileInfo(info.getUserInfo());
+                FileInfo fileInfo = storageService.loadCoursePhoto(info);
 
                 // if profile is not found set as place holder
                 if (fileInfo == null) {
@@ -68,7 +68,7 @@ public class IndexController {
                 dto.setPrice(info.getFees());
                 dto.setTeacherName(info.getUserInfo().getUserName());
                 dto.setCourseName(info.getCourseName());
-                FileInfo fileInfo = storageService.loadProfileAsFileInfo(info.getUserInfo());
+                FileInfo fileInfo = storageService.loadCoursePhoto(info);
 
                 // if profile is not found set as place holder
                 if (fileInfo == null) {

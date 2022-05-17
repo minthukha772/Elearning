@@ -19,7 +19,7 @@ public interface MailService {
 
   public void SendAdminNewTeacher(UserInfo userInfo, String appUrl) throws MessagingException;
 
-  public void SendAdminNewStudent(String appUrl) throws MessagingException;
+  public void SendAdminNewStudent(UserInfo userInfo, String appUrl) throws MessagingException;
 
   public void SendAdminNewCourseByTeacher(String appUrl) throws MessagingException;
 }
