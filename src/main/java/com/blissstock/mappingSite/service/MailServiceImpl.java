@@ -139,7 +139,7 @@ public class MailServiceImpl implements MailService {
     this.mailSender.send(mimeMessage);
   }
 
-  public void SendAdminNewStudent(String appUrl) throws MessagingException {
+  public void SendAdminNewStudent(UserInfo userInfo, String appUrl) throws MessagingException {
 
     String recipientAddress = "sys@pyinnyar-subuu.com";
     String subject = "New Student Has Registered";
@@ -152,17 +152,25 @@ public class MailServiceImpl implements MailService {
 
     ctx.setVariable("appUrl", appUrl);
 
+    UserAccount userAccount = userInfo.getUserAccount();
+    ctx.setVariable("name", userInfo.getUserName());
+    ctx.setVariable("email", userAccount.getMail());
+    ctx.setVariable("phone", userInfo.getPhoneNo());
+    ctx.setVariable("registerTime", userAccount.getRegisteredDate());
+
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
     message.setSubject(subject);
     message.setFrom("sys@pyinnyar-subuu.com");
     message.setTo(recipientAddress);
 
-    final String htmlContent = templateEngine.process("NewStudentRegisterMail", ctx);
+    final String htmlContent = templateEngine.process("NewStudentRegisteMail", ctx);
     message.setText(htmlContent, true); // true = isHtml
 
     this.mailSender.send(mimeMessage);
   }
+
+  
 
   public void SendAdminNewCourseByTeacher(String appUrl) throws MessagingException {
 
@@ -215,5 +223,11 @@ public class MailServiceImpl implements MailService {
     this.mailSender.send(mimeMessage);
 
   }
+
+  // @Override
+  // public void SendAdminNewStudent(UserInfo userInfo, String appUrl) throws MessagingException {
+  //   // TODO Auto-generated method stub
+    
+  // }
 
 }
