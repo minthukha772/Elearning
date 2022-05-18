@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+// Test for git rules
 @Controller
 
 public class CourseEditController {
@@ -56,7 +57,7 @@ public class CourseEditController {
 
     @Autowired
     public CourseEditController(StorageService storageService) {
-      this.storageService = storageService;
+        this.storageService = storageService;
     }
 
     private List<CourseTime> ctList = new ArrayList<>();
