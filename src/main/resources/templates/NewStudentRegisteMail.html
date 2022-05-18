@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <title>New Student has been registered</title>
+    <title>New Student Has Been Registered</title>
 
     <link rel="icon" type="image/x-icon" href="/images/fav.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -143,7 +143,7 @@
                     line-height: 48px;
                   "
                 >
-                  New Student has been registered
+                  Dear Admin,
                 </h1>
               </td>
             </tr>
@@ -187,14 +187,30 @@
                     line-height: 24px;
                   "
                 >
-                  <p style="margin: 0">New Student registered</p>
+                  <p style="margin: 0">This email is automatically send from Pyinnyar-subuu website.</p>
                   <br />
                   <p style="margin: 0">
-                    Press the following button to view Students
-                  </p>
+                    There is a new Student Registration at Pyinnyar-subuu website.
+                  </p>   
                 </td>
               </tr>
               <!-- end copy -->
+
+              <tr bgcolor="#ffffff">
+                <td>1. Name : <span th:text="${name}"></span></td>
+              </tr>
+
+              <tr bgcolor="#ffffff">
+                <td>2. Email : <span th:text="${email}"></span></td> 
+              </tr>
+
+              <tr bgcolor="#ffffff">
+                <td>3. Phone Number :  <span th:text="${phone}" ></span></td>
+              </tr>
+
+              <tr bgcolor="#ffffff">
+                <td>4. Registraion Time : <span th:text="${registerTime}" ></span></td>
+              </tr>
 
               <!-- start button -->
               <tr>
@@ -244,6 +260,7 @@
                 </td>
               </tr>
               <!-- end button -->
+              
 
               <!-- start copy -->
               <tr>
@@ -258,8 +275,10 @@
                   "
                 >
                   <p style="margin: 0">
-                    If that doesn't work, copy and paste the following link in
-                    your browser:
+                   Please login to the system with account and check the Student list.
+                  </p>
+                  <p style="margin: 0;">
+                    URL:http://Pyinnyar-subuu.com/admin/Student-list
                   </p>
                   <!-- url -->
                   <p style="margin: 0">
@@ -289,10 +308,20 @@
                   "
                 >
                   <p style="margin: 0">
-                    Thank you for using our service!<br /><br />
-                    Pyinnyar Subuu<br />
-                    Bliss Stock JP<br />
-                    <span th:text="${#dates.format(Date)}">Date</span>
+                    *This email is delivered from the send-only email address.<br />
+                    Please note that we will not be able to answer even if you reply as it is.<br /><br />
+                    ................................<br />
+                    Myanmar Education Service<br />
+                    http://Pyinnyar-subuu.com/<br />
+                    Tel: +959 98-656-3091<br />
+                    Viber: +959 98-656-3091<br />
+                    Telegram: +959 98-656-3091<br />
+                    Line: +959 98-656-3091<br />
+                    <!-- <span th:text="${#dates.format(Date)}">Date</span> -->
+                    <!-- <span th:if="${infoMap != null}" th:object="${userInfo}" th:text="${userInfo.emai}"></span> --
+
+                   
+
                   </p>
                 </td>
               </tr>
