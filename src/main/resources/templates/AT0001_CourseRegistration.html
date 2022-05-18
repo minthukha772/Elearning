@@ -105,8 +105,20 @@
                       </div>
                     </div>
                   </div>
+                  <!-- <div class="text-center">
+                    <span style="color: red;">Enter "Save" button to upload course image</span>
+                    </div></br>
+                    <div class="text-center">
+                      <button class="btn btn-primary mb-3"  type="submit" name="photoSubmit" value="pic-edit">Save</button>
+                    </div> -->
+
                 </div>
-                
+                  <input
+                      th:field="*{coursePhoto}"
+                      class="form-control"
+                      id="cname"
+                      type="hidden"
+                    />
                 <div class="row">
                   <div class="col-lg-3">
                     <p class="form-label">Class Type</p>
@@ -681,7 +693,7 @@
                 Reset
               </button>
 
-              <button id="btnReg" type="submit" class="btn btn-primary">
+              <button id="btnReg" type="submit" name="submit" class="btn btn-primary">
                 Register
               </button>
             </div>

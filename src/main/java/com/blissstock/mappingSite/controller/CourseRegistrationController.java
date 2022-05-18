@@ -109,7 +109,7 @@ public class CourseRegistrationController {
         if (role == UserRole.TEACHER) {
             model.addAttribute("postAction", "/teacher/save-course-register");
         } else {
-            model.addAttribute("postAction", "/admin/courseregister-confirm");
+            model.addAttribute("postAction", "/admin/save-course-register");
         }
 
         return "AT0001_CourseRegistration";
@@ -117,6 +117,7 @@ public class CourseRegistrationController {
 
     @PostMapping(value = { "/teacher/courseregister-confirm", "/admin/courseregister-confirm" })
     private String courseRegistrationConfirm(@ModelAttribute("course") CourseInfo course,
+            @RequestParam("course_pic") MultipartFile cphoto,
             @ModelAttribute("day0") String day0,
             @ModelAttribute("startTime0") String startTime0,
             @ModelAttribute("endTime0") String endTime0,
@@ -207,6 +208,22 @@ public class CourseRegistrationController {
 
         model.addAttribute("course", course);
 
+        if (!cphoto.isEmpty() && CheckUploadFileType.checkType(cphoto)) {
+            // get original photo name and generate a new file name
+            String originalFileName = StringUtils.cleanPath(
+                cphoto.getOriginalFilename());
+            try {
+              storageService.store(course.getCourseId(), cphoto, StorageServiceImpl.COURSE_PATH, true);
+            } catch (UnauthorizedFileAccessException e) {
+              e.printStackTrace();
+            }
+            // insert photo
+            course.setCoursePhoto(originalFileName);
+    
+            logger.info("profile photo {} stored", originalFileName);
+            //return  "redirect:/teacher/course-registration";
+          }
+
         UserRole role = userSessionService.getRole();
 
         if (role == UserRole.TEACHER) {
@@ -243,11 +260,6 @@ public class CourseRegistrationController {
             // get original photo name and generate a new file name
             String originalFileName = StringUtils.cleanPath(
                 cphoto.getOriginalFilename());
-            // String saveFileName = FileNameGenerator.renameFileName(
-            //     originalFileName,
-            //     uid.toString());
-    
-            // upload photo
             try {
               storageService.store(savedCourse.getCourseId(), cphoto, StorageServiceImpl.COURSE_PATH, true);
             } catch (UnauthorizedFileAccessException e) {

@@ -3,8 +3,6 @@ package com.blissstock.mappingSite.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.CourseTime;
 import com.blissstock.mappingSite.enums.Days_of_the_week;
@@ -80,10 +78,6 @@ public class CourseEditController {
 
         if (course != null) {
             // List<CourseTime> courseTimeList = new ArrayList<>();
-
-            FileInfo cphoto = storageService.loadCoursePhoto(course);
-            model.addAttribute("cphoto", cphoto);
-
             if (course.getClassType().toUpperCase().equals("LIVE")) {
 
                 model.addAttribute("classActiveLive", true);
@@ -134,7 +128,10 @@ public class CourseEditController {
                 model.addAttribute("courseTimeList", sorted_list);
                 model.addAttribute("classActiveVideo", true);
             }
-
+            
+            FileInfo cphoto = storageService.loadCoursePhoto(course);
+            model.addAttribute("cphoto", cphoto);
+            System.out.println("Request course photo "+ cphoto);
             model.addAttribute("course", course);
 
             UserRole role = userSessionService.getRole();
@@ -166,9 +163,11 @@ public class CourseEditController {
             }
 
             if (role == UserRole.TEACHER) {
-                model.addAttribute("postAction", "/teacher/edit/complete");
+                model.addAttribute("postAction", "/teacher/edit/course/"+courseId+"/confirm");
+                //model.addAttribute("photoPostAction", "/teacher/edit/"+courseId+"/photo-upload");
             } else {
-                model.addAttribute("postAction", "/admin/edit/course/" + userId + "/confirm");
+                model.addAttribute("postAction", "/admin/edit/course/"+courseId +"/" +userId + "/confirm");
+                //model.addAttribute("photoPostAction", "/admin/edit/"+courseId+"/photo-upload");
             }
 
             return "AT0001_EditCourse";
@@ -177,9 +176,49 @@ public class CourseEditController {
         }
 
     }
+    @PostMapping(value =  { "/teacher/edit/course/{courseId}/confirm", "/admin/edit/course/{courseId}/{userId}/confirm" }, params = "photoSubmit")
+    private String uploadCoursePhoto( @PathVariable Long courseId,@RequestParam("course_pic") MultipartFile cphoto) {
+        // course.setUserInfo(userInfoRepository.findById(userSessionService.getId()).get());
+        CourseInfo course=courseInfoRepo.findById(courseId).orElse(null);
 
-    @PostMapping(value = { "/teacher/edit/course/confirm", "/admin/edit/course/{userId}/confirm" })
+        logger.info("Post Requested");
+
+        CourseInfo updateCourse = courseInfoRepo.findById(course.getCourseId()).get();
+        logger.info("Get Requested {}", updateCourse);
+        if (!cphoto.isEmpty() && CheckUploadFileType.checkType(cphoto)) {
+            // get original photo name and generate a new file name
+            String originalFileName = StringUtils.cleanPath(
+                cphoto.getOriginalFilename());
+
+            try {
+              storageService.store(updateCourse.getCourseId(), cphoto, StorageServiceImpl.COURSE_PATH, true);
+            } catch (UnauthorizedFileAccessException e) {
+              e.printStackTrace();
+            }
+            // insert photo
+            updateCourse.setCoursePhoto(originalFileName);
+            courseInfoRepo.save(updateCourse);
+    
+            logger.info("profile photo {} stored", originalFileName);
+            //return  "redirect:/teacher/course-registration";
+          }
+        
+        courseInfoRepo.save(updateCourse);
+        logger.info("Update Course for CourseID {}", updateCourse.getCourseId());
+
+        UserRole role = userSessionService.getRole();
+
+        if (role == UserRole.TEACHER) {
+            return "redirect:/teacher/edit/"+courseId;
+        } else {
+            return "redirect:/admin/edit/course/"+courseId+"/"+userSessionService.getId();
+        }
+        // return "takealeave";
+    }
+
+    @PostMapping(value = {"/teacher/edit/course/{courseId}/confirm", "/admin/edit/course/{courseId}/{userId}/confirm" }, params = "submit")
     private String editCourseConfirm(@ModelAttribute("course") CourseInfo course,
+            @RequestParam("course_pic") MultipartFile photo,
             @ModelAttribute("day0") String day0,
             @ModelAttribute("startTime0") String startTime0,
             @ModelAttribute("endTime0") String endTime0,
@@ -206,7 +245,7 @@ public class CourseEditController {
             Model model) {
         logger.info("POST requested");
 
-        System.out.print("Current Course ID : " + courseId);
+        System.out.print("Current Course ID : " + course.getCoursePhoto());
 
         List<CourseTime> courseTimeList = new ArrayList<>();
         CourseTime courseTime0 = new CourseTime();
@@ -265,14 +304,16 @@ public class CourseEditController {
 
             model.addAttribute("courseTimeList", courseTimeList);
             ctList = courseTimeList;
-            System.out.println("Heehee" + ctList);
 
         } else {
             model.addAttribute("classActiveVideo", true);
         }
 
-        model.addAttribute("course", course);
+        FileInfo cphoto = storageService.loadCoursePhoto(course);
+        model.addAttribute("cphoto", cphoto);
 
+        model.addAttribute("course", course);
+        
         UserRole role = userSessionService.getRole();
 
         if (role == UserRole.TEACHER) {
@@ -298,13 +339,13 @@ public class CourseEditController {
         return "AT0002_EditCourseConfirm";
     }
 
-    @PostMapping(value = { "/teacher/edit/complete", "/admin/edit/course/complete" })
-    private String editCourseComplete(@ModelAttribute("course") CourseInfo course,@RequestParam("course_pic") MultipartFile cphoto,HttpServletRequest httpServletRequest) {
+    @PostMapping(value = { "/teacher/edit/complete", "/admin/edit/course/complete"})
+    private String editCourseComplete(@ModelAttribute("course") CourseInfo course,@RequestParam("course_pic") MultipartFile cphoto) {
         // course.setUserInfo(userInfoRepository.findById(userSessionService.getId()).get());
 
         course.setUserInfo(userInfoRepository.findById(course.getUid()).get());
         System.out.print("Teacher id:" + course.getUid());
-        System.out.print("Course Info Update:" + course);
+        System.out.print("Course photo" + cphoto);
 
         logger.info("Post Requested");
 
@@ -318,23 +359,6 @@ public class CourseEditController {
 
         CourseInfo updateCourse = courseInfoRepo.findById(course.getCourseId()).get();
         logger.info("Get Requested {}", updateCourse);
-        if (!cphoto.isEmpty() && CheckUploadFileType.checkType(cphoto)) {
-            // get original photo name and generate a new file name
-            String originalFileName = StringUtils.cleanPath(
-                cphoto.getOriginalFilename());
-
-            try {
-              storageService.store(updateCourse.getCourseId(), cphoto, StorageServiceImpl.COURSE_PATH, true);
-            } catch (UnauthorizedFileAccessException e) {
-              e.printStackTrace();
-            }
-            // insert photo
-            updateCourse.setCoursePhoto(originalFileName);
-            courseInfoRepo.save(updateCourse);
-    
-            logger.info("profile photo {} stored", originalFileName);
-            //return  "redirect:/teacher/course-registration";
-          }
           
         if (classType.toUpperCase().equals("LIVE")) {
 

@@ -131,6 +131,10 @@ public class CourseInfo {
   public boolean getIsCourseApproved() {
     return this.isCourseApproved;
   }
+
+public CourseInfo orElse(Object object) {
+    return null;
+}
   // public String getTitle() {
   // return this.title;
   // }
