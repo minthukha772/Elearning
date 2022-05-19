@@ -12,6 +12,7 @@ import com.blissstock.mappingSite.model.FileInfo;
 public class HomeCourseInfoDTO {
     private String teacherName;
     private String CourseName;
+    private String coursePhoto;
     private int price;
     private Long courseID;
     private FileInfo profilePic;

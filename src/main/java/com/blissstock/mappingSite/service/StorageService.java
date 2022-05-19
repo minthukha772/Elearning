@@ -2,6 +2,7 @@ package com.blissstock.mappingSite.service;
 
 import com.blissstock.mappingSite.entity.PaymentReceive;
 import com.blissstock.mappingSite.entity.UserInfo;
+import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.exceptions.UnauthorizedFileAccessException;
 import com.blissstock.mappingSite.model.FileInfo;
 
@@ -39,6 +40,8 @@ public interface StorageService {
   public void storeSlip(MultipartFile file, String fileName);
 
   public FileInfo loadSlipAsFileInfo(PaymentReceive payment, Long userId);
+
+  public FileInfo loadCoursePhoto(CourseInfo courseInfo);
  
 
 }
