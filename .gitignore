@@ -8,10 +8,6 @@ uploads/
 
 
 
-
-# To prevent from accidental overwriting and crashing the sever
-src/main/resources/application.properties
-
 ### STS ###
 .apt_generated
 .classpath
