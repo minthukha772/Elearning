@@ -6,6 +6,12 @@ build/
 !**/src/test/**/build/
 uploads/
 
+
+
+
+# To prevent from accidental overwriting and crashing the sever
+src/main/resources/application.properties
+
 ### STS ###
 .apt_generated
 .classpath
@@ -93,5 +99,4 @@ gradle-app.setting
 
 # # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
 # gradle/wrapper/gradle-wrapper.properties
-
 
