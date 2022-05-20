@@ -23,6 +23,7 @@ jobs:
          working-directory: /root/project/MappingSite
     steps:
     - uses: actions/checkout@v3
+    - run : sudo -i
     - run : docker-compose down 
     - run : git pull 
     - name: Set up JDK 11
