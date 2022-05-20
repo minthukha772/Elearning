@@ -28,6 +28,6 @@ jobs:
           java-version: "11"
           distribution: "temurin"
 
-      - run: sudo ./gradlew build
+      - run: sudo gradlew build
 
       - run: docker-compose -f "docker-compose.yml" up -d --build
