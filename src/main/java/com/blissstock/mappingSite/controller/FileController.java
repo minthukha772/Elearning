@@ -41,7 +41,9 @@ public class FileController {
       }else if(type.equals("slip")){
         file = storageService.load(uid, filename,StorageServiceImpl.SLIP_PATH);
       }
-      
+      else if(type.equals("cphotos")){
+        file = storageService.load(uid, filename,StorageServiceImpl.COURSE_PATH);
+      }
     } catch (UnauthorizedFileAccessException e) {
       e.printStackTrace();
       return ResponseEntity.badRequest().body(null);
