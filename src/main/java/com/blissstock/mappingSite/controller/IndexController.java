@@ -53,11 +53,11 @@ public class IndexController {
 
                 // if profile is not found set as place holder
                 if (fileInfo == null) {
-                    dto.setProfilePic(new FileInfo("https://via.placeholder.com/150",
+                    dto.setCoursePhoto(new FileInfo("https://via.placeholder.com/150",
                             "https://via.placeholder.com/150"));
                 } else {
 
-                    dto.setProfilePic(fileInfo);
+                    dto.setCoursePhoto(fileInfo);
                 }
                 liveInfoDTOs.add(dto);
 
@@ -72,11 +72,11 @@ public class IndexController {
 
                 // if profile is not found set as place holder
                 if (fileInfo == null) {
-                    dto.setProfilePic(new FileInfo("https://via.placeholder.com/150",
+                    dto.setCoursePhoto(new FileInfo("https://via.placeholder.com/150",
                             "https://via.placeholder.com/150"));
                 } else {
 
-                    dto.setProfilePic(fileInfo);
+                    dto.setCoursePhoto(fileInfo);
                 }
                 videoInfoDTOs.add(dto);
 
