@@ -23,6 +23,6 @@ jobs:
       - run: docker-compose down
       - run: git pull
 
-      - run: ./gradlew build
+      # - run: ./gradlew build
 
       - run: docker-compose -f "docker-compose.yml" up -d --build
