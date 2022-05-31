@@ -1,6 +1,9 @@
+
+
 FROM openjdk:11-jre-slim
+ADD keystore.p12 /etc/letsencrypt/live/pyinnyar-subuu-testsite.cloudns.nz/keystore.p12
 VOLUME /tmp
-ADD keystore.p12 /etc/letsencrypt/live/pyinnyar-subuu-testsite.cloudns.nz
+
 ARG JAVA_OPTS
 ENV JAVA_OPTS=$JAVA_OPTS
 COPY build/libs/mappingSite-0.0.1-SNAPSHOT.jar mappingsite.jar
