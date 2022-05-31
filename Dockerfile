@@ -1,7 +1,7 @@
 
 
 FROM openjdk:11-jre-slim
-ADD keystore.p12 /etc/letsencrypt/live/pyinnyar-subuu-testsite.cloudns.nz/keystore.p12
+ADD keystore.p12 pyinnyar-subuu-testsite.cloudns.nz/keystore.p12
 VOLUME /tmp
 
 ARG JAVA_OPTS
