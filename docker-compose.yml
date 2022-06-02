@@ -11,7 +11,6 @@ services:
     links:
       - postgres
     ports:
-      - 443:8080
       - 8080:8080
 
     volumes:
