@@ -1,7 +1,7 @@
 
 FROM openjdk:11-jre-slim
 
-ADD   /keystore.p12 keystore.p12
+ADD   cert/live/www.pyinnyarsubuu.com /www.pyinnyarsubuu.com
 VOLUME /tmp
 
 ARG JAVA_OPTS
