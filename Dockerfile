@@ -1,7 +1,7 @@
 
 FROM openjdk:11-jre-slim
 
-ADD  pyinnyar-subuu-testsite.cloudns.nz/keystore.p12 keystore.p12
+ADD   /keystore.p12 keystore.p12
 VOLUME /tmp
 
 ARG JAVA_OPTS
