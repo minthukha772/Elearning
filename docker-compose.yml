@@ -15,6 +15,8 @@ services:
     volumes:
       - ../uploads/:/root/uploads
 
+    restart: on-failure
+
   postgres:
     image: postgres:14.0-alpine
     environment:
