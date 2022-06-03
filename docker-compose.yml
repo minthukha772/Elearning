@@ -12,9 +12,10 @@ services:
       - postgres
     ports:
       - 8080:8080
-
     volumes:
       - ../uploads/:/root/uploads
+
+    restart: never
 
   postgres:
     image: postgres:14.0-alpine
