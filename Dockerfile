@@ -1,4 +1,5 @@
 FROM openjdk:11-jre-slim
+ADD   cert/live/www.pyinnyar-subuu.com /www.pyinnyar-subuu.com
 VOLUME /tmp
 ARG JAVA_OPTS
 ENV JAVA_OPTS=$JAVA_OPTS
