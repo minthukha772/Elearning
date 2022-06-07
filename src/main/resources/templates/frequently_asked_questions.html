@@ -14,14 +14,16 @@
       crossorigin="anonymous"
     /> -->
     <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
+    <link rel="stylesheet" th:href="@{/css/global.css}" />
   </head>
 
   <body>
-    <!-- nav -->
+    
     <div th:replace="@{fragments/nav}"></div>
-    <div class="row mt-5">
+
+    <div class=" p-5 row mt-5">
       <div class="col-lg-6 mx-auto">
-        <button style="float: right" class="btn btn-primary mb-3" id="toggle">
+        <button style="float: right" class="btn btn-lg btn-primary mb-3" id="toggle">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
@@ -42,43 +44,45 @@
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-lg-6 mx-auto">
+    <div class="row mb-5 fw-5 " style="font-size: 20px;">
+      <div class="col-lg-6 mx-auto " >
         <!-- <div class="container justify-content-center"> -->
         <!-- heading -->
         <div class="d-flex justify-content-center">
-          <div class="text-center mb-3">
-            <h3>Frequent Asked Questions</h3>
+          <div class="text-center mb-3 text-lg">
+            <h3 style="font-size: 32px;"><b>Frequent Asked Questions</b></h3>
           </div>
         </div>
 
         <!-- accordian -->
-        <div id="LanguageEnglish" style="display: none">
+        <div id="LanguageEnglish" style="display: none; " >
           <!-- <div class="d-flex justify-content-center"> -->
           <!-- accordian column -->
 
-          <div class="accordion" id="accordionExampleEnglish">
+          <div class="accordion t" id="accordionExampleEnglish" >
             <!-- item 1 -->
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="headingOne">
+            <div class="accordion-item" >
+              <h3 class="accordion-header" id="headingOne" >
                 <button
-                  class="accordion-button"
+                  class="accordion-button " 
                   type="button"
                   data-bs-toggle="collapse"
                   data-bs-target="#collapseOne"
                   aria-expanded="true"
                   aria-controls="collapseOne"
+                  style="font-size: 20px;"
                 >
-                  What is Pyinnyar Subuu?
+                 What is Pyinnyar Subuu?
                 </button>
-              </h2>
+              </h3>
               <div
                 id="collapseOne"
                 class="accordion-collapse collapse show"
                 aria-labelledby="headingOne"
                 data-bs-parent="#accordionExampleEnglish"
+                
               >
-                <div class="accordion-body">
+                <div class="accordion-body" >
                   Pyinnyar Subuu is a website where you can easily learn the
                   subjects you want to study online just by having internet. The
                   noble donation is the knowledge donation. You can donate
@@ -99,6 +103,7 @@
                   data-bs-target="#collapseTwo"
                   aria-expanded="false"
                   aria-controls="collapseTwo"
+                  style="font-size: 20px;"
                 >
                   How to learn online?
                 </button>
@@ -127,6 +132,7 @@
                   data-bs-target="#collapse4"
                   aria-expanded="false"
                   aria-controls="collapse4"
+                  style="font-size: 20px;"
                 >
                   Which subjects are learned in Pyinnyar Subuu?
                 </button>
@@ -155,6 +161,7 @@
                   data-bs-target="#collapse5"
                   aria-expanded="false"
                   aria-controls="collapse5"
+                  style="font-size: 20px;"
                 >
                   What do I need to register as a teacher at Pyinnyar Subuu?
                 </button>
@@ -183,6 +190,7 @@
                   data-bs-target="#collapse51"
                   aria-expanded="false"
                   aria-controls="collapse51"
+                  style="font-size: 20px;"
                 >
                   What are the benefits of being a teacher at Pyinnyar Subuu?
                 </button>
@@ -213,6 +221,7 @@
                   data-bs-target="#collapse6"
                   aria-expanded="false"
                   aria-controls="collapse6"
+                  style="font-size: 20px;"
                 >
                   How to transfer class fees as a student?
                 </button>
@@ -239,6 +248,7 @@
                   data-bs-target="#collapse7"
                   aria-expanded="false"
                   aria-controls="collapse7"
+                  style="font-size: 20px;"
                 >
                   How to register as a student?
                 </button>
@@ -264,6 +274,7 @@
                   data-bs-target="#collapse8"
                   aria-expanded="false"
                   aria-controls="collapse8"
+                  style="font-size: 20px;"
                 >
                   How to transfer class fees to teachers?
                 </button>
@@ -341,6 +352,7 @@
                   data-bs-target="#collapseOne"
                   aria-expanded="true"
                   aria-controls="collapseOne"
+                  style="font-size: 20px;"
                 >
                   ပညာစုဗူး (Pyinnyar Subuu) ဆိုတာ ဘာလဲ?
                 </button>
@@ -373,6 +385,7 @@
                   data-bs-target="#collapseTwo"
                   aria-expanded="false"
                   aria-controls="collapseTwo"
+                  style="font-size: 20px;"
                 >
                   အွန်လိုင်းကနေဘယ်လို သင်ယူရမှာလား?
                 </button>
@@ -402,6 +415,7 @@
                   data-bs-target="#collapse4"
                   aria-expanded="false"
                   aria-controls="collapse4"
+                  style="font-size: 20px;"
                 >
                   ပညာစုဗူး(Pyinnyar Subuu)တွင် မည်သို့သော ဘာသာရပ်များကို
                   သင်ယူနိုင်သလဲ?
@@ -432,6 +446,7 @@
                   data-bs-target="#collapse5"
                   aria-expanded="false"
                   aria-controls="collapse5"
+                  style="font-size: 20px;"
                 >
                   ပညာစုဗူး (Pyinnyar Subuu)မှာ ဆရာမ တစ်ဉီးအနေနဲ့ ရပ်တည်ဖို့
                   စာရင်းပေးသွင်းဖို့ဘာတွေလိုအပ်သလဲ?
@@ -462,6 +477,7 @@
                   data-bs-target="#collapse51"
                   aria-expanded="false"
                   aria-controls="collapse51"
+                  style="font-size: 20px;"
                 >
                   ဆရာမ တစ်ဉီးအနေနဲ့ ဘာအကျိုးအမြတ်ရရှိနိုင်မလဲ
                 </button>
@@ -494,6 +510,7 @@
                   data-bs-target="#collapse6"
                   aria-expanded="false"
                   aria-controls="collapse6"
+                  style="font-size: 20px;"
                 >
                   သင်တန်းသား(ကျောင်းသား)များသည် သင်တန်းကြေးကို ဘယ်လိုလွှဲရမလဲ
                 </button>
@@ -521,6 +538,7 @@
                   data-bs-target="#collapse7"
                   aria-expanded="false"
                   aria-controls="collapse7"
+                  style="font-size: 20px;"
                 >
                   သင်တန်းသားအဖြစ် ဘယ်လိုစာရင်းသွင်းရမလဲ?
                 </button>
@@ -547,6 +565,7 @@
                   data-bs-target="#collapse8"
                   aria-expanded="false"
                   aria-controls="collapse8"
+                  style="font-size: 20px;"
                 >
                   ဆရာများအား မည်ကဲ့သို့ ငွေပေးချေပါသလဲ?
                 </button>
@@ -556,6 +575,7 @@
                 class="accordion-collapse collapse"
                 aria-labelledby="headingThree"
                 data-bs-parent="#accordionExample"
+                style="font-size: 20px;"
               >
                 <div class="accordion-body">
                   ပညာစုဗူးဘက်မှ အသစ်ဝင်သည့် ကျောင်းသားဦးရေ စာရင်းကို ပေးပိုပြီး
@@ -647,5 +667,33 @@
         burmese.style.display = "block";
       }
     };
+
+
+    // for checkbox in new ui
+const toggle = document.querySelector(".checkboxClass");
+
+const menu = document.querySelector(".menu-items");
+const line1 = document.querySelector(".line1");
+const line2 = document.querySelector(".line2");
+const line3 = document.querySelector(".line3");
+let toggleOpen = false;
+
+toggle.addEventListener("click", () => {
+	if (!toggleOpen) {
+		menu.classList.add("open");
+		line1.classList.add("open-line1");
+		line2.classList.add("open-line2");
+		line3.classList.add("open-line3");
+		toggleOpen = true;
+	} else {
+		menu.classList.remove("open");
+		line1.classList.remove("open-line1");
+		line2.classList.remove("open-line2");
+		line3.classList.remove("open-line3");
+		toggleOpen = false;
+	}
+});
   </script>
+
+  
 </html>
