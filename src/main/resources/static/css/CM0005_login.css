@@ -5,7 +5,7 @@
     margin-right: auto;
     margin-left: auto;
 }
-.cards {
+.card-login-css {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -16,19 +16,18 @@
     border: 1px solid rgba(0, 0, 0, 0.125);
     border-radius: 0.25rem;
   }
-  .btn-link {
+  .btn-link-login-css {
     font-weight: 400;
     color: #1c201d;
     text-decoration: underline;
   }
-  .btn-primarys {
+  .btn-primary-login-css {
     color: #000;
     background-color: #f7f7f7;
     border-color: #309986;
   }
-  .btn-primarys:hover {
+  .btn-primary-login-css:hover {
     color: #000;
     background-color: #eaf7f4;
     border-color: #4faa6d;
   }
- 
