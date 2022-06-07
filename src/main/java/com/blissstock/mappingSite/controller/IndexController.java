@@ -49,15 +49,15 @@ public class IndexController {
                 dto.setPrice(info.getFees());
                 dto.setTeacherName(info.getUserInfo().getUserName());
                 dto.setCourseName(info.getCourseName());
-                FileInfo fileInfo = storageService.loadProfileAsFileInfo(info.getUserInfo());
+                FileInfo fileInfo = storageService.loadCoursePhoto(info);
 
                 // if profile is not found set as place holder
                 if (fileInfo == null) {
-                    dto.setProfilePic(new FileInfo("https://via.placeholder.com/150",
+                    dto.setCoursePhoto(new FileInfo("https://via.placeholder.com/150",
                             "https://via.placeholder.com/150"));
                 } else {
 
-                    dto.setProfilePic(fileInfo);
+                    dto.setCoursePhoto(fileInfo);
                 }
                 liveInfoDTOs.add(dto);
 
@@ -68,15 +68,15 @@ public class IndexController {
                 dto.setPrice(info.getFees());
                 dto.setTeacherName(info.getUserInfo().getUserName());
                 dto.setCourseName(info.getCourseName());
-                FileInfo fileInfo = storageService.loadProfileAsFileInfo(info.getUserInfo());
+                FileInfo fileInfo = storageService.loadCoursePhoto(info);
 
                 // if profile is not found set as place holder
                 if (fileInfo == null) {
-                    dto.setProfilePic(new FileInfo("https://via.placeholder.com/150",
+                    dto.setCoursePhoto(new FileInfo("https://via.placeholder.com/150",
                             "https://via.placeholder.com/150"));
                 } else {
 
-                    dto.setProfilePic(fileInfo);
+                    dto.setCoursePhoto(fileInfo);
                 }
                 videoInfoDTOs.add(dto);
 

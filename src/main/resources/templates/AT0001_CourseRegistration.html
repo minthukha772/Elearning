@@ -13,6 +13,7 @@
       content="width=device-width, initial-scale=1, minimum-scale=1.0, user-scalable=no"
     />
     <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
+    <link rel="stylesheet" th:href="@{/css/CM0004_Student Profile.css}" />
     <title>Course Registration</title>
 
   <link rel="icon" type="image/x-icon" href="/images/fav.png">
@@ -58,9 +59,66 @@
         <div class="card-header">Course Registration</div>
 
         <div class="card-body">
-          <form th:action="@{${postAction}}" method="post" novalidate>
+          <form th:action="@{${postAction}}" method="post" enctype="multipart/form-data" novalidate >
             <div th:object="${course}">
               <div class="form-group row">
+
+                <div class="text-center">
+                  <p class="form-label">Add an Image to a Course</p>
+                </div>
+
+                <div id="profile">
+                  <div class="profile-pic-wrapper">
+                    <div class="pic-holder"  style="border-radius: 0px;">
+                      <div class="d-flex justify-content-center">
+                        <div class="profile-pic-wrapper">
+
+                            <!-- uploaded pic shown here -->
+                            <img id="profilePic"
+                            class="pic" th:src="${cphoto.url}"  th:alt="${cphoto.name}" />
+  
+                              <label for="newProfilePhoto" class="upload-file-block">
+                                <div class="text-center">
+                                  <div class="mb-2">
+                                    <i class="fa fa-camera fa-2x"></i>
+                                  </div>
+                                  <div class="text-uppercase">
+                                    Upload <br />
+                                    Image
+                                  </div>
+                                </div>
+                              </label>
+                              <input
+                              class="uploadProfileInput"
+                              type="file"
+                              name="course_pic"
+                              id="newProfilePhoto"
+                              accept="image/*"
+                              style="display: none;"
+                              th:src="${cphoto.url}"
+                              th:alt="${cphoto.name}"
+                            />
+  
+
+                        </div>
+                        <!-- TODO Come back for profile Upload -->
+                      </div>
+                    </div>
+                  </div>
+                  <!-- <div class="text-center">
+                    <span style="color: red;">Enter "Save" button to upload course image</span>
+                    </div></br>
+                    <div class="text-center">
+                      <button class="btn btn-primary mb-3"  type="submit" name="photoSubmit" value="pic-edit">Save</button>
+                    </div> -->
+
+                </div>
+                  <input
+                      th:field="*{coursePhoto}"
+                      class="form-control"
+                      id="cname"
+                      type="hidden"
+                    />
                 <div class="row">
                   <div class="col-lg-3">
                     <p class="form-label">Class Type</p>
@@ -227,7 +285,7 @@
                       placeholder="Enter detail about your course here."
                       required
                     ></textarea>
-                      <span style="color: red;">* Please write less than 100 words</span>
+                      <span style="color: red;">* Please write less than 2500 words</span>
                   </div>
                 </div>
                 
@@ -250,7 +308,7 @@
                       placeholder="Enter Prerequisites for the course."
                       required
                     ></textarea>
-                    <span style="color: red;">* Please write less than 100 words</span>
+                    <span style="color: red;">* Please write less than 2500 words</span>
                   </div>
                 </div>
                 
@@ -635,7 +693,7 @@
                 Reset
               </button>
 
-              <button id="btnReg" type="submit" class="btn btn-primary">
+              <button id="btnReg" type="submit" name="submit" class="btn btn-primary">
                 Register
               </button>
             </div>
@@ -648,14 +706,17 @@
     <div th:replace="fragments/footer"></div>
 
     <script
-      type="text/javascript"
-      src="https://code.jquery.com/jquery-3.5.1.js"
-    ></script>
+     src="https://code.jquery.com/jquery-3.6.0.min.js"
+     integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+     crossorigin="anonymous"
+   ></script>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
       crossorigin="anonymous"
     ></script>
     <script th:src="@{/js/AT0001_CourseRegistration.js}"></script>
+    <script th:src="@{/js/photoPlaceHolder.js}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
   </body>
 </html>

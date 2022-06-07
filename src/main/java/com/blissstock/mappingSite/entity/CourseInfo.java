@@ -44,12 +44,15 @@ public class CourseInfo {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long courseId;
 
+  @Column(name = "course_photo")
+	private String coursePhoto;
+
   @Column(name = "course_name", length = 100)
   // @NotBlank(message="Please enter course name")
   private String courseName;
 
   @Column(name = "class_type", length = 20)
-  @NotBlank(message = "Please enter class type")
+  //@NotBlank(message = "Please enter class type")
   private String classType;
 
   @Column(name = "category", length = 100)
@@ -63,11 +66,11 @@ public class CourseInfo {
   // @NotBlank(message="Please choose course level")
   private String level;
 
-  @Column(name = "about_course", length = 250)
+  @Column(name = "about_course", length = 2500)
   // @NotBlank(message="Please enter about course")
   private String aboutCourse;
 
-  @Column(name = "prerequisite")
+  @Column(name = "prerequisite", length=2500)
   private String prerequisite;
 
   @Column(name = "max_stu")
@@ -128,6 +131,10 @@ public class CourseInfo {
   public boolean getIsCourseApproved() {
     return this.isCourseApproved;
   }
+
+public CourseInfo orElse(Object object) {
+    return null;
+}
   // public String getTitle() {
   // return this.title;
   // }
