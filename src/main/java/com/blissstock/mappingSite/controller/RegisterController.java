@@ -201,7 +201,9 @@ public class RegisterController {
                     savedUserInfo.getUserAccount(),
                     appUrl);
 
-                    mailService.SendAdminNewStudent(savedUserInfo, appUrl);
+
+                mailService.SendAdminNewStudent(savedUserInfo, appUrl);
+
 
               } catch (MessagingException e) {
                 logger.info(e.toString());
