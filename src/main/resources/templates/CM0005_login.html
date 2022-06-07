@@ -8,11 +8,9 @@
     <link rel="stylesheet" th:href="@{/css/CM0005_login.css}" />
     <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
     <title>Login</title>
-
-    <link rel="icon" type="image/x-icon" href="/images/fav.png" />
   </head>
 
-  <body style="background-color: #f0f0f0">
+  <body style="background-color: #f0f0f0;">
     <div th:replace="fragments/guestnav"></div>
 
     <!--     <div sec:authorize="isAuthenticated()">
@@ -20,31 +18,8 @@
       <i><span sec:authentication="principal.authorities">Roles</span></i>
     </div> -->
 
-    <div class="container-custom mt-5">
-      <!-- TODO -->
-      <div
-        th:if="${error != null}"
-        class="alert alert-danger fade show mt-5"
-        role="alert"
-      >
-        <span class="text-danger errormessages" th:text="${error}"></span>
-      </div>
-      <div
-        th:if="${success != null}"
-        class="alert alert-success fade show mt-5"
-        role="alert"
-      >
-        <span th:text="${success}"></span>
-      </div>
-      <div
-        th:if="${message != null}"
-        class="alert alert-success fade show mt-5"
-        role="alert"
-      >
-        <span th:text="${message}"></span>
-      </div>
-
-      <div class="card mt-3">
+    <div class="container-custom">
+      <div class="card mt-5">
         <div class="card-header">Login</div>
         <div class="card-body">
           <div class="container">
@@ -55,7 +30,7 @@
               method="post"
             >
               <!--   -->
-              <!-- <div
+              <div
                 th:if="${error != null}"
                 class="alert alert-danger fade show"
                 role="alert"
@@ -75,10 +50,11 @@
                 role="alert"
               >
                 <span th:text="${message}"></span>
-              </div> -->
+              </div>
+
               <div>
                 <div class="mb-3 has-validation">
-                  <label class="form-label " for="emailAddress"  >
+                  <label class="form-label" for="emailAddress">
                     Email Address</label
                   >
                   <input
@@ -112,6 +88,7 @@
                     placeholder="ExamplePassword001"
                     data-toggle="password"
                   />
+                  
 
                   <div
                     class="invalid-feedback"
@@ -129,7 +106,7 @@
                     name="action"
                     value="forget"
                   >
-                    Forget Password?
+                    Forget Password
                   </a>
 
                   <button
@@ -151,8 +128,6 @@
       <!---End of Card-->
     </div>
     <!-- End of Container -->
-
-    <div style="height: 100px"></div>
 
     <div th:replace="@{fragments/footer}"></div>
 
