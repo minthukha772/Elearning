@@ -6,21 +6,21 @@ const line2 = document.querySelector(".line2");
 const line3 = document.querySelector(".line3");
 let toggleOpen = false;
 
-// toggle.addEventListener("click", () => {
-// 	if (!toggleOpen) {
-// 		menu.classList.add("open");
-// 		line1.classList.add("open-line1");
-// 		line2.classList.add("open-line2");
-// 		line3.classList.add("open-line3");
-// 		toggleOpen = true;
-// 	} else {
-// 		menu.classList.remove("open");
-// 		line1.classList.remove("open-line1");
-// 		line2.classList.remove("open-line2");
-// 		line3.classList.remove("open-line3");
-// 		toggleOpen = false;
-// 	}
-// });
+toggle.addEventListener("click", () => {
+	if (!toggleOpen) {
+		menu.classList.add("open");
+		line1.classList.add("open-line1");
+		line2.classList.add("open-line2");
+		line3.classList.add("open-line3");
+		toggleOpen = true;
+	} else {
+		menu.classList.remove("open");
+		line1.classList.remove("open-line1");
+		line2.classList.remove("open-line2");
+		line3.classList.remove("open-line3");
+		toggleOpen = false;
+	}
+});
 
 // Scroll to top
 
