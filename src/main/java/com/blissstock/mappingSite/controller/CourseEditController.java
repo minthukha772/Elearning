@@ -7,22 +7,31 @@ import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.CourseTime;
 import com.blissstock.mappingSite.enums.Days_of_the_week;
 import com.blissstock.mappingSite.enums.UserRole;
+import com.blissstock.mappingSite.exceptions.UnauthorizedFileAccessException;
+import com.blissstock.mappingSite.model.FileInfo;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
 // import com.blissstock.mappingSite.repository.CourseRepository;
 import com.blissstock.mappingSite.repository.CourseTimeRepository;
 import com.blissstock.mappingSite.repository.UserInfoRepository;
+import com.blissstock.mappingSite.service.StorageService;
+import com.blissstock.mappingSite.service.StorageServiceImpl;
 import com.blissstock.mappingSite.service.UserSessionServiceImpl;
+import com.blissstock.mappingSite.utils.CheckUploadFileType;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+// Test for git rules
 @Controller
 
 public class CourseEditController {
@@ -43,6 +52,14 @@ public class CourseEditController {
     @Autowired
     private UserInfoRepository userInfoRepository;
 
+    @Autowired
+    StorageService storageService;
+
+    @Autowired
+    public CourseEditController(StorageService storageService) {
+        this.storageService = storageService;
+    }
+
     private List<CourseTime> ctList = new ArrayList<>();
 
     @RequestMapping(value = { "/teacher/edit/{courseId}", "/admin/edit/course/{courseId}/{userId}" })
@@ -62,7 +79,6 @@ public class CourseEditController {
 
         if (course != null) {
             // List<CourseTime> courseTimeList = new ArrayList<>();
-
             if (course.getClassType().toUpperCase().equals("LIVE")) {
 
                 model.addAttribute("classActiveLive", true);
@@ -113,7 +129,10 @@ public class CourseEditController {
                 model.addAttribute("courseTimeList", sorted_list);
                 model.addAttribute("classActiveVideo", true);
             }
-
+            
+            FileInfo cphoto = storageService.loadCoursePhoto(course);
+            model.addAttribute("cphoto", cphoto);
+            System.out.println("Request course photo "+ cphoto);
             model.addAttribute("course", course);
 
             UserRole role = userSessionService.getRole();
@@ -145,9 +164,11 @@ public class CourseEditController {
             }
 
             if (role == UserRole.TEACHER) {
-                model.addAttribute("postAction", "/teacher/edit/course/confirm");
+                model.addAttribute("postAction", "/teacher/edit/course/"+courseId+"/confirm");
+                //model.addAttribute("photoPostAction", "/teacher/edit/"+courseId+"/photo-upload");
             } else {
-                model.addAttribute("postAction", "/admin/edit/course/" + userId + "/confirm");
+                model.addAttribute("postAction", "/admin/edit/course/"+courseId +"/" +userId + "/confirm");
+                //model.addAttribute("photoPostAction", "/admin/edit/"+courseId+"/photo-upload");
             }
 
             return "AT0001_EditCourse";
@@ -156,9 +177,49 @@ public class CourseEditController {
         }
 
     }
+    @PostMapping(value =  { "/teacher/edit/course/{courseId}/confirm", "/admin/edit/course/{courseId}/{userId}/confirm" }, params = "photoSubmit")
+    private String uploadCoursePhoto( @PathVariable Long courseId,@RequestParam("course_pic") MultipartFile cphoto) {
+        // course.setUserInfo(userInfoRepository.findById(userSessionService.getId()).get());
+        CourseInfo course=courseInfoRepo.findById(courseId).orElse(null);
 
-    @PostMapping(value = { "/teacher/edit/course/confirm", "/admin/edit/course/{userId}/confirm" })
+        logger.info("Post Requested");
+
+        CourseInfo updateCourse = courseInfoRepo.findById(course.getCourseId()).get();
+        logger.info("Get Requested {}", updateCourse);
+        if (!cphoto.isEmpty() && CheckUploadFileType.checkType(cphoto)) {
+            // get original photo name and generate a new file name
+            String originalFileName = StringUtils.cleanPath(
+                cphoto.getOriginalFilename());
+
+            try {
+              storageService.store(updateCourse.getCourseId(), cphoto, StorageServiceImpl.COURSE_PATH, true);
+            } catch (UnauthorizedFileAccessException e) {
+              e.printStackTrace();
+            }
+            // insert photo
+            updateCourse.setCoursePhoto(originalFileName);
+            courseInfoRepo.save(updateCourse);
+    
+            logger.info("profile photo {} stored", originalFileName);
+            //return  "redirect:/teacher/course-registration";
+          }
+        
+        courseInfoRepo.save(updateCourse);
+        logger.info("Update Course for CourseID {}", updateCourse.getCourseId());
+
+        UserRole role = userSessionService.getRole();
+
+        if (role == UserRole.TEACHER) {
+            return "redirect:/teacher/edit/"+courseId;
+        } else {
+            return "redirect:/admin/edit/course/"+courseId+"/"+userSessionService.getId();
+        }
+        // return "takealeave";
+    }
+
+    @PostMapping(value = {"/teacher/edit/course/{courseId}/confirm", "/admin/edit/course/{courseId}/{userId}/confirm" }, params = "submit")
     private String editCourseConfirm(@ModelAttribute("course") CourseInfo course,
+            @RequestParam("course_pic") MultipartFile photo,
             @ModelAttribute("day0") String day0,
             @ModelAttribute("startTime0") String startTime0,
             @ModelAttribute("endTime0") String endTime0,
@@ -185,7 +246,7 @@ public class CourseEditController {
             Model model) {
         logger.info("POST requested");
 
-        System.out.print("Current Course ID : " + courseId);
+        System.out.print("Current Course ID : " + course.getCoursePhoto());
 
         List<CourseTime> courseTimeList = new ArrayList<>();
         CourseTime courseTime0 = new CourseTime();
@@ -244,14 +305,16 @@ public class CourseEditController {
 
             model.addAttribute("courseTimeList", courseTimeList);
             ctList = courseTimeList;
-            System.out.println("Heehee" + ctList);
 
         } else {
             model.addAttribute("classActiveVideo", true);
         }
 
-        model.addAttribute("course", course);
+        FileInfo cphoto = storageService.loadCoursePhoto(course);
+        model.addAttribute("cphoto", cphoto);
 
+        model.addAttribute("course", course);
+        
         UserRole role = userSessionService.getRole();
 
         if (role == UserRole.TEACHER) {
@@ -277,13 +340,13 @@ public class CourseEditController {
         return "AT0002_EditCourseConfirm";
     }
 
-    @PostMapping(value = { "/teacher/edit/complete", "/admin/edit/course/complete" })
-    private String editCourseComplete(@ModelAttribute("course") CourseInfo course) {
+    @PostMapping(value = { "/teacher/edit/complete", "/admin/edit/course/complete"})
+    private String editCourseComplete(@ModelAttribute("course") CourseInfo course,@RequestParam("course_pic") MultipartFile cphoto) {
         // course.setUserInfo(userInfoRepository.findById(userSessionService.getId()).get());
 
         course.setUserInfo(userInfoRepository.findById(course.getUid()).get());
         System.out.print("Teacher id:" + course.getUid());
-        System.out.print("Course Info Update:" + course);
+        System.out.print("Course photo" + cphoto);
 
         logger.info("Post Requested");
 
@@ -297,9 +360,9 @@ public class CourseEditController {
 
         CourseInfo updateCourse = courseInfoRepo.findById(course.getCourseId()).get();
         logger.info("Get Requested {}", updateCourse);
-        System.out.print("Update Info: " + updateCourse);
+          
         if (classType.toUpperCase().equals("LIVE")) {
-            System.out.print("It works!");
+
             updateCourse.setMaxStu(course.getMaxStu());
             updateCourse.setStartDate(course.getStartDate());
             updateCourse.setEndDate(course.getEndDate());
