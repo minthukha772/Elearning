@@ -7,11 +7,13 @@
 
     <link rel="stylesheet" th:href="@{/css/CM0005_login.css}" />
     <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
+    <link rel="stylesheet" th:href="@{/css/global.css}" />
     <title>Login</title>
   </head>
 
   <body style="background-color: #f0f0f0;">
-    <div th:replace="fragments/guestnav"></div>
+    <div th:replace="@{fragments/nav}"></div>
+  
 
     <!--     <div sec:authorize="isAuthenticated()">
       Welcome <b><span sec:authentication="name">Username</span></b>
@@ -130,6 +132,9 @@
     <!-- End of Container -->
 
     <div th:replace="@{fragments/footer}"></div>
+
+    <script th:src="@{../js/main.js}">
+    </script>
 
     <script th:inline="javascript">
       const uri = /*[[@{__${#httpServletRequest.requestURI}__}]]*/ "uri    ";
