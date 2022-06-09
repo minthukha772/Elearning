@@ -88,11 +88,11 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
 						</div>
 
 						<!-- For guest user -->
-						<div th:if="${guest == 'GUEST'}" class="d-flex justify-content-center px-5">
+						<div th:if="${guest == 'GUEST'}" class="d-flex justify-content-start px-5">
 							<!-- <button class="btn__enroll">Enroll</button> -->
 							<span th:if="${isCourseDateValid}!=null">
 								<span th:if="${!isCourseDateValid}">
-								  <div class="text-danger">
+								  <div class="text-primary">
 									This course is no longer valid to enroll
 								  </div>
 								</span>
@@ -138,7 +138,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
 									  </span>
 						
 									  <span th:if="${!isCourseDateValid}">
-										<div class="text-danger">
+										<div class="text-primary">
 										  This course is no longer valid to enroll
 										</div>
 									  </span>
@@ -161,12 +161,12 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
 									  th:if="${!paymentComplete && studentRegistered}"
 									  th:href="@{'/student/payment-upload/course_id/' + ${courseInfo.courseId}}"
 									  ><button
-										class="btn__payment"
+										class="btn-primary"
 									  >Payment</button></a>
 									  <a
 									  th:if="${studentRegistered}"
 									  th:href="@{'/student/student-review/'+${courseInfo.courseId}}"
-									  ><button class="btn__review">
+									  ><button class="btn-primary">
 										<i class="fas fa-plus"></i> Write Review
 									  </button></a
 									>
@@ -184,7 +184,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
 									<a
 									  th:if="${teacherRegistered}"
 									  th:href="@{'/teacher/edit/'+ ${courseInfo.courseId}}"
-									  ><button class="btn btn-primary">Edit Course</button></a
+									  ><button class="btn-primary">Edit Course</button></a
 									>
 									 <!-- Disable Take A Leave -->
 									<!-- <a
@@ -226,7 +226,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
 										  class="form-control"
 										  placeholder="Insert class link"
 										/>
-										<button class="btn btn-primary">Submit</button>
+										<!-- <button class="btn btn-primary">Submit</button> -->
 									  </div>
 									</form>
 								  </div>
@@ -238,7 +238,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
 								  <!-- live class  -->
 								  <span th:if="${isCourseDateValid}!=null">
 									<span th:if="${!isCourseDateValid}">
-									  <div class="text-danger">
+									  <div class="text-primary">
 										This course has already passed the starting date
 									  </div>
 									</span>
@@ -304,7 +304,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
 										  </h5>
 										  <button
 											type="button"
-											class="btn btn-close"
+											class="btn btn-primary"
 											data-bs-dismiss="modal"
 											aria-label="Close"
 										  ></button>
@@ -315,7 +315,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
 										<div class="modal-footer">
 										  <button
 											type="button"
-											class="btn btn-secondary"
+											class="btn btn-primary"
 											data-bs-dismiss="modal"
 										  >
 											Close
@@ -323,7 +323,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
 										  <button
 											type="button"
 											id="verifyCourse"
-											class="btn btn-danger"
+											class="btn btn-primary"
 										  >
 											VERIFY
 										  </button>
@@ -333,7 +333,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
 								  </div>
 								  <button
 								  type="button"
-								  class="btn btn-danger"
+								  class="btn btn-primary"
 								  data-bs-toggle="modal"
 								  data-bs-target="#deleteCourseConfirmModal"
 								  th:attr="data-bs-id=${courseInfo.courseId}"
@@ -380,7 +380,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
 										<button
 										  type="button"
 										  id="deleteCourse"
-										  class="btn btn-danger"
+										  class="btn btn-primary"
 										>
 										  DELETE
 										</button>
@@ -418,7 +418,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
 										class="form-control"
 										placeholder="Insert class link"
 									  />
-									  <button class="btn btn-primary" type="submit">Submit</button>
+									  <!-- <button class="btn btn-primary" type="submit">Submit</button> -->
 									</div>
 								  </form>
 								</div>
