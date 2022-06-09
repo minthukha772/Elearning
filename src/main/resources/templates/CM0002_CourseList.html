@@ -1,234 +1,513 @@
 <!DOCTYPE html>
 <html lang="en">
-  <!-- <html xmlns:th="http://www.thymeleaf.org"
-xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Course List</title>
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0"
+		/>
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+			integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
+			crossorigin="anonymous"
+		/>
+		<link rel="stylesheet" th:href="@{/css/global.css}" />
+		<link
+			rel="stylesheet"
+			type="text/css"
+			th:href="@{/css/CM0002_CourseList.css}"
+		/>
+		<title>Explore Page</title>
+	</head>
+	<body>
+		<header>
+			<nav class="fixed-top">
+				<div class="d-flex justify-content-between w-100">
+					<div class="navbar-logo-holder">
+						<a href="#"
+							><img src="/images/logo.png"
+						/></a>
+					</div>
+					<div class="d-flex links-div" id="linkholder">
+						<div
+							class="d-flex form__group field align-items-center align-self-center"
+						>
+							<img
+								src="./assets/icons/search-icon.svg"
+								class="icon"
+							/>
+							<input
+								type="input"
+								class="form__field"
+								name="search"
+								id="search"
+								placeholder="Search"
+							/>
+						</div>
+						<div class="link-holder">
+							<a class="nav-link" href="#"
+								>Register as a student</a
+							>
+						</div>
+						<div class="link-holder">
+							<a class="nav-link" href="#"
+								>Register as a teacher</a
+							>
+						</div>
+						<div class="link-holder">
+							<a class="nav-link" href="#">Login</a>
+						</div>
+					</div>
+					<div class="hamburger-lines">
+						<input
+							type="checkbox"
+							class="checkboxClass"
+							id="#toggle"
+						/>
+						<span class="line line1"></span>
+						<span class="line line2"></span>
+						<span class="line line3"></span>
+					</div>
+				</div>
+				<div class="menu-items">
+					<li><a href="#">Register as a student</a></li>
+					<li><a href="#">Register as a teacher</a></li>
+					<li>
+						<div
+							class="d-flex form__group field align-items-center align-self-center"
+						>
+							<img
+								src="./assets/icons/search-icon.svg"
+								class="icon"
+							/>
+							<input
+								type="input"
+								class="form__field"
+								name="search"
+								id="search"
+								placeholder="Search"
+							/>
+						</div>
+					</li>
+					<li>
+						<button type="submit" class="date__btn">
+							Search
+						</button>
+					</li>
+				</div>
+			</nav>
+		</header>
 
-    <link rel="icon" type="image/x-icon" href="/images/fav.png" />
-    <!-- CSS -->
-    <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      th:href="@{/css/CM0002_CourseList.css}"
-    />
-  </head>
-  <body>
-    <div th:replace="@{fragments/nav}"></div>
-
-    <!-- Back to top button -->
-
-    <!-- Advance Search -->
-    <div
-      class="container-fluid mb-3"
-      style="background-color: #5eba7d"
-      th:if="${searchable}"
-    >
-      <h2 class="pt-3 mb-3 text-white">Explore Courses</h2>
-
-      <form
+		<main>
+			<section class="container-fluid explore__courses">
+				<h1>Explore courses</h1>
+        
+        <form
         th:action="@{__${#httpServletRequest.requestURI}__}"
         method="get"
         th:object="${courseInfoDTO}"
-        class="form-floating"
+        class="col-sm"
       >
-        <div class="row g-2 mb-3 justify-content-start">
-          <div class="col-md-3 col-sm-6 col-12">
-            <div class="form-floating">
-              <input
-                type="text"
-                class="form-control"
-                th:field="*{courseName}"
-                placeholder="Course Name"
-              />
-              <label for="courseName">Course Name</label>
-            </div>
-          </div>
+				<div class="search__container">
+					<div class="row gap-3">
+						<div class="col-sm">
+							
+							<input
+								type="text"
+								placeholder="Course Name"
+								class="input"
+								 th:field="*{courseName}"
+							/>
+							<input
+								type="text"
+								placeholder="Start Date (dd/mm/yyyy)"
+								class="input mt-3"
+                                th:field="*{startDate}"
+							/>
+							
+						</div>
+						<div class="col-sm">
+							<input
+								type="text"
+								placeholder="Teacher Name"
+								class="input"
+								th:field="*{teacherName}"
+							/>
+							<input
+								type="text"
+								placeholder="End Date (dd/mm/yyyy)"
+								class="input mt-3"
+								th:field="*{endDate}"
+								
+							/>
+							
+						</div>
+						<div class="col-sm">
+							<input
+								type="inputk"
+								placeholder="Lowest Fee (0)"
+								class="input"
+								th:field="*{lowestFee}"
+								min="0"
+								step="1000"
 
-          <div class="col-md-3 col-sm-6 col-12">
-            <div class="form-floating">
-              <input
-                type="text"
-                class="form-control"
-                th:field="*{teacherName}"
-                placeholder="Teacher Name"
-              />
-              <label for="teacherName">Teacher Name</label>
-            </div>
-          </div>
-          <div class="col-md-3 col-sm-6 col-12">
-            <div class="form-floating">
-              <input type="date" class="form-control" th:field="*{startDate}" />
-              <label for="startDate">Start Date</label>
-            </div>
-          </div>
-          <div class="col-md-3 col-sm-6 col-12">
-            <div class="form-floating">
-              <input type="date" class="form-control" th:field="*{endDate}" />
-              <label for="endDate">End Date</label>
-            </div>
-          </div>
-          <div class="col-md-3 col-sm-6 col-12">
-            <div class="form-floating">
-              <input
-                type="number"
-                class="form-control"
-                th:field="*{lowestFee}"
-                min="0"
-                step="1000"
-              />
-              <label for="lowestFee">Lowest Fee</label>
-            </div>
-          </div>
-          <div class="col-md-3 col-sm-6 col-12">
-            <div class="form-floating">
-              <input
-                type="number"
-                class="form-control"
-                th:field="*{highestFee}"
-                min="0"
-                step="1000"
-              />
-              <label for="highestFee">Highest Fee</label>
-            </div>
-          </div>
-          <div class="col-md-3 col-sm-6 col-12"></div>
-          <div class="col-md-3 col-sm-6 col-12 text-end">
-            <button type="submit" class="btn btn-primary btn-lg">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                class="bi bi-search"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"
-                ></path>
-              </svg>
-              Search
-            </button>
-          </div>
-        </div>
-        <div class="pb-3 d-grid gap-2 d-md-flex justify-content-md-end">
-          <!-- <button type="submit" class="btn btn-lg btn-primary">Search</button> -->
-        </div>
+							/>
+							<input
+								type="input"
+								placeholder="Highest Fee (0)"
+								class="input mt-3"
+								th:field="*{highestFee}"
+								min="0"
+								step="1000"
+							/>
+						</div>
+						<div class="col-sm">
+							<button type="submit" class="date__btn">Search</button>
+						</div>
+					</div>
+				</div>
+			</section>
+			<section
+				class="container-fluid courses__section mt-4"
+			>
+				<div class="row">
+					<div class="col-sm-12 col-md-6 col-xl-3">
+						<div class="d-flex flex-column w-100">
+							<div class="filter__heading">Filter By</div>
+							<div class="filter__container">
+								<div class="specification__container">
+									<h3>Levels</h3>
+									<div class="d-flex align-items-center">
+										<input
+											type="checkbox"
+											class="filterCheckbox"
+										/>
+										<p class="filterDescription">Basic</p>
+										<p class="filterDescription">(16)</p>
+									</div>
+									<div class="d-flex align-items-center">
+										<input
+											type="checkbox"
+											class="filterCheckbox"
+										/>
+										<p class="filterDescription">
+											Intermediate
+										</p>
+										<p class="filterDescription">(1)</p>
+									</div>
+								</div>
+								<div class="specification__container">
+									<h3>Categories</h3>
+									<div class="d-flex align-items-center">
+										<input
+											type="checkbox"
+											class="filterCheckbox"
+										/>
+										<p class="filterDescription">
+											Personal Development
+										</p>
+										<p class="filterDescription">(16)</p>
+									</div>
+									<div class="d-flex align-items-center">
+										<input
+											type="checkbox"
+											class="filterCheckbox"
+										/>
+										<p class="filterDescription">IT</p>
+										<p class="filterDescription">(4)</p>
+									</div>
+									<div class="d-flex align-items-center">
+										<input
+											type="checkbox"
+											class="filterCheckbox"
+										/>
+										<p class="filterDescription">
+											Language
+										</p>
+										<p class="filterDescription">(2)</p>
+									</div>
+								</div>
+								<div class="specification__container">
+									<h3>Class Types</h3>
+									<div class="d-flex align-items-center">
+										<input
+											type="checkbox"
+											class="filterCheckbox"
+										/>
+										<p class="filterDescription">Video</p>
+										<p class="filterDescription">(16)</p>
+									</div>
+									<div class="d-flex align-items-center">
+										<input
+											type="checkbox"
+											class="filterCheckbox"
+										/>
+										<p class="filterDescription">LIVE</p>
+										<p class="filterDescription">(1)</p>
+									</div>
+								</div>
+							</div>
+							<div class="filter__buttons">
+								<button class="button__clear" type="submit">Clear</button>
+								<button class="button__apply" type="submit">Apply</button>
+							</div>
+						</div>
+					</div>
+					<div
+						class="col-sm-8 col-md-6 col-xl-9 mt-4 mt-md-0"
+					>
+						<div
+							class="d-flex flex-column flex-md-column flex-sm-column flex-lg-column flex-xl-row"
+						>
+							<img
+								class="detail__img"
+								src="/images/profile.png"
+							/>
+							<div class="course__detail mt-4 mt-md-0">
+								<h3 class="detail__title">
+									Git and GitHub (Basic)
+								</h3>
+								<p class="role__title">Subuu Teacher</p>
+								<p class="category__title">IT > Basic</p>
+								<p class="detail__description">
+									Learn the basics of Git, Git installation,
+									The basics of terminal, The Basics of
+									GitHub, Learn how to set up collaboration
+									team
+								</p>
+								<button class="detail__btn">Free</button>
+							</div>
+						</div>
+						<div
+							class="d-flex flex-column flex-md-column flex-sm-column flex-lg-column flex-xl-row mt-md-4"
+						>
+							<img
+								class="detail__img"
+								src="/images/profile.png"
+								
+							/>
+							<!-- <img 
+							th:unless="${profilePic == null}"
+							th:src="${profilePic.url}"
+							class="rounded-circle"
+							style="width: 150px"
+							alt="Avatar"> -->
+							
+							<div class="course__detail mt-4 mt-md-0">
+								<h3 class="detail__title" >
+									Git and GitHub (Basic)
+								</h3>
+								<p class="role__title">Subuu Teacher</p>
+								<p class="category__title" >IT > Basic</p>
+								<p class="detail__description" >
+									Learn the basics of Git, Git installation,
+									The basics of terminal, The Basics of
+									GitHub, Learn how to set up collaboration
+									team
+								</p>
+								<button class="detail__btn">Free</button>
+							</div>
+						</div>
+						<div
+							class="d-flex flex-column flex-md-column flex-sm-column flex-lg-column flex-xl-row mt-md-4"
+						>
+							<img
+								class="detail__img"
+								src="/images/profile.png"
+							/>
+							<div class="course__detail mt-4 mt-md-0">
+								<h3 class="detail__title">
+									Git and GitHub (Basic)
+								</h3>
+								<p class="role__title">Subuu Teacher</p>
+								<p class="category__title">IT > Basic</p>
+								<p class="detail__description">
+									Learn the basics of Git, Git installation,
+									The basics of terminal, The Basics of
+									GitHub, Learn how to set up collaboration
+									team
+								</p>
+								<button class="detail__btn">Free</button>
+							</div>
+						</div>
+						<div
+							class="d-flex flex-column flex-md-column flex-sm-column flex-lg-column flex-xl-row mt-md-4"
+						>
+							<img
+								class="detail__img"
+								src="/images/profile.png"
+							/>
+							<div class="course__detail mt-4 mt-md-0">
+								<h3 class="detail__title">
+									Git and GitHub (Basic)
+								</h3>
+								<p class="role__title">Subuu Teacher</p>
+								<p class="category__title">IT > Basic</p>
+								<p class="detail__description">
+									Learn the basics of Git, Git installation,
+									The basics of terminal, The Basics of
+									GitHub, Learn how to set up collaboration
+									team
+								</p>
+								<button class="detail__btn">Free</button>
+							</div>
+						</div>
+						<div
+							class="d-flex flex-column flex-md-column flex-sm-column flex-lg-column flex-xl-row mt-md-4"
+						>
+							<img
+								class="detail__img"
+								src="/images/profile.png"
+							/>
+							<div class="course__detail mt-4 mt-md-0">
+								<h3 class="detail__title">
+									Git and GitHub (Basic)
+								</h3>
+								<p class="role__title">Subuu Teacher</p>
+								<p class="category__title">IT > Basic</p>
+								<p class="detail__description">
+									Learn the basics of Git, Git installation,
+									The basics of terminal, The Basics of
+									GitHub, Learn how to set up collaboration
+									team
+								</p>
+								<button class="detail__btn">Free</button>
+							</div>
+						</div>
+						<div
+							class="d-flex flex-column flex-md-column flex-sm-column flex-lg-column flex-xl-row mt-md-4"
+						>
+							<img
+								class="detail__img"
+								src="/images/profile.png"
+							/>
+							<div class="course__detail mt-4 mt-md-0">
+								<h3 class="detail__title">
+									Git and GitHub (Basic)
+								</h3>
+								<p class="role__title">Subuu Teacher</p>
+								<p class="category__title">IT > Basic</p>
+								<p class="detail__description">
+									Learn the basics of Git, Git installation,
+									The basics of terminal, The Basics of
+									GitHub, Learn how to set up collaboration
+									team
+								</p>
+								<button class="detail__btn">Free</button>
+							</div>
+						</div>
 
-        <!-- End of row -->
-      </form>
-    </div>
-    <!-- End : Advance Search -->
+						<div class="d-flex mt-4">
+							<ul class="pagination">
+								<li class="page-item">
+									<a
+										class="page-link"
+										href="#"
+										aria-label="Previous"
+									>
+										<span
+											aria-hidden="true"
+											class="pagination-button"
+											>&laquo;</span
+										>
+									</a>
+								</li>
+								<li class="page-item">
+									<a
+										class="page-link"
+										href="#"
+										style="color: black"
+										>1</a
+									>
+								</li>
+								<li class="page-item">
+									<a
+										class="page-link"
+										href="#"
+										aria-label="Next"
+									>
+										<span
+											aria-hidden="true"
+											class="pagination-button"
+											>&raquo;</span
+										>
+									</a>
+								</li>
+							</ul>
+							<p
+								class="pagination__description align-self-end ms-2"
+							>
+								<span class="current__page">1</span> of 1
+								pages, 17 entries
+							</p>
+						</div>
+					</div>
+				</div>
+			</section>
+		</main>
+		<!-- Footer-->
+		<footer class="container-fluid no-padding">
+			<div class="footer__container">
+				<div
+					class="d-lg-flex flex-sm-column flex-md-row justify-content-between align-items-sm-center footer__div"
+				>
+					<div class="footer__holder">
+						<h3 class="footer__title">Get to Know Us</h3>
+						<ul
+							class="footer__subtitle"
+							style="line-height: 200%"
+						>
+							<li>FAQs</li>
+							<li>Terms and Conditions</li>
+							<li>Help and Support</li>
+							<li>About the management company</li>
+						</ul>
+					</div>
+					<div class="footer__holder">
+						<h3 class="footer__title">Contact</h3>
+						<ul
+							class="footer__subtitle"
+							style="line-height: 200%"
+						>
+							<li>Tel: +959 98-656-3091</li>
+							<li>Viber: +959 98-656-3091</li>
+							<li>Telegram: +959 98-656-3091</li>
+							<li>Line: +959 98-656-3091</li>
+						</ul>
+					</div>
+					<div class="footer__holder">
+						<img
+							src="./assets/images/bliss-stock.png"
+							alt="logo"
+							class="align-self-end"
+						/>
+					</div>
+				</div>
+				<div class="copyright">
+					<div class="center">
+						<p class="copyright__text">
+							© Copyright Pyinnyar Subuu. All Rights
+							Reserved
+						</p>
+					</div>
+				</div>
+			</div>
+		</footer>
+		<img
+			src="./assets/icons/arrow-up-square-fill.svg"
+			class="scrollToTop"
+			onclick="handleScrollToTop()"
+		/>
 
-    <!-- User Info -->
-    <div
-      class="container-fluid mb-3 py-3"
-      style="background-color: #5eba7d"
-      th:unless="${userInfo == null}"
-    >
-      <div class="row">
-        <div class="col-auto">
-          <img
-            th:if="${profilePic == null}"
-            th:src="@{/images/profile.png}"
-            class="rounded-circle"
-            style="width: 150px"
-            alt="Avatar"
-          />
-          <img
-            th:unless="${profilePic == null}"
-            th:src="${profilePic.url}"
-            class="rounded-circle"
-            style="width: 150px"
-            alt="Avatar"
-          />
-        </div>
-
-        <div class="text-white col-auto mt-2 mt-sm-0">
-          <h4 th:text="${userInfo.userName}"></h4>
-          <p th:text="${userInfo.selfDescription}"></p>
-          
-          <div sec:authorize="hasAuthority('ROLE_TEACHER')">
-            <div th:if="${userInfo.userAccount.accountStatus == 'VERIFIED'}">
-              <a
-                th:href="@{/teacher/course-registration}"
-                class="btn btn-primary"
-                >Add Course</a
-              >
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-    <!-- End: User Info -->
-
-    <div class="container-fluid">
-      <div class="row">
-        <!-- Filter -->
-        <div class="col-sm-auto col-12 mb-3">
-          <div class="card">
-            <div class="card-header">See the filtered Result</div>
-            <ul class="list-group list-group-flush filterContainer"></ul>
-            <div class="card-body">
-              <button class="btn btn-primary filterBtn" type="submit">
-                Apply
-              </button>
-              <button class="btn btn-danger clearBtn" type="submit">
-                Clear
-              </button>
-            </div>
-          </div>
-        </div>
-        <!-- End: Filter -->
-    
-        <div class="col " id="course">
-
-          <!-- <div sec:authorize="hasAuthority('ROLE_TEACHER')">
-            <div th:if="${userInfo.userAccount.accountStatus != 'VERIFIED'}">
-              <div th:href="@{/teacher/course-registration}"
-                    class="btn-sm btn-block rounded not-allowed mx-auto errormessage1">
-                <img src="/images/warning.png" style="width: 75px; height:70px;" />
-                <div class="ms-5 " style="display: inline;">It will take 1 or 2 days for the Admin Confirmation.<br/>
-                  <span class="ms-4">After the Admin confirmation,you can proceed the course registration.</span>
-                </div>
-              </div>
-             </div>
-         </div> -->
-        
-          <p
-            id="zero-result-msg"
-            class="text-center text-danger mt-5"
-            style="display: none"
-            th:text="${emptyMessage}"
-          >
-            Sorry, No Search Result Found!
-          </p>
-          <div id="courseList" class="row g-2 my-3"></div>
-        </div>
-      </div>
-    </div>
-
-    <div th:replace="@{fragments/footer}"></div>
-
-    <!-- JS -->
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-      crossorigin="anonymous"
-    ></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script th:src="@{/js/pagination.min.js}"></script>
-
-    <script th:inline="javascript">
-      const courseList = /*[[${courseList}]]*/ false;
-    </script>
-    <script th:src="@{/js/CM0002_CourseList.js}"></script>
-    <script src="/js/toTheTop.js"></script>
-  </body>
+		<!-- Bootstrap JS -->
+		<script
+			src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+			crossorigin="anonymous"
+		></script>
+		<script src="./assets/js/main.js"></script>
+	</body>
+	<html></html>
 </html>
