@@ -20,6 +20,15 @@ body {
 	overflow-x: hidden;
 }
 
+.linkholder{
+	color: #fff;
+}
+
+.linkholder:hover{
+	color: yellow;
+	transition: ease 1s;
+}
+
 nav {
 	top: 0;
 	position: fixed;
@@ -40,6 +49,7 @@ nav .navbar-logo-holder {
 }
 
 nav .link-holder {
+	
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -50,18 +60,27 @@ nav .link-holder {
 	clip-path: polygon(8% 0, 100% 0, 92% 100%, 0% 100%);
 }
 
+#linkholder div:nth-child(1) {
+	font-size: 20px;
+}
+
 #linkholder div:nth-child(2) {
-	width: 230px;
+	font-size: 20px;
+	width: 430px;
 	background-color: var(--nav-link-bg-alt);
 	color: white;
 }
 
+
 #linkholder div:nth-child(3) {
+	font-size: 20px;
+	width: 430px;
 	background-color: var(--navbar-color);
 	color: white;
 }
 
 #linkholder div:nth-child(4) {
+	font-size: 20px;
 	background-color: var(--nav-link-bg-alt);
 	color: white;
 	clip-path: polygon(8% 0, 100% 0, 100% 100%, 0% 100%);
@@ -88,11 +107,20 @@ nav .nav-link {
 }
 
 nav .form__group {
+	
 	position: relative;
 	width: 40%;
-	border-bottom: 1px solid #d9d9d9;
+	/* border-bottom: 1px solid #d9d9d9; */
 	transition: border-color 0.2s;
 	margin-right: 4rem;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+nav .form__group a{
+	text-decoration: none;
 }
 
 .menu-items .form__group {
@@ -279,6 +307,10 @@ nav .checkboxClass {
 	margin-top: 24px;
 }
 
+.hovers:hover{
+	color: yellow;
+}
+
 .copyright {
 	width: 100%;
 	background-color: black;
@@ -305,26 +337,4 @@ nav .checkboxClass {
 	.footer__title {
 		text-align: center;
 	}
-}
-
-.scrollToTop {
-	position: fixed;
-	z-index: 12;
-	width: 80px;
-	height: 80px;
-	right: 80px;
-	bottom: -16%;
-	mix-blend-mode: hard-light;
-	transition: all 0.3s ease-in-out;
-	cursor: pointer;
-}
-
-@media screen and (max-width: 550px) {
-	.scrollToTop {
-		right: 40px;
-	}
-}
-
-.show-scroll {
-	bottom: 6%;
 }
