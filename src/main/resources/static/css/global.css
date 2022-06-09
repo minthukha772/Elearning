@@ -1,6 +1,7 @@
 :root {
 	/* Colors */
 	--primary: #309986;
+	--warning: yellow;
 	--navbar-brand-bg-color: #edf3f1;
 	--navbar-color: #0f8173;
 	/* Typography */
@@ -25,7 +26,7 @@ body {
 }
 
 .linkholder:hover{
-	color: yellow;
+	color: var(--warning);
 	transition: ease 1s;
 }
 
@@ -308,7 +309,7 @@ nav .checkboxClass {
 }
 
 .hovers:hover{
-	color: yellow;
+	color: var(--warning);
 }
 
 .copyright {
