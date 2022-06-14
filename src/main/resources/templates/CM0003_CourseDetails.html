@@ -75,11 +75,11 @@
 						</div>
 
 						<!-- For guest user -->
-						<div th:if="${guest == 'GUEST'}" class="d-flex justify-content-center px-5">
+						<div th:if="${guest == 'GUEST'}" class="d-flex justify-content-start px-5">
 							<!-- <button class="btn__enroll">Enroll</button> -->
 							<span th:if="${isCourseDateValid}!=null">
 								<span th:if="${!isCourseDateValid}">
-								  <div class="text-danger">
+								  <div class="text-primary">
 									This course is no longer valid to enroll
 								  </div>
 								</span>
@@ -125,7 +125,7 @@
 									  </span>
 						
 									  <span th:if="${!isCourseDateValid}">
-										<div class="text-danger">
+										<div class="text-primary">
 										  This course is no longer valid to enroll
 										</div>
 									  </span>
@@ -148,12 +148,12 @@
 									  th:if="${!paymentComplete && studentRegistered}"
 									  th:href="@{'/student/payment-upload/course_id/' + ${courseInfo.courseId}}"
 									  ><button
-										class="btn__payment"
+										class="btn-primary"
 									  >Payment</button></a>
 									  <a
 									  th:if="${studentRegistered}"
 									  th:href="@{'/student/student-review/'+${courseInfo.courseId}}"
-									  ><button class="btn__review">
+									  ><button class="btn-primary">
 										<i class="fas fa-plus"></i> Write Review
 									  </button></a
 									>
@@ -171,7 +171,7 @@
 									<a
 									  th:if="${teacherRegistered}"
 									  th:href="@{'/teacher/edit/'+ ${courseInfo.courseId}}"
-									  ><button class="btn btn-primary">Edit Course</button></a
+									  ><button class="btn-primary">Edit Course</button></a
 									>
 									 
 									<a
@@ -208,7 +208,7 @@
 										  class="form-control"
 										  placeholder="Insert class link"
 										/>
-										<button class="btn btn-primary">Submit</button>
+										<!-- <button class="btn btn-primary">Submit</button> -->
 									  </div>
 									</form>
 								  </div>
@@ -220,7 +220,7 @@
 								  <!-- live class  -->
 								  <span th:if="${isCourseDateValid}!=null">
 									<span th:if="${!isCourseDateValid}">
-									  <div class="text-danger">
+									  <div class="text-primary">
 										This course has already passed the starting date
 									  </div>
 									</span>
@@ -286,7 +286,7 @@
 										  </h5>
 										  <button
 											type="button"
-											class="btn btn-close"
+											class="btn btn-primary"
 											data-bs-dismiss="modal"
 											aria-label="Close"
 										  ></button>
@@ -297,7 +297,7 @@
 										<div class="modal-footer">
 										  <button
 											type="button"
-											class="btn btn-secondary"
+											class="btn btn-primary"
 											data-bs-dismiss="modal"
 										  >
 											Close
@@ -305,7 +305,7 @@
 										  <button
 											type="button"
 											id="verifyCourse"
-											class="btn btn-danger"
+											class="btn btn-primary"
 										  >
 											VERIFY
 										  </button>
@@ -315,7 +315,7 @@
 								  </div>
 								  <button
 								  type="button"
-								  class="btn btn-danger"
+								  class="btn btn-primary"
 								  data-bs-toggle="modal"
 								  data-bs-target="#deleteCourseConfirmModal"
 								  th:attr="data-bs-id=${courseInfo.courseId}"
@@ -362,7 +362,7 @@
 										<button
 										  type="button"
 										  id="deleteCourse"
-										  class="btn btn-danger"
+										  class="btn btn-primary"
 										>
 										  DELETE
 										</button>
@@ -396,7 +396,7 @@
 										class="form-control"
 										placeholder="Insert class link"
 									  />
-									  <button class="btn btn-primary" type="submit">Submit</button>
+									  <!-- <button class="btn btn-primary" type="submit">Submit</button> -->
 									</div>
 								  </form>
 								</div>
@@ -507,9 +507,11 @@
 		<div th:replace="@{fragments/footer}"></div>
 		<img
 			src="/images/arrow-up-square-fill.svg"
-			class="scrollToTop"
+			class="scrollToTop show-scroll"
 			onclick="handleScrollToTop()"
 		/>
+
+
 		<script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
       th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js}"

@@ -1,6 +1,7 @@
 :root {
 	/* Colors */
 	--primary: #309986;
+	--warning: yellow;
 	--navbar-brand-bg-color: #edf3f1;
 	--navbar-color: #0f8173;
 	/* Typography */
@@ -22,6 +23,15 @@ body {
 	font-family: -apple-system, BlinkMacSystemFont, sans-serif;
 	font-weight: 400;
 	overflow-x: hidden;
+}
+
+.linkholder{
+	color: #fff;
+}
+
+.linkholder:hover{
+	color: var(--warning);
+	transition: ease 1s;
 }
 
 nav {
@@ -364,7 +374,7 @@ nav .checkboxClass {
 }
 
 .hovers:hover{
-	color: yellow;
+	color: var(--warning);
 }
 
 .copyright {
@@ -393,4 +403,25 @@ nav .checkboxClass {
 	.footer__title {
 		text-align: center;
 	}
+}
+.scrollToTop {
+	position: fixed;
+	z-index: 12;
+	width: 80px;
+	height: 80px;
+	right: 80px;
+	bottom: -16%;
+	mix-blend-mode: hard-light;
+	transition: all 0.3s ease-in-out;
+	cursor: pointer;
+}
+
+@media screen and (max-width: 550px) {
+	.scrollToTop {
+		right: 40px;
+	}
+}
+
+.show-scroll {
+	bottom: 6%;
 }
