@@ -1,3 +1,7 @@
+.largedivs{
+    padding: 50px;
+}
+
 .card-img-top {
     width: 100%;
     height: 15vw;
@@ -6,5 +10,32 @@
 
 .colors{
     color: #fff;
-    background-color: #5ea818;
+    background-color: var(--nav-link-bg-alt);
 }
+
+.cardfirsts{
+    border: 2px solid  var(--certificate-border) ;
+}
+
+.cardheaders{
+    color: var(--certificate-btn);
+    font-size: 25px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cardheadertwos{
+    background: var(--certificate-secondbtn) ;
+    color: var(--navbar-brand-bg-color);
+}
+
+
+@media screen and (max-width: 620px){
+    input[type='file']{
+        width: 100vw;
+        font-size: 13px;
+    }
+}
+

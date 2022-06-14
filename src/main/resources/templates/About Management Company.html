@@ -15,6 +15,7 @@
         rel="stylesheet"
       />
       <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
+      <link rel="stylesheet" th:href="@{/css/global.css}" />
       <title>About Management Company</title>
 
       <link rel="icon" type="image/x-icon" href="/images/fav.png" />
@@ -186,6 +187,7 @@
 
       <div th:replace="@{fragments/footer}"></div>
       <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+      <script th:src="@{../js/main.js}"></script>
       <script>
         $(function () {
           $(".burmeseBtn").click(function () {

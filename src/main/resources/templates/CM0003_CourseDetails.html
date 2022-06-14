@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<!-- <html xmlns:th="http://www.thymeleaf.org"
-xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
+
 	<head>
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -10,21 +8,10 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
 			name="viewport"
 			content="width=device-width, initial-scale=1.0"
 		/>
-		<!-- <link
-			href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
-			rel="stylesheet"
-			integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
-			crossorigin="anonymous"
-		/> -->
 		<link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
 		<link rel="stylesheet" type="text/css" th:href="@{/css/course.css}"/>
 		<link rel="stylesheet" type="text/css" th:href="@{/css/global.css}"/>
 
-		<!-- <link rel="stylesheet" href="/assets/css/global.css" />
-		<link
-			rel="stylesheet"
-			href="/assets/css/pages/course.css"
-		/> -->
 		<title>Course Details</title>
 	</head>
 	<body>
@@ -186,12 +173,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
 									  th:href="@{'/teacher/edit/'+ ${courseInfo.courseId}}"
 									  ><button class="btn-primary">Edit Course</button></a
 									>
-									 <!-- Disable Take A Leave -->
-									<!-- <a
-									  th:if="${teacherRegistered}"
-									  th:href="@{'/teacher/leave/'+ ${courseInfo.courseId} +'?course_name='+${courseInfo.courseName}+'&teacher_name='+ ${courseInfo.UserInfo.userName}}"
-									  ><button class="btn btn-primary">Take a Leave</button></a
-									> -->
+									 
 									<a
 									  th:if="${teacherRegistered}"
 									  th:href="@{'/teacher/student-list/'+ ${courseInfo.courseId}}"
@@ -389,10 +371,6 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
 								  </div>
 								</div>
 					
-								<!-- <a
-								  th:href="@{'/admin/review-list/course_id/'+${courseInfo.courseId}+'/student_id/'+${courseInfo.userInfo.uid}}"
-								  ><button class="btn btn-primary">Review List</button></a
-								> -->
 								<a
 								  th:href="@{'/admin/course_syllabus/course_id/' + ${courseInfo.courseId}}"
 								  ><button class="btn btn-primary">Manage Syllabus</button></a
@@ -534,12 +512,6 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"> -->
 		/>
 
 
-		<!-- Bootstrap JS -->
-		<!-- <script
-			src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
-			integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
-			crossorigin="anonymous"
-		></script> -->
 		<script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
       th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js}"
