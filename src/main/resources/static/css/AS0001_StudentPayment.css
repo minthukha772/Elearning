@@ -1,4 +1,13 @@
  /*General*/
+
+ :root {
+	/* Colors */
+	--primary: #309986;
+    --secondary:#ffffff;
+    --info: rgb(171, 240, 223);
+
+}
+
         
  body {
     /* font-family: 游ゴシック, "Yu Gothic", 游ゴシック体, YuGothic, sans-serif; */
@@ -14,15 +23,34 @@ p {
 
 .btnColor {
     
-    font-size: 16px;
-    letter-spacing: 1px;
-    display: inline-block;
-    padding: 8px 32px;
-    border-radius: 50px;
+	border: none;
+    border-radius: 2px;
+	font-size: 18px;
+	padding: 5px 10px;
+	width: fit-content;
+	margin-top: 10px;
     transition: 0.5s;
-    margin: 10px;
-    color: #fff;
-    background: #7749f8;
+    color: #000000 ;
+    background: var(--info);
+
+}
+
+.btnColor:hover,
+.btnColor:focus {
+
+	border: none;
+	border-radius: 2px;
+	font-size: 20px;
+    letter-spacing: 1px;
+	padding: 5px 10px;
+	width: fit-content;
+	margin-top: 10px; 
+    transition: 0.5s;
+    color: #000000;
+    background: var(--info);
+    
+    
+    
 }
 
 .btn-reset {
@@ -35,16 +63,10 @@ p {
     border-radius: 50px;
     transition: 0.5s;
     margin: 10px;
-    color: #fff;
-    background: #68717a;
+    color: var(--secondary);
+    background: var(--primary);
 }
 
-.btnColor:hover,
-.btnColor:focus {
-    color: #7749f8;
-    background: #fff;
-    border-color: #7749f8;
-}
 
 /* carousel */
 
@@ -79,7 +101,7 @@ p {
 }
 
 .sec-content .violet-text {
-    color: #940564;
+    color: var(--secondary);
 }
 
 .sec-content img {
@@ -107,11 +129,11 @@ p {
     padding-top: 20px;
     padding-bottom: 10px;
     font-size: 20px;
-    color: #152536;
+    color: var(--secondary);
 }
 
 .form-header-col {
-    background: grey;
+    background: var(--primary);
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
 }
@@ -134,19 +156,19 @@ padding-top: 30px;
 
 .bg-red {
     text-align: center;
-    color: #fff;
+    color: var(--secondary);
     background: rgb(255, 0, 0);
 }
 
 .bg-grey {
     text-align: center;
-    color: #fff;
+    color: var(--secondary);
     background: rgb(131, 130, 130);
 }
 
 .form-sec-header {
     padding-top: 20px;
-    color: #f549ec;
+    color: var(--info);
 }
 /*footer*/
 
@@ -175,11 +197,11 @@ padding-top: 30px;
 }
 
 .footer-link ul li a:hover {
-    color: #f549ec;
+    color: var(--info);
 }
 
 .footer-link ul li.active a {
-    color: #f549ec;
+    color: var(--info);
 }
 
 .footer-social {
@@ -195,8 +217,8 @@ padding-top: 30px;
 .back-to-top {
     position: fixed;
     display: none;
-    background: #7749F8;
-    color: #fff;
+    background: var(--primary) ;
+    color: var(--secondary);
     display: inline-block;
     width: 44px;
     height: 44px;
@@ -212,7 +234,7 @@ padding-top: 30px;
 
 .back-to-top i {
     padding-top: 12px;
-    color: #fff;
+    color: var(--secondary);
 }
 
 @media (max-width: 768px) {
@@ -256,7 +278,7 @@ padding-top: 30px;
 /* When you mouse over the navigation links, change their color */
 
 .sidenav a:hover {
-    color: #f1f1f1;
+    color: var(--secondary);
 }
 /* Position and style the close button (top right corner) */
 
