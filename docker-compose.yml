@@ -17,8 +17,6 @@ services:
     volumes:
       - ../uploads/:/root/uploads
 
-    restart: on-failure
-
   postgres:
     image: postgres:14.0-alpine
     environment:
@@ -30,7 +28,6 @@ services:
       - db-data:${PGDATA}
     ports:
       - "5432:5432"
-    restart: unless-stopped
 
 volumes:
   db-data:
