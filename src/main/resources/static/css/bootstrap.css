@@ -293,11 +293,17 @@ thead,
 tbody,
 tfoot,
 tr,
-td,
+td {
+  border-color: inherit;
+  border-style: solid;
+  border-width: 0;
+}
+
 th {
   border-color: inherit;
   border-style: solid;
   border-width: 0;
+  color: var(--bs-white);
 }
 
 label {
@@ -1939,7 +1945,7 @@ progress {
   --bs-table-hover-bg: rgba(0, 0, 0, 0.075);
   width: 100%;
   margin-bottom: 1rem;
-  color: #212529;
+  color: var(--bs-white);
   vertical-align: top;
   border-color: #dee2e6;
 }
@@ -4220,6 +4226,7 @@ textarea.form-control-lg {
   background-color: #309986;
   background-clip: border-box;
   border: 1px solid rgba(0, 0, 0, 0.125);
+  color: var(--bs-white);
   border-radius: 0.25rem;
 }
 .card > hr {
