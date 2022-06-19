@@ -7,6 +7,8 @@ build/
 uploads/
 
 
+## ssl
+cert/
 
 ### STS ###
 .apt_generated
