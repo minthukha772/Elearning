@@ -7,7 +7,10 @@ build/
 uploads/
 
 
-## ssl
+#ssl 
+pyinnyar-subuu-testsite.cloudns.nz
+certbot
+
 cert/
 
 ### STS ###
