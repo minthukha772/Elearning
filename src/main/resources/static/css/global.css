@@ -67,27 +67,25 @@ nav .link-holder {
 
 /* for guestnav */
 #linkholder div:nth-child(1) {
-	font-size: 20px;
+	font-size: 17px;
 }
 
 #linkholder div:nth-child(2) {
-	font-size: 20px;
-	width: 430px;
+	/* font-size: 20px; */
+	width: 330px;
 	background-color: var(--nav-link-bg-alt);
 	color: white;
 }
 
 
 #linkholder div:nth-child(3) {
-	font-size: 20px;
-	width: 430px;
+	font-size: 17px;
 	background-color: var(--navbar-color);
 	color: white;
 }
 
 #linkholder div:nth-child(4) {
-	font-size: 20px;
-	width: 430px;
+	font-size: 17px;
 	background-color: var(--nav-link-bg-alt);
 	color: white;
 	clip-path: polygon(8% 0, 100% 0, 100% 100%, 0% 100%);
@@ -104,11 +102,11 @@ nav .link-holder {
 
 /* for teacher-nav */
 #linkholderteachers div:nth-child(1) {
-	font-size: 20px;
+	font-size: 17px;
 }
 
 #linkholderteachers div:nth-child(2) {
-	font-size: 20px;
+	font-size: 17px;
 	width: 230px;
 	background-color: var(--nav-link-bg-alt);
 	color: white;
@@ -116,14 +114,14 @@ nav .link-holder {
 
 
 #linkholderteachers div:nth-child(3) {
-	font-size: 20px;
+	font-size: 17px;
 	width: 230px;
 	background-color: var(--navbar-color);
 	color: white;
 }
 
 #linkholderteachers div:nth-child(4) {
-	font-size: 20px;
+	font-size: 17px;
 	width: 230px;
 	background-color: var(--nav-link-bg-alt);
 	color: white;
@@ -131,7 +129,7 @@ nav .link-holder {
 }
 
 #linkholderteachers div:nth-child(5) {
-	font-size: 20px;
+	font-size: 17px;
 	background-color: var(--navbar-color);
 	color: white;
 	clip-path: polygon(8% 0, 100% 0, 100% 100%, 0% 100%);
