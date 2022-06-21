@@ -24,12 +24,12 @@
     <div th:replace="@{fragments/nav}"></div>
 
     <nav
-      class="p-2"
+      class="p-2 container1 breadcrums"
       aria-label="breadcrumb"
       style="--bs-breadcrumb-divider: '>'"
     >
       <ol
-        class="breadcrumb"
+        class="breadcrumb mt-3 ms-4"
         th:if="${#authorization.expression('hasRole(''ROLE_TEACHER'')')}"
       >
         <li class="breadcrumb-item">
@@ -55,9 +55,9 @@
       </ol>
     </nav>
 
-    <div class="container">
-      <div class="card mx-auto" style="max-width: 700px">
-        <div class="card-header">Update Course</div>
+    <div class="container mt-3 container2 ">
+      <div class="card mx-auto cardboxs" style="max-width: 700px">
+        <div class="card-header d-flex justify-content-center align-items-center titles">Update Course</div>
 
         <div class="card-body">
           <form th:action="@{${postAction}}" method="post" enctype="multipart/form-data" novalidate>
@@ -109,7 +109,7 @@
                   <span style="color: red;">Enter "Save" button to upload course image</span>
                   </div></br>
                   <div class="text-center">
-                    <button class="btn btn-primary mb-3"  type="submit" name="photoSubmit" value="pic-edit">Save</button>
+                    <button class="btn btn-primary mb-3 saves"  type="submit" name="photoSubmit" value="pic-edit">Save</button>
                   </div>
 
                 </div>
@@ -831,7 +831,88 @@
       </div>
     </div>
 
-    <div th:replace="fragments/footer"></div>
+    <!-- <div th:replace="fragments/footer"></div> -->
+    <footer class="container-fluid no-padding footers"  >
+      <div class="footer__container">
+        <div
+          class="d-lg-flex flex-sm-column flex-md-row justify-content-between align-items-sm-center footer__div"
+        >
+          <div class="footer__holder">
+            <h3 class="footer__title">Get to Know Us</h3>
+            <ul 
+            class="footer__subtitle"
+            style="line-height: 200%">
+              <li>
+                <a
+                  style="color: white; text-decoration: none"
+                  th:href="@{/guest/frequently_asked_questions}"
+                  target="_blank"
+                >
+                  FAQs
+                </a>
+              </li>
+              <li>
+                <a
+                  style="color: white; text-decoration: none"
+                  th:href="@{ /guest/terms_and_conditions}"
+                  target="_blank"
+                >
+                  Terms and Conditions
+                </a>
+              </li>
+              <li>
+                <a
+                  style="color: white; text-decoration: none"
+                  th:href="@{/guest/help_and_support}"
+                  target="_blank"
+                >
+                  Help and support
+                </a>
+              </li>
+              <li>
+                <a
+                  th:href="@{/guest/about_management_company}"
+                  style="color: white; text-decoration: none"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  About the management company
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="footer__holder">
+            <h3 class="footer__title">Contact</h3>
+            <ul
+              class="footer__subtitle"
+              style="line-height: 200%"
+            >
+              <li>Tel: +959 98-656-3091</li>
+              <li>Viber: +959 98-656-3091</li>
+              <li>Telegram: +959 98-656-3091</li>
+              <li>Line: +959 98-656-3091</li>
+              <li>WhatsApp: +959 98-656-3091</li>
+            </ul>
+          </div>
+          <div class="footer__holder">
+            <img
+              src="/images/bliss-stock.png"
+              alt="logo"
+              class="align-self-end"
+            />
+          </div>
+        </div>
+        <div class="copyright">
+          <div class="center">
+            <p class="copyright__text">
+              © Copyright Pyinnyar Subuu. All Rights
+              Reserved
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  
 
     <script
       type="text/javascript"
@@ -845,6 +926,6 @@
     <script th:src="@{/js/AT0001_CourseRegistration.js}"></script>
     <script th:src="@{/js/photoPlaceHolder.js}"></script>
     <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
-    <script th:src="@{../js/main.js}"></script>
+    <script th:src="@{./../../../js/main.js}"></script>
   </body>
 </html>

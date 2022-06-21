@@ -11,6 +11,10 @@
 	--certificate-border:#057835;
 	--certificate-btn:#3c8a08;
 	--certificate-secondbtn:hsla(160, 64%, 42%, 0.993);
+	--cardbox: #3abea6e7;
+    --btnbg: rgba(16, 226, 233, 0.993);
+    --btnborder:#fff;
+    --btnshadow:#000;
 }
 
 *,
