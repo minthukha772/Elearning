@@ -105,3 +105,22 @@ margin-bottom: 10px !important;
 #review-type-error{
   margin-top: -50px;
 }
+
+.breadcrumbs{
+  background: var(--grey);
+  
+}
+
+.titles{
+  font-size: 25px;
+  font-weight: 800;
+  text-shadow:-2px -1px 1px #000;
+  color: rgb(52, 241, 216);
+}
+
+.cardboxs{
+  background:  #3abea6e7;
+  border-radius: 5px;
+  box-shadow: 5px 10px 20px rgba(0,0,0,0.5);
+}
+

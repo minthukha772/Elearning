@@ -392,8 +392,8 @@ input:checked+label {
 
 .titles{
     font-size: 22px;
-    text-shadow:-2px -2px 2px #000;
-	color: #fff;
+    text-shadow:-2px -2px 2px var(--btnshadow);
+	color: var(--btnborder);
 	
 }
 
