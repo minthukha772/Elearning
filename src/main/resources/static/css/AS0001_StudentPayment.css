@@ -146,6 +146,7 @@ p {
     background: var(--primary);
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
+    
 }
 /* .form-row {
 padding-top: 30px;
@@ -322,11 +323,11 @@ padding-top: 30px;
 }*/
 /*radio button hide css code start*/
 
-ul {
+ul.paymentmethod {
     list-style: none;
 }
 
-li {
+.paymentmethod li {
     display: inline-block;
     margin-right: 15px;
 }
@@ -345,10 +346,9 @@ input:checked+label {
 
 .card{
     max-width: 720px;
-    margin-right: 16px;
-    margin-left: 16px;
     margin-right: auto;
     margin-left: auto;
+
 }
 .file {
     visibility: hidden;
