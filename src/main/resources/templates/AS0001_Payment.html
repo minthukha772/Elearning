@@ -54,9 +54,14 @@
 <body style="background-color: #f0f0f0">
 
     <div th:replace="fragments/nav"></div>
+
     <!-- <div class="m-3"> -->
     <div class="container1 " >
         <nav class="breadcrums" style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
+   
+    <div style=" margin-top: 100px">
+        <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
+
 
             <ol class="breadcrumb mt-3 ms-4">
                 <li class="breadcrumb-item">
@@ -67,9 +72,13 @@
             </ol>
         </nav>
 
+
         <div class="container2">
             <div class="card cardboxs cardboxones ">
                 <div class="card-header d-flex justify-content-center align-items-center titles">Payment Details</div>
+            <!-- <div class=" mb-3"></div> -->
+            <div class="card mb-3">
+                <div class="card-header">Payment Details</div>
                 <!-- Student view -->
                 <div class="card-body ">
                     <div class="container ">
@@ -79,7 +88,10 @@
                                     <p>Course Fees</p>
                                 </div>
                             </div>
+
                             <div class="table-responsive mb-3 ">
+                            <div class="table-responsive">
+
                                 <table class="table table-borderless table-hover">
                                     <tr>
                                         <td class="text-light font-weight-bold">Course Name</td>
@@ -102,15 +114,20 @@
             </div>
 
 
+
             <div class="card mt-5 cardboxs">
                 <div class="card-header d-flex justify-content-center align-items-center titles">Payment Methods</div>
+
+            <div class="card mb-3">
+                <div class="card-header">Payment Methods</div>
+
                 <!-- Student view -->
                 <div class="card-body  mt-2 text-light font-weight-bold">
                     <form>
                         
                         <div class="form-group row ">
                             <div class="col-lg-1"></div>
-                            <ul>
+                            <ul class="paymentmethod">
                                 <li>
                                     <input type="radio" value="KPay" name="radio" onclick="javascript:numCheck();"
                                         id="kpay" checked />
@@ -234,6 +251,10 @@
 
             <div class="card mt-5 cardboxs">
                 <div class="card-header d-flex justify-content-center align-items-center titles">Payment Details</div>
+
+            <div class="card mb-3">
+                <div class="card-header">Payment Details</div>
+
                 <!-- Student view -->
                 <div class="card-body">
   
