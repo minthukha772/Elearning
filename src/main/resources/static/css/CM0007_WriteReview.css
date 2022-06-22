@@ -106,9 +106,28 @@ margin-bottom: 10px !important;
   margin-top: -50px;
 }
 
+.container1{
+    position: relative;
+}
+
+.container2{
+  position: absolute;
+  top: 130px;
+  left: 50%;
+
+  transform: translateX(-50%);
+}
+
 .breadcrumbs{
   background: var(--grey);
   
+}
+
+.breadcrumtreviews{
+  background: var(--grey);
+    position: absolute;
+    top: 100px;
+    left: 0px;
 }
 
 .titles{
