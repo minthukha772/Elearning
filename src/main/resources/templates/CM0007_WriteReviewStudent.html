@@ -18,9 +18,9 @@
 </head>
 <body>
   <div th:replace="fragments/student-nav"></div>
-  <div class="m-3">
-    <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
-      <ol class="breadcrumb">
+  <div class="m-3 " style="transform: translateY(70px); ">
+    <nav class="breadcrumbs" style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
+      <ol class="breadcrumb mt-3 ms-4">
         <li class="breadcrumb-item">
           <a href="#" data-bs-toggle="modal" data-bs-target="#reEnterEmail"
             >Course Details</a
@@ -32,9 +32,9 @@
     </nav>
   </div>
 
-   <div class="d-flex justify-content-center">
-      <div class="card">
-        <h5 class="card-header">
+   <div class="d-flex justify-content-center container-fluid " style="transform: translateY(25%);"> 
+      <div class="card cardboxs">
+        <h5 class="card-header d-flex justify-content-center align-items-center titles">
           Add Review
         </h5>
         
@@ -74,7 +74,7 @@
               <div class="row">
                 <div class="buttons col-sm-12 text-center">                   
                      <button id="btnReset" type="reset" class="btn btn-spacing btn-secondary center-block" Style="width: 100px;" OnClick="btnClear_Click">Reset</button>
-                     <button id="btnSubmit" class="btn btn-spacing btn-primary center-block" Style="width: 150px;" OnClick="btnSearch_Click" name="action" value="next">Save Changes</button>
+                     <button id="btnSubmit" class="btn btn-spacing btn-primary center-block" Style="width: 150px; background: #03493c; border: none; box-shadow: 4px 4px 4px #000;" OnClick="btnSearch_Click" name="action" value="next">Save Changes</button>
                  </div>
             </div>
         </div>
@@ -105,12 +105,94 @@
           </div>
         </div>
       </form>
+   </div>
+
+   <footer class="container-fluid no-padding footers"  style="transform: translateY(35%);" >
+    <div class="footer__container">
+      <div
+        class="d-lg-flex flex-sm-column flex-md-row justify-content-between align-items-sm-center footer__div"
+      >
+        <div class="footer__holder">
+          <h3 class="footer__title">Get to Know Us</h3>
+          <ul 
+          class="footer__subtitle"
+          style="line-height: 200%">
+            <li>
+              <a
+                style="color: white; text-decoration: none"
+                th:href="@{/guest/frequently_asked_questions}"
+                target="_blank"
+              >
+                FAQs
+              </a>
+            </li>
+            <li>
+              <a
+                style="color: white; text-decoration: none"
+                th:href="@{ /guest/terms_and_conditions}"
+                target="_blank"
+              >
+                Terms and Conditions
+              </a>
+            </li>
+            <li>
+              <a
+                style="color: white; text-decoration: none"
+                th:href="@{/guest/help_and_support}"
+                target="_blank"
+              >
+                Help and support
+              </a>
+            </li>
+            <li>
+              <a
+                th:href="@{/guest/about_management_company}"
+                style="color: white; text-decoration: none"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                About the management company
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="footer__holder">
+          <h3 class="footer__title">Contact</h3>
+          <ul
+            class="footer__subtitle"
+            style="line-height: 200%"
+          >
+            <li>Tel: +959 98-656-3091</li>
+            <li>Viber: +959 98-656-3091</li>
+            <li>Telegram: +959 98-656-3091</li>
+            <li>Line: +959 98-656-3091</li>
+            <li>WhatsApp: +959 98-656-3091</li>
+          </ul>
+        </div>
+        <div class="footer__holder">
+          <img
+            src="/images/bliss-stock.png"
+            alt="logo"
+            class="align-self-end"
+          />
+        </div>
+      </div>
+      <div class="copyright">
+        <div class="center">
+          <p class="copyright__text">
+            © Copyright Pyinnyar Subuu. All Rights
+            Reserved
+          </p>
+        </div>
       </div>
     </div>
-    <div th:replace="@{fragments/footer}"></div>
+  </footer>
+
+    <!-- <div th:replace="@{fragments/footer}"></div> -->
     <script src="//code.jquery.com/jquery-1.12.4.js"></script>
     <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script type="text/javascript" src="js/CM0007_WriteReview.js"></script>
+    <script th:src="@{./../../../js/main.js}"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
