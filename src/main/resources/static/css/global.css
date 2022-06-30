@@ -7,6 +7,14 @@
 	/* Typography */
 	--links-font-size: 17px;
 	--nav-link-bg-alt: #00736c;
+	--log-out:#e63587;
+	--certificate-border:#057835;
+	--certificate-btn:#3c8a08;
+	--certificate-secondbtn:hsla(160, 64%, 42%, 0.993);
+	--cardbox: #3abea6e7;
+    --btnbg: rgba(16, 226, 233, 0.993);
+    --btnborder:#fff;
+    --btnshadow:#000;
 }
 
 *,
@@ -61,30 +69,83 @@ nav .link-holder {
 	clip-path: polygon(8% 0, 100% 0, 92% 100%, 0% 100%);
 }
 
+/* for guestnav */
 #linkholder div:nth-child(1) {
-	font-size: 20px;
+	font-size: 17px;
 }
 
 #linkholder div:nth-child(2) {
-	font-size: 20px;
-	width: 430px;
+	/* font-size: 20px; */
+	width: 330px;
 	background-color: var(--nav-link-bg-alt);
 	color: white;
 }
 
 
 #linkholder div:nth-child(3) {
-	font-size: 20px;
-	width: 430px;
+	font-size: 17px;
 	background-color: var(--navbar-color);
 	color: white;
 }
 
 #linkholder div:nth-child(4) {
-	font-size: 20px;
+	font-size: 17px;
 	background-color: var(--nav-link-bg-alt);
 	color: white;
 	clip-path: polygon(8% 0, 100% 0, 100% 100%, 0% 100%);
+}
+
+.linkholder{
+	color: #fff;
+}
+
+.linkholder:hover{
+	color: yellow;
+	transition: ease 1s;
+}
+
+/* for teacher-nav */
+#linkholderteachers div:nth-child(1) {
+	font-size: 17px;
+}
+
+#linkholderteachers div:nth-child(2) {
+	font-size: 17px;
+	width: 230px;
+	background-color: var(--nav-link-bg-alt);
+	color: white;
+}
+
+
+#linkholderteachers div:nth-child(3) {
+	font-size: 17px;
+	width: 230px;
+	background-color: var(--navbar-color);
+	color: white;
+}
+
+#linkholderteachers div:nth-child(4) {
+	font-size: 17px;
+	width: 230px;
+	background-color: var(--nav-link-bg-alt);
+	color: white;
+	/* clip-path: polygon(8% 0, 100% 0, 100% 100%, 0% 100%); */
+}
+
+#linkholderteachers div:nth-child(5) {
+	font-size: 17px;
+	background-color: var(--navbar-color);
+	color: white;
+	clip-path: polygon(8% 0, 100% 0, 100% 100%, 0% 100%);
+}
+
+.linkholderteachers{
+	color: #fff;
+}
+
+.linkholderteachers:hover{
+	color: yellow;
+	transition: ease 1s;
 }
 
 nav .nav-link {
@@ -239,6 +300,12 @@ nav .checkboxClass {
 		display: none !important;
 	}
 
+	#linkholderteachers {
+		border: 3px solid red;
+		display: none !important;
+	}
+	
+
 	/* Animation */
 	.open {
 		transform: translate(0) !important;
@@ -338,4 +405,25 @@ nav .checkboxClass {
 	.footer__title {
 		text-align: center;
 	}
+}
+.scrollToTop {
+	position: fixed;
+	z-index: 12;
+	width: 80px;
+	height: 80px;
+	right: 80px;
+	bottom: -16%;
+	mix-blend-mode: hard-light;
+	transition: all 0.3s ease-in-out;
+	cursor: pointer;
+}
+
+@media screen and (max-width: 550px) {
+	.scrollToTop {
+		right: 40px;
+	}
+}
+
+.show-scroll {
+	bottom: 6%;
 }
