@@ -8,6 +8,10 @@ body{
     margin-right: auto;
     margin-left: auto;
     transform: translateY(20%);
+
+     min-height: 44vh;
+    /* display: flex;
+    flex-direction: column;  */
 }
 .card-login-css {
     position: relative;
@@ -43,3 +47,4 @@ body{
   .form-label{
     color: #fff;
   }
+
