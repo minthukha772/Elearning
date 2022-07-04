@@ -95,11 +95,11 @@ public class CourseDetailsController {
         CourseInfo courseInfo = courseInfoRepository.findById(courseId).get();
         model.addAttribute("courseInfo", courseInfo);
 
-        //get classlink
+        // get classlink
         String classLink = courseInfo.getClassLink();
         model.addAttribute("classLink", classLink);
 
-        //get test links
+        // get test links
         List<Test> testList = courseInfo.getTest();
         model.addAttribute("testList", testList);
         model.addAttribute("testListSize", testList.size());
@@ -199,16 +199,20 @@ public class CourseDetailsController {
         model.addAttribute("syllabusSize", syllabusSize);
 
         // first syllabus
-        if (syllabusSize > 0 ) {
-            Syllabus firstSyllabus = syllabusList.get(0);  
-            String firstContent = firstSyllabus.getContent().get(0).getContent();
-            model.addAttribute("firstSyllabus", firstSyllabus);
-            model.addAttribute("firstContent", firstContent);
-            syllabusList.remove(0);    
-        }
-        model.addAttribute("syllabusList", syllabusList);
+        try {
+            if (syllabusSize > 0) {
+                Syllabus firstSyllabus = syllabusList.get(0);
+                String firstContent = firstSyllabus.getContent().get(0).getContent();
+                model.addAttribute("firstSyllabus", firstSyllabus);
+                model.addAttribute("firstContent", firstContent);
+                syllabusList.remove(0);
+            }
+        } catch (Exception e) {
 
-        
+            logger.info(e.toString());
+        }
+
+        model.addAttribute("syllabusList", syllabusList);
 
         // Get the remaining number of students who can join course
         Integer maxStudent = courseInfo.getMaxStu();
@@ -249,28 +253,30 @@ public class CourseDetailsController {
             List<JoinCourseUser> join = joinCourseService.getJoinCourseUser(userId, courseId);
             studentRegistered = join != null && !join.isEmpty();
 
-            //payment status
+            // payment status
             boolean paymentComplete = false;
             for (JoinCourseUser jcu : join) {
-                //logging
-                logger.info("the uid of joinlist is {} and session id is {}",jcu.getUserInfo().getUid(), userId);
-                // logger.info("The status of joinlist of outter scope is {}",jcu.getPaymentReceive().getPaymentStatus());
+                // logging
+                logger.info("the uid of joinlist is {} and session id is {}", jcu.getUserInfo().getUid(), userId);
+                // logger.info("The status of joinlist of outter scope is
+                // {}",jcu.getPaymentReceive().getPaymentStatus());
 
-                //comparing two long values reference safe
-                if(String.valueOf(jcu.getUserInfo().getUid()).equals(String.valueOf(userId))){
-                    // logger.info("The status of joinlist of scope id compare is {}",jcu.getPaymentReceive().getPaymentStatus());
-                    if(jcu.getPaymentReceive() == null){
+                // comparing two long values reference safe
+                if (String.valueOf(jcu.getUserInfo().getUid()).equals(String.valueOf(userId))) {
+                    // logger.info("The status of joinlist of scope id compare is
+                    // {}",jcu.getPaymentReceive().getPaymentStatus());
+                    if (jcu.getPaymentReceive() == null) {
                         paymentComplete = false;
+                    } else if (jcu.getPaymentReceive().getPaymentStatus().equals(PaymentStatus.COMPLETE.getValue())) {
+                        // logger.info("The status of joinlist of scope status compare is
+                        // {}",jcu.getPaymentReceive().getPaymentStatus());
+                        paymentComplete = true;
                     }
-                    else if(jcu.getPaymentReceive().getPaymentStatus().equals(PaymentStatus.COMPLETE.getValue())){
-                        // logger.info("The status of joinlist of scope status compare is {}",jcu.getPaymentReceive().getPaymentStatus());
-                        paymentComplete = true;                            
-                    } 
                 }
             }
             model.addAttribute("paymentComplete", paymentComplete);
             logger.info("the boolean value for paymentComplete is {}", paymentComplete);
-            
+
             logger.info("The boolean value for student registered is {} ", studentRegistered);
             boolean studentNotRegistered = !studentRegistered;
             model.addAttribute("studentNotRegistered", studentNotRegistered);
