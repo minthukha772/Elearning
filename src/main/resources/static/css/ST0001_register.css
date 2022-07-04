@@ -10,6 +10,7 @@
     font-weight: 400;
     line-height: 1.5;
     color: #ffffff;
+    min-height: 40vh;
 }
 .card-pwd-reset {
     position: relative;
@@ -29,3 +30,23 @@
     background-clip: border-box;
     border-bottom: 1px solid rgba(0, 0, 0, 0.125);
   }
+
+  .card-reg {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #309986;
+  background-clip: border-box;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
+  font-family: var(--bs-font-sans-serif);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #fff;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+

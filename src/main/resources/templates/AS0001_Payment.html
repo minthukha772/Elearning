@@ -26,7 +26,6 @@
     <script src="js/main.js"></script>
     <!-- <link rel="stylesheet" href="/css/CM0004_StudentProfile.css"> -->
     <link rel="stylesheet" href="/css/AS0001_StudentPayment.css">
-
     <!--account number changes based on radio button script code start-->
     <script type="text/javascript">
         function numCheck() {
@@ -54,14 +53,9 @@
 <body style="background-color: #f0f0f0">
 
     <div th:replace="fragments/nav"></div>
-
     <!-- <div class="m-3"> -->
-    <div class="container1 " >
+    <div>
         <nav class="breadcrums" style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
-   
-    <div style=" margin-top: 100px">
-        <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
-
 
             <ol class="breadcrumb mt-3 ms-4">
                 <li class="breadcrumb-item">
@@ -72,39 +66,31 @@
             </ol>
         </nav>
 
-
-        <div class="container2">
-            <div class="card cardboxs cardboxones ">
+        <div style="transform:translateY(15%)">
+            <div class="card cardboxs">
                 <div class="card-header d-flex justify-content-center align-items-center titles">Payment Details</div>
-            <!-- <div class=" mb-3"></div> -->
-            <div class="card mb-3">
-                <div class="card-header">Payment Details</div>
                 <!-- Student view -->
-                <div class="card-body ">
-                    <div class="container ">
+                <div class="card-body">
+                    <div class="container">
                         <form>
                             <div class="row form-sec-header secondtitles">
-                                <div class="col-lg-12 text-center ">
+                                <div class="col-lg-12 text-center">
                                     <p>Course Fees</p>
                                 </div>
                             </div>
-
-                            <div class="table-responsive mb-3 ">
-                            <div class="table-responsive">
-
+                            <div class="table-responsive mb-3">
                                 <table class="table table-borderless table-hover">
                                     <tr>
-                                        <td class="text-light font-weight-bold">Course Name</td>
-                                        <td class="text-light font-weight-bold">:</td>
-                                        <td class="text-light font-weight-bold">[[${courseName}]]</td>
+                                        <td>Course Name</td>
+                                        <td>:</td>
+                                        <td>[[${courseName}]]</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-light font-weight-bold">Course Fees</td>
-                                        <td class="text-light font-weight-bold">:</td>
-                                        <td class="text-light font-weight-bold">[[${fees}]]</td>
+                                        <td>Course Fees</td>
+                                        <td>:</td>
+                                        <td>[[${fees}]]</td>
                                     </tr>
                                 </table>
-                            
                             </div>
                     </div>
                     </form>
@@ -114,20 +100,19 @@
             </div>
 
 
-
             <div class="card mt-5 cardboxs">
-                <div class="card-header d-flex justify-content-center align-items-center titles">Payment Methods</div>
-
-            <div class="card mb-3">
-                <div class="card-header">Payment Methods</div>
-
+                <div class="card-header  d-flex justify-content-center align-items-center titles">Payment Methods</div>
                 <!-- Student view -->
-                <div class="card-body  mt-2 text-light font-weight-bold">
+                <div class="card-body">
                     <form>
-                        
-                        <div class="form-group row ">
+                        <div class="row form-sec-header secondtitles">
+                            <div class="col-lg-12 text-center">
+                                <p>Payment Methods</p>
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <div class="col-lg-1"></div>
-                            <ul class="paymentmethod">
+                            <ul>
                                 <li>
                                     <input type="radio" value="KPay" name="radio" onclick="javascript:numCheck();"
                                         id="kpay" checked />
@@ -250,11 +235,7 @@
             </div>
 
             <div class="card mt-5 cardboxs">
-                <div class="card-header d-flex justify-content-center align-items-center titles">Payment Details</div>
-
-            <div class="card mb-3">
-                <div class="card-header">Payment Details</div>
-
+                <div class="card-header  d-flex justify-content-center align-items-center titles">Payment Details</div>
                 <!-- Student view -->
                 <div class="card-body">
   
@@ -267,7 +248,7 @@
                             </div>
                             <div class="form-group row">
                                 <div class="col-lg-1"></div>
-                                <label for="text" class="col-lg-10 col-form-label text-light font-weight-bold">After transfering course fee, please
+                                <label for="text" class="col-lg-10 col-form-label">After transfering course fee, please
                                     submit the screenshot of the transaction.</label>
                             </div>
                             <div sec:authorize="hasAuthority('ROLE_STUDENT') ">
@@ -358,92 +339,88 @@
         </div>
     </div>
 
-    <!-- <div th:replace="@{fragments/footer}"></div> -->
-     <!-- Footer-->
-   <footer class="container-fluid no-padding footers"   >
-    <div class="footer__container">
-      <div
-        class="d-lg-flex flex-sm-column flex-md-row justify-content-between align-items-sm-center footer__div"
-      >
-        <div class="footer__holder">
-          <h3 class="footer__title">Get to Know Us</h3>
-          <ul 
-          class="footer__subtitle"
-          style="line-height: 200%">
-            <li>
-              <a
-                style="color: white; text-decoration: none"
-                th:href="@{/guest/frequently_asked_questions}"
-                target="_blank"
-              >
-                FAQs
-              </a>
-            </li><br/>
-            <li>
-              <a
-                style="color: white; text-decoration: none"
-                th:href="@{ /guest/terms_and_conditions}"
-                target="_blank"
-              >
-                Terms and Conditions
-              </a>
-            </li><br/>
-            <li>
-              <a
-                style="color: white; text-decoration: none"
-                th:href="@{/guest/help_and_support}"
-                target="_blank"
-              >
-                Help and support
-              </a>
-            </li><br/>
-            <li>
-              <a
-                th:href="@{/guest/about_management_company}"
-                style="color: white; text-decoration: none"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                About the management company
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div class="footer__holder">
-          <h3 class="footer__title">Contact</h3>
-          <ul
-            class="footer__subtitle"
-            style="line-height: 200%"
+    <footer class="container-fluid no-padding footers"   >
+        <div class="footer__container">
+          <div
+            class="d-lg-flex flex-sm-column flex-md-row justify-content-between align-items-sm-center footer__div"
           >
-            <li>Tel: +959 98-656-3091</li><br/>
-            <li>Viber: +959 98-656-3091</li><br/>
-            <li>Telegram: +959 98-656-3091</li><br/>
-            <li>Line: +959 98-656-3091</li><br/>
-            <li>WhatsApp: +959 98-656-3091</li>
-          </ul>
+            <div class="footer__holder">
+              <h3 class="footer__title">Get to Know Us</h3>
+              <ul 
+              class="footer__subtitle"
+              style="line-height: 200%">
+                <li>
+                  <a
+                    style="color: white; text-decoration: none"
+                    th:href="@{/guest/frequently_asked_questions}"
+                    target="_blank"
+                  >
+                    FAQs
+                  </a>
+                </li><br/>
+                <li>
+                  <a
+                    style="color: white; text-decoration: none"
+                    th:href="@{ /guest/terms_and_conditions}"
+                    target="_blank"
+                  >
+                    Terms and Conditions
+                  </a>
+                </li><br/>
+                <li>
+                  <a
+                    style="color: white; text-decoration: none"
+                    th:href="@{/guest/help_and_support}"
+                    target="_blank"
+                  >
+                    Help and support
+                  </a>
+                </li><br/>
+                <li>
+                  <a
+                    th:href="@{/guest/about_management_company}"
+                    style="color: white; text-decoration: none"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    About the management company
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div class="footer__holder">
+              <h3 class="footer__title">Contact</h3>
+              <ul
+                class="footer__subtitle"
+                style="line-height: 200%"
+              >
+                <li>Tel: +959 98-656-3091</li><br/>
+                <li>Viber: +959 98-656-3091</li><br/>
+                <li>Telegram: +959 98-656-3091</li><br/>
+                <li>Line: +959 98-656-3091</li><br/>
+                <li>WhatsApp: +959 98-656-3091</li>
+              </ul>
+            </div>
+            <div class="footer__holder">
+              <img
+                src="/images/bliss-stock.png"
+                alt="logo"
+                class="align-self-end"
+              />
+            </div>
+          </div>
+          <div class="copyright">
+            <div class="center">
+              <p class="copyright__text">
+                © Copyright Pyinnyar Subuu. All Rights
+                Reserved
+              </p>
+            </div>
+          </div>
         </div>
-        <div class="footer__holder">
-          <img
-            src="/images/bliss-stock.png"
-            alt="logo"
-            class="align-self-end"
-          />
-        </div>
-      </div>
-      <div class="copyright">
-        <div class="center">
-          <p class="copyright__text">
-            © Copyright Pyinnyar Subuu. All Rights
-            Reserved
-          </p>
-        </div>
-      </div>
-    </div>
-  </footer>
+      </footer>
 
-
-    
-    
+    <!-- <div th:replace="@{fragments/footer}"></div> -->
     <script type="text/javascript">
         function showPreview(event) {
             if (event.target.files.length > 0) {
@@ -460,8 +437,7 @@
         crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-        <script th:src="@{./../../../js/main.js}"></script>
-
+  
 </body>
 
 </html>
