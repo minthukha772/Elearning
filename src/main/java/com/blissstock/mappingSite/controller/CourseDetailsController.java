@@ -201,14 +201,19 @@ public class CourseDetailsController {
         // first syllabus
         try {
             if (syllabusSize > 0) {
+                logger.warn("" + syllabusList.toString());
+                logger.warn(syllabusList.size() + " the list size is ");
+                logger.warn(syllabusList.get(0).toString());
                 Syllabus firstSyllabus = syllabusList.get(0);
-                String firstContent = firstSyllabus.getContent().get(0).getContent();
+                logger.warn(firstSyllabus + " the first syllabus");
+
+                // String firstContent = firstSyllabus.getContent().get(0).getContent();
                 model.addAttribute("firstSyllabus", firstSyllabus);
-                model.addAttribute("firstContent", firstContent);
-                syllabusList.remove(0);
+                // model.addAttribute("firstContent", firstContent);
+                // syllabusList.remove(0);
             }
         } catch (Exception e) {
-
+            // TODO: handle exception
             logger.info(e.toString());
         }
 
