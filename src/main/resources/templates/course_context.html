@@ -17,6 +17,8 @@
     /> -->
     <link rel="stylesheet" href="/css/bootstrap.css" />
     <link rel="stylesheet" href="/css/ST0001_register.css" />
+    <!-- <link rel="stylesheet" type="text/css" th:href="@{/css/course.css}"/>
+		<link rel="stylesheet" type="text/css" th:href="@{/css/global.css}"/> -->
     <title>Register</title>
 
     <link rel="icon" type="image/x-icon" href="/images/fav.png" />
@@ -188,7 +190,7 @@
 
               <ul class="list-group list-group-flush">
                 <li
-                  style="background-color: #9fdbb3"
+                  style="background-color: #ffffff"
                   class="list-group-item"
                   th:each="content, index : ${syllabusList.content}"
                   th:text="${content.content}"
@@ -211,7 +213,7 @@
               </button>
               <button
                 type="button"
-                class="btn btn-outline-danger"
+                class="btn btn-danger"
                 data-bs-toggle="modal"
                 data-bs-target="#deleteConfirmModal"
                 th:attr="data-bs-id=${syllabusList.syllabusId}"
