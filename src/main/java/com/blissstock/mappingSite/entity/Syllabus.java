@@ -20,7 +20,6 @@ import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -33,6 +32,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Data
+
 @Table(name = "syllabus")
 public class Syllabus {
 
@@ -45,21 +45,14 @@ public class Syllabus {
   @Column(name = "title", length = 100)
   private String title;
 
-  //mapping
-  @ManyToOne(
-    fetch = FetchType.EAGER,
-    optional = false
-  )
+  // mapping
+  @ManyToOne(fetch = FetchType.EAGER, optional = false)
   @JoinColumn(name = "courseId_fkey")
   @JsonIgnore
   private CourseInfo courseInfo;
 
-  @OneToMany(
-    fetch = FetchType.LAZY,
-    cascade = CascadeType.ALL,
-    mappedBy = "syllabus"
-  )
+  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "syllabus")
   @JsonIgnore
   private List<Content> content = new ArrayList<>();
-  
+
 }
