@@ -207,7 +207,7 @@ public class CourseDetailsController {
                 // String firstContent = firstSyllabus.getContent().get(0).getContent();
                 model.addAttribute("firstSyllabus", firstSyllabus);
                 // model.addAttribute("firstContent", firstContent);
-                // syllabusList.remove(0);
+                syllabusList.remove(0);
             }
         } catch (Exception e) {
             // TODO: handle exception
