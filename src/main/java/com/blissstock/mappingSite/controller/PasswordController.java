@@ -42,8 +42,8 @@ public class PasswordController {
   private static final Logger logger = LoggerFactory.getLogger(
       PasswordController.class);
 
-      @Autowired
-      HttpServletRequest httpServletRequest;
+  @Autowired
+  HttpServletRequest httpServletRequest;
   @Autowired
   UserService userService;
   @Autowired
@@ -126,7 +126,7 @@ public class PasswordController {
       BindingResult bindingResult) {
     logger.info("Post Method");
     model.addAttribute("title", "Change");
-   
+
     model.addAttribute("passwordDTO", passwordDTO);
     // System.out.println(passwordDTO.toString());
     if (bindingResult.hasErrors()) {
@@ -158,7 +158,7 @@ public class PasswordController {
         httpServletRequest.logout();
         return "redirect:/login?changeSuccess=true";
       } catch (ServletException e) {
-      
+
         return "CM0006_change_password_screen";
       }
     }
@@ -248,7 +248,7 @@ public class PasswordController {
       Model model,
       @Valid @ModelAttribute("passwordDTO") PasswordDTO passwordDTO,
       BindingResult bindingResult) {
-  
+
     String title = "Change Password";
     model.addAttribute("type", "OLD_PASSWORD");
     model.addAttribute("title", title);
@@ -262,7 +262,6 @@ public class PasswordController {
     }
     logger.info("password binding is success");
 
-    System.out.println("Password DTO is" + passwordDTO.toString());
     // //System.out.println(passwordDTO.getPassword());
     // //System.out.println(passwordDTO.getConfirmPassword());
     // //System.out.println(passwordDTO.getOldPassword());
@@ -276,7 +275,6 @@ public class PasswordController {
     // get user email
 
     UserAccount userAccount = userSessionService.getUserAccount();
-  
 
     if (passwordEncoder.matches(passwordDTO.getOldPassword(), userAccount.getPassword())) {
 
@@ -291,10 +289,10 @@ public class PasswordController {
         httpServletRequest.logout();
         return "redirect:/login?changeSuccess=true";
       } catch (ServletException e) {
-      
+
         return "CM0006_change_password_screen";
       }
-     
+
       // return "CM0005_login.html";
     } else {
       logger.info(" Password and stored password do not match");

@@ -201,11 +201,8 @@ public class CourseDetailsController {
         // first syllabus
         try {
             if (syllabusSize > 0) {
-                logger.warn("" + syllabusList.toString());
-                logger.warn(syllabusList.size() + " the list size is ");
-                logger.warn(syllabusList.get(0).toString());
+
                 Syllabus firstSyllabus = syllabusList.get(0);
-                logger.warn(firstSyllabus + " the first syllabus");
 
                 // String firstContent = firstSyllabus.getContent().get(0).getContent();
                 model.addAttribute("firstSyllabus", firstSyllabus);
