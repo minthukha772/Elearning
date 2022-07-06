@@ -112,7 +112,7 @@ public class PaymentController {
       @PathVariable Long courseId,
       HttpServletRequest request) {
     Long userId = userSessionService.getUserAccount().getAccountId();
-
+    logger.info("Payment slip upload called");
     JoinCourseUser join = joinRepo.findByPayment(courseId, userId);
     PaymentReceive payment = paymentRepo.findByJoin(join.getJoinId());
     if (payment == null) {
@@ -132,9 +132,10 @@ public class PaymentController {
 
     // upload photo
     try {
+      logger.info("trying to store slip");
       storageService.store(userId, slip, StorageServiceImpl.SLIP_PATH, true);
     } catch (UnauthorizedFileAccessException e) {
-      // TODO Auto-generated catch block
+      logger.info("error: trying to store slip"); // TODO Auto-generated catch block
       e.printStackTrace();
     }
     // insert photo
