@@ -88,7 +88,7 @@ public class PaymentController {
     model.addAttribute("courseName", courseInfo.getCourseName());
     model.addAttribute("fees", courseInfo.getFees());
     model.addAttribute("payment", payment);
-    logger.error(payment.toString());
+    // logger.error(payment.toString());
 
     // Load Profile
     try {
