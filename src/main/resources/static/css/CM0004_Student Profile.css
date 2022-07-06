@@ -303,13 +303,13 @@
         
     } 
     
-    .container2{
+    /* .container2{
         position: absolute;
         top: 190px;
         left: 50%;
     
         transform: translateX(-50%);
-    }
+    } */
 
     .container3{
       max-width: 800px;
@@ -365,7 +365,7 @@
     .footers{
       max-width: 800%;
       position: absolute;
-      top: 120%;
+      top: 80%;
   }
   
   @media screen and (min-height: 450px) {
