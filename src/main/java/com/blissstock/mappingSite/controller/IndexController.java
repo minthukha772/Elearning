@@ -35,10 +35,13 @@ public class IndexController {
         try {
             logger.info("GET request");
 
-            List<CourseInfo> liveList = courseRepo.findByClassTypeIgnoreCase(ClassType.LIVE.getValue());
+            List<CourseInfo> liveList = courseRepo
+                    .findByClassTypeAndIsCourseApproved(ClassType.LIVE.getValue(),
+                            true);
 
-            List<CourseInfo> videoList = courseRepo.findByClassTypeIgnoreCase(ClassType.VIDEO.getValue());
-
+            List<CourseInfo> videoList = courseRepo
+                    .findByClassTypeAndIsCourseApproved(ClassType.VIDEO.getValue(),
+                            true);
             List<HomeCourseInfoDTO> liveInfoDTOs = new ArrayList<HomeCourseInfoDTO>();
             List<HomeCourseInfoDTO> videoInfoDTOs = new ArrayList<HomeCourseInfoDTO>();
             ;
