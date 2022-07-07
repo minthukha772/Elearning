@@ -6,7 +6,6 @@ build/
 !**/src/test/**/build/
 uploads/
 
-*.properties
 #ssl 
 pyinnyar-subuu-testsite.cloudns.nz
 certbot
