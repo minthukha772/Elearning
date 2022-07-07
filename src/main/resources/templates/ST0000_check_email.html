@@ -11,6 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
     <link rel="stylesheet" href="/css/ST0001_register.css" />
+    <link rel="stylesheet" th:href="@{/css/global.css}" />
     <title>Register</title>
 
     <link rel="icon" type="image/x-icon" href="/images/fav.png" />
@@ -18,7 +19,8 @@
 
   <body style="background-color: #f0f0f0">
     <!-- guest user navi bar -->
-    <div th:replace="fragments/guestnav"></div>
+    
+    <div th:replace="@{fragments/nav}"></div>
 
     <div class="m-3" th:if="${action=='register'}">
       <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
@@ -89,7 +91,7 @@
           The Email <b th:text="*{email}"></b> has not been registered in the
           system.
         </div>
-        <div class="card">
+        <div class="card-pwd-reset">
           <div class="card-header" th:if="${action == 'register'}">
             <span
               th:text="${emailCheck.role}"
@@ -97,7 +99,7 @@
             ></span>
             Registration
           </div>
-          <div class="card-header" th:if="${action == 'verify_password'}">
+          <div class="card-header-st0001-css" th:if="${action == 'verify_password'}">
             Reset Password
           </div>
           <div class="card-body">
@@ -155,5 +157,8 @@
       crossorigin="anonymous"
     ></script>
     <script src="/js/ST0001_register.js"></script>
+
+    <script th:src="@{../js/main.js}">
+    </script>
   </body>
 </html>
