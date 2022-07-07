@@ -19,7 +19,6 @@ import com.blissstock.mappingSite.service.UserService;
 import com.blissstock.mappingSite.service.UserSessionService;
 import com.blissstock.mappingSite.utils.StringToDateConvert;
 
-
 import org.apache.commons.lang3.ObjectUtils.Null;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,7 +74,20 @@ public class CourseListController {
 
         List<CourseInfo> courseList = courseService.getCourseList(courseInfoDTO);
         // Encasulate Data
-        List<CourseData> courseDataList = courseList.stream().map((e) -> CourseData.construct(e))
+        List<CourseData> courseDataList = courseList.stream().map((e) -> {
+            CourseData c = CourseData.construct(e);
+            FileInfo fileInfo = storageService.loadCoursePhoto(e);
+
+            // if profile is not found set as place holder
+            if (fileInfo == null) {
+                c.setCoursePhoto(new FileInfo("https://via.placeholder.com/150",
+                        "https://via.placeholder.com/150"));
+            } else {
+
+                c.setCoursePhoto(fileInfo);
+            }
+            return c;
+        })
                 .collect(Collectors.toList());
         logger.info("Getting course, count {}", courseList.size());
         model.addAttribute("courseList", courseDataList);
@@ -111,25 +123,39 @@ public class CourseListController {
 
         List<CourseInfo> courseList = userInfo.getCourseInfo();
         // Encasulate Data
-        List<CourseData> courseDataList = courseList.stream().map((e) -> CourseData.construct(e))
+        List<CourseData> courseDataList = courseList.stream().map((e) -> {
+            CourseData c = CourseData.construct(e);
+            FileInfo fileInfo = storageService.loadCoursePhoto(e);
+
+            // if profile is not found set as place holder
+            if (fileInfo == null) {
+                c.setCoursePhoto(new FileInfo("https://via.placeholder.com/150",
+                        "https://via.placeholder.com/150"));
+            } else {
+
+                c.setCoursePhoto(fileInfo);
+            }
+            return c;
+        })
                 .collect(Collectors.toList());
         logger.info("Getting course, count {}", courseList.size());
         model.addAttribute("courseList", courseDataList);
         // Enable Disable Search Function
         model.addAttribute("searchable", false);
-        if(model.getAttribute("emptyMessage") == null){
+        if (model.getAttribute("emptyMessage") == null) {
             model.addAttribute("emptyMessage", "Sorry, No Search Result Found!");
         }
         // model.addAttribute("courseList", new ArrayList<>());
         return "CM0002_CourseList";
     }
-    
+
     @GetMapping(value = "/teacher/my-course")
     public String teacherCourse(Model model) {
         Long uid = userSessionService.getId();
-        
+
         // model.addAttribute("emptyMessage", "You have not registered any course.");
-        model.addAttribute("emptyMessage", "It will take 1 or 2 days for the Admin Confirmation.After the Admin confirmation, you can proceed the course registration.");
+        model.addAttribute("emptyMessage",
+                "It will take 1 or 2 days for the Admin Confirmation.After the Admin confirmation, you can proceed the course registration.");
         return getCourseListByTeacherID(model, uid);
 
     }
@@ -141,7 +167,7 @@ public class CourseListController {
         List<JoinCourseUser> joinCourseUsers = joinCourseUserService.findByUserInfo(userInfo);
         if (joinCourseUsers == null) {
             joinCourseUsers = new ArrayList<>();
-            
+
         }
         List<CourseData> courseDataList = joinCourseUsers.stream().map((e) -> {
             return CourseData.construct(e.getCourseInfo());
