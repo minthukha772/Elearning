@@ -41,6 +41,8 @@ public class CourseData {
 
     private String photo;
 
+    private FileInfo coursePhoto;
+
     private CourseData() {
 
     };
@@ -64,5 +66,9 @@ public class CourseData {
         courseData.photo = courseInfo.getUserInfo().getPhoto();
         
         return courseData;
+    }
+
+    public void setCoursePhoto(FileInfo info) {
+        this.coursePhoto = info;
     }
 }

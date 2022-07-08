@@ -18,7 +18,7 @@
 }
 
 .cardheaders{
-    color: var(--certificate-btn);
+    color: #00736c;
     font-size: 25px;
     font-weight: bold;
     display: flex;
@@ -27,8 +27,27 @@
 }
 
 .cardheadertwos{
-    background: var(--certificate-secondbtn) ;
+    background: #3f877a ;
     color: var(--navbar-brand-bg-color);
+}
+
+.btn-primary {
+	color: white;
+	border: none;
+	background-color: #09646a;
+	border-radius: 4px;
+	font-size: 20px;
+	padding: 5px 10px;
+	width: fit-content;
+	margin-top: 10px;
+    text-decoration: none;
+
+}
+
+.btn-primary:hover {
+    color: #fff;
+    background-color: #0d190b;
+    border-color: #0c170a;
 }
 
 
