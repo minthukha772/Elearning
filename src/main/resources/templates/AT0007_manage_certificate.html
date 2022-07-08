@@ -51,10 +51,10 @@
                     Card title
                   </p>
                 </div>
-                <div class="card-footer">
+                <div class="card-footer d-flex justify-content-around">
                   <a
                     th:href="${fileInfo.url}"
-                    class="btn colors"
+                    class="btn-primary"
                     target="_blank"
                     >View Certificate</a
                   >
@@ -157,7 +157,7 @@
               />
             
             <div class="input-group-append" >
-              <button type="submit" class="btn  ms-4 colors">Upload Certificate</button>
+              <button type="submit" class="btn-primary ms-4 colors">Upload Certificate</button>
             </div>
           </div>
 
@@ -168,7 +168,7 @@
           <div class="input-group col-auto mb-3">
             <h5 class="ms-5 p-1">If you are completed certificate uploading, you can review your information in Profile page</h5>
               <a class="input-group-append" th:href="@{/teacher/profile/}">
-                <button type="submit" class="btn ms-5 colors"  >Go to Profile</button>
+                <button type="submit" class="btn-primary ms-5 colors"  >Go to Profile</button>
               </a>
           </div>
           
