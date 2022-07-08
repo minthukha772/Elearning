@@ -176,30 +176,31 @@
 				</div>
 			</section>
 			
-			<section class="container-fluid courses__section mt-4">
+			<section class="container-fluid courses__section">
 			<div class="row">
 				<div
 				class="col-sm-12 col-md-12 col-xl-12 mt-4 mt-md-0"
 				th:unless="${userInfo == null}"
 			>
+			<!-- d-flex flex-column flex-md-column flex-sm-column flex-lg-column flex-xl-row -->
 				<div
-					class="d-flex flex-column flex-md-column flex-sm-column flex-lg-column flex-xl-row">
+					class=" mb-3"> 
 					<img
 					class="detail__img"
 					th:if="${profilePic == null}"
 					th:src="@{/images/profile.png}"
-					style="width: 150px;"
+					style="width: 150px;height: 20vh;"
 					alt="Avatar"
 					/>
 					<img
 					th:unless="${profilePic == null}"
 					th:src="${profilePic.url}"
 					class="rounded-circle"
-					style="width: 150px"
+					style="width: 150px;height: 20vh;"
 					alt="Avatar"
 					/>
 					</div>
-					<div class="course__detail mt-4 mt-md-0">
+					<div class="course__detail">
 						<h3 th:text="${userInfo.userName}" class="detail__title">
 							Git and GitHub (Basic)
 						</h3>

@@ -17,12 +17,12 @@
 
     <link rel="icon" type="image/x-icon" href="/images/fav.png" />
 
-    <link
+    <!-- <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
       rel="stylesheet"
       integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
       crossorigin="anonymous"
-    />
+    /> -->
 
     <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
     <link
@@ -290,14 +290,16 @@
                     id="liveCourseSlider"
                   >
                     <div th:each="courseInfo:${liveCourse}">
-                      <div class="d-flex flex-column">
+                      <div class="d-flex flex-column img-fluid">
                         <div
                           class="course__wrapper shadow-sm rounded bg-light p-2"
                         >
-                          <img src="./images/course.png" class="course__img" />
+                           <img width="209" height="129" th:src="${courseInfo.coursePhoto.url}" class="course__img"
+                            th:alt="${courseInfo.coursePhoto.name}" />
+                          <!-- <img src="./images/course.png" class="course__img" /> -->
                           <div class="course_data_title">
                             <p
-                              class="course__title__header d-flex justify-content-center mt-3"
+                              class="course__title__header d-flex justify-content-center mt-1"
                               th:text="${courseInfo.courseName}"
                               style="font-size: 20px"
                             >
@@ -390,19 +392,21 @@
                     id="recordedCourseSlider"
                   >
                     <div th:each="courseInfo:${recordedCourse}">
-                      <div class="d-flex flex-column">
+                      <div class="d-flex flex-column img-fluid">
                         <div
                           class="course__wrapper shadow-sm rounded bg-light p-2"
                         >
-                          <img src="./images/course.png" class="course__img" />
+                        <img width="209" height="129" th:src="${courseInfo.coursePhoto.url}" class="course__img"
+                        th:alt="${courseInfo.coursePhoto.name}" />
+                          <!-- <img src="./images/course.png" class="course__img" /> -->
                           <div class="course_data_title">
-                            <h4
-                              class="course__title__header d-flex justify-content-center mt-3"
+                            <p
+                              class="course__title__header d-flex justify-content-center mt-1"
                               th:text="${courseInfo.courseName}"
                               style="font-size: 20px"
                             >
                               Course Name
-                            </h4>
+                            </p>
                             <p
                               class="course__author d-flex justify-content-center"
                               th:text="${courseInfo.teacherName}"

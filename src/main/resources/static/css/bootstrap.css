@@ -209,9 +209,9 @@ a {
   color: #0F1D0D;
   text-decoration: underline;
 }
-a:hover {
+/* a:hover {
   color: #0c170a;
-}
+} */
 
 a:not([href]):not([class]), a:not([href]):not([class]):hover {
   color: inherit;
