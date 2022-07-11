@@ -17,12 +17,12 @@
 
     <link rel="icon" type="image/x-icon" href="/images/fav.png" />
 
-    <!-- <link
+    <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
       rel="stylesheet"
       integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
       crossorigin="anonymous"
-    /> -->
+    />
 
     <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
     <link
@@ -47,11 +47,9 @@
     <div th:replace="@{fragments/nav}"></div>
 
 
-  
   <main>
   <section>
-    <div
-      class="container-fluid section-container padding__carousel hero__container">
+    <div class="container-fluid section-container padding__carousel hero__container">
 
       <div id="carouselExampleCaptions" class="carousel slide " data-bs-ride="carousel">
        
@@ -71,7 +69,7 @@
           </div>
 
           <div class="carousel-item">
-            <img src="images/homescreen-teacher1.jpg" class="img-fluid d-block w-100 backimages" alt="...">
+            <img src="images/homescreen-teacher.jpg" class="img-fluid d-block w-100 backimages" alt="...">
             <div class="carousel-caption d-flex flex-column align-items-center justify-content-center hero">
               <h5 class="main__title">Start teaching now!</h5>
               <p class="sub__title">Register today and start teaching on our platform.</p>
@@ -98,6 +96,7 @@
               </a>
             </div>
           </div>
+
         </div>
 
         
@@ -111,79 +110,9 @@
         </button>
       </div>
 
-      <div class="absolute-wrapper">
-        <div class="container date__content">
 
-          <div class="row">
-=======
-    <main>
-      <section>
-        <div
-          class="container-fluid section-container padding__carousel hero__container"
-        >
->>>>>>> b208f77998689bcb1b65f9b0f2f697cf38b03867
-          <div
-            id="carouselExampleControls"
-            class="carousel slide"
-            data-bs-ride="carousel"
-          >
-            <div class="carousel-inner">
-              <div class="carousel-item active">
-                <img
-                  src="./images/home-screen11.jpg"
-                  class="d-block w-100"
-                  alt="first slide"
-                />
-              </div>
-              <div class="carousel-item">
-                <img
-                  src="./images/library.jpg"
-                  class="d-block w-100"
-                  alt="..."
-                />
-              </div>
-              <div class="carousel-item">
-                <img
-                  src="./images/home-screen10.jpg"
-                  class="d-block w-100"
-                  alt="home-screen10"
-                />
-              </div>
-            </div>
-            <button
-              class="carousel-control-prev"
-              type="button"
-              data-bs-target="#carouselExampleControls"
-              data-bs-slide="prev"
-            >
-              <span
-                class="carousel-control-prev-icon"
-                aria-hidden="true"
-              ></span>
-              <span class="visually-hidden">Previous</span>
-            </button>
-            <button
-              class="carousel-control-next move-left"
-              type="button"
-              data-bs-target="#carouselExampleControls"
-              data-bs-slide="next"
-            >
-              <span class="carousel-control-next-icon"> </span>
-              <span class="visually-hidden">Next</span>
-            </button>
-          </div>
 
-          <div
-            class="d-flex flex-column align-items-center justify-content-center hero"
-          >
-            <h1 class="main__title">Start Learning Now!</h1>
-            <h3 class="sub__title">
-              Register today and start learning on our platform
-            </h3>
-            <a th:href="@{/check_email/register/student}">
-              <button type="button" class="btn">Register as a student</button>
-            </a>
-          </div>
+     
 
           <div class="absolute-wrapper">
             <div class="container date__content">
@@ -361,16 +290,14 @@
                     id="liveCourseSlider"
                   >
                     <div th:each="courseInfo:${liveCourse}">
-                      <div class="d-flex flex-column img-fluid">
+                      <div class="d-flex flex-column">
                         <div
                           class="course__wrapper shadow-sm rounded bg-light p-2"
                         >
-                           <img width="209" height="129" th:src="${courseInfo.coursePhoto.url}" class="course__img"
-                            th:alt="${courseInfo.coursePhoto.name}" />
-                          <!-- <img src="./images/course.png" class="course__img" /> -->
+                          <img src="./images/course.png" class="course__img" />
                           <div class="course_data_title">
                             <p
-                              class="course__title__header d-flex justify-content-center mt-1"
+                              class="course__title__header d-flex justify-content-center mt-3"
                               th:text="${courseInfo.courseName}"
                               style="font-size: 20px"
                             >
@@ -463,21 +390,19 @@
                     id="recordedCourseSlider"
                   >
                     <div th:each="courseInfo:${recordedCourse}">
-                      <div class="d-flex flex-column img-fluid">
+                      <div class="d-flex flex-column">
                         <div
                           class="course__wrapper shadow-sm rounded bg-light p-2"
                         >
-                        <img width="209" height="129" th:src="${courseInfo.coursePhoto.url}" class="course__img"
-                        th:alt="${courseInfo.coursePhoto.name}" />
-                          <!-- <img src="./images/course.png" class="course__img" /> -->
+                          <img src="./images/course.png" class="course__img" />
                           <div class="course_data_title">
-                            <p
-                              class="course__title__header d-flex justify-content-center mt-1"
+                            <h4
+                              class="course__title__header d-flex justify-content-center mt-3"
                               th:text="${courseInfo.courseName}"
                               style="font-size: 20px"
                             >
                               Course Name
-                            </p>
+                            </h4>
                             <p
                               class="course__author d-flex justify-content-center"
                               th:text="${courseInfo.teacherName}"
@@ -671,69 +596,6 @@
             $("#recordedCourseSlider").slick("slickPrev");
           });
 
-<<<<<<< HEAD
-
-  <script>
-
-    $(document).ready($(function () {
-      console.log("init");
-      $('.RecordedcoursesSlider').slick({
-        with: 100,
-        innerHeight: 100,
-        arrows: false,
-        infinite: false,
-        slidesToShow: 4,
-        slidesToScroll: 4,
-        dots: false,
-        responsive: [
-          {
-            breakpoint: 1024,
-            settings: {
-              slidesToShow: 3,
-              slidesToScroll: 3,
-              infinite: true,
-              dots: true
-            }
-          },
-          {
-            breakpoint: 600,
-            settings: {
-              slidesToShow: 2,
-              slidesToScroll: 2
-            }
-          },
-          {
-            breakpoint: 480,
-            settings: {
-              slidesToShow: 1,
-              slidesToScroll: 1
-            }
-          }
-        
-        ]
-      });
-
-
-      $("#recordPrev").click(() => {
-        console.log("prev");
-        $("#recordedCourseSlider").slick('slickPrev');
-      })
-
-      $("#recorded-tab").click(() => {
-        console.log("prev");
-        $("#recordedCourseSlider").slick('slickPrev');
-      })
-      $("#recordNext").click(() => {
-        console.log("next");
-        $("#recordedCourseSlider").slick('slickNext');
-      })
-    }));
-
-  </script>
-
-</body>
-</html>
-=======
           $("#recorded-tab").click(() => {
             console.log("prev");
             $("#recordedCourseSlider").slick("slickPrev");
@@ -747,4 +609,3 @@
     </script>
   </body>
 </html>
->>>>>>> b208f77998689bcb1b65f9b0f2f697cf38b03867
