@@ -23,6 +23,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4">
         <link rel="stylesheet" type="text/css" href="css/demo.css" th:href="@{/css/demo.css}">
         <link rel="stylesheet" type="text/css" href="css/AT0003_ListofStudentsByT.css" th:href="@{/css/AT0003_ListofStudentsByT.css}">
         <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
+        <link rel="stylesheet" th:href="@{/css/global.css}" />
         <!-- <link rel="stylesheet" type="text/css" href="css/dataTableManual.css">
             <link rel="stylesheet" type="text/css" href="css/dataTableSCSSMaual.css"> -->
             
@@ -41,7 +42,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4">
             <script type="text/javascript" language="javascript" src="js/shCore.js" th:src="@{/js/shCore.js}"></script>
             <script type="text/javascript" language="javascript" src="js/demo.js" th:src="@{/js/demo.js}"></script>
             <script type="text/javascript" language="javascript" class="init" th:inline="javascript">
-                
+            
 
                 /*<![CDATA[*/
                 $(document).ready(function () {
@@ -163,8 +164,8 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4">
                                                                             </div>
                                                                         </nav> -->
                                                                         
-                                                                        <nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: '>'">
-                                                                            <ol class="breadcrumb">
+                                                                        <nav aria-label="breadcrumb " class="container1 breadcrums" style="--bs-breadcrumb-divider: '>'">
+                                                                            <ol class="breadcrumb mt-3 ms-5">
                                                                                 <li class="breadcrumb-item"><a th:href="@{/teacher/my-course}">Top</a></li>
                                                                                 <!-- <li class="breadcrumb-item"><a href="#">Course List</a></li> -->
                                                                                 <li class="breadcrumb-item"><a th:href="@{${postAction}}">Course Detail</a></li>
@@ -177,15 +178,15 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4">
                                                                             
                                                                             
                                                                             
-                                                                            <div class="container">
-                                                                                <div class="card mb-3 mx-auto shadow-sm rounded bg-body" style="max-width: 600px;">
-                                                                                    <div class="row g-0">
+                                                                            <div class="container container2">
+                                                                                <div class="card mb-3 mx-auto shadow-sm rounded bg-body " style="max-width: 600px;">
+                                                                                    <div class="row g-0 ">
                                                                                         <div class="col-md-4" style="display: flex;">
-                                                                                            <div class="card-body part1">
+                                                                                            <div class="card-body part1 cardfirsts">
                                                                                                 <p class="card-text">
-                                                                                                    <p class="fw-bold customp1" th:utext="${#strings.substringBefore(courseInfo.startDate, ' ')} + ' ~ ' + ${#strings.substringBefore(courseInfo.endDate, ' ')}"></p>
+                                                                                                    <p class="fw-bold customp1 text-dark" th:utext="${#strings.substringBefore(courseInfo.startDate, ' ')} + ' ~ ' + ${#strings.substringBefore(courseInfo.endDate, ' ')}"></p>
                                                                                                     <div th:each="time : ${courseTimeList}">
-                                                                                                        <p class="fw-normal customp1" th:text="${time.courseDays} + ':' + ${time.courseStartTime} + '~' + ${time.courseEndTime}"></p>
+                                                                                                        <p class="fw-normal customp1 text-dark" th:text="${time.courseDays} + ':' + ${time.courseStartTime} + '~' + ${time.courseEndTime}"></p>
                                                                                                     </div>
                                                                                                     <!-- <p class="fw-normal customp1">Mon: 13:00~15:00</p>
                                                                                                     <p class="fw-normal customp1">Tue: 13:00~15:00</p> -->
@@ -264,8 +265,90 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4">
                                                                             <!-- </div> -->
                                                                         </div>
                                                                         
-                                                                        <div th:replace="@{fragments/footer}"></div>
+                                                                        <!-- <div th:replace="@{fragments/footer}"></div> -->
+
+                                                                        <footer class="container-fluid no-padding footers"  >
+                                                                            <div class="footer__container">
+                                                                              <div
+                                                                                class="d-lg-flex flex-sm-column flex-md-row justify-content-between align-items-sm-center footer__div"
+                                                                              >
+                                                                                <div class="footer__holder">
+                                                                                  <h3 class="footer__title">Get to Know Us</h3>
+                                                                                  <ul 
+                                                                                  class="footer__subtitle"
+                                                                                  style="line-height: 200%">
+                                                                                    <li>
+                                                                                      <a
+                                                                                        style="color: white; text-decoration: none"
+                                                                                        th:href="@{/guest/frequently_asked_questions}"
+                                                                                        target="_blank"
+                                                                                      >
+                                                                                        FAQs
+                                                                                      </a>
+                                                                                    </li>
+                                                                                    <li>
+                                                                                      <a
+                                                                                        style="color: white; text-decoration: none"
+                                                                                        th:href="@{ /guest/terms_and_conditions}"
+                                                                                        target="_blank"
+                                                                                      >
+                                                                                        Terms and Conditions
+                                                                                      </a>
+                                                                                    </li>
+                                                                                    <li>
+                                                                                      <a
+                                                                                        style="color: white; text-decoration: none"
+                                                                                        th:href="@{/guest/help_and_support}"
+                                                                                        target="_blank"
+                                                                                      >
+                                                                                        Help and support
+                                                                                      </a>
+                                                                                    </li>
+                                                                                    <li>
+                                                                                      <a
+                                                                                        th:href="@{/guest/about_management_company}"
+                                                                                        style="color: white; text-decoration: none"
+                                                                                        target="_blank"
+                                                                                        rel="noopener noreferrer"
+                                                                                      >
+                                                                                        About the management company
+                                                                                      </a>
+                                                                                    </li>
+                                                                                  </ul>
+                                                                                </div>
+                                                                                <div class="footer__holder">
+                                                                                  <h3 class="footer__title">Contact</h3>
+                                                                                  <ul
+                                                                                    class="footer__subtitle"
+                                                                                    style="line-height: 200%"
+                                                                                  >
+                                                                                    <li>Tel: +959 98-656-3091</li>
+                                                                                    <li>Viber: +959 98-656-3091</li>
+                                                                                    <li>Telegram: +959 98-656-3091</li>
+                                                                                    <li>Line: +959 98-656-3091</li>
+                                                                                    <li>WhatsApp: +959 98-656-3091</li>
+                                                                                  </ul>
+                                                                                </div>
+                                                                                <div class="footer__holder">
+                                                                                  <img
+                                                                                    src="/images/bliss-stock.png"
+                                                                                    alt="logo"
+                                                                                    class="align-self-end"
+                                                                                  />
+                                                                                </div>
+                                                                              </div>
+                                                                              <div class="copyright">
+                                                                                <div class="center">
+                                                                                  <p class="copyright__text">
+                                                                                    © Copyright Pyinnyar Subuu. All Rights
+                                                                                    Reserved
+                                                                                  </p>
+                                                                                </div>
+                                                                              </div>
+                                                                            </div>
+                                                                          </footer>
                                                                         
+                                                                          <script th:src="@{./../../../js/main.js}"></script>
                                                                         
                                                                         <script>
                                                                             function openNav() {

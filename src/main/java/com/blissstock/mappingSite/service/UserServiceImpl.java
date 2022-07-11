@@ -67,11 +67,11 @@ public class UserServiceImpl implements UserService {
     // Encode Password
     userAccount.setPassword(passwordEncoder.encode(userAccount.getPassword()));
     // Set Status
-    if(userAccount.getRole().equals(UserRole.STUDENT.getValue())){
+    if (userAccount.getRole().equals(UserRole.STUDENT.getValue())) {
       userAccount.setAccountStatus(AccountStatus.REGISTERED.getValue());
-    }else if(userAccount.getRole().equals(UserRole.TEACHER.getValue())){
+    } else if (userAccount.getRole().equals(UserRole.TEACHER.getValue())) {
       userAccount.setAccountStatus(AccountStatus.REQUESTED.getValue());
-    }else if(userAccount.getRole().equals(UserRole.ADMIN.getValue())){
+    } else if (userAccount.getRole().equals(UserRole.ADMIN.getValue())) {
       userAccount.setAccountStatus(AccountStatus.REGISTERED.getValue());
     }
 
@@ -130,7 +130,6 @@ public class UserServiceImpl implements UserService {
     // TODO fix bug
     Token token1 = tokenRepository.getToken(token, tokenType.getValue());
 
-    System.out.println("token is " + token1.toString());
     return token1;
   }
 
@@ -186,11 +185,10 @@ public class UserServiceImpl implements UserService {
   public void updateUserInfo(UserInfo userInfo) {
     userInfoRepository.save(userInfo);
   }
-    
+
   @Override
   public void setAsUsedToken(String token) {
     tokenRepository.setAsUsedtoken(token);
   }
-
 
 }

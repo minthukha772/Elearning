@@ -55,7 +55,7 @@ public class EnrollStudentController {
                     Optional<CourseInfo> courseInfo = courseRepo.findById(id);
                     if (courseInfo.isPresent()) {
                         CourseInfo course = courseInfo.get();
-                        // //System.out.println(course.toString());
+
                         model.addAttribute("courseName", course.getCourseName());
                         // todo find teacher name
                         // course.getUserInfo();
@@ -110,7 +110,7 @@ public class EnrollStudentController {
 
         UserRole userRole = userSessionService.getRole();
 
-        //admin enroll course limit
+        // admin enroll course limit
         CourseInfo courseInfo = courseRepo.findById(cid).get();
         Integer maxStudent = courseInfo.getMaxStu();
         List<UserInfo> studentList = new ArrayList<>();
@@ -126,11 +126,10 @@ public class EnrollStudentController {
             availableStuList = 0;
         }
 
-        //TODO
-        if(availableStuList <= 0){
+        // TODO
+        if (availableStuList <= 0) {
             return "redirect:/error/404";
         }
-
 
         if (userRole.equals(UserRole.SUPER_ADMIN) || userRole.equals(UserRole.ADMIN)) {
             JoinCourseDTO joinCourseDTO = new JoinCourseDTO();

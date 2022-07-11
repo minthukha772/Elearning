@@ -1,10 +1,10 @@
-<header>
+
   <nav class="fixed-top">
     <div class="d-flex justify-content-between w-100 navs">
 
       <div class="navbar-logo-holder">
         <a th:href="@{/}"
-          ><img src="../images/logo.png"
+          ><img src="/images/logo.png"
         /></a>
       </div>
 
@@ -15,7 +15,7 @@
         >
         
           <img
-            src="../images/icons/search-icon.svg" 
+            src="/images/icons/search-icon.svg" 
             class="icon"
           />
        
@@ -25,19 +25,19 @@
         </div>
 
         <div class="link-holder ">
-          <a class="nav-link linkholder"  href="/check_email/register/student"
+          <a class="nav-link linkholder"  th:href="@{/check_email/register/student}"
             >Register as a student</a
           >
         </div>
 
         <div class="link-holder">
-          <a class="nav-link linkholder" href="/check_email/register/teacher"
+          <a class="nav-link linkholder" th:href="@{/check_email/register/teacher}"
             >Register as a teacher</a
           >
         </div>
 
         <div class="link-holder">
-          <a class="nav-link linkholder" href="/login">Login</a>
+          <a class="nav-link linkholder" th:href="@{/login}">Login</a>
         </div>
         
       </div>
@@ -53,9 +53,10 @@
         <span class="line line3"></span>
       </div>
     </div>
+
     <div class="menu-items  ">
-      <li><a th:href="@{/check_email/register/student}">Register as a student</a></li>
-      <li><a  th:href="@{/check_email/register/teacher}">Register as a teacher</a></li>
+      <li><a class="linkholder" th:href="@{/check_email/register/student}">Register as a student</a></li>
+      <li><a class="linkholder"  th:href="@{/check_email/register/teacher}">Register as a teacher</a></li>
       <li>
         <div
           class="d-flex form__group field align-items-center align-self-center"
@@ -79,5 +80,5 @@
         </button>
       </li>
     </div>
+
   </nav>
-</header>

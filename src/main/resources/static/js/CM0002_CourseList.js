@@ -164,23 +164,24 @@ const renderCourseList = (courseList) => {
         <i>${startDate} - ${endDate}</i>`;
         }
         const template = `
-        <div class="card col-12 col-xl-6 col-xxl-4">
-          <div class="card-body">
-            <div >
+        <div class="col-sm-12 col-md-12 col-xl-12 my-3">
+          <div class="d-flex flex-column flex-md-column flex-sm-column flex-lg-column flex-xl-row">
+          <span>
+            <img width="200" height="200" src="${e.coursePhoto.url}" class="detail__img" alt="${e.coursePhoto.name}">
+          </span>
+            <div>
               <h2>${e.courseName}</h2>
               <a href="/guest/explore/teacher/${e.teacherId}">${e.teacherName}</a>
               <h6 class="mt-1">${e.category} &gt;${e.level}</h6>
               <p>${e.aboutCourse}</p>
-
-             <span>${dates}</span>
-              <h4 class="mt-2">${e.fees ? e.fees + 'MMK' : 'FREE'}</h4>
-
-          
+               <span>${dates}</span>
+              <h4 class="mt-2">${e.fees ? e.fees + 'MMK' : 'col-sm-8 col-md-6 col-xl-9 mt-4 mt-md-0'}</h4>
+              <a href="/guest/course-detail/${e.courseId}" class="btn btn-primary">See Detail</a>
             </div>
-            <a href="/guest/course-detail/${e.courseId}" class="btn btn-primary">See Detail</a>
           </div>
           
         </div>
+        <hr>
         `;
         $(template).appendTo($("#courseList"));
 
