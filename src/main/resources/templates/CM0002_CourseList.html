@@ -15,6 +15,7 @@
 		/>
 		<link rel="icon" type="image/x-icon" href="/images/fav.png" />
 		<link rel="stylesheet" th:href="@{/css/global.css}" />
+		<link rel="stylesheet" th:href="@{/css/pagination.css}" />
 		<link
 			rel="stylesheet"
 			type="text/css"
@@ -24,6 +25,7 @@
 	</head>
 	<body>
 		<div th:replace="@{fragments/nav}"></div>
+		<div class=" mt-5 pt-5 "></div>
 		<!-- <header>
 			<nav class="fixed-top">
 				<div class="d-flex justify-content-between w-100">
@@ -103,8 +105,11 @@
 		</header> -->
 
 		<main>
-			<section class="container-fluid explore__courses">
-				<h1>Explore courses</h1>
+			<section
+			 class="container-fluid explore__courses" 
+             th:if="${searchable}"
+			>
+			<h1>Explore Courses</h1>
         
         <form
         th:action="@{__${#httpServletRequest.requestURI}__}"
@@ -142,13 +147,12 @@
 								placeholder="End Date (dd/mm/yyyy)"
 								class="input mt-3"
 								th:field="*{endDate}"
-								
 							/>
 							
 						</div>
 						<div class="col-sm">
 							<input
-								type="inputk"
+								type="input"
 								placeholder="Lowest Fee (0)"
 								class="input"
 								th:field="*{lowestFee}"
@@ -171,11 +175,57 @@
 					</div>
 				</div>
 			</section>
-			<section
-				class="container-fluid courses__section mt-4"
+			
+			<section class="container-fluid courses__section">
+			<div class="row">
+				<div
+				class="col-sm-12 col-md-12 col-xl-12 mt-4 mt-md-0"
+				th:unless="${userInfo == null}"
 			>
-				<div class="row">
+			<!-- d-flex flex-column flex-md-column flex-sm-column flex-lg-column flex-xl-row -->
+				<div
+					class=" mb-3"> 
+					<img
+					class="detail__img"
+					th:if="${profilePic == null}"
+					th:src="@{/images/profile.png}"
+					style="width: 150px;height: 20vh;"
+					alt="Avatar"
+					/>
+					<img
+					th:unless="${profilePic == null}"
+					th:src="${profilePic.url}"
+					class="rounded-circle"
+					style="width: 150px;height: 20vh;"
+					alt="Avatar"
+					/>
+					</div>
+					<div class="course__detail">
+						<h3 th:text="${userInfo.userName}" class="detail__title">
+							Git and GitHub (Basic)
+						</h3>
+						<p th:text="${userInfo.selfDescription}" class="role__title">
+							Subuu Teacher
+						</p>
+						<div sec:authorize="hasAuthority('ROLE_TEACHER')">
+							<a href="/teacher/course-registration" class="btn btn-primary">Add Course</a>
+						</div>
+	
+						<!-- <div class="category__title" sec:authorize="hasAuthority('ROLE_TEACHER')">IT -->
+					   <!-- <div  class="detail__description" th:if="${userInfo.userAccount.accountStatus == 'VERIFIED'} ">
+						Learn the basics of Git, Git installation,
+						The basics of terminal, The Basics of
+						GitHub, Learn how to set up collaboration
+						team
+						   <button th:href="@{/teacher/course-registration}" class="detail_btn">FREE</button>
+					   </div> -->
+						</div>
+					</div>
+			
+			</div>
+				<div class="row my-3">
 					<div class="col-sm-12 col-md-6 col-xl-3">
+
 						<div class="d-flex flex-column w-100">
 							<div class="filter__heading">Filter By</div>
 							<div class="filter__container">
@@ -257,206 +307,42 @@
 							</div>
 						</div>
 					</div>
-					<div
-						class="col-sm-8 col-md-6 col-xl-9 mt-4 mt-md-0"
-					>
-						<div
-							class="d-flex flex-column flex-md-column flex-sm-column flex-lg-column flex-xl-row"
-						>
-							<img
-								class="detail__img"
-								src="/images/profile.png"
-							/>
-							<div class="course__detail mt-4 mt-md-0">
-								<h3 class="detail__title">
-									Git and GitHub (Basic)
-								</h3>
-								<p class="role__title">Subuu Teacher</p>
-								<p class="category__title">IT > Basic</p>
-								<p class="detail__description">
-									Learn the basics of Git, Git installation,
-									The basics of terminal, The Basics of
-									GitHub, Learn how to set up collaboration
-									team
-								</p>
-								<button class="detail__btn">Free</button>
-							</div>
-						</div>
-						<div
-							class="d-flex flex-column flex-md-column flex-sm-column flex-lg-column flex-xl-row mt-md-4"
-						>
-							<img
-								class="detail__img"
-								src="/images/profile.png"
-								
-							/>
-							<!-- <img 
-							th:unless="${profilePic == null}"
-							th:src="${profilePic.url}"
-							class="rounded-circle"
-							style="width: 150px"
-							alt="Avatar"> -->
-							
-							<div class="course__detail mt-4 mt-md-0">
-								<h3 class="detail__title" >
-									Git and GitHub (Basic)
-								</h3>
-								<p class="role__title">Subuu Teacher</p>
-								<p class="category__title" >IT > Basic</p>
-								<p class="detail__description" >
-									Learn the basics of Git, Git installation,
-									The basics of terminal, The Basics of
-									GitHub, Learn how to set up collaboration
-									team
-								</p>
-								<button class="detail__btn">Free</button>
-							</div>
-						</div>
-						<div
-							class="d-flex flex-column flex-md-column flex-sm-column flex-lg-column flex-xl-row mt-md-4"
-						>
-							<img
-								class="detail__img"
-								src="/images/profile.png"
-							/>
-							<div class="course__detail mt-4 mt-md-0">
-								<h3 class="detail__title">
-									Git and GitHub (Basic)
-								</h3>
-								<p class="role__title">Subuu Teacher</p>
-								<p class="category__title">IT > Basic</p>
-								<p class="detail__description">
-									Learn the basics of Git, Git installation,
-									The basics of terminal, The Basics of
-									GitHub, Learn how to set up collaboration
-									team
-								</p>
-								<button class="detail__btn">Free</button>
-							</div>
-						</div>
-						<div
-							class="d-flex flex-column flex-md-column flex-sm-column flex-lg-column flex-xl-row mt-md-4"
-						>
-							<img
-								class="detail__img"
-								src="/images/profile.png"
-							/>
-							<div class="course__detail mt-4 mt-md-0">
-								<h3 class="detail__title">
-									Git and GitHub (Basic)
-								</h3>
-								<p class="role__title">Subuu Teacher</p>
-								<p class="category__title">IT > Basic</p>
-								<p class="detail__description">
-									Learn the basics of Git, Git installation,
-									The basics of terminal, The Basics of
-									GitHub, Learn how to set up collaboration
-									team
-								</p>
-								<button class="detail__btn">Free</button>
-							</div>
-						</div>
-						<div
-							class="d-flex flex-column flex-md-column flex-sm-column flex-lg-column flex-xl-row mt-md-4"
-						>
-							<img
-								class="detail__img"
-								src="/images/profile.png"
-							/>
-							<div class="course__detail mt-4 mt-md-0">
-								<h3 class="detail__title">
-									Git and GitHub (Basic)
-								</h3>
-								<p class="role__title">Subuu Teacher</p>
-								<p class="category__title">IT > Basic</p>
-								<p class="detail__description">
-									Learn the basics of Git, Git installation,
-									The basics of terminal, The Basics of
-									GitHub, Learn how to set up collaboration
-									team
-								</p>
-								<button class="detail__btn">Free</button>
-							</div>
-						</div>
-						<div
-							class="d-flex flex-column flex-md-column flex-sm-column flex-lg-column flex-xl-row mt-md-4"
-						>
-							<img
-								class="detail__img"
-								src="/images/profile.png"
-							/>
-							<div class="course__detail mt-4 mt-md-0">
-								<h3 class="detail__title">
-									Git and GitHub (Basic)
-								</h3>
-								<p class="role__title">Subuu Teacher</p>
-								<p class="category__title">IT > Basic</p>
-								<p class="detail__description">
-									Learn the basics of Git, Git installation,
-									The basics of terminal, The Basics of
-									GitHub, Learn how to set up collaboration
-									team
-								</p>
-								<button class="detail__btn">Free</button>
-							</div>
-						</div>
+					<div class="col" id="course" >
 
-						<div class="d-flex mt-4">
-							<ul class="pagination">
-								<li class="page-item">
-									<a
-										class="page-link"
-										href="#"
-										aria-label="Previous"
-									>
-										<span
-											aria-hidden="true"
-											class="pagination-button"
-											>&laquo;</span
-										>
-									</a>
-								</li>
-								<li class="page-item">
-									<a
-										class="page-link"
-										href="#"
-										style="color: black"
-										>1</a
-									>
-								</li>
-								<li class="page-item">
-									<a
-										class="page-link"
-										href="#"
-										aria-label="Next"
-									>
-										<span
-											aria-hidden="true"
-											class="pagination-button"
-											>&raquo;</span
-										>
-									</a>
-								</li>
-							</ul>
-							<p
-								class="pagination__description align-self-end ms-2"
-							>
-								<span class="current__page">1</span> of 1
-								pages, 17 entries
-							</p>
+						<!-- <div sec:authorize="hasAuthority('ROLE_TEACHER')">
+						  <div th:if="${userInfo.userAccount.accountStatus != 'VERIFIED'}">
+							<div th:href="@{/teacher/course-registration}"
+								  class="btn-sm btn-block rounded not-allowed mx-auto errormessage1">
+							  <img src="/images/warning.png" style="width: 75px; height:70px;" />
+							  <div class="ms-5 " style="display: inline;">It will take 1 or 2 days for the Admin Confirmation.<br/>
+								<span class="ms-4">After the Admin confirmation,you can proceed the course registration.</span>
+							  </div>
+							</div>
+						   </div>
+					   </div> -->
+					  
+						<p
+						  id="zero-result-msg"
+						  class="text-center text-danger mt-5"
+						  style="display: none"
+						  th:text="${emptyMessage}"
+						>
+						  Sorry, No Search Result Found!
+						</p>
+						<div id="courseList" class="row g-2 my-3"></div>
+					  </div>
+
+					</div>
+
 						</div>
+					  </div>
 					</div>
 				</div>
 			</section>
 		</main>
+	</body>	
 		<!-- Footer-->
 		<div th:replace="@{fragments/footer}"></div>
-
-		<img
-			src="./assets/icons/arrow-up-square-fill.svg"
-			class="scrollToTop"
-			onclick="handleScrollToTop()"
-		/>
 
 		<!-- Bootstrap JS -->
 		<script
@@ -464,7 +350,14 @@
 			integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
 			crossorigin="anonymous"
 		></script>
-		<script th:src="@{../js/main.js}"></script>
-	</body>
-	<html></html>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script th:src="@{/js/pagination.min.js}"></script>
+
+    <script th:inline="javascript">
+      const courseList = /*[[${courseList}]]*/ false;
+    </script>
+    <script th:src="@{/js/CM0002_CourseList.js}"></script>
+    <!-- <script src="/js/toTheTop.js"></script> -->
+	<script th:src="@{../js/main.js}"></script>
+	
 </html>
