@@ -34,7 +34,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class AdminTopController {
 
   private static Logger logger = LoggerFactory.getLogger(
-     AdminTopController.class);
+      AdminTopController.class);
 
   @Autowired
   StorageService storageService;
@@ -68,7 +68,7 @@ public class AdminTopController {
       return "redirect:/404";
     }
     // load profile picture
-    
+
     FileInfo profile = storageService.loadProfileAsFileInfo(userInfo);
     model.addAttribute("profile", profile);
 
@@ -108,8 +108,7 @@ public class AdminTopController {
         String originalFileName = StringUtils.cleanPath(
             photo.getOriginalFilename());
         // String saveFileName = FileNameGenerator.renameFileName(
-        //     originalFileName,
-        //     uid.toString());
+        // originalFileName,
 
         // upload photo
         try {
@@ -124,7 +123,7 @@ public class AdminTopController {
         logger.info("profile photo {} stored", originalFileName);
         return redirectAddress + "/";
       }
-    } 
+    }
 
     return "redirect:/admin/top/";
   }

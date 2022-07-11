@@ -1,5 +1,10 @@
+
 FROM openjdk:11-jre-slim
+
+ADD   cert/live/www.pyinnyarsubuu.com /www.pyinnyarsubuu.com
+
 VOLUME /tmp
+
 ARG JAVA_OPTS
 ENV JAVA_OPTS=$JAVA_OPTS
 COPY build/libs/mappingSite-0.0.1-SNAPSHOT.jar mappingsite.jar

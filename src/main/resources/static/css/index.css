@@ -290,17 +290,16 @@
 .course__author {
 	margin-top: 29px;
 }
-
-.course__img {
-	width: 100%;
-	height: auto;
+	
+.course__wrapper img {
+	height: 170px;
+	object-fit: cover;
 }
 
 .course__inner {
 	margin-top: 10px;
 	padding: 0;
 }
-
 
 
 .course__wrapper {
