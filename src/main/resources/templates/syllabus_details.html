@@ -17,6 +17,9 @@
     /> -->
     <link rel="stylesheet" href="/css/bootstrap.css" />
     <link rel="stylesheet" href="/css/ST0001_register.css" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/course.css}"/>
+		<link rel="stylesheet" type="text/css" th:href="@{/css/global.css}"/>
+
     <title>Syllabus Details</title>
 
     <link rel="icon" type="image/x-icon" href="/images/fav.png" />
@@ -25,6 +28,7 @@
   <body style="background-color: #f0f0f0">
     <!-- guest user navi bar -->
     <div th:replace="@{fragments/nav}"></div>
+    
 
     <!-- Content Field Hidden Template -->
     <!-- <template id="hiddenContentTemplate" type="text/x-custom-template">
@@ -188,7 +192,7 @@
 
               <ul class="list-group list-group-flush">
                 <li
-                  style="background-color: #9fdbb3"
+                  style="background-color: #ffffff"
                   class="list-group-item"
                   th:each="content, index : ${syllabusList.content}"
                   th:text="${content.content}"

@@ -4,6 +4,11 @@
     padding-left: 16px;
     margin-right: auto;
     margin-left: auto;
+    transform: translateY(20%);
+
+     min-height: 44vh;
+    /* display: flex;
+    flex-direction: column;  */
 }
 .card-login-css {
     position: relative;
@@ -31,3 +36,12 @@
     background-color: #eaf7f4;
     border-color: #4faa6d;
   }
+
+  .cardbodycolors{
+    background: #0F8173;
+  }
+
+  .form-label{
+    color: #fff;
+  }
+
