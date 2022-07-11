@@ -55,13 +55,15 @@
     </div>
 
     <div class="menu-items  ">
+      <li><a class="linkholder" th:href="@{/login}">Login</a></li>
       <li><a class="linkholder" th:href="@{/check_email/register/student}">Register as a student</a></li>
       <li><a class="linkholder"  th:href="@{/check_email/register/teacher}">Register as a teacher</a></li>
+     
       <li>
         <div
           class="d-flex form__group field align-items-center align-self-center"
         >
-          <img
+          <!-- <img
             src="../images/icons/search-icon.svg"
             class="icon"
           />
@@ -72,13 +74,26 @@
             id="search"
             placeholder="Search"
           />
+          
         </div>
       </li>
       <li>
         <button type="submit" class="date__btn">
-          Search
+          Search the course
         </button>
-      </li>
+      </li> -->
+   
+             
+          <img
+            src="/images/icons/search-icon.svg" 
+            class="icon"
+          />
+       
+          <a class=" ms-3 linkholder"  th:href="@{/guest/explore}"
+          >Search the Course</a>
+
+        </div>
+
     </div>
 
   </nav>
