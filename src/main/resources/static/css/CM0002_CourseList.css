@@ -1,7 +1,7 @@
 /* Search Section */
 
 section.explore__courses {
-	margin-top: 120px;
+	/* margin-top: 120px; */
 	padding: 0 0px;
 }
 
@@ -15,6 +15,24 @@ section.explore__courses h1 {
 	padding: 50px;
 	width: 100%;
 	background-color: var(--primary);
+}
+
+.btn-primary {
+	color: white;
+	border: none;
+	background-color: #09646a;
+	border-radius: 4px;
+	font-size: 20px;
+	padding: 5px 10px;
+	width: fit-content;
+	margin-top: 10px;
+
+}
+
+.btn-primary:hover {
+    color: #fff;
+    background-color: #0d190b;
+    border-color: #0c170a;
 }
 
 .input {

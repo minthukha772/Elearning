@@ -10,6 +10,7 @@
     <link rel="icon" type="image/x-icon" href="/images/fav.png" />
     <link rel="icon" type="image/x-icon" href="/images/fav.png" />
     <link rel="stylesheet" type="text/css" href="/css/CM0007_WriteReview.css" />
+    <link rel="stylesheet" th:href="@{/css/global.css}" />
     <link
       rel="stylesheet"
       type="text/css"
@@ -20,8 +21,8 @@
   <body>
     <div th:replace="fragments/teacher-nav"></div>
     <div class="m-3">
-      <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
-        <ol class="breadcrumb">
+      <nav class="container1 breadcrumtreviews" style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
+        <ol class="breadcrumb mt-3 ms-4">
           <li class="breadcrumb-item">
             <a href="#" data-bs-toggle="modal" data-bs-target="#reEnterEmail"
               >Course Details</a
@@ -31,9 +32,9 @@
         </ol>
       </nav>
     </div>
-    <div class="d-flex justify-content-center">
-      <div class="card">
-        <h5 class="card-header">Add Review</h5>
+    <div class="d-flex justify-content-center ">
+      <div class="card container2">
+        <h5 class="card-header d-flex justify-content-center align-items-center text-dark">Add Review</h5>
         <form method="post" th:action="@{${postAction}}" th:object="${review}">
           <div class="card-body">
             <div
@@ -181,13 +182,6 @@
         </form>
       </div>
     </div>
-    <footer>
-      <div class="row justify-content-center" id="copy-right-footer">
-        <p>
-          &copy; Copyright <strong>Bliss Stock</strong>. All Rights Reserved
-        </p>
-      </div>
-    </footer>
 
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
