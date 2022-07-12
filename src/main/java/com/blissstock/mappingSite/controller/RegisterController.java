@@ -90,7 +90,7 @@ public class RegisterController {
           // userInfo.setUserName("Admin");
           // System.out.println(userInfo.getUserName());
           // UserRegisterDTO user = UserRegisterDTO.fromUserInfo(userInfo);
-          System.out.println(user.toString());
+
           // save new admin to db
           userService.addUser(user);
           String appUrl = request.getServerName() + // "localhost"
@@ -201,9 +201,7 @@ public class RegisterController {
                     savedUserInfo.getUserAccount(),
                     appUrl);
 
-
                 mailService.SendAdminNewStudent(savedUserInfo, appUrl);
-
 
               } catch (MessagingException e) {
                 logger.info(e.toString());
