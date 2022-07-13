@@ -170,8 +170,20 @@ public class CourseListController {
 
         }
         List<CourseData> courseDataList = joinCourseUsers.stream().map((e) -> {
-            return CourseData.construct(e.getCourseInfo());
+            CourseData c = CourseData.construct(e.getCourseInfo());
+            FileInfo fileInfo = storageService.loadCoursePhoto(e.getCourseInfo());
+
+            // if profile is not found set as place holder
+            if (fileInfo == null) {
+                c.setCoursePhoto(new FileInfo("https://via.placeholder.com/150",
+                        "https://via.placeholder.com/150"));
+            } else {
+
+                c.setCoursePhoto(fileInfo);
+            }
+            return c;
         }).collect(Collectors.toList());
+
         logger.info("Getting course, count {}", courseDataList.size());
 
         // ##################################################//
