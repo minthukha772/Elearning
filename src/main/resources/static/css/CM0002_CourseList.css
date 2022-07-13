@@ -178,3 +178,21 @@ section.explore__courses h1 {
 .pagination-button {
 	color: var(--primary);
 }
+
+.startdates::before{
+	content: 'Start Date ( ';
+	margin-right: 5px;
+}
+
+.startdates::after{
+	content: ' ) ';
+}
+
+.enddates::before{
+	content: 'End Date ( ';
+	margin-right: 5px;
+}
+
+.enddates::after{
+	content: ' ) ';
+}
