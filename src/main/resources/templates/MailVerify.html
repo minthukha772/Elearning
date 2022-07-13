@@ -8,17 +8,20 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
     <link rel="stylesheet" th:href="@{/css/global.css}" />
-      <title>Pyinnyar Subuu</title>
-
-  <link rel="icon" type="image/x-icon" href="/images/fav.png">
-
     <link rel="stylesheet" type="text/css" href="css/CM0001_Complete.css">
+    <link rel="icon" type="image/x-icon" href="/images/fav.png">
+      <title>Pyinnyar Subuu</title>  
+
+    
 </head>
 
 <body>
     <div th:replace="@{fragments/nav}"></div>
+
+    <div class="container-custom mt-5 " >
     <!-- Hello -->
     <div id="registercomplete">
         
@@ -50,10 +53,13 @@
             </div>
         </div>
     </div>
-   
+</div>
     <div style="height: 100px"></div>
+  
+    
     <div th:replace="@{fragments/footer}"></div>
-
+   
+    
     <script th:src="@{/js/main.js}"></script>
 
 </body>
