@@ -14,12 +14,21 @@
 	margin-left: auto;
 	margin-right: auto;
 	width: 100%;
-	top: 20.797rem;
+	bottom: 21.797rem;
 	color: white;
 }
 
 .main__title {
-	font-size: 70px;
+	font-size: 35px;
+	font-weight: 400;
+	color: #fff;
+	text-shadow:2px -2px 2px #000;
+}
+
+.sub__title{
+	font-size: 23px;
+	font-weight: 700;
+	color: #fff;
 }
 
 .btn {
@@ -27,10 +36,10 @@
 	height: 66px;
 	border: 2px solid white;
 	border-radius: 4px;
-	color: white;
+	color: #fff;
 	margin-top: 40px;
 	font-size: 20px;
-	font-weight: 400;
+	font-weight: 700;
 	transition: all 0.4s;
 }
 
@@ -41,6 +50,8 @@
 }
 
 @media screen and (max-width: 1300px) {
+
+
 	.hero {
 		top: 14rem;
 	}
@@ -169,7 +180,6 @@
 	color: #fff;
 	background: transparent;
 	border: none;
-	
 }
 
 .date-input::placeholder {
@@ -585,7 +595,6 @@
     font-size: 20px;
   }
 }
-
 /* @media (max-width: 600px) { 
   .carousel-caption h5, p{
     display: none;
