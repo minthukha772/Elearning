@@ -173,9 +173,9 @@ const renderCourseList = (courseList) => {
               <h2>${e.courseName}</h2>
               <a href="/guest/explore/teacher/${e.teacherId}">${e.teacherName}</a>
               <h6 class="mt-1">${e.category} &gt;${e.level}</h6>
-              <p>${e.aboutCourse}</p>
+              
                <span>${dates}</span>
-              <h4 class="mt-2">${e.fees ? e.fees + 'MMK' : 'col-sm-8 col-md-6 col-xl-9 mt-4 mt-md-0'}</h4>
+              <h4 class="mt-2">${e.fees ? e.fees + 'MMK' : ''}</h4>
               <a href="/guest/course-detail/${e.courseId}" class="btn btn-primary">See Detail</a>
             </div>
           </div>
