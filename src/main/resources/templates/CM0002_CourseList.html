@@ -128,11 +128,12 @@
 								 th:field="*{courseName}"
 							/>
 							<input
-								type="text"
+								type="date"
 								placeholder="Start Date (dd/mm/yyyy)"
-								class="input mt-3"
+								class="input mt-3 startdates"
                                 th:field="*{startDate}"
 							/>
+							<!-- <label for="startDate">Start Date</label> -->
 							
 						</div>
 						<div class="col-sm">
@@ -143,28 +144,26 @@
 								th:field="*{teacherName}"
 							/>
 							<input
-								type="text"
+								type="date"
 								placeholder="End Date (dd/mm/yyyy)"
-								class="input mt-3"
+								class="input mt-3 enddates"
 								th:field="*{endDate}"
 							/>
 							
 						</div>
 						<div class="col-sm">
 							<input
-								type="input"
+								type="number"
 								placeholder="Lowest Fee (0)"
 								class="input"
-								th:field="*{lowestFee}"
 								min="0"
 								step="1000"
 
 							/>
 							<input
-								type="input"
+								type="number"
 								placeholder="Highest Fee (0)"
 								class="input mt-3"
-								th:field="*{highestFee}"
 								min="0"
 								step="1000"
 							/>
