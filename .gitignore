@@ -6,6 +6,13 @@ build/
 !**/src/test/**/build/
 uploads/
 
+
+#ssl 
+pyinnyar-subuu-testsite.cloudns.nz
+certbot
+
+cert/
+
 ### STS ###
 .apt_generated
 .classpath

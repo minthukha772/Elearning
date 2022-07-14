@@ -90,7 +90,7 @@ public class RegisterController {
           // userInfo.setUserName("Admin");
           // System.out.println(userInfo.getUserName());
           // UserRegisterDTO user = UserRegisterDTO.fromUserInfo(userInfo);
-          System.out.println(user.toString());
+
           // save new admin to db
           userService.addUser(user);
           String appUrl = request.getServerName() + // "localhost"
@@ -179,6 +179,7 @@ public class RegisterController {
     }
 
     String role = "student";
+    model.addAttribute("userInfo", userInfo);
     model.addAttribute("task", "Register");
     model.addAttribute("role", role);
     model.addAttribute("postAction", "/register/" + role);
@@ -200,7 +201,7 @@ public class RegisterController {
                     savedUserInfo.getUserAccount(),
                     appUrl);
 
-                mailService.SendAdminNewStudent(appUrl);
+                mailService.SendAdminNewStudent(savedUserInfo, appUrl);
 
               } catch (MessagingException e) {
                 logger.info(e.toString());
@@ -221,7 +222,7 @@ public class RegisterController {
     }
 
     if (bindingResult.hasErrors()) {
-      logger.info("Validation Error: ", bindingResult.getFieldError());
+      // logger.info("Validation Error: ", bindingResult.getFieldError());
       return "ST0001_register.html";
     }
     // Information For Randering Confirm

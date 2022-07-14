@@ -114,8 +114,41 @@
     <div class="card mx-auto mt-3" style="max-width: 800px">
       <div class="card-header">Course Registration Confirmation</div>
       <div class="card-body">
-        <form th:action="@{${postAction}}" method="post">
+        <form th:action="@{${postAction}}" method="post" enctype="multipart/form-data">
           <div th:object="${course}">
+
+            <div class="text-center">
+              <p class="form-label">Add an Image to a Course</p>
+            </div>
+
+            <div id="profile">
+              <div class="profile-pic-wrapper">
+                <div class="pic-holder"  style="border-radius: 0px;">
+                  <div class="d-flex justify-content-center">
+                    <div class="profile-pic-wrapper">
+
+                        <img id="profilePic"
+                        class="pic" th:src="${cphoto.url}"  th:alt="${cphoto.name}" /> 
+
+                          <input
+                          class="uploadProfileInput"
+                          type="file"
+                          name="course_pic"
+                          id="newProfilePhoto"
+                          accept="image/*"
+                          style="display: none;"
+                          th:src="${cphoto.url}"
+                          th:alt="${cphoto.name}"
+                          readonly
+                        />
+
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div> 
+
             <div class="mb-3 row">
               <label for="classtype" class="col-form-label col-sm-3"
                 >Class Type</label
