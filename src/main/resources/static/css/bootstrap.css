@@ -4226,7 +4226,7 @@ textarea.form-control-lg {
   background-color: #309986;
   background-clip: border-box;
   border: 1px solid rgba(0, 0, 0, 0.125);
-  color: var(--bs-white);
+  color: #463f3f;
   border-radius: 0.25rem;
 }
 .card > hr {
