@@ -14,14 +14,15 @@
       crossorigin="anonymous"
     /> -->
     <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
+    <link rel="stylesheet" th:href="@{/css/global.css}" />
   </head>
 
-  <body>
-    <!-- nav -->
+  <body> 
     <div th:replace="@{fragments/nav}"></div>
-    <div class="row mt-5">
+
+    <div class=" p-5 row mt-5">
       <div class="col-lg-6 mx-auto">
-        <button style="float: right" class="btn btn-primary mb-3" id="toggle">
+        <button style="float: right" class="btn btn-lg btn-primary mb-3" id="toggle">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
@@ -42,43 +43,45 @@
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-lg-6 mx-auto">
+    <div class="row mb-5 fw-5 " style="font-size: 17px;">
+      <div class="col-lg-6 mx-auto " >
         <!-- <div class="container justify-content-center"> -->
         <!-- heading -->
         <div class="d-flex justify-content-center">
-          <div class="text-center mb-3">
-            <h3>Frequent Asked Questions</h3>
+          <div class="text-center mb-3 text-lg">
+            <h3 style="font-size: 28px;"><b>Frequent Asked Questions</b></h3>
           </div>
         </div>
 
         <!-- accordian -->
-        <div id="LanguageEnglish" style="display: none">
+        <div id="LanguageEnglish" style="display: none; " >
           <!-- <div class="d-flex justify-content-center"> -->
           <!-- accordian column -->
 
-          <div class="accordion" id="accordionExampleEnglish">
+          <div class="accordion t" id="accordionExampleEnglish" >
             <!-- item 1 -->
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="headingOne">
+            <div class="accordion-item" >
+              <h3 class="accordion-header" id="headingOne" >
                 <button
-                  class="accordion-button"
+                  class="accordion-button " 
                   type="button"
                   data-bs-toggle="collapse"
                   data-bs-target="#collapseOne"
                   aria-expanded="true"
                   aria-controls="collapseOne"
+                  style="font-size: 16px;"
                 >
-                  What is Pyinnyar Subuu?
+                 What is Pyinnyar Subuu?
                 </button>
-              </h2>
+              </h3>
               <div
                 id="collapseOne"
                 class="accordion-collapse collapse show"
                 aria-labelledby="headingOne"
                 data-bs-parent="#accordionExampleEnglish"
+                
               >
-                <div class="accordion-body">
+                <div class="accordion-body" >
                   Pyinnyar Subuu is a website where you can easily learn the
                   subjects you want to study online just by having internet. The
                   noble donation is the knowledge donation. You can donate
@@ -99,6 +102,7 @@
                   data-bs-target="#collapseTwo"
                   aria-expanded="false"
                   aria-controls="collapseTwo"
+                  style="font-size: 16px;"
                 >
                   How to learn online?
                 </button>
@@ -127,6 +131,7 @@
                   data-bs-target="#collapse4"
                   aria-expanded="false"
                   aria-controls="collapse4"
+                  style="font-size: 16px;"
                 >
                   Which subjects are learned in Pyinnyar Subuu?
                 </button>
@@ -155,6 +160,7 @@
                   data-bs-target="#collapse5"
                   aria-expanded="false"
                   aria-controls="collapse5"
+                  style="font-size: 16px;"
                 >
                   What do I need to register as a teacher at Pyinnyar Subuu?
                 </button>
@@ -173,6 +179,7 @@
                 </div>
               </div>
             </div>
+            
             <!-- item 5.1 -->
             <div class="accordion-item">
               <h2 class="accordion-header" id="headingThree">
@@ -183,6 +190,7 @@
                   data-bs-target="#collapse51"
                   aria-expanded="false"
                   aria-controls="collapse51"
+                  style="font-size: 16px;"
                 >
                   What are the benefits of being a teacher at Pyinnyar Subuu?
                 </button>
@@ -213,6 +221,7 @@
                   data-bs-target="#collapse6"
                   aria-expanded="false"
                   aria-controls="collapse6"
+                  style="font-size: 16px;"
                 >
                   How to transfer class fees as a student?
                 </button>
@@ -239,6 +248,7 @@
                   data-bs-target="#collapse7"
                   aria-expanded="false"
                   aria-controls="collapse7"
+                  style="font-size: 16px;"
                 >
                   How to register as a student?
                 </button>
@@ -264,6 +274,7 @@
                   data-bs-target="#collapse8"
                   aria-expanded="false"
                   aria-controls="collapse8"
+                  style="font-size: 16px;"
                 >
                   How to transfer class fees to teachers?
                 </button>
@@ -281,55 +292,11 @@
                 </div>
               </div>
             </div>
-            <!-- item 9-->
-            <!-- <div class="accordion-item">
-                  <h2 class="accordion-header" id="headingThree">
-                    <button
-                      class="accordion-button collapsed"
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#collapse9"
-                      aria-expanded="false"
-                      aria-controls="collapse9"
-                    >
-                      Termination
-                    </button>
-                  </h2>
-                  <div
-                    id="collapse9"
-                    class="accordion-collapse collapse"
-                    aria-labelledby="headingThree"
-                    data-bs-parent="#accordionExample"
-                  >
-                    <div class="accordion-body">
-                      We shall be entitled to terminate these terms and conditions
-                      and cease to provide you with any Services with immediate
-                      effect in the event that you:<br />(i) fail to pay when due
-                      your course fees;<br />(ii) act in an aggressive, bullying,
-                      offensive, threatening or harassing manner towards any
-                      employee of OLMS , any teacher or lecturer who provides the
-                      taught courses or any student who attends any courses;<br />(iii)
-                      cheat or plagiaries any work which you are required to prepare
-                      or submit in connection with the Services or during any
-                      examination taken in connection with the Services;<br />(iv)
-                      steal or act in fraudulent or deceitful manner towards us or
-                      our employees or any other students who may be on our premises
-                      or attending our taught courses;<br />(vi) are intoxicated
-                      through alcohol or illegal drugs while on our premises;<br />(vii)commit
-                      any criminal offence committed on our premises or where the
-                      victim is our employee or student;<br />are in breach of these
-                      terms and conditions.
-                    </div>
-                  </div>
-                </div> -->
+           
           </div>
-          <!-- </div> -->
         </div>
 
         <div id="LanguageBurmese">
-          <!-- <div class="d-flex justify-content-center"> -->
-          <!-- accordian column -->
-
           <div class="accordion" id="accordionExample">
             <!-- item 1 -->
             <div class="accordion-item">
@@ -341,6 +308,7 @@
                   data-bs-target="#collapseOne"
                   aria-expanded="true"
                   aria-controls="collapseOne"
+                  style="font-size: 16px;"
                 >
                   ပညာစုဗူး (Pyinnyar Subuu) ဆိုတာ ဘာလဲ?
                 </button>
@@ -373,6 +341,7 @@
                   data-bs-target="#collapseTwo"
                   aria-expanded="false"
                   aria-controls="collapseTwo"
+                  style="font-size: 16px;"
                 >
                   အွန်လိုင်းကနေဘယ်လို သင်ယူရမှာလား?
                 </button>
@@ -402,6 +371,7 @@
                   data-bs-target="#collapse4"
                   aria-expanded="false"
                   aria-controls="collapse4"
+                  style="font-size: 16px;"
                 >
                   ပညာစုဗူး(Pyinnyar Subuu)တွင် မည်သို့သော ဘာသာရပ်များကို
                   သင်ယူနိုင်သလဲ?
@@ -432,6 +402,7 @@
                   data-bs-target="#collapse5"
                   aria-expanded="false"
                   aria-controls="collapse5"
+                  style="font-size: 16px;"
                 >
                   ပညာစုဗူး (Pyinnyar Subuu)မှာ ဆရာမ တစ်ဉီးအနေနဲ့ ရပ်တည်ဖို့
                   စာရင်းပေးသွင်းဖို့ဘာတွေလိုအပ်သလဲ?
@@ -462,6 +433,7 @@
                   data-bs-target="#collapse51"
                   aria-expanded="false"
                   aria-controls="collapse51"
+                  style="font-size: 16px;"
                 >
                   ဆရာမ တစ်ဉီးအနေနဲ့ ဘာအကျိုးအမြတ်ရရှိနိုင်မလဲ
                 </button>
@@ -494,6 +466,7 @@
                   data-bs-target="#collapse6"
                   aria-expanded="false"
                   aria-controls="collapse6"
+                  style="font-size: 16px;"
                 >
                   သင်တန်းသား(ကျောင်းသား)များသည် သင်တန်းကြေးကို ဘယ်လိုလွှဲရမလဲ
                 </button>
@@ -521,6 +494,7 @@
                   data-bs-target="#collapse7"
                   aria-expanded="false"
                   aria-controls="collapse7"
+                  style="font-size: 16px;"
                 >
                   သင်တန်းသားအဖြစ် ဘယ်လိုစာရင်းသွင်းရမလဲ?
                 </button>
@@ -547,6 +521,7 @@
                   data-bs-target="#collapse8"
                   aria-expanded="false"
                   aria-controls="collapse8"
+                  style="font-size: 16px;"
                 >
                   ဆရာများအား မည်ကဲ့သို့ ငွေပေးချေပါသလဲ?
                 </button>
@@ -556,6 +531,7 @@
                 class="accordion-collapse collapse"
                 aria-labelledby="headingThree"
                 data-bs-parent="#accordionExample"
+                style="font-size: 16px;"
               >
                 <div class="accordion-body">
                   ပညာစုဗူးဘက်မှ အသစ်ဝင်သည့် ကျောင်းသားဦးရေ စာရင်းကို ပေးပိုပြီး
@@ -564,51 +540,9 @@
                 </div>
               </div>
             </div>
-            <!-- item 9-->
-            <!-- <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingThree">
-                      <button
-                        class="accordion-button collapsed"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#collapse9"
-                        aria-expanded="false"
-                        aria-controls="collapse9"
-                      >
-                        Termination
-                      </button>
-                    </h2>
-                    <div
-                      id="collapse9"
-                      class="accordion-collapse collapse"
-                      aria-labelledby="headingThree"
-                      data-bs-parent="#accordionExample"
-                    >
-                      <div class="accordion-body">
-                        We shall be entitled to terminate these terms and conditions
-                        and cease to provide you with any Services with immediate
-                        effect in the event that you:<br />(i) fail to pay when due
-                        your course fees;<br />(ii) act in an aggressive, bullying,
-                        offensive, threatening or harassing manner towards any
-                        employee of OLMS , any teacher or lecturer who provides the
-                        taught courses or any student who attends any courses;<br />(iii)
-                        cheat or plagiaries any work which you are required to prepare
-                        or submit in connection with the Services or during any
-                        examination taken in connection with the Services;<br />(iv)
-                        steal or act in fraudulent or deceitful manner towards us or
-                        our employees or any other students who may be on our premises
-                        or attending our taught courses;<br />(vi) are intoxicated
-                        through alcohol or illegal drugs while on our premises;<br />(vii)commit
-                        any criminal offence committed on our premises or where the
-                        victim is our employee or student;<br />are in breach of these
-                        terms and conditions.
-                      </div>
-                    </div>
-                  </div> -->
+           
           </div>
-          <!-- </div> -->
         </div>
-        <!-- </div> -->
       </div>
     </div>
 
@@ -624,7 +558,11 @@
       src="https://kit.fontawesome.com/d7fbea9359.js"
       crossorigin="anonymous"
     ></script>
+
+    <script th:src="@{../js/main.js}"></script>
+
   </body>
+
   <script>
     const burmese = document.getElementById("LanguageBurmese");
     const english = document.getElementById("LanguageEnglish");
@@ -647,5 +585,6 @@
         burmese.style.display = "block";
       }
     };
+
   </script>
 </html>

@@ -10,17 +10,17 @@
     <title>Login</title>
 
     <link rel="icon" type="image/x-icon" href="/images/fav.png" />
+    
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
+    <link rel="stylesheet" th:href="@{/css/global.css}" />
   </head>
 
-  <body style="background-color: #f0f0f0">
-    <div th:replace="fragments/guestnav"></div>
+  <body>
+    
+    <div th:replace="@{fragments/nav}"></div>
 
-    <!--     <div sec:authorize="isAuthenticated()">
-      Welcome <b><span sec:authentication="name">Username</span></b>
-      <i><span sec:authentication="principal.authorities">Roles</span></i>
-    </div> -->
-
-    <div class="container-custom mt-5">
+  
+    <div class="container-custom mt-5 " >
       <!-- TODO -->
       <div
         th:if="${error != null}"
@@ -44,9 +44,9 @@
         <span th:text="${message}"></span>
       </div>
 
-      <div class="card mt-3">
-        <div class="card-header">Login</div>
-        <div class="card-body">
+      <div class="card mt-3 ">
+        <div class="card-header " style="background: #02917F; color:#fff;">Login</div>
+        <div class="card-body cardbodycolors">
           <div class="container">
             <form
               id="contactForm"
@@ -78,7 +78,7 @@
               </div> -->
               <div>
                 <div class="mb-3 has-validation">
-                  <label class="form-label " for="emailAddress"  >
+                  <label class="form-label " for="emailAddress">
                     Email Address</label
                   >
                   <input
@@ -123,11 +123,12 @@
                 <div class="row justify-content-between">
                   <a
                     th:href="@{/check_email/reset_password}"
-                    class="col-auto btn btn-link"
+                    class="col-auto btn btn-link "
                     id="forgetPassword"
                     type="submit"
                     name="action"
                     value="forget"
+                   style="color: rgb(47, 255, 75);"
                   >
                     Forget Password?
                   </a>
@@ -173,5 +174,6 @@
     ></script>
 
     <script th:src="@{\js\show-hide-password.js}"></script>
+    <script th:src="@{/js/main.js}"></script>
   </body>
 </html>

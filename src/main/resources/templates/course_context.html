@@ -17,14 +17,17 @@
     /> -->
     <link rel="stylesheet" href="/css/bootstrap.css" />
     <link rel="stylesheet" href="/css/ST0001_register.css" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/course.css}"/>
+		<link rel="stylesheet" type="text/css" th:href="@{/css/global.css}"/>
     <title>Register</title>
 
     <link rel="icon" type="image/x-icon" href="/images/fav.png" />
   </head>
 
-  <body style="background-color: #f0f0f0">
+  <body>
     <!-- guest user navi bar -->
     <div th:replace="@{fragments/nav}"></div>
+    <div class=" mt-5 pt-5"></div>
 
     <!-- Content Field Hidden Template -->
     <template id="hiddenContentTemplate" type="text/x-custom-template">
@@ -188,7 +191,7 @@
 
               <ul class="list-group list-group-flush">
                 <li
-                  style="background-color: #9fdbb3"
+                  style="background-color: #ffffff"
                   class="list-group-item"
                   th:each="content, index : ${syllabusList.content}"
                   th:text="${content.content}"
@@ -201,7 +204,7 @@
             <div class="card-footer">
               <button
                 type="button"
-                class="btn btn-primary"
+                class="btn-primary"
                 data-bs-toggle="modal"
                 data-bs-target="#syllabusFormModal"
                 data-action="modify"
@@ -211,7 +214,7 @@
               </button>
               <button
                 type="button"
-                class="btn btn-outline-danger"
+                class="btn-danger"
                 data-bs-toggle="modal"
                 data-bs-target="#deleteConfirmModal"
                 th:attr="data-bs-id=${syllabusList.syllabusId}"

@@ -13,19 +13,21 @@ p {
 }
 
 .btnColor {
-    
-    font-size: 16px;
-    letter-spacing: 1px;
-    display: inline-block;
-    padding: 8px 32px;
-    border-radius: 50px;
+   
+    border: none;
+    border-radius: 15px;
+    font-size: 18px;
+    padding: 5px 10px;
+    width: fit-content;
+    margin-top: 10px;
     transition: 0.5s;
-    margin: 10px;
-    color: #fff;
-    background: #7749f8;
-}
+    color: var(--btnshadow) ;
+    background: var(--btnbg);
+    border: 2px solid var(--btnborder);
+    box-shadow: 2px 2px 3px var(--btnshadow);
+ }
 
-.btn-reset {
+ .btn-reset {
     /* font-family: 游ゴシック, "Yu Gothic", 游ゴシック体, YuGothic, sans-serif; */
     font-weight: 400;
     font-size: 16px;
@@ -322,3 +324,41 @@ input:checked+label {
     visibility: hidden;
     position: absolute;
   }
+
+
+ .breadcrums{
+    background: var(--grey);
+    position: absolute;
+    top: 100px;
+    left: 0px; 
+ } 
+
+ .titles{
+    font-size: 22px;
+    text-shadow:-2px -2px 2px var(--btnshadow);
+    color: var(--btnborder);
+ }
+
+ .secondtitles{
+    font-size: 20px;
+    color: #fff;
+    font-weight: 600;
+ }
+
+ .cardboxs{
+    width: 200%;
+    background:  var(--cardbox);
+    border-radius: 5px;
+    box-shadow: 5px 10px 20px rgba(0,0,0,0.5);
+ }
+
+ .footers{
+    position: absolute;
+    top: 180%;
+}
+
+@media screen and (min-height: 450px) {
+    .footers{
+       transform: translateY(75%);
+    }
+}

@@ -42,6 +42,7 @@ public class IndexController {
             List<CourseInfo> videoList = courseRepo
                     .findByClassTypeAndIsCourseApproved(ClassType.VIDEO.getValue(),
                             true);
+
             List<HomeCourseInfoDTO> liveInfoDTOs = new ArrayList<HomeCourseInfoDTO>();
             List<HomeCourseInfoDTO> videoInfoDTOs = new ArrayList<HomeCourseInfoDTO>();
             ;
