@@ -128,11 +128,12 @@
 								 th:field="*{courseName}"
 							/>
 							<input
-								type="text"
+								type="date"
 								placeholder="Start Date (dd/mm/yyyy)"
-								class="input mt-3"
+								class="input mt-3 startdates"
                                 th:field="*{startDate}"
 							/>
+							<!-- <label for="startDate">Start Date</label> -->
 							
 						</div>
 						<div class="col-sm">
@@ -143,28 +144,26 @@
 								th:field="*{teacherName}"
 							/>
 							<input
-								type="text"
+								type="date"
 								placeholder="End Date (dd/mm/yyyy)"
-								class="input mt-3"
+								class="input mt-3 enddates"
 								th:field="*{endDate}"
 							/>
 							
 						</div>
 						<div class="col-sm">
 							<input
-								type="input"
+								type="number"
 								placeholder="Lowest Fee (0)"
 								class="input"
-								th:field="*{lowestFee}"
 								min="0"
 								step="1000"
 
 							/>
 							<input
-								type="input"
+								type="number"
 								placeholder="Highest Fee (0)"
 								class="input mt-3"
-								th:field="*{highestFee}"
 								min="0"
 								step="1000"
 							/>
@@ -182,7 +181,7 @@
 				class="col-sm-12 col-md-12 col-xl-12 mt-4 mt-md-0"
 				th:unless="${userInfo == null}"
 			>
-			<!-- d-flex flex-column flex-md-column flex-sm-column flex-lg-column flex-xl-row -->
+		
 				<div
 					class=" mb-3"> 
 					<img
@@ -225,87 +224,18 @@
 			</div>
 				<div class="row my-3">
 					<div class="col-sm-12 col-md-6 col-xl-3">
-
-						<div class="d-flex flex-column w-100">
+						<div class="card">
 							<div class="filter__heading">Filter By</div>
-							<div class="filter__container">
-								<div class="specification__container">
-									<h3>Levels</h3>
-									<div class="d-flex align-items-center">
-										<input
-											type="checkbox"
-											class="filterCheckbox"
-										/>
-										<p class="filterDescription">Basic</p>
-										<p class="filterDescription">(16)</p>
-									</div>
-									<div class="d-flex align-items-center">
-										<input
-											type="checkbox"
-											class="filterCheckbox"
-										/>
-										<p class="filterDescription">
-											Intermediate
-										</p>
-										<p class="filterDescription">(1)</p>
-									</div>
-								</div>
-								<div class="specification__container">
-									<h3>Categories</h3>
-									<div class="d-flex align-items-center">
-										<input
-											type="checkbox"
-											class="filterCheckbox"
-										/>
-										<p class="filterDescription">
-											Personal Development
-										</p>
-										<p class="filterDescription">(16)</p>
-									</div>
-									<div class="d-flex align-items-center">
-										<input
-											type="checkbox"
-											class="filterCheckbox"
-										/>
-										<p class="filterDescription">IT</p>
-										<p class="filterDescription">(4)</p>
-									</div>
-									<div class="d-flex align-items-center">
-										<input
-											type="checkbox"
-											class="filterCheckbox"
-										/>
-										<p class="filterDescription">
-											Language
-										</p>
-										<p class="filterDescription">(2)</p>
-									</div>
-								</div>
-								<div class="specification__container">
-									<h3>Class Types</h3>
-									<div class="d-flex align-items-center">
-										<input
-											type="checkbox"
-											class="filterCheckbox"
-										/>
-										<p class="filterDescription">Video</p>
-										<p class="filterDescription">(16)</p>
-									</div>
-									<div class="d-flex align-items-center">
-										<input
-											type="checkbox"
-											class="filterCheckbox"
-										/>
-										<p class="filterDescription">LIVE</p>
-										<p class="filterDescription">(1)</p>
-									</div>
-								</div>
+							<ul class="list-group list-group-flush filterContainer"></ul>
+							<div class="card-body filter__buttons">
+								<button class="btn-danger clearBtn button__clear" type="submit">
+									Clear
+								  </button>
+								<button class=" filterBtn button__apply" type="submit">
+									Apply
+								</button>
 							</div>
-							<div class="filter__buttons">
-								<button class="button__clear" type="submit">Clear</button>
-								<button class="button__apply" type="submit">Apply</button>
-							</div>
-						</div>
+						  </div>
 					</div>
 					<div class="col" id="course" >
 
