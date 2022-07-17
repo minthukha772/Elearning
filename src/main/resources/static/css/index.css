@@ -552,16 +552,24 @@
 
 .terms__description {
 	margin-top: 20px;
-	font-size: 16px;
-	transform: translateY(-13%);
+	font-size: 12px;
+	transform: translateY(-20%);
+}
+
+.terms__description a{
+	text-decoration: none;
+	color: #063252;
 }
 
 @media screen and (max-width: 1200px) {
 	.terms__section {
 		padding: 35px 50px;
 	}
-}
 
+	.terms__description {
+		transform: translateY(-14%);
+		}
+	}
 
 .item {
   width: 20%;
