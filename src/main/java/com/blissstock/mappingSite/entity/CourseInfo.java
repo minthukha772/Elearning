@@ -45,14 +45,14 @@ public class CourseInfo {
   private Long courseId;
 
   @Column(name = "course_photo")
-	private String coursePhoto;
+  private String coursePhoto;
 
   @Column(name = "course_name", length = 100)
   // @NotBlank(message="Please enter course name")
   private String courseName;
 
   @Column(name = "class_type", length = 20)
-  //@NotBlank(message = "Please enter class type")
+  // @NotBlank(message = "Please enter class type")
   private String classType;
 
   @Column(name = "category", length = 100)
@@ -70,7 +70,7 @@ public class CourseInfo {
   // @NotBlank(message="Please enter about course")
   private String aboutCourse;
 
-  @Column(name = "prerequisite", length=2500)
+  @Column(name = "prerequisite", length = 2500)
   private String prerequisite;
 
   @Column(name = "max_stu")
@@ -114,7 +114,7 @@ public class CourseInfo {
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "courseInfo")
   @JsonIgnore
   private List<JoinCourseUser> join = new ArrayList<>();
-
+  @ToString.Exclude
   @Transient
   private Long uid;
 
@@ -132,9 +132,9 @@ public class CourseInfo {
     return this.isCourseApproved;
   }
 
-public CourseInfo orElse(Object object) {
+  public CourseInfo orElse(Object object) {
     return null;
-}
+  }
   // public String getTitle() {
   // return this.title;
   // }

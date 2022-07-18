@@ -22,12 +22,12 @@ import lombok.Setter;
 public class JoinCourseDTO {
     @Autowired
     UserService userService;
-    
+
     @Autowired
     UserRepository userRepository;
 
     // private static final Logger logger = LoggerFactory.getLogger(
-    //         JoinCourseDTO.class);
+    // JoinCourseDTO.class);
 
     private Long joinId;
 
@@ -64,7 +64,7 @@ public class JoinCourseDTO {
     // throw new Exception("Course and user info not found");
     // }
     // } catch (Exception e) {
-    // System.out.println(e.toString());
+
     // }
     // return null;
     // }

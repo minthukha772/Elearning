@@ -1957,9 +1957,12 @@ progress {
 }
 .table > tbody {
   vertical-align: inherit;
+  /* border-bottom: 1px solid #ffffff; */
+
 }
 .table > thead {
   vertical-align: bottom;
+  /* border-bottom: 3px solid #ffffff; */
 }
 .table > :not(:last-child) > :last-child > * {
   border-bottom-color: currentColor;
@@ -4226,7 +4229,7 @@ textarea.form-control-lg {
   background-color: #309986;
   background-clip: border-box;
   border: 1px solid rgba(0, 0, 0, 0.125);
-  color: var(--bs-white);
+  color: #463f3f;
   border-radius: 0.25rem;
 }
 .card > hr {

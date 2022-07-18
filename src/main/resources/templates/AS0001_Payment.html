@@ -66,7 +66,7 @@
             </ol>
         </nav>
 
-        <div style="transform:translateY(15%)">
+        <div class="payscreen" style="transform:translateY(15%)">
             <div class="card cardboxs">
                 <div class="card-header d-flex justify-content-center align-items-center titles">Payment Details</div>
                 <!-- Student view -->
@@ -322,12 +322,12 @@
                                 <div sec:authorize="hasAuthority('ROLE_STUDENT') ">
                                     <div class="form-group row" > 
                                         <div class="col-lg-12 text-center">
-                                            <a th:href="@{/student/my-course}"
+                                            <button
                                             id="btnReg" type="submit"
                                             class="btnColor btn btn-spacing btn-primary center-block" style="width: 150px;"
                                                 OnClick="btnRegister_Click">
                                                 Submit
-                                            </a>
+                                            </button>
                                         </div>   
                                     </div>
                                     </div>
@@ -437,6 +437,7 @@
         crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="/js/main.js"></script>
   
 </body>
 

@@ -334,7 +334,7 @@ public class CompleteScreenController {
 
     @RequestMapping("/teacher/course-edit/complete")
     public String EditCourseComplete(Model model) {
-        String header3 = "Course edit Complete";
+        String header3 = "Course Edit Complete";
         String header5 = "Acknowledgement!";
         String paragraph = "Course edit has been successful.";
         model.addAttribute("header3", header3);
