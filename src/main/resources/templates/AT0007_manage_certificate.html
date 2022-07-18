@@ -54,9 +54,9 @@
                 <div class="card-footer d-flex justify-content-around">
                   <a
                     th:href="${fileInfo.url}"
-                    class="btn-primary"
+                    class="btn btn-primary"
                     target="_blank"
-                    >View Certificate</a
+                    >View</a
                   >
                   <button
                     class="btn btn-outline-danger"
@@ -64,7 +64,7 @@
                     data-bs-toggle="modal"
                     data-bs-target="#deleteConfirmModal"
                   >
-                    Delete Certificate
+                    Delete
                   </button>
                 </div>
               </div>
@@ -157,7 +157,7 @@
               />
             
             <div class="input-group-append" >
-              <button type="submit" class="btn-primary ms-4 colors">Upload Certificate</button>
+              <button type="submit" class="btn btn-primary ms-4 colors">Upload</button>
             </div>
           </div>
 
@@ -166,9 +166,9 @@
         </form>
 
           <div class="input-group col-auto mb-3">
-            <h5 class="ms-5 p-1">If you are completed certificate uploading, you can review your information in Profile page</h5>
+            <h5 class="m-3 finalinfo">If you are completed certificate uploading, you can review your infomation in Profile page</h5>
               <a class="input-group-append" th:href="@{/teacher/profile/}">
-                <button type="submit" class="btn-primary ms-5 colors"  >Go to Profile</button>
+                <button type="submit" class="btn btn-primary ms-5 colors"  >Go to Profile</button>
               </a>
           </div>
           

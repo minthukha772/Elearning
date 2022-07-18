@@ -327,7 +327,7 @@ nav .checkboxClass {
 	a {
 		text-decoration: none;
 		list-style: none;
-		color: white;
+		color: black;
 	}
 }
 
@@ -339,6 +339,7 @@ nav .checkboxClass {
 	width: 100%;
 	border: none;
 	border-radius: 4px;
+	margin-top: 5px;
 }
 
 /* FOOTER */
@@ -405,6 +406,43 @@ nav .checkboxClass {
 	.footer__title {
 		text-align: center;
 	}
+
+	/* .copyright {
+		height: 70px;
+	}
+
+	.footcon {
+		font-size: small;
+		
+	} */
+
+	.payscreen .card {
+		width: 100%;
+
+	}
+
+	.profileform {
+		width: fit-content;
+	}
+
+	.paytable {
+		display: grid;
+		font-size: small;
+	}
+
+	.btndelete {
+		/* padding: 0; */
+		font-size: small;
+		
+	}
+
+	.upcard {
+		margin-top: 55%;
+		width: 100%;
+	}
+
+
+
 }
 .scrollToTop {
 	position: fixed;
