@@ -65,7 +65,7 @@
                 <div class="invalid-feedback mb-3"  id= "star-error" th:if="${#fields.hasErrors('star')}" th:errors="*{star}">
                   Please fill raing star
                 </div>                                
-              <textarea class="form-control" id="review" rows="5" cols="40" placeholder="Write feedback here " th:field=*{feedback} th:classappend="${#fields.hasErrors('feedback')}?'is-invalid':''"></textarea>
+              <textarea class="form-control" id="review" rows="5" cols="40" placeholder="Write feedback here " th:field=*{feedback} th:classappend="${#fields.hasErrors('feedback')}?'is-invalid':''"  required></textarea>
               <div class="invalid-feedback" th:if="${#fields.hasErrors('feedback')}" th:errors="*{feedback}">
                 Please fill review
               </div>
