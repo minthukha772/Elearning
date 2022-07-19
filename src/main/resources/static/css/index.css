@@ -553,7 +553,7 @@
 .terms__description {
 	margin-top: 20px;
 	font-size: 12px;
-	transform: translateY(-20%);
+	transform: translateY(-22%);
 }
 
 .terms__description a{
@@ -566,8 +566,12 @@
 		padding: 35px 50px;
 	}
 
+	.terms__title{
+		transform: translateY(-21%);
+	}
+
 	.terms__description {
-		transform: translateY(-14%);
+		transform: translateY(-19%);
 		}
 	}
 
