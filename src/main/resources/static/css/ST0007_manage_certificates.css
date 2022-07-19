@@ -37,9 +37,7 @@
 	background-color: #09646a;
 	border-radius: 4px;
 	font-size: 20px;
-	padding: 5px 10px;
 	width: fit-content;
-	margin-top: 10px;
     text-decoration: none;
 
 }
@@ -51,10 +49,20 @@
 }
 
 
-@media screen and (max-width: 620px){
+@media screen and (max-width: 480px){
     input[type='file']{
         width: 100vw;
         font-size: 13px;
     }
+
+    .btn {
+        font-size: small;
+    }
+
+    .card, .card-header, .card-body, .finalinfo {
+        font-size: small;
+    }
+
+
 }
 
