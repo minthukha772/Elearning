@@ -1957,9 +1957,12 @@ progress {
 }
 .table > tbody {
   vertical-align: inherit;
+  /* border-bottom: 1px solid #ffffff; */
+
 }
 .table > thead {
   vertical-align: bottom;
+  /* border-bottom: 3px solid #ffffff; */
 }
 .table > :not(:last-child) > :last-child > * {
   border-bottom-color: currentColor;
