@@ -89,7 +89,7 @@
           <a th:href="@{/teacher/my-course}">My Course</a>
         </li>
         <li class="breadcrumb-item active">
-          <a href="#" class="back">Update Course</a>
+          <a th:href="@{/teacher/edit/{courseId}(courseId=${courseId})}" class="back">Update Course</a>
         </li>
         <li class="breadcrumb-item">Confirmation</li>
         <li class="breadcrumb-item">Complete</li>
@@ -105,7 +105,7 @@
           <a th:href="@{/admin/teacher-list}">Teacher List</a>
         </li>
         <li class="breadcrumb-item active">
-          <a href="#" class="back">Update Course</a>
+          <a th:href="@{/teacher/edit/{courseId}(courseId=${courseId})}" class="back">Update Course</a>
         </li>
         <li class="breadcrumb-item">Confirmation</li>
         <li class="breadcrumb-item">Complete</li>
