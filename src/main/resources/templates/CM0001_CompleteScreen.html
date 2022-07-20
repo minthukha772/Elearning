@@ -16,6 +16,7 @@
       <link rel="icon" type="image/x-icon" href="/images/fav.png" />
       <link rel="icon" type="image/x-icon" href="/images/fav.png" />
       <link rel="stylesheet" type="text/css" href="css/CM0001_Complete.css" />
+      <link rel="stylesheet" th:href="@{/css/global.css}" />
       <script
         type="text/javascript"
         language="javascript"
@@ -72,9 +73,9 @@
     <body>
       <div th:replace="@{fragments/nav}"></div>
       <!-- Hello -->
-      <div id="registercomplete">
-        <nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: '>'">
-          <ol class="breadcrumb">
+      <div id="registercomplete" style="transform: translateY(21%);">
+        <nav aria-label="breadcrumb" class="registitles" style="--bs-breadcrumb-divider: '>'; background: var(--grey);">
+          <ol class="breadcrumb mt-3 ms-4">
             <th:block th:each="bc : ${breadcrumbList}">
               <!-- TODO change last route color -->
 
@@ -85,6 +86,7 @@
                 <a
                   th:href="@{${bc.breadcrumbURL}}"
                   th:utext="${bc.breadcrumbName}"
+                  class="registitlesa"
                 ></a>
               </li>
               <li
@@ -111,19 +113,19 @@
         </nav>
 
 
-        <h3 class="text-center " th:text="${header3}">
+        <h3 class="text-center mb-0 a" th:text="${header3}" style="transform: translateY(230%);">
           <!-- <span class="badge bg-secondary">New</span> -->
         </h3><br />
 
         <div
           class="card mx-auto shadow-sm rounded bg-body"
-          style="max-width: 540px"
+          style="max-width: 540px; transform: translateY(80%);"
         >
           <!-- <h5 class="card-header">Featured</h5> -->
-          <div class="card-body">
+          <div class="card-body" >
 
            
-            <p class="card-text text-center fontsizes" th:text="${paragraph}" style="font-size: 22px;"></p>
+            <p class="card-text text-center fontsizes" th:text="${paragraph}" style="font-size: 22px;color: var(--registercomplete);"></p>
             <h5 class="text-center " th:text="${header4}" style="color: red;"></h5><br/>
             <!-- <span th:if="${backButton!=null}">
 
@@ -147,8 +149,8 @@
           </div>
                 
         </div>   
-              <img src="/images/mailbox.jpg"  width="148px" height="148px" style="margin-left: 45%;" />
-              <div style="text-align: center;">
+              <img src="/images/mailbox.jpg" class="completeimgs"  width="148px" height="148px" style="margin-left: 45%; transform: translateY(35%);" />
+              <div style="text-align: center; transform: translateY(75%);">
                 <div style="margin-left: 5%;">An email has been sent to your email address. </div>
                 <div>If you have not received the email after a few minutes. Please also check your spam folder.</div>
             </div>
@@ -163,6 +165,7 @@
       <!-- Script -->
       <!-- <script th:src="@{/js/CM0001_Complete.js}"></script> -->
       <!-- Script -->
+      <script th:src="@{/js/main.js}"></script>
     </body>
   </html>
 </html>

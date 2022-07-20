@@ -19,9 +19,9 @@
       <title>Pyinnyar Subuu</title>
 
       <link rel="icon" type="image/x-icon" href="/images/fav.png" />
-      <link rel="icon" type="image/x-icon" href="/images/fav.png" />
       <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
       <link rel="stylesheet" th:href="@{/css/CM0004_Student Profile.css}" />
+      <link rel="stylesheet" th:href="@{/css/global.css}" />
 
       <script
         type="text/javascript"
@@ -77,19 +77,19 @@
     <div th:replace="@{fragments/nav}"></div>
 
     <nav
-      class="p-2"
+      class="p-2 container1 breadcrums"
       aria-label="breadcrumb"
       style="--bs-breadcrumb-divider: '>'"
     >
       <ol
-        class="breadcrumb"
+        class="breadcrumb mt-3 ms-4"
         th:if="${#authorization.expression('hasRole(''ROLE_TEACHER'')')}"
       >
         <li class="breadcrumb-item">
           <a th:href="@{/teacher/my-course}">My Course</a>
         </li>
         <li class="breadcrumb-item active">
-          <a href="#" class="back">Update Course</a>
+          <a th:href="@{/teacher/edit/{courseId}(courseId=${courseId})}" class="back">Update Course</a>
         </li>
         <li class="breadcrumb-item">Confirmation</li>
         <li class="breadcrumb-item">Complete</li>
@@ -105,15 +105,15 @@
           <a th:href="@{/admin/teacher-list}">Teacher List</a>
         </li>
         <li class="breadcrumb-item active">
-          <a href="#" class="back">Update Course</a>
+          <a th:href="@{/teacher/edit/{courseId}(courseId=${courseId})}" class="back">Update Course</a>
         </li>
         <li class="breadcrumb-item">Confirmation</li>
         <li class="breadcrumb-item">Complete</li>
       </ol>
     </nav>
 
-    <div class="card mx-auto mt-3" style="max-width: 800px">
-      <div class="card-header">Update Course Confirmation</div>
+    <div class="card mx-auto container3">
+      <div class="card-header d-flex justify-content-center align-items-center titles">Update Course Confirmation</div>
       <div class="card-body">
         <form th:action="@{${postAction}}" method="post" enctype="multipart/form-data">
           <div th:object="${course}">
@@ -148,7 +148,7 @@
 
             <div class="mb-3 row">
 
-              <label for="classtype" class="col-form-label col-sm-3"
+              <label for="classtype" class="col-form-label col-sm-3 labels"
                 >Class Type</label
               >
               <div class="col-sm-9">
@@ -162,7 +162,7 @@
             </div>
 
             <div class="mb-3 row">
-              <label class="col-form-label col-sm-3" for="cname"
+              <label class="col-form-label col-sm-3 labels" for="cname"
                 >Course Name</label
               >
               <div class="col-sm-9">
@@ -177,7 +177,7 @@
             </div>
 
             <div class="mb-3 row">
-              <label class="col-form-label col-sm-3" for="ccategory"
+              <label class="col-form-label col-sm-3 labels" for="ccategory"
                 >Course Category</label
               >
               <div class="col-sm-9">
@@ -191,7 +191,7 @@
             </div>
 
             <div class="mb-3 row">
-              <label class="col-form-label col-sm-3" for="clevel"
+              <label class="col-form-label col-sm-3 labels" for="clevel"
                 >Course Level</label
               >
               <div class="col-sm-9">
@@ -206,7 +206,7 @@
             </div>
 
             <div class="mb-3 row">
-              <label class="col-form-label col-sm-3" for="cfee"
+              <label class="col-form-label col-sm-3 labels" for="cfee"
                 >Course Fee</label
               >
               <div class="col-sm-9">
@@ -222,7 +222,7 @@
             </div>
 
             <div class="mb-3 row">
-              <label class="col-form-label col-sm-3" for="cabout"
+              <label class="col-form-label col-sm-3 labels" for="cabout"
                 >About Course</label
               >
               <div class="col-sm-9">
@@ -236,7 +236,7 @@
             </div>
 
             <div class="mb-3 row">
-              <label class="col-form-label col-sm-3" for="cprerequisites"
+              <label class="col-form-label col-sm-3 labels" for="cprerequisites"
                 >Prerequisites</label
               >
               <div class="col-sm-9">
@@ -251,7 +251,7 @@
             </div>
 
             <div class="mb-3 row">
-              <label class="col-form-label col-sm-3" for="cclasslink"
+              <label class="col-form-label col-sm-3 labels" for="cclasslink"
                 >Class Link</label
               >
               <div class="col-sm-9">
@@ -284,7 +284,7 @@
           <div th:if="${classActiveLive}">
             <div th:object="${course}">
               <div class="mb-3 row">
-                <label class="col-form-label col-sm-3" for="maxStu"
+                <label class="col-form-label col-sm-3 labels" for="maxStu"
                   >Student Numbers</label
                 >
                 <div class="col-sm-9">
@@ -391,8 +391,10 @@
       </div>
     </div>
 
+    <div style=" margin-top: 230px;"></div>
+    
     <div th:replace="@{fragments/footer}"></div>
-
+    
     <script>
       $("input").on("click", function () {
         $("#log").html($("input:checked").val() + " is checked!");
@@ -414,5 +416,7 @@
         }
       });
     </script>
+
+ 
   </body>
 </html>

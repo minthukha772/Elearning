@@ -1,6 +1,6 @@
 @charset "UTF-8";
 .card > hr {
-  background-color: #5eba7d;
+  background-color: #309986;
   flex: 1 1 auto;
   padding: 1rem 1rem;
 }
@@ -207,11 +207,11 @@ sup {
 
 a {
   color: #0F1D0D;
-  text-decoration: underline;
+  /* text-decoration: underline; */
 }
-a:hover {
+/* a:hover {
   color: #0c170a;
-}
+} */
 
 a:not([href]):not([class]), a:not([href]):not([class]):hover {
   color: inherit;
@@ -293,11 +293,17 @@ thead,
 tbody,
 tfoot,
 tr,
-td,
+td {
+  border-color: inherit;
+  border-style: solid;
+  border-width: 0;
+}
+
 th {
   border-color: inherit;
   border-style: solid;
   border-width: 0;
+  color: var(--bs-white);
 }
 
 label {
@@ -601,8 +607,8 @@ progress {
 .container-md,
 .container-sm {
   width: 100%;
-  padding-right: var(--bs-gutter-x, 0.75rem);
-  padding-left: var(--bs-gutter-x, 0.75rem);
+  /* padding-right: var(--bs-gutter-x, 0.75rem);
+  padding-left: var(--bs-gutter-x, 0.75rem); */
   margin-right: auto;
   margin-left: auto;
 }
@@ -1939,7 +1945,7 @@ progress {
   --bs-table-hover-bg: rgba(0, 0, 0, 0.075);
   width: 100%;
   margin-bottom: 1rem;
-  color: #212529;
+  color: var(--bs-white);
   vertical-align: top;
   border-color: #dee2e6;
 }
@@ -1951,9 +1957,12 @@ progress {
 }
 .table > tbody {
   vertical-align: inherit;
+  /* border-bottom: 1px solid #ffffff; */
+
 }
 .table > thead {
   vertical-align: bottom;
+  /* border-bottom: 3px solid #ffffff; */
 }
 .table > :not(:last-child) > :last-child > * {
   border-bottom-color: currentColor;
@@ -4217,9 +4226,10 @@ textarea.form-control-lg {
   flex-direction: column;
   min-width: 0;
   word-wrap: break-word;
-  background-color: #9fdbb3;
+  background-color: #309986;
   background-clip: border-box;
   border: 1px solid rgba(0, 0, 0, 0.125);
+  color: #463f3f;
   border-radius: 0.25rem;
 }
 .card > hr {

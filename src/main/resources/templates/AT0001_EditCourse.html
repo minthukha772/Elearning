@@ -14,6 +14,7 @@
     />
     <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
     <link rel="stylesheet" th:href="@{/css/CM0004_Student Profile.css}" />
+    <link rel="stylesheet" th:href="@{/css/global.css}" />
     <title>Course Edit</title>
 
     <link rel="icon" type="image/x-icon" href="/images/fav.png" />
@@ -21,14 +22,14 @@
 
   <body>
     <div th:replace="@{fragments/nav}"></div>
-
+    <main style="margin-top: 160px; margin-bottom: 30px;">
     <nav
-      class="p-2"
+      class="p-2 container1 breadcrums"
       aria-label="breadcrumb"
       style="--bs-breadcrumb-divider: '>'"
     >
       <ol
-        class="breadcrumb"
+        class="breadcrumb mt-3 ms-4"
         th:if="${#authorization.expression('hasRole(''ROLE_TEACHER'')')}"
       >
         <li class="breadcrumb-item">
@@ -54,9 +55,9 @@
       </ol>
     </nav>
 
-    <div class="container">
-      <div class="card mx-auto" style="max-width: 700px">
-        <div class="card-header">Update Course</div>
+    <div class="container mt-3 container2 ">
+      <div class="card mx-auto cardboxs upcard" style="max-width: 700px">
+        <div class="card-header d-flex justify-content-center align-items-center titles">Update Course</div>
 
         <div class="card-body">
           <form th:action="@{${postAction}}" method="post" enctype="multipart/form-data" novalidate>
@@ -108,7 +109,7 @@
                   <span style="color: red;">Enter "Save" button to upload course image</span>
                   </div></br>
                   <div class="text-center">
-                    <button class="btn btn-primary mb-3"  type="submit" name="photoSubmit" value="pic-edit">Save</button>
+                    <button class="btn btn-primary mb-3 saves"  type="submit" name="photoSubmit" value="pic-edit">Save</button>
                   </div>
 
                 </div>
@@ -829,8 +830,9 @@
         </div>
       </div>
     </div>
+    </main>
 
-    <div th:replace="fragments/footer"></div>
+    <div th:replace="@{fragments/footer}"></div>
 
     <script
       type="text/javascript"
@@ -844,5 +846,7 @@
     <script th:src="@{/js/AT0001_CourseRegistration.js}"></script>
     <script th:src="@{/js/photoPlaceHolder.js}"></script>
     <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+    <script th:src="@{./../../../js/main.js}"></script>
   </body>
+  
 </html>

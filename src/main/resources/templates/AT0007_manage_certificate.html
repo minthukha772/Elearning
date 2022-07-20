@@ -22,15 +22,16 @@
     <title>Manage Certificate</title>
 
     <link rel="icon" type="image/x-icon" href="/images/fav.png" />
+
+    <link rel="stylesheet" th:href="@{/css/global.css}" />
   </head>
 
-  <body style="background-color: #f0f0f0">
-    <!-- TODO Add Teacher Navi -->
+  <body> 
     <div th:replace="@{fragments/nav}"></div>
 
-    <div class="container mt-5">
-      <div class="card mb-3">
-        <div class="card-header">Certificate Photo</div>
+    <div class="container mt-5 largedivs">
+      <div class="card mb-3 cardfirsts">
+        <div class="card-header cardheaders">Certificate Photo</div>
 
         <div class="card-body">
           <div th:if="${files==null or files.empty}">
@@ -50,12 +51,12 @@
                     Card title
                   </p>
                 </div>
-                <div class="card-footer">
+                <div class="card-footer d-flex justify-content-around">
                   <a
                     th:href="${fileInfo.url}"
-                    class="btn colors"
+                    class="btn btn-primary"
                     target="_blank"
-                    >View Certificate</a
+                    >View</a
                   >
                   <button
                     class="btn btn-outline-danger"
@@ -63,7 +64,7 @@
                     data-bs-toggle="modal"
                     data-bs-target="#deleteConfirmModal"
                   >
-                    Delete Certificate
+                    Delete
                   </button>
                 </div>
               </div>
@@ -118,42 +119,6 @@
         </div>
 
         <!-- Delete Confirm Modal End -->
-
-        <!-- 
-
-        <table class="table table-striped ">
-          <tbody>
-            <tr th:each="fileInfo, stats : ${files}">
-              <th scope="row" th:text="${stats.index + 1}">1</th>
-              <td>
-                <a
-                  th:href="${fileInfo.url}"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  th:text=${fileInfo.name}
-                  >google.png</a
-                >
-              </td>
-              <td>
-                <button type="button" class="btn btn-sm btn-outline-danger">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                    class="bi bi-trash-fill"
-                    viewBox="0 0 16 16"
-                  >
-                    <path
-                      d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"
-                    ></path>
-                  </svg>
-                </button>
-              </td>
-            </tr>
-            
-          </tbody>
-        </table> -->
       </div>
 
       <div
@@ -168,10 +133,10 @@
           data-bs-dismiss="alert"
           aria-label="Close"
         ></button>
-      </div>
+      </div><br/>
 
       <div class="card">
-        <h5 class="card-header">If you have another certificate to upload, please choose the photo of certificate from your computer and upload by clicking the Upload certificate button.</h5>
+        <h5 class="card-header cardheadertwos" >If another certificate to upload, please choose the photo of certificate from your computer and upload by clicking the Upload certificate button.</h5>
         <div class="card-body">
           <form
             th:action="@{__${#httpServletRequest.requestURI}__}"
@@ -179,7 +144,7 @@
             enctype="multipart/form-data"
           >
             <div class=" col-auto mb-3">
-              <label for="files" class="form-label">Please Upload your remaining certificate</label>
+              <label for="files" class="form-label mt-3" style="color: var(--log-out);">Please Upload your remaining certificate</label>
 
               
               <div class="input-group col-auto mb-3">
@@ -191,9 +156,8 @@
                 required
               />
             
-
-            <div class="input-group-append">
-              <button type="submit" class="btn  ms-4 colors">Upload Certificate</button>
+            <div class="input-group-append" >
+              <button type="submit" class="btn btn-primary ms-4 colors">Upload</button>
             </div>
           </div>
 
@@ -202,15 +166,15 @@
         </form>
 
           <div class="input-group col-auto mb-3">
-            <h5 class="ms-5 p-1">If you are completed certificate uploading, you can review your information in Profile page</h5>
+            <h5 class="m-3 finalinfo">If you are completed certificate uploading, you can review your infomation in Profile page</h5>
               <a class="input-group-append" th:href="@{/teacher/profile/}">
-                <button type="submit" class="btn ms-5 colors"  >Go to Profile</button>
+                <button type="submit" class="btn btn-primary ms-5 colors"  >Go to Profile</button>
               </a>
           </div>
           
         </div>
       </div>
-    </div>
+    
 
     <!-- BootStrap Js -->
     <script
@@ -231,5 +195,7 @@
       const uri = /*[[@{__${#httpServletRequest.requestURI}__}]]*/ "uri    ";
     </script>
     <script th:src="@{/js/AT0007_manage_certificate.js}"></script>
+    <script th:src="@{../js/main.js}"></script>
+
   </body>
 </html>
