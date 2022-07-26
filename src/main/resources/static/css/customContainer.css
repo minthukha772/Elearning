@@ -4,4 +4,9 @@
     padding-left: 16px;
     margin-right: auto;
     margin-left: auto;
+    transform: translateY(20%);
+
+     min-height: 44vh;
+    /* display: flex;
+    flex-direction: column;  */
 }
