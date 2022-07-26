@@ -112,7 +112,6 @@
 										  th:if="${studentNotRegistered}"
 										  th:href="@{/student/enroll/{courseId}/{userId}(courseId = ${courseInfo.courseId}, userId = ${userId})}"
 										  ><button
-											th:if="${availableStuList > 0}"
 											class="btn__enroll"
 											th:classappend="${studentRegistered == true}? 'disabled'"
 										  >
@@ -137,7 +136,7 @@
 										class="btn__enroll"
 										type="submit"
 									  >
-										<span th:if="${availableStuList > 0}">Enroll</span>
+										Enroll
 									  </button>
 									</a>
 						
