@@ -498,6 +498,41 @@
 					</div>
 				</div>
 			</section>
+
+      <div class="container">
+        <h2 class=" text-center">Student List</h2>
+        <table id="studentListTable" class=" my-3">
+          <thead>
+            <th>No</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Account Status</th>
+            <th></th>
+            <th></th>
+          </thead>
+          <tbody>
+            <tr th:each="student,iter : ${studentList}">
+              <td th:text="${iter.index + 1}"></td>
+              <td th:text="${student.userName}"></td>
+              <td th:text="${student.UserAccount.mail}"></td>
+              <td th:text="${student.UserAccount.accountStatus}"></td>
+              <!-- <td>
+                <button class="btn">
+                  <i class="fa-solid fa-trash-can"></i>
+                </button>
+              </td> -->
+               <!-- Disable Take A Leave --> 
+              <!-- <td>
+                <a
+                  th:href="@{'/admin/leave/'+${courseInfo.courseId}+'/'+${courseInfo.UserInfo.uid}+'?course_name='+${courseInfo.courseName}+'&teacher_name='+${courseInfo.UserInfo.userName}}"
+                  ><button class="btn btn-primary">Take a Leave</button></a
+                >
+              </td> -->
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
 		</main>
 		
 		<div th:replace="@{fragments/footer}"></div>
@@ -514,8 +549,13 @@
       integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
       crossorigin="anonymous"
     ></script>
+	<script
+	src="https://code.jquery.com/jquery-3.6.0.min.js"
+	integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+	crossorigin="anonymous"
+	></script>
 
-		<script src="/js/main.js"></script>
-		<script src="/js/courseDetail.js"></script>
+	<script th:src="@{/js/main.js}"></script>
+	<script th:src="@{/js/CM0003_CourseDetails.js}"></script>
 	</body>
 	</html>
