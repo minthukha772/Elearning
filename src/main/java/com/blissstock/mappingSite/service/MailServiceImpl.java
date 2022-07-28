@@ -170,8 +170,6 @@ public class MailServiceImpl implements MailService {
     this.mailSender.send(mimeMessage);
   }
 
-  
-
   public void SendAdminNewCourseByTeacher(String appUrl) throws MessagingException {
 
     String recipientAddress = "sys@pyinnyar-subuu.com";
@@ -192,6 +190,38 @@ public class MailServiceImpl implements MailService {
     message.setTo(recipientAddress);
 
     final String htmlContent = templateEngine.process("NewCourseByTeacher", ctx);
+    message.setText(htmlContent, true); // true = isHtml
+
+    this.mailSender.send(mimeMessage);
+  }
+
+  @Override
+  public void SendAdminNewStudentEnroll(UserInfo userInfo, String appUrl) throws MessagingException {
+
+    String recipientAddress = "sys@pyinnyar-subuu.com";
+    String subject = "New Student Has Enrolled";
+
+    appUrl = appUrl + "/admin/student-list";
+
+    final Context ctx = new Context();
+    ctx.setVariable("confirmationUrl", "");
+    ctx.setVariable("Date", new Date());
+
+    ctx.setVariable("appUrl", appUrl);
+
+    UserAccount userAccount = userInfo.getUserAccount();
+    ctx.setVariable("name", userInfo.getUserName());
+    ctx.setVariable("email", userAccount.getMail());
+    ctx.setVariable("phone", userInfo.getPhoneNo());
+    ctx.setVariable("registerTime", userAccount.getRegisteredDate());
+
+    final MimeMessage mimeMessage = mailSender.createMimeMessage();
+    final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
+    message.setSubject(subject);
+    message.setFrom("sys@pyinnyar-subuu.com");
+    message.setTo(recipientAddress);
+
+    final String htmlContent = templateEngine.process("NewStudentRegisteMail", ctx);
     message.setText(htmlContent, true); // true = isHtml
 
     this.mailSender.send(mimeMessage);
@@ -225,9 +255,10 @@ public class MailServiceImpl implements MailService {
   }
 
   // @Override
-  // public void SendAdminNewStudent(UserInfo userInfo, String appUrl) throws MessagingException {
-  //   // TODO Auto-generated method stub
-    
+  // public void SendAdminNewStudent(UserInfo userInfo, String appUrl) throws
+  // MessagingException {
+  // // TODO Auto-generated method stub
+
   // }
 
 }
