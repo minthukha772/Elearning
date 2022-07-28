@@ -417,6 +417,10 @@ nav .checkboxClass {
 
 	}
 
+	.confirmScreen .card {
+		width: 100%;
+	}
+
 	.profileform {
 		width: fit-content;
 	}
