@@ -25,11 +25,12 @@
     />
 
     <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
-    <link
+    <link rel="stylesheet" href="css/slick.css" />
+    <!-- <link
       rel="stylesheet"
       type="text/css"
       href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"
-    />
+    /> -->
     <link
       rel="stylesheet"
       type="text/css"
@@ -294,8 +295,11 @@
                         <div
                           class="course__wrapper shadow-sm rounded bg-light p-2"
                         >
-                          <img src="./images/course.png" class="course__img" />
-                          <div class="course_data_title">
+
+                        <img width="230" height="230" th:src="${courseInfo.coursePhoto.url}" class="card-img-top"
+                          th:alt="${courseInfo.coursePhoto.name}" />
+
+                        <div class="course_data_title">
                             <p
                               class="course__title__header d-flex justify-content-center mt-3"
                               th:text="${courseInfo.courseName}"
@@ -394,7 +398,10 @@
                         <div
                           class="course__wrapper shadow-sm rounded bg-light p-2"
                         >
-                          <img src="./images/course.png" class="course__img" />
+
+                        <img width="230" height="230" th:src="${courseInfo.coursePhoto.url}" class="card-img-top"
+                          th:alt="${courseInfo.coursePhoto.name}" />
+
                           <div class="course_data_title">
                             <h4
                               class="course__title__header d-flex justify-content-center mt-3"

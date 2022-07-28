@@ -60,7 +60,7 @@ public class UserRegisterDTO extends PasswordData implements Confirmable {
   @NotBlank(message = ConstrainMessage.EMPTY_CONSTRAIN_MESSAGE)
   private String phone;
 
-  // @DateTimeFormat(pattern = "yyyy-MM-dd")
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
   // @ValidDob
   private Date dob = new Date();
 
@@ -90,6 +90,26 @@ public class UserRegisterDTO extends PasswordData implements Confirmable {
   @Override
   public LinkedHashMap<String, String> toMap() {
     LinkedHashMap<String, String> map = new LinkedHashMap<>();
+    String city = getCity();
+    String edu = getEducation();
+        
+    if (city == null) {
+      if (edu == null) {
+      
+    map.put("Email", this.email);
+    map.put("Name", this.name);
+    map.put("Phone Number", this.phone);
+    // map.put("Gender", this.gender);
+    // map.put("Date of Birth", DateFormatter.format(this.dob));
+    // map.put("Zip Code", this.zipCode + "");
+    // map.put("City", this.city);
+    // map.put("Division", this.division);
+    // map.put("Address", this.address);
+    // map.put("Education", this.education);
+    return map;
+  }
+  else 
+    {
     map.put("Email", this.email);
     map.put("Name", this.name);
     map.put("Phone Number", this.phone);
@@ -101,6 +121,21 @@ public class UserRegisterDTO extends PasswordData implements Confirmable {
     // map.put("Address", this.address);
     map.put("Education", this.education);
     return map;
+    }
+  } 
+  else {   
+    map.put("Email", this.email);
+    map.put("Name", this.name);
+    map.put("Phone Number", this.phone);
+    map.put("Gender", this.gender);
+    map.put("Date of Birth", DateFormatter.format(this.dob));
+    map.put("Zip Code", this.zipCode + "");
+    map.put("City", this.city);
+    map.put("Division", this.division);
+    map.put("Address", this.address);
+    map.put("Education", this.education);
+    return map;
+    } 
   }
 
   // This Function has side use with
