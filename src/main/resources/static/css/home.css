@@ -576,7 +576,7 @@
 .terms__section {
 	background-color: var(--primary);
 	width: 100%;
-	height: 300px;
+	height: 330px;
 	color: white;
 	text-align: center;
 	padding: 35px 200px;
@@ -593,7 +593,7 @@
 
 @media screen and (max-width: 1200px) {
 	.terms__section {
-		padding: 35px 50px;
+		padding: 35px 30px;
 	}
 
 	.terms__title {
@@ -602,7 +602,7 @@
 
 	.terms__description {
 		margin-top: -18px;
-		font-size: 15px;
+		font-size: 14px;
 	}
 }
 

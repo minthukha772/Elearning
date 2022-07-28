@@ -15,27 +15,22 @@
 
     <link rel="icon" type="image/x-icon" href="/images/fav.png" />
 
-    <link rel="icon" type="image/x-icon" href="/images/fav.png" />
-
-    <link
+    <!-- <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
       rel="stylesheet"
       integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
       crossorigin="anonymous"
-    />
+    /> -->
 
     <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
     <link
       rel="stylesheet"
       type="text/css"
-      href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"
-    />
+      href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
     <link
       rel="stylesheet"
       type="text/css"
-      href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"
-    />
-
+      href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
     <link rel="stylesheet" href="css/index.css" />
     <link rel="stylesheet" href="css/global.css" />
     <link rel="stylesheet" href="css/home.css" />
@@ -83,8 +78,8 @@
 
           <div class="carousel-item">
             <img src="images/home-screen10.jpg" width="100%" height="1281px" class="img-fluid d-block w-100 backimages" alt="...">
-            <div class="carousel-caption d-flex flex-column align-items-center justify-content-center hero">
-              <h5 class="main__title" >Explore our courses!</h5>
+            <div class="carousel-caption d-flex flex-column align-items-center justify-content-center hero thirds">
+              <h5 class="main__title " >Explore our courses!</h5>
               <p class="sub__title">Search our finest courses by the top mentors.</p>
               <a class="btn btn-outline-light btn-lg" aria-current="page" th:href="@{/guest/explore}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search"
@@ -165,9 +160,9 @@
                           </div>
                         </div>
 
-                        <div class=" date__btn__holder">
+                        <div class="col-md-4 col-sm-12 date__btn__holder">
                           <button
-                            class=" date__btn"
+                            class="date__btn mx-2 py-2 px-3 px-sm-0 w-sm-25"
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
@@ -519,12 +514,7 @@
         <div class="terms__section">
           <h3 class="terms__title pb-5">Term of Service</h3>
           <p class="terms__description pb-5">
-            In the Pyinnyar Subuu, We make educational content accessible for
-            students and for the teachers to be able to create and share it from
-            anywhere. We believe that the marketplace model is the best way to
-            deliver valuable educational content to our users. Rules are needed
-            to secure our platform and services to our customers, our company,
-            and our community of students and teachers. For More.
+            In the Pyinnyar Subuu, We make the educational contents accessible for the students and for the teachers to be able to create the educational courses and study it from anywhere. We believe that the marketplace model is the best way to deliver the valuable educational contents to our users. Rules are needed to secure our educational online services between our communities of the students, the teachers and the operating company. For more information about Terms and Conditions please visit the following link. <a href="https://pyinnyarsubuu.com/guest/terms_and_conditions" target="_blank">https://pyinnyarsubuu.com/guest/terms_and_conditions</a>
           </p>
         </div>
       </section>
@@ -557,7 +547,7 @@
         $(function () {
           console.log("init");
           $(".RecordedcoursesSlider").slick({
-            with: 100,
+            width: 100,
             innerHeight: 100,
             arrows: false,
             infinite: false,

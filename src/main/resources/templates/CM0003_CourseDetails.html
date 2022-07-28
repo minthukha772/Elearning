@@ -24,10 +24,7 @@
 				</p>
 				<div class="row">
 					<div class="col-sm">
-						<img
-							class="coursedetail__img"
-							src="/images/course_image.png"
-						/>
+						<img th:src="${courseInfo.coursePhoto}" class="coursedetail__img">
 					</div>
 					<div class="col-sm mt-4 mt-sm-0 mt-md-0">
 						<div class="d-flex flex-column">
@@ -115,7 +112,6 @@
 										  th:if="${studentNotRegistered}"
 										  th:href="@{/student/enroll/{courseId}/{userId}(courseId = ${courseInfo.courseId}, userId = ${userId})}"
 										  ><button
-											th:if="${availableStuList > 0}"
 											class="btn__enroll"
 											th:classappend="${studentRegistered == true}? 'disabled'"
 										  >
@@ -140,7 +136,7 @@
 										class="btn__enroll"
 										type="submit"
 									  >
-										<span th:if="${availableStuList > 0}">Enroll</span>
+										Enroll
 									  </button>
 									</a>
 						
