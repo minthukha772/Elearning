@@ -453,7 +453,7 @@ public class CourseDetailsController {
                     // savedUserInfo.getUserAccount(),
                     // appUrl);
 
-                    mailService.SendAdminNewStudentEnroll(userInfo, appUrl);
+                    mailService.SendAdminNewStudentEnroll(userInfo, courseId, appUrl);
 
                 } catch (Exception e) {
                     logger.info(e.toString());

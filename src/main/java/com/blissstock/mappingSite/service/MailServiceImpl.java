@@ -196,12 +196,12 @@ public class MailServiceImpl implements MailService {
   }
 
   @Override
-  public void SendAdminNewStudentEnroll(UserInfo userInfo, String appUrl) throws MessagingException {
+  public void SendAdminNewStudentEnroll(UserInfo userInfo, long courseId, String appUrl) throws MessagingException {
 
-    String recipientAddress = "sys@pyinnyar-subuu.com";
+    String recipientAddress = "sys@pyinnyar-subuu.com"";
     String subject = "New Student Has Enrolled";
 
-    appUrl = appUrl + "/admin/student-list";
+    appUrl = appUrl + "/guest/course-detail/" + courseId;
 
     final Context ctx = new Context();
     ctx.setVariable("confirmationUrl", "");
@@ -210,6 +210,7 @@ public class MailServiceImpl implements MailService {
     ctx.setVariable("appUrl", appUrl);
 
     UserAccount userAccount = userInfo.getUserAccount();
+    logger.warn("new Student mail is " + userAccount.getMail());
     ctx.setVariable("name", userInfo.getUserName());
     ctx.setVariable("email", userAccount.getMail());
     ctx.setVariable("phone", userInfo.getPhoneNo());
