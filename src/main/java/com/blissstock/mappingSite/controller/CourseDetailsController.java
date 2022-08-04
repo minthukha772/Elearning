@@ -446,6 +446,7 @@ public class CourseDetailsController {
             public void run() {
                 try {
                     UserInfo userInfo = userService.getUserInfoByID(userId);
+                    CourseInfo courseInfo = courseInfoRepository.findById(courseId).get();
                     String appUrl = request.getServerName() + // "localhost"
                             ":" +
                             request.getServerPort(); // "8080"
@@ -454,6 +455,8 @@ public class CourseDetailsController {
                     // appUrl);
 
                     mailService.SendAdminNewStudentEnroll(userInfo, courseId, appUrl);
+                    mailService.SendStudentEnrollCourse(userInfo, courseInfo, appUrl);
+                    mailService.SendTeacherNewStudentEnroll(userInfo, courseInfo, appUrl);
 
                 } catch (Exception e) {
                     logger.info(e.toString());

@@ -11,6 +11,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import com.blissstock.mappingSite.config.GmailConfig;
+import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.enums.TokenType;
@@ -198,7 +199,7 @@ public class MailServiceImpl implements MailService {
   @Override
   public void SendAdminNewStudentEnroll(UserInfo userInfo, long courseId, String appUrl) throws MessagingException {
 
-    String recipientAddress = "sys@pyinnyar-subuu.com"";
+    String recipientAddress = "sys@pyinnyar-subuu.com";
     String subject = "New Student Has Enrolled";
 
     appUrl = appUrl + "/guest/course-detail/" + courseId;
@@ -227,6 +228,76 @@ public class MailServiceImpl implements MailService {
 
     this.mailSender.send(mimeMessage);
   }
+
+  @Override
+  public void SendStudentEnrollCourse(UserInfo userInfo, CourseInfo courseInfo, String appUrl) throws MessagingException {
+
+    String recipientAddress = userInfo.getUserAccount().getMail();
+    String subject =  "【Pyinnyar Subuu】You have successfully enrolled in a course.";
+
+    appUrl = appUrl + "/guest/course-detail/" + courseInfo.getCourseId();
+
+    final Context ctx = new Context();
+    ctx.setVariable("confirmationUrl", "");
+    ctx.setVariable("Date", new Date());
+
+    ctx.setVariable("appUrl", appUrl);
+
+    UserAccount userAccount = userInfo.getUserAccount();
+    logger.warn("new Student mail is " + userAccount.getMail());
+    ctx.setVariable("studentName", userInfo.getUserName());
+    ctx.setVariable("courseName", courseInfo.getCourseName());
+    ctx.setVariable("coursePrice", courseInfo.getFees());
+    ctx.setVariable("teacherName", courseInfo.getUserInfo().getUserName());
+    ctx.setVariable("startDate", courseInfo.getStartDate());
+    ctx.setVariable("endDate", courseInfo.getEndDate());
+
+    final MimeMessage mimeMessage = mailSender.createMimeMessage();
+    final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
+    message.setSubject(subject);
+    message.setFrom("sys@pyinnyar-subuu.com");
+    message.setTo(recipientAddress);
+
+    final String htmlContent = templateEngine.process("EnrollCourseMailForStudent", ctx);
+    message.setText(htmlContent, true); // true = isHtml
+
+    this.mailSender.send(mimeMessage);
+  }
+
+  @Override
+  public void SendTeacherNewStudentEnroll(UserInfo userInfo, CourseInfo courseInfo, String appUrl) throws MessagingException {
+
+    String recipientAddress = courseInfo.getUserInfo().getUserAccount().getMail();
+    String subject =  "【Pyinnyar Subuu】A student has successfully enrolled in a course.";
+
+    appUrl = appUrl + "/guest/course-detail/" + courseInfo.getCourseId();
+
+    final Context ctx = new Context();
+    ctx.setVariable("confirmationUrl", "");
+    ctx.setVariable("Date", new Date());
+
+    ctx.setVariable("appUrl", appUrl);
+
+    UserAccount userAccount = userInfo.getUserAccount();
+    logger.warn("new Student mail is " + userAccount.getMail());
+    ctx.setVariable("name", courseInfo.getUserInfo().getUserName()); //teacher name
+    ctx.setVariable("email", userAccount.getMail());
+    ctx.setVariable("phone", userInfo.getPhoneNo());
+    ctx.setVariable("registerTime", userAccount.getRegisteredDate());
+
+    final MimeMessage mimeMessage = mailSender.createMimeMessage();
+    final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
+    message.setSubject(subject);
+    message.setFrom("sys@pyinnyar-subuu.com");
+    message.setTo(recipientAddress);
+
+    final String htmlContent = templateEngine.process("NewStudentRegisteMail", ctx);
+    message.setText(htmlContent, true); // true = isHtml
+
+    this.mailSender.send(mimeMessage);
+  }
+  
+
 
   @Override
   public void sendResetPasswordMail(UserAccount userAccount, String appUrl) throws MessagingException {
