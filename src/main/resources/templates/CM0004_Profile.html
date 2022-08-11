@@ -183,7 +183,7 @@
 
         <!-- Payment: Start -->
         <div th:if="${role=='ROLE_TEACHER' && isEditable}">
-          <div class="d-flex justify-content-between mt-3">
+          <div class="d-flex justify-content-between mt-3 profileform">
             <h5>Payment Information</h5>
 
             <div th:if="${isPaymentEditable}">
@@ -202,8 +202,7 @@
           </div>
 
           <div th:if="${paymentAccounts!=null and !paymentAccounts.empty and isEditable}">
-            <table class="table table-striped">
-              <thead>
+            <table class="table table-striped paytable">
                 <tr>
                   <th scope="col">#</th>
                   <th scope="col">Service</th>
@@ -211,8 +210,6 @@
                   <th scope="col">Number</th>
                   <th scope="col">Delete</th>
                 </tr>
-              </thead>
-              <tbody>
                 <tr class="col" th:each="paymentAccount, stats : ${paymentAccounts}">
                   <!-- <div class="card h-100"> -->
 
@@ -226,11 +223,10 @@
                       th:method="post">
                       <input type="hidden" th:value="${id}" id="id" name="id" hidden />
 
-                      <Button type="submit" id="submitButton" class="btn btn-danger">Delete</Button>
+                      <Button type="submit" id="submitButton" class="btn btn-danger btndelete">Delete</Button>
                   </td>
                   </form>
                 </tr>
-              </tbody>
             </table>
           </div>
         </div>
@@ -325,7 +321,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form id="paymentPost" method="post" th:action="@{__${#httpServletRequest.requestURI}__/edit/payment/}"
+          <form id="paymentPost" method="post" th:action="@{__${#httpServletRequest.requestURI}__edit/payment/}"
             th:object="${paymentInfoDTO}">
             <input type="hidden" th:field="*{primaryAccount.paymentAccountId}" />
             <input type="hidden" th:field="*{secondaryAccount.paymentAccountId}" />
@@ -356,7 +352,7 @@
 
               <div class="col-sm-4">
                 <label class="form-label" for="primaryAccountNumber">Account Number</label>
-                <input class="form-control" id="primaryAccountNumber" type="text" placeholder="Account Number"
+                <input class="form-control" id="primaryAccountNumber" type="number" placeholder="Account Number"
                   th:field="*{primaryAccount.accountNumber}" />
               </div>
             </div>
@@ -378,7 +374,7 @@
 
               <div class="col-sm-4">
                 <label class="form-label" for="secondaryAccountNumber">Account Number</label>
-                <input class="form-control" id="secondaryAccountNumber" type="text" placeholder="Account Number"
+                <input class="form-control" id="secondaryAccountNumber" type="number" placeholder="Account Number"
                   th:field="*{secondaryAccount.accountNumber}" />
               </div>
             </div>
@@ -445,7 +441,7 @@
     integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
   <script src="/js/photoPlaceHolder.js"></script>
   <script src="/js/CM0004_profile.js"></script>
-
+  <script th:src="@{./../../../js/main.js}"></script>
   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
 </body>
 

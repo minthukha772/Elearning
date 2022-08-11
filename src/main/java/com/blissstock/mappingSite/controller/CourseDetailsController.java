@@ -21,6 +21,7 @@ import com.blissstock.mappingSite.enums.PaymentStatus;
 import com.blissstock.mappingSite.enums.ClassType;
 import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.exceptions.CourseNotFoundException;
+import com.blissstock.mappingSite.model.FileInfo;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
 import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
 import com.blissstock.mappingSite.repository.SyllabusRepository;
@@ -29,6 +30,7 @@ import com.blissstock.mappingSite.repository.UserInfoRepository;
 import com.blissstock.mappingSite.repository.UserRepository;
 import com.blissstock.mappingSite.service.CourseService;
 import com.blissstock.mappingSite.service.JoinCourseService;
+import com.blissstock.mappingSite.service.StorageService;
 import com.blissstock.mappingSite.service.UserService;
 import com.blissstock.mappingSite.service.UserSessionService;
 
@@ -82,6 +84,9 @@ public class CourseDetailsController {
     @Autowired
     CourseService courseService;
 
+    @Autowired
+    StorageService storageService;
+
     @GetMapping(value = { "/student/course-details/{courseId}", "/teacher/course-details/{courseId}",
             "/admin/course-details/{courseId}", "/guest/course-detail/{courseId}" })
     private String getCourseDetails(@PathVariable Long courseId, Model model) {
@@ -89,6 +94,16 @@ public class CourseDetailsController {
 
         // Get course by ID
         CourseInfo courseInfo = courseInfoRepository.findById(courseId).get();
+            FileInfo fileInfo = storageService.loadCoursePhoto(courseInfo);
+
+            // if profile is not found set as place holder
+            if (fileInfo == null) {
+                courseInfo.setCoursePhoto("https://via.placeholder.com/150");
+            } else {
+
+                courseInfo.setCoursePhoto(fileInfo.getUrl());
+            }
+        
         model.addAttribute("courseInfo", courseInfo);
 
         // get classlink
