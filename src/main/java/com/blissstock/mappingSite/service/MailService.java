@@ -2,6 +2,7 @@ package com.blissstock.mappingSite.service;
 
 import javax.mail.MessagingException;
 
+import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.entity.UserInfo;
 
@@ -22,4 +23,10 @@ public interface MailService {
   public void SendAdminNewStudent(UserInfo userInfo, String appUrl) throws MessagingException;
 
   public void SendAdminNewCourseByTeacher(String appUrl) throws MessagingException;
+
+  public void SendAdminNewStudentEnroll(UserInfo userInfo, long courseId, CourseInfo courseInfo, String appUrl) throws MessagingException;
+
+  public void SendStudentEnrollCourse(UserInfo userInfo, CourseInfo courseInfo, String appUrl) throws MessagingException;
+
+  public void SendTeacherNewStudentEnroll(UserInfo userInfo, CourseInfo courseInfo, String appUrl) throws MessagingException;
 }
