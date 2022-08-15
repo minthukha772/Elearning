@@ -16,6 +16,7 @@ import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.enums.TokenType;
 
+import org.postgresql.translation.messages_bg;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -197,10 +198,12 @@ public class MailServiceImpl implements MailService {
   }
 
   @Override
-  public void SendAdminNewStudentEnroll(UserInfo userInfo, long courseId, String appUrl) throws MessagingException {
+  public void SendAdminNewStudentEnroll(UserInfo userInfo, long courseId, CourseInfo courseInfo, String appUrl) throws MessagingException {
 
     String recipientAddress = "sys@pyinnyar-subuu.com";
-    String subject = "New Student Has Enrolled";
+    // InternetAddress.parse(recipientAddress);
+
+    String subject = "【Pyinnyar Subuu】A student has successfully enrolled in a course.";
 
     appUrl = appUrl + "/guest/course-detail/" + courseId;
 
@@ -212,10 +215,12 @@ public class MailServiceImpl implements MailService {
 
     UserAccount userAccount = userInfo.getUserAccount();
     logger.warn("new Student mail is " + userAccount.getMail());
-    ctx.setVariable("name", userInfo.getUserName());
-    ctx.setVariable("email", userAccount.getMail());
-    ctx.setVariable("phone", userInfo.getPhoneNo());
-    ctx.setVariable("registerTime", userAccount.getRegisteredDate());
+    ctx.setVariable("courseName", courseInfo.getCourseName());
+    ctx.setVariable("coursePrice", courseInfo.getFees());
+    ctx.setVariable("teacherName", courseInfo.getUserInfo().getUserName());
+    ctx.setVariable("studentName", userInfo.getUserName());
+    ctx.setVariable("startDate", courseInfo.getStartDate());
+    ctx.setVariable("endDate", courseInfo.getEndDate());
 
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
@@ -223,7 +228,7 @@ public class MailServiceImpl implements MailService {
     message.setFrom("sys@pyinnyar-subuu.com");
     message.setTo(recipientAddress);
 
-    final String htmlContent = templateEngine.process("NewStudentRegisteMail", ctx);
+    final String htmlContent = templateEngine.process("EnrollCourseMailForAdmin", ctx);
     message.setText(htmlContent, true); // true = isHtml
 
     this.mailSender.send(mimeMessage);
@@ -280,10 +285,12 @@ public class MailServiceImpl implements MailService {
 
     UserAccount userAccount = userInfo.getUserAccount();
     logger.warn("new Student mail is " + userAccount.getMail());
-    ctx.setVariable("name", courseInfo.getUserInfo().getUserName()); //teacher name
-    ctx.setVariable("email", userAccount.getMail());
-    ctx.setVariable("phone", userInfo.getPhoneNo());
-    ctx.setVariable("registerTime", userAccount.getRegisteredDate());
+    ctx.setVariable("courseName", courseInfo.getCourseName());
+    ctx.setVariable("coursePrice", courseInfo.getFees());
+    ctx.setVariable("teacherName", courseInfo.getUserInfo().getUserName());
+    ctx.setVariable("studentName", userInfo.getUserName());
+    ctx.setVariable("numSeatsLeft", courseInfo.getMaxStu());
+
 
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
@@ -291,7 +298,7 @@ public class MailServiceImpl implements MailService {
     message.setFrom("sys@pyinnyar-subuu.com");
     message.setTo(recipientAddress);
 
-    final String htmlContent = templateEngine.process("NewStudentRegisteMail", ctx);
+    final String htmlContent = templateEngine.process("EnrollCourseMailForTeacher", ctx);
     message.setText(htmlContent, true); // true = isHtml
 
     this.mailSender.send(mimeMessage);

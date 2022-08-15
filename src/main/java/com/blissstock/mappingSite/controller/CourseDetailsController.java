@@ -22,6 +22,7 @@ import com.blissstock.mappingSite.enums.ClassType;
 import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.exceptions.CourseNotFoundException;
 import com.blissstock.mappingSite.model.FileInfo;
+import com.blissstock.mappingSite.model.Message;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
 import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
 import com.blissstock.mappingSite.repository.SyllabusRepository;
@@ -454,7 +455,7 @@ public class CourseDetailsController {
                     // savedUserInfo.getUserAccount(),
                     // appUrl);
 
-                    mailService.SendAdminNewStudentEnroll(userInfo, courseId, appUrl);
+                    mailService.SendAdminNewStudentEnroll(userInfo, courseId, courseInfo, appUrl);
                     mailService.SendStudentEnrollCourse(userInfo, courseInfo, appUrl);
                     mailService.SendTeacherNewStudentEnroll(userInfo, courseInfo, appUrl);
 
