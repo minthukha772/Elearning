@@ -2,8 +2,10 @@ package com.blissstock.mappingSite.service;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import javax.mail.MessagingException;
@@ -12,9 +14,11 @@ import javax.mail.internet.MimeMessage;
 
 import com.blissstock.mappingSite.config.GmailConfig;
 import com.blissstock.mappingSite.entity.CourseInfo;
+import com.blissstock.mappingSite.entity.JoinCourseUser;
 import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.enums.TokenType;
+import com.blissstock.mappingSite.enums.UserRole;
 
 import org.postgresql.translation.messages_bg;
 import org.slf4j.Logger;
@@ -172,10 +176,10 @@ public class MailServiceImpl implements MailService {
     this.mailSender.send(mimeMessage);
   }
 
-  public void SendAdminNewCourseByTeacher(String appUrl) throws MessagingException {
+  public void SendAdminNewCourseByTeacher(CourseInfo courseInfo, String appUrl) throws MessagingException {
 
     String recipientAddress = "sys@pyinnyar-subuu.com";
-    String subject = "New Course Has Registered";
+    String subject = "【Pyinnyar Subuu】Course Registration by a teacher Successfully Completed!";
 
     appUrl = appUrl + "/admin/course-info";
 
@@ -184,6 +188,12 @@ public class MailServiceImpl implements MailService {
     ctx.setVariable("Date", new Date());
 
     ctx.setVariable("appUrl", appUrl);
+    ctx.setVariable("teacherEmail", courseInfo.getUserInfo().getUserAccount().getMail());
+    ctx.setVariable("courseName", courseInfo.getCourseName());
+    ctx.setVariable("coursePrice", courseInfo.getFees());
+    ctx.setVariable("startDate", courseInfo.getStartDate());
+    ctx.setVariable("endDate", courseInfo.getEndDate());
+
 
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
@@ -191,7 +201,38 @@ public class MailServiceImpl implements MailService {
     message.setFrom("sys@pyinnyar-subuu.com");
     message.setTo(recipientAddress);
 
-    final String htmlContent = templateEngine.process("NewCourseByTeacher", ctx);
+    final String htmlContent = templateEngine.process("SendAdminNewCourseByTeacher", ctx);
+    message.setText(htmlContent, true); // true = isHtml
+
+    this.mailSender.send(mimeMessage);
+  }
+
+  public void SendTeacherNewCourseByTeacher(CourseInfo courseInfo, String appUrl) throws MessagingException {
+
+    String recipientAddress = courseInfo.getUserInfo().getUserAccount().getMail();
+    String subject = "【Pyinnyar Subuu】Course Registration by Teacher Successfully Completed!";
+
+    appUrl = appUrl + "/admin/course-info";
+
+    final Context ctx = new Context();
+    ctx.setVariable("confirmationUrl", "");
+    ctx.setVariable("Date", new Date());
+    ctx.setVariable("appUrl", appUrl);
+    ctx.setVariable("teacherName", courseInfo.getUserInfo().getUserName());
+    ctx.setVariable("courseName", courseInfo.getCourseName());
+    ctx.setVariable("coursePrice", courseInfo.getFees());
+    ctx.setVariable("startDate", courseInfo.getStartDate());
+    ctx.setVariable("endDate", courseInfo.getEndDate());
+
+
+
+    final MimeMessage mimeMessage = mailSender.createMimeMessage();
+    final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
+    message.setSubject(subject);
+    message.setFrom("sys@pyinnyar-subuu.com");
+    message.setTo(recipientAddress);
+
+    final String htmlContent = templateEngine.process("SendTeacherNewCourseByTeacher", ctx);
     message.setText(htmlContent, true); // true = isHtml
 
     this.mailSender.send(mimeMessage);
@@ -275,6 +316,20 @@ public class MailServiceImpl implements MailService {
     String recipientAddress = courseInfo.getUserInfo().getUserAccount().getMail();
     String subject =  "【Pyinnyar Subuu】A student has successfully enrolled in a course.";
 
+    Integer maxStudent = courseInfo.getMaxStu();
+    List<UserInfo> studentList = new ArrayList<>();
+    for (JoinCourseUser joinCourseUser : courseInfo.getJoin()) {
+        if (joinCourseUser.getUserInfo().getUserAccount().getRole().equals(UserRole.STUDENT.getValue()))
+            studentList.add(joinCourseUser.getUserInfo());
+    }
+    Integer stuListSize = studentList.size();
+    Integer availableStuList;
+    try {
+        availableStuList = maxStudent - stuListSize;
+    } catch (NullPointerException e) {
+        availableStuList = 0;
+    }
+
     appUrl = appUrl + "/guest/course-detail/" + courseInfo.getCourseId();
 
     final Context ctx = new Context();
@@ -289,7 +344,7 @@ public class MailServiceImpl implements MailService {
     ctx.setVariable("coursePrice", courseInfo.getFees());
     ctx.setVariable("teacherName", courseInfo.getUserInfo().getUserName());
     ctx.setVariable("studentName", userInfo.getUserName());
-    ctx.setVariable("numSeatsLeft", courseInfo.getMaxStu());
+    ctx.setVariable("numSeatsLeft", availableStuList);
 
 
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
