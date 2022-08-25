@@ -33,7 +33,7 @@ import com.blissstock.mappingSite.service.JoinCourseService;
 import com.blissstock.mappingSite.service.StorageService;
 import com.blissstock.mappingSite.service.UserService;
 import com.blissstock.mappingSite.service.UserSessionService;
-
+import com.blissstock.mappingSite.service.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,7 +53,8 @@ import org.slf4j.LoggerFactory;
 public class CourseDetailsController {
 
     private static final Logger logger = LoggerFactory.getLogger(CourseDetailsController.class);
-
+    @Autowired
+    MailService mailService;
     @Autowired
     UserRepository userRepository;
 
@@ -94,16 +95,16 @@ public class CourseDetailsController {
 
         // Get course by ID
         CourseInfo courseInfo = courseInfoRepository.findById(courseId).get();
-            FileInfo fileInfo = storageService.loadCoursePhoto(courseInfo);
+        FileInfo fileInfo = storageService.loadCoursePhoto(courseInfo);
 
-            // if profile is not found set as place holder
-            if (fileInfo == null) {
-                courseInfo.setCoursePhoto("https://via.placeholder.com/150");
-            } else {
+        // if profile is not found set as place holder
+        if (fileInfo == null) {
+            courseInfo.setCoursePhoto("https://via.placeholder.com/150");
+        } else {
 
-                courseInfo.setCoursePhoto(fileInfo.getUrl());
-            }
-        
+            courseInfo.setCoursePhoto(fileInfo.getUrl());
+        }
+
         model.addAttribute("courseInfo", courseInfo);
 
         // get classlink
@@ -419,7 +420,8 @@ public class CourseDetailsController {
 
     @RequestMapping("/student/enroll/{courseId}/{userId}")
 
-    public String enrollStudent(@PathVariable Long courseId, @PathVariable Long userId, Model model) {
+    public String enrollStudent(HttpServletRequest request, @PathVariable Long courseId, @PathVariable Long userId,
+            Model model) {
         logger.info("Request");
 
         JoinCourseDTO joinCourseDTO = new JoinCourseDTO();
@@ -439,6 +441,28 @@ public class CourseDetailsController {
             e.printStackTrace();
             return "redirect:/student/course-details/" + courseId + "/?error";
         }
+
+        new Thread(new Runnable() {
+            public void run() {
+                try {
+                    UserInfo userInfo = userService.getUserInfoByID(userId);
+                    CourseInfo courseInfo = courseInfoRepository.findById(courseId).get();
+                    String appUrl = request.getServerName() + // "localhost"
+                            ":" +
+                            request.getServerPort(); // "8080"
+                    // mailService.sendVerificationMail(
+                    // savedUserInfo.getUserAccount(),
+                    // appUrl);
+
+                    mailService.SendAdminNewStudentEnroll(userInfo, courseId, appUrl);
+                    mailService.SendStudentEnrollCourse(userInfo, courseInfo, appUrl);
+                    mailService.SendTeacherNewStudentEnroll(userInfo, courseInfo, appUrl);
+
+                } catch (Exception e) {
+                    logger.info(e.toString());
+                }
+            }
+        }).start();
 
         return "redirect:/student/course-details/" + courseId;
     }
