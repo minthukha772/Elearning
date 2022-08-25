@@ -24,6 +24,11 @@ public interface MailService {
 
   public void SendAdminNewStudent(UserInfo userInfo, String appUrl) throws MessagingException;
 
+
+  public void SendAdminNewCourseByTeacher(CourseInfo courseInfo, String appUrl) throws MessagingException;
+  
+  public void SendTeacherNewCourseByTeacher(CourseInfo courseInfo, String appUrl) throws MessagingException;
+
   public void SendAdminNewCourseByTeacher(String appUrl) throws MessagingException;
   
   public void PaymentByStudent(UserInfo userInfo, long courseId, CourseInfo courseInfo) throws MessagingException;
@@ -38,7 +43,7 @@ public interface MailService {
   
   public void TeacherChangedPassword(UserInfo userInfo, UserAccount userAccount, String appUrl) throws MessagingException;
 
-  public void SendAdminNewStudentEnroll(UserInfo userInfo, long courseId, String appUrl) throws MessagingException;
+  public void SendAdminNewStudentEnroll(UserInfo userInfo, long courseId, CourseInfo courseInfo, String appUrl) throws MessagingException;
 
   public void SendStudentEnrollCourse(UserInfo userInfo, CourseInfo courseInfo, String appUrl) throws MessagingException;
 
