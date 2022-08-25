@@ -79,6 +79,10 @@
 		top: 10rem;
 	}
 
+	.thirds{
+		transform: translateY(-150%);
+	}
+
 	.main__title {
 		font-size: 35px;
 	}
@@ -96,10 +100,10 @@
 	.hero {
 		top: 12rem;
 	}
-
+/* 
 	.thirds{
 		transform: translateY(-150%);
-	}
+	} */
 }
 
 /* Carousel Hero Breakpoints */
@@ -415,7 +419,7 @@
 	color: #192a50;
 	border: none;
 	padding: 20px 42px;
-	margin-top: 2.375rem;
+	margin-top: 2.375rem !important;
 	background-color: #ffeca4;
 }
 
@@ -445,7 +449,12 @@
 	}
 
 	.greenboard__wrapper .greenboard__description {
-		font-size: 18px !important;
+		font-size: 16px !important;
+		transform: translateY(-7%);
+	}
+	
+	.greenboard__button {
+		margin-top: -8% !important;
 	}
 }
 
@@ -455,9 +464,9 @@
 		margin-top: 1.5rem;
 	}
 
-	.greenboard__button {
+	/* .greenboard__button {
 		margin-top: 1.3rem;
-	}
+	} */
 }
 
 @media screen and (min-width: 1400px) {
