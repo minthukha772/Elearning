@@ -20,7 +20,7 @@ import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.enums.TokenType;
 import com.blissstock.mappingSite.enums.UserRole;
 
-import org.postgresql.translation.messages_bg;
+// import org.postgresql.translation.messages_bg;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
