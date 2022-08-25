@@ -13,12 +13,19 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import com.blissstock.mappingSite.config.GmailConfig;
+
+import com.blissstock.mappingSite.controller.CourseDetailsController;
+
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.JoinCourseUser;
 import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.enums.TokenType;
+
 import com.blissstock.mappingSite.enums.UserRole;
+
+import com.fasterxml.jackson.core.sym.Name;
+
 
 import org.postgresql.translation.messages_bg;
 import org.slf4j.Logger;
@@ -31,6 +38,8 @@ import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
+
+
 
 @Service
 public class MailServiceImpl implements MailService {
@@ -385,6 +394,190 @@ public class MailServiceImpl implements MailService {
     message.setText(htmlContent, true); // true = isHtml
 
     this.mailSender.send(mimeMessage);
+
+  }
+  
+  @Override
+  public void PaymentByStudent(UserInfo userInfo, long courseId, CourseInfo courseInfo) throws MessagingException {
+
+    
+    String subject = "【Pyinnyar Subuu】Please check student payment, course payment by a student is done successfully .";
+
+    final Context ctx = new Context();
+    ctx.setVariable("Date", new Date());
+
+    UserAccount userAccount = userInfo.getUserAccount();
+    ctx.setVariable("studentname", userInfo.getUserName());
+    String recipientAddress = userAccount.getMail();
+    ctx.setVariable("email", userAccount.getMail());
+    ctx.setVariable("teachername", courseInfo.getUserInfo().getUserName());
+    ctx.setVariable("coursename", courseInfo.getCourseName());
+    ctx.setVariable("coursefees", courseInfo.getFees());
+    ctx.setVariable("startdate", courseInfo.getStartDate());
+    ctx.setVariable("enddate", courseInfo.getEndDate());
+    
+
+    final MimeMessage mimeMessage = mailSender.createMimeMessage();
+    final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+    message.setSubject(subject);
+    message.setFrom("sys@pyinnyar-subuu.com");
+    message.setTo(recipientAddress);
+
+    final String htmlContent = templateEngine.process("PaymentByStudentCss", ctx);
+    message.setText(htmlContent, true);
+    
+    this.mailSender.send(mimeMessage);
+
+
+  }
+
+  @Override
+  public void PaymentReceivedByAdmin(UserInfo userInfo, long courseId, CourseInfo courseInfo, String appUrl) throws MessagingException {
+
+    String recipientAddress = "sys@pyinnyar-subuu.com";
+    String subject = "【Pyinnyar Subuu】Course payment by a student successfully completed! ";
+
+    final Context ctx = new Context();
+    ctx.setVariable("studentname", userInfo.getUserName());
+    ctx.setVariable("teachername", courseInfo.getUserInfo().getUserName());
+    ctx.setVariable("coursename", courseInfo.getCourseName());
+    ctx.setVariable("coursefees", courseInfo.getFees());
+    ctx.setVariable("startdate", courseInfo.getStartDate());
+    ctx.setVariable("enddate", courseInfo.getEndDate());
+    ctx.setVariable("Date", new Date());
+    ctx.setVariable("appUrl", appUrl);
+
+    final MimeMessage mimeMessage = mailSender.createMimeMessage();
+    final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+    message.setSubject(subject);
+    message.setFrom("sys@pyinnyar-subuu.com");
+    message.setTo(recipientAddress);
+
+    final String htmlContent = templateEngine.process("PaymentReceivedByAdmin", ctx);
+    message.setText(htmlContent, true);
+    
+    this.mailSender.send(mimeMessage);
+
+
+  }
+
+  @Override
+  public void VerifiedTeacherByAdmin(UserInfo teacherInfo, UserInfo adminInfo, String appUrl) throws MessagingException {
+
+    
+    String subject = "【Pyinnyar Subuu】Teacher Account Verification Successfully Completed! ";
+
+    final Context ctx = new Context();
+    UserAccount teacherAccount = teacherInfo.getUserAccount();
+    UserAccount adminAccount = adminInfo.getUserAccount();
+    String recipientAddress = adminAccount.getMail();
+    
+    
+    ctx.setVariable("teachername", teacherInfo.getUserName());
+    ctx.setVariable("teacheremail", teacherAccount.getMail());
+    
+   
+    ctx.setVariable("Date", new Date());
+    ctx.setVariable("appUrl", appUrl);
+
+    final MimeMessage mimeMessage = mailSender.createMimeMessage();
+    final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+    message.setSubject(subject);
+    message.setFrom("sys@pyinnyar-subuu.com");
+    message.setTo(recipientAddress);
+
+    final String htmlContent = templateEngine.process("VerifiedTeacherByAdmin", ctx);
+    message.setText(htmlContent, true);
+    
+    this.mailSender.send(mimeMessage);
+
+
+  }
+
+  @Override
+  public void VerifiedTeacherByAdminToTeacher(UserInfo teacherInfo, UserInfo adminInfo, String appUrl) throws MessagingException {
+
+    
+    String subject = "【Pyinnyar Subuu】Teacher Account Verification Successfully Completed! ";
+
+    final Context ctx = new Context();
+    UserAccount adminAccount = adminInfo.getUserAccount();
+    UserAccount teacherAccount = teacherInfo.getUserAccount();
+    String recipientAddress = teacherAccount.getMail();
+    
+    ctx.setVariable("teachername", teacherInfo.getUserName());
+    ctx.setVariable("adminemail", adminAccount.getMail());
+    
+
+   
+    ctx.setVariable("Date", new Date());
+    ctx.setVariable("appUrl", appUrl);
+
+    final MimeMessage mimeMessage = mailSender.createMimeMessage();
+    final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+    message.setSubject(subject);
+    message.setFrom("sys@pyinnyar-subuu.com");
+    message.setTo(recipientAddress);
+
+    final String htmlContent = templateEngine.process("VerifiedTeacherByAdminToTeacher", ctx);
+    message.setText(htmlContent, true);
+    
+    this.mailSender.send(mimeMessage);
+
+
+  }
+
+  @Override
+  public void StudentChangedPassword(UserInfo userInfo, UserAccount userAccount, String appUrl) throws MessagingException {
+
+    
+    String subject = "【Pyinnyar Subuu】You have successfully change your password.";
+
+    final Context ctx = new Context();
+    String recipientAddress = userAccount.getMail();
+    
+    ctx.setVariable("studentname", userInfo.getUserName());   
+    ctx.setVariable("Date", new Date());
+    ctx.setVariable("appUrl", appUrl);
+
+    final MimeMessage mimeMessage = mailSender.createMimeMessage();
+    final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+    message.setSubject(subject);
+    message.setFrom("sys@pyinnyar-subuu.com");
+    message.setTo(recipientAddress);   
+    
+    final String htmlContent = templateEngine.process("StudentChangedPassword", ctx);
+    message.setText(htmlContent, true);
+    
+    this.mailSender.send(mimeMessage);
+
+
+  }
+
+  @Override
+  public void TeacherChangedPassword(UserInfo userInfo, UserAccount userAccount, String appUrl) throws MessagingException {
+
+    
+    String subject = "【Pyinnyar Subuu】You have successfully changed your password.";
+
+    final Context ctx = new Context();
+    String recipientAddress = userAccount.getMail();
+    
+    ctx.setVariable("teachername", userInfo.getUserName());   
+    ctx.setVariable("Date", new Date());
+    ctx.setVariable("appUrl", appUrl);
+
+    final MimeMessage mimeMessage = mailSender.createMimeMessage();
+    final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+    message.setSubject(subject);
+    message.setFrom("sys@pyinnyar-subuu.com");
+    message.setTo(recipientAddress);
+
+    final String htmlContent = templateEngine.process("TeacherChangedPassword", ctx);
+    message.setText(htmlContent, true);
+    
+    this.mailSender.send(mimeMessage);
+
 
   }
 

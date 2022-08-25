@@ -31,6 +31,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.blissstock.mappingSite.repository.UserRepository;
+import com.blissstock.mappingSite.entity.UserInfo;
+
 @Controller
 public class PasswordController {
 
@@ -53,6 +56,9 @@ public class PasswordController {
 
   @Autowired
   private PasswordEncoder passwordEncoder;
+
+  @Autowired
+  UserRepository userRepo;
 
   @GetMapping("/password/encrypt")
   public String encrypt(Model model, String pass) {
@@ -247,7 +253,8 @@ public class PasswordController {
   public String changePasswordPost(
       Model model,
       @Valid @ModelAttribute("passwordDTO") PasswordDTO passwordDTO,
-      BindingResult bindingResult) {
+      BindingResult bindingResult,@PathVariable(name = "role", required = true) String role,
+      String token,HttpServletRequest request) {
 
     String title = "Change Password";
     model.addAttribute("type", "OLD_PASSWORD");
@@ -275,6 +282,8 @@ public class PasswordController {
     // get user email
 
     UserAccount userAccount = userSessionService.getUserAccount();
+    Long userId = userSessionService.getUserAccount().getAccountId();
+    UserInfo userInfo = userRepo.findById(userId).orElse(null);              
 
     if (passwordEncoder.matches(passwordDTO.getOldPassword(), userAccount.getPassword())) {
 
@@ -283,6 +292,36 @@ public class PasswordController {
 
       model.addAttribute("success", "Password Change Success");
       model.addAttribute("message", "Please login with new password to continue");
+
+      new Thread(new Runnable() {
+        public void run() {
+          try {
+            if (role.equals("student")) { 
+              
+              String appUrl = request.getServerName() + // "localhost"
+              ":" +
+              request.getServerPort(); // "8080"
+              
+              mailService.StudentChangedPassword(userInfo, userAccount, appUrl);              
+              
+            }
+
+            if (role.equals("teacher")) { 
+              
+              String appUrl = request.getServerName() + // "localhost"
+              ":" +
+              request.getServerPort(); // "8080" 
+              
+              mailService.TeacherChangedPassword(userInfo, userAccount, appUrl);
+
+              }
+            
+          } catch (Exception e) {
+            logger.info(e.toString());
+          }
+        }
+      }).start();
+
       // todo navigate to complete screen;
       // model.addAttribute("title", "Login");
       try {
