@@ -28,8 +28,6 @@ public interface MailService {
   public void SendAdminNewCourseByTeacher(CourseInfo courseInfo, String appUrl) throws MessagingException;
   
   public void SendTeacherNewCourseByTeacher(CourseInfo courseInfo, String appUrl) throws MessagingException;
-
-  public void SendAdminNewCourseByTeacher(String appUrl) throws MessagingException;
   
   public void PaymentByStudent(UserInfo userInfo, long courseId, CourseInfo courseInfo) throws MessagingException;
 

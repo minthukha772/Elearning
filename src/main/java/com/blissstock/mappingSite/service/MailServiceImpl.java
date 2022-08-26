@@ -25,6 +25,9 @@ import com.blissstock.mappingSite.enums.TokenType;
 import com.blissstock.mappingSite.enums.UserRole;
 
 // import org.postgresql.translation.messages_bg;
+
+import com.fasterxml.jackson.core.sym.Name;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -583,6 +586,6 @@ public class MailServiceImpl implements MailService {
   // MessagingException {
   // // TODO Auto-generated method stub
 
-  // }
+    // }
 
 }
