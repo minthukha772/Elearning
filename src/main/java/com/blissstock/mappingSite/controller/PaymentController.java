@@ -4,10 +4,13 @@ import java.util.GregorianCalendar;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.validation.constraints.Null;
 
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.JoinCourseUser;
 import com.blissstock.mappingSite.entity.PaymentReceive;
+import com.blissstock.mappingSite.entity.UserAccount;
+import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.enums.PaymentStatus;
 import com.blissstock.mappingSite.exceptions.UnauthorizedFileAccessException;
 import com.blissstock.mappingSite.model.FileInfo;
@@ -37,10 +40,21 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.blissstock.mappingSite.service.MailService;
+import com.blissstock.mappingSite.controller.CourseDetailsController;
+import java.util.ArrayList;
+import java.util.List;
+import com.blissstock.mappingSite.enums.UserRole;
+
+
+
 @Controller
 public class PaymentController {
   private static Logger logger = LoggerFactory.getLogger(
       PaymentController.class);
+
+  @Autowired
+  MailService mailService;
 
   @Autowired
   StorageService storageService;
@@ -150,7 +164,30 @@ public class PaymentController {
     if (payment.getPaymentStatus() == "ERROR") {
       return redirectAddress;
     }
-    return "redirect:/payment/complete";
+    
+    new Thread(new Runnable() {
+      public void run() {
+        try {
+          UserInfo userInfo = userService.getUserInfoByID(userId);
+          CourseInfo courseInfo = courseRepo.findById(courseId).orElse(null);
+
+          String appUrl = request.getServerName() + // "localhost"
+              ":" +
+              request.getServerPort(); // "8080"
+          // mailService.sendVerificationMail(
+          //     savedUserInfo.getUserAccount(),
+          //     appUrl);
+
+          mailService.PaymentByStudent(userInfo, courseId, courseInfo);
+          mailService.PaymentReceivedByAdmin(userInfo, courseId, courseInfo, appUrl);
+
+        } catch (Exception e) {
+          logger.info(e.toString());
+        }
+      }
+    }).start();
+
+   return "redirect:/payment/complete";
 
   }
 
@@ -183,7 +220,6 @@ public class PaymentController {
       return redirectAddress;
     }
     return redirectAddress;
-
   }
 
   // @GetMapping(value = "/edit-payment-slip/{paymentReceiveId}")
