@@ -207,7 +207,7 @@ sup {
 
 a {
   color: #0F1D0D;
-  text-decoration: underline;
+  /* text-decoration: underline; */
 }
 /* a:hover {
   color: #0c170a;
@@ -1957,9 +1957,12 @@ progress {
 }
 .table > tbody {
   vertical-align: inherit;
+  /* border-bottom: 1px solid #ffffff; */
+
 }
 .table > thead {
   vertical-align: bottom;
+  /* border-bottom: 3px solid #ffffff; */
 }
 .table > :not(:last-child) > :last-child > * {
   border-bottom-color: currentColor;
@@ -4223,7 +4226,7 @@ textarea.form-control-lg {
   flex-direction: column;
   min-width: 0;
   word-wrap: break-word;
-  background-color: #309986;
+  background-color: #4dc4ae;
   background-clip: border-box;
   border: 1px solid rgba(0, 0, 0, 0.125);
   color: #463f3f;

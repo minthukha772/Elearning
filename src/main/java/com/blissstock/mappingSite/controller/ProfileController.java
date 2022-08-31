@@ -40,12 +40,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.blissstock.mappingSite.service.MailService;
+import com.blissstock.mappingSite.repository.UserRepository;
+import com.blissstock.mappingSite.entity.UserAccount;
+
 @Controller
 public class ProfileController {
 
   private static Logger logger = LoggerFactory.getLogger(
     ProfileController.class
   );
+
+  @Autowired
+  MailService mailService;
 
   @Autowired
   StorageService storageService;
@@ -66,6 +73,9 @@ public class ProfileController {
 
   @Autowired
   PaymentInfoService paymentInfoService;
+
+  @Autowired
+  UserRepository userRepo;
 
   @GetMapping(
     value = {
@@ -373,10 +383,14 @@ public class ProfileController {
   public ResponseEntity<Object> verifyUser(
     Model model,
     Long uid,
-    HttpServletRequest httpServletRequest
+    
+    HttpServletRequest request
   ){
     logger.info("Verify request for user with id {}", uid);
-
+    Long adminId = 0L;
+          adminId = userSessionService.getUserAccount().getAccountId();
+          UserInfo adminInfo = userRepo.findById(adminId).orElse(null);
+          UserInfo teacherInfo = userService.getUserInfoByID(uid);
     try {
       UserInfo userInfo = userService.getUserInfoByID(uid);
       if(userInfo == null){
@@ -390,6 +404,31 @@ public class ProfileController {
       e.printStackTrace();
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
     }
+
+    new Thread(new Runnable() {
+      public void run() {
+        try {
+          
+          
+          
+          // UserInfo adminInfo = userService.getUserInfoByID(adminId);
+          
+          String appUrl = request.getServerName() + // "localhost"
+              ":" +
+              request.getServerPort(); // "8080"
+          // mailService.sendVerificationMail(
+          //     savedUserInfo.getUserAccount(),
+          //     appUrl);
+
+          
+          mailService.VerifiedTeacherByAdmin(teacherInfo, adminInfo, appUrl);
+          mailService.VerifiedTeacherByAdminToTeacher(teacherInfo, adminInfo, appUrl);
+          
+        } catch (Exception e) {
+          logger.info(e.toString());
+        }
+      }
+    }).start();
 
     return ResponseEntity.status(HttpStatus.OK).body("operation success");
 
