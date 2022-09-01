@@ -314,6 +314,29 @@ public class CourseRegistrationController {
             }
             return "redirect:/teacher/course-upload/complete";
         } else {
+            try {
+
+                new Thread(new Runnable() {
+                    public void run() {
+                        try {
+
+                            String appUrl = request.getServerName() + // "localhost"
+                                    ":" +
+                                    request.getServerPort(); // "8080"
+
+                            mailService.SendAdminNewCourseByAdmin(course, appUrl);
+                            mailService.SendTeacherNewCourseByAdmin(course, appUrl);
+
+
+                        } catch (Exception e) {
+                            logger.info(e.toString());
+                        }
+                    }
+                }).start();
+            } catch (Exception e) {
+                logger.info(e.toString());
+            }
+
             return "redirect:/admin/course-upload/complete";
         }
         // return "takealeave";
