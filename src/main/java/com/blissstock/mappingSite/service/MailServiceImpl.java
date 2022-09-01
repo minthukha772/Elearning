@@ -464,7 +464,7 @@ public class MailServiceImpl implements MailService {
   public void PaymentByStudent(UserInfo userInfo, long courseId, CourseInfo courseInfo) throws MessagingException {
 
     
-    String subject = "【Pyinnyar Subuu】Please check student payment, course payment by a student is done successfully .";
+    String subject = "【Pyinnyar Subuu】Course payment by a student successfully completed!";
 
     final Context ctx = new Context();
     ctx.setVariable("Date", new Date());
@@ -498,7 +498,7 @@ public class MailServiceImpl implements MailService {
   public void PaymentReceivedByAdmin(UserInfo userInfo, long courseId, CourseInfo courseInfo, String appUrl) throws MessagingException {
 
     String recipientAddress = "sys@pyinnyar-subuu.com";
-    String subject = "【Pyinnyar Subuu】Course payment by a student successfully completed! ";
+    String subject = "【Pyinnyar Subuu】Please check student payment, course payment by a student is done successfully.";
 
     final Context ctx = new Context();
     ctx.setVariable("studentname", userInfo.getUserName());
