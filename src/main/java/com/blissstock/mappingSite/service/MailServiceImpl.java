@@ -314,7 +314,8 @@ public class MailServiceImpl implements MailService {
   public void SendAdminNewStudentEnroll(UserInfo userInfo, long courseId, CourseInfo courseInfo, String appUrl) throws MessagingException {
 
     String recipientAddress = "sys@pyinnyar-subuu.com";
-    // InternetAddress.parse(recipientAddress);
+    String ccAddress1 = "sys1pyinnyarsubuu@gmail.com";
+    String ccAddress2 = "sys2pyinnyarsubuu@gmail.com";
 
     String subject = "【Pyinnyar Subuu】A student has successfully enrolled in a course.";
 
@@ -340,6 +341,8 @@ public class MailServiceImpl implements MailService {
     message.setSubject(subject);
     message.setFrom("sys@pyinnyar-subuu.com");
     message.setTo(recipientAddress);
+    message.addCc(ccAddress1);
+    message.addCc(ccAddress2);
 
     final String htmlContent = templateEngine.process("EnrollCourseMailForAdmin", ctx);
     message.setText(htmlContent, true); // true = isHtml
