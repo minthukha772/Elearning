@@ -120,6 +120,83 @@ public class MailServiceImpl implements MailService {
     this.mailSender.send(mimeMessage);
   }
 
+  public void SendAdminNewAdmin(UserAccount userAccount, UserInfo adminInfo, String appUrl) throws MessagingException {
+
+    String superAdminEmail = "syspyinnyarsubuu.supadm@gmail.com";
+    String superAdminName = "Pyinnyarsubuu Superadmin";
+
+    UserAccount adminAccount = adminInfo.getUserAccount();
+    // String recipientAddress = adminInfo.getUserAccount().getMail();
+    // String recipientAddress = adminAccount.getMail();
+    String recipientAddress = userAccount.getMail();
+
+    String subject = "【Pyinnyar Subuu】Admin Account Registration Successfully  Completed!";
+
+    appUrl = appUrl + "/admin/admin-list";
+
+    final Context ctx = new Context();
+    ctx.setVariable("Date", new Date());
+    ctx.setVariable("appUrl", appUrl);
+
+    ctx.setVariable("superAdminName", superAdminName);
+    // ctx.setVariable("adminEmail", adminAccount.getMail());
+    // ctx.setVariable("adminName", adminAccount.getUserInfo().getUserName());
+
+    ctx.setVariable("superAdminEmail", superAdminEmail);
+    ctx.setVariable("adminEmail", userAccount.getMail());
+    // ctx.setVariable("adminName", userAccount.getUserInfo().getUserName());
+    ctx.setVariable("adminName", adminAccount.getUserInfo().getUserName());
+
+
+    final MimeMessage mimeMessage = mailSender.createMimeMessage();
+    final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
+    message.setSubject(subject);
+    message.setFrom("sys@pyinnyar-subuu.com");
+    message.setTo(recipientAddress);
+
+    final String htmlContent = templateEngine.process("SendAdminNewAdminMail", ctx);
+    message.setText(htmlContent, true); // true = isHtml
+
+    this.mailSender.send(mimeMessage);
+  }
+
+  public void SendSuperAdminNewAdmin(UserAccount userAccount, UserInfo adminInfo, String appUrl) throws MessagingException {
+
+    String recipientAddress = "syspyinnyarsubuu.supadm@gmail.com";
+    String superAdminName = "Pyinnyarsubuu Superadmin";
+    String subject = "【Pyinnyar Subuu】Admin Account Registration Successfully  Completed!";
+
+    appUrl = appUrl + "/admin/admin-list";
+
+    final Context ctx = new Context();
+    UserAccount adminAccount = adminInfo.getUserAccount();
+    ctx.setVariable("Date", new Date());
+    ctx.setVariable("appUrl", appUrl);
+
+    ctx.setVariable("superAdminName", superAdminName);
+    // ctx.setVariable("adminEmail", adminAccount.getMail());
+
+    // ctx.setVariable("adminEmail", adminInfo.getUserAccount().getMail());
+
+    ctx.setVariable("adminEmail", userAccount.getMail());
+    ctx.setVariable("adminName", adminInfo.getUserName());
+
+    // ctx.setVariable("adminName", userAccount.getUserInfo().getUserName());
+
+
+
+    final MimeMessage mimeMessage = mailSender.createMimeMessage();
+    final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
+    message.setSubject(subject);
+    message.setFrom("sys@pyinnyar-subuu.com");
+    message.setTo(recipientAddress);
+
+    final String htmlContent = templateEngine.process("SendSuperAdminNewAdminMail", ctx);
+    message.setText(htmlContent, true); // true = isHtml
+
+    this.mailSender.send(mimeMessage);
+  }
+
   public void SendAdminNewTeacher(UserInfo userInfo, String appUrl) throws MessagingException {
 
     String recipientAddress = "sys@pyinnyar-subuu.com";

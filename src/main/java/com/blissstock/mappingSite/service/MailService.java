@@ -20,6 +20,10 @@ public interface MailService {
 
   public void sendResetPasswordMail(UserAccount userAccount, String appUrl) throws MessagingException;
 
+  public void SendAdminNewAdmin(UserAccount userAccount, UserInfo adminInfo, String appUrl) throws MessagingException;
+
+  public void SendSuperAdminNewAdmin(UserAccount userAccount, UserInfo adminInfo, String appUrl) throws MessagingException;
+
   public void SendAdminNewTeacher(UserInfo userInfo, String appUrl) throws MessagingException;
 
   public void SendAdminNewStudent(UserInfo userInfo, String appUrl) throws MessagingException;
