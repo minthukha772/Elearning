@@ -56,4 +56,12 @@ public interface MailService {
 
   public void SendTeacherNewStudentEnroll(UserInfo userInfo, CourseInfo courseInfo, String appUrl) throws MessagingException;
 
+  public void AdminChangedPassword(UserInfo userInfo, UserAccount userAccount, String appUrl) throws MessagingException;
+
+  public void AdminResetPassword(UserAccount user, String appUrl) throws MessagingException;
+
+  public void TeacherResetPassword(UserAccount user, String appUrl) throws MessagingException;
+
+  public void StudentResetPassword(UserAccount user, String appUrl) throws MessagingException;
+
 }
