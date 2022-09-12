@@ -11,6 +11,7 @@ import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.exceptions.UserAlreadyExistException;
+import com.blissstock.mappingSite.repository.UserRepository;
 import com.blissstock.mappingSite.service.MailService;
 import com.blissstock.mappingSite.service.UserService;
 import com.blissstock.mappingSite.service.UserSessionService;
@@ -45,6 +46,9 @@ public class RegisterController {
   @Autowired
   MailService mailService;
 
+  @Autowired
+  UserRepository userRepo;
+
   @ExceptionHandler(value = ConstraintViolationException.class)
   public String exception(ConstraintViolationException exception) {
     System.out.println("excption occur");
@@ -62,10 +66,15 @@ public class RegisterController {
   @PostMapping(path = "/newadmin")
   public String AdminRegister(HttpServletRequest request,
       Model model,
-      @ModelAttribute("email") String email) {
+      @ModelAttribute("email") String email, Long uid) {
     System.out.println("emai in newadmin is " + email);
 
     logger.info("new adim reigister");
+    Long adminId = 0L;
+    adminId = userSessionService.getUserAccount().getAccountId();
+    UserInfo adminInfo = userRepo.findById(adminId).orElse(null);
+    // UserInfo teacherInfo = userService.getUserInfoByID(uid);
+
     if (email != null) {
       UserRole userRole = userSessionService.getRole();
       if (userRole.equals(UserRole.SUPER_ADMIN)) {
@@ -105,7 +114,15 @@ public class RegisterController {
             Thread.currentThread().interrupt();
           }
           UserAccount userAccount = userService.getUserAccountByEmail(email);
+          // Long adminId = 0L;
+          // adminId = userSessionService.getUserAccount().getAccountId();
+          // UserInfo adminInfo = userRepo.findById(adminId).orElse(null);
+          // UserInfo teacherInfo = userService.getUserInfoByID(uid);
+
           mailService.sendResetPasswordMail(userAccount, appUrl);
+          mailService.SendAdminNewAdmin(userAccount, adminInfo, appUrl);
+          mailService.SendSuperAdminNewAdmin(userAccount, adminInfo, appUrl);
+        
           return "redirect:/admin/register/complete";
         } catch (Exception e) {
           logger.info("Register admin :{}", e.toString());
