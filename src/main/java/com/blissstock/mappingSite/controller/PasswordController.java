@@ -10,9 +10,11 @@ import com.blissstock.mappingSite.entity.Token;
 import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.enums.PasswordResetType;
 import com.blissstock.mappingSite.enums.TokenType;
+import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.service.MailServiceImpl;
 import com.blissstock.mappingSite.service.UserService;
 import com.blissstock.mappingSite.service.UserSessionService;
+import com.fasterxml.jackson.core.sym.Name;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -163,7 +165,9 @@ public class PasswordController {
       try {
         httpServletRequest.logout();
         return "redirect:/login?changeSuccess=true";
-      } catch (ServletException e) {
+      } 
+      
+      catch (ServletException e) {
 
         return "CM0006_change_password_screen";
       }
@@ -177,23 +181,55 @@ public class PasswordController {
       @RequestParam("email") String userEmail) {
     logger.info("POST requested, email {}", userEmail);
     UserAccount user = userService.getUserAccountByEmail(userEmail);
+    
     if (user == null) {
       return ("redirect:/check_email/reset_password?email=" +
           userEmail +
           "&error=true");
     }
+    
+    String resetaccountrole = user.getRole();
+
     /* String token = UUID.randomUUID().toString(); */
     String appUrl = request.getServerName() + // "localhost"
         ":" +
         request.getServerPort();
     /* userService.createToken(user, token, TokenType.PASSWORD_RESET); */
-    try {
-      mailService.sendResetPasswordMail(user, appUrl);
-    } catch (MessagingException e) {
-      logger.info(e.toString());
-    }
+    
+   
+        try {
+          if (resetaccountrole.equals("ROLE_ADMIN")) { 
+            
+            mailService.AdminResetPassword(user, appUrl);             
+
+          }
+
+          if (resetaccountrole.equals("ROLE_TEACHER")) { 
+            
+            mailService.TeacherResetPassword(user, appUrl);   
+
+            }
+
+            if (resetaccountrole.equals("ROLE_STUDENT")) {  
+              
+             mailService.StudentResetPassword(user, appUrl);
+
+            }
+          
+        } catch (Exception e) {
+          logger.info(e.toString());
+        }
+       
+    
+    // try {
+      
+    //   mailService.sendResetPasswordMail(user, appUrl);
+    // } catch (MessagingException e) {
+    //   logger.info(e.toString());
+    // }
     return REDIRECT_LOGIN_RESET_SUCCESS_TRUE;
   }
+  
 
   @GetMapping(path = { "{role}/change_password" })
   public String changePasswordView(
@@ -313,6 +349,16 @@ public class PasswordController {
               request.getServerPort(); // "8080" 
               
               mailService.TeacherChangedPassword(userInfo, userAccount, appUrl);
+
+              }
+
+              if (role.equals("admin")) {  
+               
+                String appUrl = request.getServerName() + // "localhost"
+              ":" +
+              request.getServerPort(); // "8080" 
+              
+              mailService.AdminChangedPassword(userInfo, userAccount, appUrl);
 
               }
             

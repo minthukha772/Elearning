@@ -20,6 +20,10 @@ public interface MailService {
 
   public void sendResetPasswordMail(UserAccount userAccount, String appUrl) throws MessagingException;
 
+  public void SendAdminNewAdmin(UserAccount userAccount, UserInfo adminInfo, String appUrl) throws MessagingException;
+
+  public void SendSuperAdminNewAdmin(UserAccount userAccount, UserInfo adminInfo, String appUrl) throws MessagingException;
+
   public void SendAdminNewTeacher(UserInfo userInfo, String appUrl) throws MessagingException;
 
   public void SendAdminNewStudent(UserInfo userInfo, String appUrl) throws MessagingException;
@@ -51,5 +55,13 @@ public interface MailService {
   public void SendStudentEnrollCourse(UserInfo userInfo, CourseInfo courseInfo, String appUrl) throws MessagingException;
 
   public void SendTeacherNewStudentEnroll(UserInfo userInfo, CourseInfo courseInfo, String appUrl) throws MessagingException;
+
+  public void AdminChangedPassword(UserInfo userInfo, UserAccount userAccount, String appUrl) throws MessagingException;
+
+  public void AdminResetPassword(UserAccount user, String appUrl) throws MessagingException;
+
+  public void TeacherResetPassword(UserAccount user, String appUrl) throws MessagingException;
+
+  public void StudentResetPassword(UserAccount user, String appUrl) throws MessagingException;
 
 }

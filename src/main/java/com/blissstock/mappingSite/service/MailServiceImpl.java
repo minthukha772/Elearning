@@ -120,6 +120,64 @@ public class MailServiceImpl implements MailService {
     this.mailSender.send(mimeMessage);
   }
 
+  public void SendAdminNewAdmin(UserAccount userAccount, UserInfo adminInfo, String appUrl) throws MessagingException {
+
+    String superAdminEmail = "syspyinnyarsubuu.supadm@gmail.com";
+
+    String recipientAddress = userAccount.getMail();
+
+    String subject = "【Pyinnyar Subuu】Admin Account Registration Successfully  Completed!";
+
+    appUrl = appUrl + "/admin/admin-list";
+
+    final Context ctx = new Context();
+    ctx.setVariable("Date", new Date());
+    ctx.setVariable("appUrl", appUrl);
+    ctx.setVariable("superAdminEmail", superAdminEmail);
+    ctx.setVariable("adminEmail", userAccount.getMail());
+
+
+    final MimeMessage mimeMessage = mailSender.createMimeMessage();
+    final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
+    message.setSubject(subject);
+    message.setFrom("sys@pyinnyar-subuu.com");
+    message.setTo(recipientAddress);
+
+    final String htmlContent = templateEngine.process("SendAdminNewAdminMail", ctx);
+    message.setText(htmlContent, true); // true = isHtml
+
+    this.mailSender.send(mimeMessage);
+  }
+
+  public void SendSuperAdminNewAdmin(UserAccount userAccount, UserInfo adminInfo, String appUrl) throws MessagingException {
+
+    String recipientAddress = "syspyinnyarsubuu.supadm@gmail.com";
+    String superAdminName = "Pyinnyarsubuu Superadmin";
+    String subject = "【Pyinnyar Subuu】Admin Account Registration Successfully  Completed!";
+
+    appUrl = appUrl + "/admin/admin-list";
+
+    final Context ctx = new Context();
+    // UserAccount adminAccount = adminInfo.getUserAccount();
+    ctx.setVariable("Date", new Date());
+    ctx.setVariable("appUrl", appUrl);
+    ctx.setVariable("superAdminName", superAdminName);
+    ctx.setVariable("adminEmail", userAccount.getMail());
+
+
+
+    final MimeMessage mimeMessage = mailSender.createMimeMessage();
+    final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
+    message.setSubject(subject);
+    message.setFrom("sys@pyinnyar-subuu.com");
+    message.setTo(recipientAddress);
+
+    final String htmlContent = templateEngine.process("SendSuperAdminNewAdminMail", ctx);
+    message.setText(htmlContent, true); // true = isHtml
+
+    this.mailSender.send(mimeMessage);
+  }
+
   public void SendAdminNewTeacher(UserInfo userInfo, String appUrl) throws MessagingException {
 
     String recipientAddress = "sys@pyinnyar-subuu.com";
@@ -314,7 +372,8 @@ public class MailServiceImpl implements MailService {
   public void SendAdminNewStudentEnroll(UserInfo userInfo, long courseId, CourseInfo courseInfo, String appUrl) throws MessagingException {
 
     String recipientAddress = "sys@pyinnyar-subuu.com";
-    // InternetAddress.parse(recipientAddress);
+    String ccAddress1 = "sys1pyinnyarsubuu@gmail.com";
+    String ccAddress2 = "sys2pyinnyarsubuu@gmail.com";
 
     String subject = "【Pyinnyar Subuu】A student has successfully enrolled in a course.";
 
@@ -340,6 +399,8 @@ public class MailServiceImpl implements MailService {
     message.setSubject(subject);
     message.setFrom("sys@pyinnyar-subuu.com");
     message.setTo(recipientAddress);
+    message.addCc(ccAddress1);
+    message.addCc(ccAddress2);
 
     final String htmlContent = templateEngine.process("EnrollCourseMailForAdmin", ctx);
     message.setText(htmlContent, true); // true = isHtml
@@ -499,7 +560,7 @@ public class MailServiceImpl implements MailService {
 
     String recipientAddress = "sys@pyinnyar-subuu.com";
     String subject = "【Pyinnyar Subuu】Please check student payment, course payment by a student is done successfully.";
-
+     
     final Context ctx = new Context();
     ctx.setVariable("studentname", userInfo.getUserName());
     ctx.setVariable("teachername", courseInfo.getUserInfo().getUserName());
@@ -641,6 +702,116 @@ public class MailServiceImpl implements MailService {
     
     this.mailSender.send(mimeMessage);
 
+
+  }
+
+  @Override
+  public void AdminChangedPassword(UserInfo userInfo, UserAccount userAccount, String appUrl) throws MessagingException {
+
+    
+    String subject = "【Pyinnyar Subuu】You have successfully change your password.";
+
+    final Context ctx = new Context();
+    String recipientAddress = userAccount.getMail();
+    
+    // ctx.setVariable("adminname", userInfo.getUserName());   
+    ctx.setVariable("Date", new Date());
+    ctx.setVariable("appUrl", appUrl);
+
+    final MimeMessage mimeMessage = mailSender.createMimeMessage();
+    final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+    message.setSubject(subject);
+    message.setFrom("sys@pyinnyar-subuu.com");
+    message.setTo(recipientAddress);
+
+    final String htmlContent = templateEngine.process("AdminChangedPassword", ctx);
+    message.setText(htmlContent, true);
+    
+    this.mailSender.send(mimeMessage);
+
+  }
+
+  @Override
+  public void AdminResetPassword(UserAccount user, String appUrl) throws MessagingException {
+    String token = UUID.randomUUID().toString();
+    userService.createToken(user, token, TokenType.PASSWORD_RESET);
+    logger.info("Password  reset request from :" + user.getMail());
+    String recipientAddress = user.getMail();
+    String subject = "【Pyinnyar Subuu】You have requested to change your password.";
+    String confirmationUrl = appUrl + "/resetPassword?token=" + token;
+    final Context ctx = new Context();
+    ctx.setVariable("confirmationUrl", confirmationUrl);
+    ctx.setVariable("username", user.getUserInfo().getUserName());
+    ctx.setVariable("Date", new Date());
+    ctx.setVariable("token", token);
+    ctx.setVariable("appUrl", appUrl);
+    final MimeMessage mimeMessage = mailSender.createMimeMessage();
+    final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
+    message.setSubject(subject);
+    message.setFrom("sys@pyinnyar-subuu.com");
+    message.setTo(recipientAddress);
+
+    final String htmlContent = templateEngine.process("AdminResetPassword", ctx);
+
+    message.setText(htmlContent, true); // true = isHtml
+
+    this.mailSender.send(mimeMessage);
+
+  }
+
+  @Override
+  public void TeacherResetPassword(UserAccount user, String appUrl) throws MessagingException {
+    String token = UUID.randomUUID().toString();
+    userService.createToken(user, token, TokenType.PASSWORD_RESET);
+    logger.info("Password  reset request from :" + user.getMail());
+    String recipientAddress = user.getMail();
+    String subject = "【Pyinnyar Subuu】You have requested to change your password.";
+    String confirmationUrl = appUrl + "/resetPassword?token=" + token;
+    final Context ctx = new Context();
+    ctx.setVariable("confirmationUrl", confirmationUrl);
+    ctx.setVariable("username", user.getUserInfo().getUserName());
+    ctx.setVariable("Date", new Date());
+    ctx.setVariable("token", token);
+    ctx.setVariable("appUrl", appUrl);
+    final MimeMessage mimeMessage = mailSender.createMimeMessage();
+    final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
+    message.setSubject(subject);
+    message.setFrom("sys@pyinnyar-subuu.com");
+    message.setTo(recipientAddress);
+
+    final String htmlContent = templateEngine.process("TeacherResetPassword", ctx);
+
+    message.setText(htmlContent, true); // true = isHtml
+
+    this.mailSender.send(mimeMessage);
+
+  }
+
+  @Override
+  public void StudentResetPassword(UserAccount user, String appUrl) throws MessagingException {
+    String token = UUID.randomUUID().toString();
+    userService.createToken(user, token, TokenType.PASSWORD_RESET);
+    logger.info("Password  reset request from :" + user.getMail());
+    String recipientAddress = user.getMail();
+    String subject = "【Pyinnyar Subuu】You have requested to change your password.";
+    String confirmationUrl = appUrl + "/resetPassword?token=" + token;
+    final Context ctx = new Context();
+    ctx.setVariable("confirmationUrl", confirmationUrl);
+    ctx.setVariable("username", user.getUserInfo().getUserName());
+    ctx.setVariable("Date", new Date());
+    ctx.setVariable("token", token);
+    ctx.setVariable("appUrl", appUrl);
+    final MimeMessage mimeMessage = mailSender.createMimeMessage();
+    final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
+    message.setSubject(subject);
+    message.setFrom("sys@pyinnyar-subuu.com");
+    message.setTo(recipientAddress);
+
+    final String htmlContent = templateEngine.process("StudentResetPassword", ctx);
+
+    message.setText(htmlContent, true); // true = isHtml
+
+    this.mailSender.send(mimeMessage);
 
   }
 
