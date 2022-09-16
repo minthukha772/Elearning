@@ -33,7 +33,7 @@ public interface MailService {
   
   public void SendTeacherNewCourseByTeacher(CourseInfo courseInfo, String appUrl) throws MessagingException;
 
-  public void SendAdminNewCourseByAdmin(CourseInfo courseInfo, String appUrl) throws MessagingException;
+  public void SendAdminNewCourseByAdmin(UserAccount userAccount, CourseInfo courseInfo, String appUrl) throws MessagingException;
   
   public void SendTeacherNewCourseByAdmin(CourseInfo courseInfo, String appUrl) throws MessagingException;
 
