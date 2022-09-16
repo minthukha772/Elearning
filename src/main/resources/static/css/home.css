@@ -19,7 +19,7 @@
 }
 
 .btn {
-	width: 263px;
+	width: fit-content;
 	height: 66px;
 	border: 2px solid white;
 	border-radius: 4px;
@@ -95,9 +95,9 @@
 	}
 
 	.btn {
-		width: 200px;
+		width: fit-content;
 		font-size: 15px;
-		margin-top: 20px;
+		/* margin-top: 20px; */
 		height: 40px;
 	}
 
@@ -362,12 +362,14 @@
 
 /* Greenboard Section */
 .greenboards{
+	margin-top: 220px;
 	transform: translateY(-66%);
 }
 
 @media screen and (max-width: 1300px) {
 
 	.greenboards{
+		margin-top: auto;
 		transform: translateY(0%);
 	}
 }	

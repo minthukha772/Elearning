@@ -305,9 +305,9 @@ public class MailServiceImpl implements MailService {
     this.mailSender.send(mimeMessage);
   }
 
-  public void SendAdminNewCourseByAdmin(CourseInfo courseInfo, String appUrl) throws MessagingException {
+  public void SendAdminNewCourseByAdmin(UserAccount userAccount, CourseInfo courseInfo, String appUrl) throws MessagingException {
 
-    String recipientAddress = "sys@pyinnyar-subuu.com";
+    String recipientAddress = userAccount.getMail();
     String subject = "【Pyinnyar Subuu】Course Registration by admin Successfully Completed!";
 
     appUrl = appUrl + "/admin/course-info";
