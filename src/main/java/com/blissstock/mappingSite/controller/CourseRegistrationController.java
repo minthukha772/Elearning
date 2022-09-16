@@ -15,6 +15,7 @@ import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.CourseTime;
 import com.blissstock.mappingSite.entity.JoinCourseUser;
 import com.blissstock.mappingSite.entity.Syllabus;
+import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.exceptions.UnauthorizedFileAccessException;
 import com.blissstock.mappingSite.model.FileInfo;
@@ -247,6 +248,8 @@ public class CourseRegistrationController {
         // course.setUserInfo(userInfoRepository.findById(userSessionService.getId()).get());
         course.setUserInfo(userInfoRepository.findById(course.getUid()).get());
         logger.info("Post Requested");
+        UserAccount userAccount = userSessionService.getUserAccount();
+
         UserRole role = userSessionService.getRole();
         if (role == UserRole.ADMIN || role == UserRole.SUPER_ADMIN) {
             course.setIsCourseApproved(true);
@@ -324,7 +327,7 @@ public class CourseRegistrationController {
                                     ":" +
                                     request.getServerPort(); // "8080"
 
-                            mailService.SendAdminNewCourseByAdmin(course, appUrl);
+                            mailService.SendAdminNewCourseByAdmin(userAccount, course, appUrl);
                             mailService.SendTeacherNewCourseByAdmin(course, appUrl);
 
 
