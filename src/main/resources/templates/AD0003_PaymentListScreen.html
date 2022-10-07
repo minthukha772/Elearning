@@ -116,8 +116,8 @@
       </div> -->
       <div th:replace="${nav_type}"></div>
       <nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: '>'">
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a th:href="@{/admin/top/}">Top</a></li>
+        <ol class="breadcrumb mt-2 ms-3">
+          <li class="breadcrumb-item "><a th:href="@{/admin/top/}">Top</a></li>
           <li class="breadcrumb-item active" aria-current="page">
             Payment List
           </li>
@@ -241,7 +241,7 @@
         <div class="container">
           <div class="card">
             <div class="card-body table-responsive">
-              <table id="payListTable" class="table table-striped">
+              <table id="payListTable" class="table">
                 <thead>
                   <tr>
                     <th>No</th>
@@ -276,7 +276,7 @@
                     <td></td>
                     <td th:text="${dr.paymentDate}"></td>
                     <td th:text="${dr.courseFees}"></td>
-                    <td th:text="${dr.paymentStatus }"></td>
+                    <td th:text="${dr.paymentStatus }" id="payStatus"></td>
                     <td>
                       <a
                         th:href="@{/admin/payment-upload/course_id/{courseId}/student_id/{id}(courseId = ${dr.courseId}, id = ${dr.userId})}"
@@ -386,5 +386,24 @@
       });
 
     </script>
+
+    <script>
+      console.log(payListTable)
+      let payStatus=document.getElementById('payStatus');
+      console.log(payStatus.innerHTML)
+      // console.log(payStatus)
+      // if(payStatus.innerHTML===COMPLETED){
+        
+      //   payListTable.forEach(element => {
+      //     element.classList.add('bg-success');
+      //   });
+      // }
+
+      // for (const iterator of ) {
+        
+      // }
+    </script>
   </body>
 </html>
+
+<h3 class=""></h3>
