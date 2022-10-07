@@ -85,165 +85,35 @@
       src="js/demo.js"
       th:src="@{/js/demo.js}"
     ></script>
-    <script
-      type="text/javascript"
-      language="javascript"
-      class="init"
-      th:inline="javascript"
-    >
-      /*<![CDATA[*/
-      $(document).ready(function () {
-        var t = $("#example").DataTable({
-          columnDefs: [
-            {
-              searchable: false,
-              orderable: false,
-            },
-          ],
-          order: [1, "asc"],
-          dom: '<"top"f>rt<"bottom"lp><"clear">', // Positions table elements
-          dom: "lrtip",
-          // "language": {
-          //     "search": "_INPUT_",            // Removes the 'Search' field label
-          //     "searchPlaceholder": "Search"   // Placeholder for the search box
-          // }
-        });
-
-        // Search Box
-        $("#mySearchButton").on("keyup click", function () {
-          t.search($("#mySearchText").val()).draw();
-        });
-
-        $("#payment_status").on("change", function () {
-          t.search(this.value).draw();
-        });
-
-        $("#mySearchButton").click(function () {
-          t.column(1).search($("#column_search:selected").val());
-          // other columns filters similarly
-          t.draw();
-        });
-
-        $("#column_search").on("change", function () {
-          value = $("#column_search:selected").val();
-          console.log($("#column_search:selected").val());
-          console.log(value);
-          if (value == 1) {
-            $("#mySearchButton").on("keyup click", function () {
-              t.column(1).search($("#mySearchText").val()).draw();
-              t.column(2).searchable = false;
-              // t.column(2).searchable(false);
-            });
-            // t.column(1).search(this.value).draw();
-          } else if (value == 2) {
-            $("#mySearchButton").on("keyup click", function () {
-              t.column(2).search($("#mySearchText").val()).draw();
-              t.column(1).searchable = false;
-              // t.column(1).searchable(false);
-            });
-            // t.column(2).search(this.value).draw();
-          }
-        });
-
-        // $("#mySearchText").keyup(function() {t.fnFilter(this.value);});
-        // $('#mySearchText').keypress(function(){
-        //     t.fnFilter( $(this).val() );
-        // });
-
-        // $('#mySearchText').keypress(function(){
-        //     t.fnFilter( this.value);
-        // });
-
-        // Yay it's ok
-        $("#mySearchText").on("keyup search input paste cut", function () {
-          t.search(this.value).draw();
-        });
-        //Yay it's ok
-
-        t.on("order.dt search.dt", function () {
-          t.column(0, { search: "applied", order: "applied" })
-            .nodes()
-            .each(function (cell, i) {
-              cell.innerHTML = i + 1;
-            });
-        }).draw();
-      });
-
-      // $(document).ready(function () {
-      //     var t = $('#example').DataTable({
-      //         "columnDefs": [{
-      //             "searchable": false,
-      //             "orderable": false,
-      //             "targets": 0
-      //         }],
-      //         "order": [
-      //             [ 1, 'asc' ]
-      //         ]
-      //     });
-
-      //     t.on('order.dt search.dt', function () {
-      //         t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
-      //             cell.innerHTML = i + 1;
-      //         });
-      //     }).draw();
-      // });
-
-      // dTable = $('#example').DataTable({
-      //     "bLengthChange": false, // this gives option for changing the number of records shown in the UI table
-      //     "lengthMenu": [4], // 4 records will be shown in the table
-      //     "columnDefs": [
-      //         { "className": "dt-center", "targets": "_all" } //columnDefs for align text to center
-      //     ],
-      //     "dom": "lrtip" //to hide default searchbox but search feature is not disabled hence customised searchbox can be made.
-      // });
-
-      // $('#myCustomSearchBox').keyup(function () {
-      //     dTable.search($(this).val()).draw();   // this  is for customized searchbox with datatable search feature.
-      // });
-
-      //     $('#myCustomSearchBox').keypress(function(){
-      //      oTable.fnFilter( $(this).val() );
-      //  });
-
-      //     $('#myCustomSearchBox').on( 'keyup', function () {
-      //    table.search( this.value ).draw();
-      // } );
-      // $("#mySearchText").keyup(function() {
-      //    dataTable.fnFilter(this.value);
-      // });
-
-      // $("#myCustomSearchBox").html($(".dataTables_filter"));
-      /*]]>*/
-    </script>
   </head>
 
   <body>
     <div style="position: relative">
       <!-- <div id="mySidebar" class="sidebar" style="float:left;">
-                                                                        
-                                                                        <div class="text">
-                                                                            Menu
-                                                                        </div>
-                                                                        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
-                                                                        <ul class="main_side">
-                                                                            <li><a th:href="@{/admin/profile}">Profile</a></li>
-                                                                            <li> <a href="#" id="1">User List <span class="fas fa-caret-down"></span> </a>
-                                                                                <ul class="item-show-1">
-                                                                                    <li><a th:href="@{/student-list}">Student List</a></li>
-                                                                                    <li><a th:href="@{/teacher-list}">Teacher List</a></li>
-                                                                                </ul>
-                                                                            </li>
-                                                                            <li><a th:href="@{/payment-list}" class="active-link">Payment Record</a></li>
-                                                                            <li> <a id="2">Course <span class="fas fa-caret-down"></span> </a>
-                                                                                <ul class="item-show-2">
-                                                                                    <li><a th:href="@{/course-list}">Course List</a></li>
-                                                                                </ul>
-                                                                            </li>
-                                                                            <li><a th:href="@{/review-list}">Review List</a></li>
-                                                                            <li><a th:href="@{/absence-list}">Absence List</a></li>
-                                                                            <li><a th:href="@{/}">Log Out</a></li>
-                                                                        </ul>
-                                                                    </div> -->
+          
+          <div class="text">
+              Menu
+          </div>
+          <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+          <ul class="main_side">
+              <li><a th:href="@{/admin/profile}">Profile</a></li>
+              <li> <a href="#" id="1">User List <span class="fas fa-caret-down"></span> </a>
+                  <ul class="item-show-1">
+                      <li><a th:href="@{/student-list}">Student List</a></li>
+                      <li><a th:href="@{/teacher-list}">Teacher List</a></li>
+                  </ul>
+              </li>
+              <li><a th:href="@{/payment-list}" class="active-link">Payment Record</a></li>
+              <li> <a id="2">Course <span class="fas fa-caret-down"></span> </a>
+                  <ul class="item-show-2">
+                      <li><a th:href="@{/course-list}">Course List</a></li>
+                  </ul>
+              </li>
+              <li><a th:href="@{/review-list}">Review List</a></li>
+              <li><a th:href="@{/absence-list}">Absence List</a></li>
+              <li><a th:href="@{/}">Log Out</a></li>
+          </ul>
+      </div> -->
       <div th:replace="${nav_type}"></div>
       <nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: '>'">
         <ol class="breadcrumb">
@@ -312,34 +182,41 @@
 
             <input
               type="text"
-              class="form-control"
-              id="mySearchText"
-              placeholder="Search in Payment List"
-              aria-label="Search in Payment List"
-              aria-describedby="mySearchButton"
+              class="form-control w-25 me-3"
+              id="courseNameSearch"
+              placeholder="Search with Course Name"
+              aria-label="Search with Course Name"
+              aria-describedby="courseNameSearch"
             />
-            <button
-              class="btn btn-outline-secondary fw-bold"
-              id="mySearchButton"
-              type="button"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                class="bi bi-search"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"
-                ></path>
-              </svg>
-              Search
-            </button>
+            
+            <input
+              type="text"
+              class="form-control w-25 me-3"
+              id="teacherNameSearch"
+              placeholder="Search with Teacher Name"
+              aria-label="Search with Teacher Name"
+              aria-describedby="teacherNameSearch"
+            />
+            
+           <div action="" class="input-group mt-3">
+              <div>
+                <label for="startDate" class="form-label me-3 mt-1">Course Start Date</label>
+                <input id="startDate" type="date" class="form-control w-50 me-3 float-end" placeholder="Start Date">  
+              </div>
+              
+              <div>
+                <label for="endDate" class="form-label me-3 mt-1">Course End Date</label>
+                <input id="endDate" type="date" class="form-control w-50 me-3 float-end"  placeholder="End Date">    
+              </div>
+           </div>                                                                 
+            
+
           </div>
         </div>
-        <div class="input-group-prepend mb-3" style="width: 125px">
+        
+        
+
+        <div class="input-group-prepend mb-3 d-inline-block" style="width: 125px">
           <label class="text-muted">Payment Status</label>
           <select
             class="form-select"
@@ -358,17 +235,22 @@
         <!-- <div class="mx-auto p-3" > -->
         <!-- <div>
                                                                         <section> -->
-        <button class=" btn btn-primary mb-3" id="downloadpaylist">Export to Excel</button>
-          <div class="container">
+        <button class="btn btn-primary mb-3 float-end" id="downloadpaylist">
+          Export to Excel
+        </button>
+        <div class="container">
           <div class="card">
             <div class="card-body table-responsive">
               <table id="payListTable" class="table table-striped">
                 <thead>
                   <tr>
                     <th>No</th>
-                    <th>Name</th>
-                    <th>Requested Course</th>
-                    <th>Date</th>
+                    <th>Student's Name</th>
+                    <th>Teacher's Name</th>
+                    <th>Course Name</th>
+                    <th>Course Start Date</th>
+                    <th>Course End Date</th>
+                    <th>Student's Payment Date</th>
                     <th>Amount</th>
                     <th>Payment Status</th>
                     <th></th>
@@ -386,9 +268,12 @@
                         ></a
                       ></b>
                     </td>
+                    <td th:text="${dr.teacherName}"></td>
                     <!-- change to "@{/CourseDetail/{id}(id=${course_id})}" or @{|/edit-mentor/${mentor.id}|} -->
                     <!-- <a th:href="@{|/test|}"></a> -->
                     <td th:text="${dr.courseName}"></td>
+                    <td></td>
+                    <td></td>
                     <td th:text="${dr.paymentDate}"></td>
                     <td th:text="${dr.courseFees}"></td>
                     <td th:text="${dr.paymentStatus }"></td>
@@ -396,7 +281,11 @@
                       <a
                         th:href="@{/admin/payment-upload/course_id/{courseId}/student_id/{id}(courseId = ${dr.courseId}, id = ${dr.userId})}"
                         class="btn btn-primary"
-                        >Payment Details</a
+                        ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-square" viewBox="0 0 16 16">
+                          <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                          <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                        </svg>
+                        </a
                       >
                     </td>
                   </tr>
@@ -416,11 +305,10 @@
             </div>
           </div>
         </div>
-  
       </div>
     </div>
- 
-    <div class=" mt-5"></div>
+
+    <div class="mt-5"></div>
     <div th:replace="@{fragments/footer}"></div>
 
     <script>
@@ -466,12 +354,37 @@
       });
     </script>
     <script>
-      document.getElementById("downloadpaylist").addEventListener("click", function(){
-      var table2excel = new Table2Excel();
-      table2excel.export(document.querySelectorAll("#payListTable"));
-    })
+      document
+        .getElementById("downloadpaylist")
+        .addEventListener("click", function () {
+          var table2excel = new Table2Excel();
+          table2excel.export(document.querySelectorAll("#payListTable"));
+        });
     </script>
     <script th:src="@{/js/table2excel.js}"></script>
+    <script type ="text/javascript">
+      
+            $(document).ready(function () {
+        var t = $("#payListTable").DataTable();
 
+        $("#payment_status").on("change", function () {
+          t.search(this.value).draw();
+        });
+        $("#courseNameSearch").on("keyup search input paste cut", function () {
+          t.column(3).search(this.value).draw();
+        });
+        $("#teacherNameSearch").on("keyup search input paste cut", function () {
+          t.column(2).search(this.value).draw();
+        });
+        t.on("order.dt search.dt", function () {
+          t.column(0, { search: "applied", order: "applied" })
+            .nodes()
+            .each(function (cell, i) {
+              cell.innerHTML = i + 1;
+            });
+        }).draw();
+      });
+
+    </script>
   </body>
 </html>

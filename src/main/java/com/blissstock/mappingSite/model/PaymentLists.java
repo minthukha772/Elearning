@@ -6,6 +6,7 @@ public class PaymentLists {
     Date paymentDate;
     String paymentStatus;
     String userName;
+    String teacherName;
     String courseName;
     int courseFees;
     Long userId;
@@ -14,10 +15,11 @@ public class PaymentLists {
     public PaymentLists() {
     }
     
-        public PaymentLists(Date paymentDate, String paymentStatus, String userName, String courseName, int courseFees, Long userId, Long courseId) {
+        public PaymentLists(Date paymentDate, String paymentStatus, String userName, String teacherName, String courseName, int courseFees, Long userId, Long courseId) {
             this.paymentDate = paymentDate;
             this.paymentStatus = paymentStatus;
             this.userName = userName;
+            this.teacherName = teacherName;
             this.courseName = courseName;
             this.courseFees = courseFees;
             this.userId = userId;
@@ -47,6 +49,14 @@ public class PaymentLists {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getTeacherName()  {
+        return this.teacherName;
+    }
+
+    public void setTeacherName(String teacherName) {
+        this.teacherName = teacherName;
     }
 
     public String getCourseName() {
