@@ -2,6 +2,7 @@ package com.blissstock.mappingSite.controller;
 
 // import java.sql.Date;
 import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,10 +57,11 @@ public class PaymentListController {
             model.addAttribute("nav_type",nav_type);
 
         List<PaymentLists> payUserList = new ArrayList<>();
+        SimpleDateFormat format  = new SimpleDateFormat("yyyy-MM-dd");
         // List<AllPaymentLists> allPayment = new AllPaymentLists();
         for(PaymentReceive paymentReceive:viewPayment)
         {
-            Date paymentDate = paymentReceive.getPaymentReceiveDate();
+            String paymentDate = format.format(paymentReceive.getPaymentReceiveDate());
             String paymentStatus = paymentReceive.getPaymentStatus();
 
             JoinCourseUser joinCourseUser = paymentReceive.getJoin();
@@ -69,10 +71,12 @@ public class PaymentListController {
             Long userId = payUserInfo.getUid();
             CourseInfo payCouresInfo = joinCourseUser.getCourseInfo();
             String courseName = payCouresInfo.getCourseName();
+            String courseStartDate = format.format(payCouresInfo.getStartDate());
+            String courseEndDate = format.format(payCouresInfo.getEndDate());
             String teacherName = payCouresInfo.getUserInfo().getUserName();
             Long courseId = payCouresInfo.getCourseId();
             int courseFees = payCouresInfo.getFees();
-            payUserList.add(new PaymentLists(paymentDate, paymentStatus, userName, teacherName, courseName, courseFees,userId,courseId));
+            payUserList.add(new PaymentLists(paymentDate, courseStartDate, courseEndDate, paymentStatus, userName, teacherName, courseName, courseFees,userId,courseId));
         }
 
         logger.info("Payment Receive List including user's information {}",payUserList);

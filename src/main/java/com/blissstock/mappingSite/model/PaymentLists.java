@@ -3,7 +3,9 @@ package com.blissstock.mappingSite.model;
 import java.util.Date;
 
 public class PaymentLists {
-    Date paymentDate;
+    String paymentDate;
+    String courseStartDate;
+    String courseEndDate;
     String paymentStatus;
     String userName;
     String teacherName;
@@ -15,8 +17,10 @@ public class PaymentLists {
     public PaymentLists() {
     }
     
-        public PaymentLists(Date paymentDate, String paymentStatus, String userName, String teacherName, String courseName, int courseFees, Long userId, Long courseId) {
+        public PaymentLists(String paymentDate, String courseStartDate, String courseEndDate, String paymentStatus, String userName, String teacherName, String courseName, int courseFees, Long userId, Long courseId) {
             this.paymentDate = paymentDate;
+            this.courseStartDate = courseStartDate;
+            this.courseEndDate = courseEndDate;
             this.paymentStatus = paymentStatus;
             this.userName = userName;
             this.teacherName = teacherName;
@@ -27,12 +31,28 @@ public class PaymentLists {
         }
     
 
-    public Date getPaymentDate() {
+    public String getPaymentDate() {
         return this.paymentDate;
     }
 
-    public void setPaymentDate(Date paymentDate) {
+    public void setPaymentDate(String paymentDate) {
         this.paymentDate = paymentDate;
+    }
+
+    public String getCourseStartDate() {
+        return this.courseStartDate;
+    }
+
+    public void setCourseStartDate(String courseStartDate) {
+        this.courseStartDate = courseStartDate;
+    }
+
+    public String getCourseEndDate() {
+        return this.courseEndDate;
+    }
+
+    public void setCourseEndDate(String courseEndDate) {
+        this.courseEndDate = courseEndDate;
     }
 
     public String getPaymentStatus() {

@@ -239,69 +239,73 @@
           Export to Excel
         </button>
         <div class="container">
-          <div class="card">
-            <div class="card-body table-responsive">
-              <table id="payListTable" class="table">
-                <thead>
-                  <tr>
-                    <th>No</th>
-                    <th>Student's Name</th>
-                    <th>Teacher's Name</th>
-                    <th>Course Name</th>
-                    <th>Course Start Date</th>
-                    <th>Course End Date</th>
-                    <th>Student's Payment Date</th>
-                    <th>Amount</th>
-                    <th>Payment Status</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr th:each="dr,index:${allPaymentList}">
-                    <td></td>
-                    <td>
-                      <b
-                        ><a
-                          th:href="@{'/admin/browse/profile/' + ${dr.userId}}"
-                          th:text="${dr.userName}"
-                          style="text-decoration: none"
-                        ></a
-                      ></b>
-                    </td>
-                    <td th:text="${dr.teacherName}"></td>
-                    <!-- change to "@{/CourseDetail/{id}(id=${course_id})}" or @{|/edit-mentor/${mentor.id}|} -->
-                    <!-- <a th:href="@{|/test|}"></a> -->
-                    <td th:text="${dr.courseName}"></td>
-                    <td></td>
-                    <td></td>
-                    <td th:text="${dr.paymentDate}"></td>
-                    <td th:text="${dr.courseFees}"></td>
-                    <td th:text="${dr.paymentStatus }" id="payStatus"></td>
-                    <td>
-                      <a
-                        th:href="@{/admin/payment-upload/course_id/{courseId}/student_id/{id}(courseId = ${dr.courseId}, id = ${dr.userId})}"
-                        class="btn btn-primary"
-                        ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-square" viewBox="0 0 16 16">
-                          <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
-                          <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
-                        </svg>
-                        </a
-                      >
-                    </td>
-                  </tr>
-                </tbody>
-                <!-- <tfoot>
-                  <tr>
-                    <th>No</th>
-                    <th>Name</th>
-                    <th>Requested Course</th>
-                    <th>Date</th>
-                    <th>Amount</th>
-                    <th>Payment Status</th>
-                    <td></td>
-                  </tr>
-                </tfoot> -->
-              </table>
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="card">
+                <div class="card-body table-responsive">
+                  <table id="payListTable" class="table w-auto">
+                    <thead>
+                      <tr>
+                        <th>No</th>
+                        <th>Student's Name</th>
+                        <th>Teacher's Name</th>
+                        <th>Course Name</th>
+                        <th>Course Start Date</th>
+                        <th>Course End Date</th>
+                        <th>Student's Payment Date</th>
+                        <th>Amount</th>
+                        <th>Payment Status</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr th:each="dr,index:${allPaymentList}">
+                        <td></td>
+                        <td>
+                          <b
+                            ><a
+                              th:href="@{'/admin/browse/profile/' + ${dr.userId}}"
+                              th:text="${dr.userName}"
+                              style="text-decoration: none"
+                            ></a
+                          ></b>
+                        </td>
+                        <td th:text="${dr.teacherName}"></td>
+                        <!-- change to "@{/CourseDetail/{id}(id=${course_id})}" or @{|/edit-mentor/${mentor.id}|} -->
+                        <!-- <a th:href="@{|/test|}"></a> -->
+                        <td th:text="${dr.courseName}"></td>
+                        <td th:text="${dr.courseStartDate}"></td>
+                        <td th:text="${dr.courseEndDate}"></td>
+                        <td th:text="${dr.paymentDate}"></td>
+                        <td th:text="${dr.courseFees}"></td>
+                        <td th:text="${dr.paymentStatus}" id="pyst" name="payStatus"></td>
+                        <td>
+                          <a
+                            th:href="@{/admin/payment-upload/course_id/{courseId}/student_id/{id}(courseId = ${dr.courseId}, id = ${dr.userId})}"
+                            class="btn btn-primary"
+                            ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-square" viewBox="0 0 16 16">
+                              <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                              <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                            </svg>
+                            </a
+                          >
+                        </td>
+                      </tr>
+                    </tbody>
+                    <!-- <tfoot>
+                      <tr>
+                        <th>No</th>
+                        <th>Name</th>
+                        <th>Requested Course</th>
+                        <th>Date</th>
+                        <th>Amount</th>
+                        <th>Payment Status</th>
+                        <td></td>
+                      </tr>
+                    </tfoot> -->
+                  </table>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -388,22 +392,48 @@
     </script>
 
     <script>
-      console.log(payListTable)
-      let payStatus=document.getElementById('payStatus');
-      console.log(payStatus.innerHTML)
+      let td=document.getElementsByName('payStatus');
+      console.log(td)
+      let pyst=document.getElementById('pyst');
+      console.log(pyst.innerHTML)
+
+        // for(let count=0;count<tbdate.length;count++){
+        //   tbdate[count].classList.add('table-success')
+        // }
       // console.log(payStatus)
-      // if(payStatus.innerHTML===COMPLETED){
-        
-      //   payListTable.forEach(element => {
-      //     element.classList.add('bg-success');
+        // td.forEach(element => {
+        //   if(pyst.innerHTML=="COMPLETED"){
+        //     element.classList.add('bg-success');
+        //    }
+        //    else if(pyst.innerHTML=="PENDING"){
+        //     element.classList.add('bg-warning');
+        //    }
+        // });
+
+        for(let i=0;i<td.length;i++){
+          if(pyst.innerHTML=="COMPLETED"){
+              // td[i].classList.add('even')
+              td[i].classList.add('bg-success')
+
+          }
+          else{
+              // boxes[i].classList.add('odd')
+              td[i].classList.add('bg-warning')
+
+          }
+      }
+
+      // else if(pyst.innerHTML=="PENDING"){
+      //   tbdate.forEach(element => {
+      //     element.classList.add('bg-info');
       //   });
+
       // }
 
-      // for (const iterator of ) {
-        
-      // }
+
+      
     </script>
   </body>
 </html>
 
-<h3 class=""></h3>
+<h3 class="table-success bg-info"></h3>
