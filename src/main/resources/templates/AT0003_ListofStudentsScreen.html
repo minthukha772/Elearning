@@ -24,6 +24,13 @@
       href="css/dataTables.bootstrap5.css"
       th:href="@{/css/dataTables.bootstrap5.css}"
     />
+    <!-- <link
+         rel="stylesheet" 
+         type="text/css"
+         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">   -->
+
+         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
     <link
       rel="stylesheet"
       type="text/css"
@@ -73,6 +80,7 @@
       type="text/javascript"
       language="javascript"
       src="js/dataTables.bootstrap5.js"
+      
       th:src="@{/js/dataTables.bootstrap5.js}"
     ></script>
     <script
@@ -315,6 +323,10 @@
           </div>
           <!-- account status end -->
 
+            <!-- <button type="button" class="btn btn-danger">
+              <i class="fa-regular fa-trash-can"></i>
+            </button> -->
+
           <!-- card start -->
           <div class="card">
             <div class="card-body table-responsive">
@@ -330,11 +342,14 @@
                     <th>Email</th>
                     <th>Phone Number</th>
                     <th>Account Status</th>
+                    <th>Delete</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr th:each="dr,index:${sAllStudentList}">
-                    <td></td>
+                    <td>
+                     
+                    </td>
                     <td>
                       <b
                         ><a
@@ -347,16 +362,22 @@
                     <td th:text="${dr.userAccount.mail}"></td>
                     <td th:text="${dr.phoneNo}"></td>
                     <td th:text="${dr.userAccount.accountStatus}"></td>
+                   <td>
+                    <a href="#">
+                      <i class="fa-solid fa-trash-can" style="margin-left:20px";></i>
+                    </a>
+                   </td>
+                     
                   </tr>
                 </tbody>
                 <tfoot>
-                  <tr>
+                  <!-- <tr>
                     <th>No</th>
                     <th>Name</th>
                     <th>Email</th>
                     <th>Phone Number</th>
                     <th>Account Status</th>
-                  </tr>
+                  </tr> -->
                 </tfoot>
               </table>
               <!-- </div> -->

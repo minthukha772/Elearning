@@ -91,3 +91,39 @@
 }  
   
 }
+footer {
+  width: 100vw;
+height: auto;
+background-color: #3f877a;
+color: white;
+}
+
+.footer__div {
+padding: 73px 103px;
+}
+
+.footer__title {
+font-size: 24px;
+}
+
+.footer__title ul {
+list-style: none;
+font-size: 16px;
+}
+
+.footer__subtitle {
+margin-top: 24px;
+}
+
+.copyright {
+	width: 100%;
+	background-color: black;
+	height: 49px;
+}
+
+.copyright__text {
+	margin: 0;
+	text-align: center;
+  color: white;
+}
+

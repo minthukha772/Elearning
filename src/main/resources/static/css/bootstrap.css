@@ -10771,4 +10771,9 @@ textarea.form-control-lg {
   }
 }
 
+.btn-danger{
+  background:white;
+  border:1px solid white;
+}
+
 /*# sourceMappingURL=main.css.map */
