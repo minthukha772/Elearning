@@ -11,6 +11,7 @@ import javax.validation.constraints.NotBlank;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.blissstock.mappingSite.entity.Content;
+import com.blissstock.mappingSite.entity.CourseCategory;
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.CourseTime;
 import com.blissstock.mappingSite.entity.JoinCourseUser;
@@ -18,6 +19,7 @@ import com.blissstock.mappingSite.entity.Syllabus;
 import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.exceptions.UnauthorizedFileAccessException;
 import com.blissstock.mappingSite.model.FileInfo;
+import com.blissstock.mappingSite.repository.CourseCategoryRepository;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
 // import com.blissstock.mappingSite.repository.CourseRepository;
 import com.blissstock.mappingSite.repository.CourseTimeRepository;
@@ -30,6 +32,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,6 +41,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.blissstock.mappingSite.service.CourseService;
 import com.blissstock.mappingSite.service.MailService;
 import com.blissstock.mappingSite.service.StorageService;
 import com.blissstock.mappingSite.service.StorageServiceImpl;
@@ -53,6 +59,9 @@ public class CourseRegistrationController {
     MailService mailService;
     @Autowired
     private CourseInfoRepository courseInfoRepo;
+
+    @Autowired
+    private CourseService courseService;
 
     @Autowired
     JoinCourseUserRepository joinRepo;
@@ -72,6 +81,9 @@ public class CourseRegistrationController {
     StorageService storageService;
 
     @Autowired
+    CourseCategoryRepository courseCategoryRepository;
+
+    @Autowired
     public CourseRegistrationController(StorageService storageService) {
       this.storageService = storageService;
     }
@@ -83,6 +95,17 @@ public class CourseRegistrationController {
 
         List<CourseTime> courseTimeList = new ArrayList<>(7);
         courseInfo.setCourseTime(courseTimeList);
+
+        // // Course Category list from Database starts here
+
+        // List<CourseCategory> options = courseCategoryRepository.findAll();
+        // model.addAttribute("CourseListHtml", options);
+        // logger.info("Course Category list :: {}", options.toString());
+
+        model.addAttribute("CourseListHtml", courseService.getAllCourseCategory());
+        // logger.info("Course Category list :: {}", courseService.getAllCourseCategory());
+        
+        // // Course Category list from Database ends here
 
         UserRole role = userSessionService.getRole();
         if (role == UserRole.ADMIN || role == UserRole.SUPER_ADMIN) {
@@ -115,6 +138,7 @@ public class CourseRegistrationController {
         return "AT0001_CourseRegistration";
     }
 
+    
     @PostMapping(value = { "/teacher/courseregister-confirm", "/admin/courseregister-confirm" })
     private String courseRegistrationConfirm(@ModelAttribute("course") CourseInfo course,
             @RequestParam("course_pic") MultipartFile cphoto,
@@ -301,8 +325,8 @@ public class CourseRegistrationController {
                                     ":" +
                                     request.getServerPort(); // "8080"
 
-                            mailService.SendAdminNewCourseByTeacher(course, appUrl);
-                            mailService.SendTeacherNewCourseByTeacher(course, appUrl);
+                            mailService.SendAdminNewCourseByTeacher(course);
+                            mailService.SendTeacherNewCourseByTeacher(course);
 
                         } catch (Exception e) {
                             logger.info(e.toString());
@@ -319,6 +343,43 @@ public class CourseRegistrationController {
         // return "takealeave";
     }
 
+    @GetMapping("/admin/course-registration/add-new-category")
+    public String addNewCategoryForm(Model model) {
+        CourseCategory courseCategory = new CourseCategory();
+        model.addAttribute("addNewCategory", courseCategory);
+        return "add_category";
+    }
+
+    @GetMapping("/admin/course-registration/updateCategory")
+    public String updateCategory(Model model) {
+        CourseCategory courseCategory = new CourseCategory();
+        model.addAttribute("addNewCategory", courseCategory);
+        model.addAttribute("Category", courseService.getAllCourseCategory());
+        return "del_category"; 
+    }
+
+    // @GetMapping("/updateCategory/{id}")
+    // public String updateCategory(@PathVariable ( value = "id") long categoryId, Model model) {
+    //     CourseCategory courseCategory = courseService.getCategoryById(categoryId);
+
+    //     model.addAttribute("Category", courseCategory);
+        
+    //     return "del_category"; 
+    // }
+
+    @GetMapping("/deleteCategory/{id}")
+    public String deleteCategory(@PathVariable ( value = "id") long categoryId, Model model) {
+        this.courseService.deleteCategoryById(categoryId);        
+        return "redirect:/admin/course-registration/updateCategory"; 
+    }
+
+    @PostMapping("/saveCategory")
+    public String saveCategory(@ModelAttribute("addNewCategory") CourseCategory courseCategory) {
+         courseService.addCategory(courseCategory);
+         return "redirect:/admin/teacher-list";
+    }
+
+   
     // @RequestMapping("/admin/course")
     // public String courseTest()
     // {

@@ -38,6 +38,7 @@ import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
+import org.springframework.beans.factory.annotation.Value;
 
 
 
@@ -63,6 +64,13 @@ public class MailServiceImpl implements MailService {
    * @Autowired
    * private MessageSource messages;
    */
+
+  @Value("${com.blissstock.mapping-site.ENVIRONMENT}")
+  String ENVIRONMENT;
+  @Value("${com.blissstock.mapping-site.TESTING_DOMAIN}")
+  String TESTING_DOMAIN;
+  @Value("${com.blissstock.mapping-site.PRODUCTION_DOMAIN}")
+  String PRODUCTION_DOMAIN;
 
   private String email = "sys@pyinnyar-subuu.com";
   private String fromName = "PyinnyarSubuu";
@@ -93,7 +101,8 @@ public class MailServiceImpl implements MailService {
         subject);
   }
 
-  public void sendVerificationMail(UserAccount userAccount, String appUrl) throws MessagingException {
+  public void sendVerificationMail(UserAccount userAccount) throws MessagingException {
+    String appUrl = getServerAddress();
     String token = UUID.randomUUID().toString();
     userService.createToken(userAccount, token, TokenType.VERIFICATION);
 
@@ -120,8 +129,8 @@ public class MailServiceImpl implements MailService {
     this.mailSender.send(mimeMessage);
   }
 
-  public void SendAdminNewTeacher(UserInfo userInfo, String appUrl) throws MessagingException {
-
+  public void SendAdminNewTeacher(UserInfo userInfo) throws MessagingException {
+    String appUrl = getServerAddress();
     String recipientAddress = "sys@pyinnyar-subuu.com";
     String subject = "New Teacher Has Registered";
 
@@ -154,8 +163,8 @@ public class MailServiceImpl implements MailService {
     this.mailSender.send(mimeMessage);
   }
 
-  public void SendAdminNewStudent(UserInfo userInfo, String appUrl) throws MessagingException {
-
+  public void SendAdminNewStudent(UserInfo userInfo) throws MessagingException {
+    String appUrl = getServerAddress();
     String recipientAddress = "sys@pyinnyar-subuu.com";
     String subject = "New Student Has Registered";
 
@@ -185,8 +194,8 @@ public class MailServiceImpl implements MailService {
     this.mailSender.send(mimeMessage);
   }
 
-  public void SendAdminNewCourseByTeacher(CourseInfo courseInfo, String appUrl) throws MessagingException {
-
+  public void SendAdminNewCourseByTeacher(CourseInfo courseInfo) throws MessagingException {
+    String appUrl = getServerAddress();
     String recipientAddress = "sys@pyinnyar-subuu.com";
     String subject = "【Pyinnyar Subuu】Course Registration by a teacher Successfully Completed!";
 
@@ -216,8 +225,8 @@ public class MailServiceImpl implements MailService {
     this.mailSender.send(mimeMessage);
   }
 
-  public void SendTeacherNewCourseByTeacher(CourseInfo courseInfo, String appUrl) throws MessagingException {
-
+  public void SendTeacherNewCourseByTeacher(CourseInfo courseInfo) throws MessagingException {
+    String appUrl = getServerAddress();
     String recipientAddress = courseInfo.getUserInfo().getUserAccount().getMail();
     String subject = "【Pyinnyar Subuu】Course Registration by Teacher Successfully Completed!";
 
@@ -248,8 +257,8 @@ public class MailServiceImpl implements MailService {
   }
 
   @Override
-  public void SendAdminNewStudentEnroll(UserInfo userInfo, long courseId, CourseInfo courseInfo, String appUrl) throws MessagingException {
-
+  public void SendAdminNewStudentEnroll(UserInfo userInfo, long courseId, CourseInfo courseInfo) throws MessagingException {
+    String appUrl = getServerAddress();
     String recipientAddress = "sys@pyinnyar-subuu.com";
     // InternetAddress.parse(recipientAddress);
 
@@ -285,8 +294,8 @@ public class MailServiceImpl implements MailService {
   }
 
   @Override
-  public void SendStudentEnrollCourse(UserInfo userInfo, CourseInfo courseInfo, String appUrl) throws MessagingException {
-
+  public void SendStudentEnrollCourse(UserInfo userInfo, CourseInfo courseInfo) throws MessagingException {
+    String appUrl = getServerAddress();
     String recipientAddress = userInfo.getUserAccount().getMail();
     String subject =  "【Pyinnyar Subuu】You have successfully enrolled in a course.";
 
@@ -320,8 +329,8 @@ public class MailServiceImpl implements MailService {
   }
 
   @Override
-  public void SendTeacherNewStudentEnroll(UserInfo userInfo, CourseInfo courseInfo, String appUrl) throws MessagingException {
-
+  public void SendTeacherNewStudentEnroll(UserInfo userInfo, CourseInfo courseInfo) throws MessagingException {
+    String appUrl = getServerAddress();
     String recipientAddress = courseInfo.getUserInfo().getUserAccount().getMail();
     String subject =  "【Pyinnyar Subuu】A student has successfully enrolled in a course.";
 
@@ -371,7 +380,8 @@ public class MailServiceImpl implements MailService {
 
 
   @Override
-  public void sendResetPasswordMail(UserAccount userAccount, String appUrl) throws MessagingException {
+  public void sendResetPasswordMail(UserAccount userAccount) throws MessagingException {
+    String appUrl = getServerAddress();
     String token = UUID.randomUUID().toString();
     userService.createToken(userAccount, token, TokenType.PASSWORD_RESET);
     logger.info("Password  resst requesst from :" + userAccount.getMail());
@@ -432,8 +442,8 @@ public class MailServiceImpl implements MailService {
   }
 
   @Override
-  public void PaymentReceivedByAdmin(UserInfo userInfo, long courseId, CourseInfo courseInfo, String appUrl) throws MessagingException {
-
+  public void PaymentReceivedByAdmin(UserInfo userInfo, long courseId, CourseInfo courseInfo) throws MessagingException {
+    String appUrl = getServerAddress();
     String recipientAddress = "sys@pyinnyar-subuu.com";
     String subject = "【Pyinnyar Subuu】Please check student payment, course payment by a student is done successfully.";
      
@@ -462,8 +472,8 @@ public class MailServiceImpl implements MailService {
   }
 
   @Override
-  public void VerifiedTeacherByAdmin(UserInfo teacherInfo, UserInfo adminInfo, String appUrl) throws MessagingException {
-
+  public void VerifiedTeacherByAdmin(UserInfo teacherInfo, UserInfo adminInfo) throws MessagingException {
+    String appUrl = getServerAddress();
     
     String subject = "【Pyinnyar Subuu】Teacher Account Verification Successfully Completed! ";
 
@@ -495,8 +505,8 @@ public class MailServiceImpl implements MailService {
   }
 
   @Override
-  public void VerifiedTeacherByAdminToTeacher(UserInfo teacherInfo, UserInfo adminInfo, String appUrl) throws MessagingException {
-
+  public void VerifiedTeacherByAdminToTeacher(UserInfo teacherInfo, UserInfo adminInfo) throws MessagingException {
+    String appUrl = getServerAddress();
     
     String subject = "【Pyinnyar Subuu】Teacher Account Verification Successfully Completed! ";
 
@@ -528,8 +538,8 @@ public class MailServiceImpl implements MailService {
   }
 
   @Override
-  public void StudentChangedPassword(UserInfo userInfo, UserAccount userAccount, String appUrl) throws MessagingException {
-
+  public void StudentChangedPassword(UserInfo userInfo, UserAccount userAccount) throws MessagingException {
+    String appUrl = getServerAddress();
     
     String subject = "【Pyinnyar Subuu】You have successfully change your password.";
 
@@ -555,8 +565,8 @@ public class MailServiceImpl implements MailService {
   }
 
   @Override
-  public void TeacherChangedPassword(UserInfo userInfo, UserAccount userAccount, String appUrl) throws MessagingException {
-
+  public void TeacherChangedPassword(UserInfo userInfo, UserAccount userAccount) throws MessagingException {
+    String appUrl = getServerAddress();
     
     String subject = "【Pyinnyar Subuu】You have successfully changed your password.";
 
@@ -582,8 +592,8 @@ public class MailServiceImpl implements MailService {
   }
 
   @Override
-  public void AdminChangedPassword(UserInfo userInfo, UserAccount userAccount, String appUrl) throws MessagingException {
-
+  public void AdminChangedPassword(UserInfo userInfo, UserAccount userAccount) throws MessagingException {
+    String appUrl = getServerAddress();
     
     String subject = "【Pyinnyar Subuu】You have successfully change your password.";
 
@@ -608,7 +618,8 @@ public class MailServiceImpl implements MailService {
   }
 
   @Override
-  public void AdminResetPassword(UserAccount user, String appUrl) throws MessagingException {
+  public void AdminResetPassword(UserAccount user) throws MessagingException {
+    String appUrl = getServerAddress();
     String token = UUID.randomUUID().toString();
     userService.createToken(user, token, TokenType.PASSWORD_RESET);
     logger.info("Password  reset request from :" + user.getMail());
@@ -636,7 +647,8 @@ public class MailServiceImpl implements MailService {
   }
 
   @Override
-  public void TeacherResetPassword(UserAccount user, String appUrl) throws MessagingException {
+  public void TeacherResetPassword(UserAccount user) throws MessagingException {
+    String appUrl = getServerAddress();
     String token = UUID.randomUUID().toString();
     userService.createToken(user, token, TokenType.PASSWORD_RESET);
     logger.info("Password  reset request from :" + user.getMail());
@@ -664,7 +676,8 @@ public class MailServiceImpl implements MailService {
   }
 
   @Override
-  public void StudentResetPassword(UserAccount user, String appUrl) throws MessagingException {
+  public void StudentResetPassword(UserAccount user) throws MessagingException {
+    String appUrl = getServerAddress();
     String token = UUID.randomUUID().toString();
     userService.createToken(user, token, TokenType.PASSWORD_RESET);
     logger.info("Password  reset request from :" + user.getMail());
@@ -688,6 +701,27 @@ public class MailServiceImpl implements MailService {
     message.setText(htmlContent, true); // true = isHtml
 
     this.mailSender.send(mimeMessage);
+
+  }
+
+  @Override
+  public String getServerAddress() {
+    String appUrl = "Empty";
+    // logger.warn(ENVIRONMENT);
+    // logger.warn((ENVIRONMENT.equals("production")) + "");
+    if (ENVIRONMENT.equals("production")) {
+      appUrl = PRODUCTION_DOMAIN;
+
+    }
+    if (ENVIRONMENT.equals("testing")) {
+      appUrl = TESTING_DOMAIN;
+
+    }
+    if (ENVIRONMENT.equals("local")) {
+      appUrl = "localhost:8080";
+
+    }
+    return appUrl;
 
   }
 
