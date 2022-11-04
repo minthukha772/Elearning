@@ -372,7 +372,103 @@
       .footers{
          transform: translateY(90%);
       }
+  }
+
+
+  /* CSS for add category */
+
+  *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.registration{
+    margin: 0 20px;
+}
+.course-registration{
+    padding-top: 20px;
+}
+.course-registration .card{
+    background-color: #4DC4AE;
+    min-width: 350px;
+    max-width: 800px;
+    margin:  auto;
+}
+
+.img-upload{
+    cursor: pointer;
+}
+
+.display-image{
+    margin: 15px auto;
+    width: 200px;
+}
+
+.unit{
+    background-color: #4DC4AE;
+    width: 70px;
+    height: 100%;
+    top: 0;
+    right: 12px;
+    border-radius: 0 5px 5px 0;
+    border: 2px solid white;
+}
+
+.add-category, .delete-category{
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 55000;
+}
+
+.add-category .add-box, .delete-category .delete-box{
+    width: 50%;
+}
+
+.add-category.ani, .delete-category.ani{
+    animation: fadeIn 0.3s ease-in both;
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+		transform: translate3d(0, -20%, 0);
+	}
+	to {
+		opacity: 1;
+		transform: translate3d(0, 0, 0);
+	}
+}
+
+@media (max-width : 600px) {
+    .add-category .add-box, .delete-category .delete-box{
+        width: 80%  !important;
+    }
+    .add-new-cat, .delete-new-cat{
+        width: 350px !important;
+    }
+}
+
+.table > :not(caption) > * > * {
+  padding: 0.5rem 0.5rem;
+  background-color: #4dc4ae;
+  border-bottom-width: 1px;
+  box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+  --bs-table-accent-bg: var(--bs-table-striped-bg);
+  color: #1f2326;
+}
+
+:root {
   
+  --bs-white: #1f2326;
+  
+}
+  
+=======
   } */
 
   /* FOOTER */
