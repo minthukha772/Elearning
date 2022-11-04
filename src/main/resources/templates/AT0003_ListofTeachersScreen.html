@@ -12,6 +12,10 @@
       name="viewport"
       content="width=device-width, initial-scale=1, minimum-scale=1.0, user-scalable=no"
     />
+
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css"> -->
     <!-- <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css"> -->
     <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -44,10 +48,9 @@
     <!-- <link rel="stylesheet" type="text/css" href="css/dataTableManual.css">
             <link rel="stylesheet" type="text/css" href="css/dataTableSCSSMaual.css"> -->
 
-      <title>Pyinnyar Subuu</title>
+    <title>Pyinnyar Subuu</title>
 
-  <link rel="icon" type="image/x-icon" href="/images/fav.png">
-
+    <link rel="icon" type="image/x-icon" href="/images/fav.png" />
 
     <script
       type="text/javascript"
@@ -199,7 +202,9 @@
       <div th:replace="${nav_type}"></div>
       <nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: '>'">
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a th:href="@{/admin/top/}">Top</a></li>
+          <li class="breadcrumb-item ms-3">
+            <a th:href="@{/admin/top/}">Top</a>
+          </li>
           <li class="breadcrumb-item active" aria-current="page">
             Teacher List
           </li>
@@ -277,9 +282,9 @@
           </button>
         </div>
 
-        <div class="container" >
+        <div class="container">
           <div class="">
-            <div class="input-group mb-3 col-lg-4 " >
+            <div class="input-group mb-3 col-lg-4">
               <input
                 type="text"
                 class="form-control"
@@ -313,16 +318,60 @@
             </select>
           </div>
 
-          <div class="card" >
+          <div class="card mb-5">
             <div class="card-body">
-              
-                <div class="table-responsive">
-                  <table
-                    id="example"
-                    class="table table-striped"
-                    style="width: 100%"
-                  >
-                    <thead>
+              <div class="table-responsive">
+                <table
+                  id="example"
+                  class="table"
+                  style="width: 100%">
+                  <thead>
+                    <tr>
+                      <th>No</th>
+                      <th>Teacher Name</th>
+                      <th>Phone Number</th>
+                      <th>Email</th>
+                      <th>Total numbers of course</th>
+                      <th>List of course</th>
+                      <th>Account Status</th>
+                      <th>Course Registration</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr th:each="dr,index:${tAllTeacherList}">
+                      <td></td>
+                      <td>
+                        <b><a
+                            th:href="@{'/admin/browse/profile/' + ${dr.uid}}"
+                            th:text="${dr.userName}"
+                            style="text-decoration: none"
+                          ></a></b>
+                      </td>
+                      <td th:text="${dr.phoneNo}"></td>
+                      <td th:text="${dr.userAccount.mail}"></td>
+                      <td th:text="${dr.courseInfo.size}" class="text-center"></td>
+                      <td class="">
+                        <div class="dropdown" >
+                            <button class="btn dropdown-toggle fw-bold text-white" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              Course
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                              <span class="dropdown-item" th:each="course,idx:${dr.courseInfo}" th:text="${course.courseName}" onclick="courseName"></span>
+                            </div>
+                        </div>
+                     </td>
+                      <td th:text="${dr.userAccount.accountStatus}" class="accStatus"></td>
+                      <td>
+                        <a
+                          th:href="@{'/admin/course-registration/' + ${dr.uid}}"
+                          class="btn btn-primary"
+                          style="float: center"
+                          th:classappend="${dr.userAccount.accountStatus != accountStatus}? 'disabled'"
+                          >Add Course</a>
+                      </td>
+                    </tr>
+                  </tbody>
+                  <!-- <tfoot>
                       <tr>
                         <th>No</th>
                         <th>Name</th>
@@ -331,48 +380,10 @@
                         <th>Account Status</th>
                         <th>Course Registration</th>
                       </tr>
-                    </thead>
-                    <tbody>
-                      <tr th:each="dr,index:${tAllTeacherList}">
-                        <td></td>
-                        <td>
-                          <b
-                            ><a
-                              th:href="@{'/admin/browse/profile/' + ${dr.uid}}"
-                              th:text="${dr.userName}"
-                              style="text-decoration: none"
-                            ></a
-                          ></b>
-                        </td>
-                        <td th:text="${dr.phoneNo}"></td>
-                        <td th:text="${dr.userAccount.mail}"></td>
-                        <td th:text="${dr.userAccount.accountStatus}"></td>
-                        <td>
-                          <a
-                            th:href="@{'/admin/course-registration/' + ${dr.uid}}"
-                            class="btn btn-primary"
-                            style="float: center"
-                            th:classappend="${dr.userAccount.accountStatus != accountStatus}? 'disabled'"
-                            >Add Course</a
-                          >
-                        </td>
-                        <!-- <td></td> -->
-                      </tr>
-                    </tbody>
-                    <tfoot>
-                      <tr>
-                        <th>No</th>
-                        <th>Name</th>
-                        <th>Phone Number</th>
-                        <th>Email</th>
-                        <th>Account Status</th>
-                        <th>Course Registration</th>
-                      </tr>
-                    </tfoot>
-                  </table>
-                </div>
-              
-            </divc>
+                    </tfoot> -->
+                </table>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -380,7 +391,7 @@
 
     <div th:replace="@{fragments/footer}"></div>
 
-    <script>
+    <!-- <script>
       function openNav() {
         document.getElementById("mySidebar").style.width = "250px";
         document.getElementById("main").style.marginLeft = "250px";
@@ -421,6 +432,50 @@
             .animate({ marginTop: $(window).scrollTop() + "px" }, "slow");
         }
       });
+    </script> -->
+
+    <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <!-- <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script> -->
+    <script th:src="@{/js/CM0002_CourseList.js}"></script>
+
+    <script>
+      let td=document.getElementsByClassName('accStatus');
+        
+
+        for(let i=0;i<td.length;i++){
+          console.log(td[i].innerHTML)
+          if(td[i].innerHTML=="VERIFIED"){
+              // td[i].innerHTML = "";
+              // td[i].classList.add('fa-solid')
+              // td[i].classList.add('fa-check')
+              td[i].classList.add('bg-success')
+              // td[i].classList.add('mt-3')
+              
+          }
+          else if(td[i].innerHTML=="REQUESTED"){
+            // td[i].innerHTML = "";
+            // td[i].classList.add('fa-solid')
+            // td[i].classList.add('fa-code-pull-request')
+            td[i].classList.add('bg-info')
+            // td[i].classList.add('mt-3')
+          }
+          else{
+              // td[i].innerHTML = "";
+              // td[i].classList.add('fa-solid')
+              // td[i].classList.add('fa-exclamation')
+              td[i].classList.add('bg-warning')
+              // td[i].classList.add('mt-3')
+          }
+      }
+      
     </script>
+
   </body>
 </html>

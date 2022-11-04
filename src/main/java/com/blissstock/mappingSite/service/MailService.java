@@ -22,6 +22,10 @@ public interface MailService {
 
   public void SendAdminNewTeacher(UserInfo userInfo) throws MessagingException;
 
+  public void SendAdminNewAdmin(UserAccount userAccount, UserInfo adminInfo, String appUrl) throws MessagingException;
+
+  public void SendSuperAdminNewAdmin(UserAccount userAccount, UserInfo adminInfo, String appUrl) throws MessagingException;
+
   public void SendAdminNewStudent(UserInfo userInfo) throws MessagingException;
 
   public String getServerAddress();
@@ -29,6 +33,10 @@ public interface MailService {
   public void SendAdminNewCourseByTeacher(CourseInfo courseInfo) throws MessagingException;
   
   public void SendTeacherNewCourseByTeacher(CourseInfo courseInfo) throws MessagingException;
+
+  public void SendAdminNewCourseByAdmin(UserAccount userAccount, CourseInfo courseInfo, String appUrl) throws MessagingException;
+  
+  public void SendTeacherNewCourseByAdmin(CourseInfo courseInfo, String appUrl) throws MessagingException;
   
   public void PaymentByStudent(UserInfo userInfo, long courseId, CourseInfo courseInfo) throws MessagingException;
 
