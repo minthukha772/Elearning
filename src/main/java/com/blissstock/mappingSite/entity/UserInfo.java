@@ -108,6 +108,10 @@ public class UserInfo implements Profile {
 
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "userInfo")
   @JsonIgnore
+  private List<PaymentReceive> paymentReceives = new ArrayList<>();
+
+  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "userInfo")
+  @JsonIgnore
   private List<JoinCourseUser> join = new ArrayList<>();
 
   @OneToMany(

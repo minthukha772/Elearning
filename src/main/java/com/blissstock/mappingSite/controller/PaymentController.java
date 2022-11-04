@@ -179,7 +179,7 @@ public class PaymentController {
           //     appUrl);
 
           mailService.PaymentByStudent(userInfo, courseId, courseInfo);
-          mailService.PaymentReceivedByAdmin(userInfo, courseId, courseInfo, appUrl);
+          mailService.PaymentReceivedByAdmin(userInfo, courseId, courseInfo);
 
         } catch (Exception e) {
           logger.info(e.toString());

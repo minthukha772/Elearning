@@ -181,6 +181,9 @@
 
         <!-- Award and Certificates: End -->
 
+
+       
+
         <!-- Payment: Start -->
         <div th:if="${role=='ROLE_TEACHER' && isEditable}">
           <div class="d-flex justify-content-between mt-3 profileform">
@@ -427,6 +430,60 @@
 
   <!-- Delete Confirm Modal End -->
 
+   <!-- Student currently attending course List table Starts from here -->
+
+   <div th:if="${role=='ROLE_STUDENT'}">
+    <div sec:authorize="hasAuthority('ROLE_ADMIN') || hasAuthority('ROLE_SUPER_ADMIN')">
+    
+  <div class="container-custom mb-5">
+    <div class="card">
+      <div class="card-body">
+    <div class="d-flex justify-content-between mt-3 profileform">
+      <h5>Currently attending course list</h5>
+
+      
+    </div>
+
+    <!-- <div th:if="${paymentAccounts!=null and !paymentAccounts.empty and isEditable}"> -->
+      <table class="table table-striped paytable">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Course Name</th>
+            <th scope="col">Teacher Name</th>
+            <th scope="col">Class Type</th>
+            <th scope="col">Start Date</th>
+            <th scope="col">End Date</th>
+            <th scope="col">Course Fee</th>
+            <th scope="col">Payment Status</th>
+          </tr>
+          <tr class="col" th:each="attcourselist, stats : ${courseList}">
+            <!-- <div class="card h-100"> -->
+
+            <th scope="row" th:text="${stats.index + 1}">1</th>
+
+            <!-- <td th:text="${attcourselist}"></td> -->
+            
+            <td th:text="${attcourselist.courseName}"></td>
+            <td th:text="${attcourselist.teacherName}"></td>
+            <td th:text="${attcourselist.classType}"></td>
+            <td th:text="${attcourselist.startDate}"></td>
+            <td th:text="${attcourselist.endDate}"></td>
+            <td th:text="${attcourselist.fees}"></td>
+            <td th:text="${attcourselist.truePaymentStatus}"></td>
+
+            
+            </form>
+          </tr>
+      </table>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+</div>
+<!-- Student currently attending course table Ends here -->
+
+
   <div th:replace="@{fragments/footer}"></div>
   <script th:inline="javascript">
     const isEditable = /*[[${isEditable}]]*/ false;
@@ -443,6 +500,7 @@
   <script src="/js/CM0004_profile.js"></script>
   <script th:src="@{./../../../js/main.js}"></script>
   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+  
 </body>
 
 </html>
