@@ -31,6 +31,12 @@ public class PaymentLists {
         }
     
 
+    public PaymentLists(String paymentStatus2) {
+
+        this.paymentStatus = paymentStatus2;
+
+        }
+
     public String getPaymentDate() {
         return this.paymentDate;
     }
