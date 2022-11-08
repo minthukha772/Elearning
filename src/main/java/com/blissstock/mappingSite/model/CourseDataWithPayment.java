@@ -79,29 +79,16 @@ public class CourseDataWithPayment {
         courseData.teacherName = courseInfo.getUserInfo().getUserName();
         courseData.teacherId = courseInfo.getUserInfo().getUid();
         courseData.photo = courseInfo.getUserInfo().getPhoto();
-
         
-        
-        // courseData.paymentStatus = paymentReceive.getJoin().getPaymentReceive().getPaymentStatus();
-        // courseData.paymentStatus = userInfo.getPaymentReceives();
-        // courseData.paymentStatus2 = paymentReceive.getPaymentStatus();
         courseData.paymentStatus = list;
         List<PaymentLists> payUserList2 = new ArrayList<>();
         for(PaymentReceive paymentReceive:courseData.paymentStatus)
         {
-            Date paymentDate = paymentReceive.getPaymentReceiveDate();
+            
             String paymentStatus = paymentReceive.getPaymentStatus();
 
-            JoinCourseUser joinCourseUser = paymentReceive.getJoin();
             
-            UserInfo payUserInfo = joinCourseUser.getUserInfo();
-            String userName = payUserInfo.getUserName();
-            Long userId = payUserInfo.getUid();
-            CourseInfo payCouresInfo = joinCourseUser.getCourseInfo();
-            String courseName = payCouresInfo.getCourseName();
-            Long courseId = payCouresInfo.getCourseId();
-            int courseFees = payCouresInfo.getFees();
-            payUserList2.add(new PaymentLists(paymentDate, paymentStatus, userName, courseName, courseFees,userId,courseId));
+            payUserList2.add(new PaymentLists(paymentStatus));
             
             courseData.truePaymentStatus = paymentReceive.getPaymentStatus();
         }   
