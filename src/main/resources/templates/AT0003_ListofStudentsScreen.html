@@ -36,13 +36,15 @@
       href="css/demo.css"
       th:href="@{/css/demo.css}"
     />
+		<!-- <link rel="stylesheet" th:href="@{/css/global.css}" /> -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
+
     <link
       rel="stylesheet"
       type="text/css"
       href="css/AT0003_ListofStudentsByA.css"
       th:href="@{/css/AT0003_ListofStudentsByA.css}"
     />
-    <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
     <!-- <link rel="stylesheet" type="text/css" href="css/dataTableManual.css">
             <link rel="stylesheet" type="text/css" href="css/dataTableSCSSMaual.css"> -->
 
@@ -231,11 +233,11 @@
   </head>
 
   <body>
-    <div style="position: relative">
+    <div style="position: relative" class="mb-5">
       <div th:replace="${nav_type}"></div>
       <nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: '>'">
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a th:href="@{/admin/top/}">Top</a></li>
+          <li class="breadcrumb-item ms-3"><a th:href="@{/admin/top/}">Top</a></li>
           <li class="breadcrumb-item active" aria-current="page">
             Student List
           </li>
@@ -321,15 +323,16 @@
               <!-- <div class="demo-html"> -->
               <table
                 id="example"
-                class="table table-striped dt-responsive nowrap"
+                class="table dt-responsive"
               >
                 <thead>
                   <tr>
                     <th>No</th>
-                    <th>Name</th>
+                    <th>Student's Name</th>
                     <th>Email</th>
                     <th>Phone Number</th>
                     <th>Account Status</th>
+                    <th>No of class attend</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -346,10 +349,11 @@
                     </td>
                     <td th:text="${dr.userAccount.mail}"></td>
                     <td th:text="${dr.phoneNo}"></td>
-                    <td th:text="${dr.userAccount.accountStatus}"></td>
+                    <td th:text="${dr.userAccount.accountStatus}" class="accStatus"></td>
+                    <td th:text="${dr.join.size}" class="text-center"></td>
                   </tr>
                 </tbody>
-                <tfoot>
+                <!-- <tfoot>
                   <tr>
                     <th>No</th>
                     <th>Name</th>
@@ -357,7 +361,7 @@
                     <th>Phone Number</th>
                     <th>Account Status</th>
                   </tr>
-                </tfoot>
+                </tfoot> -->
               </table>
               <!-- </div> -->
             </div>
@@ -396,6 +400,23 @@
             .animate({ marginTop: $(window).scrollTop() + "px" }, "slow");
         }
       });
+    </script>
+    <script>
+      let td=document.getElementsByClassName('accStatus');
+        
+        for(let i=0;i<td.length;i++){
+          console.log(td[i].innerHTML)
+          if(td[i].innerHTML=="REGISTERED"){
+              td[i].classList.add('bg-success')
+          }
+          else if(td[i].innerHTML=="SUSPENDED"){
+            td[i].classList.add('bg-info')
+          }
+          else{
+              td[i].classList.add('bg-warning')
+          }
+      }
+      
     </script>
   </body>
 </html>

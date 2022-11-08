@@ -48,7 +48,7 @@ public class PaymentReceive {
   @Column(name = "payment_receive_date")
   private Date paymentReceiveDate;
 
-  @ManyToOne(fetch = FetchType.EAGER)
+  @OneToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "join_id")
   JoinCourseUser join;
 
@@ -57,8 +57,8 @@ public class PaymentReceive {
     @JsonIgnore
     private JoinCourseUser joinByList;
   
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "uid_fkey")
-    @JsonIgnore
-    private UserInfo userInfo;
+  // @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  //   @JoinColumn(name = "uid_fkey")
+  //   @JsonIgnore
+  //   private UserInfo userInfo;
 }
