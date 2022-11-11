@@ -10,7 +10,6 @@ import java.util.NoSuchElementException;
 import javax.servlet.http.HttpServletRequest;
 
 import com.blissstock.mappingSite.dto.JoinCourseDTO;
-import com.blissstock.mappingSite.dto.CourseReviewDTO;
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.CourseTime;
 import com.blissstock.mappingSite.entity.JoinCourseUser;
@@ -139,27 +138,25 @@ public class CourseDetailsController {
         for (JoinCourseUser join : joinList) {
             reviewList.addAll(join.getReview());
         }
-        // logger.warn(reviewList.toString());
+
         // Get reveiwlist
-        List<CourseReviewDTO> courseReviewList = new ArrayList<CourseReviewDTO>();
+        List<Review> courseReviewList = new ArrayList<Review>();
+        List<FileInfo> userProfileList = new ArrayList<FileInfo>();
         for (Review courseReview : reviewList) {
             if (courseReview.getReviewType() == 0) {
-                CourseReviewDTO temp = new CourseReviewDTO();
-                temp.setFeedback(courseReview.getFeedback());
-                temp.setProfileLink(courseName);
-                temp.setReviewId(courseReview.getReviewId());
-                temp.setReviewType(courseReview.getReviewType());
+                UserInfo tempUserInfo = courseReview.getJoin().getUserInfo();
+                FileInfo profilePic = storageService.loadProfileAsFileInfo(tempUserInfo);
+                tempUserInfo.setPhoto(profilePic.getUrl());
+                courseReview.getJoin().setUserInfo(tempUserInfo);
 
-                temp.setStar(courseReview.getStar());
-                courseReviewList.add(temp);
-
+                courseReviewList.add(courseReview);
                 model.addAttribute("courseReviewList", courseReviewList);
             }
         }
 
         // first 3 reviews
         if (courseReviewList.size() >= 3) {
-            List<CourseReviewDTO> threeCourseReviewList = new ArrayList<>();
+            List<Review> threeCourseReviewList = new ArrayList<>();
             threeCourseReviewList.add(courseReviewList.get(0));
             threeCourseReviewList.add(courseReviewList.get(1));
             threeCourseReviewList.add(courseReviewList.get(2));
@@ -180,7 +177,7 @@ public class CourseDetailsController {
         // average rating
         int total_stars = 0;
         int numCourseReviewList = courseReviewList.size();
-        for (CourseReviewDTO review : courseReviewList) {
+        for (Review review : courseReviewList) {
             total_stars += review.getStar();
         }
         int average = 0;
