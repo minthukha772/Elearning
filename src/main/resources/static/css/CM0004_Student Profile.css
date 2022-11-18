@@ -1,3 +1,35 @@
+:root {
+	/* Colors */
+	--primary: #309986;
+	--warning: yellow;
+	--navbar-brand-bg-color: #edf3f1;
+	--navbar-color: #0f8173;
+	/* Typography */
+	--links-font-size: 17px;
+	--nav-link-bg-alt: #00736c;
+	--log-out:#e63587;
+	--certificate-border:#057835;
+	--certificate-btn:#3c8a08;
+	--certificate-secondbtn:hsla(160, 64%, 42%, 0.993);
+	--cardbox: #3abea6e7;
+    --btnbg: rgba(16, 226, 233, 0.993);
+    --btnborder:#fff;
+    --btnshadow:#000;
+	--registercomplete:green;
+}
+
+*,
+*::after,
+*::before {
+	box-sizing: border-box;
+}
+
+body {
+	font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+	font-weight: 400;
+	overflow-x: hidden;
+}
+
 .container-custom {
     max-width: 720px;
     padding-right: 16px;

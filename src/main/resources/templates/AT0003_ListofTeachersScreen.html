@@ -303,6 +303,8 @@
             </div>
           </div>
 
+          <button class=" btn btn-primary float-end" id="downloadteacherlist">Export to Excel</button>
+
           <div class="input-group-prepend mb-3" style="width: 135px">
             <label class="text-muted">Account Status</label>
             <select
@@ -317,13 +319,12 @@
               <option value="Suspended">SUSPENDED</option>
             </select>
           </div>
-
           <div class="card mb-5">
             <div class="card-body">
               <div class="table-responsive">
                 <table
                   id="example"
-                  class="table"
+                  class="table teacherListTable"
                   style="width: 100%">
                   <thead>
                     <tr>
@@ -390,6 +391,16 @@
     </div>
 
     <div th:replace="@{fragments/footer}"></div>
+
+    <script>
+      document.getElementById("downloadteacherlist").addEventListener("click", function () {
+          var table2excel = new Table2Excel();
+          table2excel.export(document.querySelectorAll(".teacherListTable"));
+        });
+    </script>
+
+    <script th:src="@{/js/table2excel.js}"></script>
+
 
     <!-- <script>
       function openNav() {
