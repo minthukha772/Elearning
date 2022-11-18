@@ -249,7 +249,7 @@
       <div th:replace="${nav_type}"></div>
       <nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: '>'">
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a th:href="@{/admin/top/}">Top</a></li>
+          <li class="breadcrumb-item ms-3"><a th:href="@{/admin/top/}">Top</a></li>
           <li class="breadcrumb-item active" aria-current="page">Admin List</li>
         </ol>
       </nav>
@@ -452,12 +452,12 @@
             </select>
           </div>
 
-          <div class="card">
+          <div class="card mb-5">
             <div class="card-body">
               <div class="table-responsive">
                 <table
                   id="example"
-                  class="table table-striped"
+                  class="table"
                   style="width: 100%"
                 >
                   <thead>
@@ -479,20 +479,10 @@
                         ></td> -->
                       <td th:text="${dr.mail}"></td>
                       <!-- <td th:text="${dr.phoneNo}"></td> -->
-                      <td th:text="${dr.accountStatus}"></td>
+                      <td th:text="${dr.accountStatus}" class="accStatus"></td>
                       <td th:text="${dr.registeredDate}"></td>
                     </tr>
                   </tbody>
-                  <tfoot>
-                    <tr>
-                      <th>No</th>
-                      <!-- <th>Name</th> -->
-                      <th>Email</th>
-                      <!-- <th>Phone Number</th> -->
-                      <th>Account Status</th>
-                      <th>Registered Date</th>
-                    </tr>
-                  </tfoot>
                 </table>
               </div>
             </div>
@@ -545,5 +535,25 @@
         }
       });
     </script>
+
+    </script>
+    <script>
+      let td=document.getElementsByClassName('accStatus');
+        
+        for(let i=0;i<td.length;i++){
+          console.log(td[i].innerHTML)
+          if(td[i].innerHTML=="REGISTERED"){
+              td[i].classList.add('bg-success')
+          }
+          else if(td[i].innerHTML=="SUSPENDED"){
+            td[i].classList.add('bg-info')
+          }
+          else{
+              td[i].classList.add('bg-warning')
+          }
+      }
+      
+    </script>
+
   </body>
 </html>
