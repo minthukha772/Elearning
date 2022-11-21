@@ -131,6 +131,8 @@ public class CourseDetailsController {
         model.addAttribute("courseName", courseName);
 
         // Get joinlist of the course
+
+        // here
         List<JoinCourseUser> joinList = courseInfo.getJoin();
         List<Review> reviewList = new ArrayList<Review>();
         for (JoinCourseUser join : joinList) {
@@ -139,8 +141,14 @@ public class CourseDetailsController {
 
         // Get reveiwlist
         List<Review> courseReviewList = new ArrayList<Review>();
+        List<FileInfo> userProfileList = new ArrayList<FileInfo>();
         for (Review courseReview : reviewList) {
             if (courseReview.getReviewType() == 0) {
+                UserInfo tempUserInfo = courseReview.getJoin().getUserInfo();
+                FileInfo profilePic = storageService.loadProfileAsFileInfo(tempUserInfo);
+                tempUserInfo.setPhoto(profilePic.getUrl());
+                courseReview.getJoin().setUserInfo(tempUserInfo);
+
                 courseReviewList.add(courseReview);
                 model.addAttribute("courseReviewList", courseReviewList);
             }

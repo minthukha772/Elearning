@@ -480,7 +480,7 @@
 					<div th:each="review:${courseReviewList}">
 					<div class="d-flex flex-column flex-md-row mb-3">
 						<img
-							src="/images/profile.png"
+						th:src="${review.join.userInfo.photo}"
 							class="profileImage"
 							alt="profileImage"
 						/>

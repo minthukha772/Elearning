@@ -262,6 +262,32 @@ li {
     color: #fff!important;
 } */
 
-.dataTables_filter {
+/* .dataTables_filter {
     display: none;
+} */
+
+
+.mobile-item{
+    width: 500px;
+    margin: 20px auto;
+    background-color: #28C4AF;
 }
+
+.mobile-item img{
+    width: 35px;
+    height: 35px;
+}
+
+/* @media (max-width:890px) {
+    .or-view{
+        display: none;
+    }
+    .mobile-view{
+        display: block !important;
+    }
+}
+@media (max-width:550px) {
+    .mobile-item{
+        width: 100%;
+    }
+} */
