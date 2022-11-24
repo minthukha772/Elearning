@@ -41,6 +41,8 @@
       th:href="@{/css/AD0003_PaymentList.css}"
     />
     <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+
     <!-- <link rel="stylesheet" type="text/css" href="css/dataTableManual.css">
             <link rel="stylesheet" type="text/css" href="css/dataTableSCSSMaual.css"> -->
 
@@ -169,97 +171,102 @@
                                                                     </div> -->
 
       <div class="container mx-auto">
-        <div>
-          <div class="input-group mb-2">
-            <!-- <div class="input-group-prepend" style="width: 25%;">
-                                                                                    <select class="form-select" aria-label=".form-select-sm" id="column_search"
-                                                                                    style="width: 100%;">
-                                                                                    <option value="">All</option>
-                                                                                    <option value="1">Student</option>
-                                                                                    <option value="2">Course</option>
-                                                                                    </select>
-                                                                            </div> -->
-
-            <input
-              type="text"
-              class="form-control w-25 me-3"
-              id="courseNameSearch"
-              placeholder="Search with Course Name"
-              aria-label="Search with Course Name"
-              aria-describedby="courseNameSearch"
-            />
-            
-            <input
-              type="text"
-              class="form-control w-25 me-3"
-              id="teacherNameSearch"
-              placeholder="Search with Teacher Name"
-              aria-label="Search with Teacher Name"
-              aria-describedby="teacherNameSearch"
-            />
-            
-           <!-- <div action="" class="input-group mt-3">
-              <div>
-                <label for="startDate" class="form-label me-3 mt-1">Course Start Date</label>
-                <input id="startDate" type="date" class="form-control w-50 me-3 float-end" placeholder="Start Date">  
-              </div>
+        <div class="d-none d-md-block d-lg-block d-xl-block">
+          <div>
+            <div class="input-group mb-2">
+              <!-- <div class="input-group-prepend" style="width: 25%;">
+                                                                                      <select class="form-select" aria-label=".form-select-sm" id="column_search"
+                                                                                      style="width: 100%;">
+                                                                                      <option value="">All</option>
+                                                                                      <option value="1">Student</option>
+                                                                                      <option value="2">Course</option>
+                                                                                      </select>
+                                                                              </div> -->
+  
+              <input
+                type="text"
+                class="form-control w-25 me-3"
+                id="courseNameSearch"
+                placeholder="Search with Course Name"
+                aria-label="Search with Course Name"
+                aria-describedby="courseNameSearch"
+              />
               
-              <div>
-                <label for="endDate" class="form-label me-3 mt-1">Course End Date</label>
-                <input id="endDate" type="date" class="form-control w-50 me-3 float-end"  placeholder="End Date">    
-              </div>
-           </div>                                                                  -->
-            
-
-          </div>
-        </div>
-
-        <div class="advanced-search-body">
-          <form id = "joiningDateSearch">
-            <div class="form-row d-flex justify-content-end">
-              <div class="form-group col-md-4 p-2 ">
-                <label for="" class="text-muted">Payment From</label>
-                <input type="date" id="min"
-                  class="form-control mt-2 w-100" >
-              </div>
-              <div class="form-group col-md-4 p-2 ">
-                <label for="" class="text-muted">Payment To</label>
-                <input type="date" id="max"
-                  class="form-control mt-2 w-100" >
-              </div>
-              <div class="form-group col-md-4 p-3 mt-4">
-                <button id="btnSearch" class="btn btn-outline-primary" type="button">Search</button>
-              </div>
+              <input
+                type="text"
+                class="form-control w-25 me-3"
+                id="teacherNameSearch"
+                placeholder="Search with Teacher Name"
+                aria-label="Search with Teacher Name"
+                aria-describedby="teacherNameSearch"
+              />
+              
+             <!-- <div action="" class="input-group mt-3">
+                <div>
+                  <label for="startDate" class="form-label me-3 mt-1">Course Start Date</label>
+                  <input id="startDate" type="date" class="form-control w-50 me-3 float-end" placeholder="Start Date">  
+                </div>
+                
+                <div>
+                  <label for="endDate" class="form-label me-3 mt-1">Course End Date</label>
+                  <input id="endDate" type="date" class="form-control w-50 me-3 float-end"  placeholder="End Date">    
+                </div>
+             </div>                                                                  -->
+              
+  
             </div>
-          </form>
-                            
-        </div>
-        
-        
+          </div>
+  
+          <div class="advanced-search-body">
+            <form id = "joiningDateSearch">
+              <div class="form-row d-flex justify-content-end">
+                <div class="form-group col-md-4 p-2 ">
+                  <label for="" class="text-muted">Payment From</label>
+                  <input type="date" id="min"
+                    class="form-control mt-2 w-100" >
+                </div>
+                <div class="form-group col-md-4 p-2 ">
+                  <label for="" class="text-muted">Payment To</label>
+                  <input type="date" id="max"
+                    class="form-control mt-2 w-100" >
+                </div>
+                <div class="form-group col-md-4 p-3 mt-4">
+                  <button id="btnSearch" class="btn btn-outline-primary" type="button">Search</button>
+                </div>
+              </div>
+            </form>
+                              
+          </div>
+          
+          
+  
+          <div class="input-group-prepend mb-3 d-inline-block" style="width: 125px">
+            <label class="text-muted">Payment Status</label>
+            <select
+              class="form-select mt-2"
+              aria-label=".form-select-sm example"
+              id="payment_status"
+              style="width: 100%"
+            >
+              <option value="">ALL</option>
+              <option value="Request">REQUESTED</option>
+              <option value="Pending">PENDING</option>
+              <option value="Complete">COMPLETE</option>
+              <option value="Error">ERROR</option>
+            </select>
+          </div>
 
-        <div class="input-group-prepend mb-3 d-inline-block" style="width: 125px">
-          <label class="text-muted">Payment Status</label>
-          <select
-            class="form-select mt-2"
-            aria-label=".form-select-sm example"
-            id="payment_status"
-            style="width: 100%"
-          >
-            <option value="">ALL</option>
-            <option value="Request">REQUESTED</option>
-            <option value="Pending">PENDING</option>
-            <option value="Complete">COMPLETE</option>
-            <option value="Error">ERROR</option>
-          </select>
+          <button class="btn btn-primary mb-3 float-end" id="downloadpaylist">
+            Export to Excel
+          </button>
         </div>
 
         <!-- <div class="mx-auto p-3" > -->
         <!-- <div>
                                                                         <section> -->
-        <button class="btn btn-primary mb-3 float-end" id="downloadpaylist">
-          Export to Excel
-        </button>
-        <div class="container">
+
+
+        <div class="container d-none d-md-block d-lg-block d-xl-block">
           <div class="row">
             <div class="col-lg-12">
               <div class="card">
@@ -330,6 +337,62 @@
             </div>
           </div>
         </div>
+
+        <div class="mobile-view d-block d-md-none d-lg-none d-xl-none">
+          <div class="mobile-item card" th:each="dr,index:${allPaymentList}">
+            <div class="card-header">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="">
+                  <!-- <img th:src="${dr.photo}" class="img-fluid rounded-circle" alt=""> -->
+                  <span class="fw-bold text-white">
+                    <span class="fw-bold">Student's Name -</span>
+                    <b><a
+                      th:href="@{'/admin/browse/profile/' + ${dr.userId}}"
+                      th:text="${dr.userName}"
+                      style="text-decoration: none"
+                    ></a></b>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="card-body text-white">
+              <div class="my-2">
+                <span class="fw-bold">Payment Status -</span>
+                <span class="mx-2 payStatus" th:text="${dr.paymentStatus}"></span>
+              </div>
+              <div class="my-2">
+                <span class="fw-bold">Amount -</span>
+                <span class="mx-2 text-center" th:text="${dr.courseFees}"></span>
+              </div>
+              <div class="my-2">
+                <span class="fw-bold">Student's Payment Date -</span>
+                <span class="mx-2 text-center" th:text="${dr.paymentDate}"></span>
+              </div>
+              <div class="my-2">
+                <span class="fw-bold">Course Name -</span>
+                <span class="mx-2 text-center" th:text="${dr.courseName}"></span>
+              </div>
+              <div class="my-2">
+                <span class="fw-bold">Teacher's Name -</span>
+                <span class="mx-2 text-center" th:text="${dr.teacherName}"></span>
+              </div>
+              <div class="d-flex align-items-center flex-wrap">
+                <div class="my-2 mx-2">
+                  <i class="fa-regular fa-calendar"></i>
+                  <span class="fw-bold">Course Start Date -</span>
+                  <span class="mx-2" th:text="${dr.courseStartDate}"></span>
+                </div>
+                <div class="my-2 mx-2">
+                  <i class="fa-regular fa-calendar"></i>
+                  <span class="fw-bold">Course End Date -</span>
+                  <span class="mx-2" th:text="${dr.courseEndDate}"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
       </div>
     </div>
 

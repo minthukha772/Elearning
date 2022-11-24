@@ -253,9 +253,9 @@ li {
     color: #fff!important;
 } */
 
-.dataTables_filter {
+/* .dataTables_filter {
     display: none;
-}
+} */
 
 
 /* FOOTER */
@@ -358,6 +358,7 @@ li {
 
 
 }
+
 .scrollToTop {
 	position: fixed;
 	z-index: 12;
@@ -394,4 +395,10 @@ li {
 		height: 15%;
 	}
 
+}
+
+.mobile-item{
+    width: 350px;
+    margin: 20px auto;
+    background-color: #28C4AF;
 }
