@@ -268,15 +268,15 @@ li {
 
 
 .mobile-item{
-    width: 500px;
+    width: fit-content;
     margin: 20px auto;
     background-color: #28C4AF;
 }
 
-.mobile-item img{
+/* .mobile-item img{
     width: 35px;
     height: 35px;
-}
+} */
 
 /* @media (max-width:890px) {
     .or-view{

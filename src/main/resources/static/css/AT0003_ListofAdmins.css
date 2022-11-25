@@ -419,3 +419,9 @@ li {
 	}
 
 }
+
+.mobile-item{
+    width: fit-content;
+    margin: 20px auto;
+    background-color: #28C4AF;
+}
