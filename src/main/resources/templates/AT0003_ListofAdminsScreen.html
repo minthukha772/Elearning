@@ -24,6 +24,7 @@
       href="css/dataTables.bootstrap5.css"
       th:href="@{/css/dataTables.bootstrap5.css}"
     />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <link
       rel="stylesheet"
       type="text/css"
@@ -457,7 +458,7 @@
               <div class="table-responsive">
                 <table
                   id="example"
-                  class="table"
+                  class="table "
                   style="width: 100%"
                 >
                   <thead>
@@ -468,6 +469,7 @@
                       <!-- <th>Phone Number</th> -->
                       <th>Account Status</th>
                       <th>Registered Date</th>
+                      <th>Delete Account</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -478,18 +480,100 @@
                           style="font-weight: bold"
                         ></td> -->
                       <td th:text="${dr.mail}"></td>
+
+                      <!-- ### Admin Profile link function -->
+                      <!-- <td>
+                        <b
+                        ><a
+                        th:href="@{/admin/browse/profile/{id}(id=${dr.accountId})}"
+                        th:text="${dr.mail}"
+                        style="text-decoration: none"
+                        ></a
+                        ></b></td> -->
                       <!-- <td th:text="${dr.phoneNo}"></td> -->
+
                       <td th:text="${dr.accountStatus}" class="accStatus"></td>
                       <td th:text="${dr.registeredDate}"></td>
+                      <td>
+                        <!-- <a href="#" class="del"  > -->
+                          <!-- <button type="button" th:value="${dr.accountId}" class="confirm_del_btn btn-danger btn-sm" style="margin-left:30px">Delete</button> -->
+                          <button type="button" th:value="${dr.accountId}" class="confirm_del_btn fa-solid fa-trash-can" style="margin-left:30px" ></button>
+                          
+                          <script>
+                            $(document).ready(function () {
+                            $('.confirm_del_btn').click(function (e){
+                            e.preventDefault();
+                            var uid = $(this).val();
+
+                            // ### Default Alert Notification.
+
+                            // if(confirm("Are you sure you want to delete Admin Account ?"))
+                            // {
+                            // $.ajax({
+                            // url: "/admin/profile/delete/"+uid,
+                            // }).done(function () {
+                            // //reload page
+                            //  location.reload();
+                            //   }).fail(function () {
+                            //   alert("Something went wrong");
+                            //  });
+                            // }
+
+                             // ### Default Alert Notification.
+
+                            swal({
+                              // title: "Are you sure you want to delete Admin Account ?",
+                              text: "Are you sure you want to delete admin account?",
+                              icon: "warning",
+                              buttons: true,
+                              dangerMode: true,
+                            })
+                            .then((willDelete) => {
+                              if (willDelete) 
+                              {
+                                swal("Account Deleted!" , {
+                                  icon: "success", });
+                                
+                                $.ajax({
+                                url: "/admin/profile/delete/"+uid,
+                                  }).done(function () {
+                                  //reload page
+                                  
+                                  setTimeout(function () {
+                                    location.reload(true);
+                                  }, 1000);
+                                  // location.reload();
+                                  
+                                    });
+                                
+                              } 
+                              // else {
+                              //   swal("Action Cancelled!");
+                              // }
+                            });
+
+                            });
+                            });
+                            
+                            const userRole = 'ROLE_ADMIN';
+                            
+                            </script> 
+                        </a>
+
+                        
+                      </td>                      
                     </tr>
                   </tbody>
                 </table>
               </div>
             </div>
           </div>
+          </div>
         </div>
       </div>
     </div>
+
+    <!-- <div style="margin-top: 60px;"</div></div> -->
 
     <div th:replace="@{fragments/footer}"></div>
 
@@ -535,6 +619,10 @@
         }
       });
     </script>
+
+   
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="/js/AT0003_ListofAdminsScreen.js"></script>
 
     </script>
     <script>
