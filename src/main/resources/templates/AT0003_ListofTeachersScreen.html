@@ -281,9 +281,9 @@
             Add Teacher
           </button>
         </div>
-
-        <div class="container">
-          <div class="">
+        
+    <div class="container">
+      <div class="d-none d-md-block d-lg-block d-xl-block">
             <div class="input-group mb-3 col-lg-4">
               <input
                 type="text"
@@ -292,104 +292,170 @@
                 placeholder="Search in Teacher List"
                 aria-label="Search in Teacher List"
                 aria-describedby="mySearchButton"
-              />
-              <button
-                class="btn btn-outline-secondary fw-bold"
-                id="mySearchButton"
-                type="button"
-              >
-                Search
-              </button>
+                />
+                <button
+                  class="btn btn-outline-secondary fw-bold"
+                  id="mySearchButton"
+                  type="button"
+                >
+                  Search
+                </button>
             </div>
-          </div>
 
-          <div class="input-group-prepend mb-3" style="width: 135px">
-            <label class="text-muted">Account Status</label>
-            <select
-              class="form-select"
-              aria-label=".form-select-sm example"
-              id="account_status"
-              style="width: 100%"
-            >
-              <option value="">ALL</option>
-              <option value="Requested">REQUESTED</option>
-              <option value="Verified">VERIFIED</option>
-              <option value="Suspended">SUSPENDED</option>
-            </select>
-          </div>
+            <button class=" btn btn-primary float-end" id="downloadteacherlist">Export to Excel</button>
 
-          <div class="card mb-5">
-            <div class="card-body">
-              <div class="table-responsive">
-                <table
-                  id="example"
-                  class="table"
-                  style="width: 100%">
-                  <thead>
-                    <tr>
-                      <th>No</th>
-                      <th>Teacher Name</th>
-                      <th>Phone Number</th>
-                      <th>Email</th>
-                      <th>Total numbers of course</th>
-                      <th>List of course</th>
-                      <th>Account Status</th>
-                      <th>Course Registration</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr th:each="dr,index:${tAllTeacherList}">
-                      <td></td>
-                      <td>
-                        <b><a
-                            th:href="@{'/admin/browse/profile/' + ${dr.uid}}"
-                            th:text="${dr.userName}"
-                            style="text-decoration: none"
-                          ></a></b>
-                      </td>
-                      <td th:text="${dr.phoneNo}"></td>
-                      <td th:text="${dr.userAccount.mail}"></td>
-                      <td th:text="${dr.courseInfo.size}" class="text-center"></td>
-                      <td class="">
-                        <div class="dropdown" >
-                            <button class="btn dropdown-toggle fw-bold text-white" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                              Course
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                              <span class="dropdown-item" th:each="course,idx:${dr.courseInfo}" th:text="${course.courseName}" onclick="courseName"></span>
-                            </div>
-                        </div>
-                     </td>
-                      <td th:text="${dr.userAccount.accountStatus}" class="accStatus"></td>
-                      <td>
-                        <a
-                          th:href="@{'/admin/course-registration/' + ${dr.uid}}"
-                          class="btn btn-primary"
-                          style="float: center"
-                          th:classappend="${dr.userAccount.accountStatus != accountStatus}? 'disabled'"
-                          >Add Course</a>
-                      </td>
-                    </tr>
-                  </tbody>
-                  <!-- <tfoot>
+            <div class="input-group-prepend mb-3" style="width: 135px">
+              <label class="text-muted">Account Status</label>
+              <select
+                class="form-select"
+                aria-label=".form-select-sm example"
+                id="account_status"
+                style="width: 100%"
+              >
+                <option value="">ALL</option>
+                <option value="Requested">REQUESTED</option>
+                <option value="Verified">VERIFIED</option>
+                <option value="Suspended">SUSPENDED</option>
+              </select>
+            </div>
+            
+            <div class="card mb-5">
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table
+                    id="example"
+                    class="table teacherListTable"
+                    style="width: 100%">
+                    <thead>
                       <tr>
                         <th>No</th>
-                        <th>Name</th>
+                        <th>Teacher Name</th>
                         <th>Phone Number</th>
                         <th>Email</th>
+                        <th>Total numbers of course</th>
+                        <th>List of course</th>
                         <th>Account Status</th>
                         <th>Course Registration</th>
                       </tr>
-                    </tfoot> -->
-                </table>
+                    </thead>
+                    <tbody>
+                      <tr th:each="dr,index:${tAllTeacherList}">
+                        <td></td>
+                        <td>
+                          <b><a
+                              th:href="@{'/admin/browse/profile/' + ${dr.uid}}"
+                              th:text="${dr.userName}"
+                              style="text-decoration: none"
+                            ></a></b>
+                        </td>
+                        <td th:text="${dr.phoneNo}"></td>
+                        <td th:text="${dr.userAccount.mail}"></td>
+                        <td th:text="${dr.courseInfo.size}" class="text-center"></td>
+                        <td class="">
+                          <div class="dropdown" >
+                              <button class="btn dropdown-toggle fw-bold text-white" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Course
+                              </button>
+                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <span class="dropdown-item" th:each="course,idx:${dr.courseInfo}" th:text="${course.courseName}"></span>
+                              </div>
+                          </div>
+                      </td>
+                        <td th:text="${dr.userAccount.accountStatus}" class="accStatus"></td>
+                        <td>
+                          <a
+                            th:href="@{'/admin/course-registration/' + ${dr.uid}}"
+                            class="btn btn-primary"
+                            style="float: center"
+                            th:classappend="${dr.userAccount.accountStatus != accountStatus}? 'disabled'"
+                            >Add Course</a>
+                        </td>
+                      </tr>
+                    </tbody>
+                    <!-- <tfoot>
+                        <tr>
+                          <th>No</th>
+                          <th>Name</th>
+                          <th>Phone Number</th>
+                          <th>Email</th>
+                          <th>Account Status</th>
+                          <th>Course Registration</th>
+                        </tr>
+                      </tfoot> -->
+                  </table>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
       </div>
+
+      <div class="mobile-view d-block d-md-none d-lg-none d-xl-none">
+            <div class="mobile-item card" th:each="dr,index:${tAllTeacherList}">
+              <div class="card-header">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="">
+                    <!-- <img th:src="${dr.photo}" class="img-fluid rounded-circle" alt=""> -->
+                    <span class="fw-bold text-white">
+                      <b><a
+                        th:href="@{'/admin/browse/profile/' + ${dr.uid}}"
+                        th:text="${dr.userName}"
+                        style="text-decoration: none"
+                      ></a></b>
+                    </span>
+                  </div>
+                  <div class="btn btn-dark btn-sm">
+                    <a
+                          th:href="@{'/admin/course-registration/' + ${dr.uid}}"
+                          class="btn btn-primary text-decoration-none text-white"
+                          style="float: center"
+                          th:classappend="${dr.userAccount.accountStatus != accountStatus}? 'disabled'"
+                          >Add Course</a>
+                  </div>
+                </div>
+              </div>
+              <div class="card-body text-white">
+                <div class="dropdown position-relative">
+                  <button class="btn text-start w-100 dropdown-toggle px-0 text-white" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    List Of Courses
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <span class="dropdown-item" th:each="course,idx:${dr.courseInfo}" th:text="${course.courseName}"></span>
+                  </div>
+                </div>
+                <div class="my-2">
+                  <span class="fw-bold">Account Status -</span>
+                  <span class="mx-2 accStatus" th:text="${dr.userAccount.accountStatus}"></span>
+                </div>
+                <div class="my-2">
+                  <span class="fw-bold">Total No. Of Courses -</span>
+                  <span class="mx-2 text-center" th:text="${dr.courseInfo.size}"></span>
+                </div>
+                <div class="d-flex align-items-center flex-wrap">
+                  <div class="my-2 mx-2">
+                    <i class="fa-solid fa-phone"></i>
+                    <span class="mx-2" th:text="${dr.phoneNo}"></span>
+                  </div>
+                  <div class="my-2 mx-2">
+                    <i class="fa-solid fa-envelope"></i>
+                    <span class="mx-2" th:text="${dr.userAccount.mail}"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+      </div>
+
     </div>
 
     <div th:replace="@{fragments/footer}"></div>
+
+    <script>
+      document.getElementById("downloadteacherlist").addEventListener("click", function () {
+          var table2excel = new Table2Excel();
+          table2excel.export(document.querySelectorAll(".teacherListTable"));
+        });
+    </script>
+
+    <script th:src="@{/js/table2excel.js}"></script>
+
 
     <!-- <script>
       function openNav() {

@@ -57,5 +57,4 @@ public class PaymentReceive {
     @JsonIgnore
     private JoinCourseUser joinByList;
   
-  
 }

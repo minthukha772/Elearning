@@ -445,7 +445,8 @@
     </div>
 
     <!-- <div th:if="${paymentAccounts!=null and !paymentAccounts.empty and isEditable}"> -->
-      <table class="table table paytable">
+
+      <table class="table paytable">
           <tr>
             <th scope="col">#</th>
             <th scope="col">Course Name</th>
@@ -469,8 +470,8 @@
             <td th:text="${attcourselist.startDate}"></td>
             <td th:text="${attcourselist.endDate}"></td>
             <td th:text="${attcourselist.fees}"></td>
-            <td th:text="${attcourselist.truePaymentStatus}" class="paystats"></td>
 
+            <td th:text="${attcourselist.truePaymentStatus}" class="paystatus"></td>
             
             </form>
           </tr>
@@ -502,7 +503,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
 
   <script>
-    let ps = document.getElementsByClassName('paystats');
+    let ps = document.getElementsByClassName('paystatus');
 
     for (let i=0;i<ps.length;i++){      
       if(ps[i].innerHTML=="COMPLETED"){
@@ -532,6 +533,31 @@
       }
     }
 </script>
+
+  <!-- <script>
+      let payStatus = document.getElementsByClassName('paystatus');
+      for(let i=0;i<payStatus.length;i++){
+        if(payStatus[i].innerHTML== "COMPLETED"){
+          payStatus[i].classList.add('bg-success')
+        }
+        else if(payStatus[i].innerHTML== "PENDING"){
+          payStatus[i].classList.add('bg-info')
+        }
+        else if(payStatus[i].innerHTML == ""){
+          payStatus[i].innerHTML = "Unpaid";
+          payStatus[i].classList.add('bg-warning')
+        }
+        else if(payStatus[i].innerHTML== "ERROR"){
+          payStatus[i].classList.add('bg-danger')
+        }
+        else{
+          payStatus[i].classList.add('bg-info')
+        }
+        
+        
+      }
+  </script> -->
+
   
 </body>
 
