@@ -57,8 +57,4 @@ public class PaymentReceive {
     @JsonIgnore
     private JoinCourseUser joinByList;
   
-  // @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  //   @JoinColumn(name = "uid_fkey")
-  //   @JsonIgnore
-  //   private UserInfo userInfo;
 }
