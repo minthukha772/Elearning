@@ -435,7 +435,7 @@
    <div th:if="${role=='ROLE_STUDENT'}">
     <div sec:authorize="hasAuthority('ROLE_ADMIN') || hasAuthority('ROLE_SUPER_ADMIN')">
     
-  <div class="container-custom mb-5">
+  <div class="container-custom mb-5 d-none d-md-block d-lg-block d-xl-block">
     <div class="card">
       <div class="card-body">
     <div class="d-flex justify-content-between mt-3 profileform">
@@ -445,6 +445,7 @@
     </div>
 
     <!-- <div th:if="${paymentAccounts!=null and !paymentAccounts.empty and isEditable}"> -->
+
       <table class="table paytable">
           <tr>
             <th scope="col">#</th>
@@ -469,8 +470,8 @@
             <td th:text="${attcourselist.startDate}"></td>
             <td th:text="${attcourselist.endDate}"></td>
             <td th:text="${attcourselist.fees}"></td>
-            <td th:text="${attcourselist.truePaymentStatus}" class="paystatus"></td>
 
+            <td th:text="${attcourselist.truePaymentStatus}" class="paystatus"></td>
             
             </form>
           </tr>
@@ -480,6 +481,54 @@
 </div>
 </div>
 </div>
+
+        <div class="mobile-view d-block d-md-none d-lg-none d-xl-none">
+          <div class="mobile-item card" th:each="attcourselist, stats : ${courseList}">
+            <div class="card-header">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="">
+                  <!-- <img th:src="${dr.photo}" class="img-fluid rounded-circle" alt=""> -->
+                  <span class="fw-bold text-white">
+                    <span class="fw-bold">Course Name -</span>
+                    <b><a
+                      
+                      th:text="${attcourselist.courseName}"
+                      style="text-decoration: none"
+                    ></a></b>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="card-body text-white">
+              <div class="my-2">
+                <span class="fw-bold">Teacher Name -</span>
+                <span class="mx-2 text-center " th:text="${attcourselist.teacherName}"></span>
+              </div>
+              <div class="my-2">
+                <span class="fw-bold">Class Type -</span>
+                <span class="mx-2 text-center" th:text="${attcourselist.classType}"></span>
+              </div>
+              <div class="my-2">
+                <span class="fw-bold">Start Date -</span>
+                <span class="mx-2 text-center" th:text="${attcourselist.startDate}"></span>
+              </div>
+              <div class="my-2">
+                <span class="fw-bold">End Date -</span>
+                <span class="mx-2 text-center" th:text="${attcourselist.endDate}"></span>
+              </div>
+              <div class="my-2">
+                <span class="fw-bold">Course Fee -</span>
+                <span class="mx-2 text-center" th:text="${attcourselist.fees}"></span>
+              </div>
+              <div class="my-2">
+                <span class="fw-bold">Payment Status -</span>
+                <span class="mx-2 paystatus" th:text="${attcourselist.truePaymentStatus}"></span>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+
 </div>
 <!-- Student currently attending course table Ends here -->
 
@@ -500,6 +549,39 @@
   <script src="/js/CM0004_profile.js"></script>
   <script th:src="@{./../../../js/main.js}"></script>
   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+  <script>
+    let ps = document.getElementsByClassName('paystatus');
+
+    for (let i=0;i<ps.length;i++){      
+      if(ps[i].innerHTML=="COMPLETED"){
+        ps[i].classList.add('bg-success')
+      }
+      else if(ps[i].innerHTML== "Completed"){
+        ps[i].classList.add('bg-success')
+      }
+      else if(ps[i].innerHTML== "PENDING"){
+        ps[i].classList.add('bg-info')
+      }
+      else if(ps[i].innerHTML== "Pending"){
+        ps[i].classList.add('bg-info')
+      }
+      else if(ps[i].innerHTML== ""){
+        ps[i].innerHTML = "UNPAID";
+        ps[i].classList.add('bg-warning')
+      }
+      else if(ps[i].innerHTML== "ERROR") {
+        ps[i].classList.add('bg-danger')
+      }
+      else if(ps[i].innerHTML== "Error") {
+        ps[i].classList.add('bg-danger')
+      }
+      else{
+        ps[i].classList.add('bg-info')
+      }
+    }
+</script>
+
   <!-- <script>
       let payStatus = document.getElementsByClassName('paystatus');
       for(let i=0;i<payStatus.length;i++){
@@ -523,6 +605,7 @@
         
       }
   </script> -->
+
   
 </body>
 

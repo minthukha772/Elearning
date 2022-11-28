@@ -378,6 +378,22 @@ public class ProfileController {
     return ResponseEntity.status(HttpStatus.OK).body("operation success");
   }
 
+  @GetMapping("/admin/profile/delete/{id}")
+  
+    public String deleteAdminAccount(@PathVariable ( value = "id") long uid, Model model, HttpServletRequest httpServletRequest) {
+      
+      try {
+        UserInfo userInfo = userService.getUserInfoByID(uid);
+        if(userInfo == null){
+          throw new UserNotFoundException();
+        }
+        userAccountControlService.deleteUser(userInfo);
+      } catch (UserNotFoundException e){
+        
+      }    
+        return "redirect:/admin/admin-list"; 
+    }
+
   @PostMapping("admin/profile/suspend")
   public ResponseEntity<Object> suspendUser(
     Model model,
