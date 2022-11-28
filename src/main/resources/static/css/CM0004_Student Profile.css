@@ -642,3 +642,9 @@ body {
 
 }
 
+.mobile-item{
+    width: 93%;
+    margin: 20px auto;
+    background-color: #28C4AF;
+}
+
