@@ -27,20 +27,20 @@ public class MyAuthenticationFailureHandler extends SimpleUrlAuthenticationFailu
             AuthenticationException exception) throws IOException, ServletException {
 
         logger.info("invalid login");
-        logger.info("request.getContextPath() {}",request.getContextPath());
-        
+        logger.info("request.getContextPath() {}", request.getContextPath());
+
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
 
         String redirectURL = "/login?error";
-        logger.info("before redirectURL {}",redirectURL);
+        logger.info("before redirectURL {}", redirectURL);
 
-        if(exception.getMessage().toLowerCase().contains("suspend")){
-            redirectURL+="=suspended";
-        }else if(exception.getMessage().toLowerCase().contains("not verified")){
-            redirectURL+="=non-email";
+        if (exception.getMessage().toLowerCase().contains("suspend")) {
+            redirectURL += "=suspended";
+        } else if (exception.getMessage().toLowerCase().contains("not verified")) {
+            redirectURL += "=non-email";
         }
-       
-        logger.info("redirectURL {}",redirectURL);
+
+        logger.info("redirectURL {}", redirectURL);
 
         super.setDefaultFailureUrl(redirectURL);
         super.onAuthenticationFailure(request, response, exception);
