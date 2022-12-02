@@ -114,15 +114,15 @@ public class RegisterController {
             Thread.currentThread().interrupt();
           }
           UserAccount userAccount = userService.getUserAccountByEmail(email);
+
           // Long adminId = 0L;
           // adminId = userSessionService.getUserAccount().getAccountId();
           // UserInfo adminInfo = userRepo.findById(adminId).orElse(null);
           // UserInfo teacherInfo = userService.getUserInfoByID(uid);
 
-          mailService.sendResetPasswordMail(userAccount, appUrl);
+          mailService.sendResetPasswordMail(userAccount);
           mailService.SendAdminNewAdmin(userAccount, adminInfo, appUrl);
           mailService.SendSuperAdminNewAdmin(userAccount, adminInfo, appUrl);
-        
           return "redirect:/admin/register/complete";
         } catch (Exception e) {
           logger.info("Register admin :{}", e.toString());
@@ -215,10 +215,9 @@ public class RegisterController {
                     ":" +
                     request.getServerPort(); // "8080"
                 mailService.sendVerificationMail(
-                    savedUserInfo.getUserAccount(),
-                    appUrl);
+                    savedUserInfo.getUserAccount());
 
-                mailService.SendAdminNewStudent(savedUserInfo, appUrl);
+                mailService.SendAdminNewStudent(savedUserInfo);
 
               } catch (MessagingException e) {
                 logger.info(e.toString());
@@ -285,10 +284,9 @@ public class RegisterController {
                     ":" +
                     request.getServerPort(); // "8080"
                 mailService.sendVerificationMail(
-                    savedUserInfo.getUserAccount(),
-                    appUrl);
+                    savedUserInfo.getUserAccount());
 
-                mailService.SendAdminNewTeacher(savedUserInfo, appUrl);
+                mailService.SendAdminNewTeacher(savedUserInfo);
 
               } catch (MessagingException e) {
                 logger.info(e.toString());

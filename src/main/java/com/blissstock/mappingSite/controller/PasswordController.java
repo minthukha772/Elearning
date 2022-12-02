@@ -191,28 +191,28 @@ public class PasswordController {
     String resetaccountrole = user.getRole();
 
     /* String token = UUID.randomUUID().toString(); */
-    String appUrl = request.getServerName() + // "localhost"
-        ":" +
-        request.getServerPort();
+    // String appUrl = request.getServerName() + // "localhost"
+    //     ":" +
+    //     request.getServerPort();
     /* userService.createToken(user, token, TokenType.PASSWORD_RESET); */
     
    
         try {
           if (resetaccountrole.equals("ROLE_ADMIN")) { 
             
-            mailService.AdminResetPassword(user, appUrl);             
+            mailService.AdminResetPassword(user);             
 
           }
 
           if (resetaccountrole.equals("ROLE_TEACHER")) { 
             
-            mailService.TeacherResetPassword(user, appUrl);   
+            mailService.TeacherResetPassword(user);   
 
             }
 
             if (resetaccountrole.equals("ROLE_STUDENT")) {  
               
-             mailService.StudentResetPassword(user, appUrl);
+             mailService.StudentResetPassword(user);
 
             }
           
@@ -338,7 +338,7 @@ public class PasswordController {
               ":" +
               request.getServerPort(); // "8080"
               
-              mailService.StudentChangedPassword(userInfo, userAccount, appUrl);              
+              mailService.StudentChangedPassword(userInfo, userAccount);              
               
             }
 
@@ -348,7 +348,7 @@ public class PasswordController {
               ":" +
               request.getServerPort(); // "8080" 
               
-              mailService.TeacherChangedPassword(userInfo, userAccount, appUrl);
+              mailService.TeacherChangedPassword(userInfo, userAccount);
 
               }
 
@@ -358,7 +358,7 @@ public class PasswordController {
               ":" +
               request.getServerPort(); // "8080" 
               
-              mailService.AdminChangedPassword(userInfo, userAccount, appUrl);
+              mailService.AdminChangedPassword(userInfo, userAccount);
 
               }
             
