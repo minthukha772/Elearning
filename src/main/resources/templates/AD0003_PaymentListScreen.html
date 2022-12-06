@@ -309,7 +309,7 @@
                         <td th:text="${dr.courseEndDate}"></td>
                         <td th:text="${dr.paymentDate}"></td>
                         <td th:text="${dr.courseFees}"></td>
-                        <td th:text="${dr.paymentStatus}" class="payStatus"></td>
+                        <td th:text="${dr.paymentStatus}" class="payStatus" style="text-transform: uppercase;"></td>
                         <td>
                           <a
                             th:href="@{/admin/payment-upload/course_id/{courseId}/student_id/{id}(courseId = ${dr.courseId}, id = ${dr.userId})}"
