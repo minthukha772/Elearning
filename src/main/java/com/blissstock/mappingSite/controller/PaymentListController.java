@@ -71,8 +71,15 @@ public class PaymentListController {
             Long userId = payUserInfo.getUid();
             CourseInfo payCouresInfo = joinCourseUser.getCourseInfo();
             String courseName = payCouresInfo.getCourseName();
-            String courseStartDate = format.format(payCouresInfo.getStartDate());
-            String courseEndDate = format.format(payCouresInfo.getEndDate());
+            String courseStartDate;
+            String courseEndDate;
+            try {
+                courseStartDate = format.format(payCouresInfo.getStartDate());
+                courseEndDate = format.format(payCouresInfo.getEndDate());
+            } catch (Exception e) {
+                courseStartDate = format.format(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+                courseEndDate = format.format(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+            }
             String teacherName = payCouresInfo.getUserInfo().getUserName();
             Long courseId = payCouresInfo.getCourseId();
             int courseFees = payCouresInfo.getFees();
