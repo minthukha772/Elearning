@@ -519,7 +519,7 @@
 
         for(let i=0;i<td.length;i++){
           console.log(td[i].innerHTML)
-          if(td[i].innerHTML=="COMPLETED"){
+          if(td[i].innerHTML=="COMPLETED" || td[i].innerHTML=="Completed"){
               // td[i].innerHTML = "";
               // td[i].classList.add('fa-solid')
               // td[i].classList.add('fa-check')
@@ -528,7 +528,7 @@
               
 
           }
-          else if(td[i].innerHTML=="PENDING"){
+          else if(td[i].innerHTML=="PENDING" || td[i].innerHTML=="Pending"){
             // td[i].innerHTML = "";
             // td[i].classList.add('fa-solid')
             // td[i].classList.add('fa-xmark')
@@ -537,7 +537,7 @@
 
 
           }
-          else if(td[i].innerHTML=="REQUESTED"){
+          else if(td[i].innerHTML=="REQUESTED" || td[i].innerHTML=="Requested"){
             // td[i].innerHTML = "";
             // td[i].classList.add('fa-solid')
             // td[i].classList.add('fa-code-pull-request')
