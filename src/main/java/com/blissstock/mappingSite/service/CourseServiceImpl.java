@@ -4,11 +4,13 @@ import java.util.List;
 import java.util.Optional;
 
 import com.blissstock.mappingSite.dto.CourseInfoDTO;
+import com.blissstock.mappingSite.entity.CourseCategory;
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.JoinCourseUser;
 import com.blissstock.mappingSite.entity.Syllabus;
 import com.blissstock.mappingSite.exceptions.CourseNotFoundException;
 import com.blissstock.mappingSite.exceptions.SyllabusNotFoundException;
+import com.blissstock.mappingSite.repository.CourseCategoryRepository;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
 import com.blissstock.mappingSite.repository.CourseTimeRepository;
 import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
@@ -117,4 +119,40 @@ public class CourseServiceImpl implements CourseService {
     public CourseInfo getCourseById(long id) {
         return courseInfoRepository.findByCourseID(id);
     }
+
+    @Autowired
+    private CourseCategoryRepository courseCategoryRepository;
+    @Override
+    public List<CourseCategory> getAllCourseCategory(){
+        return courseCategoryRepository.findAll();
+    }
+
+    @Override
+    public void addCategory(CourseCategory categoryName) {
+        this.courseCategoryRepository.save(categoryName);
+        
+    }
+    
+    @Override
+    public CourseCategory getCategoryById(long categoryId) {
+        Optional<CourseCategory> optional = courseCategoryRepository.findById(categoryId);
+        CourseCategory courseCategory = null;
+        if(optional.isPresent()) {
+            courseCategory = optional.get();
+        }
+        else {
+            throw new RuntimeException("Category not found for ID :: " + categoryId);
+        }
+        return courseCategory;
+    }
+
+    @Override
+    public void deleteCategoryById(long categoryId) {
+       this.courseCategoryRepository.deleteById(categoryId);
+        
+    }
+
+    
+
+    
 }

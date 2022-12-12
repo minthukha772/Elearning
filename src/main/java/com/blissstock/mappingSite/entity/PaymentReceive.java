@@ -9,10 +9,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.blissstock.mappingSite.enums.PaymentStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -49,4 +51,10 @@ public class PaymentReceive {
   @OneToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "join_id")
   JoinCourseUser join;
+
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "join_id", insertable=false, updatable=false)
+    @JsonIgnore
+    private JoinCourseUser joinByList;
+  
 }

@@ -2,7 +2,9 @@ package com.blissstock.mappingSite.controller;
 
 // import java.sql.Date;
 import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import com.blissstock.mappingSite.entity.CourseInfo;
@@ -33,33 +35,31 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class PaymentListController {
 
     private static final Logger logger = LoggerFactory.getLogger(PaymentListController.class);
-    
+
     @Autowired
     PaymentRepository paymentRepo;
-    
+
     @Autowired
     JoinCourseUserRepository joinCourseUserRepo;
-    
-    
+
     @RequestMapping("/admin/payment-list")
-    public String PaymentList(Model model)
-    {
+    public String PaymentList(Model model) {
         List<PaymentReceive> viewPayment = paymentRepo.findAll();
 
-        logger.info("Payment Receive List {}",viewPayment);
+        logger.info("Payment Receive List {}", viewPayment);
 
         // List<String> breadcrumbList = new ArrayList<>();
-        //     breadcrumbList.add("Top");
-        //     breadcrumbList.add("Payment List");
-        //     model.addAttribute("breadcrumbList",breadcrumbList);
-            String nav_type = "fragments/adminnav";
-            model.addAttribute("nav_type",nav_type);
+        // breadcrumbList.add("Top");
+        // breadcrumbList.add("Payment List");
+        // model.addAttribute("breadcrumbList",breadcrumbList);
+        String nav_type = "fragments/adminnav";
+        model.addAttribute("nav_type", nav_type);
 
         List<PaymentLists> payUserList = new ArrayList<>();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         // List<AllPaymentLists> allPayment = new AllPaymentLists();
-        for(PaymentReceive paymentReceive:viewPayment)
-        {
-            Date paymentDate = paymentReceive.getPaymentReceiveDate();
+        for (PaymentReceive paymentReceive : viewPayment) {
+            String paymentDate = format.format(paymentReceive.getPaymentReceiveDate());
             String paymentStatus = paymentReceive.getPaymentStatus();
 
             JoinCourseUser joinCourseUser = paymentReceive.getJoin();
@@ -69,16 +69,28 @@ public class PaymentListController {
             Long userId = payUserInfo.getUid();
             CourseInfo payCouresInfo = joinCourseUser.getCourseInfo();
             String courseName = payCouresInfo.getCourseName();
+            String courseStartDate;
+            String courseEndDate;
+            Calendar cal = Calendar.getInstance();
+            try {
+                courseStartDate = format.format(payCouresInfo.getStartDate());
+                courseEndDate = format.format(payCouresInfo.getEndDate());
+            } catch (Exception e) {
+                courseStartDate = format.format(cal.getTime());
+                courseEndDate = format.format(cal.getTime());
+            }
+            String teacherName = payCouresInfo.getUserInfo().getUserName();
             Long courseId = payCouresInfo.getCourseId();
             int courseFees = payCouresInfo.getFees();
-            payUserList.add(new PaymentLists(paymentDate, paymentStatus, userName, courseName, courseFees,userId,courseId));
+            payUserList.add(new PaymentLists(paymentDate, courseStartDate, courseEndDate, paymentStatus, userName,
+                    teacherName, courseName, courseFees, userId, courseId));
         }
 
-        logger.info("Payment Receive List including user's information {}",payUserList);
+        logger.info("Payment Receive List including user's information {}", payUserList);
 
         // System.out.println("All Payments"+payUserList);
-        model.addAttribute("allPaymentList",payUserList);
-        
+        model.addAttribute("allPaymentList", payUserList);
+
         return "AD0003_PaymentListScreen";
     }
 }
