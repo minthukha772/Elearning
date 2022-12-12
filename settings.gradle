@@ -1,1 +1,3 @@
 rootProject.name = 'mappingSite'
+org.gradle.caching=false 
+
