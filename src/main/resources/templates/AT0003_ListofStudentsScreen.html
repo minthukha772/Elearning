@@ -18,6 +18,7 @@
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
     <!-- Important for DropDown -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <link
       rel="stylesheet"
       type="text/css"
@@ -36,20 +37,22 @@
       href="css/demo.css"
       th:href="@{/css/demo.css}"
     />
+		<!-- <link rel="stylesheet" th:href="@{/css/global.css}" /> -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
+
     <link
       rel="stylesheet"
       type="text/css"
       href="css/AT0003_ListofStudentsByA.css"
       th:href="@{/css/AT0003_ListofStudentsByA.css}"
     />
-    <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
     <!-- <link rel="stylesheet" type="text/css" href="css/dataTableManual.css">
             <link rel="stylesheet" type="text/css" href="css/dataTableSCSSMaual.css"> -->
 
     <title>Pyinnyar Subuu</title>
 
     <link rel="icon" type="image/x-icon" href="/images/fav.png" />
-    <link rel="icon" type="image/x-icon" href="/images/fav.png" />
+    <!-- <link rel="icon" type="image/x-icon" href="/images/fav.png" /> -->
 
     <script
       type="text/javascript"
@@ -231,11 +234,11 @@
   </head>
 
   <body>
-    <div style="position: relative">
+    <div style="position: relative" class="mb-5">
       <div th:replace="${nav_type}"></div>
       <nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: '>'">
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a th:href="@{/admin/top/}">Top</a></li>
+          <li class="breadcrumb-item ms-3"><a th:href="@{/admin/top/}">Top</a></li>
           <li class="breadcrumb-item active" aria-current="page">
             Student List
           </li>
@@ -248,36 +251,42 @@
             </div> -->
 
         <!-- add student -->
-        <div style="padding-left: 100px; float: right" class="mb-3">
-          <button
-            type="button"
-            class="btn btn-primary me-3"
-            id="addadmin"
-            th:onclick="|window.location.href='/check_email/register/student'|"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              class="bi bi-person-plus-fill"
-              viewBox="0 0 16 16"
-            >
-              <path
-                d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"
-              />
-              <path
-                fill-rule="evenodd"
-                d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"
-              />
-            </svg>
-            Add Student
-          </button>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12">
+            <div style="padding-left: 100px; float: right" class="mb-3">
+              <button
+                type="button"
+                class="btn btn-primary me-3"
+                id="addadmin"
+                th:onclick="|window.location.href='/check_email/register/student'|"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-person-plus-fill"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"
+                  />
+                  <path
+                    fill-rule="evenodd"
+                    d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"
+                  />
+                </svg>
+                Add Student
+              </button>
+            </div>
+          </div>
         </div>
+      </div>
 
-        <div class="container mx-auto">
+    <div class="container mx-auto d-none d-md-block d-lg-block d-xl-block">
           <!-- search start -->
-          <div>
+      <div class="">
             <div class="input-group mb-3">
               <input
                 type="text"
@@ -295,7 +304,7 @@
                 Search
               </button>
             </div>
-          </div>
+
           <!-- search end -->
 
           <!-- account status start -->
@@ -321,15 +330,16 @@
               <!-- <div class="demo-html"> -->
               <table
                 id="example"
-                class="table table-striped dt-responsive nowrap"
+                class="table dt-responsive"
               >
                 <thead>
                   <tr>
                     <th>No</th>
-                    <th>Name</th>
+                    <th>Student's Name</th>
                     <th>Email</th>
                     <th>Phone Number</th>
                     <th>Account Status</th>
+                    <th>No of class attend</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -346,10 +356,11 @@
                     </td>
                     <td th:text="${dr.userAccount.mail}"></td>
                     <td th:text="${dr.phoneNo}"></td>
-                    <td th:text="${dr.userAccount.accountStatus}"></td>
+                    <td th:text="${dr.userAccount.accountStatus}" class="accStatus"></td>
+                    <td th:text="${dr.join.size}" class="text-center"></td>
                   </tr>
                 </tbody>
-                <tfoot>
+                <!-- <tfoot>
                   <tr>
                     <th>No</th>
                     <th>Name</th>
@@ -357,14 +368,56 @@
                     <th>Phone Number</th>
                     <th>Account Status</th>
                   </tr>
-                </tfoot>
+                </tfoot> -->
               </table>
               <!-- </div> -->
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+      
+    <div class="mobile-view d-block d-md-none d-lg-none d-xl-none">
+      <div class="mobile-item card" th:each="dr,index:${sAllStudentList}">
+        <div class="card-header">
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="">
+              <!-- <img th:src="${dr.photo}" class="img-fluid rounded-circle" alt=""> -->
+              <span class="fw-bold text-white">
+                <b><a
+                  th:href="@{'/admin/browse/profile/' + ${dr.uid}}"
+                  th:text="${dr.userName}"
+                  style="text-decoration: none"
+                ></a></b>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="card-body text-white">
+          <div class="my-2">
+            <span class="fw-bold">Account Status -</span>
+            <span class="mx-2 accStatus" th:text="${dr.userAccount.accountStatus}"></span>
+          </div>
+          <div class="my-2">
+            <span class="fw-bold">No of class attend -</span>
+            <span class="mx-2 text-center" th:text="${dr.join.size}"></span>
+          </div>
+          <div class="d-flex align-items-center flex-wrap">
+            <div class="my-2 mx-2">
+              <i class="fa-solid fa-phone"></i>
+              <span class="mx-2" th:text="${dr.phoneNo}"></span>
+            </div>
+            <div class="my-2 mx-2">
+              <i class="fa-solid fa-envelope"></i>
+              <span class="mx-2" th:text="${dr.userAccount.mail}"></span>
             </div>
           </div>
         </div>
       </div>
     </div>
+
+
 
     <div th:replace="@{fragments/footer}"></div>
 
@@ -396,6 +449,23 @@
             .animate({ marginTop: $(window).scrollTop() + "px" }, "slow");
         }
       });
+    </script>
+    <script>
+      let td=document.getElementsByClassName('accStatus');
+        
+        for(let i=0;i<td.length;i++){
+          console.log(td[i].innerHTML)
+          if(td[i].innerHTML=="REGISTERED"){
+              td[i].classList.add('bg-success')
+          }
+          else if(td[i].innerHTML=="SUSPENDED"){
+            td[i].classList.add('bg-info')
+          }
+          else{
+              td[i].classList.add('bg-warning')
+          }
+      }
+      
     </script>
   </body>
 </html>

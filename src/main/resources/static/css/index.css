@@ -42,7 +42,7 @@
 	border: 2px solid white;
 	border-radius: 4px;
 	color: #fff;
-	margin-top: 40px;
+	/* margin-top: 40px; */
 	font-size: 20px;
 	font-weight: 700;
 	transition: all 0.4s;
@@ -637,3 +637,142 @@
 .sdates{
 	float: left;
 } */
+
+*{
+    margin: 0%;
+    padding: 0;
+    /* box-sizing: border-box; */
+}
+
+    /* animation  */
+  @keyframes fadeIn{
+    0% {
+      opacity:0;
+    }
+    100% {
+      opacity:1;
+    }
+  }
+  
+  @-moz-keyframes fadeIn {
+    0% {
+      opacity:0;
+    }
+    100% {
+      opacity:1;
+    }
+  }
+  
+  @-webkit-keyframes fadeIn {
+    0% {
+      opacity:0;
+    }
+    100% {
+      opacity:1;
+    }
+  }
+  
+  @-o-keyframes fadeIn {
+    0% {
+      opacity:0;
+    }
+    100% {
+      opacity:1;
+    }
+  }
+  
+  @-ms-keyframes fadeIn {
+    0% {
+      opacity:0;
+    }
+    100% {
+      opacity:1;
+    }
+  }
+
+
+
+.course-section{
+    width: 90%;
+    margin: 20px auto;
+}
+
+.live-session.active, .record-class.active{
+    display: block !important;
+    animation: fadeIn ease 2s;
+    -webkit-animation: fadeIn ease 2s;
+    -moz-animation: fadeIn ease 2s;
+    -o-animation: fadeIn ease 2s;
+    -ms-animation: fadeIn ease 2s;   
+}
+.course-title:first-child{
+    margin-right: 25px;
+}
+.course-title{
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+}
+.course-title::after{
+    content: '';
+    height: 2px;
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+}
+.carouel-title.active{
+    cursor: none !important;
+}
+.course-title.active::after{
+    background-color: #ffc107;
+    width: 100%;
+    animation: fadeIn ease 1s;
+    -webkit-animation: fadeIn ease 1s;
+    -moz-animation: fadeIn ease 1s;
+    -o-animation: fadeIn ease 1s;
+    -ms-animation: fadeIn ease 1s;
+}
+.owl-carousel{
+    width: 80%;
+    margin: 0 auto;
+}
+.owl-carousel .owl-nav button.owl-prev,
+.owl-carousel .owl-nav button.owl-next{
+    font-size: 60px;
+    color: black !important;
+}
+.owl-prev{
+    position: absolute;
+    left: -35px;
+    top: 30%;
+}
+.owl-next{
+    position: absolute;
+    right: 0px;
+    top: 30%;
+}
+.owl-prev:focus,.owl-next:focus,.owl-prev:hover,.owl-next:hover{
+    background-color: transparent !important;
+}
+.card{
+    width: 300px !important;
+    background-color: #F8F9FA;
+    border-radius: 5px;
+}
+@media (max-width:2000px) {
+    .owl-next{
+        position: absolute;
+        right: -35px;
+        top: 30%;
+    }
+}
+@media (max-width:720px) {
+  .owl-carousel{
+    width: 300px;
+  }
+    .owl-next{
+        position: absolute;
+        right: -35px;
+        top: 30%;
+    }
+}

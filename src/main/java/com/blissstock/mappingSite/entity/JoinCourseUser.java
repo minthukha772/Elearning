@@ -58,4 +58,8 @@ public class JoinCourseUser {
   @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "join")
   @JsonIgnore
   private PaymentReceive paymentReceive;
+
+  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "joinByList")
+  @JsonIgnore
+  private List<PaymentReceive> paymentReceivesByList = new ArrayList<>();
 }

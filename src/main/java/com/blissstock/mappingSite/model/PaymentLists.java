@@ -3,9 +3,12 @@ package com.blissstock.mappingSite.model;
 import java.util.Date;
 
 public class PaymentLists {
-    Date paymentDate;
+    String paymentDate;
+    String courseStartDate;
+    String courseEndDate;
     String paymentStatus;
     String userName;
+    String teacherName;
     String courseName;
     int courseFees;
     Long userId;
@@ -14,10 +17,13 @@ public class PaymentLists {
     public PaymentLists() {
     }
     
-        public PaymentLists(Date paymentDate, String paymentStatus, String userName, String courseName, int courseFees, Long userId, Long courseId) {
+        public PaymentLists(String paymentDate, String courseStartDate, String courseEndDate, String paymentStatus, String userName, String teacherName, String courseName, int courseFees, Long userId, Long courseId) {
             this.paymentDate = paymentDate;
+            this.courseStartDate = courseStartDate;
+            this.courseEndDate = courseEndDate;
             this.paymentStatus = paymentStatus;
             this.userName = userName;
+            this.teacherName = teacherName;
             this.courseName = courseName;
             this.courseFees = courseFees;
             this.userId = userId;
@@ -25,12 +31,34 @@ public class PaymentLists {
         }
     
 
-    public Date getPaymentDate() {
+    public PaymentLists(String paymentStatus2) {
+
+        this.paymentStatus = paymentStatus2;
+
+        }
+
+    public String getPaymentDate() {
         return this.paymentDate;
     }
 
-    public void setPaymentDate(Date paymentDate) {
+    public void setPaymentDate(String paymentDate) {
         this.paymentDate = paymentDate;
+    }
+
+    public String getCourseStartDate() {
+        return this.courseStartDate;
+    }
+
+    public void setCourseStartDate(String courseStartDate) {
+        this.courseStartDate = courseStartDate;
+    }
+
+    public String getCourseEndDate() {
+        return this.courseEndDate;
+    }
+
+    public void setCourseEndDate(String courseEndDate) {
+        this.courseEndDate = courseEndDate;
     }
 
     public String getPaymentStatus() {
@@ -47,6 +75,14 @@ public class PaymentLists {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getTeacherName()  {
+        return this.teacherName;
+    }
+
+    public void setTeacherName(String teacherName) {
+        this.teacherName = teacherName;
     }
 
     public String getCourseName() {

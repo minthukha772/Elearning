@@ -1,13 +1,19 @@
 package com.blissstock.mappingSite.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.blissstock.mappingSite.dto.JoinCourseDTO;
 import com.blissstock.mappingSite.dto.PaymentInfoDTO;
 import com.blissstock.mappingSite.entity.BankInfo;
+import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.PaymentAccount;
+
+import com.blissstock.mappingSite.entity.PaymentReceive;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.enums.AccountStatus;
 import com.blissstock.mappingSite.enums.UserRole;
@@ -22,6 +28,7 @@ import com.blissstock.mappingSite.service.UserAccountControlService;
 import com.blissstock.mappingSite.service.UserService;
 import com.blissstock.mappingSite.service.UserSessionService;
 import com.blissstock.mappingSite.utils.CheckUploadFileType;
+import com.blissstock.mappingSite.model.PaymentLists;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,8 +48,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.blissstock.mappingSite.service.MailService;
+import com.blissstock.mappingSite.repository.PaymentRepository;
 import com.blissstock.mappingSite.repository.UserRepository;
 import com.blissstock.mappingSite.entity.UserAccount;
+
+import com.blissstock.mappingSite.entity.JoinCourseUser;
+import com.blissstock.mappingSite.service.JoinCourseUserService;
+import com.blissstock.mappingSite.model.CourseData;
+import com.blissstock.mappingSite.model.CourseDataWithPayment;
 
 @Controller
 public class ProfileController {
@@ -76,6 +89,15 @@ public class ProfileController {
 
   @Autowired
   UserRepository userRepo;
+
+  @Autowired
+  CourseListController courseListController;
+
+  @Autowired
+    JoinCourseUserService joinCourseUserService;
+
+  @Autowired
+  PaymentRepository paymentRepo;  
 
   @GetMapping(
     value = {
@@ -214,6 +236,35 @@ public class ProfileController {
 
     logger.debug("model attribute, isEditable: {}", isEditable(uid));
 
+    //Load Information for student joined courses and payment status.
+
+    List<JoinCourseUser> joinCourseUsers = joinCourseUserService.findByUserInfo(userInfo);
+    if (joinCourseUsers == null) {
+      joinCourseUsers = new ArrayList<>();
+
+        }
+          List<CourseDataWithPayment> courseDataList = joinCourseUsers.stream().map((e) -> {
+            CourseDataWithPayment c = CourseDataWithPayment.construct(e.getCourseInfo(), e.getPaymentReceivesByList(), e.getUserInfo());
+            FileInfo fileInfo = storageService.loadCoursePhoto(e.getCourseInfo());
+            
+            
+           
+            // if profile is not found set as place holder
+            if (fileInfo == null) {
+                c.setCoursePhoto(new FileInfo("https://via.placeholder.com/150",
+                        "https://via.placeholder.com/150"));
+            } else {
+
+                c.setCoursePhoto(fileInfo);
+            }
+            return c;
+        }).collect(Collectors.toList());
+
+      model.addAttribute("courseList", courseDataList);
+
+      //##################################################//
+
+      
     return "CM0004_Profile";
   }
 
@@ -327,6 +378,22 @@ public class ProfileController {
     return ResponseEntity.status(HttpStatus.OK).body("operation success");
   }
 
+  @GetMapping("/admin/profile/delete/{id}")
+  
+    public String deleteAdminAccount(@PathVariable ( value = "id") long uid, Model model, HttpServletRequest httpServletRequest) {
+      
+      try {
+        UserInfo userInfo = userService.getUserInfoByID(uid);
+        if(userInfo == null){
+          throw new UserNotFoundException();
+        }
+        userAccountControlService.deleteUser(userInfo);
+      } catch (UserNotFoundException e){
+        
+      }    
+        return "redirect:/admin/admin-list"; 
+    }
+
   @PostMapping("admin/profile/suspend")
   public ResponseEntity<Object> suspendUser(
     Model model,
@@ -421,8 +488,8 @@ public class ProfileController {
           //     appUrl);
 
           
-          mailService.VerifiedTeacherByAdmin(teacherInfo, adminInfo, appUrl);
-          mailService.VerifiedTeacherByAdminToTeacher(teacherInfo, adminInfo, appUrl);
+          mailService.VerifiedTeacherByAdmin(teacherInfo, adminInfo);
+          mailService.VerifiedTeacherByAdminToTeacher(teacherInfo, adminInfo);
           
         } catch (Exception e) {
           logger.info(e.toString());
