@@ -10,7 +10,7 @@ body {
     line-height: 50px;
     text-align: center;
     background-color: #6C757D;
-    letter-spacing: 1px
+    letter-spacing: 1px;
 }
 
 .text {
@@ -171,7 +171,7 @@ footer {
 .copyright__text {
 	margin: 0;
 	text-align: center;
-    padding-top: 12px;
+    /* padding-top: 12px; */
     
 }
 
