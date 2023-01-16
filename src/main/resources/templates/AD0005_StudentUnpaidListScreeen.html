@@ -191,6 +191,15 @@
                 aria-label="Search with Course Name"
                 aria-describedby="courseNameSearch"
               />
+
+              <input
+              type="text"
+              class="form-control w-25 me-3"
+              id="studentNameSearch"
+              placeholder="Search with Student Name"
+              aria-label="Search with Student Name"
+              aria-describedby="studentNameSearch"
+              />
               
               <input
                 type="text"
@@ -218,48 +227,62 @@
           </div>
   
           <div class="advanced-search-body">
-            <form id = "joiningDateSearch">
-              <div class="form-row d-flex justify-content-end">
-                <div class="form-group col-md-4 p-2 ">
-                  <label for="" class="text-muted">Payment From</label>
-                  <input type="date" id="min"
-                    class="form-control mt-2 w-100" >
-                </div>
-                <div class="form-group col-md-4 p-2 ">
-                  <label for="" class="text-muted">Payment To</label>
-                  <input type="date" id="max"
-                    class="form-control mt-2 w-100" >
-                </div>
-                <div class="form-group col-md-4 p-3 mt-4">
-                  <button id="btnSearch" class="btn btn-outline-primary" type="button">Search</button>
-                </div>
+            <div class="row">
+              <div class="col-md-12">
+                <form id = "joiningDateSearch">
+                  <div class="form-row d-flex justify-content-center">
+                    <div class="form-group col-md-3 p-1">
+                      <label for="" class="text-muted">Course Amount From</label>
+                      <input type="number" id="min"
+                        class="form-control mt-2 w-100" placeholder="MMK">
+                    </div>
+                    <div class="form-group col-md-3 p-1">
+                      <label for="" class="text-muted">Course Amount To</label>
+                      <input type="number" id="max"
+                        class="form-control mt-2 w-100" placeholder="MMK">
+                    </div>
+    
+                    <div class="form-group col-md-2 p-1">
+                      <label for="" class="text-muted">Course Period From</label>
+                      <input type="date" id="min"
+                        class="form-control mt-2 w-100" >
+                    </div>
+                    <div class="form-group col-md-2 p-1">
+                      <label for="" class="text-muted">Course Period To</label>
+                      <input type="date" id="max"
+                        class="form-control mt-2 w-100" >
+                    </div>
+                    <div class="form-group col-md-2 my-4">
+                      <button id="btnSearch" class="btn btn-outline-primary" type="button">Search</button>
+                      <button id="btnReset" class="btn btn-outline-primary" type="button">Reset</button>
+                    </div>
+                  </div>
+                </form>
               </div>
-            </form>
+            </div>
                               
           </div>
           
           
-  
-          <div class="input-group-prepend mb-3 d-inline-block" style="width: 125px">
-            <label class="text-muted">Payment Status</label>
-            <select
-              class="form-select mt-2"
-              aria-label=".form-select-sm example"
-              id="payment_status"
-              style="width: 100%"
-            >
-              <option value="">ALL</option>
-              <option value="Request">REQUESTED</option>
-              <option value="Pending">PENDING</option>
-              <option value="Complete">COMPLETE</option>
-              <option value="Error">ERROR</option>
-            </select>
-          </div>
 
-          <button class="btn btn-primary mb-3 float-end" id="downloadpaylist">
-            Export to Excel
-          </button>
-        </div>
+              <div class="input-group-prepend mb-3 d-inline-block" style="width: 125px">
+                <label class="text-muted">Payment Status</label>
+                <select
+                  class="form-select mt-2"
+                  aria-label=".form-select-sm example"
+                  id="payment_status"
+                  style="width: 100%"
+                >
+                  <option value="">ALL</option>
+                  <option value="unpaid">Unpaid (0)</option>
+                  <option value="paid">Paid (1)</option>
+                </select>
+              </div>
+    
+              <button class="btn btn-primary mb-3 float-end" id="downloadpaylist">
+                Export to Excel
+              </button>
+            </div>
 
         <!-- <div class="mx-auto p-3" > -->
         <!-- <div>
@@ -282,6 +305,7 @@
                         <th>Course Start Date</th>
                         <th>Course End Date</th>
                         <th>Amount(MMK)</th>
+                        <th>Payment Status</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -318,6 +342,7 @@
                         <td th:text="${dr.courseStartDate}"></td>
                         <td th:text="${dr.courseEndDate}"></td>
                         <td th:text="${dr.courseFees}"></td>
+                        <td th:text="${dr.paymentStatus}" class="payStatus" style="text-transform: uppercase;"></td>
                       </tr>
                     </tbody>
                   </table>
@@ -443,8 +468,11 @@
             $(document).ready(function () {
         var t = $("#payListTable").DataTable();
 
-        $("#payment_status").on("change", function () {
-          t.search(this.value).draw();
+        // $("#payment_status").on("change", function () {
+        //   t.search(this.value).draw();
+        // });
+        $("#payment_status").on("keyup search input paste cut", function () {
+          t.column(9).search(this.value).draw();
         });
         $("#courseNameSearch").on("keyup search input paste cut", function () {
           t.column(3).search(this.value).draw();
@@ -508,7 +536,7 @@
         for(let i=0;i<td.length;i++){
           console.log(td[i].innerHTML)
           if(td[i].innerHTML=="COMPLETED" || td[i].innerHTML=="Completed"){
-              // td[i].innerHTML = "";
+              td[i].innerHTML = "paid";
               // td[i].classList.add('fa-solid')
               // td[i].classList.add('fa-check')
               td[i].classList.add('bg-success')
@@ -517,7 +545,7 @@
 
           }
           else if(td[i].innerHTML=="PENDING" || td[i].innerHTML=="Pending"){
-            // td[i].innerHTML = "";
+            td[i].innerHTML = "unpaid";
             // td[i].classList.add('fa-solid')
             // td[i].classList.add('fa-xmark')
             td[i].classList.add('bg-warning')
@@ -526,7 +554,7 @@
 
           }
           else if(td[i].innerHTML=="REQUESTED" || td[i].innerHTML=="Requested"){
-            // td[i].innerHTML = "";
+            td[i].innerHTML = "unpaid";
             // td[i].classList.add('fa-solid')
             // td[i].classList.add('fa-code-pull-request')
             td[i].classList.add('bg-info')
@@ -535,7 +563,7 @@
 
           }
           else{
-              // td[i].innerHTML = "";
+              td[i].innerHTML = "unpaid";
               // td[i].classList.add('fa-solid')
               // td[i].classList.add('fa-exclamation')
               td[i].classList.add('bg-danger')
