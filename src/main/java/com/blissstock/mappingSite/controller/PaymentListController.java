@@ -15,6 +15,7 @@ import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.entity.JoinCourseUser;
 import com.blissstock.mappingSite.repository.PaymentRepository;
 import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
+import com.blissstock.mappingSite.enums.PaymentStatus;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -96,9 +97,9 @@ public class PaymentListController {
     }
 
     @RequestMapping("/admin/student-unpaid-list")
-    public String StudentUnpaidList(Model model) 
-    {
-        List<PaymentReceive> viewPayment = paymentRepo.findAll();
+    public String StudentUnpaidList(Model model) {
+
+        List<PaymentReceive> viewPayment = paymentRepo.findByPaymentStatus(PaymentStatus.PENDING.toString());
 
         logger.info("Payment Receive List {}", viewPayment);
 
@@ -138,7 +139,8 @@ public class PaymentListController {
             Long courseId = payCouresInfo.getCourseId();
             Long teacherId = payCouresInfo.getUserInfo().getUid();
             int courseFees = payCouresInfo.getFees();
-            studentUnpaidList.add(new StudentUnpaidLists(userName, courseName, teacherName, courseType, courseStartDate, courseEndDate, courseFees, userId, teacherId, courseId, paymentStatus));
+            studentUnpaidList.add(new StudentUnpaidLists(userName, courseName, teacherName, courseType, courseStartDate,
+                    courseEndDate, courseFees, userId, teacherId, courseId, paymentStatus));
         }
 
         logger.info("Payment Receive List including user's information {}", studentUnpaidList);
