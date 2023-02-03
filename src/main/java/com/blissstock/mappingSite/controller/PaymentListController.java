@@ -3,17 +3,23 @@ package com.blissstock.mappingSite.controller;
 // import java.sql.Date;
 import java.util.Date;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.model.PaymentLists;
+import com.blissstock.mappingSite.model.StudentUnpaidLists;
+import com.blissstock.mappingSite.model.TeacherPaymentLists;
 import com.blissstock.mappingSite.entity.PaymentReceive;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.entity.JoinCourseUser;
 import com.blissstock.mappingSite.repository.PaymentRepository;
 import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
+import com.blissstock.mappingSite.enums.PaymentStatus;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +48,7 @@ public class PaymentListController {
     @Autowired
     JoinCourseUserRepository joinCourseUserRepo;
 
-    @RequestMapping("/admin/payment-list")
+    @RequestMapping("/admin/student-payment-list")
     public String PaymentList(Model model) {
         List<PaymentReceive> viewPayment = paymentRepo.findAll();
 
@@ -91,6 +97,128 @@ public class PaymentListController {
         // System.out.println("All Payments"+payUserList);
         model.addAttribute("allPaymentList", payUserList);
 
-        return "AD0003_PaymentListScreen";
+        return "AD0003_StudentPaymentListScreen";
     }
+
+    @RequestMapping("/admin/student-unpaid-list")
+    public String StudentUnpaidList(Model model) {
+
+        List<PaymentReceive> viewPayment = paymentRepo.findByPaymentStatus(PaymentStatus.PENDING.toString());
+
+        logger.info("Payment Receive List {}", viewPayment);
+
+        // List<String> breadcrumbList = new ArrayList<>();
+        // breadcrumbList.add("Top");
+        // breadcrumbList.add("Payment List");
+        // model.addAttribute("breadcrumbList",breadcrumbList);
+        String nav_type = "fragments/adminnav";
+        model.addAttribute("nav_type", nav_type);
+
+        List<StudentUnpaidLists> studentUnpaidList = new ArrayList<>();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        // List<AllPaymentLists> allPayment = new AllPaymentLists();
+        for (PaymentReceive paymentReceive : viewPayment) {
+            // String paymentDate = format.format(paymentReceive.getPaymentReceiveDate());
+            String paymentStatus = paymentReceive.getPaymentStatus();
+
+            JoinCourseUser joinCourseUser = paymentReceive.getJoin();
+
+            UserInfo payUserInfo = joinCourseUser.getUserInfo();
+            String userName = payUserInfo.getUserName();
+            Long userId = payUserInfo.getUid();
+            CourseInfo payCouresInfo = joinCourseUser.getCourseInfo();
+            String courseName = payCouresInfo.getCourseName();
+            String courseType = payCouresInfo.getClassType();
+            String courseStartDate;
+            String courseEndDate;
+            Calendar cal = Calendar.getInstance();
+            try {
+                courseStartDate = format.format(payCouresInfo.getStartDate());
+                courseEndDate = format.format(payCouresInfo.getEndDate());
+            } catch (Exception e) {
+                courseStartDate = format.format(cal.getTime());
+                courseEndDate = format.format(cal.getTime());
+            }
+            String teacherName = payCouresInfo.getUserInfo().getUserName();
+            Long courseId = payCouresInfo.getCourseId();
+            Long teacherId = payCouresInfo.getUserInfo().getUid();
+            int courseFees = payCouresInfo.getFees();
+            studentUnpaidList.add(new StudentUnpaidLists(userName, courseName, teacherName, courseType, courseStartDate,
+                    courseEndDate, courseFees, userId, teacherId, courseId, paymentStatus));
+        }
+
+        logger.info("Payment Receive List including user's information {}", studentUnpaidList);
+
+        // System.out.println("All Payments"+studentUnpaidList);
+        model.addAttribute("allStuUnpaidList", studentUnpaidList);
+
+        return "AD0005_StudentUnpaidListScreeen";
+    }
+
+    @RequestMapping("/admin/teacher-payment-list")
+    public String TeacherPaymentList(Model model) {
+        List<PaymentReceive> viewPayment = paymentRepo.findAll();
+
+        logger.info("Payment Receive List {}", viewPayment);
+
+        // List<String> breadcrumbList = new ArrayList<>();
+        // breadcrumbList.add("Top");
+        // breadcrumbList.add("Payment List");
+        // model.addAttribute("breadcrumbList",breadcrumbList);
+        String nav_type = "fragments/adminnav";
+        model.addAttribute("nav_type", nav_type);
+
+        List<TeacherPaymentLists> teacherPayList = new ArrayList<>();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        // List<AllPaymentLists> allPayment = new AllPaymentLists();
+        for (PaymentReceive paymentReceive : viewPayment) {
+            String paymentDate = format.format(paymentReceive.getPaymentReceiveDate());
+            String paymentStatus = paymentReceive.getPaymentStatus();
+
+            JoinCourseUser joinCourseUser = paymentReceive.getJoin();
+
+            // UserInfo payUserInfo = joinCourseUser.getUserInfo();
+            // String userName = payUserInfo.getUserName();
+            // Long userId = payUserInfo.getUid();
+            CourseInfo payCouresInfo = joinCourseUser.getCourseInfo();
+            String courseName = payCouresInfo.getCourseName();
+            String courseStartDate;
+            String courseEndDate;
+            Calendar cal = Calendar.getInstance();
+            try {
+                courseStartDate = format.format(payCouresInfo.getStartDate());
+                courseEndDate = format.format(payCouresInfo.getEndDate());
+            } catch (Exception e) {
+                courseStartDate = format.format(cal.getTime());
+                courseEndDate = format.format(cal.getTime());
+                
+            }
+            // Long duration = payCouresInfo.getEndDate().getTime() - payCouresInfo.getStartDate().getTime();
+            LocalDate startLocalDate = payCouresInfo.getStartDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            LocalDate endLocalDate = payCouresInfo.getEndDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+            Period period = Period.between(startLocalDate, endLocalDate);
+            String duration = period.toString().substring(1);
+
+
+            String teacherName = payCouresInfo.getUserInfo().getUserName();
+            // Long courseId = payCouresInfo.getCourseId();
+            Long teacherId = payCouresInfo.getUserInfo().getUid();
+            int courseFees = payCouresInfo.getFees();
+            Double teacherPayment = courseFees - (courseFees * 0.1);
+            int payAmount = teacherPayment.intValue();
+
+
+
+            teacherPayList.add(new TeacherPaymentLists(payAmount, duration, teacherId, teacherName, courseName, courseStartDate, courseEndDate, paymentDate, courseFees, paymentStatus));
+        }
+
+        logger.info("Payment Receive List including user's information {}", teacherPayList);
+
+        // System.out.println("All Payments"+payUserList);
+        model.addAttribute("TeacherPaymentList", teacherPayList);
+
+        return "AD0006_TeacherPaymentListScreen";
+    }
+
 }
