@@ -35,8 +35,6 @@ body {
 	overflow-x: hidden;
 }
 
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700&subset=latin,latin-ext);
-
 .btn-small, .btn-small:active, .btn-small.active{
   font-size: 16px;
   color:#333;

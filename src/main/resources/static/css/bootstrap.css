@@ -4512,11 +4512,7 @@ textarea.form-control-lg {
   content: var(--bs-breadcrumb-divider, "/") /* rtl: var(--bs-breadcrumb-divider, "/") */;
 }
 .breadcrumb-item.active {
-<<<<<<< HEAD
-  color: #128639;
-=======
   color: #0d19c0;
->>>>>>> testingz
 }
 
 .pagination {

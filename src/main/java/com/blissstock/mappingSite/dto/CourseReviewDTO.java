@@ -8,7 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class CourseReviewDTO extends ReviewDTO {
+public class CourseReviewDTO {
     public String profileLink;
 
 }
