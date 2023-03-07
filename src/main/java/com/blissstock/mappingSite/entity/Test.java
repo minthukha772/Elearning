@@ -61,9 +61,8 @@ public class Test {
     @Column(name = "exam_status", length = 100)
     private String exam_status;
 
-    public Test(Long test_id, String description, String section_name, Integer minutes_allowed,
+    public Test(int course_id, int user_id, String description, String section_name, Integer minutes_allowed,
             Integer passing_score_percent, String date, String start_time, String end_time, String exam_status) {
-        this.testId = test_id;
         this.description = description;
         this.section_name = section_name;
         this.minutes_allowed = minutes_allowed;
