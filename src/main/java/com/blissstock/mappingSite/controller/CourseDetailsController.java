@@ -354,7 +354,6 @@ public class CourseDetailsController {
         List<Test> testList = courseInfo.getTest();
         logger.info("The size of test list is {}" + testList.size());
         Test test = new Test();
-        test.setTestLink(testLink);
         test.setCourseInfo(courseInfo);
         testList.add(test);
         courseInfo.setTest(testList);

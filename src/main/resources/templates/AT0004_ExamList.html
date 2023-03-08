@@ -85,18 +85,18 @@
         examAllowedMinutes = (examEndHour - examStartHour) * 60 + (examEndMinute - examStartMinute)
 
         var data = {
-          course_info: currentCourseID,
+          course_id: currentCourseID,
           description: examDescription,
           section_name: sectionName,
           passing_score: passingScore,
-          Date: examDate,
+          date: examDate,
           minutes_allowed: examAllowedMinutes,
           start_time: examStartTime,
           end_time: examEndTime,
-          examStatus: "Created"
+          exam_status: "Created"
         }
 
-        data = JSON.stringify(data);
+        var data = JSON.stringify(data);
 
         fetch("/teacher/create-exam", {
           method: "POST",

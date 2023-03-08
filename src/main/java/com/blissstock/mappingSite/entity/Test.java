@@ -26,8 +26,8 @@ public class Test {
 
     @Column(name = "test_id")
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long testId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long test_id;
 
     // mapping
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
