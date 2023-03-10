@@ -2,8 +2,6 @@ package com.blissstock.mappingSite.repository;
 
 import java.util.List;
 
-import javax.persistence.criteria.CriteriaBuilder.In;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,10 +15,10 @@ public interface TestRepository extends JpaRepository<Test, Long> {
      * @param exam_status
      * @return
      */
-    @Query(value = "Select * from test where exam_status = :exam_status and user_info_account_id = :user_id", nativeQuery = true)
+    @Query(value = "Select * from test where exam_status = :exam_status and user_info_account_id = :user_id order by test_id desc", nativeQuery = true)
     public List<Test> getListByStatusandUser(@Param("exam_status") String exam_status, @Param("user_id") Long user_id);
 
-    @Query(value = "Select * from test where user_info_account_id = :user_id", nativeQuery = true)
+    @Query(value = "Select * from test where user_info_account_id = :user_id order by test_id desc", nativeQuery = true)
     public List<Test> getListByUser(@Param("user_id") Long user_id);
 
     @Query(value = "insert into test(date, description, end_time, exam_status, minutes_allowed, passing_score_percent,"

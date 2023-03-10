@@ -72,17 +72,29 @@
         examStartTime = document.getElementById("examStartTime").value;
         examEndTime = document.getElementById("examEndTime").value;
         startTimeArray = examStartTime.split(":");
-        examStartHour = startTimeArray[0];
-        examStartMinute = startTimeArray[1];
+        examStartHour = parseInt(startTimeArray[0]);
+        examStartMinute = parseInt(startTimeArray[1]);
         endTimeArray = examEndTime.split(":");
-        examEndHour = endTimeArray[0];
-        examEndMinute = endTimeArray[1];
+        examEndHour = parseInt(endTimeArray[0]);
+        examEndMinute = parseInt(endTimeArray[1]);
 
         if (examEndMinute < examStartMinute) {
-          examEndHour--;
+          examEndHour = examEndHour - 1;
           examEndMinute += 60;
         }
         examAllowedMinutes = (examEndHour - examStartHour) * 60 + (examEndMinute - examStartMinute)
+
+        if (examStartHour > 12) {
+          examStartTime = (startTimeArray[0] - 12) + ":" + startTimeArray[1] + "pm"
+        } else {
+          examStartTime = startTimeArray[0] + ":" + startTimeArray[1] + "am"
+        }
+
+        if (parseInt(endTimeArray[0]) > 12) {
+          examEndTime = (parseInt(endTimeArray[0]) - 12) + ":" + endTimeArray[1] + "pm"
+        } else {
+          examEndTime = endTimeArray[0] + ":" + endTimeArray[1] + "am"
+        }
 
         var data = {
           course_id: currentCourseID,
@@ -93,7 +105,7 @@
           minutes_allowed: examAllowedMinutes,
           start_time: examStartTime,
           end_time: examEndTime,
-          exam_status: "Created"
+          exam_status: "Exam Created"
         }
 
         var data = JSON.stringify(data);
@@ -104,7 +116,11 @@
             "Content-Type": "application/json"
           },
           body: data
-        }).then(response => response.json())
+        }).then(response => {
+          if (response.status == 200) {
+            window.location.reload();
+          }
+        })
       })
 
       $('.datepicker').datepicker({
@@ -130,23 +146,52 @@
 
     </div>
   </div>
-  <div class="container-fluid" style="padding-top: 150px; orientation: landscape">
-    <div class="btn btn-primary" style="float: right;" data-toggle="modal" data-target="#createExamContent">
+  <div class="d-flex justify-content-end" style="padding-top: 150px; orientation: landscape">
+    <div style="padding: 8px;" th:text="${testList.size}"></div>
+    <div style="padding-top: 8px; padding-right: 10px;"> Items Found</div>
+    <div class="btn btn-primary" style="margin-right: 20px;" data-toggle="modal" data-target="#createExamContent">
       Create Exam Content
     </div>
-    <div style="float: right;">100 items found</div>
   </div>
-  <div class="container">
+  <div class="container" style="padding-top: 50px;">
     <div class="row">
       <div class="col-lg-6" th:each="test, index:${testList}">
         <div class="card"
           style="background-color: white; padding: 10px; width: 450px; border-radius: 10px; margin: 10px;">
-          <div th:text="${index.count}"></div>
+          <div class="d-flex justify-content-between" style="padding-top: 10px; padding-bottom: 10px;">
+            <div th:text="${index.count}" style="padding-top: 5px;"></div>
+            <div>
+              <img th:src="@{/images/edit.png}" width="20" />
+              <img th:src="@{/images/cross-mark.png}" width="20" />
+            </div>
+          </div>
           <div th:text="${test.description}"></div>
           <div th:text="${test.exam_status}"></div>
-          <div th:text="${test.courseInfo.courseName}"></div>
+          <div class="d-flex justify-content-start">
+            <div th:text="${test.courseInfo.courseName}"></div>
+            <div style="padding-left: 20px; padding-right: 5px;"> ( </div>
+            <div th:text="${test.section_name}"></div>
+            <div style="padding-left: 5px;"> ) </div>
+          </div>
           <div th:text="${test.userInfo.userName}"></div>
-          <div th:text="${test.section_name}"></div>
+          <div class="d-flex justify-content-start" style="color: gray">
+            <div th:text="${test.date}"></div>
+            <div style="padding-left: 20px; padding-right: 5px;"> ( </div>
+            <div th:text="${test.start_time}"></div>
+            <div style="padding-left: 5px; padding-right: 5px;"> - </div>
+            <div th:text="${test.end_time}"></div>
+            <div style="padding-left: 5px; padding-right: 5px;"> ) </div>
+          </div>
+          <div class="d-flex justify-content-start">
+            <div th:text="${test.minutes_allowed}"></div>
+            <div style="padding-left: 5px;">Minutes Allowed</div>
+          </div>
+          <div th:text="${test.passing_score_percent}"></div>
+          <div class="d-flex justify-content-between">
+            <a href="/teacher/exam/questions">Exam Questions</a>
+            <a href="/teacher/exam/examinee">Set Examinee</a>
+            <a href="/teacher/exam/result">Set Result</a>
+          </div>
         </div>
       </div>
     </div>
@@ -164,8 +209,8 @@
         </div>
         <div class="modal-body">
           <div class="container-fluid">
-            <div class="dropdown">
-              <button class="btn btn-secondary dropdown-toggle" type="button" id="courseDropDown" data-toggle="dropdown"
+            <div class="dropdown" style="width: 100%;">
+              <button class="btn btn-primary dropdown-toggle" type="button" id="courseDropDown" data-toggle="dropdown"
                 aria-expanded="false">
                 Select Course
               </button>
@@ -175,21 +220,7 @@
               </ul>
             </div>
             Description
-            <textarea id="examDescription" name="Exam Description" rows="4" cols="50"></textarea>
-            <br />
-            Exam Status
-            <div class="dropdown">
-              <button class="btn btn-secondary dropdown-toggle" type="button" id="examStatus" data-toggle="dropdown"
-                aria-expanded="false">
-                Select Exam Status
-              </button>
-              <ul class="dropdown-menu" aria-labelledby="examStatus">
-                <li><a class="dropdown-item" onclick="setExamStatus('Exam Created')">Exam Created</a></li>
-                <li><a class="dropdown-item" onclick="setExamStatus('Questions Added')">Questions Added</a></li>
-                <li><a class="dropdown-item" onclick="setExamStatus('Exam Finished')">Exam Finished</a></li>
-                <li><a class="dropdown-item" onclick="setExamStatus('Marking')">Marking</a></li>
-              </ul>
-            </div>
+            <input type="text" class="form-control" id="examDescription" aria-describedby="Section Name">
             Section Name
             <input type="text" class="form-control" id="sectionName" aria-describedby="Section Name">
             Exam Date
@@ -200,20 +231,16 @@
               </div>
             </div>
             Start Time
-            <br />
             <input id="examStartTime" />
-            <br />
             End Time
-            <br />
             <input id="examEndTime" />
-            <br />
             Passing Score
             <input type="text" class="form-control" id="passingScore" aria-describedby="Passing Score">
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" id="submitExam">Save changes</button>
+          <button type="button" class="btn btn-primary" id="submitExam">Submit</button>
         </div>
       </div>
     </div>
