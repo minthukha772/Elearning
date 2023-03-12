@@ -76,6 +76,25 @@ const onSubmit = () => {
     if (!(form[0].checkValidity() && isFormValid)) {
       event.preventDefault();
       event.stopPropagation();
+      // Get the selected payment type
+  var paymentType = document.querySelector('input[name="paymentType"]:checked').value;
+  
+  // Set the payment type value in the hidden input field
+  document.getElementById("paymentType").value = paymentType;
+
+  // Create a new FormData object to store the form data
+  var formData = new FormData(document.getElementById("myForm"));
+
+  // Send the form data to the server using AJAX
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "/teacher/save-course-register");
+  xhr.onload = function() {
+    if (xhr.status === 200) {
+      console.log(xhr.responseText);
+    }
+  };
+  xhr.send(formData);
+
     }
   });
 };

@@ -265,3 +265,33 @@ footer {
     margin: 20px auto;
     background-color: #28C4AF;
 }
+
+
+.btn-heart {
+    display: inline-block;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    /* background-color: red; */
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+  
+  .btn-heart:hover {
+    background-color: #0e8166;
+  }
+  
+  .btn-heart .bi {
+    display: inline-block;
+    margin-right: 5px;
+    font-size: 20px;
+  }
+  
+
+  td.hidden,
+  th.hidden {
+  display: none;
+  }

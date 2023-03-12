@@ -1,5 +1,4 @@
 package com.blissstock.mappingSite.model;
-import java.time.LocalDate;
 import java.util.Date;
 
 import lombok.AllArgsConstructor;
@@ -7,60 +6,36 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-//@AllArgsConstructor
-@NoArgsConstructor
-public class TeacherPaymentLists {
-    // String paymentDate;
-    // String courseStartDate;
-    // String courseEndDate;
-    // String paymentStatus;
-    // // String userName;
-    // String teacherName;
-    // String courseName;
-    // Double courseFees;
-    // Long teacherId;
-    // // Long userId;
-    // // Long courseId;
-    // String duration;
-    // int payAmount;
 
-        Long paymentForTeacherId;    
-        String teacherName; 
-        String courseName;
-        String courseStartDate; 
-        String courseEndDate;
-        String duration;
-        LocalDate paymentDate;
-        Date calculateFrom;
-        Date calculateTo;
-        int courseFees;
-        int totalAmount;
-        int payAmount;
-        String paymentStatus;
-        long teacherId;
-        long  courseId;
-        String varifyStateString;
+@NoArgsConstructor
+public class TeacherPaymentHistoryLists {
+    String courseName;
+    String teacherName;
+    Long teacherId;
+    Date paymentDate;
+    int courseFees;
+    Long courseId;
+    Long paymentForTeacherId;
+    
+    public TeacherPaymentHistoryLists(String courseName, String teacherName, Long teacherId, Date paymentDate,int courseFees,Long courseId, Long paymentForTeacherId) {
+        this.courseName = courseName;
+        this.teacherName = teacherName;
+        this.teacherId = teacherId;
+        this.paymentDate = paymentDate;
+        this.courseFees = courseFees;
+        this.courseId = courseId;
+        this.paymentForTeacherId = paymentForTeacherId;
+    }
+    
 
 
     
-    public TeacherPaymentLists(Long paymentForTeacherId, String teacherName, String courseName, String courseStartDate, String courseEndDate, String duration, LocalDate paymentDate, Date calculateFrom, Date calculateTo, int courseFees, int totalAmount, int payAmount, String paymentStatus, long teacherId, long  courseId, String varifyStateString) {
-        this.paymentForTeacherId = paymentForTeacherId;
-        this.teacherName = teacherName;
-        this.courseName = courseName;
-        this.courseStartDate = courseStartDate;
-        this.courseEndDate = courseEndDate;
-        this.duration = duration;
-        this.paymentDate = paymentDate;
-        this.calculateFrom = calculateFrom;
-        this.calculateTo = calculateTo;
-        this.courseFees = courseFees;
-        this.totalAmount = totalAmount;
-        this.payAmount = payAmount;
-        this.paymentStatus = paymentStatus;
-        this.teacherId = teacherId;
-        this.courseId = courseId;
-        this.varifyStateString = varifyStateString;
-    }
+   
+
+
+
+
+    
 
 
 // public TeacherPaymentLists(String paymentStatus2) {
