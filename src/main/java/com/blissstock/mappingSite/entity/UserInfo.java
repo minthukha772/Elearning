@@ -32,7 +32,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import org.springframework.format.annotation.DateTimeFormat;
+//import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
 @Setter
@@ -117,6 +117,14 @@ public class UserInfo implements Profile {
   )
   @JsonIgnore
   private List<CourseInfo> courseInfo = new ArrayList<>();
+
+  @OneToMany(
+    fetch = FetchType.LAZY,
+    cascade = CascadeType.ALL,
+    mappedBy = "userInfo"
+    )
+    @JsonIgnore
+    private List<PaymentRemark> paymentRemark = new ArrayList<>();
 
   public static UserInfo fromRegisterDTO(UserRegisterDTO userRegisterDTO) {
     UserInfo userInfo = new UserInfo();
