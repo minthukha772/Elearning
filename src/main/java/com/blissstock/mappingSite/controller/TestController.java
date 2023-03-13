@@ -79,8 +79,31 @@ public class TestController {
         int minutes_allowed = jsonObject.getInt("minutes_allowed");
         CourseInfo courseInfo = courseInfoRepository.findByCourseID(course_id);
         UserInfo userInfo = userInfoRepository.findStudentById(userID);
-        Test test = new Test(courseInfo, userInfo, description, section_name, minutes_allowed, passing_score, date,
-                exam_start_time, exam_end_time, exam_status);
+        Test test = new Test(null, courseInfo, userInfo, description, section_name, minutes_allowed, passing_score,
+                date, exam_start_time, exam_end_time, exam_status);
+        testRepository.save(test);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @Valid
+    @PostMapping(value = { "/teacher/edit-exam" })
+    private ResponseEntity editExam(@RequestBody String payload) {
+        Long userID = getUid(null);
+        JSONObject jsonObject = new JSONObject(payload);
+        Long test_id = jsonObject.getLong("test_id");
+        String description = jsonObject.getString("description");
+        String section_name = jsonObject.getString("section_name");
+        String date = jsonObject.getString("date");
+        String exam_status = jsonObject.getString("exam_status");
+        Long course_id = jsonObject.getLong("course_id");
+        String exam_start_time = jsonObject.getString("start_time");
+        String exam_end_time = jsonObject.getString("end_time");
+        int passing_score = Integer.parseInt(jsonObject.getString("passing_score"));
+        int minutes_allowed = jsonObject.getInt("minutes_allowed");
+        CourseInfo courseInfo = courseInfoRepository.findByCourseID(course_id);
+        UserInfo userInfo = userInfoRepository.findStudentById(userID);
+        Test test = new Test(test_id, courseInfo, userInfo, description, section_name, minutes_allowed, passing_score,
+                date, exam_start_time, exam_end_time, exam_status);
         testRepository.save(test);
         return ResponseEntity.ok(HttpStatus.OK);
     }

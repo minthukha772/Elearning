@@ -49,6 +49,8 @@
     var examEndHour;
     var examEndMinute;
     var examAllowedMinutes;
+    var currentTestID;
+    var currentExamStatus;
     $('#createExamContent').on('shown.bs.modal', function () {
       $('#createExamContent').trigger('focus')
     })
@@ -58,8 +60,52 @@
       document.getElementById("courseDropDown").innerHTML = courseName;
     };
 
+    function editCourse(courseId, courseName) {
+      currentCourse = courseId;
+      document.getElementById("editCourseDropDown").innerHTML = courseName;
+    };
+
     function setExamStatus(examStatus) {
       document.getElementById("examStatus").innerHTML = examStatus;
+    }
+
+    function editExamstatus(status) {
+      currentExamStatus = status;
+      document.getElementById("editExamStatus").innerHTML = status;
+    }
+
+    function setDataToEditDialog(test) {
+      currentTestID = test.test_id;
+      currentCourseID = test.courseInfo.courseId;
+      document.getElementById("editCourseDropDown").innerHTML = test.courseInfo.courseName;
+      document.getElementById("editExamDescription").value = test.description;
+      document.getElementById("editSectionName").value = test.section_name;
+      document.getElementById("editExamDate").value = test.date;
+      var startAmOrPm = test.start_time.slice(-2);
+      var endAmOrPm = test.end_time.slice(-2);
+      var startTimeOnly = test.start_time.substring(0, test.start_time.length - 2);
+      var endTimeOnly = test.end_time.substring(0, test.end_time.length - 2);
+
+      var editStartTimeArray = startTimeOnly.split(":");
+      var editExamStartHour = parseInt(editStartTimeArray[0]);
+      var editExamStartMinute = editStartTimeArray[1];
+      if (startAmOrPm == "pm") {
+        editExamStartHour = editExamStartHour + 12;
+      }
+      var editExamStartTime = editExamStartHour + ":" + editExamStartMinute;
+
+      var editEndTimeArray = endTimeOnly.split(":");
+      var editExamEndHour = parseInt(editEndTimeArray[0]);
+      var editExamEndMinute = editEndTimeArray[1];
+      if (endAmOrPm == "pm") {
+        editExamEndHour = editExamEndHour + 12;
+      }
+      var editExamEndTime = editExamEndHour + ":" + editExamEndMinute;
+
+      document.getElementById("editExamStatus").innerHTML = test.exam_status;
+      document.getElementById("editExamStartTime").value = editExamStartTime;
+      document.getElementById("editExamEndTime").value = editExamEndTime;
+      document.getElementById("editPassingScore").value = test.passing_score_percent;
     }
 
     $(document).ready(function () {
@@ -123,6 +169,68 @@
         })
       })
 
+      $("#updateExam").click(function () {
+        examDescription = document.getElementById("editExamDescription").value;
+        sectionName = document.getElementById("editSectionName").value;
+        passingScore = document.getElementById("editPassingScore").value;
+        examDate = document.getElementById("editExamDate").value;
+        examStartTime = document.getElementById("editExamStartTime").value;
+        examEndTime = document.getElementById("editExamEndTime").value;
+        currentExamStatus = document.getElementById("editExamStatus").innerHTML;
+
+        startTimeArray = examStartTime.split(":");
+        examStartHour = parseInt(startTimeArray[0]);
+        examStartMinute = parseInt(startTimeArray[1]);
+        endTimeArray = examEndTime.split(":");
+        examEndHour = parseInt(endTimeArray[0]);
+        examEndMinute = parseInt(endTimeArray[1]);
+
+        if (examEndMinute < examStartMinute) {
+          examEndHour = examEndHour - 1;
+          examEndMinute += 60;
+        }
+        examAllowedMinutes = (examEndHour - examStartHour) * 60 + (examEndMinute - examStartMinute)
+
+        if (examStartHour > 12) {
+          examStartTime = (startTimeArray[0] - 12) + ":" + startTimeArray[1] + "pm"
+        } else {
+          examStartTime = startTimeArray[0] + ":" + startTimeArray[1] + "am"
+        }
+
+        if (parseInt(endTimeArray[0]) > 12) {
+          examEndTime = (parseInt(endTimeArray[0]) - 12) + ":" + endTimeArray[1] + "pm"
+        } else {
+          examEndTime = endTimeArray[0] + ":" + endTimeArray[1] + "am"
+        }
+        var data = {
+          test_id: currentTestID,
+          course_id: currentCourseID,
+          description: examDescription,
+          section_name: sectionName,
+          passing_score: passingScore,
+          date: examDate,
+          minutes_allowed: examAllowedMinutes,
+          start_time: examStartTime,
+          end_time: examEndTime,
+          exam_status: currentExamStatus
+        }
+
+        var data = JSON.stringify(data);
+        console.log(data);
+         fetch("/teacher/edit-exam", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: data
+        }).then(response => {
+          if (response.status == 200) {
+            window.location.reload();
+          }
+        })
+      })
+
+
       $('.datepicker').datepicker({
         format: 'yyyy/mm/dd'
       });
@@ -134,6 +242,14 @@
       $('#examEndTime').timepicker({
         uiLibrary: 'bootstrap4'
       });
+
+      $('#editExamStartTime').timepicker({
+        uiLibrary: 'bootstrap4'
+      });
+
+      $('#editExamEndTime').timepicker({
+        uiLibrary: 'bootstrap4'
+      });
     })
 
   </script>
@@ -141,11 +257,6 @@
 
 <body style="background-color: #DFDFDF;">
   <div th:replace="@{fragments/nav}"></div>
-  <div class="row">
-    <div class="col-md-2">
-
-    </div>
-  </div>
   <div class="d-flex justify-content-end" style="padding-top: 150px; orientation: landscape">
     <div style="padding: 8px;" th:text="${testList.size}"></div>
     <div style="padding-top: 8px; padding-right: 10px;"> Items Found</div>
@@ -157,12 +268,16 @@
     <div class="row">
       <div class="col-lg-6" th:each="test, index:${testList}">
         <div class="card"
-          style="background-color: white; padding: 10px; width: 450px; border-radius: 10px; margin: 10px;">
+          style="background-color: white; padding: 15px; width: 450px; border-radius: 10px; margin: 10px;">
           <div class="d-flex justify-content-between" style="padding-top: 10px; padding-bottom: 10px;">
             <div th:text="${index.count}" style="padding-top: 5px;"></div>
-            <div>
-              <img th:src="@{/images/edit.png}" width="20" />
-              <img th:src="@{/images/cross-mark.png}" width="20" />
+            <div id="editDialog" th:onclick="setDataToEditDialog([[${test}]]);">
+              <div class="btn" data-toggle="modal" data-target="#editExamContent">
+                <img th:src="@{/images/edit.png}" width="20" />
+              </div>
+              <div class="btn" data-toggle="modal" data-target="#editExamContent">
+                <img th:src="@{/images/cross-mark.png}" width="20" />
+              </div>
             </div>
           </div>
           <div th:text="${test.description}"></div>
@@ -186,7 +301,11 @@
             <div th:text="${test.minutes_allowed}"></div>
             <div style="padding-left: 5px;">Minutes Allowed</div>
           </div>
-          <div th:text="${test.passing_score_percent}"></div>
+          <div class="d-flex justify-content-start">
+            <div th:text="${test.passing_score_percent}"></div>
+            <div style="padding-left: 5px;">%</div>
+          </div>
+
           <div class="d-flex justify-content-between">
             <a href="/teacher/exam/questions">Exam Questions</a>
             <a href="/teacher/exam/examinee">Set Examinee</a>
@@ -220,7 +339,7 @@
               </ul>
             </div>
             Description
-            <input type="text" class="form-control" id="examDescription" aria-describedby="Section Name">
+            <input type="text" class="form-control" id="examDescription" aria-describedby="Description">
             Section Name
             <input type="text" class="form-control" id="sectionName" aria-describedby="Section Name">
             Exam Date
@@ -241,6 +360,70 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           <button type="button" class="btn btn-primary" id="submitExam">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="editExamContent" tabindex="-1" role="dialog" aria-labelledby="editExam"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editExam">Edit Exam Content</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="container-fluid">
+            <div class="dropdown" style="width: 100%;">
+              <button class="btn btn-primary dropdown-toggle" type="button" id="editCourseDropDown"
+                data-toggle="dropdown" aria-expanded="false">
+                Select Course
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="courseDropDown">
+                <li th:each="course, index: ${courseList}">
+                  <a class="dropdown-item" th:text="${course.courseName}"
+                    th:onclick="editCourse([[${course.courseId}]], [[${course.courseName}]]);">
+                  </a>
+                </li>
+              </ul>
+            </div>
+            Description
+            <input type="text" class="form-control" id="editExamDescription" aria-describedby="Exam Description">
+            Section Name
+            <input type="text" class="form-control" id="editSectionName" aria-describedby="Section Name">
+            <div class="dropdown" style="padding-top: 10px;">
+              <button class="btn btn-primary dropdown-toggle" type="button" id="editExamStatus" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                Select Exam Status
+              </button>
+              <div class="dropdown-menu" aria-labelledby="editExamStatus">
+                <a class="dropdown-item" onclick="editExamstatus('Exam Created')">Exam Created</a>
+                <a class="dropdown-item" onclick="editExamstatus('Questions Created')">Questions Created</a>
+                <a class="dropdown-item" onclick="editExamstatus('Marking')">Marking</a>
+                <a class="dropdown-item" onclick="editExamstatus('Result Released')">Result Released</a>
+              </div>
+            </div>
+            Exam Date
+            <div class="input-group date" data-provide="datepicker">
+              <input type="text" class="form-control" id="editExamDate">
+              <div class="input-group-addon">
+                <span class="glyphicon glyphicon-th"></span>
+              </div>
+            </div>
+            Start Time
+            <input id="editExamStartTime" />
+            End Time
+            <input id="editExamEndTime" />
+            Passing Score
+            <input type="text" class="form-control" id="editPassingScore" aria-describedby="Passing Score">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="updateExam">Update</button>
         </div>
       </div>
     </div>
