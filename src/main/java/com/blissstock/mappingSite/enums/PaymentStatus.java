@@ -7,6 +7,7 @@ import lombok.Getter;
 public enum PaymentStatus {
   
     COMPLETE("COMPLETED"),
+    COMPLETED("COMPLETED"),
     PENDING("PENDING"),
     REQUESTED("REQUESTED"),
     ERROR("ERROR");

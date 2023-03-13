@@ -3,9 +3,11 @@ package com.blissstock.mappingSite.service;
 import com.blissstock.mappingSite.entity.PaymentReceive;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.entity.CourseInfo;
+import com.blissstock.mappingSite.entity.PaymentHistory;
 import com.blissstock.mappingSite.exceptions.UnauthorizedFileAccessException;
 import com.blissstock.mappingSite.model.FileInfo;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
@@ -42,6 +44,8 @@ public interface StorageService {
   public FileInfo loadSlipAsFileInfo(PaymentReceive payment, Long userId);
 
   public FileInfo loadCoursePhoto(CourseInfo courseInfo);
+
+  public FileInfo loadPaymentSlip(Long fileSeparator, PaymentHistory viewHistory) ;
  
 
 }
