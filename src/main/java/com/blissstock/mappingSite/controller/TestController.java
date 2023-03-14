@@ -1,5 +1,7 @@
 package com.blissstock.mappingSite.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.validation.Valid;
 
@@ -12,8 +14,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.ui.Model;
 
+import java.util.Date;
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.Test;
 import com.blissstock.mappingSite.entity.UserInfo;
@@ -40,24 +44,42 @@ public class TestController {
 
     @Valid
     @GetMapping(value = { "/teacher/exam" })
-    private String getExamManagementPage(@PathVariable(required = false) Long userId,
-            @PathVariable(required = false) String examStatus,
-            Model model) {
+    private String getExamManagementPage(@PathVariable(required = false) Long userId, Model model,
+            @RequestParam(required = false) String examStatus, @RequestParam(required = false) String courseid,
+            @RequestParam(required = false) String fromDate, @RequestParam(required = false) String toDate) throws ParseException {
         if (examStatus == null) {
             examStatus = "";
         }
+        if (courseid == null) {
+            courseid = "";
+        }
+        if (fromDate == null && toDate == null) {
+            fromDate = "";
+            toDate = "";
+        }
+
         Long userID = getUid(null);
         List<Test> testList;
         List<CourseInfo> courseList;
-
-        if (examStatus == "") {
-            testList = testRepository.getListByUser(userID);
+        if (examStatus != "" || courseid != "" || fromDate != "" || toDate != "") {
+            if (examStatus != "") {
+                testList = testRepository.getListByStatusAndUser(examStatus, userID);
+                model.addAttribute("testList", testList);
+            } else if (courseid != "") {
+                testList = testRepository.getListByCourseAndUser(Long.parseLong(courseid), userID);
+                model.addAttribute("testList", testList);
+            } else if (fromDate != "" && toDate != "") {
+                Date from = new SimpleDateFormat("yyyy-MM-dd").parse(fromDate);
+                Date to = new SimpleDateFormat("yyyy-MM-dd").parse(toDate);
+                testList = testRepository.getListByDateAndUser(from, to, userID);
+                model.addAttribute("testList", testList);
+            }
         } else {
-            testList = testRepository.getListByStatusandUser(examStatus, userID);
+            testList = testRepository.getListByUser(userID);
+            model.addAttribute("testList", testList);
         }
-        courseList = courseInfoRepository.findByUID(userID);
 
-        model.addAttribute("testList", testList);
+        courseList = courseInfoRepository.findByUID(userID);
         model.addAttribute("courseList", courseList);
 
         return "AT0004_ExamList";
@@ -71,6 +93,12 @@ public class TestController {
         String description = jsonObject.getString("description");
         String section_name = jsonObject.getString("section_name");
         String date = jsonObject.getString("date");
+        Date examDate = null;
+        try {
+            examDate = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+        } catch (Exception e) {
+
+        }
         String exam_status = jsonObject.getString("exam_status");
         Long course_id = jsonObject.getLong("course_id");
         String exam_start_time = jsonObject.getString("start_time");
@@ -80,7 +108,7 @@ public class TestController {
         CourseInfo courseInfo = courseInfoRepository.findByCourseID(course_id);
         UserInfo userInfo = userInfoRepository.findStudentById(userID);
         Test test = new Test(null, courseInfo, userInfo, description, section_name, minutes_allowed, passing_score,
-                date, exam_start_time, exam_end_time, exam_status);
+                examDate, exam_start_time, exam_end_time, exam_status);
         testRepository.save(test);
         return ResponseEntity.ok(HttpStatus.OK);
     }
@@ -94,6 +122,12 @@ public class TestController {
         String description = jsonObject.getString("description");
         String section_name = jsonObject.getString("section_name");
         String date = jsonObject.getString("date");
+        Date examDate = null;
+        try {
+            examDate = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+        } catch (Exception e) {
+
+        }
         String exam_status = jsonObject.getString("exam_status");
         Long course_id = jsonObject.getLong("course_id");
         String exam_start_time = jsonObject.getString("start_time");
@@ -103,7 +137,7 @@ public class TestController {
         CourseInfo courseInfo = courseInfoRepository.findByCourseID(course_id);
         UserInfo userInfo = userInfoRepository.findStudentById(userID);
         Test test = new Test(test_id, courseInfo, userInfo, description, section_name, minutes_allowed, passing_score,
-                date, exam_start_time, exam_end_time, exam_status);
+                examDate, exam_start_time, exam_end_time, exam_status);
         testRepository.save(test);
         return ResponseEntity.ok(HttpStatus.OK);
     }

@@ -1,5 +1,7 @@
 package com.blissstock.mappingSite.entity;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -50,7 +52,7 @@ public class Test {
     private Integer passing_score_percent;
 
     @Column(name = "date", length = 100)
-    private String Date;
+    private Date Date;
 
     @Column(name = "start_time", length = 100)
     private String start_time;
@@ -62,7 +64,7 @@ public class Test {
     private String exam_status;
 
     public Test(Long test_id, CourseInfo courseInfo, UserInfo userInfo, String description, String section_name,
-            Integer minutes_allowed, Integer passing_score_percent, String date, String start_time,
+            Integer minutes_allowed, Integer passing_score_percent, Date date, String start_time,
             String end_time, String exam_status) {
         this.test_id = test_id;
         this.courseInfo = courseInfo;
