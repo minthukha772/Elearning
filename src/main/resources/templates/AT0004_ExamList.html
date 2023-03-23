@@ -1,168 +1,55 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4">
+<html lang="en">
 
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, user-scalable=no" />
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exam List Screen</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+    integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" th:href="@{/css/AT0004_ExamManagement.css}" />
+  <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
+  <link rel="stylesheet" th:href="@{/css/CM0004_Student Profile.css}" />
   <link rel="stylesheet" th:href="@{/css/global.css}" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
-  <link rel="stylesheet" type="text/css" href="css/shCore.css" th:href="@{/css/shCore.css}" />
-  <link rel="stylesheet" type="text/css" href="css/demo.css" th:href="@{/css/demo.css}" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
-    integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
-  <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
-    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-    crossorigin="anonymous"></script>
-  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
-    crossorigin="anonymous"></script>
-  <script type="text/javascript"
-    src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
-  <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
-  <!-- <script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js" type="text/javascript"></script>
-  <link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" /> -->
-
-  <title>Pyinnyar Subuu</title>
-
   <link rel="icon" type="image/x-icon" href="/images/fav.png" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script>
+    $(document).ready(() => {
+      $("#submit").click(function () {
+        var courseDropDown = document.getElementById("course_name");
+        var courseName = courseDropDown.value;
+        var courseId = courseDropDown.options[courseDropDown.selectedIndex].id;
+        var description = document.getElementById("description").value;
+        var section_name = document.getElementById("section_name").value;
+        var exam_date = document.getElementById("exam_date").value;
+        var exam_start_time = document.getElementById("exam_start_time").value;
+        var exam_end_time = document.getElementById("exam_end_time").value;
+        var exam_start_hour = parseInt(exam_start_time.substr(0, 2));
+        var exam_start_minutes = parseInt(exam_start_time.substr(3));
+        var exam_end_hour = parseInt(exam_end_time.substr(0, 2));
+        var exam_end_minutes = parseInt(exam_end_time.substr(3));
+        exam_start_minutes += exam_start_hour * 60;
+        exam_end_minutes += exam_end_hour * 60;
+        var minutes_allowed = exam_end_minutes - exam_start_minutes;
+        var passing_score = document.getElementById("passing_score").value;
 
-  <script type="text/javascript" language="javascript" src="js/shCore.js" th:src="@{/js/shCore.js}"></script>
-  <script type="text/javascript" language="javascript" src="js/demo.js" th:src="@{/js/demo.js}"></script>
-
-  <script type="text/javascript" language="javascript">
-    var currentCourse;
-    var examDescription;
-    var sectionName;
-    var passingScore;
-    var examDate;
-    var examStartTime;
-    var examEndTime;
-    var startTimeArray;
-    var examStartHour;
-    var examStartMinute;
-    var endTimeArray;
-    var examEndHour;
-    var examEndMinute;
-    var examAllowedMinutes;
-    var currentTestID;
-    var currentExamStatus;
-
-    $('#createExamContent').on('shown.bs.modal', function () {
-      $('#createExamContent').trigger('focus')
-    })
-
-    function setCourse(courseId, courseName) {
-      currentCourse = courseId;
-      document.getElementById("courseDropDown").innerHTML = courseName;
-    };
-
-    function editCourse(courseId, courseName) {
-      currentCourse = courseId;
-      document.getElementById("editCourseDropDown").innerHTML = courseName;
-    };
-
-    function setExamStatus(examStatus) {
-      document.getElementById("examStatus").innerHTML = examStatus;
-    }
-
-    function editExamstatus(status) {
-      currentExamStatus = status;
-      document.getElementById("editExamStatus").innerHTML = status;
-    }
-
-    function toHandler(e) {
-      var fromDate = document.getElementById("fromDate").value;
-      var toDate = document.getElementById("toDate").value;
-      window.location.replace("/teacher/exam?fromDate=" + fromDate + "&toDate=" + toDate);
-    }
-
-    function setDataToEditDialog(test) {
-      currentTestID = test.test_id;
-      currentCourseID = test.courseInfo.courseId;
-      document.getElementById("editCourseDropDown").innerHTML = test.courseInfo.courseName;
-      document.getElementById("editExamDescription").value = test.description;
-      document.getElementById("editSectionName").value = test.section_name;
-      var datearray = test.date.split("T");
-      document.getElementById("editExamDate").value = datearray[0];
-      var startAmOrPm = test.start_time.slice(-2);
-      var endAmOrPm = test.end_time.slice(-2);
-      var startTimeOnly = test.start_time.substring(0, test.start_time.length - 2);
-      var endTimeOnly = test.end_time.substring(0, test.end_time.length - 2);
-
-      var editStartTimeArray = startTimeOnly.split(":");
-      var editExamStartHour = parseInt(editStartTimeArray[0]);
-      var editExamStartMinute = editStartTimeArray[1];
-      if (startAmOrPm == "pm") {
-        editExamStartHour = editExamStartHour + 12;
-      }
-      var editExamStartTime = editExamStartHour + ":" + editExamStartMinute;
-
-      var editEndTimeArray = endTimeOnly.split(":");
-      var editExamEndHour = parseInt(editEndTimeArray[0]);
-      var editExamEndMinute = editEndTimeArray[1];
-      if (endAmOrPm == "pm") {
-        editExamEndHour = editExamEndHour + 12;
-      }
-      var editExamEndTime = editExamEndHour + ":" + editExamEndMinute;
-
-      document.getElementById("editExamStatus").innerHTML = test.exam_status;
-      document.getElementById("editExamStartTime").value = editExamStartTime;
-      document.getElementById("editExamEndTime").value = editExamEndTime;
-      document.getElementById("editPassingScore").value = test.passing_score_percent;
-    }
-
-    $(document).ready(function () {
-      $("#submitExam").click(function () {
-        currentCourseID = currentCourse;
-        examDescription = document.getElementById("examDescription").value;
-        sectionName = document.getElementById("sectionName").value;
-        passingScore = document.getElementById("passingScore").value;
-        examDate = document.getElementById("examDate").value;
-        examStartTime = document.getElementById("examStartTime").value;
-        examEndTime = document.getElementById("examEndTime").value;
-        startTimeArray = examStartTime.split(":");
-        examStartHour = parseInt(startTimeArray[0]);
-        examStartMinute = parseInt(startTimeArray[1]);
-        endTimeArray = examEndTime.split(":");
-        examEndHour = parseInt(endTimeArray[0]);
-        examEndMinute = parseInt(endTimeArray[1]);
-
-        if (examEndMinute < examStartMinute) {
-          examEndHour = examEndHour - 1;
-          examEndMinute += 60;
-        }
-        examAllowedMinutes = (examEndHour - examStartHour) * 60 + (examEndMinute - examStartMinute)
-
-        if (examStartHour > 12) {
-          examStartTime = (startTimeArray[0] - 12) + ":" + startTimeArray[1] + "pm"
-        } else {
-          examStartTime = startTimeArray[0] + ":" + startTimeArray[1] + "am"
-        }
-
-        if (parseInt(endTimeArray[0]) > 12) {
-          examEndTime = (parseInt(endTimeArray[0]) - 12) + ":" + endTimeArray[1] + "pm"
-        } else {
-          examEndTime = endTimeArray[0] + ":" + endTimeArray[1] + "am"
-        }
         var data = {
-          course_id: currentCourseID,
-          description: examDescription,
-          section_name: sectionName,
-          passing_score: passingScore,
-          date: examDate,
-          minutes_allowed: examAllowedMinutes,
-          start_time: examStartTime,
-          end_time: examEndTime,
+          course_id: courseId,
+          description: description,
+          section_name: section_name,
+          passing_score: passing_score,
+          date: exam_date,
+          minutes_allowed: minutes_allowed,
+          start_time: exam_start_time,
+          end_time: exam_end_time,
           exam_status: "Exam Created"
         }
 
-        var data = JSON.stringify(data);
-
+        data = JSON.stringify(data);
         fetch("/teacher/create-exam", {
           method: "POST",
           headers: {
@@ -176,285 +63,201 @@
         })
       })
 
-      $("#updateExam").click(function () {
-        examDescription = document.getElementById("editExamDescription").value;
-        sectionName = document.getElementById("editSectionName").value;
-        passingScore = document.getElementById("editPassingScore").value;
-        examDate = document.getElementById("editExamDate").value;
-        examStartTime = document.getElementById("editExamStartTime").value;
-        examEndTime = document.getElementById("editExamEndTime").value;
-        currentExamStatus = document.getElementById("editExamStatus").innerHTML;
+      $("#filterbystatus").change(function () {
+        window.location.href = "/teacher/exam?examStatus=" + $("#filterbystatus :selected").text();
+      });
 
-        startTimeArray = examStartTime.split(":");
-        examStartHour = parseInt(startTimeArray[0]);
-        examStartMinute = parseInt(startTimeArray[1]);
-        endTimeArray = examEndTime.split(":");
-        examEndHour = parseInt(endTimeArray[0]);
-        examEndMinute = parseInt(endTimeArray[1]);
-
-        if (examEndMinute < examStartMinute) {
-          examEndHour = examEndHour - 1;
-          examEndMinute += 60;
-        }
-        examAllowedMinutes = (examEndHour - examStartHour) * 60 + (examEndMinute - examStartMinute)
-
-        if (examStartHour > 12) {
-          examStartTime = (startTimeArray[0] - 12) + ":" + startTimeArray[1] + "pm"
-        } else {
-          examStartTime = startTimeArray[0] + ":" + startTimeArray[1] + "am"
-        }
-
-        if (parseInt(endTimeArray[0]) > 12) {
-          examEndTime = (parseInt(endTimeArray[0]) - 12) + ":" + endTimeArray[1] + "pm"
-        } else {
-          examEndTime = endTimeArray[0] + ":" + endTimeArray[1] + "am"
-        }
-        var data = {
-          test_id: currentTestID,
-          course_id: currentCourseID,
-          description: examDescription,
-          section_name: sectionName,
-          passing_score: passingScore,
-          date: examDate,
-          minutes_allowed: examAllowedMinutes,
-          start_time: examStartTime,
-          end_time: examEndTime,
-          exam_status: currentExamStatus
-        }
-
-        var data = JSON.stringify(data);
-        console.log(data);
-        fetch("/teacher/edit-exam", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: data
-        }).then(response => {
-          if (response.status == 200) {
-            window.location.reload();
-          }
-        })
-      })
+      $("#filterbycourse").change(function () {
+        var filterCourseDropdown = document.getElementById("filterbycourse");
+        var filterCourseID = courseDropDown.options[filterCourseDropdown.selectedIndex].id;
+        window.location.href = "/teacher/exam?courseid=" + filterCourseID;
+      });
     })
   </script>
 </head>
 
-<body style="background-color: #DFDFDF;">
+<body>
   <div th:replace="@{fragments/nav}"></div>
-  <div class="d-flex justify-content-end" style="padding-top: 180px; orientation: landscape;">
-    <div>
-      From
-      <br />
-      <input type="date" id="fromDate" />
+  <!-- to create exam content start  -->
+  <div
+    class="create-exam-container min-vh-100 w-100 position-fixed top-0 d-flex justify-content-center align-items-center d-none fadeIn"
+    style="background-color: rgba(0, 0, 0, 0.4); z-index: 1000; padding-top: 80px;">
+    <div class="create-exam-content rounded shadow bg-white">
+      <div class="d-flex justify-content-end p-2">
+        <div class="d-flex justify-content-center align-items-center bg-danger text-white rounded-circle"
+          style="width: 25px; height: 25px; cursor: pointer" id="cancel_btn">
+          <i class="fa-solid fa-xmark"></i>
+        </div>
+      </div>
+      <div class="px-3 pb-3">
+        <h5 class="text-success text-center mb-3">To Create Exam Content</h5>
+        <div class="input-group-sm mb-2 shadow-sm">
+          <select class="form-select" aria-label="Default select example" id="course_name">
+            <option th:each="course, index: ${courseList}" th:text="${course.courseName}" th:id="${course.courseId}">
+            </option>
+          </select>
+        </div>
+        <div class="input-group-sm mb-2 shadow-sm">
+          <label for="description" class="form-label fw-bold mb-1"><small style="color: black;">Description <span
+                class="text-danger">*</span></small></label>
+          <input class="form-control" id="description" rows="3" placeholder="Add description about exam"
+            required></input>
+        </div>
+        <!-- <div class="input-group-sm mb-2 shadow-sm">
+            <label for="exam_status" class="form-label fw-bold mb-1"><small style="color: black;">Exam Status <span
+                  class="text-danger">*</span></small></label>
+            <select class="form-select" aria-label="Default select example" id="exam_status" required>
+              <option value="Exam Created" selected>Exam Created</option>
+              <option value="Questions Created">Questions Created</option>
+              <option value="Marking">Marking</option>
+              <option value="Result Released">Result Released</option>
+            </select>
+          </div> -->
+        <div class="input-group-sm mb-2 shadow-sm">
+          <label for="section_name" class="form-label fw-bold mb-1"><small style="color: black;">Section Name <span
+                class="text-danger">*</span></small></label>
+          <input type="text" class="form-control" id="section_name" required />
+        </div>
+        <div class="input-group-sm mb-2 shadow-sm">
+          <label for="exam_date" class="form-label fw-bold mb-1"><small style="color: black;">Exam Date <span
+                class="text-danger">*</span></small></label>
+          <input type="date" class="form-control" id="exam_date" required />
+        </div>
+        <div class="d-flex align-items-center">
+          <div class="col-6 px-1">
+            <div class="input-group-sm mb-2 shadow-sm">
+              <label for="exam_start_time" class="form-label fw-bold mb-1"><small style="color: black;">Start Time
+                  <span class="text-danger">*</span></small></label>
+              <input type="time" class="form-control" id="exam_start_time" required />
+            </div>
+          </div>
+          <div class="col-6 px-1">
+            <div class="input-group-sm mb-2 shadow-sm">
+              <label for="exam_end_time" class="form-label fw-bold mb-1"><small style="color: black;">End Time <span
+                    class="text-danger">*</span></small></label>
+              <input type="time" class="form-control" id="exam_end_time" required />
+            </div>
+          </div>
+        </div>
+        <div class="input-group-sm mb-3 shadow-sm">
+          <label for="passing_score" class="form-label fw-bold mb-1"><small style="color: black;">Passing Score <span
+                class="text-danger">*</span></small></label>
+          <input type="text" class="form-control" id="passing_score" placeholder="Enter minimum passing score"
+            required />
+        </div>
+        <div class="input-group-sm text-end">
+          <input type="submit" class="form-control btn btn-sm btn-success" id="submit" style="width: 100px" />
+        </div>
+      </div>
     </div>
-    <div>
-      To
-      <br />
-      <input type="date" id="toDate" onchange="toHandler(event);" />
-    </div>
-    <div class="dropdown" style="padding-top: 10px;">
-      <button class="btn btn-primary dropdown-toggle" type="button" id="examByCourse" data-toggle="dropdown"
-        aria-haspopup="true" aria-expanded="false">
-        Select Course
-      </button>
-      <ul class="dropdown-menu" aria-labelledby="courseDropDown">
-        <li th:each="course, index: ${courseList}">
-          <a class="dropdown-item" th:text="${course.courseName}"
-            th:href="${'/teacher/exam?courseid=' + course.courseId}">
-          </a>
+  </div>
+  <!-- to create exam content end  -->
+
+  <section class="main container mt-3">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="#" class="text-decoration-none">Home</a>
         </li>
-      </ul>
-    </div>
+        <li class="breadcrumb-item active" aria-current="page">Exam</li>
+      </ol>
+    </nav>
 
-    <div class="dropdown" style="padding-top: 10px;">
-      <button class="btn btn-primary dropdown-toggle" type="button" id="examByCourse" data-toggle="dropdown"
-        aria-haspopup="true" aria-expanded="false">
-        Select Exam Status
-      </button>
-      <div class="dropdown-menu" aria-labelledby="examByCourse">
-        <a class="dropdown-item" href="/teacher/exam?examStatus=Exam Created">Exam Created</a>
-        <a class="dropdown-item" href="/teacher/exam?examStatus=Questions Created">Questions Created</a>
-        <a class="dropdown-item" href="/teacher/exam?examStatus=Marking">Marking</a>
-        <a class="dropdown-item" href="/teacher/exam?examStatus=Result Released">Result Released</a>
+    <!-- to add filter start  -->
+    <div class="mt-4" style="padding-top: 60px;">
+      <form action="">
+        <div class="d-flex flex-wrap align-items-end justify-content-between">
+          <div class="">
+            <label for="exam_from" class="fw-bold"><small>Exam From</small></label><br>
+            <input type="date" class="px-3 rounded shadow-sm border-1" id="exam_from">
+          </div>
+          <div class="">
+            <label for="exam_to" class="fw-bold"><small>Exam To</small></label><br>
+            <input type="date" class="px-3 rounded shadow-sm border-1" id="exam_to">
+          </div>
+          <div class="">
+            <select name="status" id="filterbystatus" class="px-3 rounded shadow-sm">
+              <option value="Filter By Exam Status" selected><small>Filter By Exam Status</small></option>
+              <option value="Exam Created"><small>Exam Created</small></option>
+              <option value="Questions Created"><small>Questions Created</small></option>
+              <option value="Marking"><small>Marking</small></option>
+              <option value="Result Released"><small>Result Released</small></option>
+            </select>
+          </div>
+
+          <div class="">
+            <select name="course" id="filterbycourse" class="px-3 rounded shadow-sm">
+              <option th:each="course, index: ${courseList}" th:text="${course.courseName}" th:id="${course.courseId}">
+            </select>
+            <input type="reset" class="ms-2 border-0 rounded bg-success text-white px-2" value="clear">
+          </div>
+        </div>
+      </form>
+    </div>
+    <!-- to add filter end  -->
+
+    <div class="text-end mt-3">
+      <div class="">
+        <small class="fw-bold me-2"><span th:text="${testList.size}"></span> exams found</small>
+        <small class="bg-success rounded text-white px-2 py-1 fw-bold" style="cursor: pointer" id="create_exam">Create
+          Exam</small>
       </div>
     </div>
-    <a href="/teacher/exam">Clear</a>
-  </div>
-  <div class="d-flex justify-content-end" style="padding-top: 50px; orientation: landscape">
-    <div style="padding: 8px;" th:text="${testList.size}"></div>
-    <div style="padding-top: 8px; padding-right: 10px;"> Items Found</div>
-    <div class="btn btn-primary" style="margin-right: 20px;" data-toggle="modal" data-target="#createExamContent">
-      Create Exam Content
-    </div>
-  </div>
-  <div class="container" style="padding-top: 50px;">
-    <div class="row">
-      <div class="col-lg-6" th:each="test, index:${testList}">
-        <div class="card"
-          style="background-color: white; padding: 15px; width: 450px; border-radius: 10px; margin: 10px;">
-          <div class="d-flex justify-content-between" style="padding-top: 10px; padding-bottom: 10px;">
-            <div th:text="${index.count}" style="padding-top: 5px;"></div>
-            <div id="editDialog" th:onclick="setDataToEditDialog([[${test}]]);">
-              <div class="btn" data-toggle="modal" data-target="#editExamContent">
-                <img th:src="@{/images/edit.png}" width="20" />
-              </div>
-              <div class="btn" data-toggle="modal" data-target="#editExamContent">
-                <img th:src="@{/images/cross-mark.png}" width="20" />
-              </div>
-            </div>
-          </div>
-          <div th:text="${test.description}"></div>
-          <div th:text="${test.exam_status}"></div>
-          <div class="d-flex justify-content-start">
-            <div th:text="${test.courseInfo.courseName}"></div>
-            <div style="padding-left: 20px; padding-right: 5px;"> ( </div>
-            <div th:text="${test.section_name}"></div>
-            <div style="padding-left: 5px;"> ) </div>
-          </div>
-          <div th:text="${test.userInfo.userName}"></div>
-          <div class="d-flex justify-content-start" style="color: gray">
-            <div th:text="${test.date}"></div>
-            <div style="padding-left: 20px; padding-right: 5px;"> ( </div>
-            <div th:text="${test.start_time}"></div>
-            <div style="padding-left: 5px; padding-right: 5px;"> - </div>
-            <div th:text="${test.end_time}"></div>
-            <div style="padding-left: 5px; padding-right: 5px;"> ) </div>
-          </div>
-          <div class="d-flex justify-content-start">
-            <div th:text="${test.minutes_allowed}"></div>
-            <div style="padding-left: 5px;">Minutes Allowed</div>
-          </div>
-          <div class="d-flex justify-content-start">
-            <div th:text="${test.passing_score_percent}"></div>
-            <div style="padding-left: 5px;">%</div>
-          </div>
 
-          <div class="d-flex justify-content-between">
-            <a href="/teacher/exam/questions">Exam Questions</a>
-            <a href="/teacher/exam/examinee">Set Examinee</a>
-            <a href="/teacher/exam/result">Set Result</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal fade" id="createExamContent" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Create Exam Content</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="container-fluid">
-            <div class="dropdown" style="width: 100%;">
-              <button class="btn btn-primary dropdown-toggle" type="button" id="courseDropDown" data-toggle="dropdown"
-                aria-expanded="false">
-                Select Course
-              </button>
-              <ul class="dropdown-menu" aria-labelledby="courseDropDown">
-                <li th:each="course, index: ${courseList}"><a class="dropdown-item" th:text="${course.courseName}"
-                    th:onclick="setCourse([[${course.courseId}]], [[${course.courseName}]]);"></a></li>
-              </ul>
-            </div>
-            Description
-            <input type="text" class="form-control" id="examDescription" aria-describedby="Description">
-            Section Name
-            <input type="text" class="form-control" id="sectionName" aria-describedby="Section Name">
-            Exam Date
-            <br />
-            <input type="date" id="examDate" />
-            <br />
-            Start Time
-            <br />
-            <input type="time" id="examStartTime" />
-            <br />
-            End Time
-            <br />
-            <input type="time" id="examEndTime" />
-            <br />
-            Passing Score
-            <input type="text" class="form-control" id="passingScore" aria-describedby="Passing Score">
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" id="submitExam">Submit</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal fade" id="editExamContent" tabindex="-1" role="dialog" aria-labelledby="editExam"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="editExam">Edit Exam Content</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="container-fluid">
-            <div class="dropdown" style="width: 100%;">
-              <button class="btn btn-primary dropdown-toggle" type="button" id="editCourseDropDown"
-                data-toggle="dropdown" aria-expanded="false">
-                Select Course
-              </button>
-              <ul class="dropdown-menu" aria-labelledby="courseDropDown">
-                <li th:each="course, index: ${courseList}">
-                  <a class="dropdown-item" th:text="${course.courseName}"
-                    th:onclick="editCourse([[${course.courseId}]], [[${course.courseName}]]);">
-                  </a>
-                </li>
-              </ul>
-            </div>
-            Description
-            <input type="text" class="form-control" id="editExamDescription" aria-describedby="Exam Description">
-            Section Name
-            <input type="text" class="form-control" id="editSectionName" aria-describedby="Section Name">
-            <div class="dropdown" style="padding-top: 10px;">
-              <button class="btn btn-primary dropdown-toggle" type="button" id="editExamStatus" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-                Select Exam Status
-              </button>
-              <div class="dropdown-menu" aria-labelledby="editExamStatus">
-                <a class="dropdown-item" onclick="editExamstatus('Exam Created')">Exam Created</a>
-                <a class="dropdown-item" onclick="editExamstatus('Questions Created')">Questions Created</a>
-                <a class="dropdown-item" onclick="editExamstatus('Marking')">Marking</a>
-                <a class="dropdown-item" onclick="editExamstatus('Result Released')">Result Released</a>
+    <div class="exam-list mt-2">
+      <div class="row">
+        <div class="col-12 col-lg-4" th:each="test, index:${testList}">
+          <div class="card bg-white mt-3 shadow-sm" data-custom-type="result_good">
+            <div class="d-flex justify-content-end align-items-center p-2">
+              <i class="fa-solid fa-pen-to-square text-success" style="cursor: pointer"></i>
+              <div class="d-flex justify-content-center align-items-center bg-danger text-white rounded-circle ms-2"
+                style="width: 20px; height: 20px; cursor: pointer" id="">
+                <i class="fa-solid fa-xmark"></i>
               </div>
             </div>
-            Exam Date
-            <br />
-            <input type="date" id="editExamDate" />
-            <br />
-            Start Time
-            <br />
-            <input type="time" id="editExamStartTime" />
-            <br />
-            End Time
-            <br />
-            <input type="time" id="editExamEndTime" />
-            <br />
-            Passing Score
-            <input type="text" class="form-control" id="editPassingScore" aria-describedby="Passing Score">
+            <div class="card-body pt-0 rounded">
+              <div class="fw-bolder">
+                <span class="text-success" th:text="${index.count}"></span>
+                <span th:text="${test.description}"></span>
+                ( <span th:text="${test.exam_status}"></span> )
+              </div>
+              <div class="d-flex justify-content-between align-items-center mt-3 fw-bold">
+                <small th:text="${test.courseInfo.courseName}"></small>
+                <div>
+                  ( <small th:text="${test.section_name}"></small> )
+                </div>
+              </div>
+              <div class="fw-bold">
+                <small th:text="${test.section_name}"></small>
+              </div>
+              <div class="d-flex justify-content-between align-items-center fw-bold">
+                <div>
+                  <small class="text-success" th:text="${test.passing_score_percent}"></small>%
+                </div>
+                <div>
+                  <small th:text="${test.minutes_allowed}"></small> minutes
+                </div>
+              </div>
+              <div class="text-muted fw-bold">
+                <small th:text="${#dates.format(test.date, 'yyyy-MM-dd')}"></small>
+                ( <small th:text="${test.start_time}"></small> - <small th:text="${test.end_time}"></small> )
+              </div>
+              <div class="d-flex flex-wrap justify-content-between align-items-center fw-bold mt-3">
+                <small class=""><a href="#" class="text-success">Exam Questions</a></small>
+                <small class=""><a href="#" class="text-success">Set Examinee</a></small>
+                <small class=""><a href="#" class="text-success">Exam Result</a></small>
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" id="updateExam">Update</button>
         </div>
       </div>
     </div>
-  </div>
+  </section>
   <div th:replace="@{fragments/footer}"></div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+  <script th:src="@{/js/AT0004_ExamManagement.js}"></script>
 </body>
 
 </html>
