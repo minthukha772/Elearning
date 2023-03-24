@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -44,7 +43,7 @@ public class TestController {
 
     @Valid
     @GetMapping(value = { "/teacher/exam" })
-    private String getExamManagementPage(@PathVariable(required = false) Long userId, Model model,
+    private String getExamManagementPage(Model model,
             @RequestParam(required = false) String examStatus, @RequestParam(required = false) String courseid,
             @RequestParam(required = false) String fromDate, @RequestParam(required = false) String toDate) throws ParseException {
         if (examStatus == null) {
