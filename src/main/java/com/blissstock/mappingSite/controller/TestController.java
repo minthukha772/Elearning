@@ -45,7 +45,8 @@ public class TestController {
     @GetMapping(value = { "/teacher/exam" })
     private String getExamManagementPage(Model model,
             @RequestParam(required = false) String examStatus, @RequestParam(required = false) String courseid,
-            @RequestParam(required = false) String fromDate, @RequestParam(required = false) String toDate) throws ParseException {
+            @RequestParam(required = false) String fromDate, @RequestParam(required = false) String toDate)
+            throws ParseException {
         if (examStatus == null) {
             examStatus = "";
         }
@@ -64,14 +65,21 @@ public class TestController {
             if (examStatus != "") {
                 testList = testRepository.getListByStatusAndUser(examStatus, userID);
                 model.addAttribute("testList", testList);
+                model.addAttribute("filterType", "Filter By Status");
+                model.addAttribute("filter", "( " + examStatus + " )");
             } else if (courseid != "") {
+                CourseInfo course = courseInfoRepository.getById(Long.parseLong(courseid));
                 testList = testRepository.getListByCourseAndUser(Long.parseLong(courseid), userID);
                 model.addAttribute("testList", testList);
+                model.addAttribute("filterType", "Filter By Course");
+                model.addAttribute("filter", "( " + course.getCourseName() + " )");
             } else if (fromDate != "" && toDate != "") {
                 Date from = new SimpleDateFormat("yyyy-MM-dd").parse(fromDate);
                 Date to = new SimpleDateFormat("yyyy-MM-dd").parse(toDate);
                 testList = testRepository.getListByDateAndUser(from, to, userID);
                 model.addAttribute("testList", testList);
+                model.addAttribute("filterType", "Filter By Date");
+                model.addAttribute("filter", "( " + fromDate + " - " + toDate + " )");
             }
         } else {
             testList = testRepository.getListByUser(userID);
@@ -82,6 +90,14 @@ public class TestController {
         model.addAttribute("courseList", courseList);
 
         return "AT0004_ExamList";
+    }
+
+    @Valid
+    @GetMapping(value = { "/teacher/delete-exam" })
+    private ResponseEntity deleteExam(@RequestParam(required = false) Long test_id)
+            throws ParseException {
+        testRepository.deleteById(test_id);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @Valid
