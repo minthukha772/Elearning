@@ -24,6 +24,7 @@ import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
 import com.blissstock.mappingSite.repository.TestRepository;
 import com.blissstock.mappingSite.repository.UserInfoRepository;
+import com.blissstock.mappingSite.repository.UserRepository;
 import com.blissstock.mappingSite.service.UserSessionService;
 
 @Controller
@@ -40,6 +41,9 @@ public class TestController {
 
     @Autowired
     UserInfoRepository userInfoRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
     @Valid
     @GetMapping(value = { "/teacher/exam" })
@@ -86,9 +90,66 @@ public class TestController {
             model.addAttribute("testList", testList);
         }
 
+        model.addAttribute("role", "teacher");
         courseList = courseInfoRepository.findByUID(userID);
         model.addAttribute("courseList", courseList);
 
+        return "AT0004_ExamList";
+    }
+
+    @Valid
+    @GetMapping(value = { "/admin/exam" })
+    private String getExamManagementPageByAdmin(Model model,
+            @RequestParam(required = false) String examStatus, @RequestParam(required = false) String courseid,
+            @RequestParam(required = false) String fromDate, @RequestParam(required = false) String toDate)
+            throws ParseException {
+
+        Long userID = getUid(null);
+
+        if (examStatus == null) {
+            examStatus = "";
+        }
+        if (courseid == null) {
+            courseid = "";
+        }
+        if (fromDate == null && toDate == null) {
+            fromDate = "";
+            toDate = "";
+        }
+
+        List<Test> testList;
+        List<CourseInfo> courseList;
+        List<UserInfo> teacherList;
+        if (examStatus != "" || courseid != "" || fromDate != "" || toDate != "") {
+            if (examStatus != "") {
+                testList = testRepository.getListByStatusAndUser(examStatus, userID);
+                model.addAttribute("testList", testList);
+                model.addAttribute("filterType", "Filter By Status");
+                model.addAttribute("filter", "( " + examStatus + " )");
+            } else if (courseid != "") {
+                CourseInfo course = courseInfoRepository.getById(Long.parseLong(courseid));
+                testList = testRepository.getListByCourseAndUser(Long.parseLong(courseid), userID);
+                model.addAttribute("testList", testList);
+                model.addAttribute("filterType", "Filter By Course");
+                model.addAttribute("filter", "( " + course.getCourseName() + " )");
+            } else if (fromDate != "" && toDate != "") {
+                Date from = new SimpleDateFormat("yyyy-MM-dd").parse(fromDate);
+                Date to = new SimpleDateFormat("yyyy-MM-dd").parse(toDate);
+                testList = testRepository.getListByDateAndUser(from, to, userID);
+                model.addAttribute("testList", testList);
+                model.addAttribute("filterType", "Filter By Date");
+                model.addAttribute("filter", "( " + fromDate + " - " + toDate + " )");
+            }
+        } else {
+            testList = testRepository.getListByAdmin();
+            model.addAttribute("testList", testList);
+        }
+
+        courseList = courseInfoRepository.findAll();
+        teacherList = userRepository.findByUserRoleI("ROLE_TEACHER");
+        model.addAttribute("role", "admin");
+        model.addAttribute("courseList", courseList);
+        model.addAttribute("teacherList", teacherList);
         return "AT0004_ExamList";
     }
 

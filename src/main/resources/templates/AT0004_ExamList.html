@@ -17,11 +17,18 @@
   <link rel="stylesheet" th:href="@{/css/global.css}" />
   <link rel="icon" type="image/x-icon" href="/images/fav.png" />
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script>
+  <script th:inline="javascript">
     var type;
     var test_id;
 
     $(document).ready(() => {
+      var role = /*[[${role}]]*/ "default";
+      if (role == "admin") {
+        document.getElementById("teacher_dropdown_main").style.display = 'block';
+      }else{
+        document.getElementById("teacher_dropdown_main").style.display = 'none';
+      }
+
       let today = new Date().toISOString().slice(0, 10)
       document.getElementById("exam_date").setAttribute("min", today);
       let createExamContainer = document.querySelector('.create-exam-container');
@@ -412,6 +419,12 @@
               <option value="Questions Created"><small>Questions Created</small></option>
               <option value="Marking"><small>Marking</small></option>
               <option value="Result Released"><small>Result Released</small></option>
+            </select>
+          </div>
+          <div class="" style="display: none;" id="teacher_dropdown_main">
+            <select name="course" id="filterbycourse" class="px-3 rounded shadow-sm">
+              <option value="Filter By Course" selected><small>Filter By Course</small></option>
+              <option th:each="teacher, index: ${teacherList}" th:text="${teacher.userName}" th:id="${teacher.uid}">
             </select>
           </div>
           <div class="">
