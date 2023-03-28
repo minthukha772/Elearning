@@ -25,7 +25,7 @@
       var role = /*[[${role}]]*/ "default";
       if (role == "admin") {
         document.getElementById("teacher_dropdown_main").style.display = 'block';
-      }else{
+      } else {
         document.getElementById("teacher_dropdown_main").style.display = 'none';
       }
 
@@ -57,7 +57,7 @@
       })
 
       $("#deleteSubmit").click(function () {
-        fetch("/teacher/delete-exam?test_id=" + test_id, {
+        fetch("/admin/delete-exam?test_id=" + test_id, {
           method: "GET",
           headers: {
             "Content-Type": "application/json"
@@ -70,29 +70,75 @@
       })
 
       $("#filterbystatus").change(function () {
-        window.location.href = "/teacher/exam?examStatus=" + $("#filterbystatus :selected").text();
+        console.log($("#filterbystatus :selected").text());
+        window.location.href = "/admin/exam?examStatus=" + $("#filterbystatus :selected").text();
       });
 
       $("#clearFilter").click(function () {
-        window.location.href = "/teacher/exam"
+        window.location.href = "/admin/exam"
       })
 
       $("#filterbycourse").change(function () {
         var filterCourseDropdown = document.getElementById("filterbycourse");
         var filterCourseID = filterCourseDropdown.options[filterCourseDropdown.selectedIndex].id;
         console.log(filterCourseID);
-        window.location.href = "/teacher/exam?courseid=" + filterCourseID;
+        window.location.href = "/admin/exam?courseid=" + filterCourseID;
+      });
+
+      $("#filterbyteacher").change(function () {
+        var filterTeacherDropdown = document.getElementById("filterbyteacher");
+        var filterTeacherID = filterTeacherDropdown.options[filterTeacherDropdown.selectedIndex].id;
+        console.log(filterTeacherID);
+        window.location.href = "/admin/exam?teacherid=" + filterTeacherID;
+      });
+
+      $("#teacher_name").change(function () {
+        var course_dropdown = $("#course_name");
+        course_dropdown.empty();
+        course_dropdown.append("<option value='Choose Course' selected><small>Choose Course</small></option>");
+        var teacherNameDropdown = document.getElementById("teacher_name");
+        var teacherID = teacherNameDropdown.options[teacherNameDropdown.selectedIndex].id;
+        if (teacherID == "") {
+          return;
+        }
+        fetch("/admin/get-course-by-teacher?teacher_id=" + teacherID, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }).then(response => response.json())
+          .then(data => {
+            for (var i = 0; i < data.length; i++) {
+              course_dropdown.append("<option value='" + data[i]["courseName"] + "' id='" + data[i]["courseId"] + "'><small>" + data[i]["courseName"] + "</small></option>");
+            }
+          })
       });
     })
 
     function setDataToEditDialog(test) {
+      var course_dropdown = $("#course_name");
+      course_dropdown.empty();
+      course_dropdown.append("<option value='Choose Course' selected><small>Choose Course</small></option>");
+
       test_id = test.test_id;
       type = "Update"
       let createExam = document.querySelector('.create-exam-container');
       createExam.classList.remove('d-none');
       var datearray = test.date.split("T");
 
-      document.getElementById("course_name").value = test.courseInfo.courseId;
+      document.getElementById("teacher_name").value = test.userInfo.uid;
+      fetch("/admin/get-course-by-teacher?teacher_id=" + test.userInfo.uid, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }).then(response => response.json())
+        .then(data => {
+          for (var i = 0; i < data.length; i++) {
+            course_dropdown.append("<option value='" + data[i]["courseName"] + "' id='" + data[i]["courseId"] + "'><small>" + data[i]["courseName"] + "</small></option>");
+          }
+          document.getElementById("course_name").value = test.courseInfo.courseName;
+        })
       document.getElementById("exam_status").value = test.exam_status;
       document.getElementById("description").value = test.description;
       document.getElementById("section_name").value = test.section_name;
@@ -113,7 +159,17 @@
     function submitData(submitType) {
       var courseDropDown = document.getElementById("course_name");
       var courseName = courseDropDown.value;
+      var teacherDropDown = document.getElementById("teacher_name");
+      var teacherName = teacherDropDown.value;
       var courseId = courseDropDown.options[courseDropDown.selectedIndex].id;
+      var teacherId = teacherDropDown.options[teacherDropDown.selectedIndex].id;
+      if (teacherName == "Choose Teacher") {
+        document.getElementById("teacher_warning").style.display = 'block';
+        return;
+      } else {
+        document.getElementById("teacher_warning").style.display = 'none';
+      }
+
       if (courseName == "Choose Course") {
         document.getElementById("course_warning").style.display = 'block';
         return;
@@ -182,7 +238,6 @@
         }
       }
 
-
       var exam_start_hour = parseInt(exam_start_time.substr(0, 2));
       var exam_start_minutes = parseInt(exam_start_time.substr(3));
       var exam_end_hour = parseInt(exam_end_time.substr(0, 2));
@@ -205,6 +260,7 @@
 
       if (submitType == "Created") {
         data = {
+          teacher_id: teacherId,
           course_id: courseId,
           description: description,
           section_name: section_name,
@@ -217,7 +273,7 @@
         }
 
         data = JSON.stringify(data);
-        fetch("/teacher/create-exam", {
+        fetch("/admin/create-exam", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -231,6 +287,7 @@
       } else {
         data = {
           test_id: test_id,
+          teacher_id: teacherId,
           course_id: courseId,
           description: description,
           section_name: section_name,
@@ -243,7 +300,7 @@
         }
         data = JSON.stringify(data);
 
-        fetch("/teacher/edit-exam", {
+        fetch("/admin/edit-exam", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -265,7 +322,7 @@
         return;
       } else {
         document.getElementById("filter_date_warning").style.display = 'none';
-        window.location.replace("/teacher/exam?fromDate=" + fromDate + "&toDate=" + toDate);
+        window.location.replace("/admin/exam?fromDate=" + fromDate + "&toDate=" + toDate);
       }
     }
   </script>
@@ -287,12 +344,23 @@
       <div class="px-3 pb-3">
         <h5 class="text-success text-center mb-3">To Create Exam Content</h5>
         <div class="input-group-sm mb-2 shadow-sm">
+          <label for="description" class="form-label fw-bold mb-1"><small style="color: black;">Teacher Name <span
+                class="text-danger">*</span></small></label>
+          <select class="form-select" aria-label="Default select example" id="teacher_name">
+            <option value="Choose Teacher" selected><small>Choose Teacher</small></option>
+            <option th:each="teacher, index: ${teacherList}" th:text="${teacher.userName}" th:id="${teacher.uid}"
+              th:value="${teacher.uid}">
+            </option>
+          </select>
+        </div>
+        <div style="color: red; font-size: 12px; display: none;" id="teacher_warning">Please Select Teacher</div>
+        <div class="input-group-sm mb-2 shadow-sm">
           <label for="description" class="form-label fw-bold mb-1"><small style="color: black;">Course Name <span
                 class="text-danger">*</span></small></label>
           <select class="form-select" aria-label="Default select example" id="course_name">
             <option value="Choose Course" selected><small>Choose Course</small></option>
-            <option th:each="course, index: ${courseList}" th:text="${course.courseName}" th:id="${course.courseId}"
-              th:value="${course.courseId}">
+            <!-- <option th:each="course, index: ${courseList}" th:text="${course.courseName}" th:id="${course.courseId}"
+              th:value="${course.courseId}"> -->
             </option>
           </select>
         </div>
@@ -421,12 +489,12 @@
               <option value="Result Released"><small>Result Released</small></option>
             </select>
           </div>
-          <!-- <div class="" style="display: none;" id="teacher_dropdown_main">
-            <select name="course" id="filterbycourse" class="px-3 rounded shadow-sm">
-              <option value="Filter By Course" selected><small>Filter By Course</small></option>
+          <div class="" style="display: none;" id="teacher_dropdown_main">
+            <select name="course" id="filterbyteacher" class="px-3 rounded shadow-sm">
+              <option value="Filter By Course" selected><small>Filter By Teacher</small></option>
               <option th:each="teacher, index: ${teacherList}" th:text="${teacher.userName}" th:id="${teacher.uid}">
             </select>
-          </div> -->
+          </div>
           <div class="">
             <select name="course" id="filterbycourse" class="px-3 rounded shadow-sm">
               <option value="Filter By Course" selected><small>Filter By Course</small></option>
@@ -501,11 +569,11 @@
                 ( <small th:text="${test.start_time}"></small> - <small th:text="${test.end_time}"></small> )
               </div>
               <div class="d-flex flex-wrap justify-content-between align-items-center fw-bold mt-3">
-                <small class=""><a th:href="'/teacher/exam/' + ${test.test_id} + '/questions'" class="text-success">Exam
+                <small class=""><a th:href="'/admin/exam/' + ${test.test_id} + '/questions'" class="text-success">Exam
                     Questions</a></small>
-                <small class=""><a th:href="'/teacher/exam/' + ${test.test_id} + '/examinee'" class="text-success">Set
+                <small class=""><a th:href="'/admin/exam/' + ${test.test_id} + '/examinee'" class="text-success">Set
                     Examinee</a></small>
-                <small class=""><a th:href="'/teacher/exam/' + ${test.test_id} + '/result'" class="text-success">Exam
+                <small class=""><a th:href="'/admin/exam/' + ${test.test_id} + '/result'" class="text-success">Exam
                     Result</a></small>
               </div>
             </div>

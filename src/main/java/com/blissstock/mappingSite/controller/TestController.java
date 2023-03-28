@@ -101,7 +101,8 @@ public class TestController {
     @GetMapping(value = { "/admin/exam" })
     private String getExamManagementPageByAdmin(Model model,
             @RequestParam(required = false) String examStatus, @RequestParam(required = false) String courseid,
-            @RequestParam(required = false) String fromDate, @RequestParam(required = false) String toDate)
+            @RequestParam(required = false) String fromDate, @RequestParam(required = false) String toDate,
+            @RequestParam(required = false) String teacherid)
             throws ParseException {
 
         Long userID = getUid(null);
@@ -112,6 +113,9 @@ public class TestController {
         if (courseid == null) {
             courseid = "";
         }
+        if (teacherid == null) {
+            teacherid = "";
+        }
         if (fromDate == null && toDate == null) {
             fromDate = "";
             toDate = "";
@@ -120,25 +124,31 @@ public class TestController {
         List<Test> testList;
         List<CourseInfo> courseList;
         List<UserInfo> teacherList;
-        if (examStatus != "" || courseid != "" || fromDate != "" || toDate != "") {
+        if (examStatus != "" || courseid != "" || fromDate != "" || toDate != "" || teacherid != "") {
             if (examStatus != "") {
-                testList = testRepository.getListByStatusAndUser(examStatus, userID);
+                testList = testRepository.getListByStatus(examStatus);
                 model.addAttribute("testList", testList);
                 model.addAttribute("filterType", "Filter By Status");
                 model.addAttribute("filter", "( " + examStatus + " )");
             } else if (courseid != "") {
                 CourseInfo course = courseInfoRepository.getById(Long.parseLong(courseid));
-                testList = testRepository.getListByCourseAndUser(Long.parseLong(courseid), userID);
+                testList = testRepository.getListByCourse(Long.parseLong(courseid));
                 model.addAttribute("testList", testList);
                 model.addAttribute("filterType", "Filter By Course");
                 model.addAttribute("filter", "( " + course.getCourseName() + " )");
             } else if (fromDate != "" && toDate != "") {
                 Date from = new SimpleDateFormat("yyyy-MM-dd").parse(fromDate);
                 Date to = new SimpleDateFormat("yyyy-MM-dd").parse(toDate);
-                testList = testRepository.getListByDateAndUser(from, to, userID);
+                testList = testRepository.getListByDate(from, to);
                 model.addAttribute("testList", testList);
                 model.addAttribute("filterType", "Filter By Date");
                 model.addAttribute("filter", "( " + fromDate + " - " + toDate + " )");
+            } else if (teacherid != "") {
+                UserInfo teacher = userRepository.findByAccount(Long.parseLong(teacherid));
+                testList = testRepository.getListByUser(Long.parseLong(teacherid));
+                model.addAttribute("testList", testList);
+                model.addAttribute("filterType", "Filter By Teacher");
+                model.addAttribute("filter", "( " + teacher.getUserName() + " )");
             }
         } else {
             testList = testRepository.getListByAdmin();
@@ -150,7 +160,7 @@ public class TestController {
         model.addAttribute("role", "admin");
         model.addAttribute("courseList", courseList);
         model.addAttribute("teacherList", teacherList);
-        return "AT0004_ExamList";
+        return "AT0004_AdminExamList";
     }
 
     @Valid
@@ -159,6 +169,22 @@ public class TestController {
             throws ParseException {
         testRepository.deleteById(test_id);
         return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @Valid
+    @GetMapping(value = { "/admin/delete-exam" })
+    private ResponseEntity deleteExamByAdmin(@RequestParam(required = false) Long test_id)
+            throws ParseException {
+        testRepository.deleteById(test_id);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @Valid
+    @GetMapping(value = { "/admin/get-course-by-teacher" })
+    private ResponseEntity getCourseByTeacher(@RequestParam(required = false) String teacher_id)
+            throws ParseException {
+        List<CourseInfo> courseInfos = courseInfoRepository.findByUID(Long.parseLong(teacher_id));
+        return ResponseEntity.status(HttpStatus.OK).body(courseInfos);
     }
 
     @Valid
@@ -190,10 +216,38 @@ public class TestController {
     }
 
     @Valid
-    @PostMapping(value = { "/teacher/edit-exam" })
-    private ResponseEntity editExam(@RequestBody String payload) {
-        Long userID = getUid(null);
+    @PostMapping(value = { "/admin/create-exam" })
+    private ResponseEntity saveExamByAdmin(@RequestBody String payload) {
         JSONObject jsonObject = new JSONObject(payload);
+        Long teacher_id = jsonObject.getLong("teacher_id");        
+        String description = jsonObject.getString("description");
+        String section_name = jsonObject.getString("section_name");
+        String date = jsonObject.getString("date");
+        Date examDate = null;
+        try {
+            examDate = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+        } catch (Exception e) {
+
+        }
+        String exam_status = jsonObject.getString("exam_status");
+        Long course_id = jsonObject.getLong("course_id");
+        String exam_start_time = jsonObject.getString("start_time");
+        String exam_end_time = jsonObject.getString("end_time");
+        int passing_score = Integer.parseInt(jsonObject.getString("passing_score"));
+        int minutes_allowed = jsonObject.getInt("minutes_allowed");
+        CourseInfo courseInfo = courseInfoRepository.findByCourseID(course_id);
+        UserInfo userInfo = userInfoRepository.findStudentById(teacher_id);
+        Test test = new Test(null, courseInfo, userInfo, description, section_name, minutes_allowed, passing_score,
+                examDate, exam_start_time, exam_end_time, exam_status);
+        testRepository.save(test);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @Valid
+    @PostMapping(value = { "/admin/edit-exam" })
+    private ResponseEntity editExam(@RequestBody String payload) {
+        JSONObject jsonObject = new JSONObject(payload);
+        Long teacher_id = jsonObject.getLong("teacher_id");
         Long test_id = jsonObject.getLong("test_id");
         String description = jsonObject.getString("description");
         String section_name = jsonObject.getString("section_name");
@@ -211,7 +265,7 @@ public class TestController {
         int passing_score = Integer.parseInt(jsonObject.getString("passing_score"));
         int minutes_allowed = jsonObject.getInt("minutes_allowed");
         CourseInfo courseInfo = courseInfoRepository.findByCourseID(course_id);
-        UserInfo userInfo = userInfoRepository.findStudentById(userID);
+        UserInfo userInfo = userInfoRepository.findStudentById(teacher_id);
         Test test = new Test(test_id, courseInfo, userInfo, description, section_name, minutes_allowed, passing_score,
                 examDate, exam_start_time, exam_end_time, exam_status);
         testRepository.save(test);

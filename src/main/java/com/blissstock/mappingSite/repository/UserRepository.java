@@ -48,6 +48,8 @@ public interface UserRepository extends JpaRepository<UserInfo, Long> {
     @Param("userName") String userName,
     @Param("accountId") Long accountId);
     
-
+    @Query(nativeQuery = true, value = "select * from user_info where account_id=:accountId")
+    UserInfo findByAccount(
+    @Param("accountId") Long accountId);
     
 }
