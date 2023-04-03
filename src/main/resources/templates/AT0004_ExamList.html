@@ -22,12 +22,12 @@
     var test_id;
 
     $(document).ready(() => {
-      var role = /*[[${role}]]*/ "default";
-      if (role == "admin") {
-        document.getElementById("teacher_dropdown_main").style.display = 'block';
-      }else{
-        document.getElementById("teacher_dropdown_main").style.display = 'none';
-      }
+      //var role = /*[[${role}]]*/ "default";
+      // if (role == "admin") {
+      //   document.getElementById("teacher_dropdown_main").style.display = 'block';
+      // }else{
+      //   document.getElementById("teacher_dropdown_main").style.display = 'none';
+      // }
 
       let today = new Date().toISOString().slice(0, 10)
       document.getElementById("exam_date").setAttribute("min", today);
