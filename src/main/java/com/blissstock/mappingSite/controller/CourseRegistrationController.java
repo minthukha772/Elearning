@@ -1,22 +1,23 @@
 package com.blissstock.mappingSite.controller;
 
+
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.servlet.annotation.MultipartConfig;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.Period;
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.blissstock.mappingSite.entity.Content;
+
 import com.blissstock.mappingSite.entity.CourseCategory;
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.CourseTime;
 import com.blissstock.mappingSite.entity.JoinCourseUser;
-import com.blissstock.mappingSite.entity.Syllabus;
 import com.blissstock.mappingSite.entity.UserAccount;
+import com.blissstock.mappingSite.entity.PaymentForTeacher;
 import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.exceptions.UnauthorizedFileAccessException;
 import com.blissstock.mappingSite.model.FileInfo;
@@ -33,7 +34,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,10 +41,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.blissstock.mappingSite.service.CourseService;
 import com.blissstock.mappingSite.service.MailService;
+import com.blissstock.mappingSite.service.PaymentForTeacherService;
 import com.blissstock.mappingSite.service.StorageService;
 import com.blissstock.mappingSite.service.StorageServiceImpl;
 
@@ -75,6 +74,12 @@ public class CourseRegistrationController {
 
     @Autowired
     private UserInfoRepository userInfoRepository;
+
+    @Autowired
+    private PaymentForTeacherService paymentForTeacherService;
+
+    // @Autowired
+    // private PaymentForTeacher paymentForTeacherRepo;
 
     private List<CourseTime> ctList = new ArrayList<>();
 
@@ -268,7 +273,7 @@ public class CourseRegistrationController {
     }
 
     @PostMapping(value = { "/teacher/save-course-register", "/admin/save-course-register" })
-    private String saveCourseRegister(HttpServletRequest request, @ModelAttribute("course") CourseInfo course,@RequestParam("course_pic") MultipartFile cphoto,HttpServletRequest httpServletRequest) {
+    private String saveCourseRegister(HttpServletRequest request, @ModelAttribute("course") CourseInfo course,@RequestParam("course_pic") MultipartFile cphoto,HttpServletRequest httpServletRequest,@RequestParam("paymentType") String paymentType) {
         // course.setUserInfo(userInfoRepository.findById(userSessionService.getId()).get());
         course.setUserInfo(userInfoRepository.findById(course.getUid()).get());
         logger.info("Post Requested");
@@ -295,7 +300,7 @@ public class CourseRegistrationController {
             // insert photo
             course.setCoursePhoto(originalFileName);
             courseInfoRepo.save(course);
-    
+                
             logger.info("profile photo {} stored", originalFileName);
             //return  "redirect:/teacher/course-registration";
           }
@@ -362,6 +367,147 @@ public class CourseRegistrationController {
                 }).start();
             } catch (Exception e) {
                 logger.info(e.toString());
+            }
+            
+
+            if (paymentType.equals("ONE_TIME_FEE")) {
+                
+                PaymentForTeacher paymentForTeacher = new PaymentForTeacher();
+                paymentForTeacher.setCourseInfo(savedCourse);
+                //int courseFeesInt = savedCourse.getFees();
+                
+
+                java.util.Date startDate = savedCourse.getStartDate();
+                if (startDate != null) {
+                    LocalDateTime localStartDate = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+                    System.out.println("Start Date: "+ localStartDate);
+                }
+                else {
+                    startDate = null;
+                }
+
+                java.util.Date endDate = savedCourse.getEndDate();
+                if (endDate != null) {
+                    LocalDateTime localEndDate = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+                    LocalDate endOfDate = localEndDate.toLocalDate();
+                    LocalDate paymentDate = endOfDate.withDayOfMonth(5);
+                    if (paymentDate.getDayOfWeek() == DayOfWeek.SATURDAY) {
+                        paymentDate = paymentDate.plusDays(2);
+                    } else if (paymentDate.getDayOfWeek() == DayOfWeek.SUNDAY) {
+                        paymentDate = paymentDate.plusDays(1);
+                    }
+                    paymentForTeacher.setPaymentDate(paymentDate);
+                    
+                    System.out.println("End Date: "+ localEndDate);
+                    System.out.println("Payment Date: "+ paymentDate);
+                }
+                else {
+                    endDate = null;
+                    //LocalDateTime localEndDate = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+                    //LocalDate endOfDate = localEndDate.toLocalDate();
+                    paymentForTeacher.setPaymentDate(null);
+                }
+
+                
+
+                int noOfEnrollPerson = 0;
+                String paymentStatus = "PENDING";
+
+
+                
+                
+                paymentForTeacher.setCourseFee(savedCourse.getFees());
+                paymentForTeacher.setCalculateDateFrom(startDate);
+                paymentForTeacher.setCalculateDateTo(endDate);
+                paymentForTeacher.setPaymentVerify(false);
+                paymentForTeacher.setStatus(paymentStatus);
+                paymentForTeacher.setNoOfEnrollPerson(noOfEnrollPerson);
+                
+                
+                paymentForTeacherService.savePaymentForTeacher(paymentForTeacher);
+                
+               
+
+                
+            } else if (paymentType.equals("MONTHLY_FEE")) {                
+
+                java.util.Date startDate = savedCourse.getStartDate();
+                java.util.Date endDate = savedCourse.getEndDate();
+
+                if (startDate != null && endDate != null) {                
+
+                LocalDate localStartDate = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                LocalDate localEndDate = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                
+                Period period = Period.between(localStartDate.withDayOfMonth(1), localEndDate.withDayOfMonth(1));
+                int months = period.getMonths();
+
+
+                for (int i = 0; i < months; i++) {
+
+                    PaymentForTeacher paymentForTeacher = new PaymentForTeacher();
+                    paymentForTeacher.setCourseInfo(savedCourse);
+                    int courseFeesInt = savedCourse.getFees();
+                    int noOfEnrollPerson = 0;
+                    String paymentStatus = "PENDING";
+
+                    
+                    LocalDate monthStartDate = localStartDate.withDayOfMonth(1).plusMonths(i);
+                    LocalDate monthEndDate = monthStartDate.withDayOfMonth(monthStartDate.lengthOfMonth());
+
+                    java.sql.Date calDateFrom = java.sql.Date.valueOf(monthStartDate);
+                    java.sql.Date calDateTo = java.sql.Date.valueOf(monthEndDate);
+
+                    
+                    LocalDate paymentDate = monthEndDate.plusMonths(1).withDayOfMonth(5);
+
+
+                    if (paymentDate.getDayOfWeek() == DayOfWeek.SATURDAY) {
+                        paymentDate = paymentDate.plusDays(2);
+                    } else if (paymentDate.getDayOfWeek() == DayOfWeek.SUNDAY) {
+                        paymentDate = paymentDate.plusDays(1);
+                    }
+
+
+                    paymentForTeacher.setCourseFee((double) courseFeesInt);
+                    paymentForTeacher.setCalculateDateFrom(calDateFrom);
+                    paymentForTeacher.setCalculateDateTo(calDateTo);
+                    paymentForTeacher.setPaymentDate(paymentDate);
+                    paymentForTeacher.setStatus(paymentStatus);
+                    paymentForTeacher.setNoOfEnrollPerson(noOfEnrollPerson);
+                    paymentForTeacher.setPaymentVerify(false);
+                    paymentForTeacherService.savePaymentForTeacher(paymentForTeacher);
+                    
+                
+                    
+                }
+            }
+            else {
+
+                PaymentForTeacher paymentForTeacher = new PaymentForTeacher();
+                paymentForTeacher.setCourseInfo(savedCourse);               
+
+                startDate = null;                
+                endDate = null;
+                           
+                int noOfEnrollPerson = 0;
+                String paymentStatus = "PENDING";          
+                
+                paymentForTeacher.setNoOfEnrollPerson(noOfEnrollPerson);
+                paymentForTeacher.setCalculateDateFrom(startDate);
+                paymentForTeacher.setCalculateDateTo(endDate);
+                paymentForTeacher.setCourseFee(savedCourse.getFees());
+                paymentForTeacher.setPaymentDate(null);                
+                paymentForTeacher.setStatus(paymentStatus);
+                paymentForTeacher.getPaymentVerify();                            
+                paymentForTeacherService.savePaymentForTeacher(paymentForTeacher);
+                
+               
+
+            }   
+
+            } else {
+                System.out.println("Unknown payment type :"+ paymentType);
             }
 
             return "redirect:/admin/course-upload/complete";

@@ -136,6 +136,7 @@
                       <input
                         type="radio"
                         onclick="javascript:onClassTypeCheckBoxClicked();"
+                        onchange="togglePaymentTypeSection();"
                         name="liveCheck"
                         id="liveCheck"
                         value="LIVE"
@@ -147,6 +148,7 @@
                       <input
                         type="radio"
                         onclick="javascript:onClassTypeCheckBoxClicked();"
+                        onchange="togglePaymentTypeSection();"
                         name="videoCheck"
                         id="videoCheck"
                         value="VIDEO"
@@ -289,6 +291,34 @@
                 
                 <div class="invalid-feedback">This field is required.</div>
               </div>
+
+              <!-- Payment Types -->
+
+              
+              <div class="row" id="paymentTypeSection">
+                <div class="col-lg-3">
+                  <p class="form-label">Payment Type</p>
+                </div>
+                <div class="col-lg-9 mb-3">
+                  <div class="form-check form-check-inline">
+                    <input type="radio" name="paymentType" id="monthlyFee" value="MONTHLY_FEE" required checked>
+                    <label for="monthlyFee">Monthly fee</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input type="radio" name="paymentType" id="oneTimeFee" value="ONE_TIME_FEE" required >
+                    <label for="oneTimeFee">One-time fee</label>
+                  </div>                                    
+                </div>
+              </div>
+
+              
+              
+              
+                
+              
+              
+              
+
 
               <!-- about course -->
               <div class="mb-3">
@@ -721,6 +751,8 @@
               </button>
             </div>
 
+            
+
             <!-- New Code -->
 
             <!-- <div class="d-flex justify-content-end my-3">
@@ -752,6 +784,18 @@
     <script th:src="@{/js/photoPlaceHolder.js}"></script>
     <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
     <script th:src="@{./../../../js/main.js}"></script>
+
+    <script>
+      function togglePaymentTypeSection() {
+        var videoCheck = document.getElementById("videoCheck");
+        var paymentTypeSection = document.getElementById("paymentTypeSection");
+        if (videoCheck.checked) {
+          paymentTypeSection.style.display = "none";
+        } else {
+          paymentTypeSection.style.display = "";
+        }
+      }
+      </script>
 
     <!-- <script th:src="@{/js/addcourse.js}"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>

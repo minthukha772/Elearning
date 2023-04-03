@@ -1,9 +1,13 @@
 package com.blissstock.mappingSite.controller;
 
+import java.time.DayOfWeek;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -13,6 +17,7 @@ import com.blissstock.mappingSite.dto.JoinCourseDTO;
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.CourseTime;
 import com.blissstock.mappingSite.entity.JoinCourseUser;
+import com.blissstock.mappingSite.entity.PaymentForTeacher;
 import com.blissstock.mappingSite.entity.Review;
 import com.blissstock.mappingSite.entity.Syllabus;
 import com.blissstock.mappingSite.entity.Test;
@@ -22,7 +27,6 @@ import com.blissstock.mappingSite.enums.ClassType;
 import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.exceptions.CourseNotFoundException;
 import com.blissstock.mappingSite.model.FileInfo;
-import com.blissstock.mappingSite.model.Message;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
 import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
 import com.blissstock.mappingSite.repository.SyllabusRepository;
@@ -35,6 +39,8 @@ import com.blissstock.mappingSite.service.StorageService;
 import com.blissstock.mappingSite.service.UserService;
 import com.blissstock.mappingSite.service.UserSessionService;
 import com.blissstock.mappingSite.service.MailService;
+import com.blissstock.mappingSite.service.PaymentForTeacherService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -89,10 +95,14 @@ public class CourseDetailsController {
     @Autowired
     StorageService storageService;
 
+    @Autowired
+    private PaymentForTeacherService paymentForTeacherService;
+
     @GetMapping(value = { "/student/course-details/{courseId}", "/teacher/course-details/{courseId}",
             "/admin/course-details/{courseId}", "/guest/course-detail/{courseId}" })
     private String getCourseDetails(@PathVariable Long courseId, Model model) {
         Long userId;
+
 
         // Get course by ID
         CourseInfo courseInfo = courseInfoRepository.findById(courseId).get();
@@ -431,8 +441,7 @@ public class CourseDetailsController {
 
     public String enrollStudent(HttpServletRequest request, @PathVariable Long courseId, @PathVariable Long userId,
             Model model) {
-        logger.info("Request");
-
+        logger.info("Request"); 
         JoinCourseDTO joinCourseDTO = new JoinCourseDTO();
         joinCourseDTO.setUid(userId);
         joinCourseDTO.setCourseId(courseId);
@@ -450,6 +459,112 @@ public class CourseDetailsController {
             e.printStackTrace();
             return "redirect:/student/course-details/" + courseId + "/?error";
         }
+
+        CourseInfo courseInfo = courseInfoRepository.findById(courseId).get();
+        List<UserInfo> studentList = new ArrayList<>();
+        for (JoinCourseUser joinCourseUser : courseInfo.getJoin()) {
+            if (joinCourseUser.getUserInfo().getUserAccount().getRole().equals(UserRole.STUDENT.getValue()))
+                studentList.add(joinCourseUser.getUserInfo());
+        }
+        
+        Integer stuListSize = studentList.size();
+        System.out.println("Student size is : "+ stuListSize);
+
+        List<PaymentForTeacher> paymentList = paymentForTeacherService.getPaymentForTeacherByCourseId(courseId);
+            
+            for (PaymentForTeacher payment : paymentList) {
+
+                
+                if (payment.getCourseInfo().getStartDate() == null && payment.getStatus().equals("PENDING")) {
+                    int studentFromDatabase = payment.getNoOfEnrollPerson();
+                    int noOfStudent = studentFromDatabase + 1;
+                    
+                    LocalDate enrollDate = LocalDate.now();
+                    
+                    LocalDate firstDayOfMonth = enrollDate.withDayOfMonth(1);
+                    Date firstDay = Date.from(firstDayOfMonth.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+                    
+                    LocalDate lastDayOfMonth = enrollDate.withDayOfMonth(enrollDate.lengthOfMonth());
+                    Date lastDay = Date.from(lastDayOfMonth.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+                    LocalDate paymentDate = enrollDate.plusMonths(1).withDayOfMonth(5);
+                    if (paymentDate.getDayOfWeek() == DayOfWeek.SATURDAY) {
+                        paymentDate = paymentDate.plusDays(2);
+                    } else if (paymentDate.getDayOfWeek() == DayOfWeek.SUNDAY) {
+                        paymentDate = paymentDate.plusDays(1);
+                    }
+                    
+
+                    double courseFee = payment.getCourseInfo().getFees();
+                    double totalAmount = courseFee * noOfStudent;
+                    double totalAmountTenPercent = totalAmount * 0.90 ;
+
+                    payment.setNoOfEnrollPerson(noOfStudent);
+                    payment.setPaymentDate(paymentDate);
+                    payment.setCalculateDateFrom(firstDay); 
+                    payment.setCalculateDateTo(lastDay);
+                    payment.setPaymentAmount(totalAmount);
+                    payment.setPaymentAmountPercentage(totalAmountTenPercent);
+                    paymentForTeacherService.savePaymentForTeacher(payment);
+
+                    
+                }
+                else if (payment.getCourseInfo().getStartDate() == null && payment.getStatus().equals("COMPLETE")) {
+
+                    PaymentForTeacher paymentForTeacher = new PaymentForTeacher();
+                    paymentForTeacher.setCourseInfo(courseInfo);
+                    paymentForTeacher.setNoOfEnrollPerson(1);
+                    
+                    
+                    LocalDate enrollDate = LocalDate.now();
+                    
+                    LocalDate firstDayOfMonth = enrollDate.withDayOfMonth(1);
+                    Date firstDay = Date.from(firstDayOfMonth.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+                    
+                    LocalDate lastDayOfMonth = enrollDate.withDayOfMonth(enrollDate.lengthOfMonth());
+                    Date lastDay = Date.from(lastDayOfMonth.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+                    LocalDate paymentDate = enrollDate.plusMonths(1).withDayOfMonth(5);
+                    if (paymentDate.getDayOfWeek() == DayOfWeek.SATURDAY) {
+                        paymentDate = paymentDate.plusDays(2);
+                    } else if (paymentDate.getDayOfWeek() == DayOfWeek.SUNDAY) {
+                        paymentDate = paymentDate.plusDays(1);
+                    }
+
+                    double courseFee = paymentForTeacher.getCourseInfo().getFees();
+                    double totalAmount = courseFee * 1;
+                    double totalAmountTenPercent = totalAmount * 0.90 ;
+                    String paymentStatus = "PENDING";  
+                    paymentForTeacher.setCalculateDateFrom(firstDay);
+                    paymentForTeacher.setCalculateDateTo(lastDay);               
+                    paymentForTeacher.setCourseFee(courseFee);
+                    paymentForTeacher.setPaymentDate(paymentDate);
+                    paymentForTeacher.setPaymentAmount(totalAmount);
+                    paymentForTeacher.setPaymentAmountPercentage(totalAmountTenPercent);
+                    paymentForTeacher.setStatus(paymentStatus);
+                    paymentForTeacher.setPaymentVerify(false);
+                    paymentForTeacherService.savePaymentForTeacher(paymentForTeacher);                     
+                    
+                    
+                }
+
+                else if (payment.getCalculateDateFrom() != null && payment.getStatus().equals("PENDING")) {
+                    int noOfStudent = stuListSize;
+                    double courseFee = payment.getCourseInfo().getFees();
+                    double totalAmount = courseFee * noOfStudent;
+                    double totalAmountTenPercent = totalAmount * 0.90 ;
+                    payment.setNoOfEnrollPerson(noOfStudent); 
+                    payment.setPaymentAmount(totalAmount);
+                    payment.setPaymentAmountPercentage(totalAmountTenPercent);
+                    paymentForTeacherService.savePaymentForTeacher(payment);
+
+
+
+                }
+
+            }
 
         new Thread(new Runnable() {
             public void run() {
