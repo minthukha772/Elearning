@@ -5,22 +5,22 @@
       <a th:href="@{/}"><img src="/images/logo.png"/></a>
     </div>
 
-    <div class="d-flex links-div " id="linkholderteachers">
+    <div  class="d-flex links-div" id="linkholderteachers">
 
-      <div class="d-flex form__group field align-items-center align-self-center ">
+      <div style="width: 200px;" class="d-flex form__group field align-items-center align-self-center ">
         <img src="/images/icons/search-icon.svg" class="icon" />
         <a class=" ms-3 linkholderteachers"  th:href="@{/guest/explore}">Search the Course</a>
       </div>
 
-      <div class="link-holder ">
+      <div style="width: 150px;" class="link-holder ">
         <a class="nav-link linkholderteachers"  th:href="@{/home}">My Course</a>
       </div>
 
-      <div class="link-holder">
+      <div style="width: 150px;" class="link-holder">
         <a class="nav-link linkholderteachers" th:href="@{/student/profile/}">Profile</a>
       </div>
 
-      <div class="link-holder">
+      <div style="width: 150px;" class="link-holder">
         <a
             class="nav-link linkholderteachers"
             th:href="@{https://drive.google.com/file/d/1mrarzmhrAMq4xxwnE592pYRXcbNlhtRa/view?usp=sharing}"
@@ -42,8 +42,12 @@
         </a>
       </div>
 
-      <div class="link-holder">
-        <a class="nav-link linkholderteachers " th:href="@{/logout}" style="color: var(--log-out); font-weight: bold;">Log out</a>
+      <div style="width: 150px;" class="link-holder">
+        <a class="nav-link linkholderteachers " th:href="@{/exam}" style="font-weight: bold;">Exam</a>
+      </div>
+
+      <div style="width: 150px;" class="link-holder">
+        <a class="nav-link linkholderteachers " th:href="@{/logout}" style="background-color: #309986; font-weight: bold;">Log out</a>
       </div>
       
     </div>
@@ -80,8 +84,9 @@
       </svg>
       </a>
    </li>
+      <li><a class="linkholderteachers " th:href="@{/exam}" style="font-weight: bold;">Exam</a></li>
    <li><a class="linkholderteachers " th:href="@{/logout}" style="color: var(--log-out); font-weight: bold;">Log out</a></li><br />
-   <li>
+   <!--<li>
       <div
         class="d-flex form__group field align-items-center align-self-center">
         <!-- <img
