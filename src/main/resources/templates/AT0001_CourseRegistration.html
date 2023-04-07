@@ -22,10 +22,20 @@
     <title>Course Registration</title>
 
   <link rel="icon" type="image/x-icon" href="/images/fav.png">
+
+  <th:block th:if="${#authorization.expression('hasRole(''ROLE_TEACHER'')')}">
+        <link rel="icon" type="image/x-icon" href="/images/fav.png" />
+        <link rel="stylesheet" th:href="@{/css/global.css}" />
+        <link rel="stylesheet" th:href="@{/css/pagination.css}" />
+    </th:block>
+
   </head>
 
   <body>
     <div th:replace="@{fragments/nav}"></div>
+    <div th:if="${#authorization.expression('hasRole(''ROLE_TEACHER'')')}">
+      <div style="height: 100px"></div>
+  </div>
     <nav
       class="p-2"
       aria-label="breadcrumb"
