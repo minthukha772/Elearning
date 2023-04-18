@@ -92,6 +92,9 @@ public class PaymentListController {
     private UserSessionServiceImpl userSessionService;
 
     @Autowired
+    private JoinCourseUserRepository joinCourseUserRepository;
+
+    @Autowired
     private PaymentRemarkRepository paymentRemarkRepo;
 
     @Autowired
@@ -158,9 +161,9 @@ public class PaymentListController {
     @RequestMapping("/admin/student-unpaid-list")
     public String StudentUnpaidList(Model model) {
 
-        List<PaymentReceive> viewPayment = paymentRepo.findByPaymentStatus(PaymentStatus.PENDING.toString());
+        List<JoinCourseUser> unpaidList = joinCourseUserRepository.findUnpaidList();
 
-        logger.info("Payment Receive List {}", viewPayment);
+        logger.info("Unpaid List {}", unpaidList);
 
         // List<String> breadcrumbList = new ArrayList<>();
         // breadcrumbList.add("Top");
@@ -172,16 +175,12 @@ public class PaymentListController {
         List<StudentUnpaidLists> studentUnpaidList = new ArrayList<>();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         // List<AllPaymentLists> allPayment = new AllPaymentLists();
-        for (PaymentReceive paymentReceive : viewPayment) {
-            // String paymentDate = format.format(paymentReceive.getPaymentReceiveDate());
-            String paymentStatus = paymentReceive.getPaymentStatus();
-
-            JoinCourseUser joinCourseUser = paymentReceive.getJoin();
-
-            UserInfo payUserInfo = joinCourseUser.getUserInfo();
+        for (JoinCourseUser unpaidData : unpaidList) {
+            // String paymentDate = format.format(paymentReceive.getPaymentReceiveDate())
+            UserInfo payUserInfo = unpaidData.getUserInfo();
             String userName = payUserInfo.getUserName();
             Long userId = payUserInfo.getUid();
-            CourseInfo payCouresInfo = joinCourseUser.getCourseInfo();
+            CourseInfo payCouresInfo = unpaidData.getCourseInfo();
             String courseName = payCouresInfo.getCourseName();
             String courseType = payCouresInfo.getClassType();
             String courseStartDate;
@@ -199,7 +198,7 @@ public class PaymentListController {
             Long teacherId = payCouresInfo.getUserInfo().getUid();
             int courseFees = payCouresInfo.getFees();
             studentUnpaidList.add(new StudentUnpaidLists(userName, courseName, teacherName, courseType, courseStartDate,
-                    courseEndDate, courseFees, userId, teacherId, courseId, paymentStatus));
+                    courseEndDate, courseFees, userId, teacherId, courseId, "Pending"));
         }
 
         logger.info("Payment Receive List including user's information {}", studentUnpaidList);
