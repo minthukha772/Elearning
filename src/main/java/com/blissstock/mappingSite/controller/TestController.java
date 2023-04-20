@@ -25,7 +25,6 @@ import java.util.Date;
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.Test;
 import com.blissstock.mappingSite.entity.UserInfo;
-import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
 import com.blissstock.mappingSite.repository.TestRepository;
 import com.blissstock.mappingSite.repository.UserInfoRepository;
@@ -122,7 +121,7 @@ public class TestController {
             @RequestParam(required = false) String examStatus, @RequestParam(required = false) String courseid,
             @RequestParam(required = false) String fromDate, @RequestParam(required = false) String toDate,
             @RequestParam(required = false) String teacherid) {
-        logger.debug(
+        logger.info(
                 "getExamManagementPageByAdmin called with parameters: examStatus={}, courseId={}, fromDate={}, toDate={}, teacherId={}",
                 examStatus, courseid, fromDate, toDate, teacherid);
         try {
@@ -148,14 +147,14 @@ public class TestController {
             if (examStatus != "" || courseid != "" || fromDate != "" || toDate != "" || teacherid != "") {
                 if (examStatus != "") {
                     // Log the test list retrieval by status
-                    logger.debug("user id {} Retrieving test list by status: {}", userID, examStatus);
+                    logger.info("user id {} Retrieving test list by status: {}", userID, examStatus);
                     testList = testRepository.getListByStatus(examStatus);
                     model.addAttribute("testList", testList);
                     model.addAttribute("filterType", "Filter By Status");
                     model.addAttribute("filter", "( " + examStatus + " )");
                 } else if (courseid != "") {
                     // Log the test list retrieval by course ID
-                    logger.debug("user id {} Retrieving test list by course ID: {}", userID, courseid);
+                    logger.info("user id {} Retrieving test list by course ID: {}", userID, courseid);
                     CourseInfo course = courseInfoRepository.getById(Long.parseLong(courseid));
                     testList = testRepository.getListByCourse(Long.parseLong(courseid));
                     model.addAttribute("testList", testList);
@@ -163,7 +162,7 @@ public class TestController {
                     model.addAttribute("filter", "( " + course.getCourseName() + " )");
                 } else if (fromDate != "" && toDate != "") {
                     // Log the test list retrieval by date range
-                    logger.debug("user id {} Retrieving test list by date range: {} to {}", userID, fromDate, toDate);
+                    logger.info("user id {} Retrieving test list by date range: {} to {}", userID, fromDate, toDate);
                     Date from = new SimpleDateFormat("yyyy-MM-dd").parse(fromDate);
                     Date to = new SimpleDateFormat("yyyy-MM-dd").parse(toDate);
                     testList = testRepository.getListByDate(from, to);
@@ -172,7 +171,7 @@ public class TestController {
                     model.addAttribute("filter", "( " + fromDate + " - " + toDate + " )");
                 } else if (teacherid != "") {
                     // Log the test list retrieval by teacher ID
-                    logger.debug("user id {} Retrieving test list by teacher ID: {}", userID, teacherid);
+                    logger.info("user id {} Retrieving test list by teacher ID: {}", userID, teacherid);
                     UserInfo teacher = userRepository.findByAccount(Long.parseLong(teacherid));
                     testList = testRepository.getListByUser(Long.parseLong(teacherid));
                     model.addAttribute("testList", testList);
@@ -181,7 +180,7 @@ public class TestController {
                 }
             } else {
                 // Log the test list retrieval for all tests by admin
-                logger.debug("user id {} Retrieving all test list by admin", userID);
+                logger.info("user id {} Retrieving all test list by admin", userID);
                 testList = testRepository.getListByAdmin();
                 model.addAttribute("testList", testList);
             }
@@ -303,8 +302,9 @@ public class TestController {
             }
             Test test = new Test(null, courseInfo, userInfo, description, section_name, minutes_allowed, passing_score,
                     examDate, exam_start_time, exam_end_time, exam_status);
+            logger.info("User ID {} Exam start to insert test {}", userID, test);
             testRepository.save(test);
-            logger.info("User ID {} Exam saved successfully for course ID {}", userID, course_id);
+            logger.info("User ID {} Exam saved successfully test {}", userID, test);
             return ResponseEntity.ok(HttpStatus.OK);
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage());
@@ -347,8 +347,9 @@ public class TestController {
             }
             Test test = new Test(null, courseInfo, userInfo, description, section_name, minutes_allowed, passing_score,
                     examDate, exam_start_time, exam_end_time, exam_status);
+            logger.info("User ID {} Exam start to insert test {}", userID, test);
             testRepository.save(test);
-            logger.info("User ID {} Exam saved successfully for course ID {}", userID, course_id);
+            logger.info("User ID {} Exam saved successfully test {}", userID, test);
             return ResponseEntity.ok(HttpStatus.OK);
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage());
@@ -393,6 +394,7 @@ public class TestController {
             Test test = new Test(test_id, courseInfo, userInfo, description, section_name, minutes_allowed,
                     passing_score,
                     examDate, exam_start_time, exam_end_time, exam_status);
+            logger.info("User ID {} Exam start to update test {}", userID, test);
             testRepository.save(test);
             logger.info("User ID {} Exam edited successfully for course ID {} and exam ID {}", userID, course_id,
                     test_id);
@@ -439,6 +441,7 @@ public class TestController {
             Test test = new Test(test_id, courseInfo, userInfo, description, section_name, minutes_allowed,
                     passing_score,
                     examDate, exam_start_time, exam_end_time, exam_status);
+            logger.info("User ID {} Exam start to update test {}", userID, test);
             testRepository.save(test);
             logger.info("User ID {} Exam edited successfully for course ID {} and exam ID {}", userID, course_id,
                     test_id);
