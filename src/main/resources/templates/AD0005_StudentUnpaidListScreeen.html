@@ -199,7 +199,6 @@
           <div class="advanced-search-body">
             <div class="row">
               <div class="col-md-12">
-                <form id="myForm">
                   <div class="container mx-auto">
                     <div class="d-none d-md-block d-lg-block d-xl-block">
                       <div class="form-group col-md-12">
@@ -260,7 +259,6 @@
                       </div>
 
                   </div>
-                </form>
                 <div class="row mt-3">
                   <div class="col-md-12">
                     <button class="btn btn-primary mb-3" id="downloadpaylist">
@@ -544,14 +542,15 @@
 
       t.draw();
       
-      var from = $("#amount_min").val();
-      var to = $("#amount_max").val();
+      var from = parseFloat($("#amount_min").val());
+      var to =parseFloat($("#amount_max").val());
       // console.log(from);
       // console.log(to);
       if(from || to){
         $("tbody tr").each(function(){
           // console.log($(this));
           var price = $(this).children("td.course_amount").text();
+          price = parseFloat(price);
           console.log(price);
           if(price >= from && price <= to){
               // $(this).show();
@@ -569,7 +568,7 @@
     });
 
     function resetForm() {
-    document.getElementById("myForm").reset();
+    // document.getElementById("myForm").reset();
     location.reload(true);
 
     }
