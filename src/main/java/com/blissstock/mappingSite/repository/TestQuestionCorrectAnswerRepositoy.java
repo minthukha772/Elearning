@@ -1,0 +1,17 @@
+package com.blissstock.mappingSite.repository;
+
+import com.blissstock.mappingSite.entity.TestQuestionCorrectAnswer;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface TestQuestionCorrectAnswerRepositoy extends JpaRepository<TestQuestionCorrectAnswer, Long> {
+
+    @Query(value = "Select * from test_question_correct_answer where question_id = :question_id limit 1", nativeQuery = true)
+    public TestQuestionCorrectAnswer getCorrectAnswerByQuestion(@Param("question_id") Long question_id);
+}
