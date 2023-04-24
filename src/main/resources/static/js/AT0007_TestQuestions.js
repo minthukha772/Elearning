@@ -1,39 +1,107 @@
+let createExamContainer = document.querySelector('.create-exam-container');
+    cancelBtn = document.querySelector('#cancel_btn'),
+    createExam = document.querySelector('#create_question');
 
-// alert countdown 
-var deadline = new Date("Mar 14, 2023 15:37:25").getTime();
-var x = setInterval(function () {
-  var now = new Date().getTime();
-  var t = deadline - now;
-  var days = Math.floor(t / (1000 * 60 * 60 * 24));
-  var hours = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  var minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
-  var seconds = Math.floor((t % (1000 * 60)) / 1000);
-  document.querySelector("#displayDiv").innerHTML =
-  `<small class="text-white fw-bold">${days}d ${hours}h ${minutes}m ${seconds}s</small>`;
-  if (t < 0) {
-    clearInterval(x);
-    document.querySelector("#displayDiv").innerHTML = `<small class="text-white fw-bold">EXPIRED</small>`;
-  }
-}, 1000);
+cancelBtn.addEventListener('click',() => createExamContainer.classList.add('d-none') );
+createExam.addEventListener('click',() => createExamContainer.classList.remove('d-none') );
 
-// let noti;
-// function audioPlay () {
-//   noti = document.querySelector('.notification-sound');
-//   noti.play();
-// }
+// create exam 
+let answerType = document.querySelector('#answer_Type');
+    singleAnswer = document.querySelector('#single_answer'),
+    multipleAnswer = document.querySelector('#multiple_answer'),
+    singleAddOption = document.querySelector('#single_add_option'),
+    multipleAddOption = document.querySelector('#multiple_add_option'),
+    singleAddOptionBox = document.querySelector('#single_add_optionbox'),
+    multipleAddOptionBox = document.querySelector('#multiple_add_optionbox'),
+    singleAddNew = document.querySelector('#single_add_new'),
+    multipleAddNew = document.querySelector('#multiple_add_new'),
+    singleAnswerChoice = document.querySelector('#single_answer_choice'),
+    multipleAnswerChoice = document.querySelector('#multiple_answer_choice'),
+    singleAddText = document.querySelector('#single_add_text'),
+    multipleAddText = document.querySelector('#multiple_add_text'),
 
+answerType.addEventListener('change',() => {
+    if(answerType.value == '1'){
+        singleAnswer.classList.remove('d-none')
+        multipleAnswer.classList.add('d-none')
+    }else if(answerType.value == '2'){
+        singleAnswer.classList.add('d-none')
+        multipleAnswer.classList.remove('d-none')
+    }else if(answerType.value == '3'){
+        singleAnswer.classList.add('d-none')
+        multipleAnswer.classList.add('d-none')
+    }
+})
 
-document.querySelector('#create_question').addEventListener('click',() => document.querySelector(".modalBox").classList.add('d-none'))
-setTimeout(
-  () => {
-    document.querySelector("#displayDiv").classList.remove("hidden");
-    document.querySelector(".modalBox").classList.remove("d-none");
-  },
-  5000
-);
+singleAddOption.addEventListener('click',() => singleAddOptionBox.classList.toggle('d-none'));
 
-// question No 
-let questionBoxLength = document.getElementsByClassName("question").length;
-let questionNo = document.querySelector(".question-no");
-let okBtn = document.querySelector("#create_question");
-questionNo.innerText = `${questionBoxLength} Questions`;
+multipleAddOption.addEventListener('click',() => multipleAddOptionBox.classList.toggle('d-none'));
+
+singleAddNew.addEventListener('click', () => {
+    
+    if (singleAddText.value == ''){
+        alert(11)
+    }else{
+        singleAnswerChoice.innerHTML += `
+                <div class="row align-items-center mt-2 shadow-sm">
+                  <div class="col-11">
+                    <input
+                      type="text"
+                      class="form-control"
+                      id=""
+                      required
+                      value='${singleAddText.value}'
+                    />
+                  </div>
+                  <div class="col-1 px-1">
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        required
+                        type="radio"
+                        name="flexRadioDefault"
+                        id=""
+                      />
+                    </div>
+                  </div>
+                </div>
+        `;
+    }
+    singleAddText.value = '';
+
+})
+
+multipleAddNew.addEventListener('click', () => {
+    
+    if (multipleAddText.value == ''){
+        alert(11)
+    }else{
+        multipleAnswerChoice.innerHTML += `
+        <div class="row align-items-center mt-2 shadow-sm">
+        <div class="col-11">
+          <input
+            type="text"
+            class="form-control"
+            placeholder=""
+            id="option 1"
+            required
+            value='${multipleAddText.value}'
+          />
+        </div>
+        <div class="col-1 px-1">
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              required
+              type="checkBox"
+              name="flexRadioDefault"
+              id=""
+            />
+          </div>
+        </div>
+      </div>
+        `;
+    }
+    multipleAddText.value = '';
+
+});

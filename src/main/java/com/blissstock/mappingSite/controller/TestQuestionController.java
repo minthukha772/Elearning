@@ -61,29 +61,31 @@ public class TestQuestionController {
         List<QuestionAndCorrectAnswer> questionAndCorrectAnswers = new ArrayList<>();
         List<TestQuestion> testQuestions = testQuestionRepository.getQuestionByTest(test_id);
         for (TestQuestion testQuestion : testQuestions) {
-            TestQuestionCorrectAnswer testQuestionCorrectAnswer = testQuestionCorrectAnswerRepositoy
-                    .getCorrectAnswerByQuestion(testQuestion.getId());
             List<ChoiceModel> choices = new ArrayList<>();
-            List<AnswerModel> answers = new ArrayList<>();
-            JSONArray choiceArrary = new JSONArray(testQuestion.getChoices());
-            JSONArray answerArray = new JSONArray(testQuestionCorrectAnswer.getCorrectAnswer());
-            for (int i = 0; i < choiceArrary.length(); i++) {
-                JSONObject jsonObject = choiceArrary.getJSONObject(i);
-                String data = jsonObject.getString("choice");
-                choices.add(new ChoiceModel(data));
-            }
+            if (!testQuestion.getQuestion_type().equals("FREE_ANSWER")) {
+                TestQuestionCorrectAnswer testQuestionCorrectAnswer = testQuestionCorrectAnswerRepositoy
+                        .getCorrectAnswerByQuestion(testQuestion.getId());
 
-            for (int i = 0; i < answerArray.length(); i++) {
-                JSONObject jsonObject = answerArray.getJSONObject(i);
-                Integer data = jsonObject.getInt("answer");
-                answers.add(new AnswerModel(data));
+                JSONArray choiceArrary = new JSONArray(testQuestion.getChoices());
+                JSONArray answerArray = new JSONArray(testQuestionCorrectAnswer.getCorrectAnswer());
+                for (int i = 0; i < choiceArrary.length(); i++) {
+                    JSONObject choice = choiceArrary.getJSONObject(i);
+                    String choiceData = choice.getString("choice");
+                    choices.add(new ChoiceModel(i, choiceData, false));
+                }
+
+                for (int j = 0; j < answerArray.length(); j++) {
+                    JSONObject answer = answerArray.getJSONObject(j);
+                    int correct = answer.getInt("answer");
+                    String choice = choices.get(correct).getChoice();
+                    choices.set(correct, new ChoiceModel(correct, choice, true));
+                }
             }
 
             QuestionAndCorrectAnswer questionAndCorrectAnswer = new QuestionAndCorrectAnswer(testQuestion.getId(),
                     testQuestion.getQuestion_text(), testQuestion.getQuestion_materials(),
                     testQuestion.getQuestion_materials_type(), choices,
-                    testQuestion.getQuestion_type(), testQuestion.getMaximum_mark(),
-                    answers);
+                    testQuestion.getQuestion_type(), testQuestion.getMaximum_mark());
             questionAndCorrectAnswers.add(questionAndCorrectAnswer);
         }
         model.addAttribute("questionList", questionAndCorrectAnswers);

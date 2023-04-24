@@ -63,23 +63,14 @@
                         <div class="" id="single_answer_choice">
                             <div class="row align-items-center mt-2 shadow-sm">
                                 <div class="col-11">
-                                    <input type="text" class="form-control" placeholder="option 1" id="option 1"
+                                    <input type="text" class="form-control" placeholder="option 1" id="text_option1"
                                         required />
                                 </div>
                                 <div class="col-1 px-1">
                                     <div class="form-check">
                                         <input class="form-check-input" required type="radio" name="flexRadioDefault"
-                                            id="" />
+                                            id="radio_option1" />
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="input-group-sm mt-3 fadeIn d-none" id="single_add_optionbox">
-                            <div class="d-flex align-items-center">
-                                <input type="text" class="form-control" placeholder="Add New Option"
-                                    id="single_add_text" />
-                                <div class="btn btn-outline-dark" id="single_add_new">
-                                    <small>Add</small>
                                 </div>
                             </div>
                         </div>
@@ -87,6 +78,7 @@
                             <small>+ Add Option</small>
                         </div>
                     </div>
+
 
                     <div class="input-group-sm mb-2 d-none fadeIn" id="multiple_answer">
                         <div class="" id="multiple_answer_choice">
@@ -97,7 +89,7 @@
                                 </div>
                                 <div class="col-1 px-1">
                                     <div class="form-check">
-                                        <input class="form-check-input" required type="checkBox" name="flexRadioDefault"
+                                        <input class="form-check-input" required type="checkBox" name="flexCheckDefault"
                                             id="" />
                                     </div>
                                 </div>
@@ -148,7 +140,8 @@
                 </nav>
             </div>
             <div class="mt-3">
-                <small class="text-success fw-bold"><span class="">18</span> Questions</small>
+                <small class="text-success fw-bold"><span th:text="${#lists.size(questionList)}"></span>
+                    Questions</small>
             </div>
         </div>
         <div class="text-md-end mt-2">
@@ -185,14 +178,17 @@
                                             <source th:src="${testquestion.question_materials}" type="video/mp4">
                                         </video>
                                     </div>
+                                    <div th:if="${testquestion.question_materials_type == 'IMAGE'}"
+                                        style="justify-content: center; align-items: center; display: flex;">
+                                        <img th:src="${testquestion.question_materials}">
+                                    </div>
                                     <h5 class="">Description</h5>
                                     <p th:text="${testquestion.question_text}"></p>
                                     <div th:each="choice, choiceindex : ${testquestion.choices}">
-                                        <div th:each="answer : ${testquestion.correct_answer}">
-                                            <div class="form-check border rounded py-2 px-5 mt-2"
-                                                th:style="${choiceindex.count == answer.answer ? 'background-color: green' : 'background-color: white'}">
-                                                <label class="form-check-label" th:text="${choice.choice}"></label>
-                                            </div>                                          
+                                        <div class="form-check border rounded py-2 px-5 mt-2"
+                                            th:style="${choice.correct == true ? 'background-color: green' : 'background-color: white'}">
+                                            <label class="form-check-label" th:text="${choice.choice}"
+                                                th:style="${choice.correct == true ? 'color: white' : 'color: black'}"></label>
                                         </div>
                                     </div>
                                     <div class="mt-3">
@@ -211,12 +207,65 @@
             </div>
         </div>
     </section>
-
+    <div th:replace="@{fragments/footer}"></div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
-    <script th:src="@{/js/AT0007_TestQuestions.js}"></script>
-    <div th:replace="@{fragments/footer}"></div>
+
+    <script>
+        let createExamContainer = document.querySelector('.create-exam-container');
+        cancelBtn = document.querySelector('#cancel_btn');
+        createExam = document.querySelector('#create_question');
+
+        cancelBtn.addEventListener('click', () => createExamContainer.classList.add('d-none'));
+        createExam.addEventListener('click', () => createExamContainer.classList.remove('d-none'));
+
+        let answerType = document.querySelector('#answer_Type');
+        singleAnswer = document.querySelector('#single_answer');
+        multipleAnswer = document.querySelector('#multiple_answer');
+        singleAddOption = document.querySelector('#single_add_option');
+        multipleAddOption = document.querySelector('#multiple_add_option');
+        singleAddOptionBox = document.querySelector('#single_add_optionbox');
+        multipleAddOptionBox = document.querySelector('#multiple_add_optionbox');
+        singleAddNew = document.querySelector('#single_add_new');
+        multipleAddNew = document.querySelector('#multiple_add_new');
+        singleAnswerChoice = document.querySelector('#single_answer_choice');
+        multipleAnswerChoice = document.querySelector('#multiple_answer_choice');
+        singleAddText = document.querySelector('#single_add_text');
+        multipleAddText = document.querySelector('#multiple_add_text');
+
+        answerType.addEventListener('change', () => {
+            if (answerType.value == '1') {
+                singleAnswer.classList.remove('d-none')
+                multipleAnswer.classList.add('d-none')
+            } else if (answerType.value == '2') {
+                singleAnswer.classList.add('d-none')
+                multipleAnswer.classList.remove('d-none')
+            } else if (answerType.value == '3') {
+                singleAnswer.classList.add('d-none')
+                multipleAnswer.classList.add('d-none')
+            }
+        })
+
+        var singleCount = 2;
+        singleAnswerContainer = document.getElementById("single_answer_choice");
+        singleAddOption.addEventListener('click', () => {
+            const radios = document.querySelectorAll('input[name="flexRadioDefault"]');
+            singleAnswerContainer.innerHTML += '<div class="row align-items-center mt-2 shadow-sm">' +
+                '<div class="col-11">' +
+                '<input type="text" class="form-control" placeholder="option ' + singleCount + '" id="text_option_' + singleCount + '"' +
+                'required />' +
+                '</div>' +
+                '<div class="col-1 px-1">' +
+                '<div class="form-check">' +
+                '<input class="form-check-input" required type="radio" name="flexRadioDefault"' +
+                'id="radio_option_' + singleCount + '" />' +
+                '</div>' +
+                '</div>' +
+                '</div>';
+            singleCount++;
+        })
+    </script>
 </body>
 
 </html>

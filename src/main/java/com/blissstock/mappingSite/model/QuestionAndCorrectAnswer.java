@@ -10,11 +10,9 @@ public class QuestionAndCorrectAnswer {
     private List<ChoiceModel> choices;
     private String question_type;
     private Integer maximum_mark;
-    private List<AnswerModel> correct_answer;
 
     public QuestionAndCorrectAnswer(long id, String question_text, String question_materials,
-            String question_materials_type, List<ChoiceModel> choices, String question_type, Integer maximum_mark,
-            List<AnswerModel> correct_answer) {
+            String question_materials_type, List<ChoiceModel> choices, String question_type, Integer maximum_mark) {
         this.id = id;
         this.question_text = question_text;
         this.question_materials = question_materials;
@@ -22,7 +20,6 @@ public class QuestionAndCorrectAnswer {
         this.choices = choices;
         this.question_type = question_type;
         this.maximum_mark = maximum_mark;
-        this.correct_answer = correct_answer;
     }
 
     public long getId() {
@@ -79,13 +76,5 @@ public class QuestionAndCorrectAnswer {
 
     public void setMaximum_mark(Integer maximum_mark) {
         this.maximum_mark = maximum_mark;
-    }
-
-    public List<AnswerModel> getCorrect_answer() {
-        return correct_answer;
-    }
-
-    public void setCorrect_answer(List<AnswerModel> correct_answer) {
-        this.correct_answer = correct_answer;
     }
 }
