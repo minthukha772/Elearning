@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.websocket.server.PathParam;
 
+import org.hibernate.type.TrueFalseType;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,14 +23,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.blissstock.mappingSite.entity.Test;
 import com.blissstock.mappingSite.entity.TestQuestion;
 import com.blissstock.mappingSite.entity.TestQuestionCorrectAnswer;
+import com.blissstock.mappingSite.exceptions.UnauthorizedFileAccessException;
 import com.blissstock.mappingSite.model.AnswerModel;
 import com.blissstock.mappingSite.model.ChoiceModel;
 import com.blissstock.mappingSite.model.QuestionAndCorrectAnswer;
 import com.blissstock.mappingSite.repository.TestQuestionCorrectAnswerRepositoy;
 import com.blissstock.mappingSite.repository.TestQuestionRepository;
+import com.blissstock.mappingSite.repository.TestRepository;
+import com.blissstock.mappingSite.service.StorageService;
+import com.blissstock.mappingSite.service.StorageServiceImpl;
 import com.blissstock.mappingSite.service.UserSessionService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -37,6 +44,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.springframework.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,7 +60,13 @@ public class TestQuestionController {
     TestQuestionRepository testQuestionRepository;
 
     @Autowired
+    TestRepository testRepository;
+
+    @Autowired
     TestQuestionCorrectAnswerRepositoy testQuestionCorrectAnswerRepositoy;
+
+    @Autowired
+    StorageService storageService;
 
     @Valid
     @GetMapping(value = { "/teacher/exam/{test_id}/questions" })
@@ -88,8 +102,51 @@ public class TestQuestionController {
                     testQuestion.getQuestion_type(), testQuestion.getMaximum_mark());
             questionAndCorrectAnswers.add(questionAndCorrectAnswer);
         }
+        model.addAttribute("test_id", test_id);
         model.addAttribute("questionList", questionAndCorrectAnswers);
         return "AT0007_TestQuestions.html";
+    }
+
+    @Valid
+    @PostMapping(value = { "/teacher/create-question" })
+    private ResponseEntity createQuestionByTestID(
+            @RequestParam(value = "test_id") Long testID,
+            @RequestParam(value = "question_text") String question_text,
+            @RequestParam(required = false, value = "question_materials") MultipartFile question_materials,
+            @RequestParam(required = false, value = "choices") String choices,
+            @RequestParam(required = false, value = "answers") String answers,
+            @RequestParam(value = "questions_type") String questions_type,
+            @RequestParam(value = "maximum_mark") Integer maximum_mark)
+            throws ParseException, UnauthorizedFileAccessException {
+        Long userID = getUid();
+        String fileType = "BLANK";
+        String originalFileName = "";
+        if (question_materials != null) {
+            originalFileName = StringUtils.cleanPath(
+                    question_materials.getOriginalFilename());
+            int index = originalFileName.lastIndexOf(".");
+            fileType = originalFileName.substring(index + 1);
+
+            long fileSeparator = 100000L + testID;
+            storageService.store(fileSeparator, question_materials, StorageServiceImpl.QUESTION_MATERIAL_PATH,
+                    false);
+
+            if (fileType.equals("jpg") || fileType.equals("png") || fileType.equals("jpeg")) {
+                fileType = "IMAGE";
+            } else if (fileType.equals("mp3")) {
+                fileType = "AUDIO";
+            } else {
+                fileType = "VIDEO";
+            }
+        }
+        Test test = testRepository.getTestByID(testID);
+        TestQuestion testQuestion = new TestQuestion(null, test, question_text, originalFileName, fileType, choices,
+                questions_type, maximum_mark);
+        TestQuestion result = testQuestionRepository.save(testQuestion);
+        TestQuestionCorrectAnswer correctAnswer = new TestQuestionCorrectAnswer(null, result, answers);
+        testQuestionCorrectAnswerRepositoy.save(correctAnswer);
+        return ResponseEntity.ok(HttpStatus.OK);
+
     }
 
     private Long getUid() {

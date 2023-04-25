@@ -24,7 +24,8 @@ public interface TestRepository extends JpaRepository<Test, Long> {
         public List<Test> getListByCourseAndUser(@Param("course_id") Long course_id, @Param("user_id") Long user_id);
 
         @Query(value = "Select * from test where date >= :fromDate and date <= :toDate and user_info_account_id = :user_id order by test_id desc", nativeQuery = true)
-        public List<Test> getListByDateAndUser(@Param("fromDate") Date fromDate, @Param("toDate") Date toDate, @Param("user_id") Long user_id);
+        public List<Test> getListByDateAndUser(@Param("fromDate") Date fromDate, @Param("toDate") Date toDate,
+                        @Param("user_id") Long user_id);
 
         @Query(value = "Select * from test where user_info_account_id = :user_id order by test_id desc", nativeQuery = true)
         public List<Test> getListByUser(@Param("user_id") Long user_id);
@@ -40,5 +41,8 @@ public interface TestRepository extends JpaRepository<Test, Long> {
 
         @Query(value = "Select * from test where date >= :fromDate and date <= :toDate order by test_id desc", nativeQuery = true)
         public List<Test> getListByDate(@Param("fromDate") Date fromDate, @Param("toDate") Date toDate);
+
+        @Query(value = "Select * from test where test_id = :test_id", nativeQuery = true)
+        public Test getTestByID(@Param("test_id") Long test_id);
 
 }

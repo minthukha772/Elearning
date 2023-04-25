@@ -12,6 +12,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TestQuestionRepository extends JpaRepository<TestQuestion, Long> {
 
-    @Query(value = "Select * from test_question where test_id = :test_id order by test_id desc", nativeQuery = true)
+    @Query(value = "Select * from test_question where test_test_id = :test_id order by test_test_id desc", nativeQuery = true)
     public List<TestQuestion> getQuestionByTest(@Param("test_id") Long test_id);
 }

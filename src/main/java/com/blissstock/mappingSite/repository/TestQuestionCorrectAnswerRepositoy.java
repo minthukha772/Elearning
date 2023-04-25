@@ -12,6 +12,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TestQuestionCorrectAnswerRepositoy extends JpaRepository<TestQuestionCorrectAnswer, Long> {
 
-    @Query(value = "Select * from test_question_correct_answer where question_id = :question_id limit 1", nativeQuery = true)
-    public TestQuestionCorrectAnswer getCorrectAnswerByQuestion(@Param("question_id") Long question_id);
+    @Query(value = "Select * from test_question_correct_answer where test_question_id = :test_question_id limit 1", nativeQuery = true)
+    public TestQuestionCorrectAnswer getCorrectAnswerByQuestion(@Param("test_question_id") Long question_id);
 }

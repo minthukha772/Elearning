@@ -45,6 +45,8 @@ public class StorageServiceImpl implements StorageService {
       .get(System.getProperty("user.home") + File.separator + "uploads");
   public static final Path CERTIFICATE_PATH = Paths.get(
       root + File.separator + "certificates");
+      public static final Path QUESTION_MATERIAL_PATH = Paths.get(
+        root + File.separator + "question_materials");
   public static final Path PROFILE_PATH = Paths.get(
       root + File.separator + "profiles");
   public final static Path SLIP_PATH = Paths.get(

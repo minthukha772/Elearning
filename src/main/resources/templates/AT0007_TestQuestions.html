@@ -36,13 +36,13 @@
                     <div class="input-group-sm mb-2 shadow-sm">
                         <label for="description" class="form-label fw-bold mb-1"><small>Description <span
                                     class="text-danger">*</span></small></label>
-                        <textarea class="form-control" id="description" rows="3"
+                        <textarea class="form-control" id="question_description" rows="3"
                             placeholder="Add description about exam" required></textarea>
                     </div>
                     <div class="input-group-sm mb-2 shadow-sm">
                         <label for="question_upload_box" class="form-label fw-bold mb-1"><small>Question Video, Image or
                                 Audio Upload Box</small></label>
-                        <input type="file" class="form-control" id="question_upload_box" required />
+                        <input type="file" class="form-control" id="question_upload_box" />
                     </div>
                     <div class="input-group-sm mb-2 shadow-sm">
                         <label for="answer_Type" class="form-label fw-bold mb-1"><small>Answer Type <span
@@ -61,15 +61,16 @@
                                 class="text-danger">*</span></small></label>
                     <div class="input-group-sm mb-2 fadeIn" id="single_answer">
                         <div class="" id="single_answer_choice">
+                            <div class="singleCounter" id="1"></div>
                             <div class="row align-items-center mt-2 shadow-sm">
                                 <div class="col-11">
-                                    <input type="text" class="form-control" placeholder="option 1" id="text_option1"
+                                    <input type="text" class="form-control" placeholder="option 1" id="text_option_1"
                                         required />
                                 </div>
                                 <div class="col-1 px-1">
                                     <div class="form-check">
-                                        <input class="form-check-input" required type="radio" name="flexRadioDefault"
-                                            id="radio_option1" />
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                            id="radio_option_1" />
                                     </div>
                                 </div>
                             </div>
@@ -84,13 +85,11 @@
                         <div class="" id="multiple_answer_choice">
                             <div class="row align-items-center mt-2 shadow-sm">
                                 <div class="col-11">
-                                    <input type="text" class="form-control" placeholder="option 1" id="option 1"
-                                        required />
+                                    <input type="text" class="form-control" placeholder="option 1" id="option 1" />
                                 </div>
                                 <div class="col-1 px-1">
                                     <div class="form-check">
-                                        <input class="form-check-input" required type="checkBox" name="flexCheckDefault"
-                                            id="" />
+                                        <input class="form-check-input" type="checkBox" name="flexCheckDefault" id="" />
                                     </div>
                                 </div>
                             </div>
@@ -212,7 +211,7 @@
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
 
-    <script>
+    <script th:inline="javascript">
         let createExamContainer = document.querySelector('.create-exam-container');
         cancelBtn = document.querySelector('#cancel_btn');
         createExam = document.querySelector('#create_question');
@@ -248,22 +247,86 @@
         })
 
         var singleCount = 2;
-        singleAnswerContainer = document.getElementById("single_answer_choice");
         singleAddOption.addEventListener('click', () => {
-            const radios = document.querySelectorAll('input[name="flexRadioDefault"]');
-            singleAnswerContainer.innerHTML += '<div class="row align-items-center mt-2 shadow-sm">' +
-                '<div class="col-11">' +
+            $('#single_answer_choice').append('<div class="singleCounter" id="' + singleCount + '"></div>' +
+                '<div class="row align-items-center mt-2 shadow-sm">' +
+                '<div class="col-10">' +
                 '<input type="text" class="form-control" placeholder="option ' + singleCount + '" id="text_option_' + singleCount + '"' +
                 'required />' +
                 '</div>' +
                 '<div class="col-1 px-1">' +
                 '<div class="form-check">' +
-                '<input class="form-check-input" required type="radio" name="flexRadioDefault"' +
+                '<input class="form-check-input" type="radio" name="flexRadioDefault"' +
                 'id="radio_option_' + singleCount + '" />' +
                 '</div>' +
                 '</div>' +
-                '</div>';
+                '<div class="col-1 px-1">' +
+                '<div class="d-flex justify-content-center align-items-center bg-danger text-white rounded-circle ms-2"' +
+                'style="width: 20px; height: 20px; cursor: pointer" id="radio_delete_' + singleCount + '">' +
+                '<i class="fa-solid fa-xmark"></i>' +
+                '</div >' +
+                '</div>' +
+                '</div>');
             singleCount++;
+        })
+
+        submit = document.getElementById("submit");
+        submit.addEventListener('click', () => {
+            choices = [];
+            answers = [];
+            let formData = new FormData();
+            var test_id = /*[[${test_id}]]*/ null
+
+            var question_description = document.getElementById("question_description").value;
+            var question_materials = document.getElementById("question_upload_box");
+            var question_mark = document.getElementById("passing_score").value;
+            var singlechoice = document.getElementById("single_answer_choice");
+            var counters = Array.from(document.getElementsByClassName("singleCounter"));
+            var answertype = document.getElementById("answer_Type");
+            console.log(answerType.value);
+            if (answerType.value == 1) {
+                answerType = "SINGLE_ANSWER";
+            } else if (answerType.value == 2) {
+                answerType = "MULTIPLE_ANSWER";
+            } else {
+                answerType = "FREE_ANSWER";
+            }
+            if (answerType != "FREE_ANSWER") {
+                var index = 0;
+                counters.forEach(counter => {
+                    var id = counter.id;
+                    console.log(document.getElementById("radio_option_" + id).checked)
+                    if (document.getElementById("radio_option_" + id).checked == true) {
+                        var answer = { "answer": index }
+                        answers.push(answer);
+                    }
+                    var choice = { "choice": document.getElementById("text_option_" + id).value }
+                    choices.push(choice);
+                    index++;
+                });
+                choices = JSON.stringify(choices);
+                answers = JSON.stringify(answers);
+            }
+            var file = question_materials.files[0];
+            formData.append('test_id', parseInt(test_id));
+            formData.append('question_text', question_description);
+            formData.append('questions_type', answerType);
+            if (answerType != "FREE_ANSWER") {
+                formData.append('choices', choices);
+                formData.append('answers', answers);
+            }
+            if (file != null) {
+                formData.append('question_materials', file);
+            }
+            formData.append('maximum_mark', parseInt(document.getElementById("passing_score").value));
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "https://localhost:8080/teacher/create-question", true);
+            xhr.onload = function () {
+                if (this.status === 200) {
+                    console.log(this.responseText);
+                }
+            };
+            xhr.send(formData);
         })
     </script>
 </body>

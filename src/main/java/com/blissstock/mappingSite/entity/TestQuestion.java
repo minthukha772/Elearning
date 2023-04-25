@@ -22,10 +22,9 @@ import lombok.Setter;
 public class TestQuestion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "test_id")
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     private Test test;
 
     @Column(name = "question_text", columnDefinition = "TEXT")
@@ -46,14 +45,17 @@ public class TestQuestion {
     @Column(name = "maximum_mark", length = 100)
     private Integer maximum_mark;
 
-    public TestQuestion(long id, Test test, String question_text, String question_materials, String choices,
-            String question_type, Integer maximim_mark) {
+    public TestQuestion(Long id, Test test, String question_text, String question_materials,
+            String question_materials_type, String choices, String question_type, Integer maximum_mark) {
         this.id = id;
         this.test = test;
         this.question_text = question_text;
         this.question_materials = question_materials;
+        this.question_materials_type = question_materials_type;
         this.choices = choices;
         this.question_type = question_type;
-        this.maximum_mark = maximim_mark;
+        this.maximum_mark = maximum_mark;
     }
+
+    
 }
