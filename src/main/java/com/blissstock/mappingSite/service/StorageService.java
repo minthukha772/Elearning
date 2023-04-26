@@ -25,6 +25,9 @@ public interface StorageService {
   void store(Long uid, MultipartFile files, Path path, boolean deleteAllOldFiles)
     throws UnauthorizedFileAccessException;
 
+  void storeQuestionMaterials(Long uid, MultipartFile files, Path path, boolean deleteAllOldFiles)
+    throws UnauthorizedFileAccessException;
+
   Stream<Path> loadAllCertificates(Long uid)
     throws UnauthorizedFileAccessException;
 
@@ -43,5 +46,5 @@ public interface StorageService {
 
   public FileInfo loadCoursePhoto(CourseInfo courseInfo);
  
-
+  public FileInfo loadQuestionMaterials(Long fileSeparator, String fileName) ;
 }

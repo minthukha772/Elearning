@@ -1,5 +1,6 @@
 package com.blissstock.mappingSite.controller;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ import com.blissstock.mappingSite.entity.TestQuestionCorrectAnswer;
 import com.blissstock.mappingSite.exceptions.UnauthorizedFileAccessException;
 import com.blissstock.mappingSite.model.AnswerModel;
 import com.blissstock.mappingSite.model.ChoiceModel;
+import com.blissstock.mappingSite.model.FileInfo;
 import com.blissstock.mappingSite.model.QuestionAndCorrectAnswer;
 import com.blissstock.mappingSite.repository.TestQuestionCorrectAnswerRepositoy;
 import com.blissstock.mappingSite.repository.TestQuestionRepository;
@@ -47,6 +49,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.Resource;
 
 @Controller
 public class TestQuestionController {
@@ -75,11 +78,14 @@ public class TestQuestionController {
         List<QuestionAndCorrectAnswer> questionAndCorrectAnswers = new ArrayList<>();
         List<TestQuestion> testQuestions = testQuestionRepository.getQuestionByTest(test_id);
         for (TestQuestion testQuestion : testQuestions) {
+            long fileSeparator = 100000L + test_id;
+            FileInfo file = storageService.loadQuestionMaterials(fileSeparator, testQuestion.getQuestion_materials());
+            testQuestion.setQuestion_materials(file.getUrl());
+
             List<ChoiceModel> choices = new ArrayList<>();
             if (!testQuestion.getQuestion_type().equals("FREE_ANSWER")) {
                 TestQuestionCorrectAnswer testQuestionCorrectAnswer = testQuestionCorrectAnswerRepositoy
                         .getCorrectAnswerByQuestion(testQuestion.getId());
-
                 JSONArray choiceArrary = new JSONArray(testQuestion.getChoices());
                 JSONArray answerArray = new JSONArray(testQuestionCorrectAnswer.getCorrectAnswer());
                 for (int i = 0; i < choiceArrary.length(); i++) {
@@ -128,9 +134,13 @@ public class TestQuestionController {
             fileType = originalFileName.substring(index + 1);
 
             long fileSeparator = 100000L + testID;
-            storageService.store(fileSeparator, question_materials, StorageServiceImpl.QUESTION_MATERIAL_PATH,
-                    false);
-
+            try {
+                storageService.storeQuestionMaterials(fileSeparator, question_materials,
+                        StorageServiceImpl.QUESTION_MATERIAL_PATH,
+                        false);
+            } catch (Exception e) {
+                logger.error(e.getLocalizedMessage(), e);
+            }
             if (fileType.equals("jpg") || fileType.equals("png") || fileType.equals("jpeg")) {
                 fileType = "IMAGE";
             } else if (fileType.equals("mp3")) {
@@ -146,7 +156,6 @@ public class TestQuestionController {
         TestQuestionCorrectAnswer correctAnswer = new TestQuestionCorrectAnswer(null, result, answers);
         testQuestionCorrectAnswerRepositoy.save(correctAnswer);
         return ResponseEntity.ok(HttpStatus.OK);
-
     }
 
     private Long getUid() {

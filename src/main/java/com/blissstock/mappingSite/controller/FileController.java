@@ -44,6 +44,9 @@ public class FileController {
       else if(type.equals("cphotos")){
         file = storageService.load(uid, filename,StorageServiceImpl.COURSE_PATH);
       }
+      else if(type.equals("question_materials")){
+        file = storageService.load(uid, filename,StorageServiceImpl.QUESTION_MATERIAL_PATH);
+      }
     } catch (UnauthorizedFileAccessException e) {
       e.printStackTrace();
       return ResponseEntity.badRequest().body(null);
