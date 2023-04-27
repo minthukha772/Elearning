@@ -28,6 +28,7 @@ import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.exceptions.CourseNotFoundException;
 import com.blissstock.mappingSite.model.FileInfo;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
+import com.blissstock.mappingSite.repository.CourseTimeRepository;
 import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
 import com.blissstock.mappingSite.repository.SyllabusRepository;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
@@ -94,6 +95,9 @@ public class CourseDetailsController {
 
     @Autowired
     StorageService storageService;
+
+    @Autowired
+    CourseTimeRepository courseTimeRepository;
 
     @Autowired
     private PaymentForTeacherService paymentForTeacherService;
@@ -220,7 +224,8 @@ public class CourseDetailsController {
         }
 
         // Get Time segments for course
-        List<CourseTime> courseTimeList = courseInfo.getCourseTime();
+
+        List<CourseTime> courseTimeList = courseTimeRepository.searchTimeByCourseID(courseId);
         model.addAttribute("courseTimeList", courseTimeList);
 
         // Get syllabus
