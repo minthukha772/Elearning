@@ -74,14 +74,6 @@ public class UserAccount {
 	@JsonIgnore
 	private List<Token> tokens = new ArrayList<>();
 
-	//Many Exams
-	@OneToMany(fetch = FetchType.LAZY,mappedBy = "userAccount",cascade = CascadeType.ALL)
-	private List<Exam> examList = new ArrayList<>();
-
-	//Many TestStudent
-	@OneToMany(fetch = FetchType.LAZY,mappedBy = "userAccount",cascade = CascadeType.ALL)
-	private List<TestStudent> testStudentList = new ArrayList<>();
-
 	public UserAccount(Long accountId, String mail, boolean isMailVerified, String photo, String password, String role,
 			String accountStatus, Date registeredDate, UserInfo userInfo) {
 		this.accountId = accountId;
