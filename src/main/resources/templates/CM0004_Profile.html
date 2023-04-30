@@ -10,18 +10,18 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css" />
   <link rel="stylesheet" href="/css/CM0004_Student Profile.css" />
-    <title>Pyinnyar Subuu</title>
+  <title>Pyinnyar Subuu</title>
 
   <link rel="icon" type="image/x-icon" href="/images/fav.png">
 
   <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
-    <link rel="stylesheet" th:href="@{/css/global.css}" />
+  <link rel="stylesheet" th:href="@{/css/global.css}" />
 
 </head>
 
 
 <body style="background-color: #f0f0f0">
-  
+
   <!-- guest user navi bar -->
   <div th:replace="@{fragments/nav}"></div>
 
@@ -182,7 +182,7 @@
         <!-- Award and Certificates: End -->
 
 
-       
+
 
         <!-- Payment: Start -->
         <div th:if="${role=='ROLE_TEACHER' && isEditable}">
@@ -206,30 +206,31 @@
 
           <div th:if="${paymentAccounts!=null and !paymentAccounts.empty and isEditable}">
             <table class="table table-striped paytable">
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Service</th>
-                  <th scope="col">Name</th>
-                  <th scope="col">Number</th>
-                  <th scope="col">Delete</th>
-                </tr>
-                <tr class="col" th:each="paymentAccount, stats : ${paymentAccounts}">
-                  <!-- <div class="card h-100"> -->
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Service</th>
+                <th scope="col">Name</th>
+                <th scope="col">Number</th>
+                <th scope="col">Delete</th>
+              </tr>
+              <tr class="col" th:each="paymentAccount, stats : ${paymentAccounts}">
+                <!-- <div class="card h-100"> -->
 
-                  <th scope="row" th:text="${stats.index}">1</th>
-                  <td th:text="${paymentAccount.bankInfo.bankName}"></td>
-                  <td th:text="${paymentAccount.accountName}"></td>
-                  <td th:text="${paymentAccount.accountNumber}"></td>
+                <th scope="row" th:text="${stats.index}">1</th>
+                <td th:text="${paymentAccount.bankInfo.bankName}"></td>
+                <td th:text="${paymentAccount.accountName}"></td>
+                <td th:text="${paymentAccount.accountNumber}"></td>
 
-                  <td>
-                    <form th:action="@{/delete/paymentMethod/{id}(id=${paymentAccount.paymentAccountId})}"
-                      th:method="post">
-                      <input type="hidden" th:value="${id}" id="id" name="id" hidden />
+                <td>
+                  <form th:action="@{/delete/paymentMethod/{id}(id=${paymentAccount.paymentAccountId})}"
+                    th:method="post">
+                    <input type="hidden" th:value="${id}" id="id" name="id" hidden />
 
-                      <Button type="submit" id="submitButton" class="btn btn-danger btndelete">Delete</Button>
-                  </td>
-                  </form>
-                </tr>
+                    <Button type="submit" id="submitButton" class="btn btn-danger"
+                      style="background-color: #dc3545;">Delete</Button>
+                </td>
+                </form>
+              </tr>
             </table>
           </div>
         </div>
@@ -257,8 +258,8 @@
           <div class="d-flex justify-content-between mb-3"
             th:if="${(role=='ROLE_TEACHER' or role == 'ROLE_STUDENT') and (status == 'REGISTERED' or status == 'VERIFIED' or status == 'REQUESTED')}">
             <p>Suspend User For A While</p>
-            <button class="btn btn-danger" data-bs-action="Suspend" data-bs-toggle="modal"
-              data-bs-target="#actionConfirmationModal">
+            <button class="btn btn-danger" style="background-color: #dc3545" data-bs-action="Suspend"
+              data-bs-toggle="modal" data-bs-target="#actionConfirmationModal">
               Suspend
             </button>
           </div>
@@ -278,8 +279,8 @@
           <div class="d-flex justify-content-between mb-3"
             th:if="${(role=='ROLE_TEACHER' or role == 'ROLE_STUDENT') and (status == 'REGISTERED' or status == 'VERIFIED' or status == 'REQUESTED' or status == 'SUSPENDED')}">
             <p>Delete User Account</p>
-            <button class="btn btn-danger" data-bs-action="Delete" data-bs-toggle="modal"
-              data-bs-target="#actionConfirmationModal">
+            <button class="btn btn-danger" style="background-color: #dc3545" data-bs-action="Delete"
+              data-bs-toggle="modal" data-bs-target="#actionConfirmationModal">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-x"
                 viewBox="0 0 16 16">
                 <path
@@ -324,7 +325,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form id="paymentPost" method="post" th:action="@{__${#httpServletRequest.requestURI}__edit/payment/}"
+          <form id="paymentPost" method="post" th:action="@{__${#httpServletRequest.requestURI}__/edit/payment/}"
             th:object="${paymentInfoDTO}">
             <input type="hidden" th:field="*{primaryAccount.paymentAccountId}" />
             <input type="hidden" th:field="*{secondaryAccount.paymentAccountId}" />
@@ -430,107 +431,103 @@
 
   <!-- Delete Confirm Modal End -->
 
-   <!-- Student currently attending course List table Starts from here -->
+  <!-- Student currently attending course List table Starts from here -->
 
-   <div th:if="${role=='ROLE_STUDENT'}">
+  <div th:if="${role=='ROLE_STUDENT'}">
     <div sec:authorize="hasAuthority('ROLE_ADMIN') || hasAuthority('ROLE_SUPER_ADMIN')">
-    
-  <div class="container-custom mb-5 d-none d-md-block d-lg-block d-xl-block">
-    <div class="card">
-      <div class="card-body">
-    <div class="d-flex justify-content-between mt-3 profileform">
-      <h5>Currently attending course list</h5>
 
-      
-    </div>
+      <div class="container-custom mb-5 d-none d-md-block d-lg-block d-xl-block">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex justify-content-between mt-3 profileform">
+              <h5>Currently attending course list</h5>
 
-    <!-- <div th:if="${paymentAccounts!=null and !paymentAccounts.empty and isEditable}"> -->
 
-      <table class="table paytable">
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Course Name</th>
-            <th scope="col">Teacher Name</th>
-            <th scope="col">Class Type</th>
-            <th scope="col">Start Date</th>
-            <th scope="col">End Date</th>
-            <th scope="col">Course Fee</th>
-            <th scope="col">Payment Status</th>
-          </tr>
-          <tr class="col" th:each="attcourselist, stats : ${courseList}">
-            <!-- <div class="card h-100"> -->
-
-            <th scope="row" th:text="${stats.index + 1}">1</th>
-
-            <!-- <td th:text="${attcourselist}"></td> -->
-            
-            <td th:text="${attcourselist.courseName}"></td>
-            <td th:text="${attcourselist.teacherName}"></td>
-            <td th:text="${attcourselist.classType}"></td>
-            <td th:text="${attcourselist.startDate}"></td>
-            <td th:text="${attcourselist.endDate}"></td>
-            <td th:text="${attcourselist.fees}"></td>
-
-            <td th:text="${attcourselist.truePaymentStatus}" class="paystatus"></td>
-            
-            </form>
-          </tr>
-      </table>
-    </div>
-  </div>
-</div>
-</div>
-</div>
-
-        <div class="mobile-view d-block d-md-none d-lg-none d-xl-none">
-          <div class="mobile-item card" th:each="attcourselist, stats : ${courseList}">
-            <div class="card-header">
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="">
-                  <!-- <img th:src="${dr.photo}" class="img-fluid rounded-circle" alt=""> -->
-                  <span class="fw-bold text-white">
-                    <span class="fw-bold">Course Name -</span>
-                    <b><a
-                      
-                      th:text="${attcourselist.courseName}"
-                      style="text-decoration: none"
-                    ></a></b>
-                  </span>
-                </div>
-              </div>
             </div>
-            <div class="card-body text-white">
-              <div class="my-2">
-                <span class="fw-bold">Teacher Name -</span>
-                <span class="mx-2 text-center " th:text="${attcourselist.teacherName}"></span>
-              </div>
-              <div class="my-2">
-                <span class="fw-bold">Class Type -</span>
-                <span class="mx-2 text-center" th:text="${attcourselist.classType}"></span>
-              </div>
-              <div class="my-2">
-                <span class="fw-bold">Start Date -</span>
-                <span class="mx-2 text-center" th:text="${attcourselist.startDate}"></span>
-              </div>
-              <div class="my-2">
-                <span class="fw-bold">End Date -</span>
-                <span class="mx-2 text-center" th:text="${attcourselist.endDate}"></span>
-              </div>
-              <div class="my-2">
-                <span class="fw-bold">Course Fee -</span>
-                <span class="mx-2 text-center" th:text="${attcourselist.fees}"></span>
-              </div>
-              <div class="my-2">
-                <span class="fw-bold">Payment Status -</span>
-                <span class="mx-2 paystatus" th:text="${attcourselist.truePaymentStatus}"></span>
-              </div>
-              
-            </div>
+
+            <!-- <div th:if="${paymentAccounts!=null and !paymentAccounts.empty and isEditable}"> -->
+
+            <table class="table paytable">
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Course Name</th>
+                <th scope="col">Teacher Name</th>
+                <th scope="col">Class Type</th>
+                <th scope="col">Start Date</th>
+                <th scope="col">End Date</th>
+                <th scope="col">Course Fee</th>
+                <th scope="col">Payment Status</th>
+              </tr>
+              <tr class="col" th:each="attcourselist, stats : ${courseList}">
+                <!-- <div class="card h-100"> -->
+
+                <th scope="row" th:text="${stats.index + 1}">1</th>
+
+                <!-- <td th:text="${attcourselist}"></td> -->
+
+                <td th:text="${attcourselist.courseName}"></td>
+                <td th:text="${attcourselist.teacherName}"></td>
+                <td th:text="${attcourselist.classType}"></td>
+                <td th:text="${attcourselist.startDate}"></td>
+                <td th:text="${attcourselist.endDate}"></td>
+                <td th:text="${attcourselist.fees}"></td>
+
+                <td th:text="${attcourselist.truePaymentStatus}" class="paystatus"></td>
+
+                </form>
+              </tr>
+            </table>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
 
-</div>
-<!-- Student currently attending course table Ends here -->
+  <div class="mobile-view d-block d-md-none d-lg-none d-xl-none">
+    <div class="mobile-item card" th:each="attcourselist, stats : ${courseList}">
+      <div class="card-header">
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="">
+            <!-- <img th:src="${dr.photo}" class="img-fluid rounded-circle" alt=""> -->
+            <span class="fw-bold text-white">
+              <span class="fw-bold">Course Name -</span>
+              <b><a th:text="${attcourselist.courseName}" style="text-decoration: none"></a></b>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="card-body text-white">
+        <div class="my-2">
+          <span class="fw-bold">Teacher Name -</span>
+          <span class="mx-2 text-center " th:text="${attcourselist.teacherName}"></span>
+        </div>
+        <div class="my-2">
+          <span class="fw-bold">Class Type -</span>
+          <span class="mx-2 text-center" th:text="${attcourselist.classType}"></span>
+        </div>
+        <div class="my-2">
+          <span class="fw-bold">Start Date -</span>
+          <span class="mx-2 text-center" th:text="${attcourselist.startDate}"></span>
+        </div>
+        <div class="my-2">
+          <span class="fw-bold">End Date -</span>
+          <span class="mx-2 text-center" th:text="${attcourselist.endDate}"></span>
+        </div>
+        <div class="my-2">
+          <span class="fw-bold">Course Fee -</span>
+          <span class="mx-2 text-center" th:text="${attcourselist.fees}"></span>
+        </div>
+        <div class="my-2">
+          <span class="fw-bold">Payment Status -</span>
+          <span class="mx-2 paystatus" th:text="${attcourselist.truePaymentStatus}"></span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  </div>
+  <!-- Student currently attending course table Ends here -->
 
 
   <div th:replace="@{fragments/footer}"></div>
@@ -553,34 +550,34 @@
   <script>
     let ps = document.getElementsByClassName('paystatus');
 
-    for (let i=0;i<ps.length;i++){      
-      if(ps[i].innerHTML=="COMPLETED"){
+    for (let i = 0; i < ps.length; i++) {
+      if (ps[i].innerHTML == "COMPLETED") {
         ps[i].classList.add('bg-success')
       }
-      else if(ps[i].innerHTML== "Completed"){
+      else if (ps[i].innerHTML == "Completed") {
         ps[i].classList.add('bg-success')
       }
-      else if(ps[i].innerHTML== "PENDING"){
+      else if (ps[i].innerHTML == "PENDING") {
         ps[i].classList.add('bg-info')
       }
-      else if(ps[i].innerHTML== "Pending"){
+      else if (ps[i].innerHTML == "Pending") {
         ps[i].classList.add('bg-info')
       }
-      else if(ps[i].innerHTML== ""){
+      else if (ps[i].innerHTML == "") {
         ps[i].innerHTML = "UNPAID";
         ps[i].classList.add('bg-warning')
       }
-      else if(ps[i].innerHTML== "ERROR") {
+      else if (ps[i].innerHTML == "ERROR") {
         ps[i].classList.add('bg-danger')
       }
-      else if(ps[i].innerHTML== "Error") {
+      else if (ps[i].innerHTML == "Error") {
         ps[i].classList.add('bg-danger')
       }
-      else{
+      else {
         ps[i].classList.add('bg-info')
       }
     }
-</script>
+  </script>
 
   <!-- <script>
       let payStatus = document.getElementsByClassName('paystatus');
@@ -606,7 +603,7 @@
       }
   </script> -->
 
-  
+
 </body>
 
 </html>

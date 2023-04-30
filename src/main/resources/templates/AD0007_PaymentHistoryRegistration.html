@@ -173,11 +173,8 @@
                       onclick="deleteRemark(this.value)">
                       <i class="fas fa-trash-alt"></i>
                     </button>
-
-
                     <script>
                       function deleteRemark(paymentRemarkId) {
-                       
                         Swal.fire({
                           title: 'Are you sure?',
                           text: "You won't be able to revert this!",
@@ -188,25 +185,25 @@
                           confirmButtonText: 'Yes, delete it!'
                         }).then((result) => {
                           if (result.isConfirmed) {
-                            
+
                             $.ajax({
                               url: '/admin/PaymentHistoryRegistration/RemarkDelete/',
                               type: 'POST',
                               data: { paymentRemarkId: paymentRemarkId },
                               success: function (response) {
-                                
+
                                 Swal.fire({
                                   title: 'Remark deleted',
                                   icon: 'success',
                                   showConfirmButton: true,
-                                  timer: 2000 
+                                  timer: 2000
                                 }).then(function () {
-                                  
+
                                   window.location.reload();
                                 });
                               },
                               error: function (xhr, status, error) {
-                                
+
                                 Swal.fire({
                                   title: 'Error',
                                   text: 'An error occurred while deleting the remark: ' + error,
@@ -218,9 +215,6 @@
                         });
                       }
                     </script>
-
-
-
                   </p>
                   <hr />
                 </div>
@@ -241,8 +235,7 @@
         </div>
 
         <div class="image-container">
-          <img th:if="${profilePic != null}" th:src="${profilePic.url}" alt="Payment Slip">
-
+          <img th:if="${profilePic != null}" th:src="${profilePic.url}" alt="Payment Slip" id="paymentprofile">
         </div>
 
 
@@ -257,7 +250,7 @@
     <div class="mt-5"></div>
     <div th:replace="@{fragments/footer}"></div>
   </div>
-  <script>
+  <script th:inline="javascript">
 
     let addBtn = document.querySelector('.add-new-remark'),
       cancelBtn = document.querySelector('.cancelBtn'),
@@ -276,7 +269,7 @@
     let date = new Date();
     let current_date = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
     let box = [];
-    let commentArry = []; 
+    let commentArry = [];
 
     let showComment = () => {
       let contentBox = '';
@@ -297,32 +290,24 @@
       showComment();
     }
 
-    
+
     addCommentText.addEventListener('click', (e) => {
-  e.preventDefault();
-  if (commentTextArea.value != '') {
-    commentContainer.classList.add('d-none');
-    box.push(commentTextArea.value);
-    commentTextArea.value = ''; 
-    showComment();
-    if(commentArry.length > 0) {
-      commentArry.splice(0, 1, [...box]); 
-    } else {
-      commentArry.push([...box]); 
-    }
-    box = []; 
-  } else {
-    alert('please fill the text')
-  }
-})
-
-
-
-
-
-
-
-
+      e.preventDefault();
+      if (commentTextArea.value != '') {
+        commentContainer.classList.add('d-none');
+        box.push(commentTextArea.value);
+        commentTextArea.value = '';
+        showComment();
+        if (commentArry.length > 0) {
+          commentArry.splice(0, 1, [...box]);
+        } else {
+          commentArry.push([...box]);
+        }
+        box = [];
+      } else {
+        alert('please fill the text')
+      }
+    })
 
     // upload image and show image
     let input = document.getElementById('fileToUpload')
@@ -352,23 +337,31 @@
       output.style.display = "none";
     }
 
-
-
-    
     let sub = document.querySelector('#submit');
 
-    
+
     sub.addEventListener('click', (e) => {
       e.preventDefault();
-
-      
+      var checkImageAlreadyExists = false;
+      var remarkListAlreadyExists = false;
       let amountPaid = document.querySelector('#amountPaid').value;
       let amountDate = document.querySelector('#amountDate').value;
       let fileToUpload = document.querySelector('#fileToUpload').value;
       let commentTextArea = document.querySelector('.comment-textarea').value; // Get the value of the comment box
+      let paymentProfile = document.getElementById('paymentprofile');
+      var RemarkList = /*[[${RemarkList}]]*/ null
+      var slip = /*[[${slip}]]*/ null
 
-      if (amountPaid === '' || amountDate === '' || fileToUpload === '' || (commentTextArea === '' && commentArry.length === 0)) { // Check if the comment box is empty and commentArry is empty
-        
+      if (slip != 0) {
+        checkImageAlreadyExists = true;
+      }
+
+      if (commentArry.length > 0 || RemarkList.length > 0) {
+        remarkListAlreadyExists = true;
+      }
+
+      if (amountPaid === '' || amountDate === '' || checkImageAlreadyExists === false || remarkListAlreadyExists === false) { // Check if the comment box is empty and commentArry is empty
+
         Swal.fire({
           icon: 'error',
           title: 'Error!',
@@ -378,7 +371,6 @@
         return;
       }
 
-      
       let formData = new FormData();
       formData.append('paymentTeacherId', document.querySelector('#paymentForTeacherId').value);
       formData.append('courseId', document.querySelector('#forCourseId').value);
@@ -388,30 +380,37 @@
       formData.append('courseEndTime', document.querySelector('#courseEndTime').value);
       formData.append('amountPaid', amountPaid);
       formData.append('amountDate', amountDate);
-      formData.append('comments', commentArry);
-      formData.append('photo', document.getElementById('fileToUpload').files[0]);
 
-      
+      if (commentArry.length > 0) {
+        formData.append('comments', commentArry);
+      }
+
+      if (document.getElementById('fileToUpload').files[0] != undefined) {
+        formData.append('photo', document.getElementById('fileToUpload').files[0]);
+      }
+
       let xhr = new XMLHttpRequest();
       xhr.open('POST', '/admin/PaymentHistoryRegistration/registrationForm', true);
       xhr.onload = function () {
-        if (this.status === 200) {
-          
-          console.log(this.responseText);
-        }
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: 'Form submitted successfully!',
+          showConfirmButton: true,
+          timer: 2000
+        }).then(() => {
+          window.location.reload();
+        });
       };
       xhr.send(formData);
-
-      
       Swal.fire({
         icon: 'success',
-        title: 'Success!',
-        text: 'Form submitted successfully!',
+        title: 'Processing',
+        text: 'Please Wait',
         showConfirmButton: true,
         timer: 2000
       }).then(() => {
-        
-        location.reload();
+        window.location.reload();
       });
     });
 

@@ -492,6 +492,7 @@
       });
   </script>
   <script th:src="@{/js/table2excel.js}"></script>
+
   <script type="text/javascript">
 
     $(document).ready(function () {
@@ -519,23 +520,21 @@
         function (settings, data, dataIndex) {
           var valid = true;
           var min = new Date($("#min").val());
-
-          // var min = $("#min").val().toLocaleDateString('en-US');
-          console.log("Min -- " + min);
           var max = new Date($("#max").val());
-          console.log("Max -- " + max);
 
+          // Check if the payment date is null
+          var paymentDate = data[6];
+          if (paymentDate === "") {
+            return false;
+          }
+
+          // Validate the search conditions
           if (min === null && max === null) {
             // no filter applied or no date columns
             valid = true;
-          }
-          else {
-
+          } else {
             $.each(settings.aoColumns, function (i, col) {
-
-              var cDate = new Date(data[6]);
-              console.log("date -- " + cDate);
-
+              var cDate = new Date(paymentDate);
               if (max !== null && max < cDate) {
                 valid = false;
               }
@@ -549,21 +548,33 @@
 
 
       $("#btnSearch").click(function () {
-        t.draw();
+        // Get the values of the search inputs
+        var courseName = $("#courseNameSearch").val();
+        var teacherName = $("#teacherNameSearch").val();
+        var paymentFrom = $("#min").val();
+        var paymentTo = $("#max").val();
+
+        // Validate the search conditions
+        if (!paymentFrom || !paymentTo) {
+          alert("Please enter both Payment From and Payment To.");
+        } else if (paymentFrom > paymentTo) {
+          alert("Payment From date cannot be later than Payment To date.");
+        } else {
+          // Perform the search
+          t.draw();
+        }
       });
 
     });
 
     function resetForm() {
-
       document.getElementById("joiningDateSearch").reset();
       location.reload(true);
-
     }
 
+</script>
 
 
-  </script>
 
   <script>
     let td = document.getElementsByClassName('payStatus');

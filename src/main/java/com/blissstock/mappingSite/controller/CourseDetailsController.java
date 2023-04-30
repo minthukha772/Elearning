@@ -28,6 +28,7 @@ import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.exceptions.CourseNotFoundException;
 import com.blissstock.mappingSite.model.FileInfo;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
+import com.blissstock.mappingSite.repository.CourseTimeRepository;
 import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
 import com.blissstock.mappingSite.repository.SyllabusRepository;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
@@ -94,6 +95,9 @@ public class CourseDetailsController {
 
     @Autowired
     StorageService storageService;
+
+    @Autowired
+    CourseTimeRepository courseTimeRepository;
 
     @Autowired
     private PaymentForTeacherService paymentForTeacherService;
@@ -220,7 +224,8 @@ public class CourseDetailsController {
         }
 
         // Get Time segments for course
-        List<CourseTime> courseTimeList = courseInfo.getCourseTime();
+
+        List<CourseTime> courseTimeList = courseTimeRepository.searchTimeByCourseID(courseId);
         model.addAttribute("courseTimeList", courseTimeList);
 
         // Get syllabus
@@ -357,21 +362,24 @@ public class CourseDetailsController {
         return "redirect:/" + roleLink + "/course-details/" + courseId;
     }
 
-    @PostMapping("/admin/course-details/insert-test-link")
-    private String courseTestLink(@ModelAttribute("test-link") String testLink,
-            @ModelAttribute("courseId") Long courseId, Model model) {
-        CourseInfo courseInfo = courseInfoRepository.findById(courseId).get();
-        List<Test> testList = courseInfo.getTest();
-        logger.info("The size of test list is {}" + testList.size());
-        Test test = new Test();
-        test.setTestLink(testLink);
-        test.setCourseInfo(courseInfo);
-        testList.add(test);
-        courseInfo.setTest(testList);
-        courseInfoRepository.save(courseInfo);
+    // ### Temporarily disble to fix some changes in 'Test' entity class ###
+    // @PostMapping("/admin/course-details/insert-test-link")
+    // private String courseTestLink(@ModelAttribute("test-link") String testLink,
+    //         @ModelAttribute("courseId") Long courseId, Model model) {
+    //     CourseInfo courseInfo = courseInfoRepository.findById(courseId).get();
+    //     List<Test> testList = courseInfo.getTest();
+    //     logger.info("The size of test list is {}" + testList.size());
+    //     Test test = new Test();
+    //     test.setTestLink(testLink);
+    //     test.setCourseInfo(courseInfo);
+    //     testList.add(test);
+    //     courseInfo.setTest(testList);
+    //     courseInfoRepository.save(courseInfo);
 
-        return "redirect:/admin/course-details/" + courseId;
-    }
+    //     return "redirect:/admin/course-details/" + courseId;
+    // }
+
+    // ### Temporarily disble to fix some changes in 'Test' entity class ###
 
     // @GetMapping("/admin/hello")
     // private String helloWorld(){

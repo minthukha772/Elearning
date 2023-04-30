@@ -92,6 +92,9 @@ public class PaymentListController {
     private UserSessionServiceImpl userSessionService;
 
     @Autowired
+    private JoinCourseUserRepository joinCourseUserRepository;
+
+    @Autowired
     private PaymentRemarkRepository paymentRemarkRepo;
 
     @Autowired
@@ -158,9 +161,9 @@ public class PaymentListController {
     @RequestMapping("/admin/student-unpaid-list")
     public String StudentUnpaidList(Model model) {
 
-        List<PaymentReceive> viewPayment = paymentRepo.findByPaymentStatus(PaymentStatus.PENDING.toString());
+        List<JoinCourseUser> unpaidList = joinCourseUserRepository.findUnpaidList();
 
-        logger.info("Payment Receive List {}", viewPayment);
+        logger.info("Unpaid List {}", unpaidList);
 
         // List<String> breadcrumbList = new ArrayList<>();
         // breadcrumbList.add("Top");
@@ -172,16 +175,12 @@ public class PaymentListController {
         List<StudentUnpaidLists> studentUnpaidList = new ArrayList<>();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         // List<AllPaymentLists> allPayment = new AllPaymentLists();
-        for (PaymentReceive paymentReceive : viewPayment) {
-            // String paymentDate = format.format(paymentReceive.getPaymentReceiveDate());
-            String paymentStatus = paymentReceive.getPaymentStatus();
-
-            JoinCourseUser joinCourseUser = paymentReceive.getJoin();
-
-            UserInfo payUserInfo = joinCourseUser.getUserInfo();
+        for (JoinCourseUser unpaidData : unpaidList) {
+            // String paymentDate = format.format(paymentReceive.getPaymentReceiveDate())
+            UserInfo payUserInfo = unpaidData.getUserInfo();
             String userName = payUserInfo.getUserName();
             Long userId = payUserInfo.getUid();
-            CourseInfo payCouresInfo = joinCourseUser.getCourseInfo();
+            CourseInfo payCouresInfo = unpaidData.getCourseInfo();
             String courseName = payCouresInfo.getCourseName();
             String courseType = payCouresInfo.getClassType();
             String courseStartDate;
@@ -199,7 +198,7 @@ public class PaymentListController {
             Long teacherId = payCouresInfo.getUserInfo().getUid();
             int courseFees = payCouresInfo.getFees();
             studentUnpaidList.add(new StudentUnpaidLists(userName, courseName, teacherName, courseType, courseStartDate,
-                    courseEndDate, courseFees, userId, teacherId, courseId, paymentStatus));
+                    courseEndDate, courseFees, userId, teacherId, courseId, "Pending"));
         }
 
         logger.info("Payment Receive List including user's information {}", studentUnpaidList);
@@ -269,10 +268,10 @@ public class PaymentListController {
                 int courseFees = (int) paymentReceive.getCourseFee();
                 int totalAmount = (int) paymentReceive.getPaymentAmount();
                 int payAmount = (int) paymentReceive.getPaymentAmountPercentage();
-                
+
                 boolean varifyState = paymentReceive.getPaymentVerify();
                 String varifyStateString = Boolean.toString(varifyState);
-                
+
                 teacherPayList.add(new TeacherPaymentLists(paymentForTeacherId, teacherName, courseName,
                         courseStartDate, courseEndDate, duration, paymentDate, calculateFrom, calculateTo, courseFees,
                         totalAmount, payAmount, paymentStatus, teacherId, courseId, varifyStateString));
@@ -290,10 +289,10 @@ public class PaymentListController {
                     int courseFees = (int) paymentReceive.getCourseFee();
                     int totalAmount = (int) paymentReceive.getPaymentAmount();
                     int payAmount = (int) paymentReceive.getPaymentAmountPercentage();
-                    
+
                     boolean varifyState = paymentReceive.getPaymentVerify();
                     String varifyStateString = Boolean.toString(varifyState);
-                    
+
                     teacherPayList.add(new TeacherPaymentLists(paymentForTeacherId, teacherName, courseName,
                             courseStartDate, courseEndDate, duration, paymentDate, calculateFrom, calculateTo,
                             courseFees, totalAmount, payAmount, paymentStatus, teacherId, courseId, varifyStateString));
@@ -311,7 +310,7 @@ public class PaymentListController {
 
                     boolean varifyState = paymentReceive.getPaymentVerify();
                     String varifyStateString = Boolean.toString(varifyState);
-                    
+
                     teacherPayList.add(new TeacherPaymentLists(paymentForTeacherId, teacherName, courseName,
                             courseStartDate, courseEndDate, duration, paymentDate, calculateFrom, calculateTo,
                             courseFees, totalAmount, payAmount, paymentStatus, teacherId, courseId, varifyStateString));
@@ -351,7 +350,7 @@ public class PaymentListController {
         try {
             PaymentRemark paymentRemark = paymentRemarkRepo.getById(paymentRemarkId);
             if (paymentRemark != null) {
-                
+
                 paymentRemark.setRemarkStatus(false);
                 paymentRemarkRepo.save(paymentRemark);
                 return ResponseEntity.ok("Remark deleted");
@@ -364,8 +363,6 @@ public class PaymentListController {
                     .body("Error deleting payment remark: " + e.getMessage());
         }
     }
-
-
 
     @GetMapping("/admin/PaymentHistoryRegistration/{paymentForTeacherId}")
     public String getPaymentHistory(@PathVariable Long paymentForTeacherId, Model model) {
@@ -382,7 +379,6 @@ public class PaymentListController {
                 if (payTeacherId.equals(paymentForTeacherId)) {
                     idStatus = idStatus + 1;
                     Long findPaymentHistoryId = viewHistoryTable.getPaymentHistoryId();
-                    
 
                     long fileSeparator = 100000L + findPaymentHistoryId;
                     System.out.println("file separator" + fileSeparator);
@@ -390,15 +386,15 @@ public class PaymentListController {
                     try {
                         FileInfo profilePic = storageService.loadPaymentSlip(fileSeparator, viewHistoryTable);
                         model.addAttribute("profilePic", profilePic);
+                        model.addAttribute("slip", profilePic.getUrl());
                         System.out.println("Inside Profile Pic: " + profilePic);
                         System.out.println("Inside viewHistory: " + viewHistoryTable.getSlipImg());
                     } catch (Exception e) {
                         e.printStackTrace();
                         model.addAttribute("profilePic", null);
+                        model.addAttribute("slip", null);
                         logger.info("unable to get profile {}", fileSeparator);
                     }
-
-                   
 
                     List<PaymentRemarkList> paymentRemarkLists = new ArrayList<>();
                     List<PaymentRemark> viewRemark = paymentRemarkRepo.findAll();
@@ -413,7 +409,8 @@ public class PaymentListController {
                             String remarkText = paymentRemark.getRemark();
                             Date remarkDate = paymentRemark.getRemarkDate();
                             Long paymentRemarkId = paymentRemark.getId();
-                            paymentRemarkLists.add(new PaymentRemarkList(adminEmail, remarkText, remarkDate, paymentRemarkId));
+                            paymentRemarkLists
+                                    .add(new PaymentRemarkList(adminEmail, remarkText, remarkDate, paymentRemarkId));
                             model.addAttribute("RemarkList", paymentRemarkLists);
 
                         }
@@ -423,28 +420,30 @@ public class PaymentListController {
                 }
             }
             // if (idStatus == 0) {
-            //     List<PaymentRemarkList> paymentRemarkLists = new ArrayList<>();
-            //     String adminEmail = null;
-            //     String remarkText = "No one has remarked yet!";
-            //     Date remarkDate = null;
-            //     Long paymentRemarkId = null;
-            //     paymentRemarkLists.add(new PaymentRemarkList(adminEmail, remarkText,
-            //             remarkDate, paymentRemarkId));
-            //     model.addAttribute("RemarkList", paymentRemarkLists);
+            // List<PaymentRemarkList> paymentRemarkLists = new ArrayList<>();
+            // String adminEmail = null;
+            // String remarkText = "No one has remarked yet!";
+            // Date remarkDate = null;
+            // Long paymentRemarkId = null;
+            // paymentRemarkLists.add(new PaymentRemarkList(adminEmail, remarkText,
+            // remarkDate, paymentRemarkId));
+            // model.addAttribute("RemarkList", paymentRemarkLists);
 
             // }
         }
 
         // else {
-        //     List<PaymentRemarkList> paymentRemarkLists = new ArrayList<>();
-        //     String adminEmail = null;
-        //     String remarkText = "No one has remarked yet!";
-        //     Date remarkDate = null;
-        //     Long paymentRemarkId = null;
-        //     paymentRemarkLists.add(new PaymentRemarkList(adminEmail, remarkText, remarkDate, paymentRemarkId));
-        //     model.addAttribute("RemarkList", paymentRemarkLists);
-        //     System.out.println("Course ID from PaymentHistory database is not found. Thus system skipped processing"
-        //             + paymentRemarkLists);
+        // List<PaymentRemarkList> paymentRemarkLists = new ArrayList<>();
+        // String adminEmail = null;
+        // String remarkText = "No one has remarked yet!";
+        // Date remarkDate = null;
+        // Long paymentRemarkId = null;
+        // paymentRemarkLists.add(new PaymentRemarkList(adminEmail, remarkText,
+        // remarkDate, paymentRemarkId));
+        // model.addAttribute("RemarkList", paymentRemarkLists);
+        // System.out.println("Course ID from PaymentHistory database is not found. Thus
+        // system skipped processing"
+        // + paymentRemarkLists);
         // }
 
         // List<PaymentHistoryRegistrationList> paymentHistoryRegistrationLists = new
@@ -459,8 +458,7 @@ public class PaymentListController {
         Long paymentTeacherId = paymentForTeacher.getPaymentForTeacherId();
         Long courseId = paymentForTeacher.getCourseInfo().getCourseId();
         boolean varifyState = paymentForTeacher.getPaymentVerify();
-        String varifyStateString = Boolean.toString(varifyState);        
-
+        String varifyStateString = Boolean.toString(varifyState);
 
         // paymentHistoryRegistrationLists.add(new
         // PaymentHistoryRegistrationList(teacherName, courseName, paymentFrom,
@@ -487,9 +485,8 @@ public class PaymentListController {
             @RequestParam("courseEndTime") String courseEndTime,
             @RequestParam("amountPaid") Long amountPaid,
             @RequestParam("amountDate") java.sql.Date amountDate,
-            @RequestParam("comments") String comments,
-            @RequestParam("photo") MultipartFile photo) {
-
+            @RequestParam(value = "comments", required = false) String comments,
+            @RequestParam(value = "photo", required = false) MultipartFile photo) {
 
         PaymentForTeacher paymentForTeacher = paymentForTeacherRepo.getById(paymentTeacherId);
         LocalDate paidDate = amountDate.toLocalDate();
@@ -498,7 +495,6 @@ public class PaymentListController {
         paymentForTeacher.setStatus("COMPLETE");
         paymentForTeacherService.savePaymentForTeacher(paymentForTeacher);
 
-        
         List<PaymentHistory> paymentHistory = paymentHistoryRepo.findAll();
 
         if (paymentHistory.isEmpty()) {
@@ -516,17 +512,16 @@ public class PaymentListController {
             System.out.println("Newly created PayHistoryID: " + paymentHistoryId);
 
             PaymentHistory history = paymentHistoryRepo.getById(paymentHistoryId);
-            
+
             Long uid = history.getPaymentHistoryId();
             System.out.println("Assigned Payment History ID: " + uid);
 
             long fileSeparator = 100000L + uid;
-            if (!photo.isEmpty() && CheckUploadFileType.checkType(photo)) {
-                
+            if (photo != null && CheckUploadFileType.checkType(photo)) {
+
                 String originalFileName = StringUtils.cleanPath(
                         photo.getOriginalFilename());
 
-               
                 try {
 
                     storageService.store(fileSeparator, photo, StorageServiceImpl.PROFILE_PATH, true);
@@ -538,10 +533,8 @@ public class PaymentListController {
                 }
 
                 logger.info("Payment Slip photo {} stored", originalFileName);
-
-                
-
-                
+            }
+            if (comments != null) {
                 List<PaymentRemark> paymentRemarks = paymentRemarkRepo.findAll();
                 if (paymentRemarks.isEmpty()) {
                     PaymentRemark paymentRemark = new PaymentRemark();
@@ -554,13 +547,8 @@ public class PaymentListController {
                     paymentRemark.setPaymentHistory(history);
                     paymentRemark.setUserInfo(userAccount.getUserInfo());
                     paymentRemarkService.savePaymentRemark(paymentRemark);
-
                 }
-
-                
-
             }
-
         } else {
             Long findPaymentHistoryId = 0L;
             for (PaymentHistory payHistory : paymentHistory) {
@@ -568,7 +556,6 @@ public class PaymentListController {
 
                 if (paymentForTeacherID.equals(paymentTeacherId)) {
                     findPaymentHistoryId = payHistory.getPaymentHistoryId();
-                    
 
                 }
 
@@ -578,17 +565,15 @@ public class PaymentListController {
                 PaymentHistory existingHistory = paymentHistoryRepo.getById(findPaymentHistoryId);
                 existingHistory.setPaymentAmount(amountPaid);
                 existingHistory.setPaymentDate(amountDate);
-                paymentHistoryService.savePaymentHistory(existingHistory);                
+                paymentHistoryService.savePaymentHistory(existingHistory);
                 Long uid = findPaymentHistoryId;
-                
 
                 long fileSeparator = 100000L + uid;
-                if (!photo.isEmpty() && CheckUploadFileType.checkType(photo)) {
-                    
+                if (photo != null && CheckUploadFileType.checkType(photo)) {
+
                     String originalFileName = StringUtils.cleanPath(
                             photo.getOriginalFilename());
 
-                    
                     try {
 
                         storageService.store(fileSeparator, photo, StorageServiceImpl.PROFILE_PATH, true);
@@ -601,7 +586,8 @@ public class PaymentListController {
 
                     logger.info("Payment Slip photo {} stored", originalFileName);
 
-                    
+                }
+                if (comments != null) {
                     PaymentRemark paymentRemark = new PaymentRemark();
                     java.sql.Date remarkDate = new java.sql.Date(System.currentTimeMillis());
                     UserAccount userAccount = userSessionService.getUserAccount();
@@ -612,10 +598,7 @@ public class PaymentListController {
                     paymentRemark.setPaymentHistory(existingHistory);
                     paymentRemark.setUserInfo(userAccount.getUserInfo());
                     paymentRemarkService.savePaymentRemark(paymentRemark);
-
-                    
                 }
-
             } else if (findPaymentHistoryId == 0) {
                 PaymentHistory newPaymentHistory = new PaymentHistory();
                 newPaymentHistory.setCourseId(paymentForTeacher.getCourseInfo().getCourseId());
@@ -644,11 +627,10 @@ public class PaymentListController {
                         long fileSeparator = 100000L + uid;
 
                         if (!photo.isEmpty() && CheckUploadFileType.checkType(photo)) {
-                            
+
                             String originalFileName = StringUtils.cleanPath(
                                     photo.getOriginalFilename());
 
-                            
                             try {
 
                                 storageService.store(fileSeparator, photo, StorageServiceImpl.PROFILE_PATH, true);
@@ -661,6 +643,8 @@ public class PaymentListController {
 
                             logger.info("Payment Slip photo {} stored", originalFileName);
 
+                        }
+                        if (comments != null) {
                             PaymentRemark paymentRemark = new PaymentRemark();
                             java.sql.Date remarkDate = new java.sql.Date(System.currentTimeMillis());
                             UserAccount userAccount = userSessionService.getUserAccount();
@@ -672,7 +656,6 @@ public class PaymentListController {
                             paymentRemark.setUserInfo(userAccount.getUserInfo());
                             paymentRemarkService.savePaymentRemark(paymentRemark);
                         }
-
                     }
 
                 }
@@ -680,7 +663,7 @@ public class PaymentListController {
             }
 
         }
-        
+
         return "redirect:/admin/teacher-payment-list";
 
     }
@@ -757,7 +740,7 @@ public class PaymentListController {
         }
 
         logger.info("Payment Receive List including user's information {}", teacherPayHistoryList);
-        
+
         model.addAttribute("allteacherPayHistoryList", teacherPayHistoryList);
 
         return "AD0008_TeacherPaymentHistoryList";
