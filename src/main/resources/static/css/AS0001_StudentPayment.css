@@ -362,3 +362,18 @@ input:checked+label {
        transform: translateY(75%);
     }
 }
+
+#myFooter ul {
+    list-style-type: disc;
+  margin-left: 20px;
+  }
+  
+#myFooter li {
+    display: inline-block;
+    margin-right: 140px;
+  }
+
+  
+
+ 
+  

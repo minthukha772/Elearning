@@ -196,84 +196,79 @@
   
 
   
-          <div class="advanced-search-body">
-            <div class="row">
-              <div class="col-md-12">
-                <form id="myForm">
-                  <div class="container mx-auto">
-                    <div class="d-none d-md-block d-lg-block d-xl-block">
-                      <div class="form-group col-md-12">
-                        <div class="input-group">
-                          <input
-                          type="text"
-                          class="form-control w-25 me-3"
-                          id="courseNameSearch"
-                          placeholder="Search with Course Name"
-                          aria-label="Search with Course Name"
-                          aria-describedby="courseNameSearch"
-                         />
-          
-                          <input
-                          type="text"
-                          class="form-control w-25 me-3"
-                          id="studentNameSearch"
-                          placeholder="Search with Teacher Name"
-                          aria-label="Search with Student Name"
-                          aria-describedby="studentNameSearch"
-                          />
-                        
-                          <!-- <input
-                            type="text"
-                            class="form-control w-25"
-                            id="teacherNameSearch"
-                            placeholder="Search with Teacher Name"
-                            aria-label="Search with Teacher Name"
-                            aria-describedby="teacherNameSearch"
-                          /> -->
-    
+             <div class="advanced-search-body">
+              <div class="row">
+                <div class="col-md-12">
+                  <form id="myForm">
+                    <div class="container mx-auto">
+                      <div class="d-none d-md-block d-lg-block d-xl-block">
+                        <div class="form-group col-md-12">
+                          <div class="input-group">
+                            <input
+                              type="text"
+                              class="form-control w-25 me-3"
+                              id="courseNameSearch"
+                              placeholder="Search with Course Name"
+                              aria-label="Search with Course Name"
+                              aria-describedby="courseNameSearch"
+                              onkeydown="if(event.keyCode == 13) return false;"
+                            />
+            
+                            <input
+                              type="text"
+                              class="form-control w-25 me-3"
+                              id="studentNameSearch"
+                              placeholder="Search with Teacher Name"
+                              aria-label="Search with Student Name"
+                              aria-describedby="studentNameSearch"
+                              onkeydown="if(event.keyCode == 13) return false;"
+                            />
+            
+                          </div>
+                        </div>
+                      </div>  
+                      <div class="form-row d-flex justify-content-center">
+                        <div class="form-group col-md-3 p-1">
+                          <label for="" class="text-muted">Course Amount From</label>
+                          <input type="number" id="amount_min"
+                            class="form-control mt-2 w-100" placeholder="MMK"
+                            onkeydown="if(event.keyCode == 13) return false;">
+                        </div>
+                        <div class="form-group col-md-3 p-1">
+                          <label for="" class="text-muted">Course Amount To</label>
+                          <input type="number" id="amount_max"
+                            class="form-control mt-2 w-100" placeholder="MMK"
+                            onkeydown="if(event.keyCode == 13) return false;">
+                        </div>
+            
+                        <div class="form-group col-md-3 p-1">
+                          <label for="" class="text-muted">Payment Date From</label>
+                          <input type="date" id="min"
+                            class="form-control mt-2 w-100" 
+                            onkeydown="if(event.keyCode == 13) return false;">
+                        </div>
+                        <div class="form-group col-md-3 p-1">
+                          <label for="" class="text-muted">Payment Date To</label>
+                          <input type="date" id="max"
+                            class="form-control mt-2 w-100"
+                            onkeydown="if(event.keyCode == 13) return false;" >
                         </div>
                       </div>
-                    </div>  
-                    <div class="form-row d-flex justify-content-center">
-                    <!-- <div class="form-group col-md-3 p-1">
-                    </div> -->
-                    <div class="form-group col-md-3 p-1">
-                      <label for="" class="text-muted">Course Amount From</label>
-                      <input type="number" id="amount_min"
-                        class="form-control mt-2 w-100" placeholder="MMK">
+                    </form>
+                    <div class="row mt-3">
+                      <div class="col-md-12">
+                        <button class="btn btn-primary mb-3" id="downloadpaylist">
+                          Export to Excel
+                        </button>
+                        <button id="btnReset" class="btn btn-outline-primary float-end" type="button" onclick="resetForm()">Reset</button>
+                        <button id="btnSearch" class="btn btn-outline-primary float-end mx-4" type="button">Search</button>
+                      </div>
                     </div>
-                    <div class="form-group col-md-3 p-1">
-                      <label for="" class="text-muted">Course Amount To</label>
-                      <input type="number" id="amount_max"
-                        class="form-control mt-2 w-100" placeholder="MMK">
-                    </div>
-      
-                    <div class="form-group col-md-3 p-1">
-                      <label for="" class="text-muted">Payment Date From</label>
-                      <input type="date" id="min"
-                        class="form-control mt-2 w-100" >
-                    </div>
-                    <div class="form-group col-md-3 p-1">
-                      <label for="" class="text-muted">Payment Date To</label>
-                      <input type="date" id="max"
-                        class="form-control mt-2 w-100" >
-                    </div>
-
                   </div>
-                </form>
-                <div class="row mt-3">
-                  <div class="col-md-12">
-                    <button class="btn btn-primary mb-3" id="downloadpaylist">
-                      Export to Excel
-                    </button>
-                    <button id="btnReset" class="btn btn-outline-primary float-end" type="button" onclick="resetForm()">Reset</button>
-                    <button id="btnSearch" class="btn btn-outline-primary float-end mx-4" type="button">Search</button>
-                  </div>
-                </div>
-
+                </div>                             
               </div>
-            </div>                             
-          </div>
+            </div>
+            
           
           
 <!-- 

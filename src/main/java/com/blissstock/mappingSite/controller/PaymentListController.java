@@ -386,11 +386,13 @@ public class PaymentListController {
                     try {
                         FileInfo profilePic = storageService.loadPaymentSlip(fileSeparator, viewHistoryTable);
                         model.addAttribute("profilePic", profilePic);
+                        model.addAttribute("slip", profilePic.getUrl());
                         System.out.println("Inside Profile Pic: " + profilePic);
                         System.out.println("Inside viewHistory: " + viewHistoryTable.getSlipImg());
                     } catch (Exception e) {
                         e.printStackTrace();
                         model.addAttribute("profilePic", null);
+                        model.addAttribute("slip", null);
                         logger.info("unable to get profile {}", fileSeparator);
                     }
 

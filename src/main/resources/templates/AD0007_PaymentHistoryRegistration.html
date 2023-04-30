@@ -350,9 +350,9 @@
       let commentTextArea = document.querySelector('.comment-textarea').value; // Get the value of the comment box
       let paymentProfile = document.getElementById('paymentprofile');
       var RemarkList = /*[[${RemarkList}]]*/ null
-      var slip = /*[[${profilePic.url}]]*/ null
+      var slip = /*[[${slip}]]*/ null
 
-      if (paymentprofile.src.length > 0) {
+      if (slip != 0) {
         checkImageAlreadyExists = true;
       }
 
@@ -392,20 +392,25 @@
       let xhr = new XMLHttpRequest();
       xhr.open('POST', '/admin/PaymentHistoryRegistration/registrationForm', true);
       xhr.onload = function () {
-        if (this.status === 200) {
-          console.log(this.responseText);
-        }
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: 'Form submitted successfully!',
+          showConfirmButton: true,
+          timer: 2000
+        }).then(() => {
+          window.location.reload();
+        });
       };
       xhr.send(formData);
-
       Swal.fire({
         icon: 'success',
-        title: 'Success!',
-        text: 'Form submitted successfully!',
+        title: 'Processing',
+        text: 'Please Wait',
         showConfirmButton: true,
         timer: 2000
       }).then(() => {
-        location.reload();
+        window.location.reload();
       });
     });
 

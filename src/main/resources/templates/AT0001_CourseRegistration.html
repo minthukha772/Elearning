@@ -187,11 +187,12 @@
                       placeholder="Enter Course Name"
                       required
                     />
+                    <div class="invalid-feedback">This field is required.</div>
                   </div>
                   
                 </div>
                 
-                <div class="invalid-feedback">This field is required.</div>
+                
               </div>
 
               <!-- course category -->
@@ -211,11 +212,13 @@
                       class="form-select"
                       required
                     >
+                    
                       <option value="" selected="selected">Select Category</option>
 
                       <option th:each="courselist : ${CourseListHtml}" th:value="${courselist.categoryName}" th:text="${courselist.categoryName}"></option>
                       
                     </select>
+                    <div class="invalid-feedback">This field is required.</div>
                     <div sec:authorize="hasAuthority('ROLE_ADMIN') || hasAuthority('ROLE_SUPER_ADMIN')">
                     <div class="d-flex justify-content-around flex-wrap">
                       <div class="add-new-cat bg-white d-flex justify-content-between align-items-center py-1 px-3 rounded mt-2" style="width: 200px;">
@@ -231,7 +234,7 @@
                   </div>
                 </div>
                 
-                <div class="invalid-feedback">This field is required.</div>
+                
               </div>
 
               <!-- course level -->
@@ -258,12 +261,13 @@
                       <option th:value="'Advance'" th:text="Advance"></option>
                       
                     </datalist>
+                    <div class="invalid-feedback">This field is required.</div>
                 
                   </input>
                   </div>
                 </div>
 
-                <div class="invalid-feedback">This field is required.</div>
+                
               </div>
 
               <!-- <div class="form-group mt-3 row align-items-center">
@@ -295,11 +299,12 @@
                       placeholder="Enter Course Fee(Kyats)"
                       required
                     >
+                    <div class="invalid-feedback">This field is required.</div>
                     <!-- <div class="unit position-absolute d-flex align-items-center justify-content-center fw-normal"><span>MMK</span></div>  -->
                   </div>
                 </div>
                 
-                <div class="invalid-feedback">This field is required.</div>
+                
               </div>
 
               <!-- Payment Types -->
@@ -346,11 +351,12 @@
                       placeholder="Enter detail about your course here."
                       required
                     ></textarea>
+                    <div class="invalid-feedback">This field is required.</div>
                       <span style="color: red;">* Please write less than 2500 words</span>
                   </div>
                 </div>
                 
-                <div class="invalid-feedback">This field is required.</div>
+                
               </div>
 
               <!-- prerequisite -->
@@ -369,11 +375,12 @@
                       placeholder="Enter Prerequisites for the course."
                       required
                     ></textarea>
+                    <div class="invalid-feedback">This field is required.</div>
                     <span style="color: red;">* Please write less than 2500 words</span>
                   </div>
                 </div>
                 
-                <div class="invalid-feedback">This field is required.</div>
+                
               </div>
 
               <!-- class link -->
@@ -392,10 +399,11 @@
                       placeholder="Enter Class Link(Video link or Live link)"
                       required
                     />
+                    <div class="invalid-feedback">This field is required.</div>
                   </div>
                 </div>
                 
-                <div class="invalid-feedback">This field is required.</div>
+                
               </div>
               <input
                 type="hidden"
@@ -423,10 +431,11 @@
                         min="0"
                         placeholder="Enter the number of students"
                       />
+                      <div class="invalid-feedback">This field is required.</div>
                     </div>
                   </div>
                   
-                  <div class="invalid-feedback">This field is required.</div>
+                  
                 </div>
 
                 <div class="row my-3">

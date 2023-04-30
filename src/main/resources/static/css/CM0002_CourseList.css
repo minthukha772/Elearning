@@ -196,3 +196,15 @@ section.explore__courses h1 {
 .enddates::after{
 	content: ' ) ';
 }
+
+.btn-primary[disabled] {
+	opacity: 0.5;
+	pointer-events: none;
+  }
+
+  .small-btn {
+  width: 80px;
+  height: 40px;
+  font-size: 14px;
+  padding: 0 10px;
+}
