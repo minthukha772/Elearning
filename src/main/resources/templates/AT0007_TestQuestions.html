@@ -23,7 +23,7 @@
     <div th:replace="@{fragments/nav}"></div>
     <!-- create exam start  -->
     <div class="create-exam-container min-vh-100 w-100 position-fixed top-0 d-flex justify-content-center align-items-center fadeIn d-none"
-        style="background-color: rgba(0, 0, 0, 0.4); z-index: 1000">
+        style="background-color: rgba(0, 0, 0, 0.4); z-index: 1000; padding-top: 100px; padding-bottom: 200px;">
         <div class="create-exam-content rounded shadow bg-white">
             <div class="d-flex justify-content-end p-2">
                 <div class="d-flex justify-content-center align-items-center bg-danger text-white rounded-circle"
@@ -32,87 +32,84 @@
                 </div>
             </div>
             <div class="px-3 pb-3">
-                <form action="">
-                    <div class="input-group-sm mb-2 shadow-sm">
-                        <label for="description" class="form-label fw-bold mb-1"><small>Description <span
-                                    class="text-danger">*</span></small></label>
-                        <textarea class="form-control" id="question_description" rows="3"
-                            placeholder="Add description about exam" required></textarea>
-                    </div>
-                    <div class="input-group-sm mb-2 shadow-sm">
-                        <label for="question_upload_box" class="form-label fw-bold mb-1"><small>Question Video, Image or
-                                Audio Upload Box</small></label>
-                        <input type="file" class="form-control" id="question_upload_box" />
-                    </div>
-                    <div class="input-group-sm mb-2 shadow-sm">
-                        <label for="answer_Type" class="form-label fw-bold mb-1"><small>Answer Type <span
-                                    class="text-danger">*</span></small></label>
-                        <select class="form-select" aria-label="Default select example" id="answer_Type" required>
-                            <option value="1" selected>
-                                Multiple Choice Single Answer
-                            </option>
-                            <option value="2">Multiple Choice Multiple Answer</option>
-                            <option value="3">Free Answer</option>
-                        </select>
-                    </div>
-
-                    <!-- answer type start  -->
-                    <label for="manage_answer" class="form-label fw-bold mb-1"><small>Manage Answer <span
+                <div class="input-group-sm mb-2 shadow-sm">
+                    <label for="description" class="form-label fw-bold mb-1"><small>Description <span
                                 class="text-danger">*</span></small></label>
-                    <div class="input-group-sm mb-2 fadeIn" id="single_answer">
-                        <div class="" id="single_answer_choice">
-                            <div class="singleCounter" id="1"></div>
-                            <div class="row align-items-center mt-2 shadow-sm">
-                                <div class="col-11">
-                                    <input type="text" class="form-control" placeholder="option 1" id="text_option_1" />
-                                </div>
-                                <div class="col-1 px-1">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                            id="radio_option_1" />
-                                    </div>
+                    <textarea class="form-control" id="question_description" rows="3"
+                        placeholder="Add description about exam"></textarea>
+                </div>
+                <div class="input-group-sm mb-2 shadow-sm">
+                    <label for="question_upload_box" class="form-label fw-bold mb-1"><small>Question Video, Image or
+                            Audio Upload Box</small></label>
+                    <input type="file" class="form-control" id="question_upload_box" />
+                </div>
+                <div class="input-group-sm mb-2 shadow-sm">
+                    <label for="answer_Type" class="form-label fw-bold mb-1"><small>Answer Type <span
+                                class="text-danger">*</span></small></label>
+                    <select class="form-select" aria-label="Default select example" id="answer_Type">
+                        <option value="1" selected>
+                            Multiple Choice Single Answer
+                        </option>
+                        <option value="2">Multiple Choice Multiple Answer</option>
+                        <option value="3">Free Answer</option>
+                    </select>
+                </div>
+
+                <!-- answer type start  -->
+                <label for="manage_answer" class="form-label fw-bold mb-1"><small>Manage Answer <span
+                            class="text-danger">*</span></small></label>
+                <div class="input-group-sm mb-2 fadeIn" id="single_answer">
+                    <div class="" id="single_answer_choice">
+                        <div class="singleCounter" id="1"></div>
+                        <div class="row align-items-center mt-2 shadow-sm">
+                            <div class="col-11">
+                                <input type="text" class="form-control" placeholder="option 1" id="text_option_1" />
+                            </div>
+                            <div class="col-1 px-1">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                        id="radio_option_1" />
                                 </div>
                             </div>
                         </div>
-                        <div class="btn btn-sm btn-success mt-3" id="single_add_option">
-                            <small>+ Add Option</small>
-                        </div>
                     </div>
+                    <div class="btn btn-sm btn-success mt-3" id="single_add_option">
+                        <small>+ Add Option</small>
+                    </div>
+                </div>
 
 
-                    <div class="input-group-sm mb-2 d-none fadeIn" id="multiple_answer">
-                        <div class="" id="multiple_answer_choice">
-                            <div class="multiCounter" id="1"></div>
-                            <div class="row align-items-center mt-2 shadow-sm">
-                                <div class="col-11">
-                                    <input type="text" class="form-control" placeholder="option 1"
-                                        id="check_text_option_1" />
-                                </div>
-                                <div class="col-1 px-1">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkBox" name="flexCheckDefault"
-                                            id="check_option_1" />
-                                    </div>
+                <div class="input-group-sm mb-2 d-none fadeIn" id="multiple_answer">
+                    <div class="" id="multiple_answer_choice">
+                        <div class="multiCounter" id="1"></div>
+                        <div class="row align-items-center mt-2 shadow-sm">
+                            <div class="col-11">
+                                <input type="text" class="form-control" placeholder="option 1"
+                                    id="check_text_option_1" />
+                            </div>
+                            <div class="col-1 px-1">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkBox" name="flexCheckDefault"
+                                        id="check_option_1" />
                                 </div>
                             </div>
                         </div>
-                        <div class="btn btn-sm btn-success mt-2" id="multiple_add_option">
-                            <small>+ Add Option</small>
-                        </div>
                     </div>
-                    <!-- answer type end  -->
+                    <div class="btn btn-sm btn-success mt-2" id="multiple_add_option">
+                        <small>+ Add Option</small>
+                    </div>
+                </div>
+                <!-- answer type end  -->
 
-                    <div class="input-group-sm mb-3 shadow-sm">
-                        <label for="passing_score" class="form-label fw-bold mb-1"><small>Maximum Marks <span
-                                    class="text-danger">*</span></small></label>
-                        <input type="text" class="form-control" id="passing_score"
-                            placeholder="Enter minimum passing score" required />
-                    </div>
-                    <div class="input-group-sm text-end">
-                        <input type="submit" class="form-control btn btn-sm btn-success" id="submit"
-                            style="width: 100px" />
-                    </div>
-                </form>
+                <div class="input-group-sm mb-3 shadow-sm">
+                    <label for="passing_score" class="form-label fw-bold mb-1"><small>Maximum Marks <span
+                                class="text-danger">*</span></small></label>
+                    <input type="text" class="form-control" id="passing_score"
+                        placeholder="Enter minimum passing score" />
+                </div>
+                <div class="input-group-sm text-end">
+                    <input type="submit" class="form-control btn btn-sm btn-success" id="submit" style="width: 100px" />
+                </div>
             </div>
         </div>
     </div>
@@ -173,7 +170,7 @@
                                     </div>
                                     <div th:if="${testquestion.question_materials_type == 'IMAGE'}"
                                         style="justify-content: center; align-items: center; display: flex;">
-                                        <img th:src="${testquestion.question_materials}">
+                                        <img th:src="${testquestion.question_materials}" style="width: 100%;">
                                     </div>
                                     <h5 class="">Description</h5>
                                     <p th:text="${testquestion.question_text}"></p>
@@ -185,12 +182,10 @@
                                         </div>
                                     </div>
                                     <div class="mt-3">
-                                        <form action="" class="">
-                                            <div class="text-end mb-2">
-                                                <small class="fw-bold">Maximum Mark : <span
-                                                        th:text="${testquestion.maximum_mark}"> </span> Marks</small>
-                                            </div>
-                                        </form>
+                                        <div class="text-end mb-2">
+                                            <small class="fw-bold">Maximum Mark : <span
+                                                    th:text="${testquestion.maximum_mark}"> </span> Marks</small>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -246,7 +241,7 @@
                 '<div class="row align-items-center mt-2 shadow-sm">' +
                 '<div class="col-10">' +
                 '<input type="text" class="form-control" placeholder="option ' + singleCount + '" id="text_option_' + singleCount + '"' +
-                'required />' +
+                ' />' +
                 '</div>' +
                 '<div class="col-1 px-1">' +
                 '<div class="form-check">' +
@@ -313,7 +308,6 @@
                     var index = 0;
                     singlecounters.forEach(counter => {
                         var id = counter.id;
-                        console.log(document.getElementById("radio_option_" + id).checked)
                         if (document.getElementById("radio_option_" + id).checked == true) {
                             var answer = { "answer": index }
                             answers.push(answer);
@@ -351,6 +345,7 @@
             if (file != null) {
                 formData.append('question_materials', file);
             }
+            console.log(formData);
             formData.append('maximum_mark', parseInt(document.getElementById("passing_score").value));
             var xhr = new XMLHttpRequest();
             xhr.open("POST", "https://localhost:8080/teacher/create-question", true);
@@ -391,7 +386,7 @@
                         '<div class="row align-items-center mt-2 shadow-sm">' +
                         '<div class="col-10">' +
                         '<input type="text" class="form-control" placeholder="option ' + singleCount + '" id="text_option_' + singleCount + '"' +
-                        'required />' +
+                        ' />' +
                         '</div>' +
                         '<div class="col-1 px-1">' +
                         '<div class="form-check">' +

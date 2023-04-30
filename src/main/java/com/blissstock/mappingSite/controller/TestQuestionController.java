@@ -72,7 +72,7 @@ public class TestQuestionController {
     StorageService storageService;
 
     @Valid
-    @GetMapping(value = { "/teacher/exam/{test_id}/questions" })
+    @GetMapping(value = { "/teacher/exam/{test_id}/questions",  "/admin/exam/{test_id}/questions" })
     private String getQuestionsByTest(@PathVariable Long test_id, Model model)
             throws ParseException, JsonMappingException, JsonProcessingException {
         List<QuestionAndCorrectAnswer> questionAndCorrectAnswers = new ArrayList<>();
@@ -114,7 +114,7 @@ public class TestQuestionController {
     }
 
     @Valid
-    @PostMapping(value = { "/teacher/create-question" })
+    @PostMapping(value = { "/teacher/create-question", "/admin/create-question" })
     private ResponseEntity createQuestionByTestID(
             @RequestParam(value = "test_id") Long testID,
             @RequestParam(value = "question_text") String question_text,
