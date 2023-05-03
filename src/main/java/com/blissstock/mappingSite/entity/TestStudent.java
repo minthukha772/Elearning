@@ -21,21 +21,19 @@ import lombok.Setter;
 public class TestStudent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "test_id")
+    @ManyToOne(fetch = FetchType.EAGER)
     private Test test;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private UserAccount userAccount;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private UserInfo userInfo;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -47,11 +45,17 @@ public class TestStudent {
         this.test = test;
     }
 
-    public UserAccount getUserAccount() {
-        return userAccount;
+    public UserInfo getUserAccount() {
+        return userInfo;
     }
 
-    public void setUserAccount(UserAccount userAccount) {
-        this.userAccount = userAccount;
+    public void UserInfo(UserInfo userInfo) {
+        this.userInfo = userInfo;
+    }
+
+    public TestStudent(Long id, Test test, UserInfo userInfo) {
+        this.id = id;
+        this.test = test;
+        this.userInfo = userInfo;
     }
 }
