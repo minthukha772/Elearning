@@ -13,10 +13,12 @@
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" th:href="@{/css/AT0005_TestStudentList.css}" />
+    <link rel="stylesheet" th:href="@{/css/global.css}" />
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
 </head>
 
-<body>
-
+<body style="padding-top: 80px;">
+    <div th:replace="@{fragments/nav}"></div>
     <!-- add student modal box start  -->
     <div class="add-student-box min-vh-100 position-fixed w-100 top-0 d-flex justify-content-center align-items-center d-none"
         style="z-index: 1000;background: rgba(0,0,0,0.4);">
@@ -92,7 +94,6 @@
                 </nav>
             </div>
             <div class="">
-                <div class="btn btn-success btn-sm mt-2">Add All Enrolled Students</div>
                 <div class="btn btn-success btn-sm mt-2 mx-2">
                     Add All Enrolled Students
                 </div>
@@ -319,7 +320,7 @@
         </section>
         <!-- student result end  -->
     </section>
-
+    <div th:replace="@{fragments/footer}"></div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>

@@ -59,19 +59,19 @@
                 <label for="manage_answer" class="form-label fw-bold mb-1"><small>Manage Answer <span
                             class="text-danger">*</span></small></label>
                 <div class="input-group-sm mb-2 fadeIn" id="single_answer">
-                    <div class="" id="single_answer_choice">
-                        <div class="singleCounter" id="1"></div>
-                        <div class="row align-items-center mt-2 shadow-sm">
-                            <div class="col-11">
-                                <input type="text" class="form-control" placeholder="option 1" id="text_option_1" />
-                            </div>
-                            <div class="col-1 px-1">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                        id="radio_option_1" />
-                                </div>
+                    <div class="singleCounter" id="0"></div>
+                    <div class="row align-items-center mt-2 shadow-sm">
+                        <div class="col-11">
+                            <input type="text" class="form-control" placeholder="option 1" id="text_option_0" />
+                        </div>
+                        <div class="col-1 px-1">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                    id="radio_option_0" />
                             </div>
                         </div>
+                    </div>
+                    <div class="" id="single_answer_choice">
                     </div>
                     <div class="btn btn-sm btn-success mt-3" id="single_add_option">
                         <small>+ Add Option</small>
@@ -80,20 +80,19 @@
 
 
                 <div class="input-group-sm mb-2 d-none fadeIn" id="multiple_answer">
-                    <div class="" id="multiple_answer_choice">
-                        <div class="multiCounter" id="1"></div>
-                        <div class="row align-items-center mt-2 shadow-sm">
-                            <div class="col-11">
-                                <input type="text" class="form-control" placeholder="option 1"
-                                    id="check_text_option_1" />
-                            </div>
-                            <div class="col-1 px-1">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkBox" name="flexCheckDefault"
-                                        id="check_option_1" />
-                                </div>
+                    <div class="multiCounter" id="0"></div>
+                    <div class="row align-items-center mt-2 shadow-sm">
+                        <div class="col-11">
+                            <input type="text" class="form-control" placeholder="option 1" id="check_text_option_0" />
+                        </div>
+                        <div class="col-1 px-1">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkBox" name="flexCheckDefault"
+                                    id="check_option_0" />
                             </div>
                         </div>
+                    </div>
+                    <div class="" id="multiple_answer_choice">
                     </div>
                     <div class="btn btn-sm btn-success mt-2" id="multiple_add_option">
                         <small>+ Add Option</small>
@@ -201,12 +200,21 @@
         crossorigin="anonymous"></script>
 
     <script th:inline="javascript">
+        var mode = "create";
+        var question_id;
         let createExamContainer = document.querySelector('.create-exam-container');
         cancelBtn = document.querySelector('#cancel_btn');
         createExam = document.querySelector('#create_question');
 
         cancelBtn.addEventListener('click', () => createExamContainer.classList.add('d-none'));
-        createExam.addEventListener('click', () => createExamContainer.classList.remove('d-none'));
+        createExam.addEventListener('click', () => {
+            createExamContainer.classList.remove('d-none');
+            $('#single_answer_choice').empty();
+            $('#multiple_answer_choice').empty();
+            $("#question_description").value = "";
+            $("#passing_score").value = "";
+            mode = "create";
+        });
 
         let answerType = document.querySelector('#answer_Type');
         singleAnswer = document.querySelector('#single_answer');
@@ -235,7 +243,7 @@
             }
         })
 
-        var singleCount = 2;
+        var singleCount = 1;
         singleAddOption.addEventListener('click', () => {
             $('#single_answer_choice').append('<div class="singleCounter" id="' + singleCount + '"></div>' +
                 '<div class="row align-items-center mt-2 shadow-sm">' +
@@ -245,7 +253,7 @@
                 '</div>' +
                 '<div class="col-1 px-1">' +
                 '<div class="form-check">' +
-                '<input class="form-check-input" type="radio"' +
+                '<input class="form-check-input" type="radio" name="flexRadioDefault"' +
                 'id="radio_option_' + singleCount + '" />' +
                 '</div>' +
                 '</div>' +
@@ -259,7 +267,7 @@
             singleCount++;
         })
 
-        var multipleCount = 2;
+        var multipleCount = 1;
         multipleAddOption.addEventListener('click', () => {
             $('#multiple_answer_choice').append('<div class="multiCounter" id="' + multipleCount + '"></div>' +
                 '<div class="row align-items-center mt-2 shadow-sm">' +
@@ -335,6 +343,7 @@
                 }
             }
             var file = question_materials.files[0];
+
             formData.append('test_id', parseInt(test_id));
             formData.append('question_text', question_description);
             formData.append('questions_type', answerType);
@@ -345,19 +354,35 @@
             if (file != null) {
                 formData.append('question_materials', file);
             }
-            console.log(formData);
+
             formData.append('maximum_mark', parseInt(document.getElementById("passing_score").value));
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "https://localhost:8080/teacher/create-question", true);
-            xhr.onload = function () {
-                //window.location.reload();
-            };
-            xhr.send(formData);
+            console.log(formData);
+            if (mode == 'create') {
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "https://localhost:8080/admin/create-question", true);
+                xhr.onload = function () {
+                    window.location.reload();
+                };
+                xhr.send(formData);
+            } else {
+                formData.append('question_id', parseInt(question_id))
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "https://localhost:8080/admin/edit-question", true);
+                xhr.onload = function () {
+                    window.location.reload();
+                };
+                xhr.send(formData);
+            }
+
         })
 
 
         function setDataToEditDialog(question) {
+            question_id = question.id;
+            mode = "update";
             console.log(question);
+            $('#single_answer_choice').empty();
+            $('#multiple_answer_choice').empty();
             createExamContainer.classList.remove('d-none');
             var question_description = document.getElementById("question_description");
             question_description.value = question.question_text;
@@ -380,55 +405,68 @@
             var passing_score = document.getElementById("passing_score");
             passing_score.value = question.maximum_mark;
             if (question.question_type == "SINGLE_ANSWER") {
-                question.choices.forEach(choice => {
-                    var singleCount = 1
-                    $('#single_answer_choice').append('<div class="singleCounter" id="' + singleCount + '"></div>' +
+                document.getElementById("text_option_0").value = question.choices[0].choice;
+                if (question.choices[0].correct == true) {
+                    document.getElementById("radio_option_0").checked = true;
+                }
+                for (var i = 1; i < question.choices.length; i++) {
+                    $('#single_answer_choice').append('<div class="singleCounter" id="' + i + '"></div>' +
                         '<div class="row align-items-center mt-2 shadow-sm">' +
                         '<div class="col-10">' +
-                        '<input type="text" class="form-control" placeholder="option ' + singleCount + '" id="text_option_' + singleCount + '"' +
+                        '<input type="text" class="form-control" placeholder="option ' + i + '" id="text_option_' + i + '"' +
                         ' />' +
                         '</div>' +
                         '<div class="col-1 px-1">' +
                         '<div class="form-check">' +
-                        '<input class="form-check-input" type="radio"' +
-                        'id="radio_option_' + singleCount + '" />' +
+                        '<input class="form-check-input" type="radio" name="flexRadioDefault"' +
+                        'id="radio_option_' + i + '" />' +
                         '</div>' +
                         '</div>' +
                         '<div class="col-1 px-1">' +
                         '<div class="d-flex justify-content-center align-items-center bg-danger text-white rounded-circle ms-2"' +
-                        'style="width: 20px; height: 20px; cursor: pointer" id="radio_delete_' + singleCount + '">' +
+                        'style="width: 20px; height: 20px; cursor: pointer" id="radio_delete_' + i + '">' +
                         '<i class="fa-solid fa-xmark"></i>' +
                         '</div >' +
                         '</div>' +
                         '</div>');
-                    singleCount++;
-                })
+                    document.getElementById("text_option_" + i).value = question.choices[i].choice;
+                    if (question.choices[i].correct == true) {
+                        document.getElementById("radio_option_" + i).checked = true;
+                    }
+                }
             } else {
-                question.choices.forEach(choice => {
-                    console.log(choice);
-                    var multipleCount = 1;
-                    $('#multiple_answer_choice').append('<div class="multiCounter" id="' + multipleCount + '"></div>' +
+                document.getElementById("check_text_option_0").value = question.choices[0].choice;
+                if (question.choices[0].correct == true) {
+                    document.getElementById("check_option_0").checked = true;
+                }
+                for (var i = 1; i < question.choices.length; i++) {
+                    $('#multiple_answer_choice').append('<div class="multiCounter" id="' + i + '"></div>' +
                         '<div class="row align-items-center mt-2 shadow-sm">' +
                         '<div class="col-10">' +
-                        '<input type="text" class="form-control" placeholder="option ' + multipleCount + '" id="check_text_option_' + multipleCount + '" />' +
+                        '<input type="text" class="form-control" placeholder="option ' + i + '" id="check_text_option_' + i + '" />' +
                         '</div>' +
                         '<div class="col-1 px-1">' +
                         '<div class="form-check">' +
                         '<input class="form-check-input" type="checkBox"' +
-                        'id="check_option_' + multipleCount + '" />' +
+                        'id="check_option_' + i + '" />' +
                         '</div>' +
                         '</div>' +
                         '<div class="col-1 px-1">' +
                         '<div class="d-flex justify-content-center align-items-center bg-danger text-white rounded-circle ms-2"' +
-                        'style="width: 20px; height: 20px; cursor: pointer" id="check_delete_' + multipleCount + '">' +
+                        'style="width: 20px; height: 20px; cursor: pointer" id="check_delete_' + i + '">' +
                         '<i class="fa-solid fa-xmark"></i>' +
                         '</div >' +
                         '</div>' +
                         '</div>');
-                    document.getElementById("check_text_option_" + multipleCount).value = choice.choice;
-                    multipleCount++;
-                })
+                    document.getElementById("check_text_option_" + i).value = question.choices[i].choice;
+                    if (question.choices[i].correct == true) {
+                        document.getElementById("check_option_" + i).checked = true;
+                    }
+                }
             }
+        }
+
+        function deleteQuestion(question) {
         }
     </script>
 </body>

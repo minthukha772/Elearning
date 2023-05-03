@@ -72,7 +72,7 @@ public class TestQuestionController {
     StorageService storageService;
 
     @Valid
-    @GetMapping(value = { "/teacher/exam/{test_id}/questions",  "/admin/exam/{test_id}/questions" })
+    @GetMapping(value = { "/teacher/exam/{test_id}/questions", "/admin/exam/{test_id}/questions" })
     private String getQuestionsByTest(@PathVariable Long test_id, Model model)
             throws ParseException, JsonMappingException, JsonProcessingException {
         List<QuestionAndCorrectAnswer> questionAndCorrectAnswers = new ArrayList<>();
@@ -154,6 +154,55 @@ public class TestQuestionController {
                 questions_type, maximum_mark);
         TestQuestion result = testQuestionRepository.save(testQuestion);
         TestQuestionCorrectAnswer correctAnswer = new TestQuestionCorrectAnswer(null, result, answers);
+        testQuestionCorrectAnswerRepositoy.save(correctAnswer);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @Valid
+    @PostMapping(value = { "/teacher/edit-question", "/admin/edit-question" })
+    private ResponseEntity editQuestionByTestID(
+            @RequestParam(value = "test_id") Long testID,
+            @RequestParam(value = "question_id") Long questionID,
+            @RequestParam(value = "question_text") String question_text,
+            @RequestParam(required = false, value = "question_materials") MultipartFile question_materials,
+            @RequestParam(required = false, value = "choices") String choices,
+            @RequestParam(required = false, value = "answers") String answers,
+            @RequestParam(value = "questions_type") String questions_type,
+            @RequestParam(value = "maximum_mark") Integer maximum_mark)
+            throws ParseException, UnauthorizedFileAccessException {
+        Long userID = getUid();
+        String fileType = "BLANK";
+        String originalFileName = "";
+        if (question_materials != null) {
+            originalFileName = StringUtils.cleanPath(
+                    question_materials.getOriginalFilename());
+            int index = originalFileName.lastIndexOf(".");
+            fileType = originalFileName.substring(index + 1);
+
+            long fileSeparator = 100000L + testID;
+            try {
+                storageService.storeQuestionMaterials(fileSeparator, question_materials,
+                        StorageServiceImpl.QUESTION_MATERIAL_PATH,
+                        false);
+            } catch (Exception e) {
+                logger.error(e.getLocalizedMessage(), e);
+            }
+            if (fileType.equals("jpg") || fileType.equals("png") || fileType.equals("jpeg")) {
+                fileType = "IMAGE";
+            } else if (fileType.equals("mp3")) {
+                fileType = "AUDIO";
+            } else {
+                fileType = "VIDEO";
+            }
+        }
+        Test test = testRepository.getTestByID(testID);
+        TestQuestion testQuestion = new TestQuestion(questionID, test, question_text, originalFileName, fileType,
+                choices,
+                questions_type, maximum_mark);
+        TestQuestion result = testQuestionRepository.save(testQuestion);
+        TestQuestionCorrectAnswer testQuestionCorrectAnswer = testQuestionCorrectAnswerRepositoy
+                        .getCorrectAnswerByQuestion(result.getId());
+        TestQuestionCorrectAnswer correctAnswer = new TestQuestionCorrectAnswer(testQuestionCorrectAnswer.getId(), result, answers);
         testQuestionCorrectAnswerRepositoy.save(correctAnswer);
         return ResponseEntity.ok(HttpStatus.OK);
     }

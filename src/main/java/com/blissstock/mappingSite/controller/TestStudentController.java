@@ -33,7 +33,7 @@ public class TestStudentController {
     UserSessionService userSessionService;
 
     @Valid
-    @GetMapping(value = { "/teacher/exam/{id}/examinee" })
+    @GetMapping(value = { "/teacher/exam/{id}/examinee", "/admin/exam/{id}/examinee" })
     private String deleteExam(@RequestParam(required = false) Long exam_id)
             throws ParseException {
         return "AT0005_TestStudentList.html";
