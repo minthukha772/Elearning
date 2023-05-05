@@ -411,12 +411,6 @@
 							<div class="col" th:each="testList, stats : ${testList}">
 							<div class="card" th:id="|card-${stats.index}|">
 								<div class="card-body">
-								<a
-									th:href="@{${testList.testLink}}"
-									th:text="${testList.testLink}"
-									target="_blank"
-									>Test Link</a
-								>
 								</div>
 							</div>
 							</div>

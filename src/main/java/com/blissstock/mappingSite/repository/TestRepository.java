@@ -30,6 +30,9 @@ public interface TestRepository extends JpaRepository<Test, Long> {
         @Query(value = "Select * from test where user_info_account_id = :user_id order by test_id desc", nativeQuery = true)
         public List<Test> getListByUser(@Param("user_id") Long user_id);
 
+        @Query(value = "Select * from test, test_student where test.test_id = test_student.test_test_id and test_student.user_info_account_id = :user_id order by test_id desc", nativeQuery = true)
+        public List<Test> getListByStudent(@Param("user_id") Long user_id);
+
         @Query(value = "Select * from test order by test_id desc", nativeQuery = true)
         public List<Test> getListByAdmin();
 

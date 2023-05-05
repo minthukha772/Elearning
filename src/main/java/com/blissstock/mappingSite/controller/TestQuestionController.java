@@ -114,6 +114,48 @@ public class TestQuestionController {
     }
 
     @Valid
+    @GetMapping(value = { "/student/exam/{test_id}/questions" })
+    private String getStudentQuestions(@PathVariable Long test_id, Model model)
+            throws ParseException, JsonMappingException, JsonProcessingException {
+        List<QuestionAndCorrectAnswer> questionAndCorrectAnswers = new ArrayList<>();
+        List<TestQuestion> testQuestions = testQuestionRepository.getQuestionByTest(test_id);
+        for (TestQuestion testQuestion : testQuestions) {
+            long fileSeparator = 100000L + test_id;
+            FileInfo file = storageService.loadQuestionMaterials(fileSeparator, testQuestion.getQuestion_materials());
+            testQuestion.setQuestion_materials(file.getUrl());
+
+            List<ChoiceModel> choices = new ArrayList<>();
+            if (!testQuestion.getQuestion_type().equals("FREE_ANSWER")) {
+                TestQuestionCorrectAnswer testQuestionCorrectAnswer = testQuestionCorrectAnswerRepositoy
+                        .getCorrectAnswerByQuestion(testQuestion.getId());
+                JSONArray choiceArrary = new JSONArray(testQuestion.getChoices());
+                JSONArray answerArray = new JSONArray(testQuestionCorrectAnswer.getCorrectAnswer());
+                for (int i = 0; i < choiceArrary.length(); i++) {
+                    JSONObject choice = choiceArrary.getJSONObject(i);
+                    String choiceData = choice.getString("choice");
+                    choices.add(new ChoiceModel(i, choiceData, false));
+                }
+
+                for (int j = 0; j < answerArray.length(); j++) {
+                    JSONObject answer = answerArray.getJSONObject(j);
+                    int correct = answer.getInt("answer");
+                    String choice = choices.get(correct).getChoice();
+                    choices.set(correct, new ChoiceModel(correct, choice, true));
+                }
+            }
+
+            QuestionAndCorrectAnswer questionAndCorrectAnswer = new QuestionAndCorrectAnswer(testQuestion.getId(),
+                    testQuestion.getQuestion_text(), testQuestion.getQuestion_materials(),
+                    testQuestion.getQuestion_materials_type(), choices,
+                    testQuestion.getQuestion_type(), testQuestion.getMaximum_mark());
+            questionAndCorrectAnswers.add(questionAndCorrectAnswer);
+        }
+        model.addAttribute("test_id", test_id);
+        model.addAttribute("questionList", questionAndCorrectAnswers);
+        return "ST0006_ExamQuestionListStudent.html";
+    }
+
+    @Valid
     @PostMapping(value = { "/teacher/create-question", "/admin/create-question" })
     private ResponseEntity createQuestionByTestID(
             @RequestParam(value = "test_id") Long testID,

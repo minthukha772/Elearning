@@ -47,6 +47,8 @@ public class StorageServiceImpl implements StorageService {
       root + File.separator + "certificates");
   public static final Path QUESTION_MATERIAL_PATH = Paths.get(
       root + File.separator + "question_materials");
+  public static final Path ANSWER_MATERIAL_PATH = Paths.get(
+      root + File.separator + "answer_materials");
   public static final Path PROFILE_PATH = Paths.get(
       root + File.separator + "profiles");
   public final static Path SLIP_PATH = Paths.get(
@@ -225,8 +227,8 @@ public class StorageServiceImpl implements StorageService {
     // ImageFileValidator fileValidator = new ImageFileValidator();
     // // for (MultipartFile file : files) {
     // if (!fileValidator.isSupportedContentType(file.getContentType())) {
-    //   logger.error("not file exception, {}", file.getName());
-    //   throw new NotImageFileException();
+    // logger.error("not file exception, {}", file.getName());
+    // throw new NotImageFileException();
     // }
     // }
     Path storeLocation = Paths.get(path + File.separator + uid);
