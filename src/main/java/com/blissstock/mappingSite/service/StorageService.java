@@ -47,4 +47,6 @@ public interface StorageService {
   public FileInfo loadCoursePhoto(CourseInfo courseInfo);
  
   public FileInfo loadQuestionMaterials(Long fileSeparator, String fileName) ;
+
+  public FileInfo loadAnswermaterials(Long fileSeparator, String fileName) ;
 }

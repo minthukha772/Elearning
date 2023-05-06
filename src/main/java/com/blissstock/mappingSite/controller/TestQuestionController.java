@@ -29,14 +29,20 @@ import org.springframework.web.multipart.MultipartFile;
 import com.blissstock.mappingSite.entity.Test;
 import com.blissstock.mappingSite.entity.TestQuestion;
 import com.blissstock.mappingSite.entity.TestQuestionCorrectAnswer;
+import com.blissstock.mappingSite.entity.TestStudentAnswer;
+import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.exceptions.UnauthorizedFileAccessException;
 import com.blissstock.mappingSite.model.AnswerModel;
 import com.blissstock.mappingSite.model.ChoiceModel;
 import com.blissstock.mappingSite.model.FileInfo;
 import com.blissstock.mappingSite.model.QuestionAndCorrectAnswer;
+import com.blissstock.mappingSite.model.QuestionAndCorrectAnswerAndStudentAnswer;
+import com.blissstock.mappingSite.model.StudentChoiceModel;
 import com.blissstock.mappingSite.repository.TestQuestionCorrectAnswerRepositoy;
 import com.blissstock.mappingSite.repository.TestQuestionRepository;
 import com.blissstock.mappingSite.repository.TestRepository;
+import com.blissstock.mappingSite.repository.TestStudentAnswerRepository;
+import com.blissstock.mappingSite.repository.UserInfoRepository;
 import com.blissstock.mappingSite.service.StorageService;
 import com.blissstock.mappingSite.service.StorageServiceImpl;
 import com.blissstock.mappingSite.service.UserSessionService;
@@ -70,6 +76,12 @@ public class TestQuestionController {
 
     @Autowired
     StorageService storageService;
+
+    @Autowired
+    TestStudentAnswerRepository testStudentAnswerRepository;
+
+    @Autowired
+    UserInfoRepository userInfoRepository;
 
     @Valid
     @GetMapping(value = { "/teacher/exam/{test_id}/questions", "/admin/exam/{test_id}/questions" })
@@ -111,6 +123,100 @@ public class TestQuestionController {
         model.addAttribute("test_id", test_id);
         model.addAttribute("questionList", questionAndCorrectAnswers);
         return "AT0007_TestQuestions.html";
+    }
+
+    @Valid
+    @GetMapping(value = { "/teacher/exam/{test_id}/student/{student_id}",
+            "/admin/exam/{test_id}/student/{student_id}" })
+    private String getStudentAnswer(@PathVariable Long test_id,
+            @PathVariable Long student_id, Model model)
+            throws ParseException, JsonMappingException, JsonProcessingException {
+        List<QuestionAndCorrectAnswerAndStudentAnswer> questionAndCorrectAnswers = new ArrayList<>();
+        List<TestQuestion> testQuestions = testQuestionRepository.getQuestionByTest(test_id);
+        Integer freeAnswerCount = testQuestionRepository.getFreeAnswerCount();
+        Integer markingCount = testStudentAnswerRepository.getMarkingQuestionCount();
+        Test test = testRepository.getTestByID(test_id);
+
+        for (TestQuestion testQuestion : testQuestions) {
+            String studentAnswer = "";
+            String studentAnswerURL = "";
+            long fileSeparator = 100000L + test_id;
+            FileInfo file = storageService.loadQuestionMaterials(fileSeparator, testQuestion.getQuestion_materials());
+            testQuestion.setQuestion_materials(file.getUrl());
+            int acquired_mark = 0;
+            List<StudentChoiceModel> choices = new ArrayList<>();
+            if (!testQuestion.getQuestion_type().equals("FREE_ANSWER")) {
+                TestQuestionCorrectAnswer testQuestionCorrectAnswer = testQuestionCorrectAnswerRepositoy
+                        .getCorrectAnswerByQuestion(testQuestion.getId());
+                TestStudentAnswer testStudentAnswer = testStudentAnswerRepository.getStudentAnswer(student_id,
+                        testQuestion.getId());
+
+                JSONArray choiceArrary = new JSONArray(testQuestion.getChoices());
+                JSONArray answerArray = new JSONArray(testQuestionCorrectAnswer.getCorrectAnswer());
+                JSONArray studentchoiceArray = new JSONArray(testStudentAnswer.getStudent_answer());
+                for (int i = 0; i < choiceArrary.length(); i++) {
+                    JSONObject choice = choiceArrary.getJSONObject(i);
+                    String choiceData = choice.getString("choice");
+                    choices.add(new StudentChoiceModel(i, choiceData, false, false));
+                }
+
+                for (int j = 0; j < answerArray.length(); j++) {
+                    JSONObject answer = answerArray.getJSONObject(j);
+                    int correct = answer.getInt("answer");
+                    String choice = choices.get(correct).getChoice();
+                    choices.set(correct, new StudentChoiceModel(correct, choice, true, false));
+                }
+
+                for (int k = 0; k < studentchoiceArray.length(); k++) {
+                    JSONObject answer = studentchoiceArray.getJSONObject(k);
+                    int student_choice = answer.getInt("student_choice");
+                    String choice = choices.get(student_choice).getChoice();
+                    Boolean correctAnswer = choices.get(student_choice).isCorrect();
+                    choices.set(student_choice, new StudentChoiceModel(student_choice, choice, correctAnswer, true));
+                }
+
+                for (int l = 0; l < choices.size(); l++) {
+                    Boolean correctAnswer = choices.get(l).isCorrect();
+                    Boolean studentChoice = choices.get(l).isStudent_choice();
+                    if (correctAnswer && studentChoice) {
+                        acquired_mark = testQuestion.getMaximum_mark();
+                    }
+                }
+            } else {
+                TestStudentAnswer testStudentAnswer = testStudentAnswerRepository.getStudentAnswer(student_id,
+                        testQuestion.getId());
+                acquired_mark = testQuestion.getMaximum_mark();
+                long studentfileSeparator = Long.parseLong(test_id.toString()
+                        + testStudentAnswer.getQuestion().getId().toString() + student_id.toString());
+                studentAnswer = testStudentAnswer.getStudent_answer();
+                FileInfo studentAnswerFile = storageService.loadAnswermaterials(studentfileSeparator,
+                        testStudentAnswer.getStudent_answer_link());
+                studentAnswerURL = studentAnswerFile.getUrl();
+
+            }
+            QuestionAndCorrectAnswerAndStudentAnswer studentAnswerList = new QuestionAndCorrectAnswerAndStudentAnswer(
+                    testQuestion.getId(),
+                    studentAnswer, studentAnswerURL,
+                    testQuestion.getQuestion_text(), testQuestion.getQuestion_materials(),
+                    testQuestion.getQuestion_materials_type(), choices,
+                    testQuestion.getQuestion_type(), testQuestion.getMaximum_mark(),
+                    acquired_mark);
+            questionAndCorrectAnswers.add(studentAnswerList);
+        }
+        model.addAttribute("test_id", test_id);
+        model.addAttribute("questionList", questionAndCorrectAnswers);
+        model.addAttribute("testTime", test.getDate());
+        model.addAttribute("name", test.getUserInfo().getUserName());
+        model.addAttribute("totalTest", testQuestions.size());
+        model.addAttribute("freeTest", freeAnswerCount);
+        model.addAttribute("choiceTest", testQuestions.size() - freeAnswerCount);
+        if (markingCount == 0) {
+            model.addAttribute("status", "Completed");
+        } else {
+            model.addAttribute("status", "Marking");
+        }
+
+        return "AT0006_StudentAnswerList.html";
     }
 
     @Valid
@@ -243,8 +349,9 @@ public class TestQuestionController {
                 questions_type, maximum_mark);
         TestQuestion result = testQuestionRepository.save(testQuestion);
         TestQuestionCorrectAnswer testQuestionCorrectAnswer = testQuestionCorrectAnswerRepositoy
-                        .getCorrectAnswerByQuestion(result.getId());
-        TestQuestionCorrectAnswer correctAnswer = new TestQuestionCorrectAnswer(testQuestionCorrectAnswer.getId(), result, answers);
+                .getCorrectAnswerByQuestion(result.getId());
+        TestQuestionCorrectAnswer correctAnswer = new TestQuestionCorrectAnswer(testQuestionCorrectAnswer.getId(),
+                result, answers);
         testQuestionCorrectAnswerRepositoy.save(correctAnswer);
         return ResponseEntity.ok(HttpStatus.OK);
     }

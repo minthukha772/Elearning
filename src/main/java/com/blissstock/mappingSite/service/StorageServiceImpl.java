@@ -461,4 +461,27 @@ public class StorageServiceImpl implements StorageService {
     logger.info("Get Data as Resource name: {}, url: {}", fileName, url);
     return new FileInfo(fileName, url);
   }
+
+  @Override
+  public FileInfo loadAnswermaterials(Long fileSeparator, String fileName) {
+
+    if (fileName == null || fileName.isEmpty()) {
+      return new FileInfo("default", null);
+    }
+
+    String url = MvcUriComponentsBuilder
+        .fromMethodName(
+            FileController.class,
+            "getResource",
+            // "slipimg",
+            "answer_materials",
+            // payHistory.getPaymentHistoryId(),
+            fileSeparator,
+            fileName)
+        .build()
+        .toString();
+
+    logger.info("Get Data as Resource name: {}, url: {}", fileName, url);
+    return new FileInfo(fileName, url);
+  }
 }
