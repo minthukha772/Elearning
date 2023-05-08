@@ -2,10 +2,9 @@ package com.blissstock.mappingSite.model;
 
 import java.util.List;
 
-import com.blissstock.mappingSite.entity.TestStudentAnswer;
-
 public class QuestionAndCorrectAnswerAndStudentAnswer {
     private long id;
+    private Integer student_answer_id;
     private String student_answer;
     private String student_answer_link;
     private String question_text;
@@ -96,10 +95,12 @@ public class QuestionAndCorrectAnswerAndStudentAnswer {
         this.student_answer_link = student_answer_link;
     }
 
-    public QuestionAndCorrectAnswerAndStudentAnswer(long id, String student_answer, String student_answer_link,
+    public QuestionAndCorrectAnswerAndStudentAnswer(long id, Integer student_answer_id, String student_answer,
+            String student_answer_link,
             String question_text, String question_materials, String question_materials_type,
             List<StudentChoiceModel> choices, String question_type, Integer maximum_mark, Integer acquired_mark) {
         this.id = id;
+        this.student_answer_id = student_answer_id;
         this.student_answer = student_answer;
         this.student_answer_link = student_answer_link;
         this.question_text = question_text;
@@ -109,6 +110,14 @@ public class QuestionAndCorrectAnswerAndStudentAnswer {
         this.question_type = question_type;
         this.maximum_mark = maximum_mark;
         this.acquired_mark = acquired_mark;
+    }
+
+    public Integer getStudent_answer_id() {
+        return student_answer_id;
+    }
+
+    public void setStudent_answer_id(Integer student_answer_id) {
+        this.student_answer_id = student_answer_id;
     }
 
 }

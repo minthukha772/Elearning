@@ -140,14 +140,14 @@ public class TestController {
             if (examStatus != "" || courseid != "" || fromDate != "" || toDate != "") {
                 if (examStatus != "") {
                     testList = testRepository.getListByStatusAndUser(examStatus, userID);
-                    logger.info("userid {} get test list with user id and exam status by test id {}", userID, testList);
+                    //logger.info("userid {} get test list with user id and exam status by test id {}", userID, testList);
                     model.addAttribute("testList", testList);
                     model.addAttribute("filterType", "Filter By Status");
                     model.addAttribute("filter", "( " + examStatus + " )");
                 } else if (courseid != "") {
                     CourseInfo course = courseInfoRepository.getById(Long.parseLong(courseid));
                     testList = testRepository.getListByCourseAndUser(Long.parseLong(courseid), userID);
-                    logger.info("userid {} get test list with user id and course info by test id {}", userID, testList);
+                    //logger.info("userid {} get test list with user id and course info by test id {}", userID, testList);
                     model.addAttribute("testList", testList);
                     model.addAttribute("filterType", "Filter By Course");
                     model.addAttribute("filter", "( " + course.getCourseName() + " )");
@@ -155,15 +155,15 @@ public class TestController {
                     Date from = new SimpleDateFormat("yyyy-MM-dd").parse(fromDate);
                     Date to = new SimpleDateFormat("yyyy-MM-dd").parse(toDate);
                     testList = testRepository.getListByDateAndUser(from, to, userID);
-                    logger.info("userid {} get test list with user id and from date to date by test id {}", userID,
-                            testList);
+                    // logger.info("userid {} get test list with user id and from date to date by test id {}", userID,
+                    //         testList);
                     model.addAttribute("testList", testList);
                     model.addAttribute("filterType", "Filter By Date");
                     model.addAttribute("filter", "( " + fromDate + " - " + toDate + " )");
                 }
             } else {
                 testList = testRepository.getListByStudent(userID);
-                logger.info("user id {} get test list by userid", userID);
+                //logger.info("user id {} get test list by userid", userID);
                 model.addAttribute("testList", testList);
             }
 
@@ -171,10 +171,10 @@ public class TestController {
             courseList = courseInfoRepository.findByUID(userID);
             model.addAttribute("courseList", courseList);
 
-            logger.info("User " + userID + " Received response from URL: /teacher/exam with status code: 200");
+            //logger.info("User " + userID + " Received response from URL: /teacher/exam with status code: 200");
             return "ST0005_ExamListStudent";
         } catch (Exception e) {
-            logger.error(e.getLocalizedMessage());
+            //logger.error(e.getLocalizedMessage());
             return "500";
         }
     }

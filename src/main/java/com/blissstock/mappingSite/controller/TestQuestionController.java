@@ -140,6 +140,7 @@ public class TestQuestionController {
         for (TestQuestion testQuestion : testQuestions) {
             String studentAnswer = "";
             String studentAnswerURL = "";
+            Integer student_answer_id = 0;
             long fileSeparator = 100000L + test_id;
             FileInfo file = storageService.loadQuestionMaterials(fileSeparator, testQuestion.getQuestion_materials());
             testQuestion.setQuestion_materials(file.getUrl());
@@ -192,10 +193,11 @@ public class TestQuestionController {
                 FileInfo studentAnswerFile = storageService.loadAnswermaterials(studentfileSeparator,
                         testStudentAnswer.getStudent_answer_link());
                 studentAnswerURL = studentAnswerFile.getUrl();
-
+                student_answer_id = Integer.parseInt(testStudentAnswer.getId().toString());
             }
             QuestionAndCorrectAnswerAndStudentAnswer studentAnswerList = new QuestionAndCorrectAnswerAndStudentAnswer(
                     testQuestion.getId(),
+                    student_answer_id,
                     studentAnswer, studentAnswerURL,
                     testQuestion.getQuestion_text(), testQuestion.getQuestion_materials(),
                     testQuestion.getQuestion_materials_type(), choices,

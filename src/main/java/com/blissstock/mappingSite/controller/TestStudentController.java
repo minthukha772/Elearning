@@ -76,13 +76,15 @@ public class TestStudentController {
         Test test = testRepository.getTestByID(test_id);
         if (test.getExam_status().equals("Exam Created")) {
             CourseInfo course = test.getCourseInfo();
-            List<JoinCourseUser> enrolledList = joinCourseUserRepository.findByCourseID(course.getCourseId());
+            List<JoinCourseUser> enrolledList = joinCourseUserRepository.findByStudentByCourseID(course.getCourseId());
             for (JoinCourseUser student : enrolledList) {
-                TestStudent testStudent = new TestStudent(null, test, student.getUserInfo());
-                testStudentRepository.save(testStudent);
+                TestStudent checkStudent = testStudentRepository.getStudentByID(student.getUserInfo().getUid());
+                if (checkStudent == null) {
+                    TestStudent testStudent = new TestStudent(null, test, student.getUserInfo());
+                    testStudentRepository.save(testStudent);
+                }
             }
         }
-
         return "AT0005_TestStudentList.html";
     }
 

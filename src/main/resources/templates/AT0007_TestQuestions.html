@@ -356,7 +356,6 @@
             }
 
             formData.append('maximum_mark', parseInt(document.getElementById("passing_score").value));
-            console.log(formData);
             if (mode == 'create') {
                 var xhr = new XMLHttpRequest();
                 xhr.open("POST", "https://localhost:8080/admin/create-question", true);

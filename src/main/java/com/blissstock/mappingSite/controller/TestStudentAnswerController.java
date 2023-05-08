@@ -116,4 +116,22 @@ public class TestStudentAnswerController {
 
         return ResponseEntity.ok(HttpStatus.OK);
     }
+
+    @Valid
+    @PostMapping(value = { "/teacher/mark-student-question", "/admin/mark-student-question" })
+    private ResponseEntity updateStudentFreeQuestion(
+            @RequestParam(value = "id") Long id,
+            @RequestParam(value = "acquired_mark") Integer acquired_mark)
+            throws UnauthorizedFileAccessException {
+        TestStudentAnswer testStudentAnswer = testStudentAnswerRepository.getStudentAnswerByID(id);
+        testStudentAnswer.setAcquired_mark(acquired_mark);
+        testStudentAnswer.setMarked_status("MARKED");
+        testStudentAnswerRepository.save(testStudentAnswer);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    private Long getUid() {
+        Long uid = userSessionService.getUserAccount().getAccountId();
+        return uid;
+    }
 }

@@ -18,4 +18,7 @@ public interface TestStudentAnswerRepository extends JpaRepository<TestStudentAn
 
     @Query(value = "Select count(id) from test_student_answer where marked_status = 'MARKING'", nativeQuery = true)
     public Integer getMarkingQuestionCount();
+
+    @Query(value = "Select * from test_student_answer where id = :id limit 1", nativeQuery = true)
+    public TestStudentAnswer getStudentAnswerByID(@Param("id") Long id);
 }
