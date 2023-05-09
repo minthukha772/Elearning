@@ -121,6 +121,7 @@ public class TestQuestionController {
             questionAndCorrectAnswers.add(questionAndCorrectAnswer);
         }
         model.addAttribute("test_id", test_id);
+        model.addAttribute("user_role", userSessionService.getRole());
         model.addAttribute("questionList", questionAndCorrectAnswers);
         return "AT0007_TestQuestions.html";
     }

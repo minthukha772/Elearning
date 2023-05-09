@@ -1,35 +1,23 @@
 package com.blissstock.mappingSite.controller;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Optional;
-
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import javax.websocket.server.PathParam;
-
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.JoinCourseUser;
 import com.blissstock.mappingSite.entity.Test;
 import com.blissstock.mappingSite.entity.TestStudent;
-import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
 import com.blissstock.mappingSite.repository.TestRepository;
 import com.blissstock.mappingSite.repository.TestStudentRepository;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
-import com.blissstock.mappingSite.service.JoinCourseService;
 import com.blissstock.mappingSite.service.UserSessionService;
 
 import org.springframework.ui.Model;

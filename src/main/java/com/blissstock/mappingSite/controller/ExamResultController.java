@@ -21,11 +21,13 @@ import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.JoinCourseUser;
 import com.blissstock.mappingSite.entity.Result;
 import com.blissstock.mappingSite.entity.Test;
+import com.blissstock.mappingSite.entity.TestQuestion;
 import com.blissstock.mappingSite.entity.TestStudent;
 import com.blissstock.mappingSite.entity.TestStudentAnswer;
 import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.model.FileInfo;
+import com.blissstock.mappingSite.model.StudentListForExamResult;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
 import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
 import com.blissstock.mappingSite.repository.ResultRepository;
@@ -37,6 +39,7 @@ import com.blissstock.mappingSite.repository.UserAccountRepository;
 import com.blissstock.mappingSite.repository.UserRepository;
 import com.blissstock.mappingSite.service.StorageService;
 import com.blissstock.mappingSite.service.UserService;
+import com.blissstock.mappingSite.service.UserSessionService;
 import com.blissstock.mappingSite.enums.UserRole;
 
 @Controller
@@ -85,71 +88,62 @@ public class ExamResultController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/student/exam-result/{testId}/{userId}")
+    @Autowired
+    UserSessionService userSessionService;
+
+    @GetMapping("/student/exam-result/{testId}")
     // @GetMapping("/student/ExamResult")
-    public String getExamResultForStudent(@PathVariable Long testId, @PathVariable Long userId, Model model) {
+    public String getExamResultForStudent(@PathVariable Long testId, Model model) {
+        Long userID = getUid();
+        Result viewExamResult = resultRepo.getResultByTestIdAndUser(testId, userID);
+        List<TestQuestion> viewQuestion = questionRepo.getQuestionByTest(testId);
+        // StudentAnswer viewStuAns = stuAnsRepo.getResultByTestId(testId);
 
-        Result viewExamResult = resultRepo.getResultByTestIdAndUser(testId, userId);
-        if (viewExamResult == null) {
-            Test test = testRepo.getTestByID(testId);
-            UserInfo userInfo = userRepo.findByAccount(userId);
-            List<TestStudentAnswer> studentAnswerList = testStudentAnswerRepository.getStudentAnswerListByTest(userId,
-                    testId);
-            int total_acquired_mark = 0;
-            int total_mark = 0;
-            for (TestStudentAnswer studentAnswer : studentAnswerList) {
-                int acquired_mark = studentAnswer.getAcquired_mark();
-                int max_mark = studentAnswer.getQuestion().getMaximum_mark();
-                total_acquired_mark += acquired_mark;
-                total_mark += max_mark;
+        if (viewExamResult != null) {
+            String courseName = viewExamResult.getTest().getCourseInfo().getCourseName();
+            String teacherName = viewExamResult.getTest().getCourseInfo().getUserInfo().getUserName();
+            String examineeName = viewExamResult.getUserInfo().getUserName();
+            Long studentId = viewExamResult.getUserInfo().getUid();
+            Date examDate = viewExamResult.getTest().getDate();
+            int timeAllowed = viewExamResult.getTest().getMinutes_allowed();
+            int maxMarks = 0;
+            for (TestQuestion checkQuestionTable : viewQuestion) {
+                int marksForEachQuest = checkQuestionTable.getMaximum_mark();
+                maxMarks += marksForEachQuest;
             }
+            // int maxMarks = viewQuestion.getMaximumMark();
+            int stuMarks = viewExamResult.getResultMark();
+
+            Double studentMarkPercent = ((double) stuMarks / (double) maxMarks) * 100;
+            String formattedPercent = String.format("%.2f", studentMarkPercent);
+            int passScorePercent = viewExamResult.getTest().getPassing_score_percent();
+            String passOrfailResult = viewExamResult.getResult();
+            String teacherComment = viewExamResult.getTeacherComment();
+
+            model.addAttribute("courseName", courseName);
+            model.addAttribute("teacherName", teacherName);
+            model.addAttribute("examineeName", examineeName);
+            model.addAttribute("studentId", studentId);
+            model.addAttribute("examDate", examDate);
+            model.addAttribute("timeAllowed", timeAllowed);
+            model.addAttribute("examType", "");
+            model.addAttribute("studentMarkPercent", formattedPercent);
+            model.addAttribute("passScorePercent", passScorePercent);
+            model.addAttribute("passOrfailResult", passOrfailResult);
+            model.addAttribute("teacherComment", teacherComment);
+
+            logger.info("Collected Marks {}", maxMarks);
+
+        } else {
+            System.out.println("Data not found in 'Result' Database!");
         }
-        // Result viewExamResult = resultRepo.getResultByTestIdAndUser(testId, userId);
-        // List<Question> viewQuestion = questionRepo.getListByTestId(testId);
-        // // StudentAnswer viewStuAns = stuAnsRepo.getResultByTestId(testId);
-
-        // if (viewExamResult != null) {
-        // String courseName = viewExamResult.getTest().getCourseInfo().getCourseName();
-        // String teacherName =
-        // viewExamResult.getTest().getCourseInfo().getUserInfo().getUserName();
-        // String examineeName = viewExamResult.getUser().getUserName();
-        // Long studentId = viewExamResult.getUser().getUid();
-        // Date examDate = viewExamResult.getTest().getDate();
-        // int timeAllowed = viewExamResult.getTest().getMinutes_allowed();
-        // String examType = viewExamResult.getTest().getExam_type();
-        // int maxMarks = 0;
-        // for (Question checkQuestionTable : viewQuestion) {
-        // int marksForEachQuest = checkQuestionTable.getMaximumMark();
-        // maxMarks += marksForEachQuest;
-        // }
-        // // int maxMarks = viewQuestion.getMaximumMark();
-        // int stuMarks = viewExamResult.getResultMark();
-
-        // Double studentMarkPercent = ((double) stuMarks / (double) maxMarks) * 100;
-        // String formattedPercent = String.format("%.2f", studentMarkPercent);
-        // int passScorePercent = viewExamResult.getTest().getPassing_score_percent();
-        // String passOrfailResult = viewExamResult.getResult();
-        // String teacherComment = viewExamResult.getTeacherComment();
-
-        // model.addAttribute("courseName", courseName);
-        // model.addAttribute("teacherName", teacherName);
-        // model.addAttribute("examineeName", examineeName);
-        // model.addAttribute("studentId", studentId);
-        // model.addAttribute("examDate", examDate);
-        // model.addAttribute("timeAllowed", timeAllowed);
-        // model.addAttribute("examType", examType);
-        // model.addAttribute("studentMarkPercent", formattedPercent);
-        // model.addAttribute("passScorePercent", passScorePercent);
-        // model.addAttribute("passOrfailResult", passOrfailResult);
-        // model.addAttribute("teacherComment", teacherComment);
-
-        // logger.info("Collected Marks {}", maxMarks);
-
-        // } else {
-        // System.out.println("Data not found in 'Result' Database!");
-        // }
 
         return "CM0010_ExamResultStudent";
+    }
+
+    private Long getUid() {
+        Long uid = userSessionService.getUserAccount().getAccountId();
+        return uid;
     }
 
     // @GetMapping("/exam/{testId}/examinee-list")
@@ -380,175 +374,170 @@ public class ExamResultController {
     // return "redirect:/exam/" + testId + "/examinee-list/";
     // }
 
-    // @GetMapping("/exam/{testId}/exam-result-list")
-    // // @GetMapping("/Exam/exam-result-list")
-    // public String getExamResultListForTeacherAndAdmin(@PathVariable Long testId,
-    // Model model) {
-    // // public String getExamResultListForTeacherAndAdmin( Model model) {
+    @GetMapping({ "admin/exam/{testId}/exam-result-list", "teacher/exam/{testId}/exam-result-list" })
+    // @GetMapping("/Exam/exam-result-list")
+    public String getExamResultListForTeacherAndAdmin(@PathVariable Long testId,
+            Model model) {
+        // public String getExamResultListForTeacherAndAdmin( Model model) {
 
-    // Test viewTest = testRepo.getById(testId);
-    // List<TestStudent> viewTestStudents =
-    // testStudentRepo.getResultByTestId(testId);
-    // List<Result> viewResults = resultRepo.getListByTestId(testId);
-    // List<StudentAnswer> viewStudentAnswer = stuAnsRepo.getListByTestId(testId);
-    // List<Question> viewQuestions = questionRepo.getListByTestId(testId);
-    // List<StudentListForExamResult> studentListForExamResults = new ArrayList<>();
+        Test viewTest = testRepo.getById(testId);
+        List<TestStudent> viewTestStudents = testStudentRepo.getStudentByTest(testId);
+        List<Result> viewResults = resultRepo.getListByTestId(testId);
+        List<TestStudentAnswer> viewStudentAnswer = testStudentAnswerRepository.getStudentAnswerListByTest(testId);
+        List<TestQuestion> viewQuestions = questionRepo.getQuestionByTest(testId);
+        List<StudentListForExamResult> studentListForExamResults = new ArrayList<>();
 
-    // String examTitle = viewTest.getDescription();
-    // String examStatus = viewTest.getExam_status();
+        String examTitle = viewTest.getDescription();
+        String examStatus = viewTest.getExam_status();
 
-    // Date examDate = viewTest.getDate();
-    // LocalDate localExamDate =
-    // examDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        Date examDate = viewTest.getDate();
+        LocalDate localExamDate = examDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
-    // String startTime = viewTest.getStart_time();
-    // String endTime = viewTest.getEnd_time();
+        String startTime = viewTest.getStart_time();
+        String endTime = viewTest.getEnd_time();
 
-    // int totalQuestion = 0;
-    // int correctAnswer = 0;
+        int totalQuestion = 0;
+        int correctAnswer = 0;
 
-    // int totalExamineeList = 0;
-    // int answeredStudents = 0;
-    // int passedStudents = 0;
+        int totalExamineeList = 0;
+        int answeredStudents = 0;
+        int passedStudents = 0;
 
-    // if (!viewTestStudents.isEmpty()) {
+        if (!viewTestStudents.isEmpty()) {
 
-    // for (TestStudent testStudent : viewTestStudents) {
-    // totalExamineeList = totalExamineeList + 1;
-    // if (!viewResults.isEmpty()) {
+            for (TestStudent testStudent : viewTestStudents) {
+                totalExamineeList = totalExamineeList + 1;
+                if (!viewResults.isEmpty()) {
 
-    // for (Result result : viewResults) {
-    // if (testStudent.getUser().getAccountId()
-    // .equals(result.getUser().getUserAccount().getAccountId())
-    // && result.getResultMark() != 0) {
-    // answeredStudents = answeredStudents + 1;
+                    for (Result result : viewResults) {
+                        if (testStudent.getUserInfo().getUid()
+                                .equals(result.getUserInfo().getUid())
+                                && result.getResultMark() != 0) {
+                            answeredStudents = answeredStudents + 1;
 
-    // }
-    // if (testStudent.getUser().getAccountId()
-    // .equals(result.getUser().getUserAccount().getAccountId())
-    // && result.getResult().equals("Pass")) {
-    // passedStudents = passedStudents + 1;
+                        }
+                        if (testStudent.getUserInfo().getUid()
+                                .equals(result.getUserInfo().getUid())
+                                && result.getResult().equals("Pass")) {
+                            passedStudents = passedStudents + 1;
 
-    // }
-    // }
+                        }
+                    }
 
-    // }
+                }
 
-    // }
+            }
 
-    // int notAnswered = totalExamineeList - answeredStudents;
-    // double passRate = ((double) passedStudents / (double) totalExamineeList) *
-    // 100;
-    // String formattedPassedPercent = String.format("%.1f", passRate);
+            int notAnswered = totalExamineeList - answeredStudents;
+            double passRate = ((double) passedStudents / (double) totalExamineeList) *
+                    100;
+            String formattedPassedPercent = String.format("%.1f", passRate);
 
-    // model.addAttribute("examTitle", examTitle);
-    // model.addAttribute("examStatus", examStatus);
-    // model.addAttribute("totalExamineeList", totalExamineeList);
-    // model.addAttribute("answeredStudents", answeredStudents);
-    // model.addAttribute("passRate", formattedPassedPercent);
-    // model.addAttribute("examDate", localExamDate);
-    // model.addAttribute("notAnswered", notAnswered);
-    // model.addAttribute("startTime", startTime);
-    // model.addAttribute("endTime", endTime);
-    // }
+            model.addAttribute("examTitle", examTitle);
+            model.addAttribute("examStatus", examStatus);
+            model.addAttribute("totalExamineeList", totalExamineeList);
+            model.addAttribute("answeredStudents", answeredStudents);
+            model.addAttribute("passRate", formattedPassedPercent);
+            model.addAttribute("examDate", localExamDate);
+            model.addAttribute("notAnswered", notAnswered);
+            model.addAttribute("startTime", startTime);
+            model.addAttribute("endTime", endTime);
+        }
 
-    // List<String> trueArr = new ArrayList<>();
+        List<String> trueArr = new ArrayList<>();
 
-    // if (!viewQuestions.isEmpty()) {
+        if (!viewQuestions.isEmpty()) {
 
-    // for (Question question : viewQuestions) {
-    // totalQuestion = 0;
-    // correctAnswer = 0;
+            for (TestQuestion question : viewQuestions) {
+                totalQuestion = 0;
+                correctAnswer = 0;
 
-    // if (!viewStudentAnswer.isEmpty()) {
+                if (!viewStudentAnswer.isEmpty()) {
 
-    // for (StudentAnswer studentAnswer : viewStudentAnswer) {
-    // if
-    // (question.getQuestionId().equals(studentAnswer.getQuestion().getQuestionId()))
-    // {
-    // totalQuestion = totalQuestion + 1;
-    // if
-    // (question.getQuestionId().equals(studentAnswer.getQuestion().getQuestionId())
-    // && studentAnswer.getCorrectStatus().equals("correct")) {
-    // correctAnswer = correctAnswer + 1;
-    // }
+                    for (TestStudentAnswer studentAnswer : viewStudentAnswer) {
+                        if (question.getId().equals(studentAnswer.getQuestion().getId())) {
+                            totalQuestion = totalQuestion + 1;
+                            if (question.getId().equals(studentAnswer.getQuestion().getId())
+                                    && studentAnswer.getCorrect_status().equals("TRUE")) {
+                                correctAnswer = correctAnswer + 1;
+                            }
 
-    // }
-    // }
+                        }
+                    }
 
-    // }
-    // if (totalQuestion != 0) {
-    // double truePercent = ((double) correctAnswer / (double) totalQuestion) * 100;
-    // String formattedPercent = String.format("%.2f", truePercent);
+                }
+                if (totalQuestion != 0) {
+                    double truePercent = ((double) correctAnswer / (double) totalQuestion) * 100;
+                    String formattedPercent = String.format("%.2f", truePercent);
 
-    // trueArr.add(formattedPercent);
-    // }
+                    trueArr.add(formattedPercent);
+                }
 
-    // }
+            }
 
-    // }
-    // model.addAttribute("trueArr", trueArr);
+        }
+        model.addAttribute("trueArr", trueArr);
 
-    // if (!viewTestStudents.isEmpty()) {
+        if (!viewTestStudents.isEmpty()) {
 
-    // for (TestStudent testStudent : viewTestStudents) {
-    // String studentEmail = testStudent.getUser().getMail();
-    // String studentName = testStudent.getUser().getUserInfo().getUserName();
-    // String studentPhone = testStudent.getUser().getUserInfo().getPhoneNo();
+            for (TestStudent testStudent : viewTestStudents) {
+                String studentEmail = testStudent.getUserInfo().getUserAccount().getMail();
+                String studentName = testStudent.getUserInfo().getUserName();
+                String studentPhone = testStudent.getUserInfo().getPhoneNo();
 
-    // Integer maxMarks = 0;
-    // for (Question checkQuestionTable : viewQuestions) {
-    // int marksForEachQuest = checkQuestionTable.getMaximumMark();
-    // maxMarks += marksForEachQuest;
-    // }
-    // Long userId = testStudent.getUser().getAccountId();
+                Integer maxMarks = 0;
+                for (TestQuestion checkQuestionTable : viewQuestions) {
+                    int marksForEachQuest = checkQuestionTable.getMaximum_mark();
+                    maxMarks += marksForEachQuest;
+                }
+                Long userId = testStudent.getUserInfo().getUid();
 
-    // Result viewExamResult = resultRepo.getResultByTestIdAndUser(testId, userId);
+                Result viewExamResult = resultRepo.getResultByTestIdAndUser(testId, userId);
 
-    // if (viewExamResult != null) {
-    // Integer stuMarks = viewExamResult.getResultMark();
-    // String examResult = viewExamResult.getResult();
+                if (viewExamResult != null) {
+                    Integer stuMarks = viewExamResult.getResultMark();
+                    String examResult = viewExamResult.getResult();
 
-    // Long uid = testStudent.getUser().getAccountId();
-    // UserInfo userInfo = userRepo.getById(uid);
-    // try {
-    // FileInfo profilePic = storageService.loadProfileAsFileInfo(userInfo);
-    // // model.addAttribute("profilePic", profilePic);
-    // studentListForExamResults.add(new StudentListForExamResult(studentName,
-    // studentEmail,
-    // studentPhone, examResult, stuMarks, maxMarks, profilePic));
-    // model.addAttribute("students", studentListForExamResults);
-    // } catch (Exception e) {
-    // e.printStackTrace();
-    // logger.info("unable to get profile {}", uid);
-    // }
+                    Long uid = testStudent.getUserInfo().getUid();
+                    UserInfo userInfo = userRepo.getById(uid);
+                    try {
+                        FileInfo profilePic = storageService.loadProfileAsFileInfo(userInfo);
+                        // model.addAttribute("profilePic", profilePic);
+                        studentListForExamResults.add(new StudentListForExamResult(studentName,
+                                studentEmail,
+                                studentPhone, examResult, stuMarks, maxMarks, profilePic));
+                        model.addAttribute("students", studentListForExamResults);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        logger.info("unable to get profile {}", uid);
+                    }
 
-    // }
+                }
 
-    // // if (!viewResults.isEmpty()) {
+                // if (!viewResults.isEmpty()) {
 
-    // // for (Result result : viewResults) {
-    // // if (testStudent.getUser().getAccountId()
-    // // .equals(result.getUser().getUserAccount().getAccountId())
-    // // && result.getResultMark() != 0) {
-    // // answeredStudents = answeredStudents + 1;
+                // for (Result result : viewResults) {
+                // if (testStudent.getUser().getAccountId()
+                // .equals(result.getUser().getUserAccount().getAccountId())
+                // && result.getResultMark() != 0) {
+                // answeredStudents = answeredStudents + 1;
 
-    // // }
-    // // if (testStudent.getUser().getAccountId()
-    // // .equals(result.getUser().getUserAccount().getAccountId())
-    // // && result.getResult().equals("PASS")) {
-    // // passedStudents = passedStudents + 1;
+                // }
+                // if (testStudent.getUser().getAccountId()
+                // .equals(result.getUser().getUserAccount().getAccountId())
+                // && result.getResult().equals("PASS")) {
+                // passedStudents = passedStudents + 1;
 
-    // // }
-    // // }
+                // }
+                // }
 
-    // // }
+                // }
 
-    // }
+            }
 
-    // }
+        }
 
-    // return "AT0008_ExamResultList";
-    // }
+        return "AT0008_ExamResultList";
+    }
 
 }

@@ -200,6 +200,8 @@
         crossorigin="anonymous"></script>
 
     <script th:inline="javascript">
+        var role = /*[[${user_role}]]*/ "default";
+        console.log(role);
         var mode = "create";
         var question_id;
         let createExamContainer = document.querySelector('.create-exam-container');
@@ -245,7 +247,7 @@
 
         var singleCount = 1;
         singleAddOption.addEventListener('click', () => {
-            $('#single_answer_choice').append('<div class="singleCounter" id="' + singleCount + '"></div>' +
+            $('#single_answer_choice').append('<div class="singleCounter" id="' + singleCount + '">' +
                 '<div class="row align-items-center mt-2 shadow-sm">' +
                 '<div class="col-10">' +
                 '<input type="text" class="form-control" placeholder="option ' + singleCount + '" id="text_option_' + singleCount + '"' +
@@ -260,16 +262,16 @@
                 '<div class="col-1 px-1">' +
                 '<div class="d-flex justify-content-center align-items-center bg-danger text-white rounded-circle ms-2"' +
                 'style="width: 20px; height: 20px; cursor: pointer" id="radio_delete_' + singleCount + '">' +
-                '<i class="fa-solid fa-xmark"></i>' +
+                '<i class="fa-solid fa-xmark" onclick="deleteRow(' + singleCount + ')"></i>' +
                 '</div >' +
                 '</div>' +
-                '</div>');
+                '</div></div>');
             singleCount++;
         })
 
         var multipleCount = 1;
         multipleAddOption.addEventListener('click', () => {
-            $('#multiple_answer_choice').append('<div class="multiCounter" id="' + multipleCount + '"></div>' +
+            $('#multiple_answer_choice').append('<div class="multiCounter" id="' + multipleCount + '">' +
                 '<div class="row align-items-center mt-2 shadow-sm">' +
                 '<div class="col-10">' +
                 '<input type="text" class="form-control" placeholder="option ' + multipleCount + '" id="check_text_option_' + multipleCount + '" />' +
@@ -283,10 +285,10 @@
                 '<div class="col-1 px-1">' +
                 '<div class="d-flex justify-content-center align-items-center bg-danger text-white rounded-circle ms-2"' +
                 'style="width: 20px; height: 20px; cursor: pointer" id="check_delete_' + multipleCount + '">' +
-                '<i class="fa-solid fa-xmark"></i>' +
+                '<i class="fa-solid fa-xmark" onclick="deleteRow(' + multipleCount + ')"></i>' +
                 '</div >' +
                 '</div>' +
-                '</div>');
+                '</div></div>');
             multipleCount++;
         })
 
@@ -354,11 +356,16 @@
             if (file != null) {
                 formData.append('question_materials', file);
             }
-
+            var url;
+            if (role == "TEACHER") {
+                url = "teacher";
+            } else {
+                url = "admin";
+            }
             formData.append('maximum_mark', parseInt(document.getElementById("passing_score").value));
             if (mode == 'create') {
                 var xhr = new XMLHttpRequest();
-                xhr.open("POST", "https://localhost:8080/admin/create-question", true);
+                xhr.open("POST", "https://localhost:8080/" + url + "/create-question", true);
                 xhr.onload = function () {
                     window.location.reload();
                 };
@@ -366,7 +373,7 @@
             } else {
                 formData.append('question_id', parseInt(question_id))
                 var xhr = new XMLHttpRequest();
-                xhr.open("POST", "https://localhost:8080/admin/edit-question", true);
+                xhr.open("POST", "https://localhost:8080/" + url + "/edit-question", true);
                 xhr.onload = function () {
                     window.location.reload();
                 };
@@ -387,6 +394,7 @@
             question_description.value = question.question_text;
 
             var question_type = document.getElementById("answer_Type");
+            console.log(question.question_type);
             if (question.question_type == "SINGLE_ANSWER") {
                 question_type.selectedIndex = 0
                 singleAnswer.classList.remove('d-none')
@@ -409,7 +417,7 @@
                     document.getElementById("radio_option_0").checked = true;
                 }
                 for (var i = 1; i < question.choices.length; i++) {
-                    $('#single_answer_choice').append('<div class="singleCounter" id="' + i + '"></div>' +
+                    $('#single_answer_choice').append('<div class="singleCounter" id="' + i + '">' +
                         '<div class="row align-items-center mt-2 shadow-sm">' +
                         '<div class="col-10">' +
                         '<input type="text" class="form-control" placeholder="option ' + i + '" id="text_option_' + i + '"' +
@@ -424,10 +432,10 @@
                         '<div class="col-1 px-1">' +
                         '<div class="d-flex justify-content-center align-items-center bg-danger text-white rounded-circle ms-2"' +
                         'style="width: 20px; height: 20px; cursor: pointer" id="radio_delete_' + i + '">' +
-                        '<i class="fa-solid fa-xmark"></i>' +
+                        '<i class="fa-solid fa-xmark" onclick="deleteRow(' + i + ')"></i>' +
                         '</div >' +
                         '</div>' +
-                        '</div>');
+                        '</div></div>');
                     document.getElementById("text_option_" + i).value = question.choices[i].choice;
                     if (question.choices[i].correct == true) {
                         document.getElementById("radio_option_" + i).checked = true;
@@ -439,7 +447,7 @@
                     document.getElementById("check_option_0").checked = true;
                 }
                 for (var i = 1; i < question.choices.length; i++) {
-                    $('#multiple_answer_choice').append('<div class="multiCounter" id="' + i + '"></div>' +
+                    $('#multiple_answer_choice').append('<div class="multiCounter" id="' + i + '">' +
                         '<div class="row align-items-center mt-2 shadow-sm">' +
                         '<div class="col-10">' +
                         '<input type="text" class="form-control" placeholder="option ' + i + '" id="check_text_option_' + i + '" />' +
@@ -453,10 +461,10 @@
                         '<div class="col-1 px-1">' +
                         '<div class="d-flex justify-content-center align-items-center bg-danger text-white rounded-circle ms-2"' +
                         'style="width: 20px; height: 20px; cursor: pointer" id="check_delete_' + i + '">' +
-                        '<i class="fa-solid fa-xmark"></i>' +
+                        '<i class="fa-solid fa-xmark" onclick="deleteRow(' + i + ')"></i>' +
                         '</div >' +
                         '</div>' +
-                        '</div>');
+                        '</div></div>');
                     document.getElementById("check_text_option_" + i).value = question.choices[i].choice;
                     if (question.choices[i].correct == true) {
                         document.getElementById("check_option_" + i).checked = true;
@@ -465,7 +473,16 @@
             }
         }
 
-        function deleteQuestion(question) {
+        function deleteRow(index) {
+            var delete_row = document.getElementById(index);
+            var delete_row = document.getElementById(index);
+            var multiple_choice = document.getElementById('multiple_answer_choice');
+            var single_choice = document.getElementById('single_answer_choice');
+            if (delete_row.className == "multiCounter") {
+                multiple_choice.removeChild(delete_row);
+            } else {
+                single_choice.removeChild(delete_row);
+            }
         }
     </script>
 </body>
