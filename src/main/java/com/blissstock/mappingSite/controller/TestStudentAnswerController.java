@@ -1,6 +1,5 @@
 package com.blissstock.mappingSite.controller;
 
-import javax.mail.Multipart;
 import javax.validation.Valid;
 
 import org.json.JSONArray;
@@ -10,28 +9,21 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.blissstock.mappingSite.entity.Test;
 import com.blissstock.mappingSite.entity.TestQuestion;
 import com.blissstock.mappingSite.entity.TestQuestionCorrectAnswer;
 import com.blissstock.mappingSite.entity.TestStudentAnswer;
-import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.exceptions.UnauthorizedFileAccessException;
-import com.blissstock.mappingSite.model.FileInfo;
-import com.blissstock.mappingSite.model.QuestionAndCorrectAnswer;
 import com.blissstock.mappingSite.repository.TestQuestionCorrectAnswerRepositoy;
 import com.blissstock.mappingSite.repository.TestQuestionRepository;
 import com.blissstock.mappingSite.repository.TestRepository;
 import com.blissstock.mappingSite.repository.TestStudentAnswerRepository;
-import com.blissstock.mappingSite.repository.UserAccountRepository;
 import com.blissstock.mappingSite.repository.UserInfoRepository;
 import com.blissstock.mappingSite.service.StorageService;
 import com.blissstock.mappingSite.service.StorageServiceImpl;
-import com.blissstock.mappingSite.service.UserAccountControlService;
 import com.blissstock.mappingSite.service.UserSessionService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;

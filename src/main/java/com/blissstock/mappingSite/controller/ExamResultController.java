@@ -3,7 +3,6 @@ package com.blissstock.mappingSite.controller;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -15,16 +14,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-
-import com.blissstock.mappingSite.entity.CourseInfo;
-import com.blissstock.mappingSite.entity.JoinCourseUser;
 import com.blissstock.mappingSite.entity.Result;
 import com.blissstock.mappingSite.entity.Test;
 import com.blissstock.mappingSite.entity.TestQuestion;
 import com.blissstock.mappingSite.entity.TestStudent;
 import com.blissstock.mappingSite.entity.TestStudentAnswer;
-import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.model.FileInfo;
 import com.blissstock.mappingSite.model.StudentListForExamResult;
@@ -40,7 +34,6 @@ import com.blissstock.mappingSite.repository.UserRepository;
 import com.blissstock.mappingSite.service.StorageService;
 import com.blissstock.mappingSite.service.UserService;
 import com.blissstock.mappingSite.service.UserSessionService;
-import com.blissstock.mappingSite.enums.UserRole;
 
 @Controller
 public class ExamResultController {

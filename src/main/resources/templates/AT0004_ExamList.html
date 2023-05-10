@@ -80,7 +80,6 @@
       $("#filterbycourse").change(function () {
         var filterCourseDropdown = document.getElementById("filterbycourse");
         var filterCourseID = filterCourseDropdown.options[filterCourseDropdown.selectedIndex].id;
-        console.log(filterCourseID);
         window.location.href = "/teacher/exam?courseid=" + filterCourseID;
       });
     })
@@ -181,8 +180,7 @@
           document.getElementById("passing_score_number_limit").style.display = 'none';
         }
       }
-
-
+      
       var exam_start_hour = parseInt(exam_start_time.substr(0, 2));
       var exam_start_minutes = parseInt(exam_start_time.substr(3));
       var exam_end_hour = parseInt(exam_end_time.substr(0, 2));

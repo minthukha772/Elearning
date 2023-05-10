@@ -155,7 +155,10 @@ public class TestQuestionController {
 
                 JSONArray choiceArrary = new JSONArray(testQuestion.getChoices());
                 JSONArray answerArray = new JSONArray(testQuestionCorrectAnswer.getCorrectAnswer());
-                JSONArray studentchoiceArray = new JSONArray(testStudentAnswer.getStudent_answer());
+                JSONArray studentchoiceArray = new JSONArray();
+                if (testStudentAnswer != null) {
+                    studentchoiceArray = new JSONArray(testStudentAnswer.getStudent_answer());
+                }
                 for (int i = 0; i < choiceArrary.length(); i++) {
                     JSONObject choice = choiceArrary.getJSONObject(i);
                     String choiceData = choice.getString("choice");
@@ -169,12 +172,15 @@ public class TestQuestionController {
                     choices.set(correct, new StudentChoiceModel(correct, choice, true, false));
                 }
 
-                for (int k = 0; k < studentchoiceArray.length(); k++) {
-                    JSONObject answer = studentchoiceArray.getJSONObject(k);
-                    int student_choice = answer.getInt("student_choice");
-                    String choice = choices.get(student_choice).getChoice();
-                    Boolean correctAnswer = choices.get(student_choice).isCorrect();
-                    choices.set(student_choice, new StudentChoiceModel(student_choice, choice, correctAnswer, true));
+                if (testStudentAnswer != null) {
+                    for (int k = 0; k < studentchoiceArray.length(); k++) {
+                        JSONObject answer = studentchoiceArray.getJSONObject(k);
+                        int student_choice = answer.getInt("student_choice");
+                        String choice = choices.get(student_choice).getChoice();
+                        Boolean correctAnswer = choices.get(student_choice).isCorrect();
+                        choices.set(student_choice,
+                                new StudentChoiceModel(student_choice, choice, correctAnswer, true));
+                    }
                 }
 
                 for (int l = 0; l < choices.size(); l++) {
@@ -187,14 +193,16 @@ public class TestQuestionController {
             } else {
                 TestStudentAnswer testStudentAnswer = testStudentAnswerRepository.getStudentAnswer(student_id,
                         testQuestion.getId());
-                acquired_mark = testQuestion.getMaximum_mark();
-                long studentfileSeparator = Long.parseLong(test_id.toString()
-                        + testStudentAnswer.getQuestion().getId().toString() + student_id.toString());
-                studentAnswer = testStudentAnswer.getStudent_answer();
-                FileInfo studentAnswerFile = storageService.loadAnswermaterials(studentfileSeparator,
-                        testStudentAnswer.getStudent_answer_link());
-                studentAnswerURL = studentAnswerFile.getUrl();
-                student_answer_id = Integer.parseInt(testStudentAnswer.getId().toString());
+                if (testStudentAnswer != null) {
+                    acquired_mark = testQuestion.getMaximum_mark();
+                    long studentfileSeparator = Long.parseLong(test_id.toString()
+                            + testStudentAnswer.getQuestion().getId().toString() + student_id.toString());
+                    studentAnswer = testStudentAnswer.getStudent_answer();
+                    FileInfo studentAnswerFile = storageService.loadAnswermaterials(studentfileSeparator,
+                            testStudentAnswer.getStudent_answer_link());
+                    studentAnswerURL = studentAnswerFile.getUrl();
+                    student_answer_id = Integer.parseInt(testStudentAnswer.getId().toString());
+                }
             }
             QuestionAndCorrectAnswerAndStudentAnswer studentAnswerList = new QuestionAndCorrectAnswerAndStudentAnswer(
                     testQuestion.getId(),
@@ -321,9 +329,11 @@ public class TestQuestionController {
             @RequestParam(value = "questions_type") String questions_type,
             @RequestParam(value = "maximum_mark") Integer maximum_mark)
             throws ParseException, UnauthorizedFileAccessException {
+
         Long userID = getUid();
         String fileType = "BLANK";
         String originalFileName = "";
+        TestQuestion initQuestion = testQuestionRepository.getById(questionID);
         if (question_materials != null) {
             originalFileName = StringUtils.cleanPath(
                     question_materials.getOriginalFilename());
@@ -345,17 +355,27 @@ public class TestQuestionController {
             } else {
                 fileType = "VIDEO";
             }
+        } else {
+            fileType = initQuestion.getQuestion_materials_type();
+            originalFileName = initQuestion.getQuestion_materials();
         }
         Test test = testRepository.getTestByID(testID);
         TestQuestion testQuestion = new TestQuestion(questionID, test, question_text, originalFileName, fileType,
-                choices,
-                questions_type, maximum_mark);
+                choices, questions_type, maximum_mark);
         TestQuestion result = testQuestionRepository.save(testQuestion);
         TestQuestionCorrectAnswer testQuestionCorrectAnswer = testQuestionCorrectAnswerRepositoy
                 .getCorrectAnswerByQuestion(result.getId());
         TestQuestionCorrectAnswer correctAnswer = new TestQuestionCorrectAnswer(testQuestionCorrectAnswer.getId(),
                 result, answers);
         testQuestionCorrectAnswerRepositoy.save(correctAnswer);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @Valid
+    @GetMapping(value = { "/teacher/delete-question", "/admin/delete-question" })
+    private ResponseEntity deleteQuestionByQuestionID(@RequestParam(required = false) Long question_id) {
+        Integer deleteCorrectAnswer = testQuestionCorrectAnswerRepositoy.deleteByQuestionID(question_id);
+        Integer deleteQuestion = testQuestionRepository.deleteQuestionByID(question_id);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 

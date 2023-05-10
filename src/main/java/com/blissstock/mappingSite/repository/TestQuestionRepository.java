@@ -5,9 +5,11 @@ import com.blissstock.mappingSite.entity.TestQuestion;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public interface TestQuestionRepository extends JpaRepository<TestQuestion, Long> {
@@ -20,4 +22,9 @@ public interface TestQuestionRepository extends JpaRepository<TestQuestion, Long
 
     @Query(value = "Select count(id) from test_question where question_type='FREE_ANSWER'", nativeQuery = true)
     public Integer getFreeAnswerCount();
+
+    @Transactional
+    @Modifying
+    @Query(value = "delete from test_question where id = :id", nativeQuery = true)
+    public Integer deleteQuestionByID(@Param("id") Long id);
 }

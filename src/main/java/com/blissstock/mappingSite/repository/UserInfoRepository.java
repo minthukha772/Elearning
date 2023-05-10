@@ -23,4 +23,7 @@ public interface UserInfoRepository extends CrudRepository<UserInfo, Long> {
   UserInfo findByNameAndAccount(
       @Param("userName") String userName,
       @Param("accountId") Long accountId);
+
+  @Query(value = "select * from user_info, user_account where user_info.account_id = user_account.account_id and user_account.role = 'ROLE_STUDENT' and lower(user_name) like :userName%", nativeQuery = true)
+  public List<UserInfo> findByName(@Param("userName") String userName);
 }
