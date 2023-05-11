@@ -216,7 +216,7 @@ public class TestQuestionController {
         }
         model.addAttribute("test_id", test_id);
         model.addAttribute("questionList", questionAndCorrectAnswers);
-        model.addAttribute("testTime", test.getDate());
+        model.addAttribute("test_date", test.getDate());
         model.addAttribute("name", test.getUserInfo().getUserName());
         model.addAttribute("totalTest", testQuestions.size());
         model.addAttribute("freeTest", freeAnswerCount);
@@ -235,6 +235,7 @@ public class TestQuestionController {
     private String getStudentQuestions(@PathVariable Long test_id, Model model)
             throws ParseException, JsonMappingException, JsonProcessingException {
         List<QuestionAndCorrectAnswer> questionAndCorrectAnswers = new ArrayList<>();
+        Test test = testRepository.getTestByID(test_id);
         List<TestQuestion> testQuestions = testQuestionRepository.getQuestionByTest(test_id);
         for (TestQuestion testQuestion : testQuestions) {
             long fileSeparator = 100000L + test_id;
@@ -267,6 +268,9 @@ public class TestQuestionController {
                     testQuestion.getQuestion_type(), testQuestion.getMaximum_mark());
             questionAndCorrectAnswers.add(questionAndCorrectAnswer);
         }
+        model.addAttribute("test_date", test.getDate());
+        model.addAttribute("test_start_time", test.getStart_time());
+        model.addAttribute("test_end_time", test.getEnd_time());
         model.addAttribute("test_id", test_id);
         model.addAttribute("questionList", questionAndCorrectAnswers);
         return "ST0006_ExamQuestionListStudent.html";
