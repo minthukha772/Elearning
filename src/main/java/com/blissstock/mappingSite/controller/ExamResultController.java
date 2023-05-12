@@ -506,30 +506,8 @@ public class ExamResultController {
                     }
 
                 }
-
-                // if (!viewResults.isEmpty()) {
-
-                // for (Result result : viewResults) {
-                // if (testStudent.getUser().getAccountId()
-                // .equals(result.getUser().getUserAccount().getAccountId())
-                // && result.getResultMark() != 0) {
-                // answeredStudents = answeredStudents + 1;
-
-                // }
-                // if (testStudent.getUser().getAccountId()
-                // .equals(result.getUser().getUserAccount().getAccountId())
-                // && result.getResult().equals("PASS")) {
-                // passedStudents = passedStudents + 1;
-
-                // }
-                // }
-
-                // }
-
             }
-
         }
-
         return "AT0008_ExamResultList";
     }
 

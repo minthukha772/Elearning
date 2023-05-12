@@ -139,7 +139,13 @@
                                         <div th:if="${testquestion.question_type == 'FREE_ANSWER'}">
                                             <div th:if="${testquestion.question_type == 'FREE_ANSWER'}">
                                                 <input class="form-control" type="text"
+                                                    th:placeholder="${testquestion.acquired_mark}"
                                                     th:id="'acquired_mark_' + ${testquestion.id}">
+                                                <span th:id="'warning_' + ${testquestion.id}"
+                                                    style="color: red; display: none;">Acquired Mark must be number and
+                                                    not be greater
+                                                    than Maximum
+                                                    Mark</span>
                                                 <div class="text-end mt-2">
                                                     <input type="submit" value="Set as Marked"
                                                         class="btn-success border-0 rounded px-2"
@@ -172,13 +178,28 @@
         function setasmarked(test_question) {
             console.log(test_question);
             let formData = new FormData();
-            var acquired_mark = document.getElementById("acquired_mark_" + test_question.id).value;
+            var warning_message = document.getElementById("warning_" + test_question.id);
+            var acquired_mark = document.getElementById("acquired_mark_" + test_question.id);
+            if (isNaN(acquired_mark.value)) {
+                warning_message.style.display = "block";
+                return;
+            }
+            if (acquired_mark.value == "") {
+                warning_message.style.display = "block";
+                return;
+            }
+            if (acquired_mark.value > test_question.maximum_mark) {
+                warning_message.style.display = "block";
+                return;
+            }
             formData.append('id', parseInt(test_question.student_answer_id));
-            formData.append('acquired_mark', parseInt(acquired_mark));
+            formData.append('acquired_mark', parseInt(acquired_mark.value));
             var xhr = new XMLHttpRequest();
             xhr.open("POST", "https://localhost:8080/admin/mark-student-question", true);
             xhr.onload = () => {
-                console.log(xhr.status);
+                alert("Marked Successfully.");
+                warning_message.style.display = "none";
+                acquired_mark.placeholder = acquired_mark.value;
             }
             xhr.send(formData);
         }

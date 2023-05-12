@@ -194,7 +194,7 @@ public class TestQuestionController {
                 TestStudentAnswer testStudentAnswer = testStudentAnswerRepository.getStudentAnswer(student_id,
                         testQuestion.getId());
                 if (testStudentAnswer != null) {
-                    acquired_mark = testQuestion.getMaximum_mark();
+                    acquired_mark = testStudentAnswer.getAcquired_mark();
                     long studentfileSeparator = Long.parseLong(test_id.toString()
                             + testStudentAnswer.getQuestion().getId().toString() + student_id.toString());
                     studentAnswer = testStudentAnswer.getStudent_answer();
