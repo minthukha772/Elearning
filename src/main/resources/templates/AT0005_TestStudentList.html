@@ -64,7 +64,8 @@
             <div class="">
                 <small class="fw-bold text-success me-3"><span class="" th:text="${total_students}"></span> Students
                     Found</small>
-                <small class="fw-bold text-success"><span class="">40/50</span> Checked</small>
+                <small class="fw-bold text-success"><span th:text="${check_students}"></span>/<span
+                        th:text="${total_students}"></span> Checked</small>
             </div>
             <div class="bg-white d-flex align-items-center px-2 mt-3" id="student_search_box">
                 <i class="fa-solid fa-magnifying-glass me-1" id="student_search_icon"></i>
@@ -93,7 +94,9 @@
                                 <small class="fw-bold ph-no" th:text="${test_student.userInfo.phoneNo}"></small><br />
                                 <small class="fw-bold mail"
                                     th:text="${test_student.userInfo.userAccount.mail}"></small><br />
-                                <small class="fw-bold text-muted">Checked Questions ( <span class="">0/10</span>
+                                <small class="fw-bold text-muted">Checked Questions ( <span
+                                        th:text="${test_student.total_unmark_answer}"></span> / <span
+                                        th:text="${test_student.total_free_answer}"></span>
                                     )</small>
                                 <div class="text-end mt-2">
                                     <small class="fw-bold">

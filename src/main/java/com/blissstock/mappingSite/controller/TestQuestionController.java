@@ -134,8 +134,8 @@ public class TestQuestionController {
             throws ParseException, JsonMappingException, JsonProcessingException {
         List<QuestionAndCorrectAnswerAndStudentAnswer> questionAndCorrectAnswers = new ArrayList<>();
         List<TestQuestion> testQuestions = testQuestionRepository.getQuestionByTest(test_id);
-        Integer freeAnswerCount = testQuestionRepository.getFreeAnswerCount();
-        Integer markingCount = testStudentAnswerRepository.getMarkingQuestionCount();
+        Integer freeAnswerCount = testQuestionRepository.getFreeAnswerCount(test_id);
+        Integer markingCount = testStudentAnswerRepository.getMarkingQuestionCount(test_id);
         Test test = testRepository.getTestByID(test_id);
 
         for (TestQuestion testQuestion : testQuestions) {

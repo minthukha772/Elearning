@@ -142,23 +142,24 @@
         test_start_time = test_start_time + ":00";
         test_end_time = test_end_time + ":00";
 
+
+
         var date = test_date.slice(0, 10);
         var [year, month, day] = date.split("-");
         var [start_hour, start_minute, start_second] = test_start_time.split(":");
         var [end_hour, end_minute, end_second] = test_end_time.split(":");
 
-        
+
 
         function countdown() {
             const now = new Date();
             const enddateObject = new Date(year, month - 1, day, end_hour, end_minute, end_second);
             const remainingTime = enddateObject - now;
 
-            const seconds = Math.floor(remainingTime / 1000 % 60);
             const minutes = Math.floor(remainingTime / 1000 / 60 % 60);
             const hours = Math.floor(remainingTime / (1000 * 60 * 60) % 24);
 
-            document.getElementById("countdown").innerHTML = `${hours} hours ${minutes} minutes ${seconds} seconds`;
+            document.getElementById("countdown").innerHTML = `${hours} hours ${minutes} minutes`;
         }
 
         countdown();
@@ -166,6 +167,7 @@
 
         submit = document.getElementById("submit");
         submit.addEventListener('click', () => {
+
             questionList.forEach(question => {
                 let formData = new FormData();
                 student_choice = [];
@@ -204,6 +206,8 @@
                 xhr.open("POST", "https://localhost:8080/student/submit-answer", true);
                 xhr.send(formData);
             });
+            alert("Submitted Successfully.")
+            window.location.href = "/student/exam";
         })
     </script>
 </body>

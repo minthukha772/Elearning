@@ -54,7 +54,7 @@ public class TestStudentAnswerController {
 
     @Valid
     @PostMapping(value = { "/student/submit-answer" })
-    private ResponseEntity getQuestionsByTest(@RequestParam(value = "test_id") Long test_id,
+    private ResponseEntity submitAnswer(@RequestParam(value = "test_id") Long test_id,
             @RequestParam(value = "question_id") Long question_id,
             @RequestParam(value = "student_answer") String student_answer,
             @RequestParam(value = "answer_type") String answer_type,
@@ -87,10 +87,14 @@ public class TestStudentAnswerController {
             if (answerStatus == "TRUE") {
                 acquiredmarks = question.getMaximum_mark();
             }
-            TestStudentAnswer testStudentAnswer = new TestStudentAnswer(null, question.getTest(),
-                    student, question,
-                    student_answer, "", answerStatus, acquiredmarks, "MARKED");
-            testStudentAnswerRepository.save(testStudentAnswer);
+            TestStudentAnswer checkTestStudent = testStudentAnswerRepository
+                    .getStudentAnswerByQuestionID(question.getId(), student_id);
+            if (checkTestStudent == null) {
+                TestStudentAnswer testStudentAnswer = new TestStudentAnswer(null, question.getTest(),
+                        student, question,
+                        student_answer, "", answerStatus, acquiredmarks, "MARKED");
+                testStudentAnswerRepository.save(testStudentAnswer);
+            }
         } else {
             String originalFileName = StringUtils.cleanPath(
                     answer_material.getOriginalFilename());
@@ -100,12 +104,15 @@ public class TestStudentAnswerController {
                     StorageServiceImpl.ANSWER_MATERIAL_PATH,
                     true);
 
-            TestStudentAnswer testStudentAnswer = new TestStudentAnswer(null, question.getTest(),
-                    student, question,
-                    student_answer, originalFileName, "", 0, "MARKING");
-            testStudentAnswerRepository.save(testStudentAnswer);
+            TestStudentAnswer checkTestStudent = testStudentAnswerRepository
+                    .getStudentAnswerByQuestionID(question.getId(), student_id);
+            if (checkTestStudent == null) {
+                TestStudentAnswer testStudentAnswer = new TestStudentAnswer(null, question.getTest(),
+                        student, question,
+                        student_answer, originalFileName, "", 0, "MARKING");
+                testStudentAnswerRepository.save(testStudentAnswer);
+            }
         }
-
         return ResponseEntity.ok(HttpStatus.OK);
     }
 

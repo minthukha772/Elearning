@@ -20,8 +20,8 @@ public interface TestQuestionRepository extends JpaRepository<TestQuestion, Long
     @Query(value = "Select * from test_question where id = :id limit 1", nativeQuery = true)
     public TestQuestion getQuestionByID(@Param("id") Long id);
 
-    @Query(value = "Select count(id) from test_question where question_type='FREE_ANSWER'", nativeQuery = true)
-    public Integer getFreeAnswerCount();
+    @Query(value = "Select count(id) from test_question where question_type='FREE_ANSWER' and test_test_id = :test_id", nativeQuery = true)
+    public Integer getFreeAnswerCount(@Param("test_id") Long test_id);
 
     @Transactional
     @Modifying

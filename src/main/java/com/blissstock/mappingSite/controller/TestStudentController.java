@@ -1,6 +1,7 @@
 package com.blissstock.mappingSite.controller;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
 import org.json.JSONObject;
@@ -16,10 +17,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.JoinCourseUser;
 import com.blissstock.mappingSite.entity.Test;
+import com.blissstock.mappingSite.entity.TestQuestion;
 import com.blissstock.mappingSite.entity.TestStudent;
 import com.blissstock.mappingSite.entity.UserInfo;
+import com.blissstock.mappingSite.model.TestStudentWithMarkedCountModel;
 import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
+import com.blissstock.mappingSite.repository.TestQuestionRepository;
 import com.blissstock.mappingSite.repository.TestRepository;
+import com.blissstock.mappingSite.repository.TestStudentAnswerRepository;
 import com.blissstock.mappingSite.repository.TestStudentRepository;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
 import com.blissstock.mappingSite.repository.UserInfoRepository;
@@ -41,7 +46,13 @@ public class TestStudentController {
     TestStudentRepository testStudentRepository;
 
     @Autowired
+    TestStudentAnswerRepository testStudentAnswerRepository;
+
+    @Autowired
     TestRepository testRepository;
+
+    @Autowired
+    TestQuestionRepository testQuestionRepository;
 
     @Autowired
     JoinCourseUserRepository joinCourseUserRepository;
@@ -57,10 +68,35 @@ public class TestStudentController {
     private String getTestStudent(@PathVariable Long test_id, Model model)
             throws ParseException {
         List<TestStudent> testStudents = testStudentRepository.getStudentByTest(test_id);
+        List<TestStudentWithMarkedCountModel> testStudentList = new ArrayList<>();
+        int total_free_questions = testQuestionRepository.getFreeAnswerCount(test_id);
+        int checked_students = 0;
+        for (TestStudent testStudent : testStudents) {
+            Integer answerCount = testStudentAnswerRepository.getCountStudentAnswerListByTestAndStudent(test_id,
+                    testStudent.getUserInfo().getUid());
+            if (answerCount == 0) {
+                TestStudentWithMarkedCountModel testStudentWithMarkedCountModel = new TestStudentWithMarkedCountModel(
+                        testStudent.getId(), testStudent.getTest(), testStudent.getUserInfo(), total_free_questions,
+                        0);
+                testStudentList.add(testStudentWithMarkedCountModel);
+            } else {
+                int uncheck_free_questions = testStudentAnswerRepository.getUnCheckAnswerCountByTestAndStudent(test_id,
+                        testStudent.getUserInfo().getUid());
+                TestStudentWithMarkedCountModel testStudentWithMarkedCountModel = new TestStudentWithMarkedCountModel(
+                        testStudent.getId(), testStudent.getTest(), testStudent.getUserInfo(), total_free_questions,
+                        total_free_questions - uncheck_free_questions);
+                if (uncheck_free_questions == 0) {
+                    checked_students++;
+                }
+                testStudentList.add(testStudentWithMarkedCountModel);
+            }
+        }
+
         model.addAttribute("user_role", userSessionService.getRole());
         model.addAttribute("test_id", test_id);
-        model.addAttribute("test_students", testStudents);
+        model.addAttribute("test_students", testStudentList);
         model.addAttribute("total_students", testStudents.size());
+        model.addAttribute("check_students", checked_students);
         return "AT0005_TestStudentList.html";
     }
 

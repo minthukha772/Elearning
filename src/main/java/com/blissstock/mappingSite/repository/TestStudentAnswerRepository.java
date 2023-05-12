@@ -13,8 +13,14 @@ public interface TestStudentAnswerRepository extends JpaRepository<TestStudentAn
         public List<TestStudentAnswer> getStudentAnswerList(@Param("student_account_id") Long student_account_id);
 
         @Query(value = "Select * from test_student_answer where student_account_id = :student_account_id and test_test_id = :test_id", nativeQuery = true)
-        public List<TestStudentAnswer> getStudentAnswerListByTest(@Param("student_account_id") Long student_account_id,
+        public List<TestStudentAnswer> getStudentAnswerListByTestAndStudent(
+                        @Param("student_account_id") Long student_account_id,
                         @Param("test_id") Long test_id);
+
+        @Query(value = "Select count(id) from test_student_answer where student_account_id = :student_account_id and test_test_id = :test_id", nativeQuery = true)
+        public Integer getCountStudentAnswerListByTestAndStudent(
+                        @Param("test_id") Long test_id,
+                        @Param("student_account_id") Long student_account_id);
 
         @Query(value = "Select * from test_student_answer where test_test_id = :test_id", nativeQuery = true)
         public List<TestStudentAnswer> getStudentAnswerListByTest(@Param("test_id") Long test_id);
@@ -23,9 +29,17 @@ public interface TestStudentAnswerRepository extends JpaRepository<TestStudentAn
         public TestStudentAnswer getStudentAnswer(@Param("student_account_id") Long student_account_id,
                         @Param("question_id") Long question_id);
 
-        @Query(value = "Select count(id) from test_student_answer where marked_status = 'MARKING'", nativeQuery = true)
-        public Integer getMarkingQuestionCount();
+        @Query(value = "Select count(id) from test_student_answer where marked_status = 'MARKING' and test_test_id = :test_test_id", nativeQuery = true)
+        public Integer getMarkingQuestionCount(@Param("test_test_id") Long test_id);
 
         @Query(value = "Select * from test_student_answer where id = :id limit 1", nativeQuery = true)
         public TestStudentAnswer getStudentAnswerByID(@Param("id") Long id);
+
+        @Query(value = "Select * from test_student_answer where question_id = :question_id and student_account_id = :student_account_id limit 1", nativeQuery = true)
+        public TestStudentAnswer getStudentAnswerByQuestionID(@Param("question_id") Long question_id,
+                        @Param("student_account_id") Long student_account_id);
+
+        @Query(value = "Select count(id) from test_student_answer where marked_status = 'MARKING' and test_test_id = :test_test_id and student_account_id = :student_account_id", nativeQuery = true)
+        public Integer getUnCheckAnswerCountByTestAndStudent(@Param("test_test_id") Long test_test_id,
+                        @Param("student_account_id") Long student_account_id);
 }

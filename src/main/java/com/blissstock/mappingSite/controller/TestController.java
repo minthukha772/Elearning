@@ -491,7 +491,7 @@ public class TestController {
                             student.getUserInfo().getUid());
                     if (viewExamResult == null) {
                         List<TestStudentAnswer> studentAnswerList = testStudentAnswerRepository
-                                .getStudentAnswerListByTest(student.getUserInfo().getUid(),
+                                .getStudentAnswerListByTestAndStudent(student.getUserInfo().getUid(),
                                         test_id);
                         for (TestStudentAnswer studentAnswer : studentAnswerList) {
                             int acquired_mark = studentAnswer.getAcquired_mark();
@@ -573,7 +573,7 @@ public class TestController {
                             student.getUserInfo().getUid());
                     if (viewExamResult == null) {
                         List<TestStudentAnswer> studentAnswerList = testStudentAnswerRepository
-                                .getStudentAnswerListByTest(student.getUserInfo().getUid(),
+                                .getStudentAnswerListByTestAndStudent(student.getUserInfo().getUid(),
                                         test_id);
                         for (TestStudentAnswer studentAnswer : studentAnswerList) {
                             int acquired_mark = studentAnswer.getAcquired_mark();
