@@ -43,6 +43,7 @@
                             Audio Upload Box</small></label>
                     <input type="file" class="form-control" id="question_upload_box" />
                 </div>
+                <p style="color: red; display: none;" id="description_warning">Please insert description or file</p>
                 <div class="input-group-sm mb-2 shadow-sm">
                     <label for="answer_Type" class="form-label fw-bold mb-1"><small>Answer Type <span
                                 class="text-danger">*</span></small></label>
@@ -73,11 +74,11 @@
                     </div>
                     <div class="" id="single_answer_choice">
                     </div>
+                    <p style="color: red; display: none;" id="warning"></p>
                     <div class="btn btn-sm btn-success mt-3" id="single_add_option">
                         <small>+ Add Option</small>
                     </div>
                 </div>
-
 
                 <div class="input-group-sm mb-2 d-none fadeIn" id="multiple_answer">
                     <div class="multiCounter" id="0"></div>
@@ -106,6 +107,7 @@
                     <input type="text" class="form-control" id="passing_score"
                         placeholder="Enter minimum passing score" />
                 </div>
+                <p style="color: red; display: none;" id="passing_score_warning">Please insert passing score</p>
                 <div class="input-group-sm text-end">
                     <input type="submit" class="form-control btn btn-sm btn-success" id="submit" style="width: 100px" />
                 </div>
@@ -324,16 +326,25 @@
         submit.addEventListener('click', () => {
             choices = [];
             answers = [];
+            var choices_string;
+            var answers_string;
             let formData = new FormData();
             var test_id = /*[[${test_id}]]*/ null
 
             var question_description = document.getElementById("question_description").value;
+            var description_warning = document.getElementById("description_warning");
+            var passing_score_warning = document.getElementById("passing_score_warning");
+            if (question_description == null || question_description == "") {
+                description_warning.style.display = "block";
+                return;
+            }
             var question_materials = document.getElementById("question_upload_box");
             var question_mark = document.getElementById("passing_score").value;
             var singlechoice = document.getElementById("single_answer_choice");
             var singlecounters = Array.from(document.getElementsByClassName("singleCounter"));
             var multiplecounters = Array.from(document.getElementsByClassName("multiCounter"));
             var answertype = document.getElementById("answer_Type");
+            var warning = document.getElementById("warning");
             if (answerType.value == 1) {
                 answerType = "SINGLE_ANSWER";
             } else if (answerType.value == 2) {
@@ -354,8 +365,9 @@
                         choices.push(choice);
                         index++;
                     });
-                    choices = JSON.stringify(choices);
-                    answers = JSON.stringify(answers);
+                    choices_string = JSON.stringify(choices);
+                    answers_string = JSON.stringify(answers);
+                    console.log(answers);
                 } else {
                     var index = 0;
                     multiplecounters.forEach(counter => {
@@ -368,18 +380,36 @@
                         choices.push(choice);
                         index++;
                     });
-                    choices = JSON.stringify(choices);
-                    answers = JSON.stringify(answers);
+                    choices_string = JSON.stringify(choices);
+                    answers_string = JSON.stringify(answers);
                 }
             }
+            if (choices.length == 1) {
+                warning.innerHTML = "Please Add At Least 2 Choices";
+                warning.style.display = "block";
+                return;
+            }
+            // console.log(answers);
+            // if (answers.length == 0) {
+            //     warning.innerHTML = "Please Add Answer";
+            //     warning.style.display = "block";
+            //     return;
+            // }
+            if (question_mark == null || question_mark == "") {
+                passing_score_warning.style.display = "block";
+                return;
+            }
+            warning.style.display = "none";
+            description_warning.style.display = "none";
+            passing_score_warning.style.display = "none";
             var file = question_materials.files[0];
 
             formData.append('test_id', parseInt(test_id));
             formData.append('question_text', question_description);
             formData.append('questions_type', answerType);
             if (answerType != "FREE_ANSWER") {
-                formData.append('choices', choices);
-                formData.append('answers', answers);
+                formData.append('choices', choices_string);
+                formData.append('answers', answers_string);
             }
             if (file != null) {
                 formData.append('question_materials', file);

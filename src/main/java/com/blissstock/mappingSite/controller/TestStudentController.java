@@ -65,12 +65,19 @@ public class TestStudentController {
 
     @Valid
     @GetMapping(value = { "/teacher/exam/{test_id}/examinee", "/admin/exam/{test_id}/examinee" })
-    private String getTestStudent(@PathVariable Long test_id, Model model)
+    private String getTestStudent(@PathVariable Long test_id, Model model,
+            @RequestParam(required = false) String name)
             throws ParseException {
-        List<TestStudent> testStudents = testStudentRepository.getStudentByTest(test_id);
+        List<TestStudent> testStudents = new ArrayList<>();
         List<TestStudentWithMarkedCountModel> testStudentList = new ArrayList<>();
-        int total_free_questions = testQuestionRepository.getFreeAnswerCount(test_id);
         int checked_students = 0;
+        int total_free_questions = 0;
+        if (name == null) {
+            testStudents = testStudentRepository.getStudentByTest(test_id);
+        } else {
+            testStudents = testStudentRepository.findByNameandTestId(name, test_id);
+        }
+        total_free_questions = testQuestionRepository.getFreeAnswerCount(test_id);
         for (TestStudent testStudent : testStudents) {
             Integer answerCount = testStudentAnswerRepository.getCountStudentAnswerListByTestAndStudent(test_id,
                     testStudent.getUserInfo().getUid());
@@ -80,7 +87,8 @@ public class TestStudentController {
                         0);
                 testStudentList.add(testStudentWithMarkedCountModel);
             } else {
-                int uncheck_free_questions = testStudentAnswerRepository.getUnCheckAnswerCountByTestAndStudent(test_id,
+                int uncheck_free_questions = testStudentAnswerRepository.getUnCheckAnswerCountByTestAndStudent(
+                        test_id,
                         testStudent.getUserInfo().getUid());
                 TestStudentWithMarkedCountModel testStudentWithMarkedCountModel = new TestStudentWithMarkedCountModel(
                         testStudent.getId(), testStudent.getTest(), testStudent.getUserInfo(), total_free_questions,
@@ -91,7 +99,6 @@ public class TestStudentController {
                 testStudentList.add(testStudentWithMarkedCountModel);
             }
         }
-
         model.addAttribute("user_role", userSessionService.getRole());
         model.addAttribute("test_id", test_id);
         model.addAttribute("test_students", testStudentList);
@@ -105,6 +112,15 @@ public class TestStudentController {
     private ResponseEntity getCustomStudent(@RequestParam(value = "name") String name)
             throws ParseException {
         List<UserInfo> testStudents = userInfoRepository.findByName(name);
+        return ResponseEntity.ok(testStudents);
+    }
+
+    @Valid
+    @GetMapping(value = { "/teacher/get-student-exam", "/admin/get-student-exam" })
+    private ResponseEntity getCustomStudentExam(@RequestParam(value = "name") String name,
+            @RequestParam(value = "test_id") Long test_id)
+            throws ParseException {
+        List<UserInfo> testStudents = userInfoRepository.findByNameandTestId(name, test_id);
         return ResponseEntity.ok(testStudents);
     }
 

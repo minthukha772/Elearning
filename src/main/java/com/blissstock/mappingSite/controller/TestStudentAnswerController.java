@@ -96,13 +96,16 @@ public class TestStudentAnswerController {
                 testStudentAnswerRepository.save(testStudentAnswer);
             }
         } else {
-            String originalFileName = StringUtils.cleanPath(
-                    answer_material.getOriginalFilename());
-            long studentfileSeparator = Long.parseLong(test_id.toString()
-                    + question_id.toString() + student_id.toString());
-            storageService.storeQuestionMaterials(studentfileSeparator, answer_material,
-                    StorageServiceImpl.ANSWER_MATERIAL_PATH,
-                    true);
+            String originalFileName = "";
+            if (answer_material != null) {
+                originalFileName = StringUtils.cleanPath(
+                        answer_material.getOriginalFilename());
+                long studentfileSeparator = Long.parseLong(test_id.toString()
+                        + question_id.toString() + student_id.toString());
+                storageService.storeQuestionMaterials(studentfileSeparator, answer_material,
+                        StorageServiceImpl.ANSWER_MATERIAL_PATH,
+                        true);
+            }
 
             TestStudentAnswer checkTestStudent = testStudentAnswerRepository
                     .getStudentAnswerByQuestionID(question.getId(), student_id);

@@ -103,7 +103,6 @@
             <div id="contentToDownload" class="exam-result card mx-auto shadow my-5">
                 <div class="card-body px-3">
                     <h5 class="text-center text-decoration-underline fw-bold">
-
                         Exam Results For <span th:text="${courseName}"></span>
                     </h5>
 
@@ -134,7 +133,7 @@
                         </div>
                     </div>
 
-                    <div class="py-3 border-bottom">
+                     <div class="py-3 border-bottom">
                         <div class="">
                             <span class="fw-bold">Exam Date</span>
                             <span class="fw-bold mx-2 success-text">:</span>
@@ -185,7 +184,7 @@
                         <div class="btn btn-sm btn-dark">
                             <i class="fa-solid fa-backward me-2"></i>Back
                         </div>
-                        <div id="downloadPdf" class="btn btn-sm success-bg text-white">
+                        <div id="downloadPdf" class="btn btn-sm success-bg text-black">
                             <i class="fa-solid fa-file-arrow-down me-2"></i>Download
                         </div>
                         <script>
@@ -206,8 +205,6 @@
                                 // Create a worker and generate the PDF
                                 html2pdf().set(opt).from(element).save();
                             });
-
-
                         </script>
                     </div>
                 </div>

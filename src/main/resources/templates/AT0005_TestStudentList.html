@@ -22,7 +22,7 @@
     <div th:replace="@{fragments/nav}"></div>
     <!-- add student modal box start  -->
     <div class="add-student-box min-vh-100 position-fixed w-100 top-0 d-flex justify-content-center align-items-center d-none"
-        style="z-index: 1000;background: rgba(0,0,0,0.4);">
+        style="z-index: 1000;background: rgba(0,0,0,0.4); max-height: 500px; overflow-y: auto;">
         <div class="add-student-content px-2 py-3 rounded shadow-sm bg-white">
             <div class="d-flex justify-content-end">
                 <div class="bg-danger text-white rounded-circle d-flex justify-content-center align-items-center"
@@ -70,10 +70,14 @@
             <div class="bg-white d-flex align-items-center px-2 mt-3" id="student_search_box">
                 <i class="fa-solid fa-magnifying-glass me-1" id="student_search_icon"></i>
                 <input type="search" class="px-2 py-1 border-0 w-100" placeholder="Enter StudentName"
-                    id="student_search">
+                    id="search_student">
             </div>
         </div>
 
+        <div class="d-flex flex-wrap align-items-center justify-content-end mt-3">
+            <a th:href="'/admin/exam/'+${test_id}+'/examinee'" style="padding-right: 10px; padding-top: 5px;">Clear</a>
+            <div class="btn btn-success btn-sm mt-2" id="search_examinee">Search</div>
+        </div>
         <!-- student result start  -->
         <section class="my-3">
             <div class="d-flex flex-wrap align-items-center justify-content-start">
@@ -179,6 +183,13 @@
                         }
                     })
             }
+        })
+
+        var search_examinee = document.getElementById("search_examinee");
+        search_examinee.addEventListener("click", function () {
+            var search_student = document.getElementById("search_student");
+            var search_examinee_name = search_student.value;
+            window.location.href = "/" + url + "/exam/" + test_id + "/examinee?name=" + search_examinee_name;
         })
 
         function setStudentData(student) {
