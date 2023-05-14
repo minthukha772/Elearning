@@ -85,5 +85,14 @@ public class Result {
         this.teacherComment = teacherComment;
     }
 
+    public Result(Long resultId, Test test, UserInfo user, Integer resultMark, String result, String teacherComment) {
+        this.resultId = resultId;
+        this.test = test;
+        this.user = user;
+        this.resultMark = resultMark;
+        this.result = result;
+        this.teacherComment = teacherComment;
+    }
+
 }
 

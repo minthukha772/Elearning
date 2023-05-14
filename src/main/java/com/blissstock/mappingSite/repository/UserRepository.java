@@ -21,7 +21,7 @@ public interface UserRepository extends JpaRepository<UserInfo, Long> {
     // public List<UserInfo> findByUserRoleI(@Param("role") String role);
     // public List<UserInfo> findByUserRoleI();
     // public List<UserInfo> findByUserRoleI();
-    
+
     // @Query(value ="SELECT i.user_name,i.user_account_mail,u.account_status FROM
     // user_info i, user_account u, join_course_user j WHERE j.course_id=50004 AND
     // j.uid=i.uid AND j.uid=u.account_id",nativeQuery=true )
@@ -36,18 +36,20 @@ public interface UserRepository extends JpaRepository<UserInfo, Long> {
     // public List<UserInfo> findByCourse(@Param("course_id") Long course_id);
     @Query(value = "SELECT i.uid,i.user_name FROM user_info i, join_user_course j WHERE j.course_id=50004 AND i.uid=j.uid;", nativeQuery = true)
     public List<UserInfo> findByCourseI();
-    
+
     @Query(nativeQuery = true, value = "delete from user_info  where uid =:userId")
     public UserInfo removeById(@Param("userId") Long userId);
-    
+
     @Query(nativeQuery = true, value = "SELECT * FROM user_info WHERE user_account_mail=:email")
     public UserInfo findUserInfoByEmail(@Param("email") String email);
-    
+
     @Query(nativeQuery = true, value = "select * from user_info where user_name=:userName and user_account_account_id=:accountId")
     UserInfo findByNameAndAccount(
-    @Param("userName") String userName,
-    @Param("accountId") Long accountId);
-    
+            @Param("userName") String userName,
+            @Param("accountId") Long accountId);
 
-    
+    @Query(nativeQuery = true, value = "select * from user_info where account_id=:accountId limit 1")
+    UserInfo findByAccount(
+            @Param("accountId") Long accountId);
+
 }

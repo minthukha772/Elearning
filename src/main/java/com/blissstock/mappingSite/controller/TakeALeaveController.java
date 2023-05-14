@@ -35,198 +35,202 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class TakeALeaveController {
-    /*@RequestMapping(value="TakeALeave")
-	public String TakeALeave(@RequestParam(value = "record_date", defaultValue="Japanese N3") String course, @RequestParam(value = "user_name",defaultValue = "Nani") String name, Model model) {
-		model.addAttribute("course",course);
-		model.addAttribute("name", name);
-		return "LeaveScreen";
-	}*/
+  /*
+   * @RequestMapping(value="TakeALeave")
+   * public String TakeALeave(@RequestParam(value = "record_date",
+   * defaultValue="Japanese N3") String course, @RequestParam(value =
+   * "user_name",defaultValue = "Nani") String name, Model model) {
+   * model.addAttribute("course",course);
+   * model.addAttribute("name", name);
+   * return "LeaveScreen";
+   * }
+   */
 
-    // @RequestMapping("/TakeALeave")
-	// public String TakeALeave() {
-		
-	// 	return "LeaveScreen";
-	// }
+  // @RequestMapping("/TakeALeave")
+  // public String TakeALeave() {
 
-	@Autowired
-    UserRepository userRepo;
+  // return "LeaveScreen";
+  // }
 
-    // @Autowired
-    // CourseTestingRepository courseTestRepo;
+  @Autowired
+  UserRepository userRepo;
 
-    // @Autowired
-    // CourseRepository courseRepo;
+  // @Autowired
+  // CourseTestingRepository courseTestRepo;
 
-    @Autowired
-    LeaveInfoRepository leaveRepo;
+  // @Autowired
+  // CourseRepository courseRepo;
 
-    @Autowired
-    JoinCourseUserRepository joinRepo;
+  @Autowired
+  LeaveInfoRepository leaveRepo;
 
-    @Autowired
-    CourseInfoRepository courseInfoRepo;
+  @Autowired
+  JoinCourseUserRepository joinRepo;
 
-    @Autowired
-    UserSessionService userSessionService;
+  @Autowired
+  CourseInfoRepository courseInfoRepo;
 
-	@Valid
-    @GetMapping(value={"/student/leave/{courseId}","/teacher/leave/{courseId}","/admin/leave/{courseId}/{userId}"})
-    private String getTakeALeaveForm(@PathVariable Long courseId, @PathVariable(required = false) Long userId,Model model) {
-		  CourseInfo courseInfo = courseInfoRepo.findByCourseID(courseId);
-      String course = courseInfo.getCourseName();
-      UserInfo userInfo = courseInfo.getUserInfo();
-      String name = userInfo.getUserName();
+  @Autowired
+  UserSessionService userSessionService;
 
-      LeaveInfo leaveInfo = new LeaveInfo();
-      
-		  model.addAttribute("course",course);
-		  model.addAttribute("name", name);
-      model.addAttribute("leave", leaveInfo);
-      UserRole role = userSessionService.getRole();
+  @Valid
+  @GetMapping(value = { "/student/leave/{courseId}", "/teacher/leave/{courseId}", "/admin/leave/{courseId}/{userId}" })
+  private String getTakeALeaveForm(@PathVariable Long courseId, @PathVariable(required = false) Long userId,
+      Model model) {
+    CourseInfo courseInfo = courseInfoRepo.findByCourseID(courseId);
+    String course = courseInfo.getCourseName();
+    UserInfo userInfo = courseInfo.getUserInfo();
+    String name = userInfo.getUserName();
 
-        if(role == UserRole.STUDENT){
-          model.addAttribute("postAction", "/student/leave/"+courseId+"/confirm");  
-          List<String> breadcrumbList = new ArrayList<>();
-          breadcrumbList.add("My Course");
-          breadcrumbList.add("Course Detail");
-          // breadcrumbList.add("Take A Leave");
-          model.addAttribute("Absent", "Absent");
-          model.addAttribute("breadcrumbList",breadcrumbList);
-          String nav_type = "fragments/student-nav";
-          model.addAttribute("nav_type",nav_type);
+    LeaveInfo leaveInfo = new LeaveInfo();
 
-        }
-        else if(role ==UserRole.TEACHER){
-          model.addAttribute("postAction", "/teacher/leave/"+courseId+"/confirm");  
-          List<String> breadcrumbList = new ArrayList<>();
-          breadcrumbList.add("My Course");
-          breadcrumbList.add("Course Detail");
-          // breadcrumbList.add("Take A Leave");
-          model.addAttribute("Absent", "Absent");
-          model.addAttribute("breadcrumbList",breadcrumbList);
-          String nav_type = "fragments/teacher-nav";
-          model.addAttribute("nav_type",nav_type);    
-        }
-        else{
-          
-          model.addAttribute("postAction", "/admin/leave/"+courseId+"/"+userId+"/confirm");
-          List<String> breadcrumbList = new ArrayList<>();
-          breadcrumbList.add("Top");
-          breadcrumbList.add("User List");
-          // breadcrumbList.add("Take A Leave");
-          model.addAttribute("Absent", "Absent");
-          model.addAttribute("breadcrumbList",breadcrumbList);
-          String nav_type = "fragments/adminnav";
-          model.addAttribute("nav_type",nav_type);
-        }
-      
-      return "ST0003_TakeALeaveScreen";
+    model.addAttribute("course", course);
+    model.addAttribute("name", name);
+    model.addAttribute("leave", leaveInfo);
+    UserRole role = userSessionService.getRole();
+
+    if (role == UserRole.STUDENT) {
+      model.addAttribute("postAction", "/student/leave/" + courseId + "/confirm");
+      List<String> breadcrumbList = new ArrayList<>();
+      breadcrumbList.add("My Course");
+      breadcrumbList.add("Course Detail");
+      // breadcrumbList.add("Take A Leave");
+      model.addAttribute("Absent", "Absent");
+      model.addAttribute("breadcrumbList", breadcrumbList);
+      String nav_type = "fragments/student-nav";
+      model.addAttribute("nav_type", nav_type);
+
+    } else if (role == UserRole.TEACHER) {
+      model.addAttribute("postAction", "/teacher/leave/" + courseId + "/confirm");
+      List<String> breadcrumbList = new ArrayList<>();
+      breadcrumbList.add("My Course");
+      breadcrumbList.add("Course Detail");
+      // breadcrumbList.add("Take A Leave");
+      model.addAttribute("Absent", "Absent");
+      model.addAttribute("breadcrumbList", breadcrumbList);
+      String nav_type = "fragments/teacher-nav";
+      model.addAttribute("nav_type", nav_type);
+    } else {
+
+      model.addAttribute("postAction", "/admin/leave/" + courseId + "/" + userId + "/confirm");
+      List<String> breadcrumbList = new ArrayList<>();
+      breadcrumbList.add("Top");
+      breadcrumbList.add("User List");
+      // breadcrumbList.add("Take A Leave");
+      model.addAttribute("Absent", "Absent");
+      model.addAttribute("breadcrumbList", breadcrumbList);
+      String nav_type = "fragments/adminnav";
+      model.addAttribute("nav_type", nav_type);
     }
 
-    @PostMapping(value={"/student/leave/{courseId}/confirm","/teacher/leave/{courseId}/confirm","/admin/leave/{courseId}/{userId}/confirm"})
-	  public String postCourseInfoForm(@Valid @ModelAttribute("leave") LeaveInfo leaveInfo, @PathVariable Long courseId, Model model, @PathVariable(required = false) Long userId) {
-	  //if(bindingResult.hasErrors()) {
-     //return "AT00001_CourseRegisteration";
-        //}
-        // System.out.print("Take A Leave ID in confirm screen:"+leaveInfo.getLeaveId());
-      CourseInfo courseInfo = courseInfoRepo.findByCourseID(courseId);
-      String course = courseInfo.getCourseName();
-      UserInfo userInfo = courseInfo.getUserInfo();
-      String name = userInfo.getUserName();
-      
-      model.addAttribute("course",course);
-      model.addAttribute("name", name);
-      UserRole role = userSessionService.getRole();
+    return "ST0003_TakeALeaveScreen";
+  }
 
-        if(role == UserRole.STUDENT){
-          model.addAttribute("postAction", "/student/leave/"+courseId+"/complete");
-          model.addAttribute("previousAction", "/student/leave/"+courseId+"/confirm");    
-          List<String> breadcrumbList = new ArrayList<>();
-          breadcrumbList.add("My Course");
-          breadcrumbList.add("Course Detail");
-          breadcrumbList.add("Take A Leave");
-          model.addAttribute("Confirm", "Confirm");
-          model.addAttribute("breadcrumbList",breadcrumbList);
-          String nav_type = "fragments/student-nav";
-          model.addAttribute("nav_type",nav_type);  
-        }
-        else if(role ==UserRole.TEACHER){
-          model.addAttribute("postAction", "/teacher/leave/"+courseId+"/complete");
-          model.addAttribute("previousAction", "/teacher/leave/"+courseId+"/confirm");   
-          List<String> breadcrumbList = new ArrayList<>();
-          breadcrumbList.add("My Course");
-          breadcrumbList.add("Course Detail");
-          breadcrumbList.add("Take A Leave");
-          model.addAttribute("Confirm", "Confirm");
-          model.addAttribute("breadcrumbList",breadcrumbList);
-          String nav_type = "fragments/teacher-nav";
-          model.addAttribute("nav_type",nav_type);      
-        }
-        else{
-          model.addAttribute("postAction", "/admin/leave/"+courseId+"/"+userId+"/complete");
-          model.addAttribute("previousAction", "/admin/leave/"+courseId+"/"+userId+"/confirm");
-          List<String> breadcrumbList = new ArrayList<>();
-          breadcrumbList.add("Top");
-          breadcrumbList.add("User List");
-          breadcrumbList.add("Take A Leave");
-          model.addAttribute("Confirm", "Confirm");
-          model.addAttribute("breadcrumbList",breadcrumbList);
-          String nav_type = "fragments/adminnav";
-          model.addAttribute("nav_type",nav_type);
-        }
-      
-        return "ST0004_LeaveConfirmScreen";
-}
+  @PostMapping(value = { "/student/leave/{courseId}/confirm", "/teacher/leave/{courseId}/confirm",
+      "/admin/leave/{courseId}/{userId}/confirm" })
+  public String postCourseInfoForm(@Valid @ModelAttribute("leave") LeaveInfo leaveInfo, @PathVariable Long courseId,
+      Model model, @PathVariable(required = false) Long userId) {
+    // if(bindingResult.hasErrors()) {
+    // return "AT00001_CourseRegisteration";
+    // }
+    // System.out.print("Take A Leave ID in confirm
+    // screen:"+leaveInfo.getLeaveId());
+    CourseInfo courseInfo = courseInfoRepo.findByCourseID(courseId);
+    String course = courseInfo.getCourseName();
+    UserInfo userInfo = courseInfo.getUserInfo();
+    String name = userInfo.getUserName();
 
-@PostMapping(value={"/student/leave/{courseId}/complete","/teacher/leave/{courseId}/complete","/admin/leave/{courseId}/{userId}/complete"})
+    model.addAttribute("course", course);
+    model.addAttribute("name", name);
+    UserRole role = userSessionService.getRole();
+
+    if (role == UserRole.STUDENT) {
+      model.addAttribute("postAction", "/student/leave/" + courseId + "/complete");
+      model.addAttribute("previousAction", "/student/leave/" + courseId + "/confirm");
+      List<String> breadcrumbList = new ArrayList<>();
+      breadcrumbList.add("My Course");
+      breadcrumbList.add("Course Detail");
+      breadcrumbList.add("Take A Leave");
+      model.addAttribute("Confirm", "Confirm");
+      model.addAttribute("breadcrumbList", breadcrumbList);
+      String nav_type = "fragments/student-nav";
+      model.addAttribute("nav_type", nav_type);
+    } else if (role == UserRole.TEACHER) {
+      model.addAttribute("postAction", "/teacher/leave/" + courseId + "/complete");
+      model.addAttribute("previousAction", "/teacher/leave/" + courseId + "/confirm");
+      List<String> breadcrumbList = new ArrayList<>();
+      breadcrumbList.add("My Course");
+      breadcrumbList.add("Course Detail");
+      breadcrumbList.add("Take A Leave");
+      model.addAttribute("Confirm", "Confirm");
+      model.addAttribute("breadcrumbList", breadcrumbList);
+      String nav_type = "fragments/teacher-nav";
+      model.addAttribute("nav_type", nav_type);
+    } else {
+      model.addAttribute("postAction", "/admin/leave/" + courseId + "/" + userId + "/complete");
+      model.addAttribute("previousAction", "/admin/leave/" + courseId + "/" + userId + "/confirm");
+      List<String> breadcrumbList = new ArrayList<>();
+      breadcrumbList.add("Top");
+      breadcrumbList.add("User List");
+      breadcrumbList.add("Take A Leave");
+      model.addAttribute("Confirm", "Confirm");
+      model.addAttribute("breadcrumbList", breadcrumbList);
+      String nav_type = "fragments/adminnav";
+      model.addAttribute("nav_type", nav_type);
+    }
+
+    return "ST0004_LeaveConfirmScreen";
+  }
+
+  @PostMapping(value = { "/student/leave/{courseId}/complete", "/teacher/leave/{courseId}/complete",
+      "/admin/leave/{courseId}/{userId}/complete" })
   public String saveLeaveRequestForm(Model model,
-    @Valid @ModelAttribute("leave") LeaveInfo leaveInfo,
-    @PathVariable Long courseId,
-    @PathVariable(required = false) Long userId,
-    @RequestParam(value="action", required=true) String action,
-    HttpServletRequest request
-  ) {
-    
-	//LeaveInfo saveLeave = new LeaveInfo(null, leaveInfo.getLeaveDate(), leaveInfo.getLeaveStartTime(), leaveInfo.getLeaveEndTime(),leaveInfo.getReason(),leaveInfo.getJoin());
-  System.out.print("New Leave Request:"+leaveInfo.getLeaveDate());
-    //LeaveInfo leave= leaveRepo.findById(courseId).orElse(null);
-   //leaveRepo.save(leaveInfo);
-    
-   UserRole role = userSessionService.getRole();
-    
+      @Valid @ModelAttribute("leave") LeaveInfo leaveInfo,
+      @PathVariable Long courseId,
+      @PathVariable(required = false) Long userId,
+      @RequestParam(value = "action", required = true) String action,
+      HttpServletRequest request) {
 
-   if(role == UserRole.ADMIN || role == UserRole.SUPER_ADMIN){
-    Long uid = userId;
-    List<JoinCourseUser> joins=joinRepo.findByCourseUser(courseId, uid);
-      for(JoinCourseUser join:joins){
+    // LeaveInfo saveLeave = new LeaveInfo(null, leaveInfo.getLeaveDate(),
+    // leaveInfo.getLeaveStartTime(),
+    // leaveInfo.getLeaveEndTime(),leaveInfo.getReason(),leaveInfo.getJoin());
+    System.out.print("New Leave Request:" + leaveInfo.getLeaveDate());
+    // LeaveInfo leave= leaveRepo.findById(courseId).orElse(null);
+    // leaveRepo.save(leaveInfo);
+
+    UserRole role = userSessionService.getRole();
+
+    if (role == UserRole.ADMIN || role == UserRole.SUPER_ADMIN) {
+      Long uid = userId;
+      List<JoinCourseUser> joins = joinRepo.findByCourseUser(courseId, uid);
+      for (JoinCourseUser join : joins) {
         leaveInfo.setJoin(join);
         leaveRepo.save(leaveInfo);
         joinRepo.save(join);
-      
+
       }
 
-   }
-   else{
-    Long uid = userSessionService.getUserAccount().getAccountId();
-    System.out.print("Current User ID: "+uid);
-    List<JoinCourseUser> joins=joinRepo.findByCourseUser(courseId, uid);
-    for(JoinCourseUser join:joins){
-      leaveInfo.setJoin(join);
-      leaveRepo.save(leaveInfo);
-      joinRepo.save(join);
-      
+    } else {
+      Long uid = userSessionService.getUserAccount().getAccountId();
+      System.out.print("Current User ID: " + uid);
+      List<JoinCourseUser> joins = joinRepo.findByCourseUser(courseId, uid);
+      for (JoinCourseUser join : joins) {
+        leaveInfo.setJoin(join);
+        leaveRepo.save(leaveInfo);
+        joinRepo.save(join);
+
+      }
     }
-   }
 
-  //  List<JoinCourseUser> joins=joinRepo.findByCourseUser(courseId, uid);
-  //   for(JoinCourseUser join:joins){
-  //     leaveInfo.setJoin(join);
-  //     leaveRepo.save(leaveInfo);
-  //     joinRepo.save(join);
-      
-  //   }
+    // List<JoinCourseUser> joins=joinRepo.findByCourseUser(courseId, uid);
+    // for(JoinCourseUser join:joins){
+    // leaveInfo.setJoin(join);
+    // leaveRepo.save(leaveInfo);
+    // joinRepo.save(join);
 
+    // }
 
-   return "redirect:/leave/complete";
+    return "redirect:/leave/complete";
 
-}}
+  }
+}

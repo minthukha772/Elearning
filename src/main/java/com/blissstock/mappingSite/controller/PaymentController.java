@@ -4,12 +4,9 @@ import java.util.GregorianCalendar;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import javax.validation.constraints.Null;
-
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.JoinCourseUser;
 import com.blissstock.mappingSite.entity.PaymentReceive;
-import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.enums.PaymentStatus;
 import com.blissstock.mappingSite.exceptions.UnauthorizedFileAccessException;
@@ -24,8 +21,6 @@ import com.blissstock.mappingSite.service.StorageService;
 import com.blissstock.mappingSite.service.StorageServiceImpl;
 import com.blissstock.mappingSite.service.UserService;
 import com.blissstock.mappingSite.service.UserSessionService;
-import com.blissstock.mappingSite.utils.CheckUploadFileType;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,10 +36,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.blissstock.mappingSite.service.MailService;
-import com.blissstock.mappingSite.controller.CourseDetailsController;
-import java.util.ArrayList;
-import java.util.List;
-import com.blissstock.mappingSite.enums.UserRole;
 
 
 
