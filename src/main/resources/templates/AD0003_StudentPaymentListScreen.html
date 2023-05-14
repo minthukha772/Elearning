@@ -121,7 +121,7 @@
         <ol class="breadcrumb mt-2 ms-3">
           <li class="breadcrumb-item "><a th:href="@{/admin/top/}">Top</a></li>
           <li class="breadcrumb-item active" aria-current="page">
-            Payment List
+            Student Payment List
           </li>
         </ol>
       </nav>
@@ -309,7 +309,7 @@
                         <td th:text="${dr.courseEndDate}"></td>
                         <td th:text="${dr.paymentDate}"></td>
                         <td th:text="${dr.courseFees}"></td>
-                        <td th:text="${dr.paymentStatus}" class="payStatus"></td>
+                        <td th:text="${dr.paymentStatus}" class="payStatus" style="text-transform: uppercase;"></td>
                         <td>
                           <a
                             th:href="@{/admin/payment-upload/course_id/{courseId}/student_id/{id}(courseId = ${dr.courseId}, id = ${dr.userId})}"
@@ -358,7 +358,7 @@
             <div class="card-body text-white">
               <div class="my-2">
                 <span class="fw-bold">Payment Status -</span>
-                <span class="mx-2 payStatus" th:text="${dr.paymentStatus}"></span>
+                <span class="mx-2 payStatus" th:text="${dr.paymentStatus}" style="text-transform: uppercase;"></span>
               </div>
               <div class="my-2">
                 <span class="fw-bold">Amount -</span>
@@ -519,7 +519,7 @@
 
         for(let i=0;i<td.length;i++){
           console.log(td[i].innerHTML)
-          if(td[i].innerHTML=="COMPLETED"){
+          if(td[i].innerHTML=="COMPLETED" || td[i].innerHTML=="Completed"){
               // td[i].innerHTML = "";
               // td[i].classList.add('fa-solid')
               // td[i].classList.add('fa-check')
@@ -528,7 +528,7 @@
               
 
           }
-          else if(td[i].innerHTML=="PENDING"){
+          else if(td[i].innerHTML=="PENDING" || td[i].innerHTML=="Pending"){
             // td[i].innerHTML = "";
             // td[i].classList.add('fa-solid')
             // td[i].classList.add('fa-xmark')
@@ -537,7 +537,7 @@
 
 
           }
-          else if(td[i].innerHTML=="REQUESTED"){
+          else if(td[i].innerHTML=="REQUESTED" || td[i].innerHTML=="Requested"){
             // td[i].innerHTML = "";
             // td[i].classList.add('fa-solid')
             // td[i].classList.add('fa-code-pull-request')

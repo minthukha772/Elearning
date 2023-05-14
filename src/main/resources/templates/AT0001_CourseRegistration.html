@@ -22,10 +22,20 @@
     <title>Course Registration</title>
 
   <link rel="icon" type="image/x-icon" href="/images/fav.png">
+
+  <th:block th:if="${#authorization.expression('hasRole(''ROLE_TEACHER'')')}">
+        <link rel="icon" type="image/x-icon" href="/images/fav.png" />
+        <link rel="stylesheet" th:href="@{/css/global.css}" />
+        <link rel="stylesheet" th:href="@{/css/pagination.css}" />
+    </th:block>
+
   </head>
 
   <body>
     <div th:replace="@{fragments/nav}"></div>
+    <div th:if="${#authorization.expression('hasRole(''ROLE_TEACHER'')')}">
+      <div style="height: 100px"></div>
+  </div>
     <nav
       class="p-2"
       aria-label="breadcrumb"
@@ -136,6 +146,7 @@
                       <input
                         type="radio"
                         onclick="javascript:onClassTypeCheckBoxClicked();"
+                        onchange="togglePaymentTypeSection();"
                         name="liveCheck"
                         id="liveCheck"
                         value="LIVE"
@@ -147,6 +158,7 @@
                       <input
                         type="radio"
                         onclick="javascript:onClassTypeCheckBoxClicked();"
+                        onchange="togglePaymentTypeSection();"
                         name="videoCheck"
                         id="videoCheck"
                         value="VIDEO"
@@ -175,11 +187,12 @@
                       placeholder="Enter Course Name"
                       required
                     />
+                    <div class="invalid-feedback">This field is required.</div>
                   </div>
                   
                 </div>
                 
-                <div class="invalid-feedback">This field is required.</div>
+                
               </div>
 
               <!-- course category -->
@@ -199,11 +212,13 @@
                       class="form-select"
                       required
                     >
+                    
                       <option value="" selected="selected">Select Category</option>
 
                       <option th:each="courselist : ${CourseListHtml}" th:value="${courselist.categoryName}" th:text="${courselist.categoryName}"></option>
                       
                     </select>
+                    <div class="invalid-feedback">This field is required.</div>
                     <div sec:authorize="hasAuthority('ROLE_ADMIN') || hasAuthority('ROLE_SUPER_ADMIN')">
                     <div class="d-flex justify-content-around flex-wrap">
                       <div class="add-new-cat bg-white d-flex justify-content-between align-items-center py-1 px-3 rounded mt-2" style="width: 200px;">
@@ -219,7 +234,7 @@
                   </div>
                 </div>
                 
-                <div class="invalid-feedback">This field is required.</div>
+                
               </div>
 
               <!-- course level -->
@@ -246,12 +261,13 @@
                       <option th:value="'Advance'" th:text="Advance"></option>
                       
                     </datalist>
+                    <div class="invalid-feedback">This field is required.</div>
                 
                   </input>
                   </div>
                 </div>
 
-                <div class="invalid-feedback">This field is required.</div>
+                
               </div>
 
               <!-- <div class="form-group mt-3 row align-items-center">
@@ -283,12 +299,41 @@
                       placeholder="Enter Course Fee(Kyats)"
                       required
                     >
+                    <div class="invalid-feedback">This field is required.</div>
                     <!-- <div class="unit position-absolute d-flex align-items-center justify-content-center fw-normal"><span>MMK</span></div>  -->
                   </div>
                 </div>
                 
-                <div class="invalid-feedback">This field is required.</div>
+                
               </div>
+
+              <!-- Payment Types -->
+
+              
+              <div class="row" id="paymentTypeSection">
+                <div class="col-lg-3">
+                  <p class="form-label">Payment Type</p>
+                </div>
+                <div class="col-lg-9 mb-3">
+                  <div class="form-check form-check-inline">
+                    <input type="radio" name="paymentType" id="monthlyFee" value="MONTHLY_FEE" required checked>
+                    <label for="monthlyFee">Monthly fee</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input type="radio" name="paymentType" id="oneTimeFee" value="ONE_TIME_FEE" required >
+                    <label for="oneTimeFee">One-time fee</label>
+                  </div>                                    
+                </div>
+              </div>
+
+              
+              
+              
+                
+              
+              
+              
+
 
               <!-- about course -->
               <div class="mb-3">
@@ -306,11 +351,12 @@
                       placeholder="Enter detail about your course here."
                       required
                     ></textarea>
+                    <div class="invalid-feedback">This field is required.</div>
                       <span style="color: red;">* Please write less than 2500 words</span>
                   </div>
                 </div>
                 
-                <div class="invalid-feedback">This field is required.</div>
+                
               </div>
 
               <!-- prerequisite -->
@@ -329,11 +375,12 @@
                       placeholder="Enter Prerequisites for the course."
                       required
                     ></textarea>
+                    <div class="invalid-feedback">This field is required.</div>
                     <span style="color: red;">* Please write less than 2500 words</span>
                   </div>
                 </div>
                 
-                <div class="invalid-feedback">This field is required.</div>
+                
               </div>
 
               <!-- class link -->
@@ -352,10 +399,11 @@
                       placeholder="Enter Class Link(Video link or Live link)"
                       required
                     />
+                    <div class="invalid-feedback">This field is required.</div>
                   </div>
                 </div>
                 
-                <div class="invalid-feedback">This field is required.</div>
+                
               </div>
               <input
                 type="hidden"
@@ -383,10 +431,11 @@
                         min="0"
                         placeholder="Enter the number of students"
                       />
+                      <div class="invalid-feedback">This field is required.</div>
                     </div>
                   </div>
                   
-                  <div class="invalid-feedback">This field is required.</div>
+                  
                 </div>
 
                 <div class="row my-3">
@@ -721,6 +770,8 @@
               </button>
             </div>
 
+            
+
             <!-- New Code -->
 
             <!-- <div class="d-flex justify-content-end my-3">
@@ -752,6 +803,18 @@
     <script th:src="@{/js/photoPlaceHolder.js}"></script>
     <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
     <script th:src="@{./../../../js/main.js}"></script>
+
+    <script>
+      function togglePaymentTypeSection() {
+        var videoCheck = document.getElementById("videoCheck");
+        var paymentTypeSection = document.getElementById("paymentTypeSection");
+        if (videoCheck.checked) {
+          paymentTypeSection.style.display = "none";
+        } else {
+          paymentTypeSection.style.display = "";
+        }
+      }
+      </script>
 
     <!-- <script th:src="@{/js/addcourse.js}"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>

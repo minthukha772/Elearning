@@ -13,6 +13,7 @@ import com.blissstock.mappingSite.repository.CourseInfoRepository;
 // import com.blissstock.mappingSite.repository.CourseRepository;
 import com.blissstock.mappingSite.repository.CourseTimeRepository;
 import com.blissstock.mappingSite.repository.UserInfoRepository;
+import com.blissstock.mappingSite.service.CourseService;
 import com.blissstock.mappingSite.service.StorageService;
 import com.blissstock.mappingSite.service.StorageServiceImpl;
 import com.blissstock.mappingSite.service.UserSessionServiceImpl;
@@ -54,6 +55,9 @@ public class CourseEditController {
 
     @Autowired
     StorageService storageService;
+
+    @Autowired
+    private CourseService courseService;
 
     @Autowired
     public CourseEditController(StorageService storageService) {
@@ -116,6 +120,7 @@ public class CourseEditController {
                     }
                 }
 
+                model.addAttribute("CourseListHtml", courseService.getAllCourseCategory());
                 model.addAttribute("courseTimeList", sorted_list);
                 ctList = courseTimeList;
                 // System.out.println("Heehee" + ctList);

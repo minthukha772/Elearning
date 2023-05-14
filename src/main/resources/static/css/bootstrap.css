@@ -44,6 +44,12 @@
   box-sizing: border-box;
 }
 
+body {
+	font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+	font-weight: 400;
+	overflow-x: hidden;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   :root {
     scroll-behavior: smooth;
@@ -1945,7 +1951,8 @@ progress {
   --bs-table-hover-bg: rgba(0, 0, 0, 0.075);
   width: 100%;
   margin-bottom: 1rem;
-  color: var(--bs-white);
+  color: var(--
+  bs-white);
   vertical-align: top;
   border-color: #dee2e6;
 }
@@ -4512,7 +4519,11 @@ textarea.form-control-lg {
   content: var(--bs-breadcrumb-divider, "/") /* rtl: var(--bs-breadcrumb-divider, "/") */;
 }
 .breadcrumb-item.active {
+<<<<<<< HEAD
   color: #0d19c0;
+=======
+  color: #128639;
+>>>>>>> 2022205-UI-Innovation-UserSite
 }
 
 .pagination {
@@ -10767,4 +10778,147 @@ textarea.form-control-lg {
   }
 }
 
+.btn-danger{
+  background: #dc3545;
+  border:1px  #dc3545;
+}
+
 /*# sourceMappingURL=main.css.map */
+/* FOOTER */
+.no-padding {
+	padding: 0px 0px;
+}
+
+.footer__container {
+	width: 100vw;
+	height: auto;
+	background-color: #3f877a;
+	color: white;
+}
+
+.footer__div {
+	padding: 73px 103px;
+}
+
+.footer__title {
+	font-size: 24px;
+}
+
+.footer__title ul {
+	list-style: none;
+	font-size: 16px;
+}
+
+.footer__title li::before {
+	content: "•";
+	color: white;
+}
+
+.footer__subtitle {
+	margin-top: 24px;
+}
+
+.hovers:hover{
+	color: var(--warning);
+}
+
+.copyright {
+	width: 100%;
+	background-color: black;
+	height: 49px;
+}
+
+.center {
+	display: block;
+	padding-top: 11px;
+	padding-bottom: 11px;
+	font-size: 16px;
+}
+
+.copyright__text {
+	margin: 0;
+	text-align: center;
+}
+
+@media screen and (max-width: 480px) {
+	.footer__div {
+		padding: 30px 40px;
+	}
+
+	.footer__title {
+		text-align: center;
+	}
+
+	.copyright {
+		height: 70px;
+	}
+
+	.payscreen .card {
+		width: 100%;
+
+	}
+
+	.confirmScreen .card {
+		width: 100%;
+	}
+
+	.profileform {
+		width: fit-content;
+	}
+
+	.paytable {
+		display: grid;
+		font-size: small;
+	}
+
+	.btndelete {
+		/* padding: 0; */
+		font-size: small;
+		
+	}
+
+	.upcard {
+		margin-top: 55%;
+		width: 100%;
+	}
+
+
+
+}
+.scrollToTop {
+	position: fixed;
+	z-index: 12;
+	width: 80px;
+	height: 80px;
+	right: 80px;
+	bottom: -16%;
+	mix-blend-mode: hard-light;
+	transition: all 0.3s ease-in-out;
+	cursor: pointer;
+}
+
+@media screen and (max-width: 550px) {
+	.scrollToTop {
+		right: 40px;
+	}
+}
+
+.show-scroll {
+	bottom: 6%;
+}
+
+
+@media screen and (min-width: 320px) and (max-width: 1000px) {
+	.registitles{
+		color: var(--registercomplete);
+		font-size: 14px;
+		margin: auto;
+	}
+	.registitlesa{
+		color: var(--registercomplete);
+	}
+	.completeimgs{
+		height: 15%;
+	}
+
+}

@@ -2,34 +2,31 @@ package com.blissstock.mappingSite.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
-@NoArgsConstructor
+
 @Entity
 @Table(name = "result")
 public class Result {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "result_id")
     private Long resultId;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne
+    @JoinColumn(name = "test_id")
     private Test test;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    private UserInfo userInfo;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private UserInfo user;
 
     @Column(name = "mark")
     private Integer resultMark;
@@ -56,12 +53,12 @@ public class Result {
         this.test = test;
     }
 
-    public UserInfo getUserInfo() {
-        return userInfo;
+    public UserInfo getUser() {
+        return user;
     }
 
-    public void setUserInfo(UserInfo userInfo) {
-        this.userInfo = userInfo;
+    public void setUser(UserInfo user) {
+        this.user = user;
     }
 
     public Integer getResultMark() {
@@ -88,13 +85,5 @@ public class Result {
         this.teacherComment = teacherComment;
     }
 
-    public Result(Long resultId, Test test, UserInfo userInfo, Integer resultMark, String result,
-            String teacherComment) {
-        this.resultId = resultId;
-        this.test = test;
-        this.userInfo = userInfo;
-        this.resultMark = resultMark;
-        this.result = result;
-        this.teacherComment = teacherComment;
-    }
 }
+

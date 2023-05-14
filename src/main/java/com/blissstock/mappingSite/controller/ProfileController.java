@@ -1,19 +1,15 @@
 package com.blissstock.mappingSite.controller;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.blissstock.mappingSite.dto.JoinCourseDTO;
 import com.blissstock.mappingSite.dto.PaymentInfoDTO;
 import com.blissstock.mappingSite.entity.BankInfo;
-import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.PaymentAccount;
 
-import com.blissstock.mappingSite.entity.PaymentReceive;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.enums.AccountStatus;
 import com.blissstock.mappingSite.enums.UserRole;
@@ -28,7 +24,6 @@ import com.blissstock.mappingSite.service.UserAccountControlService;
 import com.blissstock.mappingSite.service.UserService;
 import com.blissstock.mappingSite.service.UserSessionService;
 import com.blissstock.mappingSite.utils.CheckUploadFileType;
-import com.blissstock.mappingSite.model.PaymentLists;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,19 +45,16 @@ import org.springframework.web.multipart.MultipartFile;
 import com.blissstock.mappingSite.service.MailService;
 import com.blissstock.mappingSite.repository.PaymentRepository;
 import com.blissstock.mappingSite.repository.UserRepository;
-import com.blissstock.mappingSite.entity.UserAccount;
 
 import com.blissstock.mappingSite.entity.JoinCourseUser;
 import com.blissstock.mappingSite.service.JoinCourseUserService;
-import com.blissstock.mappingSite.model.CourseData;
 import com.blissstock.mappingSite.model.CourseDataWithPayment;
 
 @Controller
 public class ProfileController {
 
   private static Logger logger = LoggerFactory.getLogger(
-    ProfileController.class
-  );
+      ProfileController.class);
 
   @Autowired
   MailService mailService;
@@ -94,38 +86,35 @@ public class ProfileController {
   CourseListController courseListController;
 
   @Autowired
-    JoinCourseUserService joinCourseUserService;
+  JoinCourseUserService joinCourseUserService;
 
   @Autowired
-  PaymentRepository paymentRepo;  
+  PaymentRepository paymentRepo;
 
-  @GetMapping(
-    value = {
+  @GetMapping(value = {
       "/student/profile/",
       "/teacher/profile/",
       "/admin/browse/profile/{id}",
       "/student/browse/profile/{id}",
       "/teacher/browse/profile/{id}",
-    }
-  )
+  })
   private String viewProfile(
-    Model model,
-    @PathVariable(required = false) Long id,
-    String message,
-    String error
-  ) {
+      Model model,
+      @PathVariable(required = false) Long id,
+      String message,
+      String error) {
     logger.info("GET Requested");
 
-    //Setting User Id
+    // Setting User Id
     long uid = getUid(id);
     model.addAttribute("id", uid);
 
-    //Setting isEditable
+    // Setting isEditable
     boolean isEditable = isEditable(id);
     model.addAttribute("isEditable", isEditable);
 
-    //##################################################//
-    //Display Message//
+    // ##################################################//
+    // Display Message//
     if (error != null) {
       logger.debug("Error Message: {}", error);
       Message messageInfo = new Message();
@@ -144,10 +133,10 @@ public class ProfileController {
       model.addAttribute("message", messageInfo);
     }
 
-    //############################################
+    // ############################################
 
-    //##################################################//
-    //Load User Information//
+    // ##################################################//
+    // Load User Information//
 
     UserInfo userInfo;
     try {
@@ -157,14 +146,13 @@ public class ProfileController {
       logger.info("User {} does not exist", uid);
       return "redirect:/404";
     }
-    //##################################################//
+    // ##################################################//
 
-    //##################################################//
+    // ##################################################//
 
-    //get Status
+    // get Status
     AccountStatus status = AccountStatus.strToAccountStatus(userInfo.getUserAccount().getAccountStatus());
     logger.info("requested user status is {}", status);
-
 
     // Check Role
     UserRole role = UserRole.strToUserRole(userInfo.getUserAccount().getRole());
@@ -175,10 +163,10 @@ public class ProfileController {
       return "redirect:/404";
     }
 
-    //##################################################//
+    // ##################################################//
 
-    //##################################################//
-    //Load Profile
+    // ##################################################//
+    // Load Profile
     try {
       FileInfo profilePic = storageService.loadProfileAsFileInfo(userInfo);
       model.addAttribute("profilePic", profilePic);
@@ -187,29 +175,28 @@ public class ProfileController {
       logger.info("unable to get profile {}", uid);
     }
 
-    //##################################################//
+    // ##################################################//
 
-    //##################################################//
-    //Load Certificate
+    // ##################################################//
+    // Load Certificate
     if (role == UserRole.TEACHER) {
-      //load certificates
+      // load certificates
       List<FileInfo> certificateFiles = storageService.loadCertificatesAsFileInfo(uid);
       logger.info("User have certificates: {}", certificateFiles.size());
       model.addAttribute("certificateFiles", certificateFiles);
     }
-    //##################################################//
+    // ##################################################//
 
-    //##################################################//
-    //Load Certificate
+    // ##################################################//
+    // Load Certificate
     if (isEditable) {
-      //load Support Payment Info
+      // load Support Payment Info
       List<BankInfo> bankList = paymentInfoService.getSupportedPaymentMethods();
-      //logger.debug("BankList {}",bankList);
+      // logger.debug("BankList {}",bankList);
       model.addAttribute("bankList", bankList);
 
       List<PaymentAccount> paymentAccounts = paymentInfoService.getPaymentInfo(
-        userInfo
-      );
+          userInfo);
       logger.debug("added payment accounts {}", paymentAccounts);
       model.addAttribute("paymentAccounts", paymentAccounts);
 
@@ -226,9 +213,9 @@ public class ProfileController {
       }
       model.addAttribute("paymentInfoDTO", paymentInfoDTO);
       model.addAttribute("isPaymentEditable", isPaymentEditable);
-      // model.addAttribute("isPaymentEditable", true); 
+      // model.addAttribute("isPaymentEditable", true);
     }
-    //##################################################//
+    // ##################################################//
 
     model.addAttribute("role", role.getValue());
     model.addAttribute("infoMap", userInfo.toMap(false));
@@ -236,56 +223,51 @@ public class ProfileController {
 
     logger.debug("model attribute, isEditable: {}", isEditable(uid));
 
-    //Load Information for student joined courses and payment status.
+    // Load Information for student joined courses and payment status.
 
     List<JoinCourseUser> joinCourseUsers = joinCourseUserService.findByUserInfo(userInfo);
     if (joinCourseUsers == null) {
       joinCourseUsers = new ArrayList<>();
 
-        }
-          List<CourseDataWithPayment> courseDataList = joinCourseUsers.stream().map((e) -> {
-            CourseDataWithPayment c = CourseDataWithPayment.construct(e.getCourseInfo(), e.getPaymentReceivesByList(), e.getUserInfo());
-            FileInfo fileInfo = storageService.loadCoursePhoto(e.getCourseInfo());
-            
-            
-           
-            // if profile is not found set as place holder
-            if (fileInfo == null) {
-                c.setCoursePhoto(new FileInfo("https://via.placeholder.com/150",
-                        "https://via.placeholder.com/150"));
-            } else {
+    }
+    List<CourseDataWithPayment> courseDataList = joinCourseUsers.stream().map((e) -> {
+      CourseDataWithPayment c = CourseDataWithPayment.construct(e.getCourseInfo(), e.getPaymentReceivesByList(),
+          e.getUserInfo());
+      FileInfo fileInfo = storageService.loadCoursePhoto(e.getCourseInfo());
 
-                c.setCoursePhoto(fileInfo);
-            }
-            return c;
-        }).collect(Collectors.toList());
+      // if profile is not found set as place holder
+      if (fileInfo == null) {
+        c.setCoursePhoto(new FileInfo("https://via.placeholder.com/150",
+            "https://via.placeholder.com/150"));
+      } else {
 
-      model.addAttribute("courseList", courseDataList);
+        c.setCoursePhoto(fileInfo);
+      }
+      return c;
+    }).collect(Collectors.toList());
 
-      //##################################################//
+    model.addAttribute("courseList", courseDataList);
 
-      
+    // ##################################################//
+
     return "CM0004_Profile";
   }
 
-  @PostMapping(
-    value = {
+  @PostMapping(value = {
       "/teacher/profile/edit/payment",
-      "/admin/browse/profile/{id}/edit/payment",
-    }
-  )
+      "/admin/browse/profile/{id}/edit/payment/"
+  })
   public String editPayment(
-    Model model,
-    @ModelAttribute PaymentInfoDTO paymentInfoDTO,
-    @PathVariable(required = false) Long id,
-    HttpServletRequest httpServletRequest,
-    BindingResult bindingResult
-  ) {
+      Model model,
+      @ModelAttribute PaymentInfoDTO paymentInfoDTO,
+      @PathVariable(required = false) Long id,
+      HttpServletRequest httpServletRequest,
+      BindingResult bindingResult) {
     logger.info("Post Requested");
     logger.info("Payment Edit Info {}", paymentInfoDTO);
 
-    if(bindingResult.hasErrors()){
-      logger.debug("error: {}",bindingResult.getAllErrors());
+    if (bindingResult.hasErrors()) {
+      logger.debug("error: {}", bindingResult.getAllErrors());
     }
     Long uid = getUid(id);
 
@@ -293,9 +275,9 @@ public class ProfileController {
     paymentAccounts.add(paymentInfoDTO.getPrimaryAccount());
     paymentAccounts.add(paymentInfoDTO.getSecondaryAccount());
 
-    String redirectAddress =
-      "redirect:" +
-      httpServletRequest.getRequestURI().replace("/edit/payment", "");
+    String redirectAddress = "redirect:" +
+        httpServletRequest.getRequestURI().replace("/edit/payment", "");
+
     logger.debug("Redirect Addresss {}", redirectAddress);
 
     try {
@@ -307,38 +289,33 @@ public class ProfileController {
     }
   }
 
-  @PostMapping(
-    value = {
+  @PostMapping(value = {
       "/student/profile/edit/profile-pic/",
       "/teacher/profile/edit/profile-pic/",
       "/admin/browse/profile/{id}/edit/profile-pic/",
-    }
-  )
+  })
   public String editProfilePicture(
-    Model model,
-    @RequestParam("profilePic") MultipartFile photo,
-    @PathVariable(required = false) Long id,
-    HttpServletRequest httpServletRequest
-  ) {
+      Model model,
+      @RequestParam("profilePic") MultipartFile photo,
+      @PathVariable(required = false) Long id,
+      HttpServletRequest httpServletRequest) {
     logger.info("Post Requested");
     logger.info("Payment Edit Info {}", photo);
 
     Long uid = getUid(id);
 
-    String redirectAddress =
-      "redirect:" +
-      httpServletRequest.getRequestURI().replace("/edit/profile-pic", "");
+    String redirectAddress = "redirect:" +
+        httpServletRequest.getRequestURI().replace("/edit/profile-pic", "");
     logger.debug("Redirect Addresss {}", redirectAddress);
 
     if (!photo.isEmpty() && CheckUploadFileType.checkType(photo)) {
-      //get original photo name and generate a new file name
+      // get original photo name and generate a new file name
       String originalFileName = StringUtils.cleanPath(
-        photo.getOriginalFilename()
-      );
+          photo.getOriginalFilename());
 
-      //upload photo
+      // upload photo
       try {
-       
+
         storageService.store(uid, photo, StorageServiceImpl.PROFILE_PATH, true);
         UserInfo userInfo = userService.getUserInfoByID(uid);
         userInfo.setPhoto(originalFileName);
@@ -346,7 +323,7 @@ public class ProfileController {
       } catch (UnauthorizedFileAccessException e) {
         e.printStackTrace();
       }
-      
+
       logger.info("profile photo {} stored", originalFileName);
       return redirectAddress + "?message=paymentInfo";
     }
@@ -356,21 +333,20 @@ public class ProfileController {
 
   @DeleteMapping("/admin/profile/delete")
   public ResponseEntity<Object> deleteUser(
-    Model model,
-    Long uid,
-    HttpServletRequest httpServletRequest
-  ) {
-    logger.info("DELETE Request for user {}",uid);
+      Model model,
+      Long uid,
+      HttpServletRequest httpServletRequest) {
+    logger.info("DELETE Request for user {}", uid);
     try {
       UserInfo userInfo = userService.getUserInfoByID(uid);
-      if(userInfo == null){
+      if (userInfo == null) {
         throw new UserNotFoundException();
       }
       userAccountControlService.deleteUser(userInfo);
     } catch (UserNotFoundException e) {
       e.printStackTrace();
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User Not Found");
-    } catch (Exception e){
+    } catch (Exception e) {
       e.printStackTrace();
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
     }
@@ -379,39 +355,39 @@ public class ProfileController {
   }
 
   @GetMapping("/admin/profile/delete/{id}")
-  
-    public String deleteAdminAccount(@PathVariable ( value = "id") long uid, Model model, HttpServletRequest httpServletRequest) {
-      
-      try {
-        UserInfo userInfo = userService.getUserInfoByID(uid);
-        if(userInfo == null){
-          throw new UserNotFoundException();
-        }
-        userAccountControlService.deleteUser(userInfo);
-      } catch (UserNotFoundException e){
-        
-      }    
-        return "redirect:/admin/admin-list"; 
+
+  public String deleteAdminAccount(@PathVariable(value = "id") long uid, Model model,
+      HttpServletRequest httpServletRequest) {
+
+    try {
+      UserInfo userInfo = userService.getUserInfoByID(uid);
+      if (userInfo == null) {
+        throw new UserNotFoundException();
+      }
+      userAccountControlService.deleteUser(userInfo);
+    } catch (UserNotFoundException e) {
+
     }
+    return "redirect:/admin/admin-list";
+  }
 
   @PostMapping("admin/profile/suspend")
   public ResponseEntity<Object> suspendUser(
-    Model model,
-    Long uid,
-    HttpServletRequest httpServletRequest
-  ){
+      Model model,
+      Long uid,
+      HttpServletRequest httpServletRequest) {
     logger.info("Suspend request for user with id {}", uid);
 
     try {
       UserInfo userInfo = userService.getUserInfoByID(uid);
-      if(userInfo == null){
+      if (userInfo == null) {
         throw new UserNotFoundException();
       }
       userAccountControlService.suspendUser(userInfo);
     } catch (UserNotFoundException e) {
       e.printStackTrace();
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User Not Found");
-    } catch (Exception e){
+    } catch (Exception e) {
       e.printStackTrace();
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
     }
@@ -422,22 +398,21 @@ public class ProfileController {
 
   @PostMapping("admin/profile/reactivate")
   public ResponseEntity<Object> reactivateUser(
-    Model model,
-    Long uid,
-    HttpServletRequest httpServletRequest
-  ){
+      Model model,
+      Long uid,
+      HttpServletRequest httpServletRequest) {
     logger.info("Reactivate request for user with id {}", uid);
 
     try {
       UserInfo userInfo = userService.getUserInfoByID(uid);
-      if(userInfo == null){
+      if (userInfo == null) {
         throw new UserNotFoundException();
       }
       userAccountControlService.reactivateUser(userInfo);
     } catch (UserNotFoundException e) {
       e.printStackTrace();
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User Not Found");
-    } catch (Exception e){
+    } catch (Exception e) {
       e.printStackTrace();
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
     }
@@ -448,26 +423,25 @@ public class ProfileController {
 
   @PostMapping("admin/profile/verify")
   public ResponseEntity<Object> verifyUser(
-    Model model,
-    Long uid,
-    
-    HttpServletRequest request
-  ){
+      Model model,
+      Long uid,
+
+      HttpServletRequest request) {
     logger.info("Verify request for user with id {}", uid);
     Long adminId = 0L;
-          adminId = userSessionService.getUserAccount().getAccountId();
-          UserInfo adminInfo = userRepo.findById(adminId).orElse(null);
-          UserInfo teacherInfo = userService.getUserInfoByID(uid);
+    adminId = userSessionService.getUserAccount().getAccountId();
+    UserInfo adminInfo = userRepo.findById(adminId).orElse(null);
+    UserInfo teacherInfo = userService.getUserInfoByID(uid);
     try {
       UserInfo userInfo = userService.getUserInfoByID(uid);
-      if(userInfo == null){
+      if (userInfo == null) {
         throw new UserNotFoundException();
       }
       userAccountControlService.verifyUser(userInfo);
     } catch (UserNotFoundException e) {
       e.printStackTrace();
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User Not Found");
-    } catch (Exception e){
+    } catch (Exception e) {
       e.printStackTrace();
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
     }
@@ -475,22 +449,19 @@ public class ProfileController {
     new Thread(new Runnable() {
       public void run() {
         try {
-          
-          
-          
+
           // UserInfo adminInfo = userService.getUserInfoByID(adminId);
-          
+
           String appUrl = request.getServerName() + // "localhost"
               ":" +
               request.getServerPort(); // "8080"
           // mailService.sendVerificationMail(
-          //     savedUserInfo.getUserAccount(),
-          //     appUrl);
+          // savedUserInfo.getUserAccount(),
+          // appUrl);
 
-          
           mailService.VerifiedTeacherByAdmin(teacherInfo, adminInfo);
           mailService.VerifiedTeacherByAdminToTeacher(teacherInfo, adminInfo);
-          
+
         } catch (Exception e) {
           logger.info(e.toString());
         }
@@ -501,7 +472,6 @@ public class ProfileController {
 
   }
 
-
   private boolean isEditable(Long id) {
     UserRole role = userSessionService.getRole();
     if (role == UserRole.ADMIN || role == UserRole.SUPER_ADMIN) {
@@ -509,14 +479,12 @@ public class ProfileController {
     }
     if (role == UserRole.TEACHER || role == UserRole.STUDENT) {
       logger.debug(
-        "request id {}, session id {}",
-        id,
-        userSessionService.getId()
-      );
+          "request id {}, session id {}",
+          id,
+          userSessionService.getId());
       logger.debug(
-        "userSessionService.getId() == id : {}",
-        userSessionService.getId().equals(id)
-      );
+          "userSessionService.getId() == id : {}",
+          userSessionService.getId().equals(id));
       if (id != null) {
         return false;
       }
@@ -539,6 +507,5 @@ public class ProfileController {
     }
     return uid;
   }
-
 
 }

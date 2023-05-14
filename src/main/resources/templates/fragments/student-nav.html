@@ -5,9 +5,9 @@
       <a th:href="@{/}"><img src="/images/logo.png" /></a>
     </div>
 
-    <div class="d-flex links-div " id="linkholderteachers">
+    <div  class="d-flex links-div" id="linkholderteachers">
 
-      <div class="d-flex form__group field align-items-center align-self-center ">
+      <div style="width: 200px;" class="d-flex form__group field align-items-center align-self-center ">
         <img src="/images/icons/search-icon.svg" class="icon" />
         <a class=" ms-3 linkholderteachers" th:href="@{/guest/explore}">Search the Course</a>
       </div>
@@ -68,12 +68,13 @@
             d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
         </svg>
       </a>
-    </li>
-    <li><a class="linkholderteachers " th:href="@{/logout}" style="color: var(--log-out); font-weight: bold;">Log
-        out</a></li><br />
-    <li>
-      <div class="d-flex form__group field align-items-center align-self-center">
-        <!-- <img
+   </li>
+      <li><a class="linkholderteachers " th:href="@{/exam}" style="font-weight: bold;">Exam</a></li>
+   <li><a class="linkholderteachers " th:href="@{/logout}" style="color: var(--log-out); font-weight: bold;">Log out</a></li><br />
+   <!--<li>
+      <div
+        class="d-flex form__group field align-items-center align-self-center">
+        <img
           src="../images/icons/search-icon.svg"
           class="icon" />
         <input

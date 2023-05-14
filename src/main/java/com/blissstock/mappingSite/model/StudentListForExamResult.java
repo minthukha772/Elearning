@@ -32,3 +32,7 @@ public class StudentListForExamResult {
 
 }
     
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2022205-UI-Innovation-UserSite

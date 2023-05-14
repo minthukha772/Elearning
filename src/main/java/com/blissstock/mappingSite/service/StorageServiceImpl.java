@@ -1,6 +1,7 @@
 package com.blissstock.mappingSite.service;
 
 import java.io.File;
+//import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -15,6 +16,7 @@ import java.util.stream.Stream;
 
 import com.blissstock.mappingSite.controller.FileController;
 import com.blissstock.mappingSite.entity.CourseInfo;
+import com.blissstock.mappingSite.entity.PaymentHistory;
 import com.blissstock.mappingSite.entity.PaymentReceive;
 import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.entity.UserInfo;
@@ -51,6 +53,8 @@ public class StorageServiceImpl implements StorageService {
       root + File.separator + "answer_materials");
   public static final Path PROFILE_PATH = Paths.get(
       root + File.separator + "profiles");
+  public static final Path PAYSLIP_PATH = Paths.get(
+      root + File.separator + "slipimg");     
   public final static Path SLIP_PATH = Paths.get(
       root + File.separator + "slip");
   public final static Path COURSE_PATH = Paths.get(
@@ -71,6 +75,9 @@ public class StorageServiceImpl implements StorageService {
       }
       if (!Files.exists(PROFILE_PATH)) {
         Files.createDirectory(PROFILE_PATH);
+      }
+      if (!Files.exists(PAYSLIP_PATH)) {
+        Files.createDirectory(PAYSLIP_PATH);
       }
       if (!Files.exists(SLIP_PATH)) {
         Files.createDirectory(SLIP_PATH);
@@ -439,6 +446,7 @@ public class StorageServiceImpl implements StorageService {
     return new FileInfo(name, url);
   }
 
+<<<<<<< HEAD
   @Override
   public FileInfo loadQuestionMaterials(Long fileSeparator, String fileName) {
 
@@ -484,4 +492,31 @@ public class StorageServiceImpl implements StorageService {
     logger.info("Get Data as Resource name: {}, url: {}", fileName, url);
     return new FileInfo(fileName, url);
   }
+=======
+  @Override  
+  public FileInfo loadPaymentSlip(Long fileSeparator, PaymentHistory viewHistory) {
+     
+    String fileName = viewHistory.getSlipImg();
+      if (fileName == null || fileName.isEmpty()) {
+          return new FileInfo("default", null);
+      }
+
+      String url = MvcUriComponentsBuilder
+              .fromMethodName(
+                      FileController.class,
+                      "getResource",
+                      //"slipimg",
+                      "profiles",
+                      //payHistory.getPaymentHistoryId(),
+                      fileSeparator,
+                      fileName)
+              .build()
+              .toString();
+
+      logger.info("Get Data as Resource name: {}, url: {}", fileName, url);
+      return new FileInfo(fileName, url);
+  }
+
+
+>>>>>>> 2022205-UI-Innovation-UserSite
 }

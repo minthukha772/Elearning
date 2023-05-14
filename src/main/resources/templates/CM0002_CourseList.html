@@ -104,6 +104,7 @@
 				<div class="search__container">
 					<div class="row gap-3">
 						<div class="col-sm">
+<<<<<<< HEAD
 
 							<input type="text" placeholder="Course Name" class="input" th:field="*{courseName}" />
 							<input type="date" placeholder="Start Date (dd/mm/yyyy)" class="input mt-3 startdates"
@@ -120,10 +121,65 @@
 						<div class="col-sm">
 							<input type="number" placeholder="Lowest Fee (0)" class="input" min="0" step="1000" />
 							<input type="number" placeholder="Highest Fee (0)" class="input mt-3" min="0" step="1000" />
+=======
+							
+							<input
+								type="text"
+								placeholder="Course Name"
+								class="input"
+								 th:field="*{courseName}"
+							/>
+							<input
+								type="date"
+								placeholder="Start Date (dd/mm/yyyy)"
+								class="input mt-3 startdates"
+                                th:field="*{startDate}"
+							/>
+							<!-- <label for="startDate">Start Date</label> -->
+							<div class="col-sm">
+								<button type="submit" class="date__btn small-btn">Search</button>
+								<button type="button" class="date__btn small-btn" onclick="window.location.href='/guest/explore';">Reset</button>
+							  </div>
 						</div>
 						<div class="col-sm">
-							<button type="submit" class="date__btn">Search</button>
+							<input
+								type="text"
+								placeholder="Teacher Name"
+								class="input"
+								th:field="*{teacherName}"
+							/>
+							<input
+								type="date"
+								placeholder="End Date (dd/mm/yyyy)"
+								class="input mt-3 enddates"
+								th:field="*{endDate}"
+							/>
+							
 						</div>
+						<div class="col-sm">
+							<input
+								type="number"
+								placeholder="Lowest Fee (0)"
+								class="input"
+								min="0"
+								step="1000"
+								th:field="*{lowestFee}"
+							/>
+							<input
+								type="number"
+								placeholder="Highest Fee (0)"
+								class="input mt-3"
+								min="0"
+								step="1000"
+								th:field="*{highestFee}"
+							/>
+>>>>>>> 2022205-UI-Innovation-UserSite
+						</div>
+						<!-- <div class="col-sm">
+							<button type="submit" class="date__btn small-btn">Search</button>
+							<button type="button" class="date__btn small-btn" onclick="window.location.href='/guest/explore';">Reset</button>
+						  </div> -->
+						  
 					</div>
 				</div>
 		</section>
@@ -146,9 +202,15 @@
 							Subuu Teacher
 						</p>
 						<div sec:authorize="hasAuthority('ROLE_TEACHER')">
-							<a href="/teacher/course-registration" class="btn btn-primary">Add Course</a>
+							<a href="/teacher/course-registration" class="btn btn-primary" th:if="${userInfo.userAccount.accountStatus == 'VERIFIED'}">Add Course</a>
+							<a href="#" class="btn btn-primary" th:if="${userInfo.userAccount.accountStatus != 'VERIFIED'}" disabled>Add Course</a>
 						</div>
+<<<<<<< HEAD
 
+=======
+						
+	
+>>>>>>> 2022205-UI-Innovation-UserSite
 						<!-- <div class="category__title" sec:authorize="hasAuthority('ROLE_TEACHER')">IT -->
 						<!-- <div  class="detail__description" th:if="${userInfo.userAccount.accountStatus == 'VERIFIED'} ">
 						Learn the basics of Git, Git installation,
