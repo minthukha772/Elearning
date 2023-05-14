@@ -32,11 +32,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-<<<<<<< HEAD
-=======
-//import org.springframework.format.annotation.DateTimeFormat;
-
->>>>>>> 2022205-UI-Innovation-UserSite
 @Getter
 @Setter
 @Data

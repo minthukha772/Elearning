@@ -446,7 +446,6 @@ public class StorageServiceImpl implements StorageService {
     return new FileInfo(name, url);
   }
 
-<<<<<<< HEAD
   @Override
   public FileInfo loadQuestionMaterials(Long fileSeparator, String fileName) {
 
@@ -492,7 +491,6 @@ public class StorageServiceImpl implements StorageService {
     logger.info("Get Data as Resource name: {}, url: {}", fileName, url);
     return new FileInfo(fileName, url);
   }
-=======
   @Override  
   public FileInfo loadPaymentSlip(Long fileSeparator, PaymentHistory viewHistory) {
      
@@ -518,5 +516,4 @@ public class StorageServiceImpl implements StorageService {
   }
 
 
->>>>>>> 2022205-UI-Innovation-UserSite
 }
