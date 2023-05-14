@@ -63,12 +63,18 @@ public class Test {
     @Column(name = "exam_status", length = 100)
     private String exam_status;
 
+<<<<<<< HEAD
+    public Test(Long test_id, CourseInfo courseInfo, UserInfo userInfo, String description, String section_name,
+            Integer minutes_allowed, Integer passing_score_percent, Date date, String start_time,
+            String end_time, String exam_status) {
+=======
     @Column(name = "exam_type", length = 100)
     private String exam_type;
 
     public Test(Long test_id, CourseInfo courseInfo, UserInfo userInfo, String description, String section_name,
             Integer minutes_allowed, Integer passing_score_percent, Date date, String start_time,
             String end_time, String exam_status, String exam_type) {
+>>>>>>> 2022205-UI-Innovation-UserSite
         this.test_id = test_id;
         this.courseInfo = courseInfo;
         this.userInfo = userInfo;
@@ -80,6 +86,9 @@ public class Test {
         this.start_time = start_time;
         this.end_time = end_time;
         this.exam_status = exam_status;
+<<<<<<< HEAD
+=======
         this.exam_type = exam_type;
+>>>>>>> 2022205-UI-Innovation-UserSite
     }
 }

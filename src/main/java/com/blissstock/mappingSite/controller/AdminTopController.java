@@ -15,7 +15,6 @@ import com.blissstock.mappingSite.service.StorageService;
 import com.blissstock.mappingSite.service.StorageServiceImpl;
 import com.blissstock.mappingSite.service.UserSessionService;
 import com.blissstock.mappingSite.utils.CheckUploadFileType;
-import com.blissstock.mappingSite.utils.FileNameGenerator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

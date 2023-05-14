@@ -14,6 +14,7 @@ public class AddAdmin {
         this.userName = userName;
         this.mail = mail;
         this.role = role;
+        //test
     }
 
     public String getUserName() {

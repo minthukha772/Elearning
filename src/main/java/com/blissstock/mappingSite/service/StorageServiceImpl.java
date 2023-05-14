@@ -47,6 +47,10 @@ public class StorageServiceImpl implements StorageService {
       .get(System.getProperty("user.home") + File.separator + "uploads");
   public static final Path CERTIFICATE_PATH = Paths.get(
       root + File.separator + "certificates");
+  public static final Path QUESTION_MATERIAL_PATH = Paths.get(
+      root + File.separator + "question_materials");
+  public static final Path ANSWER_MATERIAL_PATH = Paths.get(
+      root + File.separator + "answer_materials");
   public static final Path PROFILE_PATH = Paths.get(
       root + File.separator + "profiles");
   public static final Path PAYSLIP_PATH = Paths.get(
@@ -54,14 +58,14 @@ public class StorageServiceImpl implements StorageService {
   public final static Path SLIP_PATH = Paths.get(
       root + File.separator + "slip");
   public final static Path COURSE_PATH = Paths.get(
-        root + File.separator + "cphotos");
+      root + File.separator + "cphotos");
 
   @Autowired
   UserSessionService userSessionService;
 
   @Override
   public void init() {
-    logger.info("Initiating {}",root.toAbsolutePath().toString());
+    logger.info("Initiating {}", root.toAbsolutePath().toString());
     try {
       if (!Files.exists(root)) {
         Files.createDirectory(root);
@@ -80,6 +84,9 @@ public class StorageServiceImpl implements StorageService {
       }
       if (!Files.exists(COURSE_PATH)) {
         Files.createDirectory(COURSE_PATH);
+      }
+      if (!Files.exists(QUESTION_MATERIAL_PATH)) {
+        Files.createDirectory(QUESTION_MATERIAL_PATH);
       }
     } catch (IOException e) {
       throw new RuntimeException("Could not initialize folder for upload!");
@@ -169,6 +176,67 @@ public class StorageServiceImpl implements StorageService {
       logger.error("not file exception, {}", file.getName());
       throw new NotImageFileException();
     }
+    // }
+    Path storeLocation = Paths.get(path + File.separator + uid);
+
+    // Create Directory if it does not exists
+    if (!Files.exists(storeLocation)) {
+      try {
+        Files.createDirectories(storeLocation);
+      } catch (IOException e) {
+        e.printStackTrace();
+        logger.error("Could not initialize folder for upload!");
+        throw new RuntimeException("Could not initialize folder for upload!");
+      }
+    }
+
+    if (deleteAllOldFiles) {
+      logger.info("Deleting all photos of Uid: {}", uid);
+      try {
+        FileUtils.cleanDirectory(storeLocation.toFile());
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+
+    // for (MultipartFile file : files) {
+    try {
+      try {
+        Files.copy(
+            file.getInputStream(),
+            storeLocation.resolve(file.getOriginalFilename()));
+      } catch (Exception e) {
+        throw new RuntimeException(
+            "Could not store the file. Error: " + e.getMessage());
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+
+      throw new FileStorageException(
+          "Could not store file " +
+              file.getOriginalFilename() +
+              ". Please try again!");
+    }
+    // logger.info("User {} has stored {} files",uid,files.length);
+  }
+
+  @Override
+  public void storeQuestionMaterials(Long uid, MultipartFile file, Path path, boolean deleteAllOldFiles)
+      throws UnauthorizedFileAccessException {
+    // Checking Content Type
+    // logger.info("files with size: {} is being stored",files.length);
+
+    if (path.equals(CERTIFICATE_PATH) && !checkAuthForTeacher(uid)) {
+      logger.info("User " + uid + " is uploding certificates");
+      logger.error("unauthorize file access");
+      throw new UnauthorizedFileAccessException();
+    }
+    // ImageFileValidator fileValidator = new ImageFileValidator();
+    // // for (MultipartFile file : files) {
+    // if (!fileValidator.isSupportedContentType(file.getContentType())) {
+    // logger.error("not file exception, {}", file.getName());
+    // throw new NotImageFileException();
+    // }
     // }
     Path storeLocation = Paths.get(path + File.separator + uid);
 
@@ -333,6 +401,7 @@ public class StorageServiceImpl implements StorageService {
     logger.info("Get Data as Resource name: {}, url: {}", name, url);
     return new FileInfo(name, url);
   }
+
   @Override
   public void storeSlip(MultipartFile file, String fileName) {
     try {
@@ -377,6 +446,53 @@ public class StorageServiceImpl implements StorageService {
     return new FileInfo(name, url);
   }
 
+<<<<<<< HEAD
+  @Override
+  public FileInfo loadQuestionMaterials(Long fileSeparator, String fileName) {
+
+    if (fileName == null || fileName.isEmpty()) {
+      return new FileInfo("default", null);
+    }
+
+    String url = MvcUriComponentsBuilder
+        .fromMethodName(
+            FileController.class,
+            "getResource",
+            // "slipimg",
+            "question_materials",
+            // payHistory.getPaymentHistoryId(),
+            fileSeparator,
+            fileName)
+        .build()
+        .toString();
+
+    logger.info("Get Data as Resource name: {}, url: {}", fileName, url);
+    return new FileInfo(fileName, url);
+  }
+
+  @Override
+  public FileInfo loadAnswermaterials(Long fileSeparator, String fileName) {
+
+    if (fileName == null || fileName.isEmpty()) {
+      return new FileInfo("default", null);
+    }
+
+    String url = MvcUriComponentsBuilder
+        .fromMethodName(
+            FileController.class,
+            "getResource",
+            // "slipimg",
+            "answer_materials",
+            // payHistory.getPaymentHistoryId(),
+            fileSeparator,
+            fileName)
+        .build()
+        .toString();
+
+    logger.info("Get Data as Resource name: {}, url: {}", fileName, url);
+    return new FileInfo(fileName, url);
+  }
+=======
   @Override  
   public FileInfo loadPaymentSlip(Long fileSeparator, PaymentHistory viewHistory) {
      
@@ -402,4 +518,5 @@ public class StorageServiceImpl implements StorageService {
   }
 
 
+>>>>>>> 2022205-UI-Innovation-UserSite
 }

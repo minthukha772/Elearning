@@ -4519,7 +4519,11 @@ textarea.form-control-lg {
   content: var(--bs-breadcrumb-divider, "/") /* rtl: var(--bs-breadcrumb-divider, "/") */;
 }
 .breadcrumb-item.active {
+<<<<<<< HEAD
+  color: #0d19c0;
+=======
   color: #128639;
+>>>>>>> 2022205-UI-Innovation-UserSite
 }
 
 .pagination {

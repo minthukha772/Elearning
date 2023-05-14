@@ -110,11 +110,19 @@
             <div class="mt-2 mb-5 d-flex justify-content-around align-items-center flex-wrap exam-results-card">
                 <div th:each="student : ${students}" class="col-md-4">
                     <div class="card mt-3 py-2 rounded-3" style="width: 420px;"
+<<<<<<< HEAD
+                        th:data-custom-type="${student.examResult == 'Fail' ? 'Fail' : 'Pass'}">
+                        <div class="card-body" th:data-status="${student.examResult}">
+                            <div class="d-flex align-items-center">
+                                <img th:src="@{${student.profilePic.url}}" alt="" class="img-fluid rounded-circle"
+                                    style="width: 50px;height: 50px;">
+=======
                          th:data-custom-type="${student.examResult == 'Fail' ? 'Fail' : 'Pass'}">
                         <div class="card-body" th:data-status="${student.examResult}">
                             <div class="d-flex align-items-center">
                                 <img th:src="@{${student.profilePic.url}}" alt="" class="img-fluid rounded-circle"
                                      style="width: 50px;height: 50px;">
+>>>>>>> 2022205-UI-Innovation-UserSite
                                 <h6 class="ms-3" th:text="${student.studentName}"></h6>
                             </div>
                             <div class="mt-2 d-flex justify-content-between align-items-center flex-wrap result-data">
@@ -127,11 +135,20 @@
                                 <div class="">
                                     <div th:text="${' - ' + student.studentEmail}"></div>
                                     <div th:text="${' - ' + student.studentPhone}"></div>
+<<<<<<< HEAD
+                                    <div
+                                        th:class="${student.examResult == 'Pass' ? 'text-success' : 'text-danger fw-bold'}">
+                                        <span class="me-1 text-dark fw-normal">- </span>
+                                        <span th:text="${student.examResult}"></span>
+                                    </div>
+
+=======
                                     <div th:class="${student.examResult == 'Pass' ? 'text-success' : 'text-danger fw-bold'}">
                                         <span class="me-1 text-dark fw-normal">- </span>
                                         <span th:text="${student.examResult}"></span>
                                     </div>
                                     
+>>>>>>> 2022205-UI-Innovation-UserSite
                                     <div th:text="${' - ' + student.stuMarks + '/' + student.maxMarks}"></div>
                                 </div>
                                 <div class="col-12 mt-2">
@@ -144,7 +161,11 @@
                     </div>
                 </div>
             </div>
+<<<<<<< HEAD
+
+=======
             
+>>>>>>> 2022205-UI-Innovation-UserSite
         </div>
 
 
@@ -162,8 +183,156 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script th:src="@{/js/AT0008_ExamResultList.js}"></script>
     <script th:src="@{/js/main.js}"></script>
+<<<<<<< HEAD
+    <script th:inline="javascript">
+        var trueArr = /*[[${trueArr}]]*/ null;
+        let chart = document.querySelector('.chart');
+        let labelBox = document.querySelector('.label-box');
+        chart.style.width = `${40 * trueArr.length}px`;
+        labelBox.style.width = `${40 * trueArr.length}px`;
+
+        trueArr.forEach((val, i) => {
+            chart.innerHTML += `<div class="chart-data" id="${i + 1}">
+        <div class="false" title="False : ${100 - val}%"  style='height:${100 - val}%'></div>
+        <div class="true"  title="True : ${val}%" style='height:${val}%'></div>
+    </div>`;
+            labelBox.innerHTML += `<div class="label text-center" id="Q${i + 1}" style="width: 27px;">Q${i + 1}</div>`
+        })
+
+        // filter 
+        $("select").change(function () {
+            var selectedEventType = this.options[this.selectedIndex].value;
+            if (selectedEventType == "All") {
+                $('.card').removeClass('d-none');
+            } else {
+                $('.card').addClass('d-none');
+                $('.card[data-custom-type="' + selectedEventType + '"]').removeClass('d-none');
+            }
+        });
+
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            overflow-x: hidden !important;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            box-sizing: border-box;
+            text-decoration: none !important;
+            scroll-behavior: smooth;
+        }
+
+        .bg-success,
+        .btn-success {
+            background-color: #309986 !important;
+        }
+
+        .text-success {
+            color: #309986 !important;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            overflow: hidden !important;
+        }
+
+        /* scrollbar
+/* width */
+        /* ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+   */
+        /* Track */
+        /* ::-webkit-scrollbar-track {
+background: rgba(48, 153, 134, 0.2);
+} */
+
+        /* Handle */
+        /* ::-webkit-scrollbar-thumb {
+background: #309986;
+} */
+
+
+        .chart-section {
+            min-width: 1054px;
+            max-width: 1300px;
+            margin: auto;
+            padding: 0 20px 10px;
+            overflow-x: scroll !important;
+        }
+
+        .chart {
+            height: 150px;
+            border-bottom: 3px solid #309986;
+            margin: 20px auto 0px;
+            display: flex;
+        }
+
+        .chart-data {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 10px;
+            width: 27px !important;
+            height: 100%;
+        }
+
+        .false {
+            width: 100%;
+            height: 20%;
+            background-color: #FFFFFF;
+        }
+
+        .true {
+            width: 100%;
+            height: 80%;
+            background-color: #309986;
+        }
+
+        .label-box {
+            display: flex;
+            margin: 0 auto;
+        }
+
+        .label {
+            margin: 0 10px;
+            min-width: 20px !important;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .card {
+            border: none;
+            box-shadow: rgba(48, 153, 134, 0.2) 0px 8px 20px;
+            transition: 0.3s ease-in-out;
+        }
+
+        .card[data-custom-type="Pass"]:hover {
+            background-color: rgba(48, 153, 134, 0.2)
+        }
+
+        .card[data-custom-type="Fail"]:hover {
+            background-color: rgba(255, 0, 0, 0.2)
+        }
+
+        .card .result-data {
+            font-size: 17px;
+        }
+    </style>
+=======
     
     
+>>>>>>> 2022205-UI-Innovation-UserSite
 </body>
 
 </html>
