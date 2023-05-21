@@ -110,19 +110,11 @@
             <div class="mt-2 mb-5 d-flex justify-content-around align-items-center flex-wrap exam-results-card">
                 <div th:each="student : ${students}" class="col-md-4">
                     <div class="card mt-3 py-2 rounded-3" style="width: 420px;"
-<<<<<<< HEAD
                         th:data-custom-type="${student.examResult == 'Fail' ? 'Fail' : 'Pass'}">
                         <div class="card-body" th:data-status="${student.examResult}">
                             <div class="d-flex align-items-center">
                                 <img th:src="@{${student.profilePic.url}}" alt="" class="img-fluid rounded-circle"
                                     style="width: 50px;height: 50px;">
-=======
-                         th:data-custom-type="${student.examResult == 'Fail' ? 'Fail' : 'Pass'}">
-                        <div class="card-body" th:data-status="${student.examResult}">
-                            <div class="d-flex align-items-center">
-                                <img th:src="@{${student.profilePic.url}}" alt="" class="img-fluid rounded-circle"
-                                     style="width: 50px;height: 50px;">
->>>>>>> 2022205-UI-Innovation-UserSite
                                 <h6 class="ms-3" th:text="${student.studentName}"></h6>
                             </div>
                             <div class="mt-2 d-flex justify-content-between align-items-center flex-wrap result-data">
@@ -135,20 +127,12 @@
                                 <div class="">
                                     <div th:text="${' - ' + student.studentEmail}"></div>
                                     <div th:text="${' - ' + student.studentPhone}"></div>
-<<<<<<< HEAD
                                     <div
                                         th:class="${student.examResult == 'Pass' ? 'text-success' : 'text-danger fw-bold'}">
                                         <span class="me-1 text-dark fw-normal">- </span>
                                         <span th:text="${student.examResult}"></span>
                                     </div>
 
-=======
-                                    <div th:class="${student.examResult == 'Pass' ? 'text-success' : 'text-danger fw-bold'}">
-                                        <span class="me-1 text-dark fw-normal">- </span>
-                                        <span th:text="${student.examResult}"></span>
-                                    </div>
-                                    
->>>>>>> 2022205-UI-Innovation-UserSite
                                     <div th:text="${' - ' + student.stuMarks + '/' + student.maxMarks}"></div>
                                 </div>
                                 <div class="col-12 mt-2">
@@ -161,11 +145,6 @@
                     </div>
                 </div>
             </div>
-<<<<<<< HEAD
-
-=======
-            
->>>>>>> 2022205-UI-Innovation-UserSite
         </div>
 
 
@@ -183,7 +162,6 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script th:src="@{/js/AT0008_ExamResultList.js}"></script>
     <script th:src="@{/js/main.js}"></script>
-<<<<<<< HEAD
     <script th:inline="javascript">
         var trueArr = /*[[${trueArr}]]*/ null;
         let chart = document.querySelector('.chart');
@@ -329,10 +307,6 @@ background: #309986;
             font-size: 17px;
         }
     </style>
-=======
-    
-    
->>>>>>> 2022205-UI-Innovation-UserSite
 </body>
 
 </html>
