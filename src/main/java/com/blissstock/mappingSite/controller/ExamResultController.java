@@ -95,8 +95,8 @@ public class ExamResultController {
         if (viewExamResult != null) {
             String courseName = viewExamResult.getTest().getCourseInfo().getCourseName();
             String teacherName = viewExamResult.getTest().getCourseInfo().getUserInfo().getUserName();
-            String examineeName = viewExamResult.getUserInfo().getUserName();
-            Long studentId = viewExamResult.getUserInfo().getUid();
+            String examineeName = viewExamResult.getUser().getUserName();
+            Long studentId = viewExamResult.getUser().getUid();
             Date examDate = viewExamResult.getTest().getDate();
             int timeAllowed = viewExamResult.getTest().getMinutes_allowed();
             int maxMarks = 0;
@@ -404,13 +404,13 @@ public class ExamResultController {
 
                     for (Result result : viewResults) {
                         if (testStudent.getUserInfo().getUid()
-                                .equals(result.getUserInfo().getUid())
+                                .equals(result.getUser().getUid())
                                 && result.getResultMark() != 0) {
                             answeredStudents = answeredStudents + 1;
 
                         }
                         if (testStudent.getUserInfo().getUid()
-                                .equals(result.getUserInfo().getUid())
+                                .equals(result.getUser().getUid())
                                 && result.getResult().equals("Pass")) {
                             passedStudents = passedStudents + 1;
 
