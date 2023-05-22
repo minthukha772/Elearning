@@ -133,7 +133,10 @@
                                                                             Add Teacher
                                                                         </button>
                                                                     </div> -->
-
+    <div id="pc-view-message">
+      <p><i style="color: yellowgreen;font-size: 25px;" class="fas fa-exclamation-triangle"></i> Please only use PC View
+        for this page.</p>
+    </div>
     <div class="container-fluid">
       <div class="d-none d-md-block d-lg-block d-xl-block mx-5">
         <div>
@@ -289,7 +292,7 @@
                             e.preventDefault();
                             var paymentId = $(this).val();
 
-                            
+
                             Swal.fire({
                               title: 'Are you sure?',
                               text: "You won't be able to revert this!",
@@ -300,7 +303,7 @@
                               confirmButtonText: 'Yes, verify it!'
                             }).then((result) => {
                               if (result.isConfirmed) {
-                                
+
                                 $.ajax({
                                   url: "/admin/teacher-payment-list/verifyPayment",
                                   type: "POST",
@@ -308,19 +311,19 @@
                                     paymentId: paymentId
                                   },
                                   success: function (response) {
-                                    
+
                                     Swal.fire({
                                       icon: "success",
                                       title: "Payment verified",
                                       showConfirmButton: false,
-                                      timer: 2000 
+                                      timer: 2000
                                     }).then(function () {
-                                      
+
                                       window.location.reload();
                                     });
                                   },
                                   error: function (xhr) {
-                                    
+
                                     Swal.fire(
                                       'Error!',
                                       xhr.responseText,
@@ -572,7 +575,7 @@
       location.reload(true);
     }
 
-</script>
+  </script>
 
 
 
