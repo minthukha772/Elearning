@@ -1,8 +1,5 @@
 package com.blissstock.mappingSite.model;
 
-
-
-//import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -32,7 +29,3 @@ public class StudentListForExamResult {
 
 }
     
-<<<<<<< HEAD
-=======
-
->>>>>>> 2022205-UI-Innovation-UserSite
