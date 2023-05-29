@@ -885,11 +885,6 @@
     width: 38px;
   }
   
-  @import url("https://fonts.googleapis.com/css?family=Inter:400,700,500,600,800|Mulish:600");.screen a {
-    display: contents;
-    text-decoration: none;
-  }
-  
   .container-center-horizontal {
     display: flex;
     flex-direction: row;

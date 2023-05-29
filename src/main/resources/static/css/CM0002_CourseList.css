@@ -20,7 +20,8 @@ section.explore__courses h1 {
 .btn-primary {
 	color: white;
 	border: none;
-	background-color: #09646a;
+    background-color: #3f877a;
+	/* background-color: #09646a; */
 	border-radius: 4px;
 	font-size: 20px;
 	padding: 5px 10px;
@@ -194,4 +195,16 @@ section.explore__courses h1 {
 
 .enddates::after{
 	content: ' ) ';
+}
+
+.btn-primary[disabled] {
+	opacity: 0.5;
+	pointer-events: none;
+  }
+
+  .small-btn {
+  width: 80px;
+  height: 40px;
+  font-size: 14px;
+  padding: 0 10px;
 }

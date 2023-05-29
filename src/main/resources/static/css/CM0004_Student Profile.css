@@ -394,7 +394,10 @@ body {
   box-shadow: 2px 2px 3px var(--btnshadow);
 }
 
+
     /* .footers{
+
+
       max-width: 800%;
       position: absolute;
       top: 80%;
@@ -500,8 +503,6 @@ body {
   
 }
   
-=======
-  } */
 
   /* FOOTER */
 .no-padding {
@@ -647,4 +648,12 @@ body {
     margin: 20px auto;
     background-color: #28C4AF;
 }
+
+/* #cfee:invalid:empty {
+  border-color: #dc3545;
+}
+
+#cfee:invalid:empty + .invalid-feedback {
+  display: block;
+} */
 

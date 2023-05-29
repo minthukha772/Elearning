@@ -93,6 +93,10 @@ public class CourseInfo {
   @Column(name = "isCourseApproved", nullable = false)
   private boolean isCourseApproved = false;
 
+  // new column
+  @Column(name = "payment_type", length = 50)
+  private String paymentType;
+
   // mapping
 
   @ToString.Exclude
@@ -118,6 +122,14 @@ public class CourseInfo {
   @Transient
   private Long uid;
 
+  @OneToMany(
+    fetch = FetchType.LAZY,
+    cascade = CascadeType.ALL,
+    mappedBy = "courseInfo"
+  )
+  @JsonIgnore
+  private List<PaymentForTeacher> paymentForTeachers = new ArrayList<>();
+
   @ToString.Exclude
   @ManyToOne(fetch = FetchType.EAGER, optional = false)
   @JoinColumn(name = "uid_fkey")
@@ -134,6 +146,14 @@ public class CourseInfo {
 
   public CourseInfo orElse(Object object) {
     return null;
+  }
+
+  public String getPaymentType() {
+    return paymentType;
+  }
+
+  public void setPaymentType(String paymentType) {
+      this.paymentType = paymentType;
   }
   // public String getTitle() {
   // return this.title;

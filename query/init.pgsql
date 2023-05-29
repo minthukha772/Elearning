@@ -470,7 +470,6 @@ INSERT INTO public.review(
 INSERT INTO public.review(
  review_id, assigned_date, feedback, review_type, star, join_fkey)
  VALUES (60029,'2021-12-01','The course content is quite good, though it could have been deeper in some areas.But its peer review system is not working well, if at all.Regards, An Le.',0,4,90029);
--- INSERT INTO public.review(
---  review_id, assigned_date, feedback, review_type, star, join_fkey)
---  VALUES (60030,'2021-12-02','Keep up with deadlines',1,0,50010,20008);
-
+INSERT INTO public.review(
+review_id, assigned_date, feedback, review_type, star, join_fkey)
+VALUES (60030,'2021-12-02','Keep up with deadlines',1,0,50010,20008);

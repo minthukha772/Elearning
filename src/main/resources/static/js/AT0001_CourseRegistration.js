@@ -69,13 +69,32 @@ const onSubmit = () => {
   const form = $("form");
 
   $("#btnReg").click((event) => {
-    
+    console.log("")
     $(form).addClass("was-validated");
     let isFormValid = checkDate();
-    isFormValid= checkTime() && isFormValid;
+    isFormValid = checkTime() && isFormValid;
     if (!(form[0].checkValidity() && isFormValid)) {
       event.preventDefault();
       event.stopPropagation();
+      // Get the selected payment type
+      var paymentType = document.querySelector('input[name="paymentType"]:checked').value;
+
+      // Set the payment type value in the hidden input field
+      document.getElementById("paymentType").value = paymentType;
+
+      // Create a new FormData object to store the form data
+      var formData = new FormData(document.getElementById("myForm"));
+
+      // Send the form data to the server using AJAX
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", "/teacher/save-course-register");
+      xhr.onload = function () {
+        if (xhr.status === 200) {
+          console.log(xhr.responseText);
+        }
+      };
+      xhr.send(formData);
+
     }
   });
 };
@@ -106,21 +125,21 @@ const checkTime = () => {
       const endTimeInput = $("#endTime" + i);
       const startTime = minFromMidnight(startTimeInput.val());
       const endTime = minFromMidnight(endTimeInput.val());
-      if(startTime < 0|| endTime <0){
+      if (startTime < 0 || endTime < 0) {
         // If startTime or endTime is null;
         isValid = false;
         continue;
       }
-      if(startTime>endTime){
+      if (startTime > endTime) {
         const errorMessage = "The end time should be later";
         startTimeInput[0].setCustomValidity(errorMessage);
         endTimeInput[0].setCustomValidity(errorMessage);
-        $(".day"+i+"-feedback").html(errorMessage);
+        $(".day" + i + "-feedback").html(errorMessage);
         isValid = false;
-      }else{
+      } else {
         startTimeInput[0].setCustomValidity("");
         endTimeInput[0].setCustomValidity("");
-        $(".day"+i+"-feedback").html("This field must be filled");
+        $(".day" + i + "-feedback").html("This field must be filled");
       }
     }
   }
@@ -128,18 +147,18 @@ const checkTime = () => {
 };
 
 function minFromMidnight(tm) {
-  try{
+  try {
     var ampm = tm.substr(-2);
     var clk = tm.substr(0, 5);
     var m = parseInt(clk.match(/\d+$/)[0], 10);
     var h = parseInt(clk.match(/^\d+/)[0], 10);
     h += ampm.match(/pm/i) ? 12 : 0;
     return h * 60 + m;
-  }catch(e){
-    
+  } catch (e) {
+
   }
   return -1;
-  
+
 }
 
 // $("input").on("click", function () {
@@ -171,7 +190,7 @@ function minFromMidnight(tm) {
 //     let photo = upload.files[0];
 //     console.log(upload.files)
 //     let reader = new FileReader();
-    
+
 //     reader.addEventListener('load',()=>{
 //         img.src = reader.result;
 //         img.classList = 'display-image'
@@ -189,32 +208,32 @@ let inputInSelect = document.querySelector('.add');
 let catTitle = document.querySelector('#new_cat');
 let courseTitle = document.querySelector('#course_title');
 
-add.addEventListener('click',()=>{
-    catBox.classList.remove('d-none');
-    catBox.classList.add('ani');
+add.addEventListener('click', () => {
+  catBox.classList.remove('d-none');
+  catBox.classList.add('ani');
 });
 
-close.forEach( el => {
-    el.addEventListener('click',()=>{
-        catBox.classList.add('d-none');
-        delBox.classList.add('d-none');
-    })
+close.forEach(el => {
+  el.addEventListener('click', () => {
+    catBox.classList.add('d-none');
+    delBox.classList.add('d-none');
+  })
 });
 
-inputInSelect.addEventListener('click',()=>{
+inputInSelect.addEventListener('click', () => {
+  courseTitle.innerHTML += `<option value="${catTitle.value}">${catTitle.value}</option>`;
+  delteTitle.innerHTML += `<option value="${catTitle.value}">${catTitle.value}</option>`;
+  catBox.classList.add('d-none');
+  catTitle.value = ''
+})
+
+catTitle.addEventListener('keyup', (e) => {
+  if (e.key == 'Enter') {
     courseTitle.innerHTML += `<option value="${catTitle.value}">${catTitle.value}</option>`;
     delteTitle.innerHTML += `<option value="${catTitle.value}">${catTitle.value}</option>`;
     catBox.classList.add('d-none');
     catTitle.value = ''
-})
-
-catTitle.addEventListener('keyup',(e)=>{
-    if(e.key == 'Enter'){
-        courseTitle.innerHTML += `<option value="${catTitle.value}">${catTitle.value}</option>`;
-        delteTitle.innerHTML += `<option value="${catTitle.value}">${catTitle.value}</option>`;
-        catBox.classList.add('d-none');
-        catTitle.value = ''
-    }
+  }
 })
 
 // delete category
@@ -225,21 +244,21 @@ let delBtn = document.querySelector('.deleteBtn');
 let delteTitle = document.querySelector('#delete_cat');
 let courseTitleValue = courseTitle.value;
 
-del.addEventListener('click',()=>{
-    delBox.classList.remove('d-none');
-    delBox.classList.add('ani');
+del.addEventListener('click', () => {
+  delBox.classList.remove('d-none');
+  delBox.classList.add('ani');
 });
 
-delBtn.addEventListener('click',()=>{
-    if (delteTitle.value != 'Select Category'){
-        for (var i=0; i<courseTitle.length; i++) {
-            if (courseTitle.options[i].value == delteTitle.value)
-                courseTitle.remove(i);
-        }
-        for (var i=0; i<delteTitle.length; i++) {
-            if (delteTitle.options[i].value == delteTitle.value)
-                delteTitle.remove(i);
-        }
-        delBox.classList.add('d-none');
+delBtn.addEventListener('click', () => {
+  if (delteTitle.value != 'Select Category') {
+    for (var i = 0; i < courseTitle.length; i++) {
+      if (courseTitle.options[i].value == delteTitle.value)
+        courseTitle.remove(i);
     }
+    for (var i = 0; i < delteTitle.length; i++) {
+      if (delteTitle.options[i].value == delteTitle.value)
+        delteTitle.remove(i);
+    }
+    delBox.classList.add('d-none');
+  }
 })

@@ -52,8 +52,6 @@ public interface CourseInfoRepository extends JpaRepository<CourseInfo, Long> {
             @Param("aboutCourse") String aboutCourse, @Param("prerequisite") String prerequisite,
             @Param("fees") int fees, @Param("isCourseApproved") boolean isCourseApproved);
 
-    // @Query(value = "SELECT c.course_name, u.user_name FROM course_info
-    // c,user_info u where course_id=50004 and c.uid_fkey =
-    // u.account_id",nativeQuery = true)
-    // public
+    @Query(value = "SELECT * FROM course_info WHERE uid_fkey=:uid", nativeQuery = true)
+    public List<CourseInfo> findByUID(@Param("uid") Long uid);
 }
