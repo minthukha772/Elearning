@@ -21,11 +21,9 @@ public class Result {
     private Long resultId;
 
     @ManyToOne
-    @JoinColumn(name = "test_id")
     private Test test;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
     private UserInfo user;
 
     @Column(name = "mark")
