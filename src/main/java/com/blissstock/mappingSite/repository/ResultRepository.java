@@ -12,6 +12,6 @@ public interface ResultRepository extends JpaRepository<Result, Long> {
     @Query(value = "Select * from result where test_test_id = :test_id order by test_test_id desc", nativeQuery = true)
     public List<Result> getListByTestId(@Param("test_id") Long test_id);
 
-    @Query(value = "Select * from result where test_test_id = :test_id and user_info_account_id = :user_id order by result_id desc", nativeQuery = true)
+    @Query(value = "Select * from result where test_test_id = :test_id and user_account_id = :user_id order by result_id desc", nativeQuery = true)
     public Result getResultByTestIdAndUser(@Param("test_id") Long test_id, @Param("user_id") Long user_id);
 }
