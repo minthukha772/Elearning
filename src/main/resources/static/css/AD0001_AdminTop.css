@@ -3,7 +3,37 @@
         width:100px;
     }
 } */
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700&subset=latin,latin-ext);
+:root {
+	/* Colors */
+	--primary: #309986;
+	--warning: yellow;
+	--navbar-brand-bg-color: #edf3f1;
+	--navbar-color: #0f8173;
+	/* Typography */
+	--links-font-size: 17px;
+	--nav-link-bg-alt: #00736c;
+	--log-out:#e63587;
+	--certificate-border:#057835;
+	--certificate-btn:#3c8a08;
+	--certificate-secondbtn:hsla(160, 64%, 42%, 0.993);
+	--cardbox: #3abea6e7;
+    --btnbg: rgba(16, 226, 233, 0.993);
+    --btnborder:#fff;
+    --btnshadow:#000;
+	--registercomplete:green;
+}
+
+*,
+*::after,
+*::before {
+	box-sizing: border-box;
+}
+
+body {
+	font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+	font-weight: 400;
+	overflow-x: hidden;
+}
 
 .btn-small, .btn-small:active, .btn-small.active{
   font-size: 16px;
@@ -91,3 +121,39 @@
 }  
   
 }
+footer {
+  width: 100vw;
+height: auto;
+background-color: #3f877a;
+color: white;
+}
+
+.footer__div {
+padding: 73px 103px;
+}
+
+.footer__title {
+font-size: 24px;
+}
+
+.footer__title ul {
+list-style: none;
+font-size: 16px;
+}
+
+.footer__subtitle {
+margin-top: 24px;
+}
+
+.copyright {
+	width: 100%;
+	background-color: black;
+	height: 49px;
+}
+
+.copyright__text {
+	margin: 0;
+	text-align: center;
+  color: white;
+}
+

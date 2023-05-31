@@ -351,35 +351,35 @@ INSERT INTO public.leave_info(leave_id, leave_date, leave_start_time, leave_end_
 
 
 --Payment receive
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80001,'1.1.2021','Completed','https://www.w26schools.com/images/picture.jpg', 90001);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80002,'2.1.2021','Completed','https://www.w27schools.com/images/picture.jpg', 90002);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80003,'3.1.2021','Completed','https://www.w28schools.com/images/picture.jpg', 90003);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80004,'4.1.2021','Completed','https://www.w29schools.com/images/picture.jpg', 90004);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80005,'5.1.2021','Completed','https://www.w30schools.com/images/picture.jpg', 90005);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80006,'6.1.2021','Completed','https://www.w31schools.com/images/picture.jpg', 90006);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80007,'7.1.2021','Completed','https://www.w32schools.com/images/picture.jpg', 90007);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80008,'8.1.2021','Pending','https://www.w33schools.com/images/picture.jpg', 90008);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80009,'9.1.2021','Request','https://www.w34schools.com/images/picture.jpg', 90009);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80010,'1.1.2021','Error','https://www.w35schools.com/images/picture.jpg', 90010);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80011,'1.1.2021','Pending','https://www.w36schools.com/images/picture.jpg', 90011);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80012,'2.1.2021','Pending','https://www.w37schools.com/images/picture.jpg', 90012);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80013,'3.1.2021','Pending','https://www.w38schools.com/images/picture.jpg', 90013);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80014,'4.1.2021','Pending','https://www.w39schools.com/images/picture.jpg', 90014);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80015,'5.1.2021','Pending','https://www.w40schools.com/images/picture.jpg', 90015);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80016,'6.1.2021','Pending','https://www.w41schools.com/images/picture.jpg', 90016);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80017,'7.1.2021','Request','https://www.w42schools.com/images/picture.jpg', 90017);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80018,'8.1.2021','Error','https://www.w43schools.com/images/picture.jpg', 90018);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80019,'9.1.2021','Completed','https://www.w44schools.com/images/picture.jpg', 90019);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80020,'2.2.2021','Completed','https://www.w45schools.com/images/picture.jpg', 90020);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80021,'1.2.2021','Completed','https://www.w46schools.com/images/picture.jpg', 90021);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80022,'3.1.2021','Completed','https://www.w47schools.com/images/picture.jpg', 90022);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80023,'4.1.2021','Completed','https://www.w48schools.com/images/picture.jpg', 90023);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80024,'5.1.2021','Completed','https://www.w49schools.com/images/picture.jpg', 90024);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80025,'6.1.2021','Completed','https://www.w50schools.com/images/picture.jpg', 90025);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80026,'6.1.2021','Pending','https://www.w51schools.com/images/picture.jpg', 90026);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80027,'7.1.2021','Pending','https://www.w52schools.com/images/picture.jpg', 90027);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80028,'8.1.2021','Pending','https://www.w53schools.com/images/picture.jpg', 90028);
-INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80029,'9.1.2021','Completed','https://www.w54schools.com/images/picture.jpg', 90029);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80001,'1.1.2021','COMPLETED','https://www.w26schools.com/images/picture.jpg', 90001);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80002,'2.1.2021','COMPLETED','https://www.w27schools.com/images/picture.jpg', 90002);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80003,'3.1.2021','COMPLETED','https://www.w28schools.com/images/picture.jpg', 90003);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80004,'4.1.2021','COMPLETED','https://www.w29schools.com/images/picture.jpg', 90004);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80005,'5.1.2021','COMPLETED','https://www.w30schools.com/images/picture.jpg', 90005);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80006,'6.1.2021','COMPLETED','https://www.w31schools.com/images/picture.jpg', 90006);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80007,'7.1.2021','COMPLETED','https://www.w32schools.com/images/picture.jpg', 90007);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80008,'8.1.2021','PENDING','https://www.w33schools.com/images/picture.jpg', 90008);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80009,'9.1.2021','REQUESTED','https://www.w34schools.com/images/picture.jpg', 90009);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80010,'1.1.2021','ERROR','https://www.w35schools.com/images/picture.jpg', 90010);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80011,'1.1.2021','PENDING','https://www.w36schools.com/images/picture.jpg', 90011);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80012,'2.1.2021','PENDING','https://www.w37schools.com/images/picture.jpg', 90012);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80013,'3.1.2021','PENDING','https://www.w38schools.com/images/picture.jpg', 90013);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80014,'4.1.2021','PENDING','https://www.w39schools.com/images/picture.jpg', 90014);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80015,'5.1.2021','PENDING','https://www.w40schools.com/images/picture.jpg', 90015);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80016,'6.1.2021','PENDING','https://www.w41schools.com/images/picture.jpg', 90016);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80017,'7.1.2021','REQUESTED','https://www.w42schools.com/images/picture.jpg', 90017);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80018,'8.1.2021','ERROR','https://www.w43schools.com/images/picture.jpg', 90018);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80019,'9.1.2021','COMPLETED','https://www.w44schools.com/images/picture.jpg', 90019);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80020,'2.2.2021','COMPLETED','https://www.w45schools.com/images/picture.jpg', 90020);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80021,'1.2.2021','COMPLETED','https://www.w46schools.com/images/picture.jpg', 90021);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80022,'3.1.2021','COMPLETED','https://www.w47schools.com/images/picture.jpg', 90022);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80023,'4.1.2021','COMPLETED','https://www.w48schools.com/images/picture.jpg', 90023);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80024,'5.1.2021','COMPLETED','https://www.w49schools.com/images/picture.jpg', 90024);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80025,'6.1.2021','COMPLETED','https://www.w50schools.com/images/picture.jpg', 90025);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80026,'6.1.2021','PENDING','https://www.w51schools.com/images/picture.jpg', 90026);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80027,'7.1.2021','PENDING','https://www.w52schools.com/images/picture.jpg', 90027);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80028,'8.1.2021','PENDING','https://www.w53schools.com/images/picture.jpg', 90028);
+INSERT INTO public.payment_receive(payment_receive_id,payment_receive_date, payment_status, slip, join_id) VALUES (80029,'9.1.2021','COMPLETED','https://www.w54schools.com/images/picture.jpg', 90029);
 
 
 --Review
@@ -470,7 +470,6 @@ INSERT INTO public.review(
 INSERT INTO public.review(
  review_id, assigned_date, feedback, review_type, star, join_fkey)
  VALUES (60029,'2021-12-01','The course content is quite good, though it could have been deeper in some areas.But its peer review system is not working well, if at all.Regards, An Le.',0,4,90029);
--- INSERT INTO public.review(
---  review_id, assigned_date, feedback, review_type, star, join_fkey)
---  VALUES (60030,'2021-12-02','Keep up with deadlines',1,0,50010,20008);
-
+INSERT INTO public.review(
+review_id, assigned_date, feedback, review_type, star, join_fkey)
+VALUES (60030,'2021-12-02','Keep up with deadlines',1,0,50010,20008);

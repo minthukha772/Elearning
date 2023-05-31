@@ -6,13 +6,11 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum PaymentStatus {
   
-    COMPLETE("COMPLETE"),
+    COMPLETE("COMPLETED"),
+    COMPLETED("COMPLETED"),
     PENDING("PENDING"),
     REQUESTED("REQUESTED"),
     ERROR("ERROR");
     
     @Getter private String value;
-
-   
-
 }

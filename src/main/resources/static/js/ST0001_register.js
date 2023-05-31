@@ -1,17 +1,17 @@
 $(document).ready(function () {
   fillPassword();
- 
 
-  $(".back").click(function (event) {
-    //TODO prevent external link
 
-    event.preventDefault();
+  // $(".back").click(function (event) {
+  //   //TODO prevent external link
 
-    if(isInternal() && history.length > 0){
-      history.back(1);
-    }
-    
-  });
+  //   event.preventDefault();
+
+  //   if(isInternal() && history.length > 0){
+  //     history.back(1);
+  //   }
+
+  // });
 });
 
 function fillPassword() {
@@ -27,13 +27,13 @@ function fillPassword() {
 
 }
 
-function isInternal(){
+function isInternal() {
   /* Get Previous Page */
   const prevPage = document.referrer;
   /* Get current Page Host */
   const regExp = new RegExp(location.host);
   return regExp.test(prevPage);
-  
+
 }
 
 

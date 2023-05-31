@@ -13,10 +13,8 @@ import javax.validation.ConstraintValidatorContext;
 
 import com.blissstock.mappingSite.validation.constrains.ValidDob;
 
-
 public class DobValidator implements ConstraintValidator<ValidDob, Date> {
 
-  
   @Override
   public void initialize(ValidDob constraintAnnotation) {
   }
@@ -27,8 +25,7 @@ public class DobValidator implements ConstraintValidator<ValidDob, Date> {
     gregorianCalendar.setTime(dob);
     LocalDate formattedDob = gregorianCalendar.toZonedDateTime().toLocalDate();
     LocalDate today = LocalDate.now();
-    return Period.between(formattedDob, today).getYears() >=13;
+    return Period.between(formattedDob, today).getYears() >= 5;
   }
-
 
 }

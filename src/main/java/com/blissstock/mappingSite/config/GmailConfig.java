@@ -1,6 +1,7 @@
 package com.blissstock.mappingSite.config;
 
 import java.util.Properties;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -15,8 +16,8 @@ public class GmailConfig {
     mailSender.setHost("smtp.gmail.com");
     mailSender.setPort(587);
 
-    mailSender.setUsername("mappingsite0@gmail.com");
-    mailSender.setPassword("gnbnwftoumlxhkuw");
+    mailSender.setUsername("sys@pyinnyar-subuu.com");
+    mailSender.setPassword("Bs_pyinnyar01");
 
     Properties props = mailSender.getJavaMailProperties();
     props.put("mail.transport.protocol", "smtp");
@@ -26,4 +27,15 @@ public class GmailConfig {
 
     return mailSender;
   }
+
+  // test impl
+
+  // @Bean
+  // public ResourceBundleMessageSource emailMessageSource() {
+  // final ResourceBundleMessageSource messageSource = new
+  // ResourceBundleMessageSource();
+  // messageSource.setBasename("mail/MailMessages");
+  // return messageSource;
+  // }
+
 }

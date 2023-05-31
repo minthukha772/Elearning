@@ -8,20 +8,45 @@
     <link rel="stylesheet" th:href="@{/css/CM0005_login.css}" />
     <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
     <title>Login</title>
+
+    <link rel="icon" type="image/x-icon" href="/images/fav.png" />
+    
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
+    <link rel="stylesheet" th:href="@{/css/global.css}" />
   </head>
 
-  <body style="background-color: #f0f0f0;">
-    <div th:replace="fragments/guestnav"></div>
+  <body>
+    
+    <div th:replace="@{fragments/nav}"></div>
 
-    <!--     <div sec:authorize="isAuthenticated()">
-      Welcome <b><span sec:authentication="name">Username</span></b>
-      <i><span sec:authentication="principal.authorities">Roles</span></i>
-    </div> -->
+  
+    <div class="container-custom mt-5 " >
+      <!-- TODO -->
+      <div
+        th:if="${error != null}"
+        class="alert alert-danger fade show mt-5"
+        role="alert"
+      >
+        <span class="text-danger errormessages" th:text="${error}"></span>
+      </div>
+      <div
+        th:if="${success != null}"
+        class="alert alert-success fade show mt-5"
+        role="alert"
+      >
+        <span th:text="${success}"></span>
+      </div>
+      <div
+        th:if="${message != null}"
+        class="alert alert-success fade show mt-5"
+        role="alert"
+      >
+        <span th:text="${message}"></span>
+      </div>
 
-    <div class="container-custom">
-      <div class="card mt-5">
-        <div class="card-header">Login</div>
-        <div class="card-body">
+      <div class="card mt-3 ">
+        <div class="card-header " style="background: #02917F; color:#fff;">Login</div>
+        <div class="card-body cardbodycolors">
           <div class="container">
             <form
               id="contactForm"
@@ -30,7 +55,7 @@
               method="post"
             >
               <!--   -->
-              <div
+              <!-- <div
                 th:if="${error != null}"
                 class="alert alert-danger fade show"
                 role="alert"
@@ -50,11 +75,10 @@
                 role="alert"
               >
                 <span th:text="${message}"></span>
-              </div>
-
+              </div> -->
               <div>
                 <div class="mb-3 has-validation">
-                  <label class="form-label" for="emailAddress">
+                  <label class="form-label " for="emailAddress">
                     Email Address</label
                   >
                   <input
@@ -88,7 +112,6 @@
                     placeholder="ExamplePassword001"
                     data-toggle="password"
                   />
-                  
 
                   <div
                     class="invalid-feedback"
@@ -100,13 +123,14 @@
                 <div class="row justify-content-between">
                   <a
                     th:href="@{/check_email/reset_password}"
-                    class="col-auto btn btn-link"
+                    class="col-auto btn btn-link "
                     id="forgetPassword"
                     type="submit"
                     name="action"
                     value="forget"
+                   style="color: rgb(47, 255, 75);"
                   >
-                    Forget Password
+                    Forget Password?
                   </a>
 
                   <button
@@ -129,6 +153,8 @@
     </div>
     <!-- End of Container -->
 
+    <div style="height: 100px"></div>
+
     <div th:replace="@{fragments/footer}"></div>
 
     <script th:inline="javascript">
@@ -148,5 +174,6 @@
     ></script>
 
     <script th:src="@{\js\show-hide-password.js}"></script>
+    <script th:src="@{/js/main.js}"></script>
   </body>
 </html>

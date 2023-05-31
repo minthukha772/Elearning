@@ -9,25 +9,25 @@ $(function () {
     e.preventDefault();
     clearAction(courseList);
   });
-  LowestFeeInput =  $("#lowestFee");
-  HighestFeeInput =  $("#highestFee");
-  LowestFeeInput.on('input', function () {
+  LowestFeeInput = $("#lowestFee");
+  HighestFeeInput = $("#highestFee");
+  LowestFeeInput.on("input", function () {
     // To prevent Highest value from being less than Lowest value
     // Update Highest value every time the lower value is higher them itself.
-    lowestValue = parseInt($(LowestFeeInput).val()); 
+    lowestValue = parseInt($(LowestFeeInput).val());
     highestValue = parseInt($(HighestFeeInput).val());
-     console.log(lowestValue,highestValue);
-    if(lowestValue > highestValue){
-      console.log(lowestValue,">",highestValue);
+    console.log(lowestValue, highestValue);
+    if (lowestValue > highestValue) {
+      console.log(lowestValue, ">", highestValue);
       $(HighestFeeInput).val(lowestValue);
     }
   });
-  HighestFeeInput.on('input', function () {
+  HighestFeeInput.on("input", function () {
     // To prevent Lowest value from being more than Lowest value
     // Update Lowest value every time the highest value is higher them itself.
-    lowestValue = parseInt($(LowestFeeInput).val()); 
+    lowestValue = parseInt($(LowestFeeInput).val());
     highestValue = parseInt($(HighestFeeInput).val());
-    if(highestValue < lowestValue){
+    if (highestValue < lowestValue) {
       $(LowestFeeInput).val(highestValue);
     }
   });
@@ -58,9 +58,7 @@ const filterAction = (courseList) => {
 };
 
 const clearCheckInputs = () => {
-  $(".filterContainer")
-    .find("input:checked")
-    .prop('checked', false);
+  $(".filterContainer").find("input:checked").prop("checked", false);
 };
 
 const structureInputFilters = () => {
@@ -133,6 +131,15 @@ const renderFilterItems = (filterItems) => {
 };
 
 const renderCourseList = (courseList) => {
+  $("#zero-result-msg").hide();
+  // If list empty display text
+  if ((courseList == null, courseList.length == 0)) {
+    $("#zero-result-msg").show();
+    $("#courseList").hide();
+    $("#courseList").empty();
+    return;
+  }
+
   $("#course").pagination({
     dataSource: courseList,
     pageSize: 24,
@@ -148,24 +155,33 @@ const renderCourseList = (courseList) => {
       data.forEach((e) => {
         const startDate = new Date(e.startDate).toLocaleDateString();
         const endDate = new Date(e.endDate).toLocaleDateString();
+        var dates;
+        if (e.classType == "VIDEO") {
+          dates = ` <h4>&nbsp</h4>
+          <i> &nbsp</i>`;
+        } else {
+          dates = ` <h4>Date</h4>
+        <i>${startDate} - ${endDate}</i>`;
+        }
         const template = `
-        <div class="card col-12 col-xl-6 col-xxl-4">
-          <div class="card-body">
-            <div >
+        <div class="col-sm-12 col-md-12 col-xl-12 my-3">
+          <div class="d-flex flex-column flex-md-column flex-sm-column flex-lg-column flex-xl-row">
+          <span>
+            <img width="200" height="200" src="${e.coursePhoto.url}" class="detail__img" alt="${e.coursePhoto.name}">
+          </span>
+            <div>
               <h2>${e.courseName}</h2>
               <a href="/guest/explore/teacher/${e.teacherId}">${e.teacherName}</a>
               <h6 class="mt-1">${e.category} &gt;${e.level}</h6>
-              <p>${e.aboutCourse}</p>
-              <h4>Date</h4>
-              <i>${startDate} - ${endDate}</i>
-              <h4 class="mt-2">${e.fees} MMK</h4>
-
-          
+              
+               <span>${dates}</span>
+              <h4 class="mt-2">${e.fees ? e.fees + 'MMK' : ''}</h4>
+              <a href="/guest/course-detail/${e.courseId}" class="btn btn-primary">See Detail</a>
             </div>
-            <a href="/guest/course-detail/${e.courseId}" class="btn btn-primary">See Detail</a>
           </div>
           
         </div>
+        <hr>
         `;
         $(template).appendTo($("#courseList"));
 

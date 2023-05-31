@@ -13,12 +13,29 @@
       content="width=device-width, initial-scale=1, minimum-scale=1.0, user-scalable=no"
     />
     <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
+    <link rel="stylesheet" th:href="@{/css/CM0004_Student Profile.css}" />
+
+		<!-- <link rel="stylesheet" th:href="@{/css/global.css}" /> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+
     <title>Course Registration</title>
+
+  <link rel="icon" type="image/x-icon" href="/images/fav.png">
+
+  <th:block th:if="${#authorization.expression('hasRole(''ROLE_TEACHER'')')}">
+        <link rel="icon" type="image/x-icon" href="/images/fav.png" />
+        <link rel="stylesheet" th:href="@{/css/global.css}" />
+        <link rel="stylesheet" th:href="@{/css/pagination.css}" />
+    </th:block>
+
   </head>
 
   <body>
     <div th:replace="@{fragments/nav}"></div>
-
+    <div th:if="${#authorization.expression('hasRole(''ROLE_TEACHER'')')}">
+      <div style="height: 100px"></div>
+  </div>
     <nav
       class="p-2"
       aria-label="breadcrumb"
@@ -39,11 +56,11 @@
         class="breadcrumb"
         th:unless="${#authorization.expression('hasRole(''ROLE_TEACHER'')')}"
       >
-        <li class="breadcrumb-item">
-          <a th:href="@{/admin/top/}">Top</a>
+        <li class="breadcrumb-item ms-3">
+          <a th:href="@{/admin/top/}" style="text-decoration: none;">Top</a>
         </li>
         <li class="breadcrumb-item">
-          <a th:href="@{/admin/teacher-list}">Teacher List</a>
+          <a th:href="@{/admin/teacher-list}" style="text-decoration: none;">Teacher List</a>
         </li>
         <li class="breadcrumb-item active">Course Registration</li>
         <li class="breadcrumb-item">Confirmation</li>
@@ -51,14 +68,74 @@
       </ol>
     </nav>
 
+    
+    
+
     <div class="container">
       <div class="card mx-auto" style="max-width: 700px">
         <div class="card-header">Course Registration</div>
 
         <div class="card-body">
-          <form th:action="@{${postAction}}" method="post" novalidate>
+          <form th:action="@{${postAction}}" method="post" enctype="multipart/form-data" novalidate >
             <div th:object="${course}">
               <div class="form-group row">
+
+                <div class="text-center">
+                  <p class="form-label">Add an Image to a Course</p>
+                </div>
+
+                <div id="profile">
+                  <div class="profile-pic-wrapper">
+                    <div class="pic-holder"  style="border-radius: 0px;">
+                      <div class="d-flex justify-content-center">
+                        <div class="profile-pic-wrapper">
+
+                            <!-- uploaded pic shown here -->
+                            <img id="profilePic"
+                            class="pic" th:src="${cphoto.url}"  th:alt="${cphoto.name}" />
+  
+                              <label for="newProfilePhoto" class="upload-file-block">
+                                <div class="text-center">
+                                  <div class="mb-2">
+                                    <i class="fa fa-camera fa-2x"></i>
+                                  </div>
+                                  <div class="text-uppercase">
+                                    Upload <br />
+                                    Image
+                                  </div>
+                                </div>
+                              </label>
+                              <input
+                              class="uploadProfileInput"
+                              type="file"
+                              name="course_pic"
+                              id="newProfilePhoto"
+                              accept="image/*"
+                              style="display: none;"
+                              th:src="${cphoto.url}"
+                              th:alt="${cphoto.name}"
+                            />
+  
+
+                        </div>
+                        <!-- TODO Come back for profile Upload -->
+                      </div>
+                    </div>
+                  </div>
+                  <!-- <div class="text-center">
+                    <span style="color: red;">Enter "Save" button to upload course image</span>
+                    </div></br>
+                    <div class="text-center">
+                      <button class="btn btn-primary mb-3"  type="submit" name="photoSubmit" value="pic-edit">Save</button>
+                    </div> -->
+
+                </div>
+                  <input
+                      th:field="*{coursePhoto}"
+                      class="form-control"
+                      id="cname"
+                      type="hidden"
+                    />
                 <div class="row">
                   <div class="col-lg-3">
                     <p class="form-label">Class Type</p>
@@ -69,9 +146,10 @@
                       <input
                         type="radio"
                         onclick="javascript:onClassTypeCheckBoxClicked();"
+                        onchange="togglePaymentTypeSection();"
                         name="liveCheck"
                         id="liveCheck"
-                        value="live"
+                        value="LIVE"
                         th:field="*{classType}"
                       />
                       <label for="liveCheck">Live</label>
@@ -80,9 +158,10 @@
                       <input
                         type="radio"
                         onclick="javascript:onClassTypeCheckBoxClicked();"
+                        onchange="togglePaymentTypeSection();"
                         name="videoCheck"
                         id="videoCheck"
-                        value="video"
+                        value="VIDEO"
                         th:field="*{classType}"
                       />
                       <label for="videoCheck">Video</label>
@@ -108,14 +187,16 @@
                       placeholder="Enter Course Name"
                       required
                     />
+                    <div class="invalid-feedback">This field is required.</div>
                   </div>
                   
                 </div>
                 
-                <div class="invalid-feedback">This field is required.</div>
+                
               </div>
 
               <!-- course category -->
+              
               <div class="mb-3">
                 <div class="row">
                   <div class="col-lg-3">
@@ -131,30 +212,33 @@
                       class="form-select"
                       required
                     >
+                    
                       <option value="" selected="selected">Select Category</option>
-                      <option value="Business">Business</option>
-                      <option value="Engineering & Construction">
-                        Engineering & Construction
-                      </option>
-                      <option value="Health">Health</option>
-                      <option value="IT">IT</option>
-                      <option value="Language">Language</option>
-                      <option value="Management">Management</option>
-                      <option value="Personal Development">
-                        Personal Development
-                      </option>
-                      <option value="Sales & Marketing">Sales & Marketing</option>
-                      <option value="Teaching & Academics">
-                        Teaching & Academics
-                      </option>
+
+                      <option th:each="courselist : ${CourseListHtml}" th:value="${courselist.categoryName}" th:text="${courselist.categoryName}"></option>
+                      
                     </select>
+                    <div class="invalid-feedback">This field is required.</div>
+                    <div sec:authorize="hasAuthority('ROLE_ADMIN') || hasAuthority('ROLE_SUPER_ADMIN')">
+                    <div class="d-flex justify-content-around flex-wrap">
+                      <div class="add-new-cat bg-white d-flex justify-content-between align-items-center py-1 px-3 rounded mt-2" style="width: 200px;">
+                          <span class="text-success fw-normal">Add New Category</span>
+                          <a th:href="@{/admin/course-registration/add-new-category}" class="" id="add_new_category"><i class="fa-solid fa-plus text-dark"></i></a>
+                      </div>
+                      <div class="delete-new-cat bg-white d-flex justify-content-between align-items-center py-1 px-3 rounded mt-2" style="width: 200px;">
+                          <span class="text-danger fw-normal">Delete Category</span>
+                          <a th:href="@{/admin/course-registration/updateCategory}" class="" id="del_category"><i class="fa-solid fa-trash-can text-danger"></i></a>
+                      </div>
+                  </div>
+                </div>
                   </div>
                 </div>
                 
-                <div class="invalid-feedback">This field is required.</div>
+                
               </div>
 
               <!-- course level -->
+
               <div class="mb-3">
                 <div class="row">
                   <div class="col-lg-3">
@@ -166,16 +250,37 @@
                       th:field="*{level}"
                       th:classappend="${#fields.hasErrors('level')}?'is-invalid':''"
                       class="form-control"
-                      id="clevel"
+                      list="clevel"
                       type="text"
                       placeholder="Enter Course Level(For example : Japanese Basic)"
                       required
-                    />
+                    >
+                    <datalist id="clevel">
+                      <option th:value="'Basic'" th:text="Basic"></option>
+                      <option th:value="'Intermediate'" th:text="Intermediate"></option>
+                      <option th:value="'Advance'" th:text="Advance"></option>
+                      
+                    </datalist>
+                    <div class="invalid-feedback">This field is required.</div>
+                
+                  </input>
                   </div>
                 </div>
 
-                <div class="invalid-feedback">This field is required.</div>
+                
               </div>
+
+              <!-- <div class="form-group mt-3 row align-items-center">
+                <label for="course_name" class="col-sm-3 col-form-label">Course Level</label>
+                <div class="col-sm-9">
+                    <select class="form-control" id="exampleFormControlSelect1" required>
+                        <option value="0" selected>Select Level</option>
+                        <option value="1">Beginner</option>
+                        <option value="2">Intermediate</option>
+                        <option value="3">Advanced</option>
+                      </select>
+                </div>
+            </div> -->
 
               <!-- course fee -->
               <div class="mb-3">
@@ -183,7 +288,7 @@
                   <div class="col-lg-3">
                     <label class="form-label" for="cfee">Course Fee</label>
                   </div>
-                  <div class="col-lg-9">
+                  <div class="col-sm-9 position-relative">
                     <input
                       th:field="*{fees}"
                       th:classappend="${#fields.hasErrors('fees')}?'is-invalid':''"
@@ -193,17 +298,47 @@
                       min="0"
                       placeholder="Enter Course Fee(Kyats)"
                       required
-                    />
+                    >
+                    <div class="invalid-feedback">This field is required.</div>
+                    <!-- <div class="unit position-absolute d-flex align-items-center justify-content-center fw-normal"><span>MMK</span></div>  -->
                   </div>
                 </div>
                 
-                <div class="invalid-feedback">This field is required.</div>
+                
               </div>
+
+              <!-- Payment Types -->
+
+              
+              <div class="row" id="paymentTypeSection">
+                <div class="col-lg-3">
+                  <p class="form-label">Payment Type</p>
+                </div>
+                <div class="col-lg-9 mb-3">
+                  <div class="form-check form-check-inline">
+                    <input type="radio" name="paymentType" id="monthlyFee" value="MONTHLY_FEE" required checked>
+                    <label for="monthlyFee">Monthly fee</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input type="radio" name="paymentType" id="oneTimeFee" value="ONE_TIME_FEE" required >
+                    <label for="oneTimeFee">One-time fee</label>
+                  </div>                                    
+                </div>
+              </div>
+
+              
+              
+              
+                
+              
+              
+              
+
 
               <!-- about course -->
               <div class="mb-3">
                 <div class="row">
-                  <div class="col-lg-3">
+                  <div class="col-lg-3"><br/>
                     <label class="form-label" for="cabout">About Course</label>
                   </div>
                   <div class="col-lg-9">
@@ -216,16 +351,18 @@
                       placeholder="Enter detail about your course here."
                       required
                     ></textarea>
+                    <div class="invalid-feedback">This field is required.</div>
+                      <span style="color: red;">* Please write less than 2500 words</span>
                   </div>
                 </div>
                 
-                <div class="invalid-feedback">This field is required.</div>
+                
               </div>
 
               <!-- prerequisite -->
               <div class="mb-3">
                 <div class="row">
-                  <div class="col-lg-3">
+                  <div class="col-lg-3"><br/>
                     <label class="form-label" for="prerequisites">Prerequisites</label>
                   </div>
                   <div class="col-lg-9">
@@ -238,10 +375,12 @@
                       placeholder="Enter Prerequisites for the course."
                       required
                     ></textarea>
+                    <div class="invalid-feedback">This field is required.</div>
+                    <span style="color: red;">* Please write less than 2500 words</span>
                   </div>
                 </div>
                 
-                <div class="invalid-feedback">This field is required.</div>
+                
               </div>
 
               <!-- class link -->
@@ -260,10 +399,11 @@
                       placeholder="Enter Class Link(Video link or Live link)"
                       required
                     />
+                    <div class="invalid-feedback">This field is required.</div>
                   </div>
                 </div>
                 
-                <div class="invalid-feedback">This field is required.</div>
+                
               </div>
               <input
                 type="hidden"
@@ -291,10 +431,11 @@
                         min="0"
                         placeholder="Enter the number of students"
                       />
+                      <div class="invalid-feedback">This field is required.</div>
                     </div>
                   </div>
                   
-                  <div class="invalid-feedback">This field is required.</div>
+                  
                 </div>
 
                 <div class="row my-3">
@@ -611,38 +752,71 @@
               <div class="input_fields_wrap"></div>
             </div>
 
-            <div class="d-grid gap-2 d-flex justify-content-around buttons">
+            <!-- Original Reset/Register button code -->
+
+            <div class="d-flex justify-content-end my-3">
               <button
                 id="btnReset"
                 type="reset"
-                class="btn btn-spacing btn-secondary center-block btnSubmit"
+                class="btn btn-danger mx-3"
                 style="width: 100px"
                 OnClick="btnClear_Click"
               >
                 Reset
               </button>
 
-              <button id="btnReg" type="submit" class="btn btn-primary">
+              <button id="btnReg" type="submit" name="submit" class="btn btn-primary" style="width: 100px">
                 Register
               </button>
             </div>
+
+            
+
+            <!-- New Code -->
+
+            <!-- <div class="d-flex justify-content-end my-3">
+              <button type="reset" class="btn btn-danger mx-3">Reset</button>
+              <button type="submit" class="btn btn-primary">Register</button>
+            </div> -->
+
             <div class="form-group row"></div>
           </form>
         </div>
       </div>
     </div>
+  </div>
 
+    <div class=" mt-5"></div>
     <div th:replace="fragments/footer"></div>
 
     <script
-      type="text/javascript"
-      src="https://code.jquery.com/jquery-3.5.1.js"
-    ></script>
+     src="https://code.jquery.com/jquery-3.6.0.min.js"
+     integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+     crossorigin="anonymous"
+   ></script>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
       crossorigin="anonymous"
     ></script>
     <script th:src="@{/js/AT0001_CourseRegistration.js}"></script>
+    <script th:src="@{/js/photoPlaceHolder.js}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+    <script th:src="@{./../../../js/main.js}"></script>
+
+    <script>
+      function togglePaymentTypeSection() {
+        var videoCheck = document.getElementById("videoCheck");
+        var paymentTypeSection = document.getElementById("paymentTypeSection");
+        if (videoCheck.checked) {
+          paymentTypeSection.style.display = "none";
+        } else {
+          paymentTypeSection.style.display = "";
+        }
+      }
+      </script>
+
+    <!-- <script th:src="@{/js/addcourse.js}"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
   </body>
 </html>
