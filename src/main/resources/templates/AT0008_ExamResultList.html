@@ -110,6 +110,7 @@
             <div class="mt-2 mb-5 d-flex justify-content-around align-items-center flex-wrap exam-results-card">
                 <div th:each="student : ${students}" class="col-md-4">
                     <div class="card mt-3 py-2 rounded-3" style="width: 420px;"
+
                          th:data-custom-type="${student.examResult == 'Fail' ? 'Fail' : 'Pass'}">
                         <div class="card-body" th:data-status="${student.examResult}">
                             <div class="d-flex align-items-center">
@@ -127,11 +128,12 @@
                                 <div class="">
                                     <div th:text="${' - ' + student.studentEmail}"></div>
                                     <div th:text="${' - ' + student.studentPhone}"></div>
+
                                     <div th:class="${student.examResult == 'Pass' ? 'text-success' : 'text-danger fw-bold'}">
                                         <span class="me-1 text-dark fw-normal">- </span>
                                         <span th:text="${student.examResult}"></span>
                                     </div>
-                                    
+                                   
                                     <div th:text="${' - ' + student.stuMarks + '/' + student.maxMarks}"></div>
                                 </div>
                                 <div class="col-12 mt-2">
@@ -145,6 +147,7 @@
                 </div>
             </div>
             
+
         </div>
 
 

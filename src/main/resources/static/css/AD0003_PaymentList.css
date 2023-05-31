@@ -295,3 +295,31 @@ footer {
   th.hidden {
   display: none;
   }
+
+#pc-view-message {
+    display: none;
+}
+@media only screen and (max-width:767px) {
+    #pc-view-message{
+        display: block;
+        height: 75px;
+        text-align: center;
+        padding: 20px;
+        background-color: #F0E68C;
+        border-radius: 1%;
+        margin-left: 40px;
+        margin-right: 40px;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        border-bottom-left-radius: 15px;
+        border-bottom-right-radius:15px;
+       
+        
+
+    }
+   
+    #whole-container{
+        display: none;
+    }
+    
+}

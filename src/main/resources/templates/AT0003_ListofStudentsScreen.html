@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+
   xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4"
 >
   <head>
@@ -142,6 +143,7 @@
           //                 var val = $.fn.dataTable.util.escapeRegex(
           //                     $(this).val()
           //                 );
+
 
         //                 column
         //                     .search(val ? '^' + val + '$' : '', true, false)
@@ -315,7 +317,7 @@
           </div>
           <!-- account status end -->
 
-            <!-- <button type="button" class="btn btn-danger">
+          <!-- <button type="button" class="btn btn-danger">
               <i class="fa-regular fa-trash-can"></i>
             </button> -->
 
@@ -337,7 +339,7 @@
                 <tbody>
                   <tr th:each="dr,index:${sAllStudentList}">
                     <td>
-                     
+
                     </td>
                     <td>
                       <b><a th:href="@{'/admin/browse/profile/' + ${dr.uid}}" th:text="${dr.userName}"

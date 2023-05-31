@@ -177,28 +177,33 @@ public class PaymentListController {
         // List<AllPaymentLists> allPayment = new AllPaymentLists();
         for (JoinCourseUser unpaidData : unpaidList) {
             // String paymentDate = format.format(paymentReceive.getPaymentReceiveDate())
-            UserInfo payUserInfo = unpaidData.getUserInfo();
-            String userName = payUserInfo.getUserName();
-            Long userId = payUserInfo.getUid();
-            CourseInfo payCouresInfo = unpaidData.getCourseInfo();
-            String courseName = payCouresInfo.getCourseName();
-            String courseType = payCouresInfo.getClassType();
-            String courseStartDate;
-            String courseEndDate;
-            Calendar cal = Calendar.getInstance();
-            try {
-                courseStartDate = format.format(payCouresInfo.getStartDate());
-                courseEndDate = format.format(payCouresInfo.getEndDate());
-            } catch (Exception e) {
-                courseStartDate = format.format(cal.getTime());
-                courseEndDate = format.format(cal.getTime());
+            String userRole = unpaidData.getUserInfo().getUserAccount().getRole();
+            if (!userRole.equals("ROLE_TEACHER")) {
+                UserInfo payUserInfo = unpaidData.getUserInfo();
+                String userName = payUserInfo.getUserName();
+                Long userId = payUserInfo.getUid();
+                CourseInfo payCouresInfo = unpaidData.getCourseInfo();
+                String courseName = payCouresInfo.getCourseName();
+                String courseType = payCouresInfo.getClassType();
+                String courseStartDate;
+                String courseEndDate;
+                Calendar cal = Calendar.getInstance();
+                try {
+                    courseStartDate = format.format(payCouresInfo.getStartDate());
+                    courseEndDate = format.format(payCouresInfo.getEndDate());
+                } catch (Exception e) {
+                    courseStartDate = format.format(cal.getTime());
+                    courseEndDate = format.format(cal.getTime());
+                }
+                String teacherName = payCouresInfo.getUserInfo().getUserName();
+                Long courseId = payCouresInfo.getCourseId();
+                Long teacherId = payCouresInfo.getUserInfo().getUid();
+                int courseFees = payCouresInfo.getFees();
+                studentUnpaidList
+                        .add(new StudentUnpaidLists(userName, courseName, teacherName, courseType, courseStartDate,
+                                courseEndDate, courseFees, userId, teacherId, courseId, "Pending"));
             }
-            String teacherName = payCouresInfo.getUserInfo().getUserName();
-            Long courseId = payCouresInfo.getCourseId();
-            Long teacherId = payCouresInfo.getUserInfo().getUid();
-            int courseFees = payCouresInfo.getFees();
-            studentUnpaidList.add(new StudentUnpaidLists(userName, courseName, teacherName, courseType, courseStartDate,
-                    courseEndDate, courseFees, userId, teacherId, courseId, "Pending"));
+
         }
 
         logger.info("Payment Receive List including user's information {}", studentUnpaidList);
