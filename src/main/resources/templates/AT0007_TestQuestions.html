@@ -488,7 +488,7 @@
                 audioElement.setAttribute("controls", "controls");
 
                 var sourceElement = document.createElement("source");
-                sourceElement.setAttribute("src", materialsUrl);
+                sourceElement.setAttribute("src", question.question_materials);
                 sourceElement.setAttribute("type", "audio/mpeg");
 
                 audioElement.appendChild(sourceElement);
@@ -506,7 +506,7 @@
                 videoElement.setAttribute("controls", "controls");
 
                 var sourceElement = document.createElement("source");
-                sourceElement.setAttribute("src", materialsUrl);
+                sourceElement.setAttribute("src", question.question_materials);
                 sourceElement.setAttribute("type", "video/mp4");
 
                 videoElement.appendChild(sourceElement);
@@ -518,7 +518,7 @@
                 }
             } else if (materialsType === 'IMAGE') {
                 var imageElement = document.createElement("img");
-                imageElement.setAttribute("src", materialsUrl);
+                imageElement.setAttribute("src", question.question_materials);
                 imageElement.setAttribute("style", "width: 100%");
                 materialsContainer.appendChild(imageElement);
 
