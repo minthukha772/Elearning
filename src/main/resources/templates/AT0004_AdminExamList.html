@@ -147,6 +147,14 @@
       document.getElementById("exam_start_time").value = test.start_time;
       document.getElementById("exam_end_time").value = test.end_time;
 
+      if (test.exam_status === "Result Released") {
+        document.getElementById("exam_status").disabled = true;
+        document.getElementById("exam_status_dropdown_warning").style.display = "block";
+      } else {
+        document.getElementById("exam_status").disabled = false;
+        document.getElementById("exam_status_dropdown_warning").style.display = "block";
+      }
+
       $("#exam_status_dropdown").css("display", "block");
     }
 
@@ -573,7 +581,8 @@
                     Questions</a></small>
                 <small class=""><a th:href="'/admin/exam/' + ${test.test_id} + '/examinee'" class="text-success">Set
                     Examinee</a></small>
-                <small class=""><a th:href="'/admin/exam/' + ${test.test_id} + '/exam-result-list'" class="text-success">Exam
+                <small class=""><a th:href="'/admin/exam/' + ${test.test_id} + '/exam-result-list'"
+                    class="text-success">Exam
                     Result</a></small>
               </div>
             </div>

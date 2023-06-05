@@ -138,18 +138,18 @@
                                         </div>
                                         <div th:if="${testquestion.question_type == 'FREE_ANSWER'}">
                                             <div th:if="${testquestion.question_type == 'FREE_ANSWER'}">
-                                                <input class="form-control" type="text"
-                                                    th:placeholder="${testquestion.acquired_mark}"
-                                                    th:id="'acquired_mark_' + ${testquestion.id}">
-                                                <span th:id="'warning_' + ${testquestion.id}"
-                                                    style="color: red; display: none;">Acquired Mark must be number and
-                                                    not be greater
-                                                    than Maximum
-                                                    Mark</span>
-                                                <div class="text-end mt-2">
-                                                    <input type="submit" value="Set as Marked"
-                                                        class="btn-success border-0 rounded px-2"
-                                                        th:onclick="setasmarked([[${testquestion}]]);" />
+                                                <div th:if="${testquestion.question_type == 'FREE_ANSWER'}">
+                                                    <input class="form-control" type="text"
+                                                        th:placeholder="${testquestion.acquired_mark}"
+                                                        th:id="'acquired_mark_' + ${testquestion.id}">
+                                                    <span th:id="'warning_' + ${testquestion.id}"
+                                                        style="color: red; display: none;">Please fill Acquired Mark.Not
+                                                        greater than maximum marks</span>
+                                                    <div class="text-end mt-2">
+                                                        <input type="submit" value="Set as Marked"
+                                                            class="btn-success border-0 rounded px-2"
+                                                            th:onclick="setasmarked([[${testquestion}]]);" />
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
