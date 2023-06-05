@@ -85,29 +85,13 @@
     })
 
     function setDataToEditDialog(test) {
-      var course_dropdown = $("#course_name");
-      course_dropdown.empty();
-      course_dropdown.append("<option value='Choose Course' selected><small>Choose Course</small></option>");
-
       test_id = test.test_id;
       type = "Update"
       let createExam = document.querySelector('.create-exam-container');
       createExam.classList.remove('d-none');
       var datearray = test.date.split("T");
 
-      document.getElementById("teacher_name").value = test.userInfo.uid;
-      fetch("/admin/get-course-by-teacher?teacher_id=" + test.userInfo.uid, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json"
-        }
-      }).then(response => response.json())
-        .then(data => {
-          for (var i = 0; i < data.length; i++) {
-            course_dropdown.append("<option value='" + data[i]["courseName"] + "' id='" + data[i]["courseId"] + "'><small>" + data[i]["courseName"] + "</small></option>");
-          }
-          document.getElementById("course_name").value = test.courseInfo.courseName;
-        })
+      document.getElementById("course_name").value = test.courseInfo.courseId;
       document.getElementById("exam_status").value = test.exam_status;
       document.getElementById("description").value = test.description;
       document.getElementById("section_name").value = test.section_name;
@@ -115,14 +99,6 @@
       document.getElementById("exam_date").value = datearray[0];
       document.getElementById("exam_start_time").value = test.start_time;
       document.getElementById("exam_end_time").value = test.end_time;
-
-      if (test.exam_status === "Result Released") {
-        document.getElementById("exam_status").disabled = true;
-        document.getElementById("exam_status_dropdown_warning").style.display = "block";
-      } else {
-        document.getElementById("exam_status").disabled = false;
-        document.getElementById("exam_status_dropdown_warning").style.display = "block";
-      }
 
       $("#exam_status_dropdown").css("display", "block");
     }
@@ -204,7 +180,7 @@
           document.getElementById("passing_score_number_limit").style.display = 'none';
         }
       }
-
+      
       var exam_start_hour = parseInt(exam_start_time.substr(0, 2));
       var exam_start_minutes = parseInt(exam_start_time.substr(3));
       var exam_end_hour = parseInt(exam_end_time.substr(0, 2));
@@ -428,11 +404,11 @@
         <div class="d-flex flex-wrap align-items-end justify-content-between">
           <div class="">
             <label for="exam_from" class="fw-bold"><small>Exam From</small></label><br>
-            <input type="date" class="px-3 rounded shadow-sm border-1" id="exam_from">
+            <input type="date" class="px-3 rounded shadow-sm border-1" id="exam_from" onchange="fromHandler(event)">
           </div>
           <div class="">
             <label for="exam_to" class="fw-bold"><small>Exam To</small></label><br>
-            <input type="date" class="px-3 rounded shadow-sm border-1" id="exam_to" onchange="toHandler(event)">
+            <input type="date" class="px-3 rounded shadow-sm border-1" id="exam_to" onchange="toHandler(event)" disabled>
           </div>
           <div class="">
             <select name="status" id="filterbystatus" class="px-3 rounded shadow-sm">
@@ -464,6 +440,19 @@
     <div style="color: red; font-size: 12px; display: none; padding-top: 10px;" id="filter_date_warning">End Date Must
       Be Greater
       Than Start Date</div>
+
+      <script>
+        function fromHandler(event) {
+          var examToInput = document.getElementById("exam_to");
+          var examFromInput = document.getElementById("exam_from");
+          examToInput.disabled = false;
+          if (examFromInput.value === "") {
+            examToInput.disabled = true;
+            examToInput.value = "";
+          }
+        } 
+      </script>
+      
     <!-- to add filter end  -->
 
     <div class="text-center mt-3">
@@ -541,6 +530,8 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
     crossorigin="anonymous"></script>
+
+    <script th:src="@{/js/main.js}"></script> 
   <div th:replace="@{fragments/footer}"></div>
 </body>
 

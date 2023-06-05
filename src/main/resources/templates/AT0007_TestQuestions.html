@@ -32,6 +32,17 @@
                 </div>
             </div>
             <div class="px-3 pb-3">
+                <p id="question_number">Question No.</p>
+                <div class="material-container" id="material-container">
+                    <div id="question_materials"></div>
+                    <div class="delete-button" id="delete-button-container" style="display: none;">
+                        <div class="d-flex justify-content-center align-items-center bg-danger text-white rounded-circle ms-2"
+                            style="width: 20px; height: 20px; cursor: pointer" onclick="deleteQuestion()">
+                            <i class="fa fa-trash"></i>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="input-group-sm mb-2 shadow-sm">
                     <label for="description" class="form-label fw-bold mb-1"><small>Description <span
                                 class="text-danger">*</span></small></label>
@@ -44,14 +55,28 @@
                     <input type="file" class="form-control" id="question_upload_box" />
                 </div>
                 <p style="color: red; display: none;" id="description_warning">Please insert description or file</p>
+
+                <div class="input-group-sm mb-2 shadow-sm">
+                    <label for="remove_files" class="form-label fw-bold mb-1" style="display: none;"><small>Remove
+                            question materials.</small></label>
+                    <div style="display: none;">
+                        <input type="radio" id="remove_yes" name="remove_files" value="yes">
+                        <label for="remove_yes">Yes</label>
+                    </div>
+                    <div style="display: none;">
+                        <input type="radio" id="remove_no" name="remove_files" value="no" checked>
+                        <label for="remove_no">No</label>
+                    </div>
+                </div>
+
                 <div class="input-group-sm mb-2 shadow-sm">
                     <label for="answer_Type" class="form-label fw-bold mb-1"><small>Answer Type <span
                                 class="text-danger">*</span></small></label>
                     <select class="form-select" aria-label="Default select example" id="answer_Type">
                         <option value="1" selected>
-                            Multiple Choice Single Answer
+                            Single Answer
                         </option>
-                        <option value="2">Multiple Choice Multiple Answer</option>
+                        <option value="2">Multiple Answer</option>
                         <option value="3">Free Answer</option>
                     </select>
                 </div>
@@ -148,7 +173,7 @@
                             <div class="card border-0">
                                 <div class="d-flex justify-content-end align-items-center p-2">
                                     <i class="fa-solid fa-pen-to-square text-success" style="cursor: pointer"
-                                        th:onclick="setDataToEditDialog([[${testquestion}]])"></i>
+                                        th:onclick="setDataToEditDialog([[${testquestion}]],[[${index.count}]],[[${testquestion.question_materials_type}]],'${testquestion.question_materials}')"></i>
                                     <div class="d-flex justify-content-center align-items-center bg-danger text-white rounded-circle ms-2"
                                         style="width: 20px; height: 20px; cursor: pointer" id="">
                                         <i class="fa-solid fa-xmark"
@@ -339,6 +364,7 @@
                 return;
             }
             var question_materials = document.getElementById("question_upload_box");
+            var removeYesRadio = document.getElementById('remove_yes');
             var question_mark = document.getElementById("passing_score").value;
             var singlechoice = document.getElementById("single_answer_choice");
             var singlecounters = Array.from(document.getElementsByClassName("singleCounter"));
@@ -414,6 +440,18 @@
             if (file != null) {
                 formData.append('question_materials', file);
             }
+            
+            if (removeYesRadio.checked) {
+                var dummyFile = new File([""], "dummy.blank", { type: "application/octet-stream" });
+                var dataTransfer = new DataTransfer();
+                dataTransfer.items.add(dummyFile);
+                question_materials.files = dataTransfer.files;
+                file = dummyFile;
+                formData.append('question_materials', file);
+
+
+            }
+
             formData.append('maximum_mark', parseInt(document.getElementById("passing_score").value));
             if (mode == 'create') {
                 var xhr = new XMLHttpRequest();
@@ -435,7 +473,62 @@
         })
 
 
-        function setDataToEditDialog(question) {
+        function setDataToEditDialog(question, questionNumber, materialsType, materialsUrl) {
+
+            document.getElementById("question_number").innerText = "Question No. " + questionNumber;
+
+
+            var materialsContainer = document.getElementById("question_materials");
+            var deleteButtonContainer = document.getElementById("delete-button-container");
+            materialsContainer.innerHTML = "";
+
+
+            if (materialsType === 'AUDIO') {
+                var audioElement = document.createElement("audio");
+                audioElement.setAttribute("controls", "controls");
+
+                var sourceElement = document.createElement("source");
+                sourceElement.setAttribute("src", materialsUrl);
+                sourceElement.setAttribute("type", "audio/mpeg");
+
+                audioElement.appendChild(sourceElement);
+                materialsContainer.appendChild(audioElement);
+
+                var showDeleteBlock = true;
+                if (showDeleteBlock) {
+                    deleteButtonContainer.style.display = "block";
+                }
+
+            } else if (materialsType === 'VIDEO') {
+                var videoElement = document.createElement("video");
+                videoElement.setAttribute("width", "100%");
+                videoElement.setAttribute("height", "240");
+                videoElement.setAttribute("controls", "controls");
+
+                var sourceElement = document.createElement("source");
+                sourceElement.setAttribute("src", materialsUrl);
+                sourceElement.setAttribute("type", "video/mp4");
+
+                videoElement.appendChild(sourceElement);
+                materialsContainer.appendChild(videoElement);
+
+                var showDeleteBlock = true;
+                if (showDeleteBlock) {
+                    deleteButtonContainer.style.display = "block";
+                }
+            } else if (materialsType === 'IMAGE') {
+                var imageElement = document.createElement("img");
+                imageElement.setAttribute("src", materialsUrl);
+                imageElement.setAttribute("style", "width: 100%");
+                materialsContainer.appendChild(imageElement);
+
+                var showDeleteBlock = true;
+                if (showDeleteBlock) {
+                    deleteButtonContainer.style.display = "block";
+                }
+            }
+
+
             if (question.question_type == "MULTIPLE_ANSWER") {
                 multipleCount = question.choices.length;
             } else if (question.question_type == "SINGLE_ANSWER") {
@@ -530,6 +623,16 @@
             }
         }
 
+
+        function deleteQuestion() {
+
+            document.getElementById('remove_yes').checked = true;
+
+
+            var submitButton = document.getElementById('submit');
+            submitButton.click();
+        }
+
         function deleteRow(index) {
             var delete_row = document.getElementById(index);
             var delete_row = document.getElementById(index);
@@ -566,6 +669,8 @@
             })
         })
     </script>
+
+    <script th:src="@{/js/main.js}"></script>
 </body>
 
 </html>
