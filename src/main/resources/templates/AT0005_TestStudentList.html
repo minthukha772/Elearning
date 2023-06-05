@@ -75,14 +75,15 @@
         </div>
 
         <div class="d-flex flex-wrap align-items-center justify-content-end mt-3">
-            <a th:href="'/admin/exam/'+${test_id}+'/examinee'" style="padding-right: 10px; padding-top: 5px;">Clear</a>
+            <a href="?" style="padding-right: 10px; padding-top: 5px;">Clear</a>
             <div class="btn btn-success btn-sm mt-2" id="search_examinee">Search</div>
         </div>
+
         <!-- student result start  -->
         <section class="my-3">
             <div class="d-flex flex-wrap align-items-center justify-content-start">
-                <div class="col-12 col-md-6 col-lg-4 card-container mx-0 px-0 px-md-1 mt-3"
-                    th:each="test_student :${test_students}">
+                <div class="col-12 col-md-6 col-lg-4 card-container mx-0 px-0 px-md-1 mt-3 student-item"
+                    th:each="test_student : ${test_students}">
                     <div class="card border-0 shadow-sm">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-start">
@@ -100,8 +101,7 @@
                                     th:text="${test_student.userInfo.userAccount.mail}"></small><br />
                                 <small class="fw-bold text-muted">Checked Questions ( <span
                                         th:text="${test_student.total_unmark_answer}"></span> / <span
-                                        th:text="${test_student.total_free_answer}"></span>
-                                    )</small>
+                                        th:text="${test_student.total_free_answer}"></span> )</small>
                                 <div class="text-end mt-2">
                                     <small class="fw-bold">
                                         <a th:href="'/admin/exam/' + ${test_student.test.test_id} + '/student/'+ ${test_student.userInfo.uid}"
@@ -114,6 +114,7 @@
                 </div>
             </div>
         </section>
+
         <!-- student result end  -->
     </section>
     <div th:replace="@{fragments/footer}"></div>
@@ -185,12 +186,6 @@
             }
         })
 
-        var search_examinee = document.getElementById("search_examinee");
-        search_examinee.addEventListener("click", function () {
-            var search_student = document.getElementById("search_student");
-            var search_examinee_name = search_student.value;
-            window.location.href = "/" + url + "/exam/" + test_id + "/examinee?name=" + search_examinee_name;
-        })
 
         function setStudentData(student) {
             data = {
@@ -209,6 +204,31 @@
             })
         }
     </script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            
+            $("#search_examinee").click(function () {
+                var searchValue = $("#search_student").val().toLowerCase(); 
+
+                
+                $(".student-item").each(function () {
+                    var studentName = $(this).find(".name").text().toLowerCase(); 
+
+                    
+                    if (studentName.includes(searchValue)) {
+                        $(this).show(); 
+                    } else {
+                        $(this).hide(); 
+                    }
+                });
+            });
+        });
+    </script>
+
+
+    <script th:src="@{/js/main.js}"></script>
 </body>
 
 </html>

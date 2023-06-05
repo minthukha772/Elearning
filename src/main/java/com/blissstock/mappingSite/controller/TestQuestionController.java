@@ -308,8 +308,10 @@ public class TestQuestionController {
                 fileType = "IMAGE";
             } else if (fileType.equals("mp3")) {
                 fileType = "AUDIO";
-            } else {
+            } else if (fileType.equals("mp4")) {
                 fileType = "VIDEO";
+            } else {
+                fileType = "BLANK";
             }
         }
         Test test = testRepository.getTestByID(testID);
@@ -356,8 +358,10 @@ public class TestQuestionController {
                 fileType = "IMAGE";
             } else if (fileType.equals("mp3")) {
                 fileType = "AUDIO";
-            } else {
+            } else if (fileType.equals("mp4")) {
                 fileType = "VIDEO";
+            } else {
+                fileType = "BLANK";
             }
         } else {
             fileType = initQuestion.getQuestion_materials_type();

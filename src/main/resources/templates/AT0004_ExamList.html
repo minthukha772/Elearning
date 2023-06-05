@@ -404,11 +404,11 @@
         <div class="d-flex flex-wrap align-items-end justify-content-between">
           <div class="">
             <label for="exam_from" class="fw-bold"><small>Exam From</small></label><br>
-            <input type="date" class="px-3 rounded shadow-sm border-1" id="exam_from">
+            <input type="date" class="px-3 rounded shadow-sm border-1" id="exam_from" onchange="fromHandler(event)">
           </div>
           <div class="">
             <label for="exam_to" class="fw-bold"><small>Exam To</small></label><br>
-            <input type="date" class="px-3 rounded shadow-sm border-1" id="exam_to" onchange="toHandler(event)">
+            <input type="date" class="px-3 rounded shadow-sm border-1" id="exam_to" onchange="toHandler(event)" disabled>
           </div>
           <div class="">
             <select name="status" id="filterbystatus" class="px-3 rounded shadow-sm">
@@ -440,6 +440,19 @@
     <div style="color: red; font-size: 12px; display: none; padding-top: 10px;" id="filter_date_warning">End Date Must
       Be Greater
       Than Start Date</div>
+
+      <script>
+        function fromHandler(event) {
+          var examToInput = document.getElementById("exam_to");
+          var examFromInput = document.getElementById("exam_from");
+          examToInput.disabled = false;
+          if (examFromInput.value === "") {
+            examToInput.disabled = true;
+            examToInput.value = "";
+          }
+        } 
+      </script>
+      
     <!-- to add filter end  -->
 
     <div class="text-center mt-3">
@@ -517,6 +530,8 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
     crossorigin="anonymous"></script>
+
+    <script th:src="@{/js/main.js}"></script> 
   <div th:replace="@{fragments/footer}"></div>
 </body>
 
