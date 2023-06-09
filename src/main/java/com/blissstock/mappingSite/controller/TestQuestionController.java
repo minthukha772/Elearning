@@ -148,6 +148,7 @@ public class TestQuestionController {
         Integer freeAnswerCount = testQuestionRepository.getFreeAnswerCount(test_id);
         Integer markingCount = testStudentAnswerRepository.getMarkingQuestionCount(test_id);
         Test test = testRepository.getTestByID(test_id);
+        UserInfo userInfo = userInfoRepository.findStudentById(student_id);
 
         for (TestQuestion testQuestion : testQuestions) {
             String studentAnswer = "";
@@ -228,7 +229,7 @@ public class TestQuestionController {
         model.addAttribute("test_id", test_id);
         model.addAttribute("questionList", questionAndCorrectAnswers);
         model.addAttribute("test_date", test.getDate());
-        model.addAttribute("name", test.getUserInfo().getUserName());
+        model.addAttribute("name", userInfo.getUserName());
         model.addAttribute("totalTest", testQuestions.size());
         model.addAttribute("freeTest", freeAnswerCount);
         model.addAttribute("choiceTest", testQuestions.size() - freeAnswerCount);

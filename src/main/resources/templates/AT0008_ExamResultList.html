@@ -9,6 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" th:href="@{/css/AT0008_ExamResultList.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
 
     <th:block th:if="${#authorization.expression('hasRole(''ROLE_TEACHER'')')}">
         <link rel="icon" type="image/x-icon" href="/images/fav.png" />
@@ -28,7 +29,14 @@
         <div style="height: 80px"></div>
     </div>
 
-    <section class="main">
+    <div id="pc-view-message">
+        <p style="align-items: center;"><i style="color: yellowgreen;font-size: 15px;"
+                class="fas fa-exclamation-triangle"></i>The Exam result is not released yet! After the exam is released,
+            it will redirect to Exam Answer Dashbord.<br><br>
+            Tips: please change the exam status to 「released」, to view the Exam Answer Dashbord.</p>
+    </div>
+
+    <section id="whole_container" class="main">
 
         <div class="container">
             <div class="col-12 mt-3">
@@ -51,7 +59,8 @@
                 </div>
                 <div class="">
                     <span class="fw-bold">Status : </span>
-                    <span th:text="${examStatus}" th:class="${examStatus == 'Complete'} ? 'text-success' : ''"></span>
+                    <span id="examStatus" th:text="${examStatus}"
+                        th:class="${examStatus == 'Complete'} ? 'text-success' : ''"></span>
                 </div>
                 <div class="col-12">
                     <span class="fw-bold">Exam Date : </span>
@@ -110,12 +119,11 @@
             <div class="mt-2 mb-5 d-flex justify-content-around align-items-center flex-wrap exam-results-card">
                 <div th:each="student : ${students}" class="col-md-4">
                     <div class="card mt-3 py-2 rounded-3" style="width: 420px;"
-
-                         th:data-custom-type="${student.examResult == 'Fail' ? 'Fail' : 'Pass'}">
+                        th:data-custom-type="${student.examResult == 'Fail' ? 'Fail' : 'Pass'}">
                         <div class="card-body" th:data-status="${student.examResult}">
                             <div class="d-flex align-items-center">
                                 <img th:src="@{${student.profilePic.url}}" alt="" class="img-fluid rounded-circle"
-                                     style="width: 50px;height: 50px;">
+                                    style="width: 50px;height: 50px;">
                                 <h6 class="ms-3" th:text="${student.studentName}"></h6>
                             </div>
                             <div class="mt-2 d-flex justify-content-between align-items-center flex-wrap result-data">
@@ -129,11 +137,12 @@
                                     <div th:text="${' - ' + student.studentEmail}"></div>
                                     <div th:text="${' - ' + student.studentPhone}"></div>
 
-                                    <div th:class="${student.examResult == 'Pass' ? 'text-success' : 'text-danger fw-bold'}">
+                                    <div
+                                        th:class="${student.examResult == 'Pass' ? 'text-success' : 'text-danger fw-bold'}">
                                         <span class="me-1 text-dark fw-normal">- </span>
                                         <span th:text="${student.examResult}"></span>
                                     </div>
-                                   
+
                                     <div th:text="${' - ' + student.stuMarks + '/' + student.maxMarks}"></div>
                                 </div>
                                 <div class="col-12 mt-2">
@@ -146,7 +155,7 @@
                     </div>
                 </div>
             </div>
-            
+
 
         </div>
 
@@ -166,30 +175,44 @@
     <script th:src="@{/js/AT0008_ExamResultList.js}"></script>
     <script th:src="@{/js/main.js}"></script>
     <script th:inline="javascript">
-        var trueArr = /*[[${trueArr}]]*/ null;
-        let chart = document.querySelector('.chart');
-        let labelBox = document.querySelector('.label-box');
-        chart.style.width = `${40 * trueArr.length}px`;
-        labelBox.style.width = `${40 * trueArr.length}px`;
+        /* var trueArr = null;
+         let chart = document.querySelector('.chart');
+         let labelBox = document.querySelector('.label-box');
+         chart.style.width = `${40 * trueArr.length}px`;
+         labelBox.style.width = `${40 * trueArr.length}px`;
+ 
+         trueArr.forEach((val, i) => {
+             chart.innerHTML += `<div class="chart-data" id="${i + 1}">
+         <div class="false" title="False : ${100 - val}%"  style='height:${100 - val}%'></div>
+         <div class="true"  title="True : ${val}%" style='height:${val}%'></div>
+     </div>`;
+             labelBox.innerHTML += `<div class="label text-center" id="Q${i + 1}" style="width: 27px;">Q${i + 1}</div>`
+         })
+ 
+         // filter 
+         $("select").change(function () {
+             var selectedEventType = this.options[this.selectedIndex].value;
+             if (selectedEventType == "All") {
+                 $('.card').removeClass('d-none');
+             } else {
+                 $('.card').addClass('d-none');
+                 $('.card[data-custom-type="' + selectedEventType + '"]').removeClass('d-none');
+             }
+         });*/
 
-        trueArr.forEach((val, i) => {
-            chart.innerHTML += `<div class="chart-data" id="${i + 1}">
-        <div class="false" title="False : ${100 - val}%"  style='height:${100 - val}%'></div>
-        <div class="true"  title="True : ${val}%" style='height:${val}%'></div>
-    </div>`;
-            labelBox.innerHTML += `<div class="label text-center" id="Q${i + 1}" style="width: 27px;">Q${i + 1}</div>`
-        })
+        var status = document.getElementById("examStatus").textContent;
 
-        // filter 
-        $("select").change(function () {
-            var selectedEventType = this.options[this.selectedIndex].value;
-            if (selectedEventType == "All") {
-                $('.card').removeClass('d-none');
-            } else {
-                $('.card').addClass('d-none');
-                $('.card[data-custom-type="' + selectedEventType + '"]').removeClass('d-none');
-            }
-        });
+        if (status == "Result Released") {
+            document.getElementById("whole_container").style.display = 'block';
+            document.getElementById("pc-view-message").style.display = 'none';
+        } else {
+            document.getElementById("whole_container").style.display = 'none';
+            document.getElementById("pc-view-message").style.display = 'block';
+
+        }
+
+
+
 
     </script>
     <style>
@@ -311,5 +334,24 @@ background: #309986;
         }
     </style>
 </body>
+<style>
+    #pc-view-message {
+        text-align: center;
+        margin-top: 100px;
+        margin-bottom: 100px;
+        padding: 20px;
+        background-color: #F0E68C;
+        border-radius: 1%;
+        margin-left: 100px;
+        margin-right: 100px;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 15px;
+
+
+
+    }
+</style>
 
 </html>
