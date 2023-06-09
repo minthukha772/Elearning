@@ -17,4 +17,7 @@ public interface TestStudentRepository extends JpaRepository<TestStudent, Long> 
 
     @Query(value = "Select * from test_student where user_info_account_id = :id and test_test_id = :test_id limit 1", nativeQuery = true)
     public TestStudent getStudentByID(@Param("id") Long id, @Param("test_id") Long test_id);
+
+    @Query(value = "Select * from test_student where test_test_id = :test_id and user_info_account_id = :uid limit 1", nativeQuery = true)
+    public TestStudent findByTestIdAndUid(@Param("test_id") Long test_id, @Param("uid") Long uid);
 }
