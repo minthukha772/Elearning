@@ -99,6 +99,7 @@ public class ExamResultController {
             Long studentId = viewExamResult.getUser().getUid();
             Date examDate = viewExamResult.getTest().getDate();
             int timeAllowed = viewExamResult.getTest().getMinutes_allowed();
+            String examStatus = viewExamResult.getTest().getExam_status();
             int maxMarks = 0;
             for (TestQuestion checkQuestionTable : viewQuestion) {
                 int marksForEachQuest = checkQuestionTable.getMaximum_mark();
@@ -124,6 +125,7 @@ public class ExamResultController {
             model.addAttribute("passScorePercent", passScorePercent);
             model.addAttribute("passOrfailResult", passOrfailResult);
             model.addAttribute("teacherComment", teacherComment);
+            model.addAttribute("examStatus", examStatus);
 
             logger.info("Collected Marks {}", maxMarks);
 

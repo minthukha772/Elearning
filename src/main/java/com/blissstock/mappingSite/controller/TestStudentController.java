@@ -138,7 +138,7 @@ public class TestStudentController {
                 TestStudent checkStudent = testStudentRepository.getStudentByID(student.getUserInfo().getUid(),
                         test_id);
                 if (checkStudent == null) {
-                    TestStudent testStudent = new TestStudent(null, test, student.getUserInfo());
+                    TestStudent testStudent = new TestStudent(null, test, student.getUserInfo(), null);
                     testStudentRepository.save(testStudent);
                 }
             }
@@ -158,7 +158,7 @@ public class TestStudentController {
         if (test.getExam_status().equals("Exam Created")) {
             TestStudent existingStudent = testStudentRepository.getStudentByID(student_id, test_id);
             if (existingStudent == null) {
-                TestStudent testStudent = new TestStudent(null, test, user);
+                TestStudent testStudent = new TestStudent(null, test, user, null);
                 testStudentRepository.save(testStudent);
             }
         }

@@ -1,5 +1,6 @@
 package com.blissstock.mappingSite.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -29,6 +30,9 @@ public class TestStudent {
     @ManyToOne(fetch = FetchType.EAGER)
     private UserInfo userInfo;
 
+    @Column(length = 15)
+    private String student_exam_start_time;
+
     public Long getId() {
         return id;
     }
@@ -53,9 +57,18 @@ public class TestStudent {
         this.userInfo = userInfo;
     }
 
-    public TestStudent(Long id, Test test, UserInfo userInfo) {
+    public String getStudentExamStartTime() {
+        return student_exam_start_time;
+    }
+
+    public void setStudentExamStartTime(String student_exam_start_time) {
+        this.student_exam_start_time = student_exam_start_time;
+    }
+
+        public TestStudent(Long id, Test test, UserInfo userInfo, String student_exam_start_time) {
         this.id = id;
         this.test = test;
         this.userInfo = userInfo;
+        this.student_exam_start_time = student_exam_start_time;
     }
 }
