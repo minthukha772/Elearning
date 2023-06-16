@@ -2,6 +2,8 @@ package com.blissstock.mappingSite.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -90,11 +92,21 @@ public class TestController {
             logger.info("user id {} start processing URL /teacher/exam", userID);
             if (examStatus != "" || courseid != "" || fromDate != "" || toDate != "") {
                 if (examStatus != "") {
-                    testList = testRepository.getListByStatusAndUser(examStatus, userID);
-                    logger.info("userid {} get test list with user id and exam status by test id {}", userID, testList);
-                    model.addAttribute("testList", testList);
-                    model.addAttribute("filterType", "Filter By Status");
-                    model.addAttribute("filter", "( " + examStatus + " )");
+                    if (examStatus.equals("Deleted")) {
+                        testList = testRepository.getDeletedListByUser(userID);
+                        logger.info("userid {} get test list with user id and exam status by test id {}", userID,
+                                testList);
+                        model.addAttribute("testList", testList);
+                        model.addAttribute("filterType", "Filter By Status");
+                        model.addAttribute("filter", "( " + examStatus + " )");
+                    } else if (!examStatus.equals("Deleted")) {
+                        testList = testRepository.getListByStatusAndUser(examStatus, userID);
+                        logger.info("userid {} get test list with user id and exam status by test id {}", userID,
+                                testList);
+                        model.addAttribute("testList", testList);
+                        model.addAttribute("filterType", "Filter By Status");
+                        model.addAttribute("filter", "( " + examStatus + " )");
+                    }
                 } else if (courseid != "") {
                     CourseInfo course = courseInfoRepository.getById(Long.parseLong(courseid));
                     testList = testRepository.getListByCourseAndUser(Long.parseLong(courseid), userID);
@@ -229,12 +241,21 @@ public class TestController {
             List<UserInfo> teacherList;
             if (examStatus != "" || courseid != "" || fromDate != "" || toDate != "" || teacherid != "") {
                 if (examStatus != "") {
-                    // Log the test list retrieval by status
-                    logger.info("user id {} Retrieving test list by status: {}", userID, examStatus);
-                    testList = testRepository.getListByStatus(examStatus);
-                    model.addAttribute("testList", testList);
-                    model.addAttribute("filterType", "Filter By Status");
-                    model.addAttribute("filter", "( " + examStatus + " )");
+                    if (examStatus.equals("Deleted")) {
+                        logger.info("user id {} Retrieving deleted test list by status: {}", userID, examStatus);
+                        testList = testRepository.getDeletedListByAdmin();
+                        model.addAttribute("testList", testList);
+                        model.addAttribute("filterType", "Filter By Status");
+                        model.addAttribute("filter", "( " + examStatus + " )");
+
+                    } else if (!examStatus.equals("Deleted")) {
+                        // Log the test list retrieval by status
+                        logger.info("user id {} Retrieving test list by status: {}", userID, examStatus);
+                        testList = testRepository.getListByStatus(examStatus);
+                        model.addAttribute("testList", testList);
+                        model.addAttribute("filterType", "Filter By Status");
+                        model.addAttribute("filter", "( " + examStatus + " )");
+                    }
                 } else if (courseid != "") {
                     // Log the test list retrieval by course ID
                     logger.info("user id {} Retrieving test list by course ID: {}", userID, courseid);
@@ -298,8 +319,25 @@ public class TestController {
                 return ResponseEntity.noContent().build();
             }
             logger.info("Received request to delete exam with ID: {}", test_id);
-            testRepository.deleteById(test_id);
-            logger.info("User ID {} Exam with ID {} successfully deleted", userID, test_id);
+            Test testData = testRepository.getTestByID(test_id);
+            String isDelete = testData.getIsDelete();
+            if (!isDelete.equals("true")) {
+                LocalDateTime currentDateTime = LocalDateTime.now();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                String deletedAt = currentDateTime.format(formatter);
+
+                testData.setDeletedAt(deletedAt);
+                testData.setIsDelete("true");
+                testRepository.save(testData);
+            }
+            if (isDelete.equals("true")) {
+                testData.setDeletedAt("null");
+                testData.setIsDelete("false");
+                testRepository.save(testData);
+            }
+            // testRepository.deleteById(test_id);
+            // logger.info("User ID {} Exam with ID {} successfully deleted", userID,
+            // test_id);
             return ResponseEntity.ok(HttpStatus.OK);
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage());
@@ -323,8 +361,24 @@ public class TestController {
                 return ResponseEntity.noContent().build();
             }
             logger.info("Received request to delete exam with ID: {}", test_id);
-            testRepository.deleteById(test_id);
-            logger.info("User ID {} Exam with ID {} successfully deleted", userID, test_id);
+            Test testData = testRepository.getTestByID(test_id);
+            String isDelete = testData.getIsDelete();
+            if (!isDelete.equals("true")) {
+                LocalDateTime currentDateTime = LocalDateTime.now();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                String deletedAt = currentDateTime.format(formatter);
+                testData.setDeletedAt(deletedAt);
+                testData.setIsDelete("true");
+                testRepository.save(testData);
+            }
+            if (isDelete.equals("true")) {
+                testData.setDeletedAt("null");
+                testData.setIsDelete("false");
+                testRepository.save(testData);
+            }
+            // testRepository.deleteById(test_id);
+            // logger.info("User ID {} Exam with ID {} successfully deleted", userID,
+            // test_id);
             return ResponseEntity.ok(HttpStatus.OK);
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage());
@@ -384,7 +438,7 @@ public class TestController {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to find user with ID: " + userID);
             }
             Test test = new Test(null, courseInfo, userInfo, description, section_name, minutes_allowed, passing_score,
-                    examDate, exam_start_time, exam_end_time, exam_status);
+                    examDate, exam_start_time, exam_end_time, exam_status, "false", "null");
             logger.info("User ID {} Exam start to insert test {}", userID, test);
             testRepository.save(test);
             logger.info("User ID {} Exam saved successfully test {}", userID, test);
@@ -429,7 +483,7 @@ public class TestController {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to find user with ID: " + teacher_id);
             }
             Test test = new Test(null, courseInfo, userInfo, description, section_name, minutes_allowed, passing_score,
-                    examDate, exam_start_time, exam_end_time, exam_status);
+                    examDate, exam_start_time, exam_end_time, exam_status, "false", "null");
             logger.info("User ID {} Exam start to insert test {}", userID, test);
             testRepository.save(test);
             logger.info("User ID {} Exam saved successfully test {}", userID, test);
@@ -476,7 +530,7 @@ public class TestController {
             }
             Test test = new Test(test_id, courseInfo, userInfo, description, section_name, minutes_allowed,
                     passing_score,
-                    examDate, exam_start_time, exam_end_time, exam_status);
+                    examDate, exam_start_time, exam_end_time, exam_status, "false", "null");
             logger.info("User ID {} Exam start to update test {}", userID, test);
             testRepository.save(test);
             logger.info("User ID {} Exam edited successfully for course ID {} and exam ID {}", userID, course_id,
@@ -558,7 +612,7 @@ public class TestController {
             }
             Test test = new Test(test_id, courseInfo, userInfo, description, section_name, minutes_allowed,
                     passing_score,
-                    examDate, exam_start_time, exam_end_time, exam_status);
+                    examDate, exam_start_time, exam_end_time, exam_status, "false", "null");
             logger.info("User ID {} Exam start to update test {}", userID, test);
             testRepository.save(test);
             logger.info("User ID {} Exam edited successfully for course ID {} and exam ID {}", userID, course_id,

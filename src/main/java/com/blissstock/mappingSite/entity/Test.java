@@ -63,9 +63,15 @@ public class Test {
     @Column(name = "exam_status", length = 100)
     private String exam_status;
 
+    @Column(name = "is_delete", length = 50)
+    private String isDelete;
+
+    @Column(name = "deleted_at", length = 100)
+    private String deletedAt = "empty";
+
     public Test(Long test_id, CourseInfo courseInfo, UserInfo userInfo, String description, String section_name,
             Integer minutes_allowed, Integer passing_score_percent, Date date, String start_time,
-            String end_time, String exam_status) {
+            String end_time, String exam_status, String isDelete, String deletedAt) {
         this.test_id = test_id;
         this.courseInfo = courseInfo;
         this.userInfo = userInfo;
@@ -77,5 +83,8 @@ public class Test {
         this.start_time = start_time;
         this.end_time = end_time;
         this.exam_status = exam_status;
+        this.isDelete = isDelete;
+        this.deletedAt = deletedAt;
     }
+
 }
