@@ -3,7 +3,13 @@ package com.blissstock.mappingSite.controller;
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,6 +35,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.blissstock.mappingSite.entity.Test;
 import com.blissstock.mappingSite.entity.TestQuestion;
 import com.blissstock.mappingSite.entity.TestQuestionCorrectAnswer;
+import com.blissstock.mappingSite.entity.TestStudent;
 import com.blissstock.mappingSite.entity.TestStudentAnswer;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.exceptions.UnauthorizedFileAccessException;
@@ -42,6 +49,7 @@ import com.blissstock.mappingSite.repository.TestQuestionCorrectAnswerRepositoy;
 import com.blissstock.mappingSite.repository.TestQuestionRepository;
 import com.blissstock.mappingSite.repository.TestRepository;
 import com.blissstock.mappingSite.repository.TestStudentAnswerRepository;
+import com.blissstock.mappingSite.repository.TestStudentRepository;
 import com.blissstock.mappingSite.repository.UserInfoRepository;
 import com.blissstock.mappingSite.service.StorageService;
 import com.blissstock.mappingSite.service.StorageServiceImpl;
@@ -82,6 +90,9 @@ public class TestQuestionController {
 
     @Autowired
     UserInfoRepository userInfoRepository;
+
+    @Autowired
+    TestStudentRepository testStudentRepository;
 
     @Valid
     @GetMapping(value = { "/teacher/exam/{test_id}/questions", "/admin/exam/{test_id}/questions" })
@@ -137,6 +148,7 @@ public class TestQuestionController {
         Integer freeAnswerCount = testQuestionRepository.getFreeAnswerCount(test_id);
         Integer markingCount = testStudentAnswerRepository.getMarkingQuestionCount(test_id);
         Test test = testRepository.getTestByID(test_id);
+        UserInfo userInfo = userInfoRepository.findStudentById(student_id);
 
         for (TestQuestion testQuestion : testQuestions) {
             String studentAnswer = "";
@@ -217,7 +229,7 @@ public class TestQuestionController {
         model.addAttribute("test_id", test_id);
         model.addAttribute("questionList", questionAndCorrectAnswers);
         model.addAttribute("test_date", test.getDate());
-        model.addAttribute("name", test.getUserInfo().getUserName());
+        model.addAttribute("name", userInfo.getUserName());
         model.addAttribute("totalTest", testQuestions.size());
         model.addAttribute("freeTest", freeAnswerCount);
         model.addAttribute("choiceTest", testQuestions.size() - freeAnswerCount);
@@ -234,45 +246,250 @@ public class TestQuestionController {
     @GetMapping(value = { "/student/exam/{test_id}/questions" })
     private String getStudentQuestions(@PathVariable Long test_id, Model model)
             throws ParseException, JsonMappingException, JsonProcessingException {
-        List<QuestionAndCorrectAnswer> questionAndCorrectAnswers = new ArrayList<>();
-        Test test = testRepository.getTestByID(test_id);
-        List<TestQuestion> testQuestions = testQuestionRepository.getQuestionByTest(test_id);
-        for (TestQuestion testQuestion : testQuestions) {
-            long fileSeparator = 100000L + test_id;
-            FileInfo file = storageService.loadQuestionMaterials(fileSeparator, testQuestion.getQuestion_materials());
-            testQuestion.setQuestion_materials(file.getUrl());
+        Test testinfo = testRepository.getTestByID(test_id);
+        Date examDate = testinfo.getDate();
+        LocalDate convertedExamDate = examDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate currentDate = LocalDate.now();
+        Long studentId = userSessionService.getId();
+        TestStudent studentInfo = testStudentRepository.findByTestIdAndUid(test_id, studentId);
+        String studentExamStartTime = studentInfo.getStudentExamStartTime();
 
-            List<ChoiceModel> choices = new ArrayList<>();
-            if (!testQuestion.getQuestion_type().equals("FREE_ANSWER")) {
-                TestQuestionCorrectAnswer testQuestionCorrectAnswer = testQuestionCorrectAnswerRepositoy
-                        .getCorrectAnswerByQuestion(testQuestion.getId());
-                JSONArray choiceArrary = new JSONArray(testQuestion.getChoices());
-                JSONArray answerArray = new JSONArray(testQuestionCorrectAnswer.getCorrectAnswer());
-                for (int i = 0; i < choiceArrary.length(); i++) {
-                    JSONObject choice = choiceArrary.getJSONObject(i);
-                    String choiceData = choice.getString("choice");
-                    choices.add(new ChoiceModel(i, choiceData, false));
+        DateTimeFormatter examTimeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+
+        String examStartTimeString = testinfo.getStart_time();
+        LocalTime examStartTime = LocalTime.parse(examStartTimeString, examTimeFormatter);
+        LocalTime currentTime = LocalTime.now().withSecond(0).withNano(0);
+        String examEndTimeString = testinfo.getEnd_time();
+        LocalTime examEndTime = LocalTime.parse(examEndTimeString, examTimeFormatter);
+
+        LocalTime examStartTimeFinal = examStartTime.plusMinutes(30);
+
+        String examAnnouncement = null;
+
+        if (currentDate.isBefore(convertedExamDate)) {
+            examAnnouncement = "Apologies! Exam is not currently available yet. Please note that the exam will be accessible on "
+                    + convertedExamDate + " " + examStartTime;
+        } else if (currentDate.isEqual(convertedExamDate)) {
+
+            if (currentTime.isBefore(examStartTime)) {
+                examAnnouncement = "Apologies! Exam is not currently available yet. Please note that the exam will be accessible on "
+                        + convertedExamDate + " " + examStartTime;
+            } else if (currentTime.equals(examStartTime) || currentTime.isBefore(examStartTimeFinal)
+                    || currentTime.equals(examStartTimeFinal)) {
+
+                if (studentExamStartTime == null || studentExamStartTime.isEmpty()) {
+
+                    studentExamStartTime = currentTime.toString();
+                    studentInfo.setStudentExamStartTime(studentExamStartTime);
+                    testStudentRepository.save(studentInfo);
+
+                    List<QuestionAndCorrectAnswer> questionAndCorrectAnswers = new ArrayList<>();
+                    Test test = testRepository.getTestByID(test_id);
+                    List<TestQuestion> testQuestions = testQuestionRepository.getQuestionByTest(test_id);
+                    for (TestQuestion testQuestion : testQuestions) {
+                        long fileSeparator = 100000L + test_id;
+                        FileInfo file = storageService.loadQuestionMaterials(fileSeparator,
+                                testQuestion.getQuestion_materials());
+                        testQuestion.setQuestion_materials(file.getUrl());
+
+                        List<ChoiceModel> choices = new ArrayList<>();
+                        if (!testQuestion.getQuestion_type().equals("FREE_ANSWER")) {
+                            TestQuestionCorrectAnswer testQuestionCorrectAnswer = testQuestionCorrectAnswerRepositoy
+                                    .getCorrectAnswerByQuestion(testQuestion.getId());
+                            JSONArray choiceArrary = new JSONArray(testQuestion.getChoices());
+                            JSONArray answerArray = new JSONArray(testQuestionCorrectAnswer.getCorrectAnswer());
+                            for (int i = 0; i < choiceArrary.length(); i++) {
+                                JSONObject choice = choiceArrary.getJSONObject(i);
+                                String choiceData = choice.getString("choice");
+                                choices.add(new ChoiceModel(i, choiceData, false));
+                            }
+
+                            for (int j = 0; j < answerArray.length(); j++) {
+                                JSONObject answer = answerArray.getJSONObject(j);
+                                int correct = answer.getInt("answer");
+                                String choice = choices.get(correct).getChoice();
+                                choices.set(correct, new ChoiceModel(correct, choice, true));
+                            }
+                        }
+
+                        QuestionAndCorrectAnswer questionAndCorrectAnswer = new QuestionAndCorrectAnswer(
+                                testQuestion.getId(),
+                                testQuestion.getQuestion_text(), testQuestion.getQuestion_materials(),
+                                testQuestion.getQuestion_materials_type(), choices,
+                                testQuestion.getQuestion_type(), testQuestion.getMaximum_mark());
+                        questionAndCorrectAnswers.add(questionAndCorrectAnswer);
+                    }
+                    model.addAttribute("test_date", test.getDate());
+                    model.addAttribute("test_start_time", test.getStart_time());
+                    model.addAttribute("test_end_time", test.getEnd_time());
+                    model.addAttribute("test_id", test_id);
+                    model.addAttribute("exam_announce", examAnnouncement);
+                    model.addAttribute("exam_start_time", currentTime);
+                    model.addAttribute("exam_end_time", examEndTime);
+                    model.addAttribute("questionList", questionAndCorrectAnswers);
+
+                    return "ST0006_ExamQuestionListStudent.html";
+                } else if (studentExamStartTime != null) {
+
+                    List<QuestionAndCorrectAnswer> questionAndCorrectAnswers = new ArrayList<>();
+                    Test test = testRepository.getTestByID(test_id);
+                    List<TestQuestion> testQuestions = testQuestionRepository.getQuestionByTest(test_id);
+                    for (TestQuestion testQuestion : testQuestions) {
+                        long fileSeparator = 100000L + test_id;
+                        FileInfo file = storageService.loadQuestionMaterials(fileSeparator,
+                                testQuestion.getQuestion_materials());
+                        testQuestion.setQuestion_materials(file.getUrl());
+
+                        List<ChoiceModel> choices = new ArrayList<>();
+                        if (!testQuestion.getQuestion_type().equals("FREE_ANSWER")) {
+                            TestQuestionCorrectAnswer testQuestionCorrectAnswer = testQuestionCorrectAnswerRepositoy
+                                    .getCorrectAnswerByQuestion(testQuestion.getId());
+                            JSONArray choiceArrary = new JSONArray(testQuestion.getChoices());
+                            JSONArray answerArray = new JSONArray(testQuestionCorrectAnswer.getCorrectAnswer());
+                            for (int i = 0; i < choiceArrary.length(); i++) {
+                                JSONObject choice = choiceArrary.getJSONObject(i);
+                                String choiceData = choice.getString("choice");
+                                choices.add(new ChoiceModel(i, choiceData, false));
+                            }
+
+                            for (int j = 0; j < answerArray.length(); j++) {
+                                JSONObject answer = answerArray.getJSONObject(j);
+                                int correct = answer.getInt("answer");
+                                String choice = choices.get(correct).getChoice();
+                                choices.set(correct, new ChoiceModel(correct, choice, true));
+                            }
+                        }
+
+                        QuestionAndCorrectAnswer questionAndCorrectAnswer = new QuestionAndCorrectAnswer(
+                                testQuestion.getId(),
+                                testQuestion.getQuestion_text(), testQuestion.getQuestion_materials(),
+                                testQuestion.getQuestion_materials_type(), choices,
+                                testQuestion.getQuestion_type(), testQuestion.getMaximum_mark());
+                        questionAndCorrectAnswers.add(questionAndCorrectAnswer);
+                    }
+                    model.addAttribute("test_date", test.getDate());
+                    model.addAttribute("test_start_time", test.getStart_time());
+                    model.addAttribute("test_end_time", test.getEnd_time());
+                    model.addAttribute("test_id", test_id);
+                    model.addAttribute("exam_announce", examAnnouncement);
+                    model.addAttribute("exam_start_time", currentTime);
+                    model.addAttribute("exam_end_time", examEndTime);
+                    model.addAttribute("questionList", questionAndCorrectAnswers);
+
+                    return "ST0006_ExamQuestionListStudent.html";
                 }
 
-                for (int j = 0; j < answerArray.length(); j++) {
-                    JSONObject answer = answerArray.getJSONObject(j);
-                    int correct = answer.getInt("answer");
-                    String choice = choices.get(correct).getChoice();
-                    choices.set(correct, new ChoiceModel(correct, choice, true));
+            } else if (currentTime.isAfter(examStartTimeFinal) && currentTime.isBefore(examEndTime)) {
+                if (studentExamStartTime == null || studentExamStartTime.isEmpty()) {
+                    examAnnouncement = "Apologies! The exam is currently in progress. Late examinees are not allowed to take the exam.";
+                } else if (studentExamStartTime != null) {
+                    List<QuestionAndCorrectAnswer> questionAndCorrectAnswers = new ArrayList<>();
+                    Test test = testRepository.getTestByID(test_id);
+                    List<TestQuestion> testQuestions = testQuestionRepository.getQuestionByTest(test_id);
+                    for (TestQuestion testQuestion : testQuestions) {
+                        long fileSeparator = 100000L + test_id;
+                        FileInfo file = storageService.loadQuestionMaterials(fileSeparator,
+                                testQuestion.getQuestion_materials());
+                        testQuestion.setQuestion_materials(file.getUrl());
+
+                        List<ChoiceModel> choices = new ArrayList<>();
+                        if (!testQuestion.getQuestion_type().equals("FREE_ANSWER")) {
+                            TestQuestionCorrectAnswer testQuestionCorrectAnswer = testQuestionCorrectAnswerRepositoy
+                                    .getCorrectAnswerByQuestion(testQuestion.getId());
+                            JSONArray choiceArrary = new JSONArray(testQuestion.getChoices());
+                            JSONArray answerArray = new JSONArray(testQuestionCorrectAnswer.getCorrectAnswer());
+                            for (int i = 0; i < choiceArrary.length(); i++) {
+                                JSONObject choice = choiceArrary.getJSONObject(i);
+                                String choiceData = choice.getString("choice");
+                                choices.add(new ChoiceModel(i, choiceData, false));
+                            }
+
+                            for (int j = 0; j < answerArray.length(); j++) {
+                                JSONObject answer = answerArray.getJSONObject(j);
+                                int correct = answer.getInt("answer");
+                                String choice = choices.get(correct).getChoice();
+                                choices.set(correct, new ChoiceModel(correct, choice, true));
+                            }
+                        }
+
+                        QuestionAndCorrectAnswer questionAndCorrectAnswer = new QuestionAndCorrectAnswer(
+                                testQuestion.getId(),
+                                testQuestion.getQuestion_text(), testQuestion.getQuestion_materials(),
+                                testQuestion.getQuestion_materials_type(), choices,
+                                testQuestion.getQuestion_type(), testQuestion.getMaximum_mark());
+                        questionAndCorrectAnswers.add(questionAndCorrectAnswer);
+                    }
+                    model.addAttribute("test_date", test.getDate());
+                    model.addAttribute("test_start_time", test.getStart_time());
+                    model.addAttribute("test_end_time", test.getEnd_time());
+                    model.addAttribute("test_id", test_id);
+                    model.addAttribute("exam_announce", examAnnouncement);
+                    model.addAttribute("exam_start_time", currentTime);
+                    model.addAttribute("exam_end_time", examEndTime);
+                    model.addAttribute("questionList", questionAndCorrectAnswers);
+
+                    return "ST0006_ExamQuestionListStudent.html";
                 }
             }
 
-            QuestionAndCorrectAnswer questionAndCorrectAnswer = new QuestionAndCorrectAnswer(testQuestion.getId(),
-                    testQuestion.getQuestion_text(), testQuestion.getQuestion_materials(),
-                    testQuestion.getQuestion_materials_type(), choices,
-                    testQuestion.getQuestion_type(), testQuestion.getMaximum_mark());
-            questionAndCorrectAnswers.add(questionAndCorrectAnswer);
+            else if (currentTime.isAfter(examEndTime) || currentTime.equals(examEndTime)) {
+                examAnnouncement = "Apologies! This exam has already been conducted. It was held on "
+                        + convertedExamDate
+                        + " " + examStartTime;
+
+            }
+
+        } else if (currentDate.isAfter(convertedExamDate)) {
+            examAnnouncement = "Apologies! This exam has already been conducted. It was held on " + convertedExamDate
+                    + " " + examStartTime;
         }
-        model.addAttribute("test_date", test.getDate());
-        model.addAttribute("test_start_time", test.getStart_time());
-        model.addAttribute("test_end_time", test.getEnd_time());
-        model.addAttribute("test_id", test_id);
-        model.addAttribute("questionList", questionAndCorrectAnswers);
+
+        // List<QuestionAndCorrectAnswer> questionAndCorrectAnswers = new ArrayList<>();
+        // Test test = testRepository.getTestByID(test_id);
+        // List<TestQuestion> testQuestions =
+        // testQuestionRepository.getQuestionByTest(test_id);
+        // for (TestQuestion testQuestion : testQuestions) {
+        // long fileSeparator = 100000L + test_id;
+        // FileInfo file = storageService.loadQuestionMaterials(fileSeparator,
+        // testQuestion.getQuestion_materials());
+        // testQuestion.setQuestion_materials(file.getUrl());
+
+        // List<ChoiceModel> choices = new ArrayList<>();
+        // if (!testQuestion.getQuestion_type().equals("FREE_ANSWER")) {
+        // TestQuestionCorrectAnswer testQuestionCorrectAnswer =
+        // testQuestionCorrectAnswerRepositoy
+        // .getCorrectAnswerByQuestion(testQuestion.getId());
+        // JSONArray choiceArrary = new JSONArray(testQuestion.getChoices());
+        // JSONArray answerArray = new
+        // JSONArray(testQuestionCorrectAnswer.getCorrectAnswer());
+        // for (int i = 0; i < choiceArrary.length(); i++) {
+        // JSONObject choice = choiceArrary.getJSONObject(i);
+        // String choiceData = choice.getString("choice");
+        // choices.add(new ChoiceModel(i, choiceData, false));
+        // }
+
+        // for (int j = 0; j < answerArray.length(); j++) {
+        // JSONObject answer = answerArray.getJSONObject(j);
+        // int correct = answer.getInt("answer");
+        // String choice = choices.get(correct).getChoice();
+        // choices.set(correct, new ChoiceModel(correct, choice, true));
+        // }
+        // }
+
+        // QuestionAndCorrectAnswer questionAndCorrectAnswer = new
+        // QuestionAndCorrectAnswer(testQuestion.getId(),
+        // testQuestion.getQuestion_text(), testQuestion.getQuestion_materials(),
+        // testQuestion.getQuestion_materials_type(), choices,
+        // testQuestion.getQuestion_type(), testQuestion.getMaximum_mark());
+        // questionAndCorrectAnswers.add(questionAndCorrectAnswer);
+        // }
+        // model.addAttribute("test_date", test.getDate());
+        // model.addAttribute("test_start_time", test.getStart_time());
+        // model.addAttribute("test_end_time", test.getEnd_time());
+        // model.addAttribute("test_id", test_id);
+        // model.addAttribute("questionList", questionAndCorrectAnswers);
+
+        model.addAttribute("exam_announce", examAnnouncement);
         return "ST0006_ExamQuestionListStudent.html";
     }
 
