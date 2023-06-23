@@ -27,25 +27,23 @@
 
             $("#filterbystatus").change(function () {
                 console.log($("#filterbystatus :selected").text());
-                window.location.href = "/admin/exam?examStatus=" + $("#filterbystatus :selected").text();
+                window.location.href = "/student/exam?examStatus=" + $("#filterbystatus :selected").text();
             });
 
             $("#clearFilter").click(function () {
-                window.location.href = "/admin/exam"
+                window.location.href = "/student/exam"
             })
 
             $("#filterbycourse").change(function () {
                 var filterCourseDropdown = document.getElementById("filterbycourse");
                 var filterCourseID = filterCourseDropdown.options[filterCourseDropdown.selectedIndex].id;
-                console.log(filterCourseID);
-                window.location.href = "/admin/exam?courseid=" + filterCourseID;
+                window.location.href = "/student/exam?courseid=" + filterCourseID;
             });
 
             $("#filterbyteacher").change(function () {
                 var filterTeacherDropdown = document.getElementById("filterbyteacher");
                 var filterTeacherID = filterTeacherDropdown.options[filterTeacherDropdown.selectedIndex].id;
-                console.log(filterTeacherID);
-                window.location.href = "/admin/exam?teacherid=" + filterTeacherID;
+                window.location.href = "/student/exam?teacherid=" + filterTeacherID;
             });
 
             $("#teacher_name").change(function () {
@@ -57,7 +55,7 @@
                 if (teacherID == "") {
                     return;
                 }
-                fetch("/admin/get-course-by-teacher?teacher_id=" + teacherID, {
+                fetch("/student/get-course-by-teacher?teacher_id=" + teacherID, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json"
@@ -79,7 +77,7 @@
                 return;
             } else {
                 document.getElementById("filter_date_warning").style.display = 'none';
-                window.location.replace("/admin/exam?fromDate=" + fromDate + "&toDate=" + toDate);
+                window.location.replace("/student/exam?fromDate=" + fromDate + "&toDate=" + toDate);
             }
         }
     </script>
