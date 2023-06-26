@@ -35,10 +35,15 @@
                 </nav>
             </div>
         </div>
+
         <div class="d-flex justify-content-between align-items-center flex-wrap">
             <div class="">
+                <div class="fw-bold text-success" style="display: none;">
+                    Test Id: <span class="" id="testId" th:text="${test_id}"></span>
+                </div>
+
                 <div class="fw-bold text-success">
-                    Student Name : <span class="" th:text="${name}"></span>
+                    Student Name: <span class="" th:text="${name}"></span>
                 </div>
                 <div class="fw-bold text-success">
                     All : <span class="" th:text="${totalTest}"></span> Questions
@@ -48,8 +53,11 @@
                 </div>
             </div>
             <div class="">
+                <div class="fw-bold text-success" style="display: none;">
+                    Student Id: <span class="" id="studentId" th:text="${userId}"></span>
+                </div>
                 <div class="fw-bold text-success">
-                    Answered Date : <span class="" th:text="${testTime}"></span>
+                    Answered Date : <span class="" th:text="${test_date}"></span>
                 </div>
                 <div class="fw-bold text-success">
                     Auto Answer : <span class="" th:text="${freeTest}"></span> Questions
@@ -166,6 +174,22 @@
             <input type="submit" id="submit" value="Submit" class="bg-success text-white border-0 rounded px-2">
         </div>
     </div> -->
+    <div class="comment-container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <form>
+                    <div class="form-group">
+                        <label for="comment">Comment:</label>
+                        <textarea class="form-control" id="comment" rows="3"
+                            placeholder="Enter your comment"></textarea>
+                    </div>
+                    <input type="submit" id="submit" value="Submit" class="btn-success border-0 rounded px-2"
+                        th:onclick="setascomment();" />
+                </form>
+            </div>
+        </div>
+    </div>
+
     <div th:replace="@{fragments/footer}"></div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
@@ -203,6 +227,69 @@
             }
             xhr.send(formData);
         }
+
+
+        /*function setascomment(){
+            let formData = new FormData();
+            var comment = document.getElementById("comment");
+
+            
+            formData.append('comment',comment.value);
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST","http://localhost:8080/admin/comment",true);
+            xhr.send(formData);
+
+
+
+        }*/
+
+        var type = "Created";
+
+        $("#submit").click(function () {
+            submitData(type);
+        })
+
+        function submitData(submitType) {
+            var testId = document.getElementById("testId").textContent;
+            var studentId = document.getElementById("studentId").textContent;
+            var comment = document.getElementById("comment").value;
+
+            var data;
+
+            if (submitType == "Created") {
+                data = {
+                    test_Id: testId,
+                    student_Id: studentId,
+                    comment: comment
+
+                }
+                data = JSON.stringify(data);
+                fetch("/admin/comment", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: data
+                }).then(response => {
+                    if (response.status == 200) {
+                        window.location.reload();
+
+
+                    }
+                })
+            }
+
+
+        }
+        function setascomment() {
+            var comment = document.getElementById("comment").value;
+            if (comment.trim() !== "") {
+                alert("Data submit is success");
+            } else {
+                alert("Please fill comment");
+            }
+        }
+
     </script>
 </body>
 

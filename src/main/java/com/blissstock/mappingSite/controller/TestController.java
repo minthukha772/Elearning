@@ -179,7 +179,7 @@ public class TestController {
                     model.addAttribute("testList", testList);
                     model.addAttribute("filterType", "Filter By Status");
                     model.addAttribute("filter", "( " + examStatus + " )");
-                } else if (courseid != "") {                   
+                } else if (courseid != "") {
 
                     // Log the test list retrieval by course ID
                     logger.info("user id {} Retrieving test list by course ID: {}", userID, courseid);
@@ -542,6 +542,7 @@ public class TestController {
             int passing_score = Integer.parseInt(jsonObject.getString("passing_score"));
             int minutes_allowed = jsonObject.getInt("minutes_allowed");
             CourseInfo courseInfo = courseInfoRepository.findByCourseID(course_id);
+
             if (courseInfo == null) {
                 logger.warn("Failed to find course with ID: " + course_id);
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -590,10 +591,39 @@ public class TestController {
                             Result result = new Result(null, test, studentInfo, total_acquired_mark, "Failed", "");
                             resultRepo.save(result);
                         }
+                    } else {
+                        List<TestStudentAnswer> studentAnswerList = testStudentAnswerRepository
+                                .getStudentAnswerListByTestAndStudent(student.getUserInfo().getUid(),
+                                        test_id);
+                        for (TestStudentAnswer studentAnswer : studentAnswerList) {
+                            int acquired_mark = studentAnswer.getAcquired_mark();
+                            int max_mark = studentAnswer.getQuestion().getMaximum_mark();
+                            total_acquired_mark += acquired_mark;
+                            total_mark += max_mark;
+                        }
+                        Float ftotal_acquired_mark = (float) (total_acquired_mark);
+                        Float ftotal_mark = (float) (total_mark);
+                        int passing_score_percent = test.getPassing_score_percent();
+                        Float fcalculate_percent = (float) (ftotal_acquired_mark / ftotal_mark);
+                        fcalculate_percent = fcalculate_percent * 100;
+                        UserInfo studentInfo = userInfoRepository.findStudentById(student.getUserInfo().getUid());
+                        if (fcalculate_percent > passing_score_percent) {
+
+                            viewExamResult.setResult("Passed");
+                            viewExamResult.setResultMark(total_acquired_mark);
+                            resultRepo.save(viewExamResult);
+                        } else {
+
+                            viewExamResult.setResult("Failed");
+                            viewExamResult.setResultMark(total_acquired_mark);
+                            resultRepo.save(viewExamResult);
+                        }
+
                     }
 
                 }
             }
+
             return ResponseEntity.ok(HttpStatus.OK);
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage());
@@ -665,6 +695,7 @@ public class TestController {
                         Float fcalculate_percent = (float) (ftotal_acquired_mark / ftotal_mark);
                         fcalculate_percent = fcalculate_percent * 100;
                         UserInfo studentInfo = userInfoRepository.findStudentById(student.getUserInfo().getUid());
+
                         if (fcalculate_percent > passing_score_percent) {
                             Result result = new Result(null, test, studentInfo, total_acquired_mark, "Passed", "");
                             resultRepo.save(result);
@@ -672,6 +703,34 @@ public class TestController {
                             Result result = new Result(null, test, studentInfo, total_acquired_mark, "Failed", "");
                             resultRepo.save(result);
                         }
+                    } else {
+                        List<TestStudentAnswer> studentAnswerList = testStudentAnswerRepository
+                                .getStudentAnswerListByTestAndStudent(student.getUserInfo().getUid(),
+                                        test_id);
+                        for (TestStudentAnswer studentAnswer : studentAnswerList) {
+                            int acquired_mark = studentAnswer.getAcquired_mark();
+                            int max_mark = studentAnswer.getQuestion().getMaximum_mark();
+                            total_acquired_mark += acquired_mark;
+                            total_mark += max_mark;
+                        }
+                        Float ftotal_acquired_mark = (float) (total_acquired_mark);
+                        Float ftotal_mark = (float) (total_mark);
+                        int passing_score_percent = test.getPassing_score_percent();
+                        Float fcalculate_percent = (float) (ftotal_acquired_mark / ftotal_mark);
+                        fcalculate_percent = fcalculate_percent * 100;
+                        UserInfo studentInfo = userInfoRepository.findStudentById(student.getUserInfo().getUid());
+                        if (fcalculate_percent > passing_score_percent) {
+
+                            viewExamResult.setResult("Passed");
+                            viewExamResult.setResultMark(total_acquired_mark);
+                            resultRepo.save(viewExamResult);
+                        } else {
+
+                            viewExamResult.setResult("Failed");
+                            viewExamResult.setResultMark(total_acquired_mark);
+                            resultRepo.save(viewExamResult);
+                        }
+
                     }
                 }
             }

@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.blissstock.mappingSite.entity.Result;
 import com.blissstock.mappingSite.entity.Test;
 import com.blissstock.mappingSite.entity.TestQuestion;
 import com.blissstock.mappingSite.entity.TestQuestionCorrectAnswer;
@@ -45,6 +46,7 @@ import com.blissstock.mappingSite.model.FileInfo;
 import com.blissstock.mappingSite.model.QuestionAndCorrectAnswer;
 import com.blissstock.mappingSite.model.QuestionAndCorrectAnswerAndStudentAnswer;
 import com.blissstock.mappingSite.model.StudentChoiceModel;
+import com.blissstock.mappingSite.repository.ResultRepository;
 import com.blissstock.mappingSite.repository.TestQuestionCorrectAnswerRepositoy;
 import com.blissstock.mappingSite.repository.TestQuestionRepository;
 import com.blissstock.mappingSite.repository.TestRepository;
@@ -94,6 +96,9 @@ public class TestQuestionController {
     @Autowired
     TestStudentRepository testStudentRepository;
 
+    @Autowired
+    ResultRepository resultRepository;
+
     @Valid
     @GetMapping(value = { "/teacher/exam/{test_id}/questions", "/admin/exam/{test_id}/questions" })
     private String getQuestionsByTest(@PathVariable Long test_id, Model model)
@@ -138,7 +143,7 @@ public class TestQuestionController {
     }
 
     @Valid
-    @GetMapping(value = { "/teacher/exam/{test_id}/student/{student_id}",
+    @GetMapping(value = { "/teacher/exam/{test_id}/student/{account_id}",
             "/admin/exam/{test_id}/student/{student_id}" })
     private String getStudentAnswer(@PathVariable Long test_id,
             @PathVariable Long student_id, Model model)
@@ -225,11 +230,13 @@ public class TestQuestionController {
                     testQuestion.getQuestion_type(), testQuestion.getMaximum_mark(),
                     acquired_mark);
             questionAndCorrectAnswers.add(studentAnswerList);
+
         }
         model.addAttribute("test_id", test_id);
         model.addAttribute("questionList", questionAndCorrectAnswers);
         model.addAttribute("test_date", test.getDate());
         model.addAttribute("name", userInfo.getUserName());
+        model.addAttribute("userId", userInfo.getUid());
         model.addAttribute("totalTest", testQuestions.size());
         model.addAttribute("freeTest", freeAnswerCount);
         model.addAttribute("choiceTest", testQuestions.size() - freeAnswerCount);
@@ -491,6 +498,41 @@ public class TestQuestionController {
 
         model.addAttribute("exam_announce", examAnnouncement);
         return "ST0006_ExamQuestionListStudent.html";
+    }
+
+    @Valid
+    @PostMapping(value = { "/teacher/comment", "/admin/comment" })
+    private ResponseEntity saveComment(@RequestBody String payLoad) {
+        try {
+            Long userID = getUid();
+            JSONObject jsonObject = new JSONObject(payLoad);
+            Long testId = jsonObject.getLong("test_Id");
+            Long studentId = jsonObject.getLong("student_Id");
+            String comment = jsonObject.getString("comment");
+            Result result = new Result();
+
+            Test test = testRepository.getTestByID(testId);
+            UserInfo userInfo = userInfoRepository.findStudentById(studentId);
+
+            Result viewCommentResult = resultRepository.getResultByTestIdAndUser(testId, studentId);
+            if (viewCommentResult == null) {
+
+                result.setTest(test);
+                result.setUser(userInfo);
+                result.setTeacherComment(comment);
+                resultRepository.save(result);
+
+            } else {
+                viewCommentResult.setTeacherComment(comment);
+                resultRepository.save(viewCommentResult);
+            }
+
+            return ResponseEntity.ok(HttpStatus.OK);
+
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @Valid

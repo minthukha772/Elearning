@@ -54,6 +54,23 @@
         document.getElementById("exam_end_time").value = "";
       });
 
+      $("#search_date_btn").click(function () {
+        var fromDate = document.getElementById("exam_from").value;
+        var toDate = document.getElementById("exam_to").value;
+        if (fromDate === "" && toDate != null) {
+          document.getElementById("filter_date_warning").textContent = "Please choose two date filters";
+          document.getElementById("filter_date_warning").style.display = 'block';
+        } else if (fromDate != "" && toDate === "") {
+          document.getElementById("filter_date_warning").textContent = "Please choose two date filters";
+          document.getElementById("filter_date_warning").style.display = 'block';
+        } else if (fromDate >= toDate) {
+          document.getElementById("filter_date_warning").style.display = 'block';
+        } else {
+          document.getElementById("filter_date_warning").style.display = 'none';
+          window.location.replace("/admin/exam?fromDate=" + fromDate + "&toDate=" + toDate);
+        }
+      });
+
       $("#submit").click(function () {
         submitData(type);
       })
@@ -483,6 +500,13 @@
             <input type="date" class="px-3 rounded shadow-sm border-1" id="exam_to" onchange="toHandler(event)"
               disabled>
           </div>
+          <div style="margin-top: 10px;margin-left: 250px;">
+            <small class="bg-success rounded text-white px-2 py-1 fw-bold" style="cursor: pointer"
+              id="search_date_btn">Search Date</small>
+          </div>
+
+          <div style="color: red; font-size: 12px; display: none; padding-top: 10px;" id="filter_date_warning">End Date
+            Must Be Greater Than Start Date</div>
           <div class="">
             <select name="status" id="filterbystatus" class="px-3 rounded shadow-sm">
               <option value="Filter By Exam Status" selected><small>Search By Exam Status</small></option>
