@@ -81,13 +81,14 @@
                 </div>
             </div>
 
+            <div class="col-12">
+                <div class="chart-section" th:attr="data-trueArr=${trueArr}" style="width: 100%; min-width: 0px;">
+                    <div class="chart">
 
-            <div class="chart-section" th:attr="data-trueArr=${trueArr}">
-                <div class="chart">
+                    </div>
+                    <div class="label-box">
 
-                </div>
-                <div class="label-box">
-
+                    </div>
                 </div>
             </div>
         </div>
@@ -110,8 +111,8 @@
                     <select id="result" class="border-0 px-2 py-1">
                         <option value="Status Filters" disabled>Status Filters</option>
                         <option value="All">All</option>
-                        <option value="Pass">Pass</option>
-                        <option value="Fail">Fail</option>
+                        <option value="Passed">Pass</option>
+                        <option value="Failed">Fail</option>
                     </select>
                 </div>
             </div>
@@ -119,7 +120,7 @@
             <div class="mt-2 mb-5 d-flex justify-content-around align-items-center flex-wrap exam-results-card">
                 <div th:each="student : ${students}" class="col-md-4">
                     <div class="card mt-3 py-2 rounded-3" style="width: 420px;"
-                        th:data-custom-type="${student.examResult == 'Fail' ? 'Fail' : 'Pass'}">
+                        th:data-custom-type="${student.examResult == 'Failed' ? 'Failed' : 'Passed'}">
                         <div class="card-body" th:data-status="${student.examResult}">
                             <div class="d-flex align-items-center">
                                 <img th:src="@{${student.profilePic.url}}" alt="" class="img-fluid rounded-circle"
@@ -136,9 +137,10 @@
                                 <div class="">
                                     <div th:text="${' - ' + student.studentEmail}"></div>
                                     <div th:text="${' - ' + student.studentPhone}"></div>
+                                    <!-- <div th:text="${' - ' + student.uid}"></div> -->
 
                                     <div
-                                        th:class="${student.examResult == 'Pass' ? 'text-success' : 'text-danger fw-bold'}">
+                                        th:class="${student.examResult == 'Passed' ? 'text-success' : 'text-danger fw-bold'}">
                                         <span class="me-1 text-dark fw-normal">- </span>
                                         <span th:text="${student.examResult}"></span>
                                     </div>
@@ -146,10 +148,32 @@
                                     <div th:text="${' - ' + student.stuMarks + '/' + student.maxMarks}"></div>
                                 </div>
                                 <div class="col-12 mt-2">
-                                    <div class="text-end">
-                                        <a href="#" class="text-success">Go To Answers</a>
+                                    <div class="text-end mt-2">
+                                        <small class="fw-bold">
+                                            <a class="adminLink text-success text-decoration-underline"
+                                                th:href="'/admin/exam/' + ${test_id} + '/student/'+ ${student.uid}">Go
+                                                To Answers</a>
+                                            <a class="teacherLink text-success text-decoration-underline"
+                                                th:href="'/teacher/exam/' + ${test_id} + '/student/'+ ${student.uid}">Go
+                                                To Answers</a>
+                                        </small>
                                     </div>
                                 </div>
+                                <script>
+                                    var userRole = "[[${user_role}]]";
+                                    var adminLinks = document.getElementsByClassName("adminLink");
+                                    var teacherLinks = document.getElementsByClassName("teacherLink");
+
+                                    if (userRole === "SUPER_ADMIN" || userRole === "ADMIN") {
+                                        Array.from(teacherLinks).forEach(function (link) {
+                                            link.style.display = "none";
+                                        });
+                                    } else if (userRole === "TEACHER") {
+                                        Array.from(adminLinks).forEach(function (link) {
+                                            link.style.display = "none";
+                                        });
+                                    }
+                                </script>
                             </div>
                         </div>
                     </div>

@@ -2,6 +2,8 @@ package com.blissstock.mappingSite.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -90,11 +92,21 @@ public class TestController {
             logger.info("user id {} start processing URL /teacher/exam", userID);
             if (examStatus != "" || courseid != "" || fromDate != "" || toDate != "") {
                 if (examStatus != "") {
-                    testList = testRepository.getListByStatusAndUser(examStatus, userID);
-                    logger.info("userid {} get test list with user id and exam status by test id {}", userID, testList);
-                    model.addAttribute("testList", testList);
-                    model.addAttribute("filterType", "Filter By Status");
-                    model.addAttribute("filter", "( " + examStatus + " )");
+                    if (examStatus.equals("Deleted")) {
+                        testList = testRepository.getDeletedListByUser(userID);
+                        logger.info("userid {} get test list with user id and exam status by test id {}", userID,
+                                testList);
+                        model.addAttribute("testList", testList);
+                        model.addAttribute("filterType", "Filter By Status");
+                        model.addAttribute("filter", "( " + examStatus + " )");
+                    } else if (!examStatus.equals("Deleted")) {
+                        testList = testRepository.getListByStatusAndUser(examStatus, userID);
+                        logger.info("userid {} get test list with user id and exam status by test id {}", userID,
+                                testList);
+                        model.addAttribute("testList", testList);
+                        model.addAttribute("filterType", "Filter By Status");
+                        model.addAttribute("filter", "( " + examStatus + " )");
+                    }
                 } else if (courseid != "") {
                     CourseInfo course = courseInfoRepository.getById(Long.parseLong(courseid));
                     testList = testRepository.getListByCourseAndUser(Long.parseLong(courseid), userID);
@@ -134,50 +146,67 @@ public class TestController {
     @GetMapping(value = { "/student/exam" })
     private String getExamListPage(Model model,
             @RequestParam(required = false) String examStatus, @RequestParam(required = false) String courseid,
-            @RequestParam(required = false) String fromDate, @RequestParam(required = false) String toDate)
+            @RequestParam(required = false) String fromDate, @RequestParam(required = false) String toDate,
+            @RequestParam(required = false) String teacherid)
             throws ParseException {
-        if (examStatus == null) {
-            examStatus = "";
-        }
-        if (courseid == null) {
-            courseid = "";
-        }
-        if (fromDate == null && toDate == null) {
-            fromDate = "";
-            toDate = "";
-        }
-
         try {
+            if (examStatus == null) {
+                examStatus = "";
+            }
+            if (courseid == null) {
+                courseid = "";
+            }
+
+            if (teacherid == null) {
+
+                teacherid = "";
+            }
+            if (fromDate == null && toDate == null) {
+                fromDate = "";
+                toDate = "";
+            }
+
             Long userID = getUid();
             List<Test> testList;
             List<CourseInfo> courseList;
+            List<UserInfo> teacherList;
             logger.info("user id {} start processing URL /teacher/exam", userID);
-            if (examStatus != "" || courseid != "" || fromDate != "" || toDate != "") {
+            if (examStatus != "" || courseid != "" || fromDate != "" || toDate != "" || teacherid != "") {
                 if (examStatus != "") {
-                    testList = testRepository.getListByStatusAndUser(examStatus, userID);
+                    testList = testRepository.getListByStatusAndStudentId(examStatus, userID);
                     // logger.info("userid {} get test list with user id and exam status by test id
                     // {}", userID, testList);
                     model.addAttribute("testList", testList);
                     model.addAttribute("filterType", "Filter By Status");
                     model.addAttribute("filter", "( " + examStatus + " )");
                 } else if (courseid != "") {
+
+                    // Log the test list retrieval by course ID
+                    logger.info("user id {} Retrieving test list by course ID: {}", userID, courseid);
                     CourseInfo course = courseInfoRepository.getById(Long.parseLong(courseid));
-                    testList = testRepository.getListByCourseAndUser(Long.parseLong(courseid), userID);
-                    // logger.info("userid {} get test list with user id and course info by test id
-                    // {}", userID, testList);
+                    testList = testRepository.getListByCourse(Long.parseLong(courseid));
                     model.addAttribute("testList", testList);
                     model.addAttribute("filterType", "Filter By Course");
                     model.addAttribute("filter", "( " + course.getCourseName() + " )");
+
                 } else if (fromDate != "" && toDate != "") {
                     Date from = new SimpleDateFormat("yyyy-MM-dd").parse(fromDate);
                     Date to = new SimpleDateFormat("yyyy-MM-dd").parse(toDate);
-                    testList = testRepository.getListByDateAndUser(from, to, userID);
+                    testList = testRepository.getListByDateAndStudentId(from, to, userID);
                     // logger.info("userid {} get test list with user id and from date to date by
                     // test id {}", userID,
                     // testList);
                     model.addAttribute("testList", testList);
                     model.addAttribute("filterType", "Filter By Date");
                     model.addAttribute("filter", "( " + fromDate + " - " + toDate + " )");
+                } else if (teacherid != "") {
+                    // Log the test list retrieval by teacher ID
+                    logger.info("user id {} Retrieving test list by teacher ID: {}", userID, teacherid);
+                    UserInfo teacher = userRepository.findByAccount(Long.parseLong(teacherid));
+                    testList = testRepository.getListByUser(Long.parseLong(teacherid));
+                    model.addAttribute("testList", testList);
+                    model.addAttribute("filterType", "Filter By Teacher");
+                    model.addAttribute("filter", "( " + teacher.getUserName() + " )");
                 }
             } else {
                 testList = testRepository.getListByStudent(userID);
@@ -185,9 +214,16 @@ public class TestController {
                 model.addAttribute("testList", testList);
             }
 
-            model.addAttribute("role", "teacher");
-            courseList = courseInfoRepository.findByUID(userID);
+            // model.addAttribute("role", "teacher");
+            // courseList = courseInfoRepository.findByUID(userID);
+            // model.addAttribute("courseList", courseList);
+
+            courseList = courseInfoRepository.findAll();
+            teacherList = userRepository.findByUserRoleI("ROLE_TEACHER");
+            // Log the model attributes being added
+
             model.addAttribute("courseList", courseList);
+            model.addAttribute("teacherList", teacherList);
 
             // logger.info("User " + userID + " Received response from URL: /teacher/exam
             // with status code: 200");
@@ -229,12 +265,21 @@ public class TestController {
             List<UserInfo> teacherList;
             if (examStatus != "" || courseid != "" || fromDate != "" || toDate != "" || teacherid != "") {
                 if (examStatus != "") {
-                    // Log the test list retrieval by status
-                    logger.info("user id {} Retrieving test list by status: {}", userID, examStatus);
-                    testList = testRepository.getListByStatus(examStatus);
-                    model.addAttribute("testList", testList);
-                    model.addAttribute("filterType", "Filter By Status");
-                    model.addAttribute("filter", "( " + examStatus + " )");
+                    if (examStatus.equals("Deleted")) {
+                        logger.info("user id {} Retrieving deleted test list by status: {}", userID, examStatus);
+                        testList = testRepository.getDeletedListByAdmin();
+                        model.addAttribute("testList", testList);
+                        model.addAttribute("filterType", "Filter By Status");
+                        model.addAttribute("filter", "( " + examStatus + " )");
+
+                    } else if (!examStatus.equals("Deleted")) {
+                        // Log the test list retrieval by status
+                        logger.info("user id {} Retrieving test list by status: {}", userID, examStatus);
+                        testList = testRepository.getListByStatus(examStatus);
+                        model.addAttribute("testList", testList);
+                        model.addAttribute("filterType", "Filter By Status");
+                        model.addAttribute("filter", "( " + examStatus + " )");
+                    }
                 } else if (courseid != "") {
                     // Log the test list retrieval by course ID
                     logger.info("user id {} Retrieving test list by course ID: {}", userID, courseid);
@@ -298,8 +343,25 @@ public class TestController {
                 return ResponseEntity.noContent().build();
             }
             logger.info("Received request to delete exam with ID: {}", test_id);
-            testRepository.deleteById(test_id);
-            logger.info("User ID {} Exam with ID {} successfully deleted", userID, test_id);
+            Test testData = testRepository.getTestByID(test_id);
+            String isDelete = testData.getIsDelete();
+            if (!isDelete.equals("true")) {
+                LocalDateTime currentDateTime = LocalDateTime.now();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                String deletedAt = currentDateTime.format(formatter);
+
+                testData.setDeletedAt(deletedAt);
+                testData.setIsDelete("true");
+                testRepository.save(testData);
+            }
+            if (isDelete.equals("true")) {
+                testData.setDeletedAt("null");
+                testData.setIsDelete("false");
+                testRepository.save(testData);
+            }
+            // testRepository.deleteById(test_id);
+            // logger.info("User ID {} Exam with ID {} successfully deleted", userID,
+            // test_id);
             return ResponseEntity.ok(HttpStatus.OK);
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage());
@@ -323,8 +385,24 @@ public class TestController {
                 return ResponseEntity.noContent().build();
             }
             logger.info("Received request to delete exam with ID: {}", test_id);
-            testRepository.deleteById(test_id);
-            logger.info("User ID {} Exam with ID {} successfully deleted", userID, test_id);
+            Test testData = testRepository.getTestByID(test_id);
+            String isDelete = testData.getIsDelete();
+            if (!isDelete.equals("true")) {
+                LocalDateTime currentDateTime = LocalDateTime.now();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                String deletedAt = currentDateTime.format(formatter);
+                testData.setDeletedAt(deletedAt);
+                testData.setIsDelete("true");
+                testRepository.save(testData);
+            }
+            if (isDelete.equals("true")) {
+                testData.setDeletedAt("null");
+                testData.setIsDelete("false");
+                testRepository.save(testData);
+            }
+            // testRepository.deleteById(test_id);
+            // logger.info("User ID {} Exam with ID {} successfully deleted", userID,
+            // test_id);
             return ResponseEntity.ok(HttpStatus.OK);
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage());
@@ -384,7 +462,7 @@ public class TestController {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to find user with ID: " + userID);
             }
             Test test = new Test(null, courseInfo, userInfo, description, section_name, minutes_allowed, passing_score,
-                    examDate, exam_start_time, exam_end_time, exam_status);
+                    examDate, exam_start_time, exam_end_time, exam_status, "false", "null");
             logger.info("User ID {} Exam start to insert test {}", userID, test);
             testRepository.save(test);
             logger.info("User ID {} Exam saved successfully test {}", userID, test);
@@ -429,7 +507,7 @@ public class TestController {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to find user with ID: " + teacher_id);
             }
             Test test = new Test(null, courseInfo, userInfo, description, section_name, minutes_allowed, passing_score,
-                    examDate, exam_start_time, exam_end_time, exam_status);
+                    examDate, exam_start_time, exam_end_time, exam_status, "false", "null");
             logger.info("User ID {} Exam start to insert test {}", userID, test);
             testRepository.save(test);
             logger.info("User ID {} Exam saved successfully test {}", userID, test);
@@ -464,6 +542,7 @@ public class TestController {
             int passing_score = Integer.parseInt(jsonObject.getString("passing_score"));
             int minutes_allowed = jsonObject.getInt("minutes_allowed");
             CourseInfo courseInfo = courseInfoRepository.findByCourseID(course_id);
+
             if (courseInfo == null) {
                 logger.warn("Failed to find course with ID: " + course_id);
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -476,7 +555,7 @@ public class TestController {
             }
             Test test = new Test(test_id, courseInfo, userInfo, description, section_name, minutes_allowed,
                     passing_score,
-                    examDate, exam_start_time, exam_end_time, exam_status);
+                    examDate, exam_start_time, exam_end_time, exam_status, "false", "null");
             logger.info("User ID {} Exam start to update test {}", userID, test);
             testRepository.save(test);
             logger.info("User ID {} Exam edited successfully for course ID {} and exam ID {}", userID, course_id,
@@ -512,10 +591,39 @@ public class TestController {
                             Result result = new Result(null, test, studentInfo, total_acquired_mark, "Failed", "");
                             resultRepo.save(result);
                         }
+                    } else {
+                        List<TestStudentAnswer> studentAnswerList = testStudentAnswerRepository
+                                .getStudentAnswerListByTestAndStudent(student.getUserInfo().getUid(),
+                                        test_id);
+                        for (TestStudentAnswer studentAnswer : studentAnswerList) {
+                            int acquired_mark = studentAnswer.getAcquired_mark();
+                            int max_mark = studentAnswer.getQuestion().getMaximum_mark();
+                            total_acquired_mark += acquired_mark;
+                            total_mark += max_mark;
+                        }
+                        Float ftotal_acquired_mark = (float) (total_acquired_mark);
+                        Float ftotal_mark = (float) (total_mark);
+                        int passing_score_percent = test.getPassing_score_percent();
+                        Float fcalculate_percent = (float) (ftotal_acquired_mark / ftotal_mark);
+                        fcalculate_percent = fcalculate_percent * 100;
+                        UserInfo studentInfo = userInfoRepository.findStudentById(student.getUserInfo().getUid());
+                        if (fcalculate_percent > passing_score_percent) {
+
+                            viewExamResult.setResult("Passed");
+                            viewExamResult.setResultMark(total_acquired_mark);
+                            resultRepo.save(viewExamResult);
+                        } else {
+
+                            viewExamResult.setResult("Failed");
+                            viewExamResult.setResultMark(total_acquired_mark);
+                            resultRepo.save(viewExamResult);
+                        }
+
                     }
 
                 }
             }
+
             return ResponseEntity.ok(HttpStatus.OK);
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage());
@@ -558,7 +666,7 @@ public class TestController {
             }
             Test test = new Test(test_id, courseInfo, userInfo, description, section_name, minutes_allowed,
                     passing_score,
-                    examDate, exam_start_time, exam_end_time, exam_status);
+                    examDate, exam_start_time, exam_end_time, exam_status, "false", "null");
             logger.info("User ID {} Exam start to update test {}", userID, test);
             testRepository.save(test);
             logger.info("User ID {} Exam edited successfully for course ID {} and exam ID {}", userID, course_id,
@@ -587,6 +695,7 @@ public class TestController {
                         Float fcalculate_percent = (float) (ftotal_acquired_mark / ftotal_mark);
                         fcalculate_percent = fcalculate_percent * 100;
                         UserInfo studentInfo = userInfoRepository.findStudentById(student.getUserInfo().getUid());
+
                         if (fcalculate_percent > passing_score_percent) {
                             Result result = new Result(null, test, studentInfo, total_acquired_mark, "Passed", "");
                             resultRepo.save(result);
@@ -594,6 +703,34 @@ public class TestController {
                             Result result = new Result(null, test, studentInfo, total_acquired_mark, "Failed", "");
                             resultRepo.save(result);
                         }
+                    } else {
+                        List<TestStudentAnswer> studentAnswerList = testStudentAnswerRepository
+                                .getStudentAnswerListByTestAndStudent(student.getUserInfo().getUid(),
+                                        test_id);
+                        for (TestStudentAnswer studentAnswer : studentAnswerList) {
+                            int acquired_mark = studentAnswer.getAcquired_mark();
+                            int max_mark = studentAnswer.getQuestion().getMaximum_mark();
+                            total_acquired_mark += acquired_mark;
+                            total_mark += max_mark;
+                        }
+                        Float ftotal_acquired_mark = (float) (total_acquired_mark);
+                        Float ftotal_mark = (float) (total_mark);
+                        int passing_score_percent = test.getPassing_score_percent();
+                        Float fcalculate_percent = (float) (ftotal_acquired_mark / ftotal_mark);
+                        fcalculate_percent = fcalculate_percent * 100;
+                        UserInfo studentInfo = userInfoRepository.findStudentById(student.getUserInfo().getUid());
+                        if (fcalculate_percent > passing_score_percent) {
+
+                            viewExamResult.setResult("Passed");
+                            viewExamResult.setResultMark(total_acquired_mark);
+                            resultRepo.save(viewExamResult);
+                        } else {
+
+                            viewExamResult.setResult("Failed");
+                            viewExamResult.setResultMark(total_acquired_mark);
+                            resultRepo.save(viewExamResult);
+                        }
+
                     }
                 }
             }
