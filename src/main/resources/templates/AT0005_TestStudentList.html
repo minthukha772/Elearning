@@ -12,10 +12,12 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.css">
     <link rel="stylesheet" th:href="@{/css/AT0005_TestStudentList.css}" />
     <link rel="stylesheet" th:href="@{/css/global.css}" />
     <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.js"></script>
 </head>
 
 <body style="padding-top: 80px;">
@@ -87,28 +89,75 @@
                     <div class="card border-0 shadow-sm">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-start">
-                                <img th:src="@{/images/profile.png}" alt="" class="img-fluid rounded-circle"
-                                    style="width: 50px; height: 50px" />
-                                <div class="rounded-circle bg-danger text-white d-flex justify-content-center align-items-center fw-bold"
-                                    style="cursor: pointer; width: 25px; height: 25px">
+                                <img th:src="@{/images/profile.png}" alt="" class="img-fluid rounded-circle" style="width: 50px; height: 50px" />
+                              
+                                <form th:action="@{'/delete-teststudent/' + ${test_id} + '/' + ${test_student.userInfo.uid} + '/' + ${user_role}}"
+                                      method="POST" class="deleteForm">
+                                  <button type="submit" onclick="showConfirmation(event)" class="rounded-circle bg-danger text-white d-flex justify-content-center align-items-center fw-bold"
+                                          style="cursor: pointer; width: 25px; height: 25px">
                                     <i class="fa-solid fa-xmark"></i>
-                                </div>
-                            </div>
+                                  </button>
+                                </form>   
+                              </div>
+                              <script>
+                                function showConfirmation(event) {
+                                    event.preventDefault(); // Prevent the form from submitting
+                            
+                                    Swal.fire({
+                                        title: 'Are you sure?',
+                                        text: "You are about to delete the test student. This action cannot be undone!",
+                                        icon: 'warning',
+                                        showCancelButton: true,
+                                        confirmButtonColor: '#d33',
+                                        cancelButtonColor: '#3085d6',
+                                        confirmButtonText: 'Yes, delete it!'
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            
+                                            event.target.closest('.deleteForm').submit();
+                                        }
+                                    });
+                                }
+                            </script>
+                            
+
                             <div class="mt-3">
                                 <small class="fw-bold name" th:text="${test_student.userInfo.userName}"></small><br />
                                 <small class="fw-bold ph-no" th:text="${test_student.userInfo.phoneNo}"></small><br />
                                 <small class="fw-bold mail"
                                     th:text="${test_student.userInfo.userAccount.mail}"></small><br />
-                                <small class="fw-bold text-muted">Checked Questions ( <span
-                                        th:text="${test_student.total_unmark_answer}"></span> / <span
-                                        th:text="${test_student.total_free_answer}"></span> )</small>
+                                <small class="fw-bold text-muted">Checked Questions (
+                                    <span th:text="${test_student.total_unmark_answer}"></span> /
+                                    <span th:text="${test_student.total_free_answer}"></span>
+                                    )</small>
                                 <div class="text-end mt-2">
                                     <small class="fw-bold">
-                                        <a th:href="'/admin/exam/' + ${test_student.test.test_id} + '/student/'+ ${test_student.userInfo.uid}"
-                                            class="text-success text-decoration-underline">Go To Answers</a>
+                                        <a class="adminLink text-success text-decoration-underline"
+                                            th:href="'/admin/exam/' + ${test_student.test.test_id} + '/student/'+ ${test_student.userInfo.uid}">Go
+                                            To Answers</a>
+                                        <a class="teacherLink text-success text-decoration-underline"
+                                            th:href="'/teacher/exam/' + ${test_student.test.test_id} + '/student/'+ ${test_student.userInfo.uid}">Go
+                                            To Answers</a>
                                     </small>
                                 </div>
                             </div>
+
+                            <script>
+                                var userRole = "[[${user_role}]]";
+                                var adminLinks = document.getElementsByClassName("adminLink");
+                                var teacherLinks = document.getElementsByClassName("teacherLink");
+
+                                if (userRole === "SUPER_ADMIN" || userRole === "ADMIN") {
+                                    Array.from(teacherLinks).forEach(function (link) {
+                                        link.style.display = "none";
+                                    });
+                                } else if (userRole === "TEACHER") {
+                                    Array.from(adminLinks).forEach(function (link) {
+                                        link.style.display = "none";
+                                    });
+                                }
+                            </script>
+
                         </div>
                     </div>
                 </div>
@@ -208,19 +257,19 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function () {
-            
+
             $("#search_examinee").click(function () {
-                var searchValue = $("#search_student").val().toLowerCase(); 
+                var searchValue = $("#search_student").val().toLowerCase();
 
-                
+
                 $(".student-item").each(function () {
-                    var studentName = $(this).find(".name").text().toLowerCase(); 
+                    var studentName = $(this).find(".name").text().toLowerCase();
 
-                    
+
                     if (studentName.includes(searchValue)) {
-                        $(this).show(); 
+                        $(this).show();
                     } else {
-                        $(this).hide(); 
+                        $(this).hide();
                     }
                 });
             });
