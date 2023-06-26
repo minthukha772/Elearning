@@ -1,8 +1,5 @@
 package com.blissstock.mappingSite.model;
 
-
-
-//import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,9 +14,10 @@ public class StudentListForExamResult {
     Integer stuMarks;
     Integer maxMarks;
     FileInfo profilePic;
+    Long uid;
     
     
-    public StudentListForExamResult(String studentName, String studentEmail, String studentPhone, String examResult, Integer stuMarks, Integer maxMarks, FileInfo profilePic) {
+    public StudentListForExamResult(String studentName, String studentEmail, String studentPhone, String examResult, Integer stuMarks, Integer maxMarks, FileInfo profilePic, Long uid) {
         this.studentName = studentName;
         this.studentEmail = studentEmail;
         this.studentPhone = studentPhone;
@@ -27,7 +25,7 @@ public class StudentListForExamResult {
         this.stuMarks = stuMarks;
         this.maxMarks = maxMarks;
         this.profilePic = profilePic;
-                
+        this.uid = uid;        
     }
 
 }

@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public interface TestQuestionRepository extends JpaRepository<TestQuestion, Long> {
 
-    @Query(value = "Select * from test_question where test_test_id = :test_id order by id desc", nativeQuery = true)
+    @Query(value = "Select * from test_question where test_test_id = :test_id order by id asc", nativeQuery = true)
     public List<TestQuestion> getQuestionByTest(@Param("test_id") Long test_id);
 
     @Query(value = "Select * from test_question where id = :id limit 1", nativeQuery = true)

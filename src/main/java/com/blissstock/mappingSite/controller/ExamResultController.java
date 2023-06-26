@@ -14,6 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+
 import com.blissstock.mappingSite.entity.Result;
 import com.blissstock.mappingSite.entity.Test;
 import com.blissstock.mappingSite.entity.TestQuestion;
@@ -99,6 +101,7 @@ public class ExamResultController {
             Long studentId = viewExamResult.getUser().getUid();
             Date examDate = viewExamResult.getTest().getDate();
             int timeAllowed = viewExamResult.getTest().getMinutes_allowed();
+            String examStatus = viewExamResult.getTest().getExam_status();
             int maxMarks = 0;
             for (TestQuestion checkQuestionTable : viewQuestion) {
                 int marksForEachQuest = checkQuestionTable.getMaximum_mark();
@@ -124,6 +127,7 @@ public class ExamResultController {
             model.addAttribute("passScorePercent", passScorePercent);
             model.addAttribute("passOrfailResult", passOrfailResult);
             model.addAttribute("teacherComment", teacherComment);
+            model.addAttribute("examStatus", examStatus);
 
             logger.info("Collected Marks {}", maxMarks);
 
@@ -283,14 +287,22 @@ public class ExamResultController {
     // }
 
     // @PostMapping("/exam/examinee-list/delete-test-student/{testStudentId}")
-    // public String deleteTestStudent(@PathVariable Long testStudentId) {
+    @PostMapping("/delete-teststudent/{testId}/{studentId}/{role}")
+    public String deleteTestStudent(@PathVariable Long testId, @PathVariable Long studentId,
+            @PathVariable String role) {
+        String roles = "";
+        TestStudent viewTestStudent = testStudentRepo.findByTestIdAndUid(testId, studentId);
+        testStudentRepo.delete(viewTestStudent);
 
-    // TestStudent viewTestStudent = testStudentRepo.getById(testStudentId);
-    // Long redirectId = viewTestStudent.getTest().getTest_id();
-    // testStudentService.deleteTestStudent(testStudentId);
+        if (role.equals("SUPER_ADMIN") || role.equals("ADMIN")) {
+            roles = "admin";
+        } else if (role.equals("TEACHER")) {
+            roles = "teacher";
+        }
 
-    // return "redirect:/exam/" + redirectId + "/examinee-list/";
-    // }
+        // return "redirect:/exam/" + redirectId + "/examinee-list/";
+        return "redirect:/" + roles + "/exam/" + testId + "/examinee";
+    }
 
     // @GetMapping("/exam/examinee-list/add-all-enrolled-students/{testId}")
     // public String addAllEnrolledStudents(@PathVariable Long testId) {
@@ -411,7 +423,7 @@ public class ExamResultController {
                         }
                         if (testStudent.getUserInfo().getUid()
                                 .equals(result.getUser().getUid())
-                                && result.getResult().equals("Pass")) {
+                                && result.getResult().equals("Passed")) {
                             passedStudents = passedStudents + 1;
 
                         }
@@ -493,13 +505,15 @@ public class ExamResultController {
 
                     Long uid = testStudent.getUserInfo().getUid();
                     UserInfo userInfo = userRepo.getById(uid);
+
                     try {
                         FileInfo profilePic = storageService.loadProfileAsFileInfo(userInfo);
                         // model.addAttribute("profilePic", profilePic);
                         studentListForExamResults.add(new StudentListForExamResult(studentName,
                                 studentEmail,
-                                studentPhone, examResult, stuMarks, maxMarks, profilePic));
+                                studentPhone, examResult, stuMarks, maxMarks, profilePic, uid));
                         model.addAttribute("students", studentListForExamResults);
+
                     } catch (Exception e) {
                         e.printStackTrace();
                         logger.info("unable to get profile {}", uid);
@@ -508,6 +522,8 @@ public class ExamResultController {
                 }
             }
         }
+        model.addAttribute("user_role", userSessionService.getRole());
+        model.addAttribute("test_id", testId);
         return "AT0008_ExamResultList";
     }
 
