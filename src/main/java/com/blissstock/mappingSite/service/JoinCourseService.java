@@ -52,13 +52,10 @@ public class JoinCourseService {
 
         logger.info("enroll student");
 
-        // logger.info(getUserInfo.toString());
-        // logger.info(getCourseInfo.toString());
-
         JoinCourseUser joinCourseUser = new JoinCourseUser();
         joinCourseUser.setUserInfo(userInfo);
         joinCourseUser.setCourseInfo(courseInfo);
-        // logger.info("user is " + user.toString());
+
         JoinCourseUser savedJoinCourseUser = joinCourseUserRepository.save(joinCourseUser);
         return savedJoinCourseUser;
 

@@ -1,64 +1,64 @@
-package com.blissstock.mappingSite.entity;
+// package com.blissstock.mappingSite.entity;
 
-import java.util.Date;
+// import java.util.Date;
 
-public class PaymentLists {
-    Date paymentDate;
-    String paymentStatus;
-    String userName;
-    String courseName;
-    int courseFees;
+// public class PaymentLists {
+//     Date paymentDate;
+//     String paymentStatus;
+//     String userName;
+//     String courseName;
+//     int courseFees;
 
-    public PaymentLists() {
-    }
+//     public PaymentLists() {
+//     }
     
-        public PaymentLists(Date paymentDate, String paymentStatus, String userName, String courseName, int courseFees) {
-            this.paymentDate = paymentDate;
-            this.paymentStatus = paymentStatus;
-            this.userName = userName;
-            this.courseName = courseName;
-            this.courseFees = courseFees;
-        }
+//         public PaymentLists(Date paymentDate, String paymentStatus, String userName, String courseName, int courseFees) {
+//             this.paymentDate = paymentDate;
+//             this.paymentStatus = paymentStatus;
+//             this.userName = userName;
+//             this.courseName = courseName;
+//             this.courseFees = courseFees;
+//         }
     
-        public Date getPaymentDate() {
-            return this.paymentDate;
-        }
+//         public Date getPaymentDate() {
+//             return this.paymentDate;
+//         }
     
-        public void setPaymentDate(Date paymentDate) {
-            this.paymentDate = paymentDate;
-        }
+//         public void setPaymentDate(Date paymentDate) {
+//             this.paymentDate = paymentDate;
+//         }
     
-        public String getPaymentStatus() {
-            return this.paymentStatus;
-        }
+//         public String getPaymentStatus() {
+//             return this.paymentStatus;
+//         }
     
-        public void setPaymentStatus(String paymentStatus) {
-            this.paymentStatus = paymentStatus;
-        }
+//         public void setPaymentStatus(String paymentStatus) {
+//             this.paymentStatus = paymentStatus;
+//         }
     
-        public String getUserName() {
-            return this.userName;
-        }
+//         public String getUserName() {
+//             return this.userName;
+//         }
     
-        public void setUserName(String userName) {
-            this.userName = userName;
-        }
+//         public void setUserName(String userName) {
+//             this.userName = userName;
+//         }
     
-        public String getCourseName() {
-            return this.courseName;
-        }
+//         public String getCourseName() {
+//             return this.courseName;
+//         }
     
-        public void setCourseName(String courseName) {
-            this.courseName = courseName;
-        }
+//         public void setCourseName(String courseName) {
+//             this.courseName = courseName;
+//         }
     
-        public int getCourseFees() {
-            return this.courseFees;
-        }
+//         public int getCourseFees() {
+//             return this.courseFees;
+//         }
     
-        public void setCourseFees(int courseFees) {
-            this.courseFees = courseFees;
-        }
+//         public void setCourseFees(int courseFees) {
+//             this.courseFees = courseFees;
+//         }
     
-}
+// }
 

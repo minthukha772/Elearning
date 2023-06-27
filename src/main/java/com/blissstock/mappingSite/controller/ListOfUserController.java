@@ -6,6 +6,7 @@ import com.blissstock.mappingSite.entity.CourseTime;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.entity.JoinCourseUser;
+import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
 import com.blissstock.mappingSite.repository.UserRepository;
@@ -50,7 +51,7 @@ public class ListOfUserController {
     {
         List<UserInfo> tAllRecord = userRepo.findByUserRoleI("ROLE_TEACHER");
         // System.out.println(tAllRecord);
-        logger.info("Teacher List of Mapping Site {}",tAllRecord);
+        logger.info("Teacher List of Pyinnyar Subuu {}",tAllRecord);
         model.addAttribute("tAllTeacherList", tAllRecord);
         // List<String> breadcrumbList = new ArrayList<>();
         // breadcrumbList.add("Top");
@@ -70,7 +71,7 @@ public class ListOfUserController {
         List<UserInfo> sAllRecord = userRepo.findByUserRoleI("ROLE_STUDENT");
         // System.out.println("Student List Console"+sAllRecord);
         
-        logger.info("Student List of Mapping Site {}",sAllRecord);
+        logger.info("Student List of Pyinnyar Subuu {}",sAllRecord);
 
         model.addAttribute("sAllStudentList", sAllRecord);
         // System.out.println(sAllRecord);
@@ -94,9 +95,9 @@ public class ListOfUserController {
         System.out.println(adminRole);
         AddAdmin newAdmin = new AddAdmin();
         
-        List<UserInfo> aAllRecord = userRepo.findByUserRoleI("ROLE_ADMIN");
+        List<UserAccount> aAllRecord = userAccountRepo.findByRole("ROLE_ADMIN");
 
-        logger.info("Admin List of Mapping Site {}",aAllRecord);
+        logger.info("Admin List of Pyinnyar Subuu {}",aAllRecord);
 
 
         

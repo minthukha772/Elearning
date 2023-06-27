@@ -1,5 +1,7 @@
 package com.blissstock.mappingSite.controller;
 
+import javax.mail.MessagingException;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -8,9 +10,11 @@ import com.blissstock.mappingSite.entity.Token;
 import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.enums.PasswordResetType;
 import com.blissstock.mappingSite.enums.TokenType;
+import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.service.MailServiceImpl;
 import com.blissstock.mappingSite.service.UserService;
 import com.blissstock.mappingSite.service.UserSessionService;
+import com.fasterxml.jackson.core.sym.Name;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,12 +33,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.blissstock.mappingSite.repository.UserRepository;
+import com.blissstock.mappingSite.entity.UserInfo;
+
 @Controller
 public class PasswordController {
+
+  /**
+   *
+   */
+  private static final String REDIRECT_LOGIN_RESET_SUCCESS_TRUE = "redirect:/login?resetSuccess=true";
 
   private static final Logger logger = LoggerFactory.getLogger(
       PasswordController.class);
 
+  @Autowired
+  HttpServletRequest httpServletRequest;
   @Autowired
   UserService userService;
   @Autowired
@@ -45,13 +59,16 @@ public class PasswordController {
   @Autowired
   private PasswordEncoder passwordEncoder;
 
-  
-    @GetMapping("/password/encrypt")
-    public String encrypt(Model model, String pass) {
+  @Autowired
+  UserRepository userRepo;
+
+  @GetMapping("/password/encrypt")
+  public String encrypt(Model model, String pass) {
     String password = passwordEncoder.encode(pass);
     System.out.println(password);
-     return "redirect:/";
-    }
+    return "redirect:/";
+  }
+
   /*
    * @GetMapping("/token")
    * public String createToken(Model model) {
@@ -64,7 +81,7 @@ public class PasswordController {
    * return "redirect:/";
    * }
    */
-  @GetMapping("password/verify_password")
+  @GetMapping("resetPassword")
   public String verifyPassword(Model model, @RequestParam(value = "token", required = true) String token) {
     logger.info("GET requested");
     logger.info("Reset password by token called");
@@ -75,7 +92,7 @@ public class PasswordController {
 
     }
     UserAccount userAccount = userService.getUserAccountByToken(token,
-        "PASSWORD_RESET");
+        TokenType.PASSWORD_RESET.getValue());
     if (userAccount == null) {
       System.out.println("Invalid token");
       String header3 = "Invalid token";
@@ -111,14 +128,13 @@ public class PasswordController {
     // return "redirect:/home";
   }
 
-  @PostMapping("password/verify_password")
+  @PostMapping("resetPassword")
   public String changePassword(Model model, @Valid @ModelAttribute("passwordDTO") PasswordDTO passwordDTO,
       @ModelAttribute("token") String token,
       BindingResult bindingResult) {
     logger.info("Post Method");
     model.addAttribute("title", "Change");
-    System.out.println(passwordDTO.toString());
-    System.out.println(token);
+
     model.addAttribute("passwordDTO", passwordDTO);
     // System.out.println(passwordDTO.toString());
     if (bindingResult.hasErrors()) {
@@ -135,7 +151,7 @@ public class PasswordController {
       model.addAttribute("error", "password and confirm password should match");
       return "CM006_reset_password_screen";
     } else {
-      UserAccount userAccount = userService.getUserAccountByToken(token, "PASSWORD_RESET");
+      UserAccount userAccount = userService.getUserAccountByToken(token, TokenType.PASSWORD_RESET.getValue());
       if (userAccount == null) {
 
         model.addAttribute("error", "The password reset mail is invalid! Please check the mail again.");
@@ -145,9 +161,16 @@ public class PasswordController {
       userAccount.setPassword(passwordEncoder.encode(passwordDTO.getPassword()));
       userService.updateUserAccount(userAccount);
       userService.setAsUsedToken(token);
-      model.addAttribute("success", "Password Change Success");
-      model.addAttribute("message", "Please login with new password to continue");
-      return "CM006_reset_password_screen";
+      //
+      try {
+        httpServletRequest.logout();
+        return "redirect:/login?changeSuccess=true";
+      } 
+      
+      catch (ServletException e) {
+
+        return "CM0006_change_password_screen";
+      }
     }
 
   }
@@ -158,19 +181,55 @@ public class PasswordController {
       @RequestParam("email") String userEmail) {
     logger.info("POST requested, email {}", userEmail);
     UserAccount user = userService.getUserAccountByEmail(userEmail);
+    
     if (user == null) {
       return ("redirect:/check_email/reset_password?email=" +
           userEmail +
           "&error=true");
     }
+    
+    String resetaccountrole = user.getRole();
+
     /* String token = UUID.randomUUID().toString(); */
-    String appUrl = request.getServerName() + // "localhost"
-        ":" +
-        request.getServerPort();
+    // String appUrl = request.getServerName() + // "localhost"
+    //     ":" +
+    //     request.getServerPort();
     /* userService.createToken(user, token, TokenType.PASSWORD_RESET); */
-    mailService.sendResetPasswordMail(user, appUrl);
-    return "redirect:/login?resetSuccess=true";
+    
+   
+        try {
+          if (resetaccountrole.equals("ROLE_ADMIN")) { 
+            
+            mailService.AdminResetPassword(user);             
+
+          }
+
+          if (resetaccountrole.equals("ROLE_TEACHER")) { 
+            
+            mailService.TeacherResetPassword(user);   
+
+            }
+
+            if (resetaccountrole.equals("ROLE_STUDENT")) {  
+              
+             mailService.StudentResetPassword(user);
+
+            }
+          
+        } catch (Exception e) {
+          logger.info(e.toString());
+        }
+       
+    
+    // try {
+      
+    //   mailService.sendResetPasswordMail(user, appUrl);
+    // } catch (MessagingException e) {
+    //   logger.info(e.toString());
+    // }
+    return REDIRECT_LOGIN_RESET_SUCCESS_TRUE;
   }
+  
 
   @GetMapping(path = { "{role}/change_password" })
   public String changePasswordView(
@@ -230,8 +289,8 @@ public class PasswordController {
   public String changePasswordPost(
       Model model,
       @Valid @ModelAttribute("passwordDTO") PasswordDTO passwordDTO,
-      BindingResult bindingResult) {
-    logger.info("POST request, {}", passwordDTO);
+      BindingResult bindingResult,@PathVariable(name = "role", required = true) String role,
+      String token,HttpServletRequest request) {
 
     String title = "Change Password";
     model.addAttribute("type", "OLD_PASSWORD");
@@ -246,7 +305,6 @@ public class PasswordController {
     }
     logger.info("password binding is success");
 
-    System.out.println("Password DTO is" + passwordDTO.toString());
     // //System.out.println(passwordDTO.getPassword());
     // //System.out.println(passwordDTO.getConfirmPassword());
     // //System.out.println(passwordDTO.getOldPassword());
@@ -260,10 +318,8 @@ public class PasswordController {
     // get user email
 
     UserAccount userAccount = userSessionService.getUserAccount();
-    // System.out.println("stored psw is " + userAccount.getPassword());
-    // System.out.println(userAccount.getPassword());
-    // System.out.println(passwordEncoder.encode(passwordDTO.getOldPassword()));
-    // System.out.println(passwordEncoder.encode("a1111111"));
+    Long userId = userSessionService.getUserAccount().getAccountId();
+    UserInfo userInfo = userRepo.findById(userId).orElse(null);              
 
     if (passwordEncoder.matches(passwordDTO.getOldPassword(), userAccount.getPassword())) {
 
@@ -272,9 +328,56 @@ public class PasswordController {
 
       model.addAttribute("success", "Password Change Success");
       model.addAttribute("message", "Please login with new password to continue");
+
+      new Thread(new Runnable() {
+        public void run() {
+          try {
+            if (role.equals("student")) { 
+              
+              String appUrl = request.getServerName() + // "localhost"
+              ":" +
+              request.getServerPort(); // "8080"
+              
+              mailService.StudentChangedPassword(userInfo, userAccount);              
+              
+            }
+
+            if (role.equals("teacher")) { 
+              
+              String appUrl = request.getServerName() + // "localhost"
+              ":" +
+              request.getServerPort(); // "8080" 
+              
+              mailService.TeacherChangedPassword(userInfo, userAccount);
+
+              }
+
+              if (role.equals("admin")) {  
+               
+                String appUrl = request.getServerName() + // "localhost"
+              ":" +
+              request.getServerPort(); // "8080" 
+              
+              mailService.AdminChangedPassword(userInfo, userAccount);
+
+              }
+            
+          } catch (Exception e) {
+            logger.info(e.toString());
+          }
+        }
+      }).start();
+
       // todo navigate to complete screen;
       // model.addAttribute("title", "Login");
-      return "CM0006_change_password_screen";
+      try {
+        httpServletRequest.logout();
+        return "redirect:/login?changeSuccess=true";
+      } catch (ServletException e) {
+
+        return "CM0006_change_password_screen";
+      }
+
       // return "CM0005_login.html";
     } else {
       logger.info(" Password and stored password do not match");

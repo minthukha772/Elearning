@@ -37,6 +37,8 @@ public class UserAccount {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long accountId;
 
+	
+
 	@Column(name = "mail", length = 255)
 	// @NotBlank(message="Please enter email address")
 	private String mail;
@@ -84,5 +86,6 @@ public class UserAccount {
 		this.registeredDate = registeredDate;
 		this.userInfo = userInfo;
 	}
+
 
 }

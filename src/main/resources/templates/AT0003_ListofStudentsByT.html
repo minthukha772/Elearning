@@ -8,7 +8,10 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4">
     <meta charset="utf-8">
     <!-- <link rel="shortcut icon" type="image/ico" href="http://www.datatables.net/favicon.ico"> -->
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, user-scalable=no">
-    <title>Mapping Site</title>
+      <title>Pyinnyar Subuu</title>
+
+  <link rel="icon" type="image/x-icon" href="/images/fav.png">
+
     <!-- <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css"> -->
         <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -20,12 +23,16 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4">
         <link rel="stylesheet" type="text/css" href="css/demo.css" th:href="@{/css/demo.css}">
         <link rel="stylesheet" type="text/css" href="css/AT0003_ListofStudentsByT.css" th:href="@{/css/AT0003_ListofStudentsByT.css}">
         <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
+        <link rel="stylesheet" th:href="@{/css/global.css}" />
         <!-- <link rel="stylesheet" type="text/css" href="css/dataTableManual.css">
             <link rel="stylesheet" type="text/css" href="css/dataTableSCSSMaual.css"> -->
             
             
             
-            <title>Mapping Site</title>
+              <title>Pyinnyar Subuu</title>
+
+  <link rel="icon" type="image/x-icon" href="/images/fav.png">
+
             
             
             
@@ -35,7 +42,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4">
             <script type="text/javascript" language="javascript" src="js/shCore.js" th:src="@{/js/shCore.js}"></script>
             <script type="text/javascript" language="javascript" src="js/demo.js" th:src="@{/js/demo.js}"></script>
             <script type="text/javascript" language="javascript" class="init" th:inline="javascript">
-                
+            
 
                 /*<![CDATA[*/
                 $(document).ready(function () {
@@ -134,7 +141,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4">
                                                                     <div style="position: relative;">
 
                                                                         <div th:replace="fragments/teacher-nav"></div>
-
+                                                                            
                                                                         <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
                                                                             <div class="container-fluid">
                                                                                 <a class="navbar-brand" href="#">MappingSite</a> -->
@@ -157,8 +164,8 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4">
                                                                             </div>
                                                                         </nav> -->
                                                                         
-                                                                        <nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: '>'">
-                                                                            <ol class="breadcrumb">
+                                                                        <nav aria-label="breadcrumb " class="container1 breadcrums" style="--bs-breadcrumb-divider: '>'">
+                                                                            <ol class="breadcrumb mt-3 ms-5">
                                                                                 <li class="breadcrumb-item"><a th:href="@{/teacher/my-course}">Top</a></li>
                                                                                 <!-- <li class="breadcrumb-item"><a href="#">Course List</a></li> -->
                                                                                 <li class="breadcrumb-item"><a th:href="@{${postAction}}">Course Detail</a></li>
@@ -171,15 +178,15 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4">
                                                                             
                                                                             
                                                                             
-                                                                            <div class="container">
-                                                                                <div class="card mb-3 mx-auto shadow-sm rounded bg-body" style="max-width: 600px;">
-                                                                                    <div class="row g-0">
+                                                                            <div class="container container2">
+                                                                                <div class="card mb-3 mx-auto shadow-sm rounded bg-body " style="max-width: 600px;">
+                                                                                    <div class="row g-0 ">
                                                                                         <div class="col-md-4" style="display: flex;">
-                                                                                            <div class="card-body part1">
+                                                                                            <div class="card-body part1 cardfirsts">
                                                                                                 <p class="card-text">
-                                                                                                    <p class="fw-bold customp1" th:utext="${#strings.substringBefore(courseInfo.startDate, ' ')} + ' ~ ' + ${#strings.substringBefore(courseInfo.endDate, ' ')}"></p>
+                                                                                                    <p class="fw-bold customp1 text-dark" th:utext="${#strings.substringBefore(courseInfo.startDate, ' ')} + ' ~ ' + ${#strings.substringBefore(courseInfo.endDate, ' ')}"></p>
                                                                                                     <div th:each="time : ${courseTimeList}">
-                                                                                                        <p class="fw-normal customp1" th:text="${time.courseDays} + ':' + ${time.courseStartTime} + '~' + ${time.courseEndTime}"></p>
+                                                                                                        <p class="fw-normal customp1 text-dark" th:text="${time.courseDays} + ':' + ${time.courseStartTime} + '~' + ${time.courseEndTime}"></p>
                                                                                                     </div>
                                                                                                     <!-- <p class="fw-normal customp1">Mon: 13:00~15:00</p>
                                                                                                     <p class="fw-normal customp1">Tue: 13:00~15:00</p> -->
@@ -212,40 +219,42 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4">
                                                                                     <div class="card-body">
                                                                                         <section>
                                                                                             <div class="demo-html">
-                                                                                                <table id="example" class="table table-striped" style="width:100%">
-                                                                                                    <thead>
-                                                                                                        <tr>
-                                                                                                            <th>No</th>
-                                                                                                            <th>Name</th>
-                                                                                                            <th>Email</th>
-                                                                                                            <th>Account Status</th>
-                                                                                                            <th></th>
-                                                                                                            
-                                                                                                            
-                                                                                                        </tr>
-                                                                                                    </thead>
-                                                                                                    <tbody>
-                                                                                                        <tr th:each="dr,index:${allStudentList}">
-                                                                                                            <td></td>
-                                                                                                            <td><b><a th:href="@{'/teacher/browse/profile/' + ${dr.uid}}" th:text="${dr.userName}" style="text-decoration: none;"></a></b></td>
-                                                                                                            <td th:text="${dr.userAccount.mail}"></td>
-                                                                                                            <td th:text="${dr.userAccount.accountStatus}"></td>
-                                                                                                            <td>
-                                                                                                                <a th:href="@{'/teacher/teacher-review/' + ${courseInfo.courseId} + '/' + ${dr.uid}}" class='btn btn-primary fw-bolder' style='float: center;'><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-chat-text' viewBox='0 0 16 16'><path d='M2.678 11.894a1 1 0 0 1 .287.801 10.97 10.97 0 0 1-.398 2c1.395-.323 2.247-.697 2.634-.893a1 1 0 0 1 .71-.074A8.06 8.06 0 0 0 8 14c3.996 0 7-2.807 7-6 0-3.192-3.004-6-7-6S1 4.808 1 8c0 1.468.617 2.83 1.678 3.894zm-.493 3.905a21.682 21.682 0 0 1-.713.129c-.2.032-.352-.176-.273-.362a9.68 9.68 0 0 0 .244-.637l.003-.01c.248-.72.45-1.548.524-2.319C.743 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.52.263-1.639.742-3.468 1.105z'/><path d='M4 5.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8zm0 2.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5z'/></svg> Review</a>
-                                                                                                            </td>
-                                                                                                        </tr>
-                                                                                                    </tbody>
-                                                                                                    <tfoot>
-                                                                                                        <tr>
-                                                                                                            <th>No</th>
-                                                                                                            <th>Name</th>
-                                                                                                            <th>Email</th>
-                                                                                                            <th>Account Status</th>
-                                                                                                            <th></th>
-                                                                                                            
-                                                                                                        </tr>
-                                                                                                    </tfoot>
-                                                                                                </table>
+                                                                                                <div class="table-responsive">
+                                                                                                    <table id="example" class="table table-striped" style="width:100%">
+                                                                                                        <thead>
+                                                                                                            <tr>
+                                                                                                                <th>No</th>
+                                                                                                                <th>Name</th>
+                                                                                                                <th>Email</th>
+                                                                                                                <th>Account Status</th>
+                                                                                                                <th></th>
+                                                                                                                
+                                                                                                                
+                                                                                                            </tr>
+                                                                                                        </thead>
+                                                                                                        <tbody>
+                                                                                                            <tr th:each="dr,index:${allStudentList}">
+                                                                                                                <td></td>
+                                                                                                                <td><b><a th:href="@{'/teacher/browse/profile/' + ${dr.uid}}" th:text="${dr.userName}" style="text-decoration: none;"></a></b></td>
+                                                                                                                <td th:text="${dr.userAccount.mail}"></td>
+                                                                                                                <td th:text="${dr.userAccount.accountStatus}"></td>
+                                                                                                                <td>
+                                                                                                                    <a th:href="@{'/teacher/teacher-review/' + ${courseInfo.courseId} + '/' + ${dr.uid}}" class='btn btn-primary fw-bolder' style='float: center;'><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-chat-text' viewBox='0 0 16 16'><path d='M2.678 11.894a1 1 0 0 1 .287.801 10.97 10.97 0 0 1-.398 2c1.395-.323 2.247-.697 2.634-.893a1 1 0 0 1 .71-.074A8.06 8.06 0 0 0 8 14c3.996 0 7-2.807 7-6 0-3.192-3.004-6-7-6S1 4.808 1 8c0 1.468.617 2.83 1.678 3.894zm-.493 3.905a21.682 21.682 0 0 1-.713.129c-.2.032-.352-.176-.273-.362a9.68 9.68 0 0 0 .244-.637l.003-.01c.248-.72.45-1.548.524-2.319C.743 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.52.263-1.639.742-3.468 1.105z'/><path d='M4 5.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8zm0 2.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5z'/></svg> Review</a>
+                                                                                                                </td>
+                                                                                                            </tr>
+                                                                                                        </tbody>
+                                                                                                        <tfoot>
+                                                                                                            <tr>
+                                                                                                                <th>No</th>
+                                                                                                                <th>Name</th>
+                                                                                                                <th>Email</th>
+                                                                                                                <th>Account Status</th>
+                                                                                                                <th></th>
+                                                                                                                
+                                                                                                            </tr>
+                                                                                                        </tfoot>
+                                                                                                    </table>
+                                                                                                </div>
                                                                                             </div>
                                                                                         </section>
                                                                                     </div>
@@ -255,9 +264,90 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extrasspringsecurity4">
                                                                             
                                                                             <!-- </div> -->
                                                                         </div>
+                                                                        <!-- <div th:replace="@{fragments/footer}"></div> -->
+
+                                                                        <footer class="container-fluid no-padding footers mt-5 pt-5"  >
+                                                                            <div class="footer__container mt-5">
+                                                                              <div
+                                                                                class="d-lg-flex flex-sm-column flex-md-row justify-content-between align-items-sm-center footer__div"
+                                                                              >
+                                                                                <div class="footer__holder">
+                                                                                  <h3 class="footer__title">Get to Know Us</h3>
+                                                                                  <ul 
+                                                                                  class="footer__subtitle"
+                                                                                  style="line-height: 200%">
+                                                                                    <li>
+                                                                                      <a
+                                                                                        style="color: white; text-decoration: none"
+                                                                                        th:href="@{/guest/frequently_asked_questions}"
+                                                                                        target="_blank"
+                                                                                      >
+                                                                                        FAQs
+                                                                                      </a>
+                                                                                    </li>
+                                                                                    <li>
+                                                                                      <a
+                                                                                        style="color: white; text-decoration: none"
+                                                                                        th:href="@{ /guest/terms_and_conditions}"
+                                                                                        target="_blank"
+                                                                                      >
+                                                                                        Terms and Conditions
+                                                                                      </a>
+                                                                                    </li>
+                                                                                    <li>
+                                                                                      <a
+                                                                                        style="color: white; text-decoration: none"
+                                                                                        th:href="@{/guest/help_and_support}"
+                                                                                        target="_blank"
+                                                                                      >
+                                                                                        Help and support
+                                                                                      </a>
+                                                                                    </li>
+                                                                                    <li>
+                                                                                      <a
+                                                                                        th:href="@{/guest/about_management_company}"
+                                                                                        style="color: white; text-decoration: none"
+                                                                                        target="_blank"
+                                                                                        rel="noopener noreferrer"
+                                                                                      >
+                                                                                        About the management company
+                                                                                      </a>
+                                                                                    </li>
+                                                                                  </ul>
+                                                                                </div>
+                                                                                <div class="footer__holder">
+                                                                                  <h3 class="footer__title">Contact</h3>
+                                                                                  <ul
+                                                                                    class="footer__subtitle"
+                                                                                    style="line-height: 200%"
+                                                                                  >
+                                                                                    <li>Tel: +959 98-656-3091</li>
+                                                                                    <li>Viber: +959 98-656-3091</li>
+                                                                                    <li>Telegram: +959 98-656-3091</li>
+                                                                                    <li>Line: +959 98-656-3091</li>
+                                                                                    <li>WhatsApp: +959 98-656-3091</li>
+                                                                                  </ul>
+                                                                                </div>
+                                                                                <div class="footer__holder">
+                                                                                  <img
+                                                                                    src="/images/bliss-stock.png"
+                                                                                    alt="logo"
+                                                                                    class="align-self-end"
+                                                                                  />
+                                                                                </div>
+                                                                              </div>
+                                                                              <div class="copyright">
+                                                                                <div class="center">
+                                                                                  <p class="copyright__text">
+                                                                                    © Copyright Pyinnyar Subuu. All Rights
+                                                                                    Reserved
+                                                                                  </p>
+                                                                                </div>
+                                                                              </div>
+                                                                            </div>
+                                                                          </footer>
                                                                         
-                                                                        <div th:replace="@{fragments/footer}"></div>
-                                                                        
+                                                                          <script th:src="@{./../../../js/main.js}"></script>
                                                                         
                                                                         <script>
                                                                             function openNav() {

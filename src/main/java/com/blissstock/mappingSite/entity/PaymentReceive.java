@@ -9,13 +9,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.blissstock.mappingSite.enums.PaymentStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,6 +27,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
+
 @Table(name = "payment_receive")
 public class PaymentReceive {
 
@@ -35,11 +39,11 @@ public class PaymentReceive {
   @Column(name = "slip")
   private String slip;
 
-  //@NotNull
+  // @NotNull
   @Column(name = "payment_status", length = 15)
-  private String paymentStatus=PaymentStatus.REQUESTED.getValue();
+  private String paymentStatus = PaymentStatus.REQUESTED.getValue();
 
-  //@NotNull
+  // @NotNull
   @DateTimeFormat(pattern = "yyyy-MM-dd")
   @Column(name = "payment_receive_date")
   private Date paymentReceiveDate;
@@ -47,4 +51,10 @@ public class PaymentReceive {
   @OneToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "join_id")
   JoinCourseUser join;
+
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "join_id", insertable=false, updatable=false)
+    @JsonIgnore
+    private JoinCourseUser joinByList;
+  
 }

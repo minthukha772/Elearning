@@ -35,9 +35,13 @@ public class IndexController {
         try {
             logger.info("GET request");
 
-            List<CourseInfo> liveList = courseRepo.findByClassType(ClassType.LIVE.getValue());
+            List<CourseInfo> liveList = courseRepo
+                    .findByClassTypeAndIsCourseApproved(ClassType.LIVE.getValue(),
+                            true);
 
-            List<CourseInfo> videoList = courseRepo.findByClassType(ClassType.VIDEO.getValue());
+            List<CourseInfo> videoList = courseRepo
+                    .findByClassTypeAndIsCourseApproved(ClassType.VIDEO.getValue(),
+                            true);
 
             List<HomeCourseInfoDTO> liveInfoDTOs = new ArrayList<HomeCourseInfoDTO>();
             List<HomeCourseInfoDTO> videoInfoDTOs = new ArrayList<HomeCourseInfoDTO>();
@@ -49,15 +53,15 @@ public class IndexController {
                 dto.setPrice(info.getFees());
                 dto.setTeacherName(info.getUserInfo().getUserName());
                 dto.setCourseName(info.getCourseName());
-                FileInfo fileInfo = storageService.loadProfileAsFileInfo(info.getUserInfo());
+                FileInfo fileInfo = storageService.loadCoursePhoto(info);
 
                 // if profile is not found set as place holder
                 if (fileInfo == null) {
-                    dto.setProfilePic(new FileInfo("https://via.placeholder.com/150",
+                    dto.setCoursePhoto(new FileInfo("https://via.placeholder.com/150",
                             "https://via.placeholder.com/150"));
                 } else {
 
-                    dto.setProfilePic(fileInfo);
+                    dto.setCoursePhoto(fileInfo);
                 }
                 liveInfoDTOs.add(dto);
 
@@ -68,15 +72,15 @@ public class IndexController {
                 dto.setPrice(info.getFees());
                 dto.setTeacherName(info.getUserInfo().getUserName());
                 dto.setCourseName(info.getCourseName());
-                FileInfo fileInfo = storageService.loadProfileAsFileInfo(info.getUserInfo());
+                FileInfo fileInfo = storageService.loadCoursePhoto(info);
 
                 // if profile is not found set as place holder
                 if (fileInfo == null) {
-                    dto.setProfilePic(new FileInfo("https://via.placeholder.com/150",
+                    dto.setCoursePhoto(new FileInfo("https://via.placeholder.com/150",
                             "https://via.placeholder.com/150"));
                 } else {
 
-                    dto.setProfilePic(fileInfo);
+                    dto.setCoursePhoto(fileInfo);
                 }
                 videoInfoDTOs.add(dto);
 
