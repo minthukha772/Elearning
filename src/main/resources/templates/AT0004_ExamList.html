@@ -58,22 +58,7 @@
         submitData(type);
       })
 
-      $("#search_date_btn").click(function () {
-        var fromDate = document.getElementById("exam_from").value;
-        var toDate = document.getElementById("exam_to").value;
-        if (fromDate === "" && toDate != null) {
-          document.getElementById("filter_date_warning").textContent = "Please choose two date filters";
-          document.getElementById("filter_date_warning").style.display = 'block';
-        } else if (fromDate != "" && toDate === "") {
-          document.getElementById("filter_date_warning").textContent = "Please choose two date filters";
-          document.getElementById("filter_date_warning").style.display = 'block';
-        } else if (fromDate >= toDate) {
-          document.getElementById("filter_date_warning").style.display = 'block';
-        } else {
-          document.getElementById("filter_date_warning").style.display = 'none';
-          window.location.replace("/admin/exam?fromDate=" + fromDate + "&toDate=" + toDate);
-        }
-      });
+      
 
       $("#deleteSubmit").click(function () {
         fetch("/teacher/delete-exam?test_id=" + test_id, {
