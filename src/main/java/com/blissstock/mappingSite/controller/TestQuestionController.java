@@ -231,6 +231,15 @@ public class TestQuestionController {
                     acquired_mark);
             questionAndCorrectAnswers.add(studentAnswerList);
 
+        } 
+        try {
+            Result viewExamResult = resultRepository.getResultByTestIdAndUser(test_id, student_id);
+            if (viewExamResult != null) {
+                model.addAttribute("comment", viewExamResult.getTeacherComment());
+
+            }
+        } catch (DataAccessException ex) {
+
         }
         model.addAttribute("test_id", test_id);
         model.addAttribute("questionList", questionAndCorrectAnswers);
