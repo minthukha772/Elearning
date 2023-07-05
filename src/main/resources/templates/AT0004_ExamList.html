@@ -273,7 +273,7 @@
           document.getElementById("filter_date_warning").style.display = 'block';
         }else{
           document.getElementById("filter_date_warning").style.display = 'none';
-          window.location.replace("/admin/exam?fromDate=" + fromDate + "&toDate=" + toDate);
+          window.location.replace("/teacher/exam?fromDate=" + fromDate + "&toDate=" + toDate);
         }
       });
     });
@@ -415,11 +415,11 @@
         <div class="d-flex flex-wrap align-items-end justify-content-between">
           <div class="">
             <label for="exam_from" class="fw-bold"><small>Exam From</small></label><br>
-            <input type="date" class="px-3 rounded shadow-sm border-1" id="exam_from" onchange="fromHandler(event)">
+            <input type="date" class="px-3 rounded shadow-sm border-1" id="exam_from">
           </div>
           <div class="">
             <label for="exam_to" class="fw-bold"><small>Exam To</small></label><br>
-            <input type="date" class="px-3 rounded shadow-sm border-1" id="exam_to" onchange="toHandler(event)">
+            <input type="date" class="px-3 rounded shadow-sm border-1" id="exam_to" >
           </div>
           <div class="">
             <select name="status" id="filterbystatus" class="px-3 rounded shadow-sm">
