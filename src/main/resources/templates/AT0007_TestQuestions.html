@@ -455,7 +455,7 @@
             formData.append('maximum_mark', parseInt(document.getElementById("passing_score").value));
             if (mode == 'create') {
                 var xhr = new XMLHttpRequest();
-                xhr.open("POST", "https://pyinnyarsubuu.com/" + url + "/create-question", true);
+                xhr.open("POST", "https://pyinnyar-subuu.com/" + url + "/create-question", true);
                 xhr.onload = function () {
                     window.location.reload();
                 };
@@ -463,7 +463,7 @@
             } else {
                 formData.append('question_id', parseInt(question_id))
                 var xhr = new XMLHttpRequest();
-                xhr.open("POST", "https://pyinnyarsubuu.com/" + url + "/edit-question", true);
+                xhr.open("POST", "https://pyinnyar-subuu.com/" + url + "/edit-question", true);
                 xhr.onload = function () {
                     window.location.reload();
                 };
