@@ -143,7 +143,7 @@ public class TestQuestionController {
     }
 
     @Valid
-    @GetMapping(value = { "/teacher/exam/{test_id}/student/{account_id}",
+    @GetMapping(value = { "/teacher/exam/{test_id}/student/{student_id}",
             "/admin/exam/{test_id}/student/{student_id}" })
     private String getStudentAnswer(@PathVariable Long test_id,
             @PathVariable Long student_id, Model model)
@@ -154,6 +154,7 @@ public class TestQuestionController {
         Integer markingCount = testStudentAnswerRepository.getMarkingQuestionCount(test_id);
         Test test = testRepository.getTestByID(test_id);
         UserInfo userInfo = userInfoRepository.findStudentById(student_id);
+        String markedStatus = "";
 
         for (TestQuestion testQuestion : testQuestions) {
             String studentAnswer = "";
@@ -219,6 +220,7 @@ public class TestQuestionController {
                             testStudentAnswer.getStudent_answer_link());
                     studentAnswerURL = studentAnswerFile.getUrl();
                     student_answer_id = Integer.parseInt(testStudentAnswer.getId().toString());
+                    markedStatus = testStudentAnswer.getMarked_status();
                 }
             }
             QuestionAndCorrectAnswerAndStudentAnswer studentAnswerList = new QuestionAndCorrectAnswerAndStudentAnswer(
@@ -228,17 +230,8 @@ public class TestQuestionController {
                     testQuestion.getQuestion_text(), testQuestion.getQuestion_materials(),
                     testQuestion.getQuestion_materials_type(), choices,
                     testQuestion.getQuestion_type(), testQuestion.getMaximum_mark(),
-                    acquired_mark);
+                    acquired_mark, markedStatus);
             questionAndCorrectAnswers.add(studentAnswerList);
-
-        } 
-        try {
-            Result viewExamResult = resultRepository.getResultByTestIdAndUser(test_id, student_id);
-            if (viewExamResult != null) {
-                model.addAttribute("comment", viewExamResult.getTeacherComment());
-
-            }
-        } catch (DataAccessException ex) {
 
         }
         model.addAttribute("test_id", test_id);
@@ -284,12 +277,12 @@ public class TestQuestionController {
 
         if (currentDate.isBefore(convertedExamDate)) {
             examAnnouncement = "Apologies! Exam is not currently available yet. Please note that the exam will be accessible on "
-                    + convertedExamDate + " " + examStartTime;
+                    + convertedExamDate + " " + examStartTime + " (Japan Standard Time, JST).";
         } else if (currentDate.isEqual(convertedExamDate)) {
 
             if (currentTime.isBefore(examStartTime)) {
                 examAnnouncement = "Apologies! Exam is not currently available yet. Please note that the exam will be accessible on "
-                        + convertedExamDate + " " + examStartTime;
+                        + convertedExamDate + " " + examStartTime + " (Japan Standard Time, JST).";
             } else if (currentTime.equals(examStartTime) || currentTime.isBefore(examStartTimeFinal)
                     || currentTime.equals(examStartTimeFinal)) {
 
@@ -451,13 +444,13 @@ public class TestQuestionController {
             else if (currentTime.isAfter(examEndTime) || currentTime.equals(examEndTime)) {
                 examAnnouncement = "Apologies! This exam has already been conducted. It was held on "
                         + convertedExamDate
-                        + " " + examStartTime;
+                        + " " + examStartTime + " (Japan Standard Time, JST).";
 
             }
 
         } else if (currentDate.isAfter(convertedExamDate)) {
             examAnnouncement = "Apologies! This exam has already been conducted. It was held on " + convertedExamDate
-                    + " " + examStartTime;
+                    + " " + examStartTime + " (Japan Standard Time, JST).";
         }
 
         // List<QuestionAndCorrectAnswer> questionAndCorrectAnswers = new ArrayList<>();

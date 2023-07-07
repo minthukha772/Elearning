@@ -31,4 +31,7 @@ public interface JoinCourseUserRepository extends CrudRepository<JoinCourseUser,
 
     @Query(nativeQuery = true, value = "select join_course_user.* from join_course_user left join payment_receive ON join_course_user.join_id = payment_receive.join_id WHERE payment_receive.join_id is null")
     public List<JoinCourseUser> findUnpaidList();
+
+    @Query(nativeQuery = true, value = "select * from join_course_user where uid_fkey=:uid")
+    public List<JoinCourseUser> findByStuId(@Param("uid") Long uid);
 }

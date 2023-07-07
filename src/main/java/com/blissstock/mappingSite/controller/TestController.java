@@ -23,14 +23,18 @@ import org.springframework.ui.Model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.Date;
 import com.blissstock.mappingSite.entity.CourseInfo;
+import com.blissstock.mappingSite.entity.JoinCourseUser;
+import com.blissstock.mappingSite.entity.PaymentHistory;
 import com.blissstock.mappingSite.entity.Result;
 import com.blissstock.mappingSite.entity.Test;
 import com.blissstock.mappingSite.entity.TestStudent;
 import com.blissstock.mappingSite.entity.TestStudentAnswer;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
+import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
 import com.blissstock.mappingSite.repository.ResultRepository;
 import com.blissstock.mappingSite.repository.TestRepository;
 import com.blissstock.mappingSite.repository.TestStudentAnswerRepository;
@@ -67,6 +71,9 @@ public class TestController {
 
     @Autowired
     private TestStudentAnswerRepository testStudentAnswerRepository;
+
+    @Autowired
+    private JoinCourseUserRepository joinCourseUserRepository;
 
     @Valid
     @GetMapping(value = { "/teacher/exam" })
@@ -168,8 +175,10 @@ public class TestController {
 
             Long userID = getUid();
             List<Test> testList;
-            List<CourseInfo> courseList;
-            List<UserInfo> teacherList;
+            List<JoinCourseUser> joinList;
+            //List<CourseInfo> courseList;
+            List<CourseInfo> courseList = new ArrayList<>();
+            List<UserInfo> teacherList = new ArrayList<>();
             logger.info("user id {} start processing URL /teacher/exam", userID);
             if (examStatus != "" || courseid != "" || fromDate != "" || toDate != "" || teacherid != "") {
                 if (examStatus != "") {
@@ -217,14 +226,26 @@ public class TestController {
             // model.addAttribute("role", "teacher");
             // courseList = courseInfoRepository.findByUID(userID);
             // model.addAttribute("courseList", courseList);
+            joinList = joinCourseUserRepository.findByStuId(userID);
+            for (JoinCourseUser checkJoinUser : joinList) {
+                Long courseID = checkJoinUser.getCourseInfo().getCourseId();                
+                CourseInfo course = courseInfoRepository.getById(courseID);                 
+                courseList.add(course);
 
-            courseList = courseInfoRepository.findAll();
-            teacherList = userRepository.findByUserRoleI("ROLE_TEACHER");
+                Long teacherId = course.getUserInfo().getUid();
+
+                
+                UserInfo teacher = userInfoRepository.findStudentById(teacherId);
+                teacherList.add(teacher);
+                
+                
+                model.addAttribute("courseList", courseList);
+                model.addAttribute("teacherList", teacherList);
+            }
+            //courseList = courseInfoRepository.findByUID(userID);
+            //teacherList = userRepository.findByUserRoleI("ROLE_TEACHER");
             // Log the model attributes being added
-
-            model.addAttribute("courseList", courseList);
-            model.addAttribute("teacherList", teacherList);
-
+            //model.addAttribute("courseList", courseList);
             // logger.info("User " + userID + " Received response from URL: /teacher/exam
             // with status code: 200");
             return "ST0005_ExamListStudent";
