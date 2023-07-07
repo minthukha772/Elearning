@@ -14,7 +14,9 @@ public class QuestionAndCorrectAnswerAndStudentAnswer {
     private String question_type;
     private Integer maximum_mark;
     private Integer acquired_mark;
+    private String markedStatus;
 
+    
     public long getId() {
         return id;
     }
@@ -79,6 +81,14 @@ public class QuestionAndCorrectAnswerAndStudentAnswer {
         this.acquired_mark = acquired_mark;
     }
 
+    public String getMarkedStatus() {
+        return markedStatus;
+    }
+
+    public void setMarkedStatus(String markedStatus) {
+        this.markedStatus = markedStatus;
+    }
+
     public String getStudent_answer() {
         return student_answer;
     }
@@ -98,7 +108,7 @@ public class QuestionAndCorrectAnswerAndStudentAnswer {
     public QuestionAndCorrectAnswerAndStudentAnswer(long id, Integer student_answer_id, String student_answer,
             String student_answer_link,
             String question_text, String question_materials, String question_materials_type,
-            List<StudentChoiceModel> choices, String question_type, Integer maximum_mark, Integer acquired_mark) {
+            List<StudentChoiceModel> choices, String question_type, Integer maximum_mark, Integer acquired_mark, String markedStatus) {
         this.id = id;
         this.student_answer_id = student_answer_id;
         this.student_answer = student_answer;
@@ -110,6 +120,7 @@ public class QuestionAndCorrectAnswerAndStudentAnswer {
         this.question_type = question_type;
         this.maximum_mark = maximum_mark;
         this.acquired_mark = acquired_mark;
+        this.markedStatus = markedStatus;
     }
 
     public Integer getStudent_answer_id() {
