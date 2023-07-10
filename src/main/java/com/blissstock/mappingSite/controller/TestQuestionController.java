@@ -234,6 +234,15 @@ public class TestQuestionController {
             questionAndCorrectAnswers.add(studentAnswerList);
 
         }
+        try {
+            Result viewExamResult = resultRepository.getResultByTestIdAndUser(test_id, student_id);
+            if (viewExamResult != null) {
+                model.addAttribute("comment", viewExamResult.getTeacherComment());
+
+            }
+        } catch (DataAccessException ex) {
+
+        }
         model.addAttribute("test_id", test_id);
         model.addAttribute("questionList", questionAndCorrectAnswers);
         model.addAttribute("test_date", test.getDate());
