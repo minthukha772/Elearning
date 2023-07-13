@@ -87,4 +87,13 @@ public class Test {
         this.deletedAt = deletedAt;
     }
 
+    public String display() {
+        return this.test_id + ", " + this.courseInfo.getCourseName() + ", " + this.userInfo.getUserName() + ", "
+                + this.description + ", " + this.section_name + ", " +
+                this.minutes_allowed + ", " + this.passing_score_percent + ", " + this.Date + ", " + this.start_time
+                + ", " + this.end_time + ", " + this.exam_status + ", " +
+                this.isDelete + ", " + this.deletedAt;
+
+    }
+
 }

@@ -6,6 +6,7 @@ build/
 !**/src/test/**/build/
 uploads/
 
+
 #ssl 
 pyinnyar-subuu-testsite.cloudns.nz
 certbot
@@ -101,3 +102,5 @@ gradle-app.setting
 # gradle/wrapper/gradle-wrapper.properties
 
 
+lol.p12
+src/main/resources/application.properties

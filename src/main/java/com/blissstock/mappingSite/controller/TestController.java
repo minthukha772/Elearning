@@ -176,7 +176,7 @@ public class TestController {
             Long userID = getUid();
             List<Test> testList;
             List<JoinCourseUser> joinList;
-            //List<CourseInfo> courseList;
+            // List<CourseInfo> courseList;
             List<CourseInfo> courseList = new ArrayList<>();
             List<UserInfo> teacherList = new ArrayList<>();
             logger.info("user id {} start processing URL /teacher/exam", userID);
@@ -228,24 +228,22 @@ public class TestController {
             // model.addAttribute("courseList", courseList);
             joinList = joinCourseUserRepository.findByStuId(userID);
             for (JoinCourseUser checkJoinUser : joinList) {
-                Long courseID = checkJoinUser.getCourseInfo().getCourseId();                
-                CourseInfo course = courseInfoRepository.getById(courseID);                 
+                Long courseID = checkJoinUser.getCourseInfo().getCourseId();
+                CourseInfo course = courseInfoRepository.getById(courseID);
                 courseList.add(course);
 
                 Long teacherId = course.getUserInfo().getUid();
 
-                
                 UserInfo teacher = userInfoRepository.findStudentById(teacherId);
                 teacherList.add(teacher);
-                
-                
+
                 model.addAttribute("courseList", courseList);
                 model.addAttribute("teacherList", teacherList);
             }
-            //courseList = courseInfoRepository.findByUID(userID);
-            //teacherList = userRepository.findByUserRoleI("ROLE_TEACHER");
+            // courseList = courseInfoRepository.findByUID(userID);
+            // teacherList = userRepository.findByUserRoleI("ROLE_TEACHER");
             // Log the model attributes being added
-            //model.addAttribute("courseList", courseList);
+            // model.addAttribute("courseList", courseList);
             // logger.info("User " + userID + " Received response from URL: /teacher/exam
             // with status code: 200");
             return "ST0005_ExamListStudent";
@@ -261,12 +259,7 @@ public class TestController {
             @RequestParam(required = false) String examStatus, @RequestParam(required = false) String courseid,
             @RequestParam(required = false) String fromDate, @RequestParam(required = false) String toDate,
             @RequestParam(required = false) String teacherid) {
-        logger.info(
-                "getExamManagementPageByAdmin called with parameters: examStatus={}, courseId={}, fromDate={}, toDate={}, teacherId={}",
-                examStatus, courseid, fromDate, toDate, teacherid);
         try {
-            Long userID = getUid();
-
             if (examStatus == null) {
                 examStatus = "";
             }
@@ -280,67 +273,93 @@ public class TestController {
                 fromDate = "";
                 toDate = "";
             }
-
             List<Test> testList;
             List<CourseInfo> courseList;
             List<UserInfo> teacherList;
+            String responseString = "";
             if (examStatus != "" || courseid != "" || fromDate != "" || toDate != "" || teacherid != "") {
                 if (examStatus != "") {
+                    logger.info("Called AT_000004 with parameters: examStatus={}", examStatus);
+                    responseString = "Called AT_000004 with parameters: examStatus=" + examStatus + " Success";
                     if (examStatus.equals("Deleted")) {
-                        logger.info("user id {} Retrieving deleted test list by status: {}", userID, examStatus);
+                        logger.info("Initiate to Operation Retrieve Table test by Query {}", examStatus);
                         testList = testRepository.getDeletedListByAdmin();
+                        logger.info("Operation Retrieve Table test by Query Status {} Result list {} Success",
+                                examStatus, testList.size());
                         model.addAttribute("testList", testList);
                         model.addAttribute("filterType", "Filter By Status");
                         model.addAttribute("filter", "( " + examStatus + " )");
-
                     } else if (!examStatus.equals("Deleted")) {
-                        // Log the test list retrieval by status
-                        logger.info("user id {} Retrieving test list by status: {}", userID, examStatus);
+                        logger.info("Initiate to Operation Retrieve Table test by Query Status {}", examStatus);
                         testList = testRepository.getListByStatus(examStatus);
+                        logger.info("Operation Retrieve Table test by Query Status {} Result list {} Success",
+                                examStatus, testList.size());
                         model.addAttribute("testList", testList);
                         model.addAttribute("filterType", "Filter By Status");
                         model.addAttribute("filter", "( " + examStatus + " )");
                     }
                 } else if (courseid != "") {
-                    // Log the test list retrieval by course ID
-                    logger.info("user id {} Retrieving test list by course ID: {}", userID, courseid);
+                    responseString = "Called AT_000004 with parameters: courseid=" + courseid + " Success";
+                    logger.info("Called AT_000004 with parameters: course={}", courseid);
+                    logger.info("Initiate to Operation Retrieve Table course_info by Query Course {}", courseid);
                     CourseInfo course = courseInfoRepository.getById(Long.parseLong(courseid));
+                    logger.info("Operation Retrieve Table course_info by Query Course {} Success", courseid);
+                    logger.info("Initiate to Operation Retrieve Table test by Query Course {}", courseid);
                     testList = testRepository.getListByCourse(Long.parseLong(courseid));
+                    logger.info("Operation Retrieve Table test by Query Course {} Result list {} Success", courseid,
+                            testList.size());
                     model.addAttribute("testList", testList);
                     model.addAttribute("filterType", "Filter By Course");
                     model.addAttribute("filter", "( " + course.getCourseName() + " )");
                 } else if (fromDate != "" && toDate != "") {
-                    // Log the test list retrieval by date range
-                    logger.info("user id {} Retrieving test list by date range: {} to {}", userID, fromDate, toDate);
+                    responseString = "Called AT_000004 with parameters: fromDate=" + fromDate + " toDate=" + toDate
+                            + " Success";
+                    logger.info("Called AT_000004 with parameters: fromDate={} and toDate={}", fromDate, toDate);
                     Date from = new SimpleDateFormat("yyyy-MM-dd").parse(fromDate);
                     Date to = new SimpleDateFormat("yyyy-MM-dd").parse(toDate);
+                    logger.info("Initiate to Operation Retrieve Table test by Query fromDate {} toDate {}", fromDate,
+                            toDate);
                     testList = testRepository.getListByDate(from, to);
+                    logger.info("Operation Retrieve Table test by Query fromDate {} toDate {} Result list {} Success",
+                            from, to, testList.size());
                     model.addAttribute("testList", testList);
                     model.addAttribute("filterType", "Filter By Date");
                     model.addAttribute("filter", "( " + fromDate + " - " + toDate + " )");
                 } else if (teacherid != "") {
-                    // Log the test list retrieval by teacher ID
-                    logger.info("user id {} Retrieving test list by teacher ID: {}", userID, teacherid);
+                    responseString = "Called AT_000004 with parameters: teacherid=" + teacherid + " Success";
+                    logger.info("Called AT_000004 with parameters: teacher={}", teacherid);
                     UserInfo teacher = userRepository.findByAccount(Long.parseLong(teacherid));
+                    logger.info("Initiate to Operation Retrieve Table test by Query Teacher {}", teacherid);
                     testList = testRepository.getListByUser(Long.parseLong(teacherid));
+                    logger.info("Operation Retrieve Table test by Query Teacher {} Result list {} Success", teacherid,
+                            testList.size());
                     model.addAttribute("testList", testList);
                     model.addAttribute("filterType", "Filter By Teacher");
                     model.addAttribute("filter", "( " + teacher.getUserName() + " )");
                 }
             } else {
-                // Log the test list retrieval for all tests by admin
-                logger.info("user id {} Retrieving all test list by admin", userID);
+                responseString = "Called AT_000004 with parameters: None Success";
+                logger.info("Called AT_000004 with parameters: None");
+                logger.info("Initiate to Operation Retrieve Table test by Query None");
                 testList = testRepository.getListByAdmin();
+                logger.info("Operation Retrieve Table test by Query None Result list {} Success", testList.size());
                 model.addAttribute("testList", testList);
             }
 
+            logger.info("Initiate to Operation Retrieve Table course_info by Query None");
             courseList = courseInfoRepository.findAll();
+            logger.info("Operation Retrieve Table course_info by Query None Result list {} Success", courseList.size());
+
+            logger.info("Initiate to Operation Retrieve Table user_info, user_account by Query Role Teacher");
             teacherList = userRepository.findByUserRoleI("ROLE_TEACHER");
+            logger.info("Operation Retrieve Table user_info, user_account by Query Role Teacher Result list {} Success",
+                    teacherList.size());
             // Log the model attributes being added
             model.addAttribute("role", "admin");
             model.addAttribute("courseList", courseList);
             model.addAttribute("teacherList", teacherList);
 
+            logger.info(responseString);
             return "AT0004_AdminExamList";
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage());
@@ -381,7 +400,7 @@ public class TestController {
                 testRepository.save(testData);
             }
             // testRepository.deleteById(test_id);
-            // logger.info("User ID {} Exam with ID {} successfully deleted", userID,
+            // logger.info("User ID {} Exam with ID {} Successfully deleted", userID,
             // test_id);
             return ResponseEntity.ok(HttpStatus.OK);
         } catch (Exception e) {
@@ -422,7 +441,7 @@ public class TestController {
                 testRepository.save(testData);
             }
             // testRepository.deleteById(test_id);
-            // logger.info("User ID {} Exam with ID {} successfully deleted", userID,
+            // logger.info("User ID {} Exam with ID {} Successfully deleted", userID,
             // test_id);
             return ResponseEntity.ok(HttpStatus.OK);
         } catch (Exception e) {
@@ -486,7 +505,7 @@ public class TestController {
                     examDate, exam_start_time, exam_end_time, exam_status, "false", "null");
             logger.info("User ID {} Exam start to insert test {}", userID, test);
             testRepository.save(test);
-            logger.info("User ID {} Exam saved successfully test {}", userID, test);
+            logger.info("User ID {} Exam saved Successfully test {}", userID, test);
             return ResponseEntity.ok(HttpStatus.OK);
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage());
@@ -498,6 +517,7 @@ public class TestController {
     @PostMapping(value = { "/admin/create-exam" })
     private ResponseEntity saveExamByAdmin(@RequestBody String payload) {
         try {
+            logger.info("Called saveExamByAdmin");
             Long userID = getUid();
             JSONObject jsonObject = new JSONObject(payload);
             Long teacher_id = jsonObject.getLong("teacher_id");
@@ -518,20 +538,24 @@ public class TestController {
             int minutes_allowed = jsonObject.getInt("minutes_allowed");
             CourseInfo courseInfo = courseInfoRepository.findByCourseID(course_id);
             if (courseInfo == null) {
-                logger.warn("Failed to find course with ID: " + course_id);
+                logger.warn("Operation Retrieve Table course_info by query course_id = {} Result No Data",
+                        course_id);
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                         .body("Failed to find course with ID: " + course_id);
             }
             UserInfo userInfo = userInfoRepository.findStudentById(teacher_id);
             if (userInfo == null) {
-                logger.warn("Failed to find teacher with ID: " + teacher_id);
+                logger.warn("Operation Retrieve Table user_info, user_account by query user_id = {} Result No Data",
+                        teacher_id);
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to find user with ID: " + teacher_id);
             }
             Test test = new Test(null, courseInfo, userInfo, description, section_name, minutes_allowed, passing_score,
                     examDate, exam_start_time, exam_end_time, exam_status, "false", "null");
-            logger.info("User ID {} Exam start to insert test {}", userID, test);
+            logger.info("Initiate to Operation Insert Table Test Data {}", test.display());
             testRepository.save(test);
-            logger.info("User ID {} Exam saved successfully test {}", userID, test);
+            logger.info("Operation Insert Table Test Data {} Success", test.display());
+
+            logger.info("Called saveExamByAdmin Success");
             return ResponseEntity.ok(HttpStatus.OK);
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage());
@@ -565,13 +589,15 @@ public class TestController {
             CourseInfo courseInfo = courseInfoRepository.findByCourseID(course_id);
 
             if (courseInfo == null) {
-                logger.warn("Failed to find course with ID: " + course_id);
+                logger.warn("Operation Retrieve Table course_info by query course_id = {} Result No Data",
+                        course_id);
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                         .body("Failed to find course with ID: " + course_id);
             }
             UserInfo userInfo = userInfoRepository.findStudentById(teacher_id);
             if (userInfo == null) {
-                logger.warn("Failed to find teacher with ID: " + teacher_id);
+                logger.warn("Operation Retrieve Table user_info, user_account by query user_id = {} Result No Data",
+                        teacher_id);
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to find user with ID: " + teacher_id);
             }
             Test test = new Test(test_id, courseInfo, userInfo, description, section_name, minutes_allowed,
@@ -579,7 +605,7 @@ public class TestController {
                     examDate, exam_start_time, exam_end_time, exam_status, "false", "null");
             logger.info("User ID {} Exam start to update test {}", userID, test);
             testRepository.save(test);
-            logger.info("User ID {} Exam edited successfully for course ID {} and exam ID {}", userID, course_id,
+            logger.info("User ID {} Exam edited Successfully for course ID {} and exam ID {}", userID, course_id,
                     test_id);
 
             if (exam_status.equals("Result Released")) {
@@ -690,7 +716,7 @@ public class TestController {
                     examDate, exam_start_time, exam_end_time, exam_status, "false", "null");
             logger.info("User ID {} Exam start to update test {}", userID, test);
             testRepository.save(test);
-            logger.info("User ID {} Exam edited successfully for course ID {} and exam ID {}", userID, course_id,
+            logger.info("User ID {} Exam edited Successfully for course ID {} and exam ID {}", userID, course_id,
                     test_id);
 
             if (exam_status.equals("Result Released")) {
