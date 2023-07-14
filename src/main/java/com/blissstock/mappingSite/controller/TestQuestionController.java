@@ -66,6 +66,7 @@ import org.springframework.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
+import org.springframework.dao.DataAccessException;
 
 @Controller
 public class TestQuestionController {
@@ -232,6 +233,15 @@ public class TestQuestionController {
                     testQuestion.getQuestion_type(), testQuestion.getMaximum_mark(),
                     acquired_mark, markedStatus);
             questionAndCorrectAnswers.add(studentAnswerList);
+
+        }
+        try {
+            Result viewExamResult = resultRepository.getResultByTestIdAndUser(test_id, student_id);
+            if (viewExamResult != null) {
+                model.addAttribute("comment", viewExamResult.getTeacherComment());
+
+            }
+        } catch (DataAccessException ex) {
 
         }
         model.addAttribute("test_id", test_id);

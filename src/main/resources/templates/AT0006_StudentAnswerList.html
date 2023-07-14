@@ -19,20 +19,12 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
 </head>
 
-<body style="padding-top: 80px;">
+<body>
     <div th:replace="@{fragments/nav}"></div>
     <section class="main container">
         <div class="d-flex align-items-center justify-content-between flex-wrap">
             <div class="mt-3">
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item"><a href="#">Exam</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">
-                            Questions
-                        </li>
-                    </ol>
-                </nav>
+               
             </div>
         </div>
 
@@ -60,10 +52,10 @@
                     Answered Date : <span class="" th:text="${test_date}"></span>
                 </div>
                 <div class="fw-bold text-success">
-                    Auto Answer : <span class="" th:text="${freeTest}"></span> Questions
+                    Manual Answer : <span class="" th:text="${freeTest}"></span> Questions
                 </div>
                 <div class="fw-bold text-success">
-                    Manual Answer : <span class="" th:text="${choiceTest}"> </span> Questions
+                    Auto Answer : <span class="" th:text="${choiceTest}"> </span> Questions
                 </div>
             </div>
         </div>
@@ -184,8 +176,7 @@
                 <form>
                     <div class="form-group">
                         <label for="comment">Comment:</label>
-                        <textarea class="form-control" id="comment" rows="3"
-                            placeholder="Enter your comment"></textarea>
+                        <textarea th:placeholder="${comment}" class="form-control" id="comment" rows="3"></textarea>
                     </div>
                     <input type="submit" id="submit" value="Submit" class="btn-success border-0 rounded px-2"
                         th:onclick="setascomment();" />
