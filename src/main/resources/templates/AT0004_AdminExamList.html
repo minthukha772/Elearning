@@ -54,22 +54,7 @@
         document.getElementById("exam_end_time").value = "";
       });
 
-      $("#search_date_btn").click(function () {
-        var fromDate = document.getElementById("exam_from").value;
-        var toDate = document.getElementById("exam_to").value;
-        if (fromDate === "" && toDate != null) {
-          document.getElementById("filter_date_warning").textContent = "Please choose two date filters";
-          document.getElementById("filter_date_warning").style.display = 'block';
-        } else if (fromDate != "" && toDate === "") {
-          document.getElementById("filter_date_warning").textContent = "Please choose two date filters";
-          document.getElementById("filter_date_warning").style.display = 'block';
-        } else if (fromDate >= toDate) {
-          document.getElementById("filter_date_warning").style.display = 'block';
-        } else {
-          document.getElementById("filter_date_warning").style.display = 'none';
-          window.location.replace("/admin/exam?fromDate=" + fromDate + "&toDate=" + toDate);
-        }
-      });
+      
 
       $("#submit").click(function () {
         submitData(type);
@@ -333,17 +318,24 @@
       }
     }
 
-    function toHandler(e) {
-      var fromDate = document.getElementById("exam_from").value;
-      var toDate = document.getElementById("exam_to").value;
-      if (fromDate >= toDate) {
-        document.getElementById("filter_date_warning").style.display = 'block';
-        return;
-      } else {
-        document.getElementById("filter_date_warning").style.display = 'none';
-        window.location.replace("/admin/exam?fromDate=" + fromDate + "&toDate=" + toDate);
-      }
-    }
+    $(document).ready(function(){
+      $("#search_date_btn").click(function(){
+        var fromDate = document.getElementById("exam_from").value;
+        var toDate = document.getElementById("exam_to").value;
+        if(fromDate === "" && toDate != null){
+          document.getElementById("filter_date_warning").textContent = "Please choose two date filters";
+          document.getElementById("filter_date_warning").style.display = 'block';
+        }else if(fromDate != "" && toDate === ""){
+          document.getElementById("filter_date_warning").textContent = "Please choose two date filters";
+          document.getElementById("filter_date_warning").style.display = 'block';
+        }else if(fromDate >= toDate){
+          document.getElementById("filter_date_warning").style.display = 'block';
+        }else{
+          document.getElementById("filter_date_warning").style.display = 'none';
+          window.location.replace("/admin/exam?fromDate=" + fromDate + "&toDate=" + toDate);
+        }
+      });
+    });
   </script>
 </head>
 
@@ -478,27 +470,18 @@
   </div>
 
   <section class="main container mt-3">
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item">
-          <a href="#" class="text-decoration-none">Home</a>
-        </li>
-        <li class="breadcrumb-item active" aria-current="page">Exam</li>
-      </ol>
-    </nav>
-
+   
     <!-- to add filter start  -->
     <div class="mt-4" style="padding-top: 60px;">
       <form action="">
         <div class="d-flex flex-wrap align-items-end justify-content-between">
           <div class="">
             <label for="exam_from" class="fw-bold"><small>Exam From</small></label><br>
-            <input type="date" class="px-3 rounded shadow-sm border-1" id="exam_from" onchange="fromHandler(event)">
+            <input type="date" class="px-3 rounded shadow-sm border-1" id="exam_from" >
           </div>
           <div class="">
             <label for="exam_to" class="fw-bold"><small>Exam To</small></label><br>
-            <input type="date" class="px-3 rounded shadow-sm border-1" id="exam_to" onchange="toHandler(event)"
-              disabled>
+            <input type="date" class="px-3 rounded shadow-sm border-1" id="exam_to">
           </div>
           <select name="status" id="filterbystatus" class="px-3 rounded shadow-sm">
             <option value="Filter By Exam Status" selected><small>Search By Exam Status</small></option>
@@ -508,7 +491,7 @@
             <option value="Result Released"><small>Result Released</small></option>
             <option value="Deleted"><small>Deleted</small></option>
           </select>
-        </div>
+        
         <div class="" style="display: none;" id="teacher_dropdown_main">
           <select name="course" id="filterbyteacher" class="px-3 rounded shadow-sm">
             <option value="Filter By Course" selected><small>Filter By Teacher</small></option>
@@ -523,8 +506,8 @@
           <input type="reset" class="ms-2 border-0 rounded bg-success text-white px-2" value="Clear Filter"
             id="clearFilter">
         </div>
-    </div>
-    </form>
+      </div>
+      </form>
     </div>
 
     <div style="margin-top: 10px;margin-left: 250px;">
@@ -535,15 +518,7 @@
       Be Greater Than Start Date</div>
 
     <script>
-      function fromHandler(event) {
-        var examToInput = document.getElementById("exam_to");
-        var examFromInput = document.getElementById("exam_from");
-        examToInput.disabled = false;
-        if (examFromInput.value === "") {
-          examToInput.disabled = true;
-          examToInput.value = "";
-        }
-      }
+     
 
 
     </script>
