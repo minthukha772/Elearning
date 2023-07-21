@@ -111,7 +111,8 @@ public class TestStudentController {
     @GetMapping(value = { "/teacher/get-student", "/admin/get-student" })
     private ResponseEntity getCustomStudent(@RequestParam(value = "name") String name)
             throws ParseException {
-        List<UserInfo> testStudents = userInfoRepository.findByName(name);
+        String lower_case_name = name.toLowerCase();
+        List<UserInfo> testStudents = userInfoRepository.findByName(name, lower_case_name);
         return ResponseEntity.ok(testStudents);
     }
 
