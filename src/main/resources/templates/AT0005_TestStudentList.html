@@ -24,8 +24,8 @@
     <div th:replace="@{fragments/nav}"></div>
     <!-- add student modal box start  -->
     <div class="add-student-box min-vh-100 position-fixed w-100 top-0 d-flex justify-content-center align-items-center d-none"
-        style="z-index: 1000;background: rgba(0,0,0,0.4); max-height: 500px; overflow-y: auto;">
-        <div class="add-student-content px-2 py-3 rounded shadow-sm bg-white">
+        style="z-index: 1000;background: rgba(0,0,0,0.4);">
+        <div class="add-student-content px-2 py-3 rounded shadow-sm bg-white" style="height: 700px;">
             <div class="d-flex justify-content-end">
                 <div class="bg-danger text-white rounded-circle d-flex justify-content-center align-items-center"
                     style="width: 30px;height: 30px;cursor: pointer;" id="add_student_cancel">
@@ -37,9 +37,12 @@
                 <input type="search" class="px-2 py-1 border-0 w-100" placeholder="Enter StudentName"
                     id="add_student_search">
             </div>
-            <div id="student_list">
+            <div style="height: 90%; overflow: auto;">
+                <div id="student_list">
 
+                </div>
             </div>
+
         </div>
     </div>
     <!-- add student modal box end -->
@@ -47,7 +50,7 @@
     <section class="main container mt-3" style="padding-top: 80px;">
         <div class="d-flex flex-wrap align-items-center justify-content-between">
             <div class="mt-2">
-                
+
             </div>
             <div class="">
                 <div class="btn btn-success btn-sm mt-2 mx-2" id="add_enrolled_student">
@@ -84,20 +87,23 @@
                     <div class="card border-0 shadow-sm">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-start">
-                                <img th:src="@{/images/profile.png}" alt="" class="img-fluid rounded-circle" style="width: 50px; height: 50px" />
-                              
-                                <form th:action="@{'/delete-teststudent/' + ${test_id} + '/' + ${test_student.userInfo.uid} + '/' + ${user_role}}"
-                                      method="POST" class="deleteForm">
-                                  <button type="submit" onclick="showConfirmation(event)" class="rounded-circle bg-danger text-white d-flex justify-content-center align-items-center fw-bold"
-                                          style="cursor: pointer; width: 25px; height: 25px">
-                                    <i class="fa-solid fa-xmark"></i>
-                                  </button>
-                                </form>   
-                              </div>
-                              <script>
+                                <img th:src="@{/images/profile.png}" alt="" class="img-fluid rounded-circle"
+                                    style="width: 50px; height: 50px" />
+
+                                <form
+                                    th:action="@{'/delete-teststudent/' + ${test_id} + '/' + ${test_student.userInfo.uid} + '/' + ${user_role}}"
+                                    method="POST" class="deleteForm">
+                                    <button type="submit" onclick="showConfirmation(event)"
+                                        class="rounded-circle bg-danger text-white d-flex justify-content-center align-items-center fw-bold"
+                                        style="cursor: pointer; width: 25px; height: 25px">
+                                        <i class="fa-solid fa-xmark"></i>
+                                    </button>
+                                </form>
+                            </div>
+                            <script>
                                 function showConfirmation(event) {
                                     event.preventDefault(); // Prevent the form from submitting
-                            
+
                                     Swal.fire({
                                         title: 'Are you sure?',
                                         text: "You are about to delete the test student. This action cannot be undone!",
@@ -108,13 +114,13 @@
                                         confirmButtonText: 'Yes, delete it!'
                                     }).then((result) => {
                                         if (result.isConfirmed) {
-                                            
+
                                             event.target.closest('.deleteForm').submit();
                                         }
                                     });
                                 }
                             </script>
-                            
+
 
                             <div class="mt-3">
                                 <small class="fw-bold name" th:text="${test_student.userInfo.userName}"></small><br />
@@ -199,36 +205,36 @@
 
         var addstudent = document.getElementById("add_student_search");
         addstudent.addEventListener("input", function () {
-        var student_list = $("#student_list");
-        student_list.empty();
-        if (addstudent.value != "") {
-            var searchValue = addstudent.value.toLowerCase(); // Convert to lowercase
-            fetch("/" + url + "/get-student?name=" + encodeURIComponent(searchValue), {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            }).then(response => response.json())
-            .then(data => {
-                console.log(data);
-                for (var i = 0; i < data.length; i++) {
-                    student_list.append('<div class="mt-3 shadow-sm rounded p-2 border">' +
-                        '<div class="d-flex justify-content-between align-items-end">' +
-                        '<div class="d-flex align-items-center">' +
-                        '<div class="me-2" style="width: 65px;">' +
-                        '<img src="https://pyinnyarsubuu.com/images/profile.png" alt="" class="img-fluid rounded-circle">' +
-                        '</div>' +
-                        '<div class="">' +
-                        '<small class="fw-bold d-block">' + data[i]['userName'] + '</small>' +
-                        '<small class="fw-bold d-block">' + data[i]['phoneNo'] + '</small>' +
-                        '<small class="fw-bold d-block">' + data[i]['userAccount']['mail'] + '</small>' +
-                        '</div>' +
-                        '</div>' +
-                        '<div class="btn btn-sm btn-success" onclick="setStudentData(' + data[i]['uid'] + ');">Add</div>' +
-                        '</div>' +
-                        '</div>');
+            var student_list = $("#student_list");
+            student_list.empty();
+            if (addstudent.value != "") {
+                var searchValue = addstudent.value; // Convert to lowercase
+                fetch("/" + url + "/get-student?name=" + encodeURIComponent(searchValue), {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json"
                     }
-                })
+                }).then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                        for (var i = 0; i < data.length; i++) {
+                            student_list.append('<div class="mt-3 shadow-sm rounded p-2 border">' +
+                                '<div class="d-flex justify-content-between align-items-end">' +
+                                '<div class="d-flex align-items-center">' +
+                                '<div class="me-2" style="width: 65px;">' +
+                                '<img src="https://pyinnyarsubuu.com/images/profile.png" alt="" class="img-fluid rounded-circle">' +
+                                '</div>' +
+                                '<div class="">' +
+                                '<small class="fw-bold d-block">' + data[i]['userName'] + '</small>' +
+                                '<small class="fw-bold d-block">' + data[i]['phoneNo'] + '</small>' +
+                                '<small class="fw-bold d-block">' + data[i]['userAccount']['mail'] + '</small>' +
+                                '</div>' +
+                                '</div>' +
+                                '<div class="btn btn-sm btn-success" onclick="setStudentData(' + data[i]['uid'] + ');">Add</div>' +
+                                '</div>' +
+                                '</div>');
+                        }
+                    })
             }
         });
 

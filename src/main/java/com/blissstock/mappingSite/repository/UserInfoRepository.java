@@ -24,7 +24,7 @@ public interface UserInfoRepository extends CrudRepository<UserInfo, Long> {
       @Param("userName") String userName,
       @Param("accountId") Long accountId);
 
-  @Query(value = "select * from user_info, user_account where user_info.account_id = user_account.account_id and user_account.role = 'ROLE_STUDENT' and (user_info.user_name like '%:lowerName%' or user_account.mail like '%:lowerName%' or user_info.phone_no like '%:lowerName%' or user_info.user_name like '%:userName%' or user_account.mail like '%:userName%' or user_info.phone_no like '%:userName%')", nativeQuery = true)
+  @Query(value = "select * from user_info, user_account where user_info.account_id = user_account.account_id and user_account.role = 'ROLE_STUDENT' and (user_info.user_name like %:lowerName% or user_account.mail like %:lowerName% or user_info.phone_no like %:lowerName% or user_info.user_name like %:userName% or user_account.mail like %:userName% or user_info.phone_no like %:userName%)", nativeQuery = true)
   public List<UserInfo> findByName(@Param("userName") String userName, @Param("lowerName") String lowerName);
 
   @Query(value = "select * from user_info, user_account, test_student where user_info.account_id = user_account.account_id and test_student.test_test_id = :test_id and test_student.user_info_account_id = user_info.account_id and user_account.role = 'ROLE_STUDENT' and lower(user_name) like :userName%", nativeQuery = true)
