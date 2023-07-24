@@ -17,6 +17,11 @@ public interface TestStudentAnswerRepository extends JpaRepository<TestStudentAn
                         @Param("student_account_id") Long student_account_id,
                         @Param("test_id") Long test_id);
 
+        @Query(value = "Select * from test_student_answer where student_account_id = :student_account_id and test_test_id = :test_id limit 1", nativeQuery = true)
+        public TestStudentAnswer getStudentAnswerByTestAndStudent(
+                        @Param("student_account_id") Long student_account_id,
+                        @Param("test_id") Long test_id);
+
         @Query(value = "Select count(id) from test_student_answer where student_account_id = :student_account_id and test_test_id = :test_id", nativeQuery = true)
         public Integer getCountStudentAnswerListByTestAndStudent(
                         @Param("test_id") Long test_id,

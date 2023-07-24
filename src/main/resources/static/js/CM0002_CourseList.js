@@ -153,8 +153,14 @@ const renderCourseList = (courseList) => {
       $("#courseList").hide();
       $("#courseList").empty();
       data.forEach((e) => {
-        const startDate = new Date(e.startDate).toLocaleDateString();
-        const endDate = new Date(e.endDate).toLocaleDateString();
+        const options = {
+          timeZone: 'Asia/Tokyo',
+          year: 'numeric',
+          month: 'numeric',
+          day: 'numeric',
+        };
+        const startDate = new Date(e.startDate).toLocaleDateString('en-US', options);
+        const endDate = new Date(e.endDate).toLocaleDateString('en-US', options);
         var dates;
         if (e.classType == "VIDEO") {
           dates = ` <h4>&nbsp</h4>

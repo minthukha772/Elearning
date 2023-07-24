@@ -70,6 +70,8 @@ public class TestStudentController {
             throws ParseException {
         List<TestStudent> testStudents = new ArrayList<>();
         List<TestStudentWithMarkedCountModel> testStudentList = new ArrayList<>();
+        Test test = testRepository.getTestByID(test_id);
+        String examStatus = test.getExam_status();
         int checked_students = 0;
         int total_free_questions = 0;
         if (name == null) {
@@ -104,6 +106,7 @@ public class TestStudentController {
         model.addAttribute("test_students", testStudentList);
         model.addAttribute("total_students", testStudents.size());
         model.addAttribute("check_students", checked_students);
+        model.addAttribute("exam_status", examStatus);
         return "AT0005_TestStudentList.html";
     }
 
@@ -156,7 +159,7 @@ public class TestStudentController {
         Long student_id = jsonObject.getLong("student_id");
         Test test = testRepository.getTestByID(test_id);
         UserInfo user = userInfoRepository.findStudentById(student_id);
-        if (test.getExam_status().equals("Exam Created")) {
+        if (test.getExam_status().equals("Exam Created") || test.getExam_status().equals("Questions Created")) {
             TestStudent existingStudent = testStudentRepository.getStudentByID(student_id, test_id);
             if (existingStudent == null) {
                 TestStudent testStudent = new TestStudent(null, test, user, null);

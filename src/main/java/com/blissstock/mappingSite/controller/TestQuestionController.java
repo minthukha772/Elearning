@@ -201,15 +201,25 @@ public class TestQuestionController {
                                 new StudentChoiceModel(student_choice, choice, correctAnswer, true));
                     }
                 }
-
+            
+                boolean allCorrectAnswersMatched = true; 
+            
                 for (int l = 0; l < choices.size(); l++) {
                     Boolean correctAnswer = choices.get(l).isCorrect();
                     Boolean studentChoice = choices.get(l).isStudent_choice();
-                    if (correctAnswer && studentChoice) {
-                        acquired_mark = testQuestion.getMaximum_mark();
+            
+                    if (correctAnswer && !studentChoice) {                        
+                        allCorrectAnswersMatched = false;
+                        break; 
                     }
                 }
-            } else {
+            
+                if (allCorrectAnswersMatched) {                    
+                    acquired_mark = testQuestion.getMaximum_mark();
+                }
+            }
+             
+            else {
                 TestStudentAnswer testStudentAnswer = testStudentAnswerRepository.getStudentAnswer(student_id,
                         testQuestion.getId());
                 if (testStudentAnswer != null) {
@@ -252,6 +262,7 @@ public class TestQuestionController {
         model.addAttribute("totalTest", testQuestions.size());
         model.addAttribute("freeTest", freeAnswerCount);
         model.addAttribute("choiceTest", testQuestions.size() - freeAnswerCount);
+        model.addAttribute("user_role", userSessionService.getRole());
         if (markingCount == 0) {
             model.addAttribute("status", "Completed");
         } else {
@@ -271,7 +282,9 @@ public class TestQuestionController {
         LocalDate currentDate = LocalDate.now();
         Long studentId = userSessionService.getId();
         TestStudent studentInfo = testStudentRepository.findByTestIdAndUid(test_id, studentId);
+        TestStudentAnswer studentAnswerInfo = testStudentAnswerRepository.getStudentAnswerByTestAndStudent(studentId, test_id);
         String studentExamStartTime = studentInfo.getStudentExamStartTime();
+        String examTitle = testinfo.getDescription();
 
         DateTimeFormatter examTimeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
@@ -284,6 +297,13 @@ public class TestQuestionController {
         LocalTime examStartTimeFinal = examStartTime.plusMinutes(30);
 
         String examAnnouncement = null;
+
+        if (studentAnswerInfo != null) {
+            examAnnouncement = "Apologies! Exam answer is already submitted. Examinees are not allowed to submit the answer more than once! ";
+            model.addAttribute("exam_announce", examAnnouncement);
+            return "ST0006_ExamQuestionListStudent.html";
+        }
+        
 
         if (currentDate.isBefore(convertedExamDate)) {
             examAnnouncement = "Apologies! Exam is not currently available yet. Please note that the exam will be accessible on "
@@ -345,6 +365,7 @@ public class TestQuestionController {
                     model.addAttribute("exam_announce", examAnnouncement);
                     model.addAttribute("exam_start_time", currentTime);
                     model.addAttribute("exam_end_time", examEndTime);
+                    model.addAttribute("exam_title", examTitle);
                     model.addAttribute("questionList", questionAndCorrectAnswers);
 
                     return "ST0006_ExamQuestionListStudent.html";
@@ -393,6 +414,7 @@ public class TestQuestionController {
                     model.addAttribute("exam_announce", examAnnouncement);
                     model.addAttribute("exam_start_time", currentTime);
                     model.addAttribute("exam_end_time", examEndTime);
+                    model.addAttribute("exam_title", examTitle);
                     model.addAttribute("questionList", questionAndCorrectAnswers);
 
                     return "ST0006_ExamQuestionListStudent.html";
@@ -445,6 +467,7 @@ public class TestQuestionController {
                     model.addAttribute("exam_announce", examAnnouncement);
                     model.addAttribute("exam_start_time", currentTime);
                     model.addAttribute("exam_end_time", examEndTime);
+                    model.addAttribute("exam_title", examTitle);
                     model.addAttribute("questionList", questionAndCorrectAnswers);
 
                     return "ST0006_ExamQuestionListStudent.html";
