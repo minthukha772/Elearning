@@ -16,21 +16,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.blissstock.mappingSite.entity.TestResult;
 import com.blissstock.mappingSite.entity.Test;
-import com.blissstock.mappingSite.entity.TestQuestion;
 import com.blissstock.mappingSite.entity.TestExaminee;
 import com.blissstock.mappingSite.entity.TestExamineeAnswer;
+import com.blissstock.mappingSite.entity.TestQuestion;
+import com.blissstock.mappingSite.entity.TestResult;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.model.FileInfo;
 import com.blissstock.mappingSite.model.StudentListForExamResult;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
 import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
 import com.blissstock.mappingSite.repository.ResultRepository;
-import com.blissstock.mappingSite.repository.TestQuestionRepository;
-import com.blissstock.mappingSite.repository.TestRepository;
 import com.blissstock.mappingSite.repository.TestExamineeAnswerRepository;
 import com.blissstock.mappingSite.repository.TestExamineeRepository;
+import com.blissstock.mappingSite.repository.TestQuestionRepository;
+import com.blissstock.mappingSite.repository.TestRepository;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
 import com.blissstock.mappingSite.repository.UserRepository;
 import com.blissstock.mappingSite.service.StorageService;
@@ -90,6 +90,13 @@ public class ExamResultController {
     // @GetMapping("/student/ExamResult")
     public String getExamResultForStudent(@PathVariable Long testId, Model model) {
         Long userID = getUid();
+        Long courseID = getCid(testId);
+
+        logger.info("Called CM0010_ExamResultStudent with parameter(test_id={})", testId);
+        logger.info("user_id: {}, role: {}", userID, "Student");
+
+        logger.info("Initiate Operation Retrieve Table result by Query: test_id={}, user_id={}", testId,
+                userID);
         TestResult viewExamResult = resultRepo.getResultByTestIdAndUser(testId, userID);
         List<TestQuestion> viewQuestion = questionRepo.getQuestionByTest(testId);
         // StudentAnswer viewStuAns = stuAnsRepo.getResultByTestId(testId);
@@ -129,10 +136,15 @@ public class ExamResultController {
             model.addAttribute("teacherComment", teacherComment);
             model.addAttribute("examStatus", examStatus);
 
-            logger.info("Collected Marks {}", maxMarks);
+            logger.info(
+                    "Operation Retrieve Table result by Query: test_id={}, course_id={}, user_id={} Result: result_id={}, result={}, mark={}, teacher_comment={}, test_id={}, user_id={}  | Success",
+                    testId, courseID, userID, viewExamResult.getResultId(), passOrfailResult, stuMarks, teacherComment,
+                    testId, userID);
 
         } else {
-            System.out.println("Data not found in 'Result' Database!");
+            logger.warn(
+                    "Failed to retrieved data from Table result where test_id: {}, course_id: {}, user_id: {} | Not Found",
+                    testId, courseID, userID);
         }
 
         return "CM0010_ExamResultStudent";
@@ -141,6 +153,13 @@ public class ExamResultController {
     private Long getUid() {
         Long uid = userSessionService.getUserAccount().getAccountId();
         return uid;
+    }
+
+    private Long getCid(Long testID) {
+        Test viewTestTable = testRepo.getById(testID);
+        Long courseId = viewTestTable.getCourseInfo().getCourseId();
+
+        return courseId;
     }
 
     // @GetMapping("/exam/{testId}/examinee-list")
@@ -290,15 +309,27 @@ public class ExamResultController {
     @PostMapping("/delete-teststudent/{testId}/{studentId}/{role}")
     public String deleteTestStudent(@PathVariable Long testId, @PathVariable Long studentId,
             @PathVariable String role) {
+        Long userID = getUid();
+
+        logger.info("Redirect /{}/exam/{}/examinee with parameter(test_id={}, user_id={}, role={})", "admin", testId,
+                testId, studentId, role);
+
+        logger.info("user_id: {}, role: {}", userID, role);
+
+        logger.info("Initiate Operation Delete Table test_student by Query: test_id={}, user_id{}",
+                testId, userID);
         String roles = "";
         TestExaminee viewTestStudent = testStudentRepo.findByTestIdAndUid(testId, studentId);
         testStudentRepo.delete(viewTestStudent);
-
+        logger.info("Operation Delete Table test_student by Query: test_id={}, user_id{} | Success",
+                testId, userID);
         if (role.equals("SUPER_ADMIN") || role.equals("ADMIN")) {
             roles = "admin";
         } else if (role.equals("TEACHER")) {
             roles = "teacher";
         }
+        logger.info("Redirect /{}/exam/{}/examinee with parameter(test_id={}, user_id={}, role={}) | Success", roles,
+                testId, testId, studentId, role);
 
         // return "redirect:/exam/" + redirectId + "/examinee-list/";
         return "redirect:/" + roles + "/exam/" + testId + "/examinee";
@@ -383,7 +414,13 @@ public class ExamResultController {
     // @GetMapping("/Exam/exam-result-list")
     public String getExamResultListForTeacherAndAdmin(@PathVariable Long testId,
             Model model) {
+        Long userID = getUid();
         // public String getExamResultListForTeacherAndAdmin( Model model) {
+        logger.info("Called AT0008_ExamResultList with parameter(test_id={})", testId);
+        logger.info("user_id: {}, role: {}", userID, userSessionService.getRole());
+        logger.info(
+                "Initiate Operation Retrieve Table test, test_student, result, test_student_answer, test_question by Query: test_id={}",
+                testId);
 
         Test viewTest = testRepo.getById(testId);
         List<TestExaminee> viewTestStudents = testStudentRepo.getStudentByTest(testId);
@@ -429,6 +466,9 @@ public class ExamResultController {
                         }
                     }
 
+                } else {
+                    logger.warn("Data Retrieved from Table result by Query: test_id={}, user_id={} is empty", testId,
+                            userID);
                 }
 
             }
@@ -447,6 +487,9 @@ public class ExamResultController {
             model.addAttribute("notAnswered", notAnswered);
             model.addAttribute("startTime", startTime);
             model.addAttribute("endTime", endTime);
+        } else {
+            logger.warn("Data retrieved from Table test_student by Query: test_id={}, user_id={} is empty", testId,
+                    userID);
         }
 
         List<String> trueArr = new ArrayList<>();
@@ -470,6 +513,10 @@ public class ExamResultController {
                         }
                     }
 
+                } else {
+                    logger.warn(
+                            "Data retrieved from Table test_student_answer by Query: question_id={} test_id={}, user_id={} is empty",
+                            question.getId(), testId, userID);
                 }
                 if (totalQuestion != 0) {
                     double truePercent = ((double) correctAnswer / (double) totalQuestion) * 100;
@@ -480,6 +527,8 @@ public class ExamResultController {
 
             }
 
+        } else {
+            logger.warn("Data retreived from Table test_question by Query: test_id={} is empty", testId);
         }
         model.addAttribute("trueArr", trueArr);
 
@@ -497,9 +546,12 @@ public class ExamResultController {
                 }
                 Long userId = testStudent.getUserInfo().getUid();
 
+                logger.info("Initiate Operation Retrieve Table result by Query: test_id={}, user_id={}", testId,
+                        userID);
                 TestResult viewExamResult = resultRepo.getResultByTestIdAndUser(testId, userId);
 
                 if (viewExamResult != null) {
+
                     Integer stuMarks = viewExamResult.getResultMark();
                     String examResult = viewExamResult.getResult();
 
@@ -519,12 +571,32 @@ public class ExamResultController {
                         logger.info("unable to get profile {}", uid);
                     }
 
+                    logger.info(
+                            "Operation Retrieve Table result by Query: test_id={}, user_id={} Result: result_id={}, result={}, mark={}, teacher_comment={} | Success",
+                            testId,
+                            userID);
+
+                } else {
+                    logger.warn("Data Retrieved from Table result by Query: test_id={}, user_id={} is empty", testId,
+                            userID);
                 }
             }
+        } else {
+            logger.warn("Data retrieved from Table test_student by Query: test_id={}, user_id={} is empty", testId,
+                    userID);
         }
         model.addAttribute("user_role", userSessionService.getRole());
         model.addAttribute("test_id", testId);
+        logger.info(
+                "Operation Retrieve Table test, test_student, result, test_student_answer, test_question by Query: test_id={}\nResult {} | Success",
+                testId, model);
+
+        logger.info("Called AT0008_ExamResultList with parameter(test_id={}) | Success", testId);
+
         return "AT0008_ExamResultList";
+    }
+
+    private void info(String string, Long testId) {
     }
 
 }

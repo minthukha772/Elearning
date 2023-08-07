@@ -32,16 +32,22 @@ public class IndexController {
 
     @GetMapping("/")
     private String getCourses(Model model) {
-        try {
-            logger.info("GET request");
+        logger.info("index.html with parameter: {}");
 
+        try {
+            // logger.info("GET request");
+            logger.info("Initiate to Operation Retrieve Table {course_info} by query {courseRepo.findByClassTypeAndIsCourseApproved(ClassType.LIVE.getValue(),true)}");
             List<CourseInfo> liveList = courseRepo
                     .findByClassTypeAndIsCourseApproved(ClassType.LIVE.getValue(),
                             true);
 
+            logger.info("Initiate to Operation Retrieve Table {course_info} by query {courseRepo.findByClassTypeAndIsCourseApproved(ClassType.VIDEO.getValue(),true)}");
             List<CourseInfo> videoList = courseRepo
                     .findByClassTypeAndIsCourseApproved(ClassType.VIDEO.getValue(),
                             true);
+
+            logger.info("Operation Retrieve Table {course_info} by query {courseRepo.findByClassTypeAndIsCourseApproved(ClassType.LIVE.getValue(),true)} Result List {liveList} Success");
+            logger.info("Operation Retrieve Table {course_info} by query {courseRepo.findByClassTypeAndIsCourseApproved(ClassType.VIDEO.getValue(),true)} Result List {videoList} Success");
 
             List<HomeCourseInfoDTO> liveInfoDTOs = new ArrayList<HomeCourseInfoDTO>();
             List<HomeCourseInfoDTO> videoInfoDTOs = new ArrayList<HomeCourseInfoDTO>();
@@ -96,6 +102,7 @@ public class IndexController {
             System.out.print(e.toString());
         }
 
+        logger.info("index.html with parameter: {} Success");
         return "index.html";
     }
 

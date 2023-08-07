@@ -45,7 +45,7 @@ public class TestExamineeAnswer {
     private String examinee_answer;
 
     @Column(name = "examinee_answer_link", length = 255)
-    private String student_answer_link;
+    private String examinee_answer_link;
 
     @Column(name = "correct_status", length = 255)
     private String correct_status;
@@ -56,19 +56,25 @@ public class TestExamineeAnswer {
     @Column(name = "marked_status", length = 255)
     private String marked_status;
 
-    
-
     public TestExamineeAnswer(Long id, Test test, UserInfo student, TestQuestion question, String examinee_answer,
-            String student_answer_link, String correct_status, Integer acquired_mark, String marked_status) {
+            String examinee_answer_link, String correct_status, Integer acquired_mark, String marked_status) {
         this.id = id;
         this.test = test;
         this.student = student;
         this.question = question;
         this.examinee_answer = examinee_answer;
-        this.student_answer_link = student_answer_link;
+        this.examinee_answer_link = examinee_answer_link;
         this.correct_status = correct_status;
         this.acquired_mark = acquired_mark;
         this.marked_status = marked_status;
+    }
+
+    public String display() {
+        return this.id + ", " + this.test.getTest_id() + ", " + this.student + ", "
+                + this.question + ", " + this.examinee_answer + ", " + this.examinee_answer_link + ", "
+                + this.correct_status
+                + ", " + this.acquired_mark + ", " + this.marked_status;
+
     }
 
 }

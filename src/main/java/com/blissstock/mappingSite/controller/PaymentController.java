@@ -37,8 +37,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.blissstock.mappingSite.service.MailService;
 
-
-
 @Controller
 public class PaymentController {
   private static Logger logger = LoggerFactory.getLogger(
@@ -80,12 +78,19 @@ public class PaymentController {
   private String getPaymentUploadForm(@PathVariable Long courseId, @PathVariable(name = "id", required = false) Long id,
       Model model) {
     // StuPaymentDTO payment = new StuPaymentDTO();
+    logger.info("Operation Retrieve Before on database", id);
     Long userId = id == null ? userSessionService.getUserAccount().getAccountId() : id;
+
+    logger.info("Before start to database operation UserID {}", userId);
 
     CourseInfo courseInfo = courseRepo.findById(courseId).orElse(null);
 
+    logger.info("Before start to database operation CourseInfo {}", courseInfo);
+
     JoinCourseUser join = joinRepo.findByPayment(courseId, userId);
+    logger.info("Operation Retrieve Table JoinCourseUser by query{} Result List {} Success", join);
     PaymentReceive payment = paymentRepo.findByJoin(join.getJoinId());
+    logger.info("Operation Retrieve Table {PaymentReceive} by query{} Result List {} Success", payment);
     if (payment == null) {
       payment = new PaymentReceive();
     }
@@ -93,16 +98,22 @@ public class PaymentController {
     model.addAttribute("courseName", courseInfo.getCourseName());
     model.addAttribute("fees", courseInfo.getFees());
     model.addAttribute("payment", payment);
+    logger.info("Operation Retrieve Table CourseInfo Success by get courseName", courseInfo.getCourseName());
+    logger.info("Operation Retrieve Table CourseInfo Success by get fees", courseInfo.getFees());
+    logger.info("Operation Retrieve Table PaymentReceive Success", payment);
+
     // logger.error(payment.toString());
 
     // Load Profile
     try {
       FileInfo slipPic = storageService.loadSlipAsFileInfo(payment, userId);
       model.addAttribute("slip", slipPic);
+      logger.info("Operation save file success {}", slipPic);
     } catch (Exception e) {
-      e.printStackTrace();
+      e.getLocalizedMessage();
       logger.info("unable to get payment slip {}", userId);
     }
+    logger.info("GetPaymentUploadForm is successfully.", userId);
     return "AS0001_Payment";
   }
 
@@ -116,15 +127,22 @@ public class PaymentController {
       @RequestParam("slip") MultipartFile slip,
       @PathVariable Long courseId,
       HttpServletRequest request) {
+
+    logger.info("Before Operation Retrieve by query{} Result List {} Success", inputPayment, bindingResult, slip,
+        courseId, request);
     Long userId = userSessionService.getUserAccount().getAccountId();
-    logger.info("Payment slip upload called");
+    logger.info("Operation Retrieve by query{} Result List {} Success", userId);
     JoinCourseUser join = joinRepo.findByPayment(courseId, userId);
+    logger.info("Operation Retrieve Table {JoinCourseUser} by query{} Result List {} Success", join);
     PaymentReceive payment = paymentRepo.findByJoin(join.getJoinId());
+    logger.info("Operation Retrieve Table {PaymentReceive} by query{} Result List {} Success", payment);
+
     if (payment == null) {
       payment = new PaymentReceive();
     }
     payment.setJoin(join);
     joinRepo.save(join);
+    logger.info("Operation Insert Table {JoinCourseUser} Data {InsertData} Success", joinRepo);
 
     String redirectAddress = "redirect:" +
         request.getRequestURI().replace("/edit/", "");
@@ -141,33 +159,41 @@ public class PaymentController {
       storageService.store(userId, slip, StorageServiceImpl.SLIP_PATH, true);
     } catch (UnauthorizedFileAccessException e) {
       logger.info("error: trying to store slip"); // TODO Auto-generated catch block
-      e.printStackTrace();
+      e.getLocalizedMessage();
     }
     // insert photo
     payment.setSlip(saveFileName);
+    logger.info("Operation Save On Table PaymentReceive{}", payment);
     payment.setPaymentStatus(PaymentStatus.PENDING.getValue());
+    logger.info("Operation Save On Table PaymentReceive{}", payment);
 
     payment.setPaymentReceiveDate(GregorianCalendar.getInstance().getTime());
+    logger.info("Operation Save on Table PaymentReceive{}", payment);
     paymentRepo.save(payment);
+    logger.info("Operation Save On Table PaymentRepo{}", paymentRepo);
 
     logger.info("payment slip {} stored", saveFileName);
     // }
     if (payment.getPaymentStatus() == "ERROR") {
+      logger.error("Error is occuring", payment.getPaymentStatus());
       return redirectAddress;
     }
-    
+
     new Thread(new Runnable() {
       public void run() {
         try {
+          logger.info("Before Operation Retrieve on Table{}");
           UserInfo userInfo = userService.getUserInfoByID(userId);
           CourseInfo courseInfo = courseRepo.findById(courseId).orElse(null);
+          logger.info("Operation Retrieve On Table UserInfo{}", userInfo);
+          logger.info("Operation Retrieve On Table CourseInfo{}", courseInfo);
 
           String appUrl = request.getServerName() + // "localhost"
               ":" +
               request.getServerPort(); // "8080"
           // mailService.sendVerificationMail(
-          //     savedUserInfo.getUserAccount(),
-          //     appUrl);
+          // savedUserInfo.getUserAccount(),
+          // appUrl);
 
           mailService.PaymentByStudent(userInfo, courseId, courseInfo);
           mailService.PaymentReceivedByAdmin(userInfo, courseId, courseInfo);
@@ -177,8 +203,9 @@ public class PaymentController {
         }
       }
     }).start();
+    logger.info("studentUploadPayment is successfully", mailService);
 
-   return "redirect:/payment/complete";
+    return "redirect:/payment/complete";
 
   }
 
@@ -190,27 +217,35 @@ public class PaymentController {
       @PathVariable Long courseId,
       @PathVariable(name = "id", required = false) Long userId,
       HttpServletRequest request) {
-
+    logger.info("Before Operation Retrieve on Table{}", inputPayment, bindingResult, courseId, userId, request);
     JoinCourseUser join = joinRepo.findByPayment(courseId, userId);
     PaymentReceive payment = paymentRepo.findByJoin(join.getJoinId());
+    logger.info("Operation Retrieve on Table JoinCourseUser&PaymentReceive {}", join, payment);
 
     payment.setJoin(join);
     joinRepo.save(join);
+    logger.info("Operation Insert Table {JoinCourseUser} Data {InsertData} Success", joinRepo);
 
     String redirectAddress = "redirect:" +
         request.getRequestURI().replace("/edit/", "");
     logger.debug("Redirect Addresss {}", redirectAddress);
 
     payment.setPaymentStatus(inputPayment.getPaymentStatus());
+    logger.info("Operation Save On Table PaymentReceive{}", payment);
     System.out.println(inputPayment.getPaymentStatus());
 
     paymentRepo.save(payment);
+    logger.info("Operation Insert Table {paymentReceive} Data {InsertData} Success", paymentRepo);
 
     // }
     if (payment.getPaymentStatus() == "ERROR") {
+      logger.error("Error get when PaymentStatus error", payment.getPaymentStatus());
       return redirectAddress;
     }
+    logger.warn("adminUploadPayment edit method is successfully", paymentRepo);
+
     return redirectAddress;
+
   }
 
   // @GetMapping(value = "/edit-payment-slip/{paymentReceiveId}")

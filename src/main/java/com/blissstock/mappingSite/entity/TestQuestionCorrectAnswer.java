@@ -38,4 +38,9 @@ public class TestQuestionCorrectAnswer {
         this.testQuestion = testQuestion;
         this.correctAnswer = correctAnswer;
     }
+
+    public String display() {
+        return this.id + ", " + this.testQuestion.getId() + ", " + this.correctAnswer;
+
+    }
 }

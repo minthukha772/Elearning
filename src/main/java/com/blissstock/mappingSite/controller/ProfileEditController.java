@@ -46,23 +46,29 @@ public class ProfileEditController {
   public String editProfileView(
       Model model,
       @PathVariable(name = "id", required = false) Long id) {
+    logger.info("Before Operation Retrieve On Table{}", id);
     String role;
     System.out.println("id is " + id);
 
     if (id == null) {
       id = userSessionService.getUserAccount().getAccountId();
+      logger.info("Operation Retrieve Got ID {}", id);
     }
 
     UserInfo userInfo = userService.getUserInfoByID(id);
+    logger.info("Operation Retrieve On Table UserInfo {}", userInfo);
     role = userInfo.getUserAccount().getRole().equals(UserRole.TEACHER.getValue())
         ? "teacher"
         : "student";
 
     UserRegisterDTO userRegisterDTO = UserRegisterDTO.fromUserInfo(userInfo);
     userRegisterDTO.setAcceptTerm(true);
+    logger.info("Operation Save On DTO UserRegisterDTO", userRegisterDTO);
     model.addAttribute("userInfo", userRegisterDTO);
     model.addAttribute("task", "profile_edit");
     model.addAttribute("role", role);
+
+    logger.info("Edit Profile is success", userRegisterDTO, role);
 
     return "ST0001_register";
   }
@@ -75,14 +81,16 @@ public class ProfileEditController {
       @RequestParam(value = "action", required = true) String action,
       HttpServletRequest httpServletRequest,
       @PathVariable(name = "id", required = false) Long id) {
+    logger.info("Before Operation Save On Table {}", userInfo, bindingResult, action, httpServletRequest, id);
     String role = "student";
     Long uid = getUid(id);
+    logger.info("Get User ID {}", uid);
     model.addAttribute("task", "profile_edit");
     model.addAttribute("role", role);
     model.addAttribute(
         "postAction",
         httpServletRequest.getRequestURL().toString());
-
+    logger.info("Student Profile is editing", role, httpServletRequest);
     if (bindingResult.hasErrors()) {
       System.out.println(bindingResult.getFieldError());
       return "ST0001_register";
@@ -93,6 +101,7 @@ public class ProfileEditController {
       model.addAttribute("userInfo", userInfo);
       model.addAttribute("task", "profile_edit");
       model.addAttribute("role", "student");
+      logger.info("Student Profile back to screen", userInfo);
 
       return "ST0001_register";
     }
@@ -101,6 +110,7 @@ public class ProfileEditController {
       if (action.equals("submit")) {
         logger.info("update userinfo {}", uid);
         userService.updateUser(userInfo, uid);
+        logger.info("student or admin profile is edited successfully", userService);
         if (userSessionService.getRole() == UserRole.STUDENT) {
           return "redirect:/student/profile/?message=profileEdit";
         } else {
@@ -109,7 +119,7 @@ public class ProfileEditController {
       }
 
     } catch (Exception e) {
-      e.printStackTrace();
+      e.getLocalizedMessage();
       if (userSessionService.getRole() == UserRole.STUDENT) {
         return "redirect:/student/profile/?message=profileEdit";
       } else {
@@ -119,6 +129,7 @@ public class ProfileEditController {
 
     // Information For Randering Confirm
     model.addAttribute("infoMap", userInfo.toMap());
+    logger.info("Information For Randering Confirm", userInfo.toMap());
     System.out.println(userInfo.toMap());
     return "ST0001_register";
   }
@@ -131,13 +142,17 @@ public class ProfileEditController {
       @RequestParam(value = "action", required = true) String action,
       HttpServletRequest httpServletRequest,
       @PathVariable(name = "id", required = false) Long id) {
+    logger.info("Before Operation Save On Table{} ", userInfo, bindingResult, action, httpServletRequest, id);
     String role = "teacher";
     Long uid = getUid(id);
+    logger.info("Get User ID {}", uid);
+
     model.addAttribute("task", "profile_edit");
     model.addAttribute("role", role);
     model.addAttribute(
         "postAction",
         httpServletRequest.getRequestURL().toString());
+    logger.info("Teacher Profile is Editing {}", role, httpServletRequest);
 
     if (bindingResult.hasErrors()) {
       System.out.println(bindingResult.getFieldError());
@@ -150,12 +165,15 @@ public class ProfileEditController {
       model.addAttribute("userInfo", userInfo);
       model.addAttribute("task", "profile_edit");
       model.addAttribute("role", "teacher");
+      logger.info("Student Profile back to screen", userInfo);
+
       return "ST0001_register";
     }
     try {
       if (action.equals("submit")) {
         logger.info("update userinfo {}", uid);
         userService.updateUser(userInfo, uid);
+        logger.info("student or admin profile is edited successfully", userService);
         if (userSessionService.getRole() == UserRole.TEACHER) {
           return "redirect:/teacher/profile/?message=profileEdit";
         } else {
@@ -165,7 +183,7 @@ public class ProfileEditController {
       }
 
     } catch (Exception e) {
-      e.printStackTrace();
+      e.getLocalizedMessage();
       if (userSessionService.getRole() == UserRole.TEACHER) {
         return "redirect:/teacher/profile/?error=profileEdit";
       } else {
@@ -177,6 +195,8 @@ public class ProfileEditController {
     // Information For Randering Confirm
     model.addAttribute("infoMap", userInfo.toMap());
     // System.out.println(userInfo.toMap());
+    logger.info("Information For Randering Confirm", userInfo.toMap());
+
     return "ST0001_register";
   }
 
@@ -196,13 +216,13 @@ public class ProfileEditController {
   @PostMapping(path = "/delete/paymentMethod/{paymentInfoId}")
   private String DeleteTeacherPaymentInfo(@PathVariable(name = "paymentInfoId", required = false) Long paymentInfoId,
       @ModelAttribute("id") Long Uid) {
-
+    logger.info("Before Operation Save On Table {}", paymentInfoId, Uid);
     try {
       paymentInfoServiceImpl.deletePaymentInfo(paymentInfoId);
-      logger.info("payment information delete success ");
+      logger.info("Operation Delete On Table PaymentInfo Table{}", paymentInfoServiceImpl);
     } catch (UserNotFoundException e) {
       logger.info("payment information not found");
-      e.printStackTrace();
+      e.getLocalizedMessage();
     }
     System.out.println(Uid);
     if (userSessionService.getUserAccount().getRole().equals(UserRole.ADMIN.getValue())

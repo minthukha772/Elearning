@@ -105,4 +105,11 @@ public class TestResult {
         this.teacherComment = teacherComment;
     }
 
+    public String display() {
+        return this.resultId + ", " + this.test.getTest_id() + ", " + this.user.getUserName() + ", "
+                + this.resultMark + ", " + this.result + ", " +
+                this.teacherComment;
+
+    }
+
 }

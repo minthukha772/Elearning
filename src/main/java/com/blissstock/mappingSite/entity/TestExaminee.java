@@ -78,4 +78,10 @@ public class TestExaminee {
         this.userInfo = userInfo;
         this.examinee_exam_start_time = examinee_exam_start_time;
     }
+
+    public String display() {
+        return this.id + ", " + this.test.getTest_id() + ", " + this.userInfo.getUserName() + ", "
+                + this.examinee_exam_start_time;
+
+    }
 }

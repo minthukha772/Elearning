@@ -59,7 +59,6 @@ public class TestQuestion {
         this.maximum_mark = maximum_mark;
     }
 
-
     public Long getId() {
         return this.id;
     }
@@ -122,6 +121,14 @@ public class TestQuestion {
 
     public void setMaximum_mark(Integer maximum_mark) {
         this.maximum_mark = maximum_mark;
-    }    
-    
+    }
+
+    public String display() {
+        return this.id + ", " + this.test.getTest_id() + ", " + this.question_text + ", "
+                + this.question_materials + ", " + this.question_materials_type + ", " + this.choices + ", "
+                + this.question_type
+                + ", " + this.maximum_mark;
+
+    }
+
 }

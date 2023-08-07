@@ -95,11 +95,13 @@ public class CourseRegistrationController {
 
     @RequestMapping(value = { "/teacher/course-registration", "/admin/course-registration/{id}" })
     private String courseRegistration(Model model, @PathVariable(required = false) Long id) {
+        logger.info("Api name is: {}. Parameter is id: {} ","courseRegistration", id);
         logger.info("GET Requested");
 
         CourseInfo courseInfo = new CourseInfo();
 
         List<CourseTime> courseTimeList = new ArrayList<>(7);
+        logger.info("Initiate to Operation Insert Table {} Data {}", " courseInfo",courseTimeList);
         courseInfo.setCourseTime(courseTimeList);
 
         // // Course Category list from Database starts here
@@ -107,8 +109,8 @@ public class CourseRegistrationController {
         // List<CourseCategory> options = courseCategoryRepository.findAll();
         // model.addAttribute("CourseListHtml", options);
         // logger.info("Course Category list :: {}", options.toString());
-
-        model.addAttribute("CourseListHtml", courseService.getAllCourseCategory());
+         model.addAttribute("CourseListHtml", courseService.getAllCourseCategory());
+       
         // logger.info("Course Category list :: {}",
         // courseService.getAllCourseCategory());
 
@@ -142,6 +144,7 @@ public class CourseRegistrationController {
             model.addAttribute("postAction", "/admin/save-course-register");
         }
 
+        logger.info("Called courseRegistration with parameter: {} Success", id);
         return "AT0001_CourseRegistration";
     }
 
@@ -245,6 +248,7 @@ public class CourseRegistrationController {
             try {
                 storageService.store(course.getCourseId(), cphoto, StorageServiceImpl.COURSE_PATH, true);
             } catch (UnauthorizedFileAccessException e) {
+                e.getLocalizedMessage();
                 e.printStackTrace();
             }
             // insert photo
@@ -269,6 +273,7 @@ public class CourseRegistrationController {
         // System.out.println("Haahaa " + courseTimeList.get(0).getCourseDays() +
         // courseTimeList.size());
 
+        logger.info("Called courseRegistrationConfirm with parameter: {} Success", course);
         return "AT0002_CourseRegistrationConfirm";
     }
 
@@ -298,7 +303,9 @@ public class CourseRegistrationController {
             @RequestParam("course_pic") MultipartFile cphoto, HttpServletRequest httpServletRequest,
             @RequestParam("paymentType") String paymentType) {
         // course.setUserInfo(userInfoRepository.findById(userSessionService.getId()).get());
+        logger.info("Initiate to Operation Retrieve Table: {} by query: findById={} ", "userInfo",course.getUid());
         course.setUserInfo(userInfoRepository.findById(course.getUid()).get());
+        logger.info("Initiate to Operation Retrieve Table: {} by query: findById={} Result List : {} Success ", "userInfo",course.getUid(),course.toString());
         logger.info("Post Requested");
         UserAccount userAccount = userSessionService.getUserAccount();
 
@@ -310,6 +317,7 @@ public class CourseRegistrationController {
         }
 
         CourseInfo savedCourse = courseInfoRepo.save(course);
+        logger.info("Operation Insert Table {} Data {} Success", "courseInfo",course);
 
         if (!cphoto.isEmpty() && CheckUploadFileType.checkType(cphoto)) {
             // get original photo name and generate a new file name
@@ -318,20 +326,25 @@ public class CourseRegistrationController {
             try {
                 storageService.store(savedCourse.getCourseId(), cphoto, StorageServiceImpl.COURSE_PATH, true);
             } catch (UnauthorizedFileAccessException e) {
+                e.getLocalizedMessage();
                 e.printStackTrace();
             }
             // insert photo
             course.setCoursePhoto(originalFileName);
-            courseInfoRepo.save(course);
-
+            CourseInfo temp = courseInfoRepo.save(course);
+            logger.info("Operation Insert Table {} Data {} Success", "courseInfo",temp);
+            
             logger.info("profile photo {} stored", originalFileName);
             // return "redirect:/teacher/course-registration";
         }
 
         JoinCourseUser joins = new JoinCourseUser();
         joins.setCourseInfo(course);
+        logger.info("Initiate to Operation Retrieve Table: {} by query: findById={} ", "userInfo",course);
         joins.setUserInfo(userInfoRepository.findById(course.getUid()).get());
+        logger.info("Operation Retrieve Table: {} by query: findById={} Result  List {} Success ", "userInfo",course,course.getUid().toString());
         joinRepo.save(joins);
+        logger.info("Operation Insert Table {} Data {} Success", "join",joinRepo.save(joins));
 
         // course.setJoin(join);
         List<CourseTime> courseTimeList = new ArrayList<>();
@@ -396,6 +409,7 @@ public class CourseRegistrationController {
             course.setClassType(course.getClassType().toUpperCase());
             courseTime.setCourseInfo(course);
             courseTimeRepo.save(courseTime);
+            logger.info("Operation Insert Table {} Data {} Success", "courseTime",courseTime);
         }
 
         // UserRole role = userSessionService.getRole();
@@ -415,11 +429,13 @@ public class CourseRegistrationController {
                             mailService.SendTeacherNewCourseByTeacher(course);
 
                         } catch (Exception e) {
+                            e.getLocalizedMessage();
                             logger.info(e.toString());
                         }
                     }
                 }).start();
             } catch (Exception e) {
+                e.getLocalizedMessage();
                 logger.info(e.toString());
             }
 
@@ -471,6 +487,7 @@ public class CourseRegistrationController {
                 paymentForTeacher.setNoOfEnrollPerson(noOfEnrollPerson);
 
                 paymentForTeacherService.savePaymentForTeacher(paymentForTeacher);
+                logger.info("Operation Insert Table {} Data {} Success", "PaymentForTeacher",paymentForTeacher);
 
             } else if (paymentType.equals("MONTHLY_FEE")) {
 
@@ -515,6 +532,7 @@ public class CourseRegistrationController {
                         paymentForTeacher.setNoOfEnrollPerson(noOfEnrollPerson);
                         paymentForTeacher.setPaymentVerify(false);
                         paymentForTeacherService.savePaymentForTeacher(paymentForTeacher);
+                        logger.info("Operation Insert Table {} Data {} Success", "PaymentForTeacher",paymentForTeacher);
 
                     }
                 } else {
@@ -536,13 +554,15 @@ public class CourseRegistrationController {
                     paymentForTeacher.setStatus(paymentStatus);
                     paymentForTeacher.getPaymentVerify();
                     paymentForTeacherService.savePaymentForTeacher(paymentForTeacher);
+                    logger.info("Operation Insert Table {} Data {} Success", "PaymentForTeacher",paymentForTeacherService);
+                    
 
                 }
 
             } else {
                 System.out.println("Unknown payment type :" + paymentType);
             }
-
+            logger.info("redirect:/teacher/course-upload/complete : Success");
             return "redirect:/teacher/course-upload/complete";
         } else {
             try {
@@ -559,11 +579,13 @@ public class CourseRegistrationController {
                             mailService.SendTeacherNewCourseByAdmin(course, appUrl);
 
                         } catch (Exception e) {
+                            e.getLocalizedMessage();
                             logger.info(e.toString());
                         }
                     }
                 }).start();
             } catch (Exception e) {
+                e.getLocalizedMessage();
                 logger.info(e.toString());
             }
 
@@ -615,6 +637,7 @@ public class CourseRegistrationController {
                 paymentForTeacher.setNoOfEnrollPerson(noOfEnrollPerson);
 
                 paymentForTeacherService.savePaymentForTeacher(paymentForTeacher);
+                logger.info("Operation Insert Table {} Data {} Success", "PaymentForTeacher",paymentForTeacherService);
 
             } else if (paymentType.equals("MONTHLY_FEE")) {
 
@@ -659,6 +682,7 @@ public class CourseRegistrationController {
                         paymentForTeacher.setNoOfEnrollPerson(noOfEnrollPerson);
                         paymentForTeacher.setPaymentVerify(false);
                         paymentForTeacherService.savePaymentForTeacher(paymentForTeacher);
+                        logger.info("Operation Insert Table {} Data {} Success", "PaymentForTeacher",paymentForTeacherService);
 
                     }
                 } else {
@@ -680,13 +704,14 @@ public class CourseRegistrationController {
                     paymentForTeacher.setStatus(paymentStatus);
                     paymentForTeacher.getPaymentVerify();
                     paymentForTeacherService.savePaymentForTeacher(paymentForTeacher);
+                    logger.info("Operation Insert Table {} Data {} Success", "PaymentForTeacher",paymentForTeacherService);
 
                 }
 
             } else {
                 System.out.println("Unknown payment type :" + paymentType);
             }
-
+            logger.info("redirect:/admin/course-upload/complete");
             return "redirect:/admin/course-upload/complete";
         }
         // return "takealeave";
@@ -695,15 +720,21 @@ public class CourseRegistrationController {
     @GetMapping("/admin/course-registration/add-new-category")
     public String addNewCategoryForm(Model model) {
         CourseCategory courseCategory = new CourseCategory();
+        logger.info("Api name is: {}.","addNewCategoryForm");
         model.addAttribute("addNewCategory", courseCategory);
+        logger.info("Called addNewCategoryForm : Success");
         return "add_category";
     }
 
     @GetMapping("/admin/course-registration/updateCategory")
     public String updateCategory(Model model) {
+        logger.info("Api name is: {}. ","updateCategory");
         CourseCategory courseCategory = new CourseCategory();
         model.addAttribute("addNewCategory", courseCategory);
+        logger.info("Initiate to Operation Retrieve Table {} by query {}","Category",courseCategory.toString());
         model.addAttribute("Category", courseService.getAllCourseCategory());
+        model.getAttribute("Category");
+        logger.info("Called del_category : Success");
         return "del_category";
     }
 
@@ -719,13 +750,17 @@ public class CourseRegistrationController {
 
     @GetMapping("/deleteCategory/{id}")
     public String deleteCategory(@PathVariable(value = "id") long categoryId, Model model) {
+        logger.info("Api name is: {}. Parameter is categoryId: {} ","deleteCategory", categoryId);
         this.courseService.deleteCategoryById(categoryId);
+        logger.info("redirect to:/admin/course-registration/updateCategory Success");
         return "redirect:/admin/course-registration/updateCategory";
     }
 
     @PostMapping("/saveCategory")
     public String saveCategory(@ModelAttribute("addNewCategory") CourseCategory courseCategory) {
+        logger.info("Api name is: {}. Parameter is courseCategory: {} ","saveCategory", courseCategory);
         courseService.addCategory(courseCategory);
+        logger.info("Called redirect:/admin/teacher-list with parameter: {} Success");
         return "redirect:/admin/teacher-list";
     }
 

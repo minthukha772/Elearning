@@ -35,11 +35,19 @@ public class MailCheckController {
     @GetMapping(path = { "/verify_password" })
     public String mailVerify(
             @RequestParam(value = "token", required = true) String token, Model model) {
+        logger.info("MailVerify.html with parameter: {}");
+
         System.out.println("mail verify called" + token);
         final String tokenType = "VERIFICATION";
         try {
             System.out.println("get token callsed");
+
+            logger.info("Initiate to Operation Retrieve Table {} by query {}",
+            "user_account","userService.getUserAccountByToken(token, tokenType)");
             UserAccount userAccount = userService.getUserAccountByToken(token, tokenType);
+            logger.info("Operation Retrieve Table {tablename} by query {} Result List {} Success",
+            "user_account","userService.getUserAccountByToken(token, tokenType)",userAccount.toString());
+
             System.out.println(userAccount.toString());
 
             if (userAccount.isMailVerified()) {
@@ -51,6 +59,8 @@ public class MailCheckController {
                 model.addAttribute("header3", header3);
                 model.addAttribute("header5", header5);
                 model.addAttribute("paragraph", paragraph);
+
+                logger.info("MailVerify.html with parameter: {} Success");
                 return "MailVerify.html";
             } else {
 
@@ -66,11 +76,14 @@ public class MailCheckController {
                 model.addAttribute("header3", header3);
                 model.addAttribute("header5", header5);
                 model.addAttribute("paragraph", paragraph);
+
+                logger.info("MailVerify.html with parameter: {} Success");
                 return "MailVerify.html";
             }
 
         } catch (Exception e) {
             System.out.println(e.toString());
+            logger.error(e.getLocalizedMessage());
         }
         System.out.println("Invalid token");
         String header3 = "Invalid token";
@@ -80,6 +93,8 @@ public class MailCheckController {
         model.addAttribute("header3", header3);
         model.addAttribute("header5", header5);
         model.addAttribute("paragraph", paragraph);
+
+        logger.info("MailVerify.html with parameter: {} Success");
         return "MailVerify.html";
 
         // System.out.println(token);

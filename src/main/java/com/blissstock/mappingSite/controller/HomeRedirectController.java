@@ -27,26 +27,32 @@ public class HomeRedirectController {
 
   @RequestMapping("/home")
   public String redirectHome(Model model, HttpServletRequest request) {
-    UserRole userRole= userSessionService.getRole();
-    if(userRole == null){
-        //redirect to 
-        return "redirect:/";
+    UserRole userRole = userSessionService.getRole();
+    if (userRole == null) {
+      // redirect to
+      logger.info("Redirected to home page");
+      return "redirect:/";
     }
-    if(userRole == UserRole.ADMIN || userRole == UserRole.SUPER_ADMIN){
-        return "redirect:/admin/top/";
+    if (userRole == UserRole.ADMIN || userRole == UserRole.SUPER_ADMIN) {
+      logger.info("Redirected to admin's home page");
+      return "redirect:/admin/top/";
     }
-    if(userRole == UserRole.STUDENT ){
-       try {
+    if (userRole == UserRole.STUDENT) {
+      try {
         long courseId = courseSessionService.getCourse(request);
-        return "redirect:guest/course-detail/"+courseId;
+        logger.info("Redirected to course id:"+courseId);
+        return "redirect:guest/course-detail/" + courseId;
       } catch (CourseNotFoundException e) {
         logger.debug("No course is stored in session");
       }
-       return "redirect:student/my-course";
+      logger.info("Redirected to student's my_course page");
+      return "redirect:student/my-course";
     }
-    if(userRole == UserRole.TEACHER){
+    if (userRole == UserRole.TEACHER) {
+      logger.info("Redirected to teacher's my_course page");
       return "redirect:/teacher/my-course";
     }
+    logger.info("Redirected to home page");
     return "redirect:/";
   }
 }

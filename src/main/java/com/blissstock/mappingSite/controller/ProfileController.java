@@ -103,10 +103,11 @@ public class ProfileController {
       @PathVariable(required = false) Long id,
       String message,
       String error) {
-    logger.info("GET Requested");
+    logger.info("Before Operation Retrieve FROM Table{}", id, message, error);
 
     // Setting User Id
     long uid = getUid(id);
+    logger.info("Get User ID {}", uid);
     model.addAttribute("id", uid);
 
     // Setting isEditable
@@ -141,8 +142,9 @@ public class ProfileController {
     UserInfo userInfo;
     try {
       userInfo = userService.getUserInfoByID(uid);
+      logger.info("Operation Retrieve On Table UserInfo{}", userInfo);
     } catch (Exception e) {
-      e.printStackTrace();
+      e.getLocalizedMessage();
       logger.info("User {} does not exist", uid);
       return "redirect:/404";
     }
@@ -171,7 +173,7 @@ public class ProfileController {
       FileInfo profilePic = storageService.loadProfileAsFileInfo(userInfo);
       model.addAttribute("profilePic", profilePic);
     } catch (Exception e) {
-      e.printStackTrace();
+      e.getLocalizedMessage();
       logger.info("unable to get profile {}", uid);
     }
 
@@ -226,6 +228,7 @@ public class ProfileController {
     // Load Information for student joined courses and payment status.
 
     List<JoinCourseUser> joinCourseUsers = joinCourseUserService.findByUserInfo(userInfo);
+    logger.info("Operation Retriev On Table JoinCourseUser{}", joinCourseUsers);
     if (joinCourseUsers == null) {
       joinCourseUsers = new ArrayList<>();
 
@@ -247,6 +250,7 @@ public class ProfileController {
     }).collect(Collectors.toList());
 
     model.addAttribute("courseList", courseDataList);
+    logger.info("Data is Successfully {} ", courseDataList);
 
     // ##################################################//
 
@@ -263,18 +267,17 @@ public class ProfileController {
       @PathVariable(required = false) Long id,
       HttpServletRequest httpServletRequest,
       BindingResult bindingResult) {
-    logger.info("Post Requested");
-    logger.info("Payment Edit Info {}", paymentInfoDTO);
+    logger.info("Before Operation Retrieve On Table{}", paymentInfoDTO, id, httpServletRequest, bindingResult);
 
     if (bindingResult.hasErrors()) {
       logger.debug("error: {}", bindingResult.getAllErrors());
     }
     Long uid = getUid(id);
-
+    logger.info("Operation Retrieve With UserID", uid);
     List<PaymentAccount> paymentAccounts = new ArrayList<>();
     paymentAccounts.add(paymentInfoDTO.getPrimaryAccount());
     paymentAccounts.add(paymentInfoDTO.getSecondaryAccount());
-
+    logger.info("Operation Save On PaymentAccount {}", paymentAccounts);
     String redirectAddress = "redirect:" +
         httpServletRequest.getRequestURI().replace("/edit/payment", "");
 
@@ -282,11 +285,13 @@ public class ProfileController {
 
     try {
       paymentInfoService.updatePayment(paymentAccounts, uid);
+      logger.info("Edit Payment is Successfully {}", paymentInfoService);
       return redirectAddress + "?message=paymentInfo";
     } catch (UserNotFoundException e) {
-      e.printStackTrace();
+      e.getLocalizedMessage();
       return redirectAddress + "?error";
     }
+
   }
 
   @PostMapping(value = {
@@ -299,11 +304,11 @@ public class ProfileController {
       @RequestParam("profilePic") MultipartFile photo,
       @PathVariable(required = false) Long id,
       HttpServletRequest httpServletRequest) {
-    logger.info("Post Requested");
-    logger.info("Payment Edit Info {}", photo);
+
+    logger.info("Before Operation Retrieve On Table{}", photo, id, httpServletRequest);
 
     Long uid = getUid(id);
-
+    logger.info("Operation Retrieve With User ID", uid);
     String redirectAddress = "redirect:" +
         httpServletRequest.getRequestURI().replace("/edit/profile-pic", "");
     logger.debug("Redirect Addresss {}", redirectAddress);
@@ -318,10 +323,14 @@ public class ProfileController {
 
         storageService.store(uid, photo, StorageServiceImpl.PROFILE_PATH, true);
         UserInfo userInfo = userService.getUserInfoByID(uid);
+        logger.info("Operation Retrieve On Table UserInfo {}", userInfo);
         userInfo.setPhoto(originalFileName);
+        logger.info("Operation Save On Table UserInfo {}", userInfo);
         userService.updateUserInfo(userInfo);
+        logger.info("Operation Update On Table UserInfo {}", userService);
+
       } catch (UnauthorizedFileAccessException e) {
-        e.printStackTrace();
+        e.getLocalizedMessage();
       }
 
       logger.info("profile photo {} stored", originalFileName);
@@ -336,18 +345,22 @@ public class ProfileController {
       Model model,
       Long uid,
       HttpServletRequest httpServletRequest) {
-    logger.info("DELETE Request for user {}", uid);
+    logger.info("Before Operation Delete On Table{}", uid);
     try {
       UserInfo userInfo = userService.getUserInfoByID(uid);
+      logger.info("Operation Retrieve On UserInfo {}", userInfo);
+
       if (userInfo == null) {
         throw new UserNotFoundException();
       }
       userAccountControlService.deleteUser(userInfo);
+      logger.info("Operation Delete On UserInfo {}", userAccountControlService);
+
     } catch (UserNotFoundException e) {
-      e.printStackTrace();
+      e.getLocalizedMessage();
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User Not Found");
     } catch (Exception e) {
-      e.printStackTrace();
+      e.getLocalizedMessage();
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
     }
 
@@ -358,13 +371,16 @@ public class ProfileController {
 
   public String deleteAdminAccount(@PathVariable(value = "id") long uid, Model model,
       HttpServletRequest httpServletRequest) {
-
+    logger.info("Before Operation Retrieve On Table{}", uid, httpServletRequest);
     try {
       UserInfo userInfo = userService.getUserInfoByID(uid);
+      logger.info("Operation Retrieve On Table UserInfo{}", userInfo);
       if (userInfo == null) {
         throw new UserNotFoundException();
       }
       userAccountControlService.deleteUser(userInfo);
+      logger.info("Operation Delete On Table UserInfo{}", userAccountControlService);
+
     } catch (UserNotFoundException e) {
 
     }
@@ -376,19 +392,23 @@ public class ProfileController {
       Model model,
       Long uid,
       HttpServletRequest httpServletRequest) {
-    logger.info("Suspend request for user with id {}", uid);
+    logger.info("Before Operation Save On Table {}", uid);
 
     try {
       UserInfo userInfo = userService.getUserInfoByID(uid);
+      logger.info("Operation Retrieve On Table UserInfo{}", userInfo);
+
       if (userInfo == null) {
         throw new UserNotFoundException();
       }
       userAccountControlService.suspendUser(userInfo);
+      logger.info("Suspend for user {}", userAccountControlService);
+
     } catch (UserNotFoundException e) {
-      e.printStackTrace();
+      e.getLocalizedMessage();
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User Not Found");
     } catch (Exception e) {
-      e.printStackTrace();
+      e.getLocalizedMessage();
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
     }
 
@@ -401,19 +421,23 @@ public class ProfileController {
       Model model,
       Long uid,
       HttpServletRequest httpServletRequest) {
-    logger.info("Reactivate request for user with id {}", uid);
+    logger.info("Before Operation Retrieve On Table{}", uid);
 
     try {
       UserInfo userInfo = userService.getUserInfoByID(uid);
+      logger.info("Before Operation Retrieve On Table{}", userInfo);
+
       if (userInfo == null) {
         throw new UserNotFoundException();
       }
       userAccountControlService.reactivateUser(userInfo);
+      logger.info("Reactivate Request for user {}", userAccountControlService);
+
     } catch (UserNotFoundException e) {
-      e.printStackTrace();
+      e.getLocalizedMessage();
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User Not Found");
     } catch (Exception e) {
-      e.printStackTrace();
+      e.getLocalizedMessage();
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
     }
 
@@ -424,25 +448,32 @@ public class ProfileController {
   @PostMapping("admin/profile/verify")
   public ResponseEntity<Object> verifyUser(
       Model model,
-      Long uid,
-
-      HttpServletRequest request) {
-    logger.info("Verify request for user with id {}", uid);
+      Long uid, HttpServletRequest request) {
+    logger.info("Operation Save On Table {}", uid);
     Long adminId = 0L;
     adminId = userSessionService.getUserAccount().getAccountId();
+    logger.info("Operation Retrieve On Table {} ", adminId);
+
     UserInfo adminInfo = userRepo.findById(adminId).orElse(null);
+    logger.info("Operation Retrieve UserInfo Table {}", adminInfo);
     UserInfo teacherInfo = userService.getUserInfoByID(uid);
+    logger.info("Operation Retrieve UserInfo Table {}", teacherInfo);
+
     try {
       UserInfo userInfo = userService.getUserInfoByID(uid);
+      logger.info("Operation Retrieve UserInfo Table {}", userInfo);
+
       if (userInfo == null) {
         throw new UserNotFoundException();
       }
       userAccountControlService.verifyUser(userInfo);
+      logger.info("verfiyUser is success", teacherInfo);
+
     } catch (UserNotFoundException e) {
-      e.printStackTrace();
+      e.getLocalizedMessage();
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User Not Found");
     } catch (Exception e) {
-      e.printStackTrace();
+      e.getLocalizedMessage();
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
     }
 
@@ -460,7 +491,10 @@ public class ProfileController {
           // appUrl);
 
           mailService.VerifiedTeacherByAdmin(teacherInfo, adminInfo);
+          logger.info("Verify Teacher By Admin  {}", mailService);
+
           mailService.VerifiedTeacherByAdminToTeacher(teacherInfo, adminInfo);
+          logger.info("Verfiy Teacher By Admin To Teacher {}", mailService);
 
         } catch (Exception e) {
           logger.info(e.toString());
@@ -468,12 +502,15 @@ public class ProfileController {
       }
     }).start();
 
+    logger.info("Verfiy is successfully", adminInfo, teacherInfo);
     return ResponseEntity.status(HttpStatus.OK).body("operation success");
 
   }
 
   private boolean isEditable(Long id) {
+    logger.info("Operation Retrieve On Table {}", id);
     UserRole role = userSessionService.getRole();
+    logger.info("Operation Retrieve On Table UserRole", role);
     if (role == UserRole.ADMIN || role == UserRole.SUPER_ADMIN) {
       return true;
     }
