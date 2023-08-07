@@ -52,7 +52,7 @@ public class RegisterController {
   @ExceptionHandler(value = ConstraintViolationException.class)
   public String exception(ConstraintViolationException exception) {
     System.out.println("excption occur");
-    System.out.println(exception.getMessage());
+    System.out.println(exception.getLocalizedMessage());
     return "redirect:/email_check/register/";
   }
 
@@ -69,14 +69,17 @@ public class RegisterController {
       @ModelAttribute("email") String email, Long uid) {
     System.out.println("emai in newadmin is " + email);
 
-    logger.info("new adim reigister");
+    logger.info("Before Operation Save On Table{}", request, uid, email);
     Long adminId = 0L;
     adminId = userSessionService.getUserAccount().getAccountId();
+    logger.info("Operation Retrieve Get User ID{}", adminId);
     UserInfo adminInfo = userRepo.findById(adminId).orElse(null);
     // UserInfo teacherInfo = userService.getUserInfoByID(uid);
+    logger.info("Operation Retrieve on Table UserInfo{} ", adminInfo);
 
     if (email != null) {
       UserRole userRole = userSessionService.getRole();
+      logger.info("Operation Retrieve On Table UserRole", userRole);
       if (userRole.equals(UserRole.SUPER_ADMIN)) {
 
         try {
@@ -102,6 +105,7 @@ public class RegisterController {
 
           // save new admin to db
           userService.addUser(user);
+          logger.info("Operation Save On DTO UserRegister{}", userService);
           String appUrl = request.getServerName() + // "localhost"
               ":" +
               request.getServerPort();
@@ -114,6 +118,7 @@ public class RegisterController {
             Thread.currentThread().interrupt();
           }
           UserAccount userAccount = userService.getUserAccountByEmail(email);
+          logger.info("Operation Retrieve On Table UserAccount Table{}", userAccount);
 
           // Long adminId = 0L;
           // adminId = userSessionService.getUserAccount().getAccountId();
@@ -123,6 +128,7 @@ public class RegisterController {
           mailService.sendResetPasswordMail(userAccount);
           mailService.SendAdminNewAdmin(userAccount, adminInfo, appUrl);
           mailService.SendSuperAdminNewAdmin(userAccount, adminInfo, appUrl);
+          logger.info("New Admin is registered successfully", mailService);
           return "redirect:/admin/register/complete";
         } catch (Exception e) {
           logger.info("Register admin :{}", e.toString());
@@ -148,7 +154,7 @@ public class RegisterController {
       @PathVariable(name = "role", required = false) String role,
       @PathVariable(name = "email") String email,
       Model model) {
-    logger.info("GET Request");
+    logger.info("Before Operation Retrieve On Table {}", role, email);
     // if email is not validate throw ConstraintViolationException exception
     if (!new EmailValidator().validateEmail(email)) {
       throw new ConstraintViolationException("Invalid Email", null);
@@ -163,6 +169,8 @@ public class RegisterController {
     // Initialize UserInfo
     userInfo = role.equals("student") ? new UserRegisterDTO() : new TeacherRegisterDTO();
     userInfo.setEmail(email);
+    logger.info("Operation Save On DTO userRegisterDTO{}", userInfo);
+    ;
     model.addAttribute("userInfo", userInfo);
 
     //
@@ -170,6 +178,8 @@ public class RegisterController {
     model.addAttribute("task", "Register");
     model.addAttribute("role", role);
     model.addAttribute("postAction", "/register/" + role);
+
+    logger.info("Prepare for register", userInfo, role);
 
     return "ST0001_register.html";
   }
@@ -183,7 +193,7 @@ public class RegisterController {
       HttpServletRequest request,
       Errors errors) {
     // logger.info("POST Request, action: {}", action);
-
+    
     // back action redirects to register form
     logger.info("Action value is {}", action);
     if (action.equals("Back")) {
@@ -191,6 +201,8 @@ public class RegisterController {
       model.addAttribute("task", "Register");
       model.addAttribute("role", "student");
       model.addAttribute("postAction", "/register/" + "student");
+
+      logger.info("Student Register Confirm is Successfully", userInfo);
 
       return "ST0001_register.html";
     }
@@ -200,6 +212,7 @@ public class RegisterController {
     model.addAttribute("task", "Register");
     model.addAttribute("role", role);
     model.addAttribute("postAction", "/register/" + role);
+    logger.info("Student Register Confirm is Successfully", userInfo);
 
     try {
       if (action.equals("submit")) {
@@ -224,13 +237,13 @@ public class RegisterController {
               }
             }
           }).start();
-
+          logger.info("Register is successfully", savedUserInfo);
           return "redirect:/studentAccount/register/complete";
         } catch (UserAlreadyExistException e) {
-          e.printStackTrace();
+          e.getLocalizedMessage();
           model.addAttribute("userExistError", true);
         } catch (Exception e) {
-          e.printStackTrace();
+          e.getLocalizedMessage();
         }
       }
     } catch (Exception e) {
@@ -243,6 +256,8 @@ public class RegisterController {
     }
     // Information For Randering Confirm
     model.addAttribute("infoMap", userInfo.toMap());
+    logger.info("Information For Randering Confirm", userInfo.toMap());
+
     return "ST0001_register.html";
   }
 
@@ -262,6 +277,7 @@ public class RegisterController {
       model.addAttribute("task", "Register");
       model.addAttribute("role", "teacher");
       model.addAttribute("postAction", "/register/" + "teacher");
+      logger.info("back action redirects to register form", userInfo);
       return "ST0001_register.html";
     }
     String role = "teacher";
@@ -269,6 +285,7 @@ public class RegisterController {
     model.addAttribute("task", "Register");
     model.addAttribute("role", role);
     model.addAttribute("postAction", "/register/" + role);
+    logger.info("Operation Retrieve From Table{}", userInfo, role);
 
     try {
       if (action.equals("submit")) {
@@ -293,13 +310,13 @@ public class RegisterController {
               }
             }
           }).start();
-
+          logger.info("Register is successfully", savedUserInfo);
           return "redirect:/teacherAccount/register/complete";
         } catch (UserAlreadyExistException e) {
-          e.printStackTrace();
+          e.getLocalizedMessage();
           model.addAttribute("userExistError", true);
         } catch (Exception e) {
-          e.printStackTrace();
+          e.getLocalizedMessage();
         }
       }
     } catch (Exception e) {
@@ -310,6 +327,8 @@ public class RegisterController {
     }
     // Information For Randering Confirm
     model.addAttribute("infoMap", userInfo.toMap());
+    logger.info("Information For Randering Confirm", userInfo.toMap());
+
     return "ST0001_register.html";
   }
 }

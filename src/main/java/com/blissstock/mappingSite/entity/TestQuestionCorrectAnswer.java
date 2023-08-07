@@ -22,10 +22,12 @@ import lombok.Setter;
 @Table(name = "test_question_correct_answer")
 public class TestQuestionCorrectAnswer {
     @Id
+    @Column(name = "correct_answer_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "question_id")
+    @OneToOne(fetch = FetchType.EAGER)
     private TestQuestion testQuestion;
 
     @Column(name = "correct_answer")
@@ -35,5 +37,10 @@ public class TestQuestionCorrectAnswer {
         this.id = id;
         this.testQuestion = testQuestion;
         this.correctAnswer = correctAnswer;
+    }
+
+    public String display() {
+        return this.id + ", " + this.testQuestion.getId() + ", " + this.correctAnswer;
+
     }
 }

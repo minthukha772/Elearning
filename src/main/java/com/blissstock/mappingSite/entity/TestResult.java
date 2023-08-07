@@ -14,24 +14,29 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "result")
-public class Result {
+@Table(name = "test_result")
+public class TestResult {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "result_id")
     private Long resultId;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "test_id")
     private Test test;
-    
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "examinee_student_id")
     private UserInfo user;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "examinee_guest_id")
+    private GuestUser guestUser;
 
     @Column(name = "mark")
     private Integer resultMark;
@@ -90,7 +95,8 @@ public class Result {
         this.teacherComment = teacherComment;
     }
 
-    public Result(Long resultId, Test test, UserInfo user, Integer resultMark, String result, String teacherComment) {
+    public TestResult(Long resultId, Test test, UserInfo user, Integer resultMark, String result,
+            String teacherComment) {
         this.resultId = resultId;
         this.test = test;
         this.user = user;
@@ -99,5 +105,11 @@ public class Result {
         this.teacherComment = teacherComment;
     }
 
-}
+    public String display() {
+        return this.resultId + ", " + this.test.getTest_id() + ", " + this.user.getUserName() + ", "
+                + this.resultMark + ", " + this.result + ", " +
+                this.teacherComment;
 
+    }
+
+}

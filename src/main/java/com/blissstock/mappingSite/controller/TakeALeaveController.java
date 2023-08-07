@@ -20,6 +20,8 @@ import com.blissstock.mappingSite.repository.LeaveInfoRepository;
 import com.blissstock.mappingSite.repository.UserRepository;
 import com.blissstock.mappingSite.service.UserSessionService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -51,6 +53,7 @@ public class TakeALeaveController {
 
   // return "LeaveScreen";
   // }
+  private static final Logger logger = LoggerFactory.getLogger(ReviewListController.class);
 
   @Autowired
   UserRepository userRepo;
@@ -77,6 +80,12 @@ public class TakeALeaveController {
   @GetMapping(value = { "/student/leave/{courseId}", "/teacher/leave/{courseId}", "/admin/leave/{courseId}/{userId}" })
   private String getTakeALeaveForm(@PathVariable Long courseId, @PathVariable(required = false) Long userId,
       Model model) {
+    Long logUserID = getUid();
+    String logRole = getUserRole();
+    logger.info("Called getTakeALeaveForm with parameter(course_id={})", courseId);
+    logger.info("user_id: {}, role: {}", logUserID, logRole);
+    logger.info("Initiate Operation Retrieve Table course_info by Query: Course ID ={}, User ID ={}", courseId,
+        logUserID);
     CourseInfo courseInfo = courseInfoRepo.findByCourseID(courseId);
     String course = courseInfo.getCourseName();
     UserInfo userInfo = courseInfo.getUserInfo();
@@ -87,6 +96,11 @@ public class TakeALeaveController {
     model.addAttribute("course", course);
     model.addAttribute("name", name);
     model.addAttribute("leave", leaveInfo);
+
+    logger.info(
+        "Operation Retrieve Table course_info by Query: Course Name ={}, Teacher Name ={}, Leave Info ={}, user_id={}  | Success",
+        course, name, leaveInfo, logUserID);
+
     UserRole role = userSessionService.getRole();
 
     if (role == UserRole.STUDENT) {
@@ -122,8 +136,19 @@ public class TakeALeaveController {
       String nav_type = "fragments/adminnav";
       model.addAttribute("nav_type", nav_type);
     }
-
+    logger.info("Called getTakeALeaveForm with parameter(course_id={}) Success", courseId);
+    logger.info("user_id: {}, role: {}", logUserID, logRole);
     return "ST0003_TakeALeaveScreen";
+  }
+
+  private Long getUid() {
+    Long uid = userSessionService.getUserAccount().getAccountId();
+    return uid;
+  }
+
+  private String getUserRole() {
+    String userRole = userSessionService.getUserAccount().getRole();
+    return userRole;
   }
 
   @PostMapping(value = { "/student/leave/{courseId}/confirm", "/teacher/leave/{courseId}/confirm",
@@ -135,6 +160,10 @@ public class TakeALeaveController {
     // }
     // System.out.print("Take A Leave ID in confirm
     // screen:"+leaveInfo.getLeaveId());
+    Long logUserID = getUid();
+    String logRole = getUserRole();
+    logger.info("Called postCourseInfoForm with parameter(course_id={})", courseId);
+    logger.info("user_id: {}, role: {}", logUserID, logRole);
     CourseInfo courseInfo = courseInfoRepo.findByCourseID(courseId);
     String course = courseInfo.getCourseName();
     UserInfo userInfo = courseInfo.getUserInfo();
@@ -178,7 +207,8 @@ public class TakeALeaveController {
       String nav_type = "fragments/adminnav";
       model.addAttribute("nav_type", nav_type);
     }
-
+    logger.info("Called postCourseInfoForm with parameter(course_id={}) Success", courseId);
+    logger.info("user_id: {}, role: {}", logUserID, logRole);
     return "ST0004_LeaveConfirmScreen";
   }
 
@@ -190,16 +220,21 @@ public class TakeALeaveController {
       @PathVariable(required = false) Long userId,
       @RequestParam(value = "action", required = true) String action,
       HttpServletRequest request) {
-
+    Long logUserID = getUid();
+    String logRole = getUserRole();
+    logger.info("Called saveLeaveRequestForm with parameter(course_id={}),", courseId);
+    logger.info("user_id: {}, role: {}", logUserID, logRole);
     // LeaveInfo saveLeave = new LeaveInfo(null, leaveInfo.getLeaveDate(),
     // leaveInfo.getLeaveStartTime(),
     // leaveInfo.getLeaveEndTime(),leaveInfo.getReason(),leaveInfo.getJoin());
-    System.out.print("New Leave Request:" + leaveInfo.getLeaveDate());
+    // System.out.print("New Leave Request:" + leaveInfo.getLeaveDate());
     // LeaveInfo leave= leaveRepo.findById(courseId).orElse(null);
     // leaveRepo.save(leaveInfo);
 
     UserRole role = userSessionService.getRole();
-
+    logger.info(
+        "Initiate to Operation Insert Table leave_info by Query: course_id={} and user_id={}",
+        courseId, logUserID);
     if (role == UserRole.ADMIN || role == UserRole.SUPER_ADMIN) {
       Long uid = userId;
       List<JoinCourseUser> joins = joinRepo.findByCourseUser(courseId, uid);
@@ -209,8 +244,13 @@ public class TakeALeaveController {
         joinRepo.save(join);
 
       }
-
+      logger.info("Operation Insert Table leave_info by Query: course_id={} and user_id={} | Success",
+          courseId, uid);
     } else {
+      logger.info(
+          "Initiate to Operation Insert Table leave_info by Query: course_id={} and user_id={}",
+          courseId, logUserID);
+
       Long uid = userSessionService.getUserAccount().getAccountId();
       System.out.print("Current User ID: " + uid);
       List<JoinCourseUser> joins = joinRepo.findByCourseUser(courseId, uid);
@@ -220,6 +260,8 @@ public class TakeALeaveController {
         joinRepo.save(join);
 
       }
+      logger.info("Operation Insert Table leave_info by Query: course_id={} and user_id={} | Success",
+          courseId, uid);
     }
 
     // List<JoinCourseUser> joins=joinRepo.findByCourseUser(courseId, uid);
@@ -229,7 +271,8 @@ public class TakeALeaveController {
     // joinRepo.save(join);
 
     // }
-
+    logger.info("Called saveLeaveRequestForm with parameter(course_id={}), Success", courseId);
+    logger.info("user_id: {}, role: {}", logUserID, logRole);
     return "redirect:/leave/complete";
 
   }

@@ -83,16 +83,24 @@ public class PasswordController {
    */
   @GetMapping("resetPassword")
   public String verifyPassword(Model model, @RequestParam(value = "token", required = true) String token) {
-    logger.info("GET requested");
-    logger.info("Reset password by token called");
+    // logger.info("GET requested");
+    // logger.info("Reset password by token called");
+    logger.info("resetPassword by token with parameter: {}",token);
+
     model.addAttribute("title", "Change");
     if (token == null) {
       model.addAttribute("error", "The password reset mail is invalid! Please check the mail again.");
+      logger.warn("CM00006 with parameter: {} Warning no Token", token);
       return "CM006_reset_password_screen";
-
     }
+
+    logger.info("Initiate to Operation Retrieve Table {} by query {}",
+    "user_account","userService.getUserAccountByToken(token,TokenType.PASSWORD_RESET.getValue())");
     UserAccount userAccount = userService.getUserAccountByToken(token,
         TokenType.PASSWORD_RESET.getValue());
+    logger.info("Operation Retrieve Table {} by query {} Result List {} Success",
+    "user_account","userService.getUserAccountByToken(token,TokenType.PASSWORD_RESET.getValue())",userAccount);
+
     if (userAccount == null) {
       System.out.println("Invalid token");
       String header3 = "Invalid token";
@@ -102,12 +110,16 @@ public class PasswordController {
       model.addAttribute("header3", header3);
       model.addAttribute("header5", header5);
       model.addAttribute("paragraph", paragraph);
+
+      logger.info("MailVerify.html with parameter: {} Success",token);
       return "MailVerify.html";
     } else {
       PasswordDTO passwordDTO = new PasswordDTO();
       model.addAttribute("passwordDTO", passwordDTO);
       passwordDTO.setOldPassword(token);
       model.addAttribute("token", token);
+
+      logger.info("CM006 with parameter: {} Success",token);
       return "CM006_reset_password_screen";
 
     }
@@ -132,7 +144,9 @@ public class PasswordController {
   public String changePassword(Model model, @Valid @ModelAttribute("passwordDTO") PasswordDTO passwordDTO,
       @ModelAttribute("token") String token,
       BindingResult bindingResult) {
+    logger.info("resetPassword with parameter: {}",token);
     logger.info("Post Method");
+
     model.addAttribute("title", "Change");
 
     model.addAttribute("passwordDTO", passwordDTO);
@@ -141,20 +155,31 @@ public class PasswordController {
       logger.warn("validation error, {}", bindingResult.getFieldError());
 
       model.addAttribute("error", bindingResult.getFieldError().getDefaultMessage());
+
+      logger.warn("CM00006 with parameter: {} Warning {bindingResult.getFieldError().getDefaultMessage()}");
       return "CM006_reset_password_screen";
     }
     logger.info("password binding is success");
 
     if (!passwordDTO.getPassword().equals(passwordDTO.getConfirmPassword())) {
-      logger.info("Password and conform password do not match");
+      logger.info("Password and confirm password do not match");
 
-      model.addAttribute("error", "password and confirm password should match");
+      model.addAttribute("error", "Password and confirm password should match.");
+
+      logger.info("CM006 with parameter: {} Success",token);
       return "CM006_reset_password_screen";
     } else {
+      logger.info("Initiate to Operation Retrieve Table {} by query {}",
+      "user_account","userService.getUserAccountByToken(token,TokenType.PASSWORD_RESET.getValue())");
       UserAccount userAccount = userService.getUserAccountByToken(token, TokenType.PASSWORD_RESET.getValue());
+      logger.info("Operation Retrieve Table {} by query {} Result List {} Success",
+      "user_account","userService.getUserAccountByToken(token,TokenType.PASSWORD_RESET.getValue())",userAccount);
+
       if (userAccount == null) {
 
         model.addAttribute("error", "The password reset mail is invalid! Please check the mail again.");
+
+        logger.info("CM006 with parameter: {} Success",token);
         return "CM006_reset_password_screen";
 
       }
@@ -164,11 +189,13 @@ public class PasswordController {
       //
       try {
         httpServletRequest.logout();
+        logger.info("redirect:/login?changeSuccess=true with parameter: {} Success",token);
         return "redirect:/login?changeSuccess=true";
       } 
       
       catch (ServletException e) {
-
+        logger.warn(e. getLocalizedMessage());
+        logger.info("CM0006 with parameter: {} Success",token);
         return "CM0006_change_password_screen";
       }
     }
@@ -180,9 +207,16 @@ public class PasswordController {
       HttpServletRequest request,
       @RequestParam("email") String userEmail) {
     logger.info("POST requested, email {}", userEmail);
+
+    logger.info("Initiate to Operation Retrieve Table {} by query {}",
+    "user_account", "userService.getUserAccountByEmail(userEmail)");
     UserAccount user = userService.getUserAccountByEmail(userEmail);
+    logger.info("Operation Retrieve Table {} by query {} Result List {} Success",
+    "user_account", "userService.getUserAccountByEmail(userEmail)",user);
     
     if (user == null) {
+      logger.info("redirect:/check_email/reset_password?email={}&error=true with parameter: {} Success",
+      userEmail, userEmail);
       return ("redirect:/check_email/reset_password?email=" +
           userEmail +
           "&error=true");
@@ -218,6 +252,7 @@ public class PasswordController {
           
         } catch (Exception e) {
           logger.info(e.toString());
+          logger.warn(e. getLocalizedMessage());
         }
        
     
@@ -238,7 +273,9 @@ public class PasswordController {
       String token) {
     // //System.out.println("change password called");
     // Role being null meaning user is trying to reset password
+    logger.info("change_password with parameter: {},{}",role,token);
     logger.info("GET requested, role {}", role);
+
     if (role != null &&
         !(role.equals("student") || role.equals("teacher") || role.equals("admin"))) {
       throw new ResponseStatusException(
@@ -258,9 +295,14 @@ public class PasswordController {
       if (token == null) {
         isTokenValid = false;
       } else {
+        logger.info("Initiate to Operation Retrieve Table {} by query {}",
+        "token","userService.getToken(token,TokenType.PASSWORD_RESET)");
         Token savedToken = userService.getToken(
             token,
             TokenType.PASSWORD_RESET);
+        logger.info("Operation Retrieve Table {} by query {} Result List {} Success",
+        "token","userService.getToken(token,TokenType.PASSWORD_RESET)",savedToken);
+
         if (savedToken == null) {
           isTokenValid = false;
         } else {
@@ -282,6 +324,7 @@ public class PasswordController {
     model.addAttribute("passwordDTO", passwordDTO);
     logger.trace("Title {}", model.getAttribute("title"));
 
+    logger.info("CM0006 with parameter: {},{} Success",role,token);
     return "CM0006_change_password_screen";
   }
 
@@ -292,6 +335,8 @@ public class PasswordController {
       BindingResult bindingResult,@PathVariable(name = "role", required = true) String role,
       String token,HttpServletRequest request) {
 
+    logger.info("change_password with parameter: {},{}",role,token);
+
     String title = "Change Password";
     model.addAttribute("type", "OLD_PASSWORD");
     model.addAttribute("title", title);
@@ -301,6 +346,8 @@ public class PasswordController {
       logger.warn("validation error, {}", bindingResult.getFieldError());
 
       model.addAttribute("error", bindingResult.getFieldError().getDefaultMessage());
+
+      logger.info("CM0006 with parameter: {},{} Success",role,token);
       return "CM0006_change_password_screen";
     }
     logger.info("password binding is success");
@@ -310,16 +357,22 @@ public class PasswordController {
     // //System.out.println(passwordDTO.getOldPassword());
 
     if (!passwordDTO.getPassword().equals(passwordDTO.getConfirmPassword())) {
-      logger.info("Password and conform password do not match");
+      logger.info("Password and confirm password do not match.");
 
-      model.addAttribute("error", "password and confirm password should match");
+      model.addAttribute("error", "Password and confirm password should match.");
+      logger.info("CM0006  with parameter: {},{} Success",role,token);
       return "CM0006_change_password_screen";
     }
     // get user email
 
     UserAccount userAccount = userSessionService.getUserAccount();
     Long userId = userSessionService.getUserAccount().getAccountId();
-    UserInfo userInfo = userRepo.findById(userId).orElse(null);              
+
+    logger.info("Initiate to Operation Retrieve Table {} by query {}",
+    "user_info,user_account","userRepo.findById(userId).orElse(null)");
+    UserInfo userInfo = userRepo.findById(userId).orElse(null);
+    logger.info("Operation Retrieve Table {} by query {} Result List {} Success",
+    "user_info,user_account","userRepo.findById(userId).orElse(null)",userInfo);            
 
     if (passwordEncoder.matches(passwordDTO.getOldPassword(), userAccount.getPassword())) {
 
@@ -327,7 +380,7 @@ public class PasswordController {
       userService.updateUserAccount(userAccount);
 
       model.addAttribute("success", "Password Change Success");
-      model.addAttribute("message", "Please login with new password to continue");
+      model.addAttribute("message", "Please login with new password to continue.");
 
       new Thread(new Runnable() {
         public void run() {
@@ -364,6 +417,7 @@ public class PasswordController {
             
           } catch (Exception e) {
             logger.info(e.toString());
+            logger.warn(e. getLocalizedMessage());
           }
         }
       }).start();
@@ -372,17 +426,19 @@ public class PasswordController {
       // model.addAttribute("title", "Login");
       try {
         httpServletRequest.logout();
+        logger.info("redirect:/login?changeSuccess=true with parameter: {},{} Success",role,token);
         return "redirect:/login?changeSuccess=true";
       } catch (ServletException e) {
-
+        logger.info("CM0006 with parameter: {},{} Success",role,token);
         return "CM0006_change_password_screen";
       }
 
       // return "CM0005_login.html";
     } else {
-      logger.info(" Password and stored password do not match");
+      logger.info(" Password and stored password do not match.");
 
-      model.addAttribute("error", "Please enter the correct old password");
+      model.addAttribute("error", "Please enter the correct old password.");
+      logger.info("CM0006 with parameter: {},{} Success",role,token);
       return "CM0006_change_password_screen";
 
     }

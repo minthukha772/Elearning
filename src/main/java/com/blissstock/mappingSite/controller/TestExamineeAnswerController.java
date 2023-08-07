@@ -4,6 +4,8 @@ import javax.validation.Valid;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,13 +16,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.blissstock.mappingSite.entity.TestQuestion;
 import com.blissstock.mappingSite.entity.TestQuestionCorrectAnswer;
-import com.blissstock.mappingSite.entity.TestStudentAnswer;
+import com.blissstock.mappingSite.entity.TestExamineeAnswer;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.exceptions.UnauthorizedFileAccessException;
 import com.blissstock.mappingSite.repository.TestQuestionCorrectAnswerRepositoy;
 import com.blissstock.mappingSite.repository.TestQuestionRepository;
 import com.blissstock.mappingSite.repository.TestRepository;
-import com.blissstock.mappingSite.repository.TestStudentAnswerRepository;
+import com.blissstock.mappingSite.repository.TestExamineeAnswerRepository;
 import com.blissstock.mappingSite.repository.UserInfoRepository;
 import com.blissstock.mappingSite.service.StorageService;
 import com.blissstock.mappingSite.service.StorageServiceImpl;
@@ -30,9 +32,12 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import org.springframework.util.StringUtils;
 
 @Controller
-public class TestStudentAnswerController {
+public class TestExamineeAnswerController {
+
+    private static Logger logger = LoggerFactory.getLogger(TestController.class);
+
     @Autowired
-    TestStudentAnswerRepository testStudentAnswerRepository;
+    TestExamineeAnswerRepository TestExamineeAnswerRepository;
 
     @Autowired
     UserSessionService userSessionService;
@@ -60,17 +65,31 @@ public class TestStudentAnswerController {
             @RequestParam(value = "answer_type") String answer_type,
             @RequestParam(value = "answer_material", required = false) MultipartFile answer_material)
             throws JsonMappingException, JsonProcessingException, UnauthorizedFileAccessException {
+        Long userID = getUid();
+        logger.info(
+                "Called submitAnswer with parameter (test_id={}, question_id={}, student_answer={}, answer_type={}, answer_material={})",
+                test_id, question_id, student_answer, answer_type, answer_material.getSize());
+        logger.info("user_id: {}", userID);
         Long student_id = userSessionService.getUserAccount().getAccountId();
+        logger.info("Initiate Operation Retrieve Table user_info by Query: student_id={}", student_id);
         UserInfo student = userInfoRepository.findStudentById(student_id);
+        logger.info("Operation Retrieve Table user_info by Query: student_id={}. Result List: student={} | Success",
+                student_id, student);
         String answerStatus = "FALSE";
         Integer acquiredmarks = 0;
-
+        logger.info("Initiate Operation Retrieve Table test_question by Query: question_id={}", question_id);
         TestQuestion question = testQuestionRepository.getQuestionByID(question_id);
-
+        logger.info(
+                "Operation Retrieve Table test_question by Query: question_id={}. Result List: Question={} | Success",
+                question_id, question);
         if (!answer_type.equals("FREE_ANSWER")) {
+            logger.info("Initiate Operation Retrieve Table test_question_correct_answer by Query: question_id={}",
+                    question_id);
             TestQuestionCorrectAnswer questionAndCorrectAnswer = testQuestionCorrectAnswerRepositoy
                     .getCorrectAnswerByQuestion(question_id);
-
+            logger.info(
+                    "Operation Retrieve Table test_question_correct_answer by Query: question_id={}. Result List: questionAndCorrectAnswer={} | Success",
+                    question_id, questionAndCorrectAnswer);
             JSONArray studentAnswersArray = new JSONArray(student_answer);
             JSONArray correctAnswersArray = new JSONArray(questionAndCorrectAnswer.getCorrectAnswer());
             for (var i = 0; i < correctAnswersArray.length(); i++) {
@@ -87,13 +106,22 @@ public class TestStudentAnswerController {
             if (answerStatus == "TRUE") {
                 acquiredmarks = question.getMaximum_mark();
             }
-            TestStudentAnswer checkTestStudent = testStudentAnswerRepository
+            logger.info("Initiate Operation Retrieve Table test_student_answer by Query: question_id={}, student_id={}",
+                    question_id, student_id);
+            TestExamineeAnswer checkTestStudent = TestExamineeAnswerRepository
                     .getStudentAnswerByQuestionID(question.getId(), student_id);
+            logger.info(
+                    "Operation Retrieve Table test_student_answer by Query: question_id={}, student_id={}. Result List: checkTestStudent={} | Success",
+                    question_id, student_id, checkTestStudent);
+
             if (checkTestStudent == null) {
-                TestStudentAnswer testStudentAnswer = new TestStudentAnswer(null, question.getTest(),
+                TestExamineeAnswer TestExamineeAnswer = new TestExamineeAnswer(null, question.getTest(),
                         student, question,
                         student_answer, "", answerStatus, acquiredmarks, "MARKED");
-                testStudentAnswerRepository.save(testStudentAnswer);
+                        logger.info( "Initiate to Operation Insert Table Test Student Answer Data {}", TestExamineeAnswer.display());
+                TestExamineeAnswerRepository.save(TestExamineeAnswer);
+                logger.info( "Operation Insert Table Test Student Answer Data {} | Success", TestExamineeAnswer.display());
+
             }
         } else {
             String originalFileName = "";
@@ -107,15 +135,20 @@ public class TestStudentAnswerController {
                         true);
             }
 
-            TestStudentAnswer checkTestStudent = testStudentAnswerRepository
+            TestExamineeAnswer checkTestStudent = TestExamineeAnswerRepository
                     .getStudentAnswerByQuestionID(question.getId(), student_id);
             if (checkTestStudent == null) {
-                TestStudentAnswer testStudentAnswer = new TestStudentAnswer(null, question.getTest(),
+                TestExamineeAnswer TestExamineeAnswer = new TestExamineeAnswer(null, question.getTest(),
                         student, question,
                         student_answer, originalFileName, "", 0, "MARKING");
-                testStudentAnswerRepository.save(testStudentAnswer);
+                        logger.info( "Initiate to Operation Insert Table Test Student Answer Data {}", TestExamineeAnswer.display());
+                TestExamineeAnswerRepository.save(TestExamineeAnswer);
+                logger.info( "Operation Insert Table Test Student Answer Data {} | Success", TestExamineeAnswer.display());
             }
         }
+        logger.info(
+                "Called submitAnswer with parameter (test_id={}, question_id={}, student_answer={}, answer_type={}, answer_material={}) Success",
+                test_id, question_id, student_answer, answer_type, answer_material.getSize());
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
@@ -125,10 +158,19 @@ public class TestStudentAnswerController {
             @RequestParam(value = "id") Long id,
             @RequestParam(value = "acquired_mark") Integer acquired_mark)
             throws UnauthorizedFileAccessException {
-        TestStudentAnswer testStudentAnswer = testStudentAnswerRepository.getStudentAnswerByID(id);
-        testStudentAnswer.setAcquired_mark(acquired_mark);
-        testStudentAnswer.setMarked_status("MARKED");
-        testStudentAnswerRepository.save(testStudentAnswer);
+        logger.info("Called updateStudentFreeQuestion with parameter(id={}, acquired_mark={})", id, acquired_mark);   
+        logger.info("Initiate Operation Retrieve Table test_student_answer by Query: id={}",
+                    id);     
+        TestExamineeAnswer TestExamineeAnswer = TestExamineeAnswerRepository.getStudentAnswerByID(id);
+        logger.info(
+                    "Operation Retrieve Table test_student_answer by Query: id={}. Result List: TestExamineeAnswer={} | Success",
+                    TestExamineeAnswer);
+        TestExamineeAnswer.setAcquired_mark(acquired_mark);
+        TestExamineeAnswer.setMarked_status("MARKED");
+        logger.info( "Initiate to Operation Insert Table Test Student Answer Data {}", TestExamineeAnswer.display());
+        TestExamineeAnswerRepository.save(TestExamineeAnswer);
+        logger.info( "Operation Insert Table Test Student Answer Data {} | Success", TestExamineeAnswer.display());
+        logger.info("Called updateStudentFreeQuestion with parameter(id={}, acquired_mark={}) Success", id, acquired_mark);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 

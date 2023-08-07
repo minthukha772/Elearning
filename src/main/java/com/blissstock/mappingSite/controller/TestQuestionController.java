@@ -32,12 +32,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.blissstock.mappingSite.entity.Result;
+import com.blissstock.mappingSite.entity.TestResult;
 import com.blissstock.mappingSite.entity.Test;
 import com.blissstock.mappingSite.entity.TestQuestion;
 import com.blissstock.mappingSite.entity.TestQuestionCorrectAnswer;
-import com.blissstock.mappingSite.entity.TestStudent;
-import com.blissstock.mappingSite.entity.TestStudentAnswer;
+import com.blissstock.mappingSite.entity.TestExaminee;
+import com.blissstock.mappingSite.entity.TestExamineeAnswer;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.exceptions.UnauthorizedFileAccessException;
 import com.blissstock.mappingSite.model.AnswerModel;
@@ -50,8 +50,8 @@ import com.blissstock.mappingSite.repository.ResultRepository;
 import com.blissstock.mappingSite.repository.TestQuestionCorrectAnswerRepositoy;
 import com.blissstock.mappingSite.repository.TestQuestionRepository;
 import com.blissstock.mappingSite.repository.TestRepository;
-import com.blissstock.mappingSite.repository.TestStudentAnswerRepository;
-import com.blissstock.mappingSite.repository.TestStudentRepository;
+import com.blissstock.mappingSite.repository.TestExamineeAnswerRepository;
+import com.blissstock.mappingSite.repository.TestExamineeRepository;
 import com.blissstock.mappingSite.repository.UserInfoRepository;
 import com.blissstock.mappingSite.service.StorageService;
 import com.blissstock.mappingSite.service.StorageServiceImpl;
@@ -89,13 +89,13 @@ public class TestQuestionController {
     StorageService storageService;
 
     @Autowired
-    TestStudentAnswerRepository testStudentAnswerRepository;
+    TestExamineeAnswerRepository TestExamineeAnswerRepository;
 
     @Autowired
     UserInfoRepository userInfoRepository;
 
     @Autowired
-    TestStudentRepository testStudentRepository;
+    TestExamineeRepository TestExamineeRepository;
 
     @Autowired
     ResultRepository resultRepository;
@@ -104,8 +104,14 @@ public class TestQuestionController {
     @GetMapping(value = { "/teacher/exam/{test_id}/questions", "/admin/exam/{test_id}/questions" })
     private String getQuestionsByTest(@PathVariable Long test_id, Model model)
             throws ParseException, JsonMappingException, JsonProcessingException {
+        Long userID = getUid();
+        logger.info("Called getQuestionsByTest with parameter(user_id={})", userID);
         List<QuestionAndCorrectAnswer> questionAndCorrectAnswers = new ArrayList<>();
+        logger.info("Initiate Operation Retrieve Table test_question by Query: test_id={}", test_id);
         List<TestQuestion> testQuestions = testQuestionRepository.getQuestionByTest(test_id);
+        logger.info(
+                "Operation Retrieve Table test_question by Query: test_id={}. Result List: testQuestions={} | Success",
+                test_id, testQuestions.size());
         for (TestQuestion testQuestion : testQuestions) {
             long fileSeparator = 100000L + test_id;
             FileInfo file = storageService.loadQuestionMaterials(fileSeparator, testQuestion.getQuestion_materials());
@@ -113,8 +119,13 @@ public class TestQuestionController {
 
             List<ChoiceModel> choices = new ArrayList<>();
             if (!testQuestion.getQuestion_type().equals("FREE_ANSWER")) {
+                logger.info("Initiate Operation Retrieve Table test_question_correct_answer by Query: question_id={}",
+                        testQuestion.getId());
                 TestQuestionCorrectAnswer testQuestionCorrectAnswer = testQuestionCorrectAnswerRepositoy
                         .getCorrectAnswerByQuestion(testQuestion.getId());
+                logger.info(
+                        "Operation Retrieve Table test_question_correct_answer by Query: question_id={}. Result List: test_question_correct_answer={} | Success",
+                        testQuestion.getId(), testQuestionCorrectAnswer);
                 JSONArray choiceArrary = new JSONArray(testQuestion.getChoices());
                 JSONArray answerArray = new JSONArray(testQuestionCorrectAnswer.getCorrectAnswer());
                 for (int i = 0; i < choiceArrary.length(); i++) {
@@ -140,6 +151,7 @@ public class TestQuestionController {
         model.addAttribute("test_id", test_id);
         model.addAttribute("user_role", userSessionService.getRole());
         model.addAttribute("questionList", questionAndCorrectAnswers);
+        logger.info("Called getQuestionsByTest with parameter(user_id={}) Success", userID);
         return "AT0007_TestQuestions.html";
     }
 
@@ -149,12 +161,32 @@ public class TestQuestionController {
     private String getStudentAnswer(@PathVariable Long test_id,
             @PathVariable Long student_id, Model model)
             throws ParseException, JsonMappingException, JsonProcessingException {
+        Long userID = getUid();
+        logger.info("Called getStudentAnswer with parameter(user_id={})", userID);
         List<QuestionAndCorrectAnswerAndStudentAnswer> questionAndCorrectAnswers = new ArrayList<>();
+        logger.info("Initiate Operation Retrieve Table test_question by Query: test_id={}", test_id);
         List<TestQuestion> testQuestions = testQuestionRepository.getQuestionByTest(test_id);
+        logger.info(
+                "Operation Retrieve Table test_question by Query: test_id={}. Result List: testQuestions={} | Success",
+                test_id, testQuestions.size());
+        logger.info("Initiate Operation Retrieve Table test_question by Query: test_id={}", test_id);
         Integer freeAnswerCount = testQuestionRepository.getFreeAnswerCount(test_id);
-        Integer markingCount = testStudentAnswerRepository.getMarkingQuestionCount(test_id);
+        logger.info(
+                "Operation Retrieve Table test_question by Query: test_id={}. Result List: freeAnswerCount={} | Success",
+                test_id, freeAnswerCount);
+        logger.info("Initiate Operation Retrieve Table test_student_answer by Query: test_id={}", test_id);
+        Integer markingCount = TestExamineeAnswerRepository.getMarkingQuestionCount(test_id);
+        logger.info(
+                "Operation Retrieve Table test_student_answer by Query: test_id={}. Result List: markingCount={} | Success",
+                test_id, markingCount);
+        logger.info("Initiate Operation Retrieve Table test by Query: test_id={}", test_id);
         Test test = testRepository.getTestByID(test_id);
+        logger.info("Operation Retrieve Table test by Query: test_id={}. Result List: test={} | Success", test_id,
+                test);
+        logger.info("Initiate Operation Retrieve Table user_info by Query: student_id={}", student_id);
         UserInfo userInfo = userInfoRepository.findStudentById(student_id);
+        logger.info("Operation Retrieve Table user_info by Query: student_id={}. Result List: userInfo={} | Success",
+                student_id, userInfo);
         String markedStatus = "";
 
         for (TestQuestion testQuestion : testQuestions) {
@@ -169,14 +201,14 @@ public class TestQuestionController {
             if (!testQuestion.getQuestion_type().equals("FREE_ANSWER")) {
                 TestQuestionCorrectAnswer testQuestionCorrectAnswer = testQuestionCorrectAnswerRepositoy
                         .getCorrectAnswerByQuestion(testQuestion.getId());
-                TestStudentAnswer testStudentAnswer = testStudentAnswerRepository.getStudentAnswer(student_id,
+                TestExamineeAnswer TestExamineeAnswer = TestExamineeAnswerRepository.getStudentAnswer(student_id,
                         testQuestion.getId());
 
                 JSONArray choiceArrary = new JSONArray(testQuestion.getChoices());
                 JSONArray answerArray = new JSONArray(testQuestionCorrectAnswer.getCorrectAnswer());
                 JSONArray studentchoiceArray = new JSONArray();
-                if (testStudentAnswer != null) {
-                    studentchoiceArray = new JSONArray(testStudentAnswer.getStudent_answer());
+                if (TestExamineeAnswer != null) {
+                    studentchoiceArray = new JSONArray(TestExamineeAnswer.getExaminee_answer());
                 }
                 for (int i = 0; i < choiceArrary.length(); i++) {
                     JSONObject choice = choiceArrary.getJSONObject(i);
@@ -191,7 +223,7 @@ public class TestQuestionController {
                     choices.set(correct, new StudentChoiceModel(correct, choice, true, false));
                 }
 
-                if (testStudentAnswer != null) {
+                if (TestExamineeAnswer != null) {
                     for (int k = 0; k < studentchoiceArray.length(); k++) {
                         JSONObject answer = studentchoiceArray.getJSONObject(k);
                         int student_choice = answer.getInt("student_choice");
@@ -201,37 +233,37 @@ public class TestQuestionController {
                                 new StudentChoiceModel(student_choice, choice, correctAnswer, true));
                     }
                 }
-            
-                boolean allCorrectAnswersMatched = true; 
-            
+
+                boolean allCorrectAnswersMatched = true;
+
                 for (int l = 0; l < choices.size(); l++) {
                     Boolean correctAnswer = choices.get(l).isCorrect();
                     Boolean studentChoice = choices.get(l).isStudent_choice();
-            
-                    if (correctAnswer && !studentChoice) {                        
+
+                    if (correctAnswer && !studentChoice) {
                         allCorrectAnswersMatched = false;
-                        break; 
+                        break;
                     }
                 }
-            
-                if (allCorrectAnswersMatched) {                    
+
+                if (allCorrectAnswersMatched) {
                     acquired_mark = testQuestion.getMaximum_mark();
                 }
             }
-             
+
             else {
-                TestStudentAnswer testStudentAnswer = testStudentAnswerRepository.getStudentAnswer(student_id,
+                TestExamineeAnswer TestExamineeAnswer = TestExamineeAnswerRepository.getStudentAnswer(student_id,
                         testQuestion.getId());
-                if (testStudentAnswer != null) {
-                    acquired_mark = testStudentAnswer.getAcquired_mark();
+                if (TestExamineeAnswer != null) {
+                    acquired_mark = TestExamineeAnswer.getAcquired_mark();
                     long studentfileSeparator = Long.parseLong(test_id.toString()
-                            + testStudentAnswer.getQuestion().getId().toString() + student_id.toString());
-                    studentAnswer = testStudentAnswer.getStudent_answer();
+                            + TestExamineeAnswer.getQuestion().getId().toString() + student_id.toString());
+                    studentAnswer = TestExamineeAnswer.getExaminee_answer();
                     FileInfo studentAnswerFile = storageService.loadAnswermaterials(studentfileSeparator,
-                            testStudentAnswer.getStudent_answer_link());
+                            TestExamineeAnswer.getExaminee_answer_link());
                     studentAnswerURL = studentAnswerFile.getUrl();
-                    student_answer_id = Integer.parseInt(testStudentAnswer.getId().toString());
-                    markedStatus = testStudentAnswer.getMarked_status();
+                    student_answer_id = Integer.parseInt(TestExamineeAnswer.getId().toString());
+                    markedStatus = TestExamineeAnswer.getMarked_status();
                 }
             }
             QuestionAndCorrectAnswerAndStudentAnswer studentAnswerList = new QuestionAndCorrectAnswerAndStudentAnswer(
@@ -246,7 +278,7 @@ public class TestQuestionController {
 
         }
         try {
-            Result viewExamResult = resultRepository.getResultByTestIdAndUser(test_id, student_id);
+            TestResult viewExamResult = resultRepository.getResultByTestIdAndUser(test_id, student_id);
             if (viewExamResult != null) {
                 model.addAttribute("comment", viewExamResult.getTeacherComment());
 
@@ -268,7 +300,7 @@ public class TestQuestionController {
         } else {
             model.addAttribute("status", "Marking");
         }
-
+        logger.info("Called getStudentAnswer with parameter(user_id={})", userID);
         return "AT0006_StudentAnswerList.html";
     }
 
@@ -276,13 +308,32 @@ public class TestQuestionController {
     @GetMapping(value = { "/student/exam/{test_id}/questions" })
     private String getStudentQuestions(@PathVariable Long test_id, Model model)
             throws ParseException, JsonMappingException, JsonProcessingException {
+        Long userID = getUid();
+        logger.info("Called getStudentQuestions with parameter(user_id={})", userID);
+        logger.info("Initiate Operation Retrieve Table test by Query: test_id={}", test_id);
         Test testinfo = testRepository.getTestByID(test_id);
+        logger.info("Operation Retrieve Table test by Query: test_id={}. Result List: testinfo={} | Success", test_id,
+                testinfo);
         Date examDate = testinfo.getDate();
         LocalDate convertedExamDate = examDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         LocalDate currentDate = LocalDate.now();
         Long studentId = userSessionService.getId();
-        TestStudent studentInfo = testStudentRepository.findByTestIdAndUid(test_id, studentId);
-        TestStudentAnswer studentAnswerInfo = testStudentAnswerRepository.getStudentAnswerByTestAndStudent(studentId, test_id);
+
+        logger.info("Initiate Operation Retrieve Table test_student by Query: test_id={}, studentId={}", test_id,
+                studentId);
+        TestExaminee studentInfo = TestExamineeRepository.findByTestIdAndUid(test_id, studentId);
+        logger.info(
+                "Operation Retrieve Table test_student by Query: test_id={}, studentId={}. Result List: studentInfo={} | Success",
+                test_id, studentId, studentInfo);
+
+        logger.info("Initiate Operation Retrieve Table test_student_answer by Query: studentId={}, test_id={}",
+                studentId, test_id);
+        TestExamineeAnswer studentAnswerInfo = TestExamineeAnswerRepository.getStudentAnswerByTestAndStudent(studentId,
+                test_id);
+        logger.info(
+                "Operation Retrieve Table test_student_answer by Query: studentId={}, test_id={}. Result List: studentAnswerInfo={} | Success",
+                studentId, test_id, studentAnswerInfo);
+
         String studentExamStartTime = studentInfo.getStudentExamStartTime();
         String examTitle = testinfo.getDescription();
 
@@ -303,7 +354,6 @@ public class TestQuestionController {
             model.addAttribute("exam_announce", examAnnouncement);
             return "ST0006_ExamQuestionListStudent.html";
         }
-        
 
         if (currentDate.isBefore(convertedExamDate)) {
             examAnnouncement = "Apologies! Exam is not currently available yet. Please note that the exam will be accessible on "
@@ -320,7 +370,9 @@ public class TestQuestionController {
 
                     studentExamStartTime = currentTime.toString();
                     studentInfo.setStudentExamStartTime(studentExamStartTime);
-                    testStudentRepository.save(studentInfo);
+                    logger.info("Initiate to Operation Insert Table Test Student Data {}", studentInfo.display());
+                    TestExamineeRepository.save(studentInfo);
+                    logger.info("Operation Insert Table Test Student Data {} | Success", studentInfo.display());
 
                     List<QuestionAndCorrectAnswer> questionAndCorrectAnswers = new ArrayList<>();
                     Test test = testRepository.getTestByID(test_id);
@@ -367,13 +419,23 @@ public class TestQuestionController {
                     model.addAttribute("exam_end_time", examEndTime);
                     model.addAttribute("exam_title", examTitle);
                     model.addAttribute("questionList", questionAndCorrectAnswers);
-
+                    logger.info("Called getStudentQuestions with parameter(user_id={}) Success", userID);
                     return "ST0006_ExamQuestionListStudent.html";
                 } else if (studentExamStartTime != null) {
 
                     List<QuestionAndCorrectAnswer> questionAndCorrectAnswers = new ArrayList<>();
+
+                    logger.info("Initiate Operation Retrieve Table test by Query: test_id={}", test_id);
                     Test test = testRepository.getTestByID(test_id);
+                    logger.info("Operation Retrieve Table test by Query: test_id={}. Result List: test={} | Success",
+                            test_id, test);
+
+                    logger.info("Initiate Operation Retrieve Table test_question by Query: test_id={}", test_id);
                     List<TestQuestion> testQuestions = testQuestionRepository.getQuestionByTest(test_id);
+                    logger.info(
+                            "Operation Retrieve Table test_question by Query: test_id={}. Result List: testQuestions={} | Success",
+                            test_id, testQuestions.size());
+
                     for (TestQuestion testQuestion : testQuestions) {
                         long fileSeparator = 100000L + test_id;
                         FileInfo file = storageService.loadQuestionMaterials(fileSeparator,
@@ -416,7 +478,7 @@ public class TestQuestionController {
                     model.addAttribute("exam_end_time", examEndTime);
                     model.addAttribute("exam_title", examTitle);
                     model.addAttribute("questionList", questionAndCorrectAnswers);
-
+                    logger.info("Called getStudentQuestions with parameter(user_id={}) Success", userID);
                     return "ST0006_ExamQuestionListStudent.html";
                 }
 
@@ -469,7 +531,7 @@ public class TestQuestionController {
                     model.addAttribute("exam_end_time", examEndTime);
                     model.addAttribute("exam_title", examTitle);
                     model.addAttribute("questionList", questionAndCorrectAnswers);
-
+                    logger.info("Called getStudentQuestions with parameter(user_id={}) Success", userID);
                     return "ST0006_ExamQuestionListStudent.html";
                 }
             }
@@ -532,6 +594,7 @@ public class TestQuestionController {
         // model.addAttribute("questionList", questionAndCorrectAnswers);
 
         model.addAttribute("exam_announce", examAnnouncement);
+        logger.info("Called getStudentQuestions with parameter(user_id={}) Success", userID);
         return "ST0006_ExamQuestionListStudent.html";
     }
 
@@ -540,28 +603,48 @@ public class TestQuestionController {
     private ResponseEntity saveComment(@RequestBody String payLoad) {
         try {
             Long userID = getUid();
+            logger.info("Called saveComment with parameter(payLoad={}, userID={})", payLoad, userID);
             JSONObject jsonObject = new JSONObject(payLoad);
             Long testId = jsonObject.getLong("test_Id");
             Long studentId = jsonObject.getLong("student_Id");
             String comment = jsonObject.getString("comment");
-            Result result = new Result();
+            TestResult result = new TestResult();
 
+            logger.info("Initiate Operation Retrieve Table test by Query: testId={}", testId);
             Test test = testRepository.getTestByID(testId);
-            UserInfo userInfo = userInfoRepository.findStudentById(studentId);
+            logger.info("Operation Retrieve Table test by Query: testId={}. Result List: test={} | Success", testId,
+                    test);
 
-            Result viewCommentResult = resultRepository.getResultByTestIdAndUser(testId, studentId);
+            logger.info("Initiate Operation Retrieve Table user_info by Query: studentId={}", studentId);
+            UserInfo userInfo = userInfoRepository.findStudentById(studentId);
+            logger.info("Operation Retrieve Table user_info by Query: studentId={}. Result List: userInfo={} | Success",
+                    studentId, userInfo);
+
+            logger.info("Initiate Operation Retrieve Table result by Query: testId={}, studentId={}", testId,
+                    studentId);
+            TestResult viewCommentResult = resultRepository.getResultByTestIdAndUser(testId, studentId);
+            logger.info(
+                    "Operation Retrieve Table result by Query: testId={}, studentId={}. Result List: viewCommentResult={} | Success",
+                    testId, studentId, viewCommentResult);
+
             if (viewCommentResult == null) {
 
                 result.setTest(test);
                 result.setUser(userInfo);
                 result.setTeacherComment(comment);
+
+                logger.info("Initiate to Operation Insert Table Result Data {}", result.display());
                 resultRepository.save(result);
+                logger.info("Operation Insert Table Result Data {} | Success", result.display());
 
             } else {
                 viewCommentResult.setTeacherComment(comment);
-                resultRepository.save(viewCommentResult);
-            }
 
+                logger.info("Initiate to Operation Insert Table Result Data {}", viewCommentResult.display());
+                resultRepository.save(viewCommentResult);
+                logger.info("Operation Insert Table Result Data {} | Success", viewCommentResult.display());
+            }
+            logger.info("Called saveComment with parameter(payLoad={}, userID={}) Success", payLoad, userID);
             return ResponseEntity.ok(HttpStatus.OK);
 
         } catch (Exception e) {
@@ -582,6 +665,10 @@ public class TestQuestionController {
             @RequestParam(value = "maximum_mark") Integer maximum_mark)
             throws ParseException, UnauthorizedFileAccessException {
         Long userID = getUid();
+        logger.info(
+                "Called createQuestionByTestID with parameter(testID={}, question_text={}, question_materials={}, choices={}, answers={}, questions_type={}, maximum_mark={}, userID={},)",
+                testID, question_text, question_materials, choices, answers, questions_type, maximum_mark, userID);
+
         String fileType = "BLANK";
         String originalFileName = "";
         if (question_materials != null) {
@@ -608,12 +695,26 @@ public class TestQuestionController {
                 fileType = "BLANK";
             }
         }
+
+        logger.info("Initiate Operation Retrieve Table test by Query: testID={}", testID);
         Test test = testRepository.getTestByID(testID);
+        logger.info("Operation Retrieve Table test by Query: testID={}. Result List: test={} | Success", testID, test);
+
         TestQuestion testQuestion = new TestQuestion(null, test, question_text, originalFileName, fileType, choices,
                 questions_type, maximum_mark);
+
+        logger.info("Initiate to Operation Insert Table Test Question Data {}", testQuestion.display());
         TestQuestion result = testQuestionRepository.save(testQuestion);
+        logger.info("Operation Insert Table Test Question Data {} | Success", testQuestion.display());
+
         TestQuestionCorrectAnswer correctAnswer = new TestQuestionCorrectAnswer(null, result, answers);
+
+        logger.info("Initiate to Operation Insert Table Test Question Correct Answer Data {}", correctAnswer.display());
         testQuestionCorrectAnswerRepositoy.save(correctAnswer);
+        logger.info("Operation Insert Table Test Question Correct Answer Data {} | Success", correctAnswer.display());
+        logger.info(
+                "Called createQuestionByTestID with parameter(testID={}, question_text={}, question_materials={}, choices={}, answers={}, questions_type={}, maximum_mark={}, userID={},) Success",
+                testID, question_text, question_materials, choices, answers, questions_type, maximum_mark, userID);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
@@ -631,6 +732,10 @@ public class TestQuestionController {
             throws ParseException, UnauthorizedFileAccessException {
 
         Long userID = getUid();
+        logger.info(
+                "Called editQuestionByTestID with parameter(testID={}, questionID={}, question_text={}, question_materials={}, choices={}, answers={}, questions_type={}, maximum_mark={}, userID={},)",
+                testID, questionID, question_text, question_materials, choices, answers, questions_type, maximum_mark,
+                userID);
         String fileType = "BLANK";
         String originalFileName = "";
         TestQuestion initQuestion = testQuestionRepository.getById(questionID);
@@ -661,23 +766,43 @@ public class TestQuestionController {
             fileType = initQuestion.getQuestion_materials_type();
             originalFileName = initQuestion.getQuestion_materials();
         }
+
+        logger.info("Initiate Operation Retrieve Table test by Query: testID={}", testID);
         Test test = testRepository.getTestByID(testID);
+        logger.info("Operation Retrieve Table test by Query: testID={}. Result List: test={} | Success", testID, test);
+
         TestQuestion testQuestion = new TestQuestion(questionID, test, question_text, originalFileName, fileType,
                 choices, questions_type, maximum_mark);
+
+        logger.info("Initiate to Operation Insert Table Test Question Data {}", testQuestion.display());
         TestQuestion result = testQuestionRepository.save(testQuestion);
+        logger.info("Operation Insert Table Test Question Data {} | Success", testQuestion.display());
+
         TestQuestionCorrectAnswer testQuestionCorrectAnswer = testQuestionCorrectAnswerRepositoy
                 .getCorrectAnswerByQuestion(result.getId());
         TestQuestionCorrectAnswer correctAnswer = new TestQuestionCorrectAnswer(testQuestionCorrectAnswer.getId(),
                 result, answers);
+
+        logger.info("Initiate to Operation Insert Table Test Question Correct Answer Data {}", correctAnswer.display());
         testQuestionCorrectAnswerRepositoy.save(correctAnswer);
+        logger.info("Operation Insert Table Test Question Correct Answer Data {} | Success", correctAnswer.display());
+        logger.info(
+                "Called editQuestionByTestID with parameter(testID={}, questionID={}, question_text={}, question_materials={}, choices={}, answers={}, questions_type={}, maximum_mark={}, userID={},) Success",
+                testID, questionID, question_text, question_materials, choices, answers, questions_type, maximum_mark,
+                userID);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @Valid
     @GetMapping(value = { "/teacher/delete-question", "/admin/delete-question" })
     private ResponseEntity deleteQuestionByQuestionID(@RequestParam(required = false) Long question_id) {
+
+        Long userID = getUid();
+        logger.info("Called deleteQuestionByQuestionID with parameter(question_id={}, userID={})", question_id, userID);
         Integer deleteCorrectAnswer = testQuestionCorrectAnswerRepositoy.deleteByQuestionID(question_id);
         Integer deleteQuestion = testQuestionRepository.deleteQuestionByID(question_id);
+        logger.info("Called deleteQuestionByQuestionID with parameter(question_id={}, userID={}) Success", question_id,
+                userID);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 

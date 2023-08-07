@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 
 import com.blissstock.mappingSite.entity.Syllabus;
+import com.blissstock.mappingSite.enums.UserRole;
 import com.blissstock.mappingSite.exceptions.CourseNotFoundException;
 import com.blissstock.mappingSite.exceptions.InsuffientPermssionException;
 import com.blissstock.mappingSite.service.SyllabusService;
@@ -53,48 +54,78 @@ public class CourseSyllabusController {
       @PathVariable("id") long id,
       HttpServletRequest httpServletRequest)
       throws CourseNotFoundException {
-    // For the purpose of display
-    logger.info("user requested syllabus of course_id: {}", id);
 
-    //Sort by title
-    List<Syllabus> syllabusList = syllabusService.getAllSyllabus(id).stream()
-        .sorted((p1, p2) -> p1.getTitle().compareTo(p2.getTitle())).collect(Collectors.toList());
+    try {
+      Long userID = getUid();
+      UserRole userRole = getRole();
+      // For the purpose of display
+      logger.info("Called course_context with parameter(course_id={})", id);
+      logger.info("user_id: {}, role: {}", userID, userRole);
+      logger.info("Initiate to Operation Retrieve Table syllabus by Query: None");
+      // Sort by title
+      List<Syllabus> syllabusList = syllabusService.getAllSyllabus(id).stream()
+          .sorted((p1, p2) -> p1.getTitle().compareTo(p2.getTitle())).collect(Collectors.toList());
 
-    model.addAttribute(
-        "deleteAction",
-        httpServletRequest.getRequestURL().toString() + "/delete");
-    model.addAttribute("syllabusList", syllabusList);
+      if (syllabusList != null)
+        logger.info("Operation Retrieve Table syllabus by Query: None Result syllabus count={} | Success",
+            syllabusList.size());
+      else
+        logger.warn("No syllabus in course_id={}", id);
 
-    model.addAttribute("postAction", httpServletRequest.getRequestURL());
+      model.addAttribute(
+          "deleteAction",
+          httpServletRequest.getRequestURL().toString() + "/delete");
+      model.addAttribute("syllabusList", syllabusList);
 
-    return "course_context";
+      model.addAttribute("postAction", httpServletRequest.getRequestURL());
+      logger.info("Called course_context with parameter(course_id={}) | Success", id);
+      return "course_context";
+    } catch (Exception e) {
+      logger.error(e.getLocalizedMessage());
+      return "500";
+    }
   }
 
   // syllabus update
   @GetMapping(path = {
-    "/syllabus_details/course_id/{id}"
-})
-public String syllabusDetails(
-    Model model,
-    @PathVariable("id") long id,
-    HttpServletRequest httpServletRequest)
-    throws CourseNotFoundException {
-  // For the purpose of display
-  logger.info("user requested syllabus of course_id: {}", id);
+      "/syllabus_details/course_id/{id}"
+  })
+  public String syllabusDetails(
+      Model model,
+      @PathVariable("id") long id,
+      HttpServletRequest httpServletRequest)
+      throws CourseNotFoundException {
+    try {
+      Long userID = getUid();
+      UserRole userRole = getRole();
+      // For the purpose of display
+      logger.info("Called syllabus_details with parameter(course_id={})", id);
+      logger.info("user_id: {}, role: {}", userID, userRole);
+      logger.info("Initiate to Operation Retrieve Table syllabus by Query: None");
 
-  //Sort by title
-  List<Syllabus> syllabusList = syllabusService.getAllSyllabus(id).stream()
-      .sorted((p1, p2) -> p1.getTitle().compareTo(p2.getTitle())).collect(Collectors.toList());
+      // Sort by title
+      List<Syllabus> syllabusList = syllabusService.getAllSyllabus(id).stream()
+          .sorted((p1, p2) -> p1.getTitle().compareTo(p2.getTitle())).collect(Collectors.toList());
 
-  // model.addAttribute(
-  //     "deleteAction",
-  //     httpServletRequest.getRequestURL().toString() + "/delete");
-  model.addAttribute("syllabusList", syllabusList);
+      if (syllabusList != null)
+        logger.info("Operation Retrieve Table syllabus by Query: None Result syllabus count={} | Success",
+            syllabusList.size());
+      else
+        logger.warn("No syllabus in course_id={}", id);
 
-  // model.addAttribute("postAction", httpServletRequest.getRequestURL());
+      // model.addAttribute(
+      // "deleteAction",
+      // httpServletRequest.getRequestURL().toString() + "/delete");
+      model.addAttribute("syllabusList", syllabusList);
 
-  return "syllabus_details";
-}
+      // model.addAttribute("postAction", httpServletRequest.getRequestURL());
+      logger.info("Called syllabus_details with parameter(course_id={}) | Success", id);
+      return "syllabus_details";
+    } catch (Exception e) {
+      logger.error(e.getLocalizedMessage());
+      return "500";
+    }
+  }
 
   @PostMapping(path = {
       "/teacher/course_syllabus/course_id/{id}",
@@ -105,15 +136,22 @@ public String syllabusDetails(
       @ModelAttribute Syllabus syllabus,
       @PathVariable(name = "id") Long id,
       HttpServletRequest httpServletRequest) {
-
-    logger.info("user added syllabus {}", syllabus);
-
     try {
+      Long userID = getUid();
+      UserRole userRole = getRole();
+
+      logger.info("Called {} with parameter(course_id={})", httpServletRequest.getRequestURI(), id);
+      logger.info("user_id: {}, role: {}", userID, userRole);
+      logger.info("Initiate to Operation Insert/Update Table syllabus Data course_id={}, syllabus={}", id, syllabus);
+
       // syllabusService.deleteSyllabus(id);
       syllabusService.addSyllabus(syllabus, id);
+      logger.info("Operation Insert/Update Table syllabus Data course_id={}, syllabus={} | Success", id, syllabus);
     } catch (InsuffientPermssionException e) {
+      logger.error(e.getLocalizedMessage());
       //
     } catch (Exception e) {
+      logger.error(e.getLocalizedMessage());
       //
     }
 
@@ -139,9 +177,18 @@ public String syllabusDetails(
       HttpServletRequest httpServletRequest) {
 
     try {
+      Long userID = getUid();
+      UserRole userRole = getRole();
+
+      logger.info("Called {} with parameter(course_id={})", httpServletRequest.getRequestURI(), id);
+      logger.info("user_id: {}, role: {}", userID, userRole);
+      logger.info("Initiate to Operation Delete Table syllabus by syllabus_id={}", id);
+
       syllabusService.deleteSyllabus(id);
+      logger.info("Operation Delete Table syllabus by syllabus_id={} | Success", id);
     } catch (Exception e) {
       e.printStackTrace();
+      logger.error(e.getLocalizedMessage());
       return ResponseEntity.status(HttpStatus.OK).body("operation success");
     }
 
@@ -154,6 +201,16 @@ public String syllabusDetails(
      * }
      */
 
+    logger.info("Called {} with parameter(course_id={}) | Success", httpServletRequest.getRequestURI(), id);
     return ResponseEntity.status(HttpStatus.OK).body("operation success");
   }
+
+  private Long getUid() {
+    return userSessionService.getUserAccount().getAccountId();
+  }
+
+  private UserRole getRole() {
+    return userSessionService.getRole();
+  }
+
 }
