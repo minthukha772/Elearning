@@ -14,13 +14,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.blissstock.mappingSite.entity.TestQuestion;
 import com.blissstock.mappingSite.entity.TestQuestionCorrectAnswer;
-import com.blissstock.mappingSite.entity.TestStudentAnswer;
+import com.blissstock.mappingSite.entity.TestExamineeAnswer;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.exceptions.UnauthorizedFileAccessException;
 import com.blissstock.mappingSite.repository.TestQuestionCorrectAnswerRepositoy;
 import com.blissstock.mappingSite.repository.TestQuestionRepository;
 import com.blissstock.mappingSite.repository.TestRepository;
-import com.blissstock.mappingSite.repository.TestStudentAnswerRepository;
+import com.blissstock.mappingSite.repository.TestExamineeAnswerRepository;
 import com.blissstock.mappingSite.repository.UserInfoRepository;
 import com.blissstock.mappingSite.service.StorageService;
 import com.blissstock.mappingSite.service.StorageServiceImpl;
@@ -30,9 +30,9 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import org.springframework.util.StringUtils;
 
 @Controller
-public class TestStudentAnswerController {
+public class TestExamineeAnswerController {
     @Autowired
-    TestStudentAnswerRepository testStudentAnswerRepository;
+    TestExamineeAnswerRepository testExamineeAnswerRepository;
 
     @Autowired
     UserSessionService userSessionService;
@@ -87,13 +87,13 @@ public class TestStudentAnswerController {
             if (answerStatus == "TRUE") {
                 acquiredmarks = question.getMaximum_mark();
             }
-            TestStudentAnswer checkTestStudent = testStudentAnswerRepository
+            TestExamineeAnswer checkTestStudent = testExamineeAnswerRepository
                     .getStudentAnswerByQuestionID(question.getId(), student_id);
             if (checkTestStudent == null) {
-                TestStudentAnswer testStudentAnswer = new TestStudentAnswer(null, question.getTest(),
+                TestExamineeAnswer testExamineeAnswer = new TestExamineeAnswer(null, question.getTest(),
                         student, question,
                         student_answer, "", answerStatus, acquiredmarks, "MARKED");
-                testStudentAnswerRepository.save(testStudentAnswer);
+                testExamineeAnswerRepository.save(testExamineeAnswer);
             }
         } else {
             String originalFileName = "";
@@ -107,13 +107,13 @@ public class TestStudentAnswerController {
                         true);
             }
 
-            TestStudentAnswer checkTestStudent = testStudentAnswerRepository
+            TestExamineeAnswer checkTestStudent = testExamineeAnswerRepository
                     .getStudentAnswerByQuestionID(question.getId(), student_id);
             if (checkTestStudent == null) {
-                TestStudentAnswer testStudentAnswer = new TestStudentAnswer(null, question.getTest(),
+                TestExamineeAnswer testExamineeAnswer = new TestExamineeAnswer(null, question.getTest(),
                         student, question,
                         student_answer, originalFileName, "", 0, "MARKING");
-                testStudentAnswerRepository.save(testStudentAnswer);
+                testExamineeAnswerRepository.save(testExamineeAnswer);
             }
         }
         return ResponseEntity.ok(HttpStatus.OK);
@@ -125,10 +125,10 @@ public class TestStudentAnswerController {
             @RequestParam(value = "id") Long id,
             @RequestParam(value = "acquired_mark") Integer acquired_mark)
             throws UnauthorizedFileAccessException {
-        TestStudentAnswer testStudentAnswer = testStudentAnswerRepository.getStudentAnswerByID(id);
-        testStudentAnswer.setAcquired_mark(acquired_mark);
-        testStudentAnswer.setMarked_status("MARKED");
-        testStudentAnswerRepository.save(testStudentAnswer);
+        TestExamineeAnswer testExamineeAnswer = testExamineeAnswerRepository.getStudentAnswerByID(id);
+        testExamineeAnswer.setAcquired_mark(acquired_mark);
+        testExamineeAnswer.setMarked_status("MARKED");
+        testExamineeAnswerRepository.save(testExamineeAnswer);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 

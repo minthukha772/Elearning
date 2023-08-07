@@ -28,17 +28,17 @@ import java.util.Date;
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.JoinCourseUser;
 import com.blissstock.mappingSite.entity.PaymentHistory;
-import com.blissstock.mappingSite.entity.Result;
+import com.blissstock.mappingSite.entity.TestResult;
 import com.blissstock.mappingSite.entity.Test;
-import com.blissstock.mappingSite.entity.TestStudent;
-import com.blissstock.mappingSite.entity.TestStudentAnswer;
+import com.blissstock.mappingSite.entity.TestExaminee;
+import com.blissstock.mappingSite.entity.TestExamineeAnswer;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
 import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
 import com.blissstock.mappingSite.repository.ResultRepository;
 import com.blissstock.mappingSite.repository.TestRepository;
-import com.blissstock.mappingSite.repository.TestStudentAnswerRepository;
-import com.blissstock.mappingSite.repository.TestStudentRepository;
+import com.blissstock.mappingSite.repository.TestExamineeAnswerRepository;
+import com.blissstock.mappingSite.repository.TestExamineeRepository;
 import com.blissstock.mappingSite.repository.UserInfoRepository;
 import com.blissstock.mappingSite.repository.UserRepository;
 import com.blissstock.mappingSite.service.UserSessionService;
@@ -67,10 +67,10 @@ public class TestController {
     private ResultRepository resultRepo;
 
     @Autowired
-    private TestStudentRepository testStudentRepository;
+    private TestExamineeRepository testStudentRepository;
 
     @Autowired
-    private TestStudentAnswerRepository testStudentAnswerRepository;
+    private TestExamineeAnswerRepository testStudentAnswerRepository;
 
     @Autowired
     private JoinCourseUserRepository joinCourseUserRepository;
@@ -609,17 +609,17 @@ public class TestController {
                     test_id);
 
             if (exam_status.equals("Result Released")) {
-                List<TestStudent> testStudents = testStudentRepository.getStudentByTest(test_id);
-                for (TestStudent student : testStudents) {
+                List<TestExaminee> testStudents = testStudentRepository.getStudentByTest(test_id);
+                for (TestExaminee student : testStudents) {
                     int total_acquired_mark = 0;
                     int total_mark = 0;
-                    Result viewExamResult = resultRepo.getResultByTestIdAndUser(test_id,
+                    TestResult viewExamResult = resultRepo.getResultByTestIdAndUser(test_id,
                             student.getUserInfo().getUid());
                     if (viewExamResult == null) {
-                        List<TestStudentAnswer> studentAnswerList = testStudentAnswerRepository
+                        List<TestExamineeAnswer> studentAnswerList = testStudentAnswerRepository
                                 .getStudentAnswerListByTestAndStudent(student.getUserInfo().getUid(),
                                         test_id);
-                        for (TestStudentAnswer studentAnswer : studentAnswerList) {
+                        for (TestExamineeAnswer studentAnswer : studentAnswerList) {
                             int acquired_mark = studentAnswer.getAcquired_mark();
                             int max_mark = studentAnswer.getQuestion().getMaximum_mark();
                             total_acquired_mark += acquired_mark;
@@ -632,17 +632,17 @@ public class TestController {
                         fcalculate_percent = fcalculate_percent * 100;
                         UserInfo studentInfo = userInfoRepository.findStudentById(student.getUserInfo().getUid());
                         if (fcalculate_percent > passing_score_percent) {
-                            Result result = new Result(null, test, studentInfo, total_acquired_mark, "Passed", "");
+                            TestResult result = new TestResult(null, test, studentInfo, total_acquired_mark, "Passed", "");
                             resultRepo.save(result);
                         } else {
-                            Result result = new Result(null, test, studentInfo, total_acquired_mark, "Failed", "");
+                            TestResult result = new TestResult(null, test, studentInfo, total_acquired_mark, "Failed", "");
                             resultRepo.save(result);
                         }
                     } else {
-                        List<TestStudentAnswer> studentAnswerList = testStudentAnswerRepository
+                        List<TestExamineeAnswer> studentAnswerList = testStudentAnswerRepository
                                 .getStudentAnswerListByTestAndStudent(student.getUserInfo().getUid(),
                                         test_id);
-                        for (TestStudentAnswer studentAnswer : studentAnswerList) {
+                        for (TestExamineeAnswer studentAnswer : studentAnswerList) {
                             int acquired_mark = studentAnswer.getAcquired_mark();
                             int max_mark = studentAnswer.getQuestion().getMaximum_mark();
                             total_acquired_mark += acquired_mark;
@@ -720,17 +720,17 @@ public class TestController {
                     test_id);
 
             if (exam_status.equals("Result Released")) {
-                List<TestStudent> testStudents = testStudentRepository.getStudentByTest(test_id);
-                for (TestStudent student : testStudents) {
+                List<TestExaminee> testStudents = testStudentRepository.getStudentByTest(test_id);
+                for (TestExaminee student : testStudents) {
                     int total_acquired_mark = 0;
                     int total_mark = 0;
-                    Result viewExamResult = resultRepo.getResultByTestIdAndUser(test_id,
+                    TestResult viewExamResult = resultRepo.getResultByTestIdAndUser(test_id,
                             student.getUserInfo().getUid());
                     if (viewExamResult == null) {
-                        List<TestStudentAnswer> studentAnswerList = testStudentAnswerRepository
+                        List<TestExamineeAnswer> studentAnswerList = testStudentAnswerRepository
                                 .getStudentAnswerListByTestAndStudent(student.getUserInfo().getUid(),
                                         test_id);
-                        for (TestStudentAnswer studentAnswer : studentAnswerList) {
+                        for (TestExamineeAnswer studentAnswer : studentAnswerList) {
                             int acquired_mark = studentAnswer.getAcquired_mark();
                             int max_mark = studentAnswer.getQuestion().getMaximum_mark();
                             total_acquired_mark += acquired_mark;
@@ -744,17 +744,17 @@ public class TestController {
                         UserInfo studentInfo = userInfoRepository.findStudentById(student.getUserInfo().getUid());
 
                         if (fcalculate_percent > passing_score_percent) {
-                            Result result = new Result(null, test, studentInfo, total_acquired_mark, "Passed", "");
+                            TestResult result = new TestResult(null, test, studentInfo, total_acquired_mark, "Passed", "");
                             resultRepo.save(result);
                         } else {
-                            Result result = new Result(null, test, studentInfo, total_acquired_mark, "Failed", "");
+                            TestResult result = new TestResult(null, test, studentInfo, total_acquired_mark, "Failed", "");
                             resultRepo.save(result);
                         }
                     } else {
-                        List<TestStudentAnswer> studentAnswerList = testStudentAnswerRepository
+                        List<TestExamineeAnswer> studentAnswerList = testStudentAnswerRepository
                                 .getStudentAnswerListByTestAndStudent(student.getUserInfo().getUid(),
                                         test_id);
-                        for (TestStudentAnswer studentAnswer : studentAnswerList) {
+                        for (TestExamineeAnswer studentAnswer : studentAnswerList) {
                             int acquired_mark = studentAnswer.getAcquired_mark();
                             int max_mark = studentAnswer.getQuestion().getMaximum_mark();
                             total_acquired_mark += acquired_mark;

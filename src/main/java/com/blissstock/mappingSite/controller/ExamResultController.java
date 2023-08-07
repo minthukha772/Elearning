@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.blissstock.mappingSite.entity.Result;
+import com.blissstock.mappingSite.entity.TestResult;
 import com.blissstock.mappingSite.entity.Test;
 import com.blissstock.mappingSite.entity.TestQuestion;
-import com.blissstock.mappingSite.entity.TestStudent;
-import com.blissstock.mappingSite.entity.TestStudentAnswer;
+import com.blissstock.mappingSite.entity.TestExaminee;
+import com.blissstock.mappingSite.entity.TestExamineeAnswer;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.model.FileInfo;
 import com.blissstock.mappingSite.model.StudentListForExamResult;
@@ -29,8 +29,8 @@ import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
 import com.blissstock.mappingSite.repository.ResultRepository;
 import com.blissstock.mappingSite.repository.TestQuestionRepository;
 import com.blissstock.mappingSite.repository.TestRepository;
-import com.blissstock.mappingSite.repository.TestStudentAnswerRepository;
-import com.blissstock.mappingSite.repository.TestStudentRepository;
+import com.blissstock.mappingSite.repository.TestExamineeAnswerRepository;
+import com.blissstock.mappingSite.repository.TestExamineeRepository;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
 import com.blissstock.mappingSite.repository.UserRepository;
 import com.blissstock.mappingSite.service.StorageService;
@@ -57,13 +57,13 @@ public class ExamResultController {
     private ResultRepository resultRepo;
 
     @Autowired
-    private TestStudentAnswerRepository testStudentAnswerRepository;
+    private TestExamineeAnswerRepository testStudentAnswerRepository;
 
     @Autowired
     private TestQuestionRepository questionRepo;
 
     @Autowired
-    private TestStudentRepository testStudentRepo;
+    private TestExamineeRepository testStudentRepo;
 
     @Autowired
     private UserRepository userRepo;
@@ -90,7 +90,7 @@ public class ExamResultController {
     // @GetMapping("/student/ExamResult")
     public String getExamResultForStudent(@PathVariable Long testId, Model model) {
         Long userID = getUid();
-        Result viewExamResult = resultRepo.getResultByTestIdAndUser(testId, userID);
+        TestResult viewExamResult = resultRepo.getResultByTestIdAndUser(testId, userID);
         List<TestQuestion> viewQuestion = questionRepo.getQuestionByTest(testId);
         // StudentAnswer viewStuAns = stuAnsRepo.getResultByTestId(testId);
 
@@ -291,7 +291,7 @@ public class ExamResultController {
     public String deleteTestStudent(@PathVariable Long testId, @PathVariable Long studentId,
             @PathVariable String role) {
         String roles = "";
-        TestStudent viewTestStudent = testStudentRepo.findByTestIdAndUid(testId, studentId);
+        TestExaminee viewTestStudent = testStudentRepo.findByTestIdAndUid(testId, studentId);
         testStudentRepo.delete(viewTestStudent);
 
         if (role.equals("SUPER_ADMIN") || role.equals("ADMIN")) {
@@ -386,9 +386,9 @@ public class ExamResultController {
         // public String getExamResultListForTeacherAndAdmin( Model model) {
 
         Test viewTest = testRepo.getById(testId);
-        List<TestStudent> viewTestStudents = testStudentRepo.getStudentByTest(testId);
-        List<Result> viewResults = resultRepo.getListByTestId(testId);
-        List<TestStudentAnswer> viewStudentAnswer = testStudentAnswerRepository.getStudentAnswerListByTest(testId);
+        List<TestExaminee> viewTestStudents = testStudentRepo.getStudentByTest(testId);
+        List<TestResult> viewResults = resultRepo.getListByTestId(testId);
+        List<TestExamineeAnswer> viewStudentAnswer = testStudentAnswerRepository.getStudentAnswerListByTest(testId);
         List<TestQuestion> viewQuestions = questionRepo.getQuestionByTest(testId);
         List<StudentListForExamResult> studentListForExamResults = new ArrayList<>();
 
@@ -410,11 +410,11 @@ public class ExamResultController {
 
         if (!viewTestStudents.isEmpty()) {
 
-            for (TestStudent testStudent : viewTestStudents) {
+            for (TestExaminee testStudent : viewTestStudents) {
                 totalExamineeList = totalExamineeList + 1;
                 if (!viewResults.isEmpty()) {
 
-                    for (Result result : viewResults) {
+                    for (TestResult result : viewResults) {
                         if (testStudent.getUserInfo().getUid()
                                 .equals(result.getUser().getUid())
                                 && result.getResultMark() != 0) {
@@ -459,7 +459,7 @@ public class ExamResultController {
 
                 if (!viewStudentAnswer.isEmpty()) {
 
-                    for (TestStudentAnswer studentAnswer : viewStudentAnswer) {
+                    for (TestExamineeAnswer studentAnswer : viewStudentAnswer) {
                         if (question.getId().equals(studentAnswer.getQuestion().getId())) {
                             totalQuestion = totalQuestion + 1;
                             if (question.getId().equals(studentAnswer.getQuestion().getId())
@@ -485,7 +485,7 @@ public class ExamResultController {
 
         if (!viewTestStudents.isEmpty()) {
 
-            for (TestStudent testStudent : viewTestStudents) {
+            for (TestExaminee testStudent : viewTestStudents) {
                 String studentEmail = testStudent.getUserInfo().getUserAccount().getMail();
                 String studentName = testStudent.getUserInfo().getUserName();
                 String studentPhone = testStudent.getUserInfo().getPhoneNo();
@@ -497,7 +497,7 @@ public class ExamResultController {
                 }
                 Long userId = testStudent.getUserInfo().getUid();
 
-                Result viewExamResult = resultRepo.getResultByTestIdAndUser(testId, userId);
+                TestResult viewExamResult = resultRepo.getResultByTestIdAndUser(testId, userId);
 
                 if (viewExamResult != null) {
                     Integer stuMarks = viewExamResult.getResultMark();

@@ -32,11 +32,13 @@ public class Test {
     private Long test_id;
 
     // mapping
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
     private UserInfo userInfo;
 
     // mapping
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "course_id")
     private CourseInfo courseInfo;
 
     @Column(name = "description", length = 255)
@@ -69,6 +71,12 @@ public class Test {
     @Column(name = "deleted_at", length = 100)
     private String deletedAt = "empty";
 
+    @Column(name = "exam_target", length = 10)
+    private Integer exam_target;
+
+    @Column(name = "exam_announce", length = 10)
+    private Integer exam_announce;
+
     public Test(Long test_id, CourseInfo courseInfo, UserInfo userInfo, String description, String section_name,
             Integer minutes_allowed, Integer passing_score_percent, Date date, String start_time,
             String end_time, String exam_status, String isDelete, String deletedAt) {
@@ -95,5 +103,5 @@ public class Test {
                 this.isDelete + ", " + this.deletedAt;
 
     }
-
+    
 }

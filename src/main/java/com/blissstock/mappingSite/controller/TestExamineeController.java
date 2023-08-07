@@ -18,14 +18,14 @@ import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.JoinCourseUser;
 import com.blissstock.mappingSite.entity.Test;
 import com.blissstock.mappingSite.entity.TestQuestion;
-import com.blissstock.mappingSite.entity.TestStudent;
+import com.blissstock.mappingSite.entity.TestExaminee;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.model.TestStudentWithMarkedCountModel;
 import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
 import com.blissstock.mappingSite.repository.TestQuestionRepository;
 import com.blissstock.mappingSite.repository.TestRepository;
-import com.blissstock.mappingSite.repository.TestStudentAnswerRepository;
-import com.blissstock.mappingSite.repository.TestStudentRepository;
+import com.blissstock.mappingSite.repository.TestExamineeAnswerRepository;
+import com.blissstock.mappingSite.repository.TestExamineeRepository;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
 import com.blissstock.mappingSite.repository.UserInfoRepository;
 import com.blissstock.mappingSite.service.UserSessionService;
@@ -35,18 +35,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Controller
-public class TestStudentController {
+public class TestExamineeController {
     private static Logger logger = LoggerFactory.getLogger(
-            TestStudentController.class);
+            TestExamineeController.class);
 
     @Autowired
     UserSessionService userSessionService;
 
     @Autowired
-    TestStudentRepository testStudentRepository;
+    TestExamineeRepository testStudentRepository;
 
     @Autowired
-    TestStudentAnswerRepository testStudentAnswerRepository;
+    TestExamineeAnswerRepository testStudentAnswerRepository;
 
     @Autowired
     TestRepository testRepository;
@@ -68,7 +68,7 @@ public class TestStudentController {
     private String getTestStudent(@PathVariable Long test_id, Model model,
             @RequestParam(required = false) String name)
             throws ParseException {
-        List<TestStudent> testStudents = new ArrayList<>();
+        List<TestExaminee> testStudents = new ArrayList<>();
         List<TestStudentWithMarkedCountModel> testStudentList = new ArrayList<>();
         Test test = testRepository.getTestByID(test_id);
         String examStatus = test.getExam_status();
@@ -80,7 +80,7 @@ public class TestStudentController {
             testStudents = testStudentRepository.findByNameandTestId(name, test_id);
         }
         total_free_questions = testQuestionRepository.getFreeAnswerCount(test_id);
-        for (TestStudent testStudent : testStudents) {
+        for (TestExaminee testStudent : testStudents) {
             Integer answerCount = testStudentAnswerRepository.getCountStudentAnswerListByTestAndStudent(test_id,
                     testStudent.getUserInfo().getUid());
             if (answerCount == 0) {
@@ -103,7 +103,7 @@ public class TestStudentController {
         }
         model.addAttribute("user_role", userSessionService.getRole());
         model.addAttribute("test_id", test_id);
-        model.addAttribute("test_students", testStudentList);
+        model.addAttribute("test_examinees", testStudentList);
         model.addAttribute("total_students", testStudents.size());
         model.addAttribute("check_students", checked_students);
         model.addAttribute("exam_status", examStatus);
@@ -139,10 +139,10 @@ public class TestStudentController {
             CourseInfo course = test.getCourseInfo();
             List<JoinCourseUser> enrolledList = joinCourseUserRepository.findByStudentByCourseID(course.getCourseId());
             for (JoinCourseUser student : enrolledList) {
-                TestStudent checkStudent = testStudentRepository.getStudentByID(student.getUserInfo().getUid(),
+                TestExaminee checkStudent = testStudentRepository.getStudentByID(student.getUserInfo().getUid(),
                         test_id);
                 if (checkStudent == null) {
-                    TestStudent testStudent = new TestStudent(null, test, student.getUserInfo(), null);
+                    TestExaminee testStudent = new TestExaminee(null, test, student.getUserInfo(), null);
                     testStudentRepository.save(testStudent);
                 }
             }
@@ -160,9 +160,9 @@ public class TestStudentController {
         Test test = testRepository.getTestByID(test_id);
         UserInfo user = userInfoRepository.findStudentById(student_id);
         if (test.getExam_status().equals("Exam Created") || test.getExam_status().equals("Questions Created")) {
-            TestStudent existingStudent = testStudentRepository.getStudentByID(student_id, test_id);
+            TestExaminee existingStudent = testStudentRepository.getStudentByID(student_id, test_id);
             if (existingStudent == null) {
-                TestStudent testStudent = new TestStudent(null, test, user, null);
+                TestExaminee testStudent = new TestExaminee(null, test, user, null);
                 testStudentRepository.save(testStudent);
             }
         }

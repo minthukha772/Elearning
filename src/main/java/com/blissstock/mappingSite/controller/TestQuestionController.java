@@ -32,12 +32,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.blissstock.mappingSite.entity.Result;
+import com.blissstock.mappingSite.entity.TestResult;
 import com.blissstock.mappingSite.entity.Test;
 import com.blissstock.mappingSite.entity.TestQuestion;
 import com.blissstock.mappingSite.entity.TestQuestionCorrectAnswer;
-import com.blissstock.mappingSite.entity.TestStudent;
-import com.blissstock.mappingSite.entity.TestStudentAnswer;
+import com.blissstock.mappingSite.entity.TestExaminee;
+import com.blissstock.mappingSite.entity.TestExamineeAnswer;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.exceptions.UnauthorizedFileAccessException;
 import com.blissstock.mappingSite.model.AnswerModel;
@@ -50,8 +50,8 @@ import com.blissstock.mappingSite.repository.ResultRepository;
 import com.blissstock.mappingSite.repository.TestQuestionCorrectAnswerRepositoy;
 import com.blissstock.mappingSite.repository.TestQuestionRepository;
 import com.blissstock.mappingSite.repository.TestRepository;
-import com.blissstock.mappingSite.repository.TestStudentAnswerRepository;
-import com.blissstock.mappingSite.repository.TestStudentRepository;
+import com.blissstock.mappingSite.repository.TestExamineeAnswerRepository;
+import com.blissstock.mappingSite.repository.TestExamineeRepository;
 import com.blissstock.mappingSite.repository.UserInfoRepository;
 import com.blissstock.mappingSite.service.StorageService;
 import com.blissstock.mappingSite.service.StorageServiceImpl;
@@ -89,13 +89,13 @@ public class TestQuestionController {
     StorageService storageService;
 
     @Autowired
-    TestStudentAnswerRepository testStudentAnswerRepository;
+    TestExamineeAnswerRepository testStudentAnswerRepository;
 
     @Autowired
     UserInfoRepository userInfoRepository;
 
     @Autowired
-    TestStudentRepository testStudentRepository;
+    TestExamineeRepository testExamineeRepository;
 
     @Autowired
     ResultRepository resultRepository;
@@ -169,14 +169,14 @@ public class TestQuestionController {
             if (!testQuestion.getQuestion_type().equals("FREE_ANSWER")) {
                 TestQuestionCorrectAnswer testQuestionCorrectAnswer = testQuestionCorrectAnswerRepositoy
                         .getCorrectAnswerByQuestion(testQuestion.getId());
-                TestStudentAnswer testStudentAnswer = testStudentAnswerRepository.getStudentAnswer(student_id,
+                TestExamineeAnswer testStudentAnswer = testStudentAnswerRepository.getStudentAnswer(student_id,
                         testQuestion.getId());
 
                 JSONArray choiceArrary = new JSONArray(testQuestion.getChoices());
                 JSONArray answerArray = new JSONArray(testQuestionCorrectAnswer.getCorrectAnswer());
                 JSONArray studentchoiceArray = new JSONArray();
                 if (testStudentAnswer != null) {
-                    studentchoiceArray = new JSONArray(testStudentAnswer.getStudent_answer());
+                    studentchoiceArray = new JSONArray(testStudentAnswer.getExaminee_answer());
                 }
                 for (int i = 0; i < choiceArrary.length(); i++) {
                     JSONObject choice = choiceArrary.getJSONObject(i);
@@ -201,32 +201,30 @@ public class TestQuestionController {
                                 new StudentChoiceModel(student_choice, choice, correctAnswer, true));
                     }
                 }
-            
-                boolean allCorrectAnswersMatched = true; 
-            
+
+                boolean allCorrectAnswersMatched = true;
+
                 for (int l = 0; l < choices.size(); l++) {
                     Boolean correctAnswer = choices.get(l).isCorrect();
                     Boolean studentChoice = choices.get(l).isStudent_choice();
-            
-                    if (correctAnswer && !studentChoice) {                        
+
+                    if (correctAnswer && !studentChoice) {
                         allCorrectAnswersMatched = false;
-                        break; 
+                        break;
                     }
                 }
-            
-                if (allCorrectAnswersMatched) {                    
+
+                if (allCorrectAnswersMatched) {
                     acquired_mark = testQuestion.getMaximum_mark();
                 }
-            }
-             
-            else {
-                TestStudentAnswer testStudentAnswer = testStudentAnswerRepository.getStudentAnswer(student_id,
+            } else {
+                TestExamineeAnswer testStudentAnswer = testStudentAnswerRepository.getStudentAnswer(student_id,
                         testQuestion.getId());
                 if (testStudentAnswer != null) {
                     acquired_mark = testStudentAnswer.getAcquired_mark();
                     long studentfileSeparator = Long.parseLong(test_id.toString()
                             + testStudentAnswer.getQuestion().getId().toString() + student_id.toString());
-                    studentAnswer = testStudentAnswer.getStudent_answer();
+                    studentAnswer = testStudentAnswer.getExaminee_answer();
                     FileInfo studentAnswerFile = storageService.loadAnswermaterials(studentfileSeparator,
                             testStudentAnswer.getStudent_answer_link());
                     studentAnswerURL = studentAnswerFile.getUrl();
@@ -246,7 +244,7 @@ public class TestQuestionController {
 
         }
         try {
-            Result viewExamResult = resultRepository.getResultByTestIdAndUser(test_id, student_id);
+            TestResult viewExamResult = resultRepository.getResultByTestIdAndUser(test_id, student_id);
             if (viewExamResult != null) {
                 model.addAttribute("comment", viewExamResult.getTeacherComment());
 
@@ -281,8 +279,9 @@ public class TestQuestionController {
         LocalDate convertedExamDate = examDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         LocalDate currentDate = LocalDate.now();
         Long studentId = userSessionService.getId();
-        TestStudent studentInfo = testStudentRepository.findByTestIdAndUid(test_id, studentId);
-        TestStudentAnswer studentAnswerInfo = testStudentAnswerRepository.getStudentAnswerByTestAndStudent(studentId, test_id);
+        TestExaminee studentInfo = testExamineeRepository.findByTestIdAndUid(test_id, studentId);
+        TestExamineeAnswer studentAnswerInfo = testStudentAnswerRepository.getStudentAnswerByTestAndStudent(studentId,
+                test_id);
         String studentExamStartTime = studentInfo.getStudentExamStartTime();
         String examTitle = testinfo.getDescription();
 
@@ -303,7 +302,6 @@ public class TestQuestionController {
             model.addAttribute("exam_announce", examAnnouncement);
             return "ST0006_ExamQuestionListStudent.html";
         }
-        
 
         if (currentDate.isBefore(convertedExamDate)) {
             examAnnouncement = "Apologies! Exam is not currently available yet. Please note that the exam will be accessible on "
@@ -320,7 +318,7 @@ public class TestQuestionController {
 
                     studentExamStartTime = currentTime.toString();
                     studentInfo.setStudentExamStartTime(studentExamStartTime);
-                    testStudentRepository.save(studentInfo);
+                    testExamineeRepository.save(studentInfo);
 
                     List<QuestionAndCorrectAnswer> questionAndCorrectAnswers = new ArrayList<>();
                     Test test = testRepository.getTestByID(test_id);
@@ -544,12 +542,12 @@ public class TestQuestionController {
             Long testId = jsonObject.getLong("test_Id");
             Long studentId = jsonObject.getLong("student_Id");
             String comment = jsonObject.getString("comment");
-            Result result = new Result();
+            TestResult result = new TestResult();
 
             Test test = testRepository.getTestByID(testId);
             UserInfo userInfo = userInfoRepository.findStudentById(studentId);
 
-            Result viewCommentResult = resultRepository.getResultByTestIdAndUser(testId, studentId);
+            TestResult viewCommentResult = resultRepository.getResultByTestIdAndUser(testId, studentId);
             if (viewCommentResult == null) {
 
                 result.setTest(test);

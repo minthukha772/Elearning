@@ -21,10 +21,12 @@ import lombok.Setter;
 @Table(name = "test_question")
 public class TestQuestion {
     @Id
+    @Column(name = "question_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "test_id")
     private Test test;
 
     @Column(name = "question_text", columnDefinition = "TEXT")
@@ -57,5 +59,69 @@ public class TestQuestion {
         this.maximum_mark = maximum_mark;
     }
 
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Test getTest() {
+        return this.test;
+    }
+
+    public void setTest(Test test) {
+        this.test = test;
+    }
+
+    public String getQuestion_text() {
+        return this.question_text;
+    }
+
+    public void setQuestion_text(String question_text) {
+        this.question_text = question_text;
+    }
+
+    public String getQuestion_materials() {
+        return this.question_materials;
+    }
+
+    public void setQuestion_materials(String question_materials) {
+        this.question_materials = question_materials;
+    }
+
+    public String getQuestion_materials_type() {
+        return this.question_materials_type;
+    }
+
+    public void setQuestion_materials_type(String question_materials_type) {
+        this.question_materials_type = question_materials_type;
+    }
+
+    public String getChoices() {
+        return this.choices;
+    }
+
+    public void setChoices(String choices) {
+        this.choices = choices;
+    }
+
+    public String getQuestion_type() {
+        return this.question_type;
+    }
+
+    public void setQuestion_type(String question_type) {
+        this.question_type = question_type;
+    }
+
+    public Integer getMaximum_mark() {
+        return this.maximum_mark;
+    }
+
+    public void setMaximum_mark(Integer maximum_mark) {
+        this.maximum_mark = maximum_mark;
+    }    
     
 }
