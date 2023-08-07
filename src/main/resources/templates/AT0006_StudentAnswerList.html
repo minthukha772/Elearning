@@ -171,7 +171,7 @@
             <input type="submit" id="submit" value="Submit" class="bg-success text-white border-0 rounded px-2">
         </div>
     </div> -->
-
+   
 
     <div class="comment-container">
         <div class="row">
@@ -188,46 +188,46 @@
         </div>
     </div>
 
-    <div class="dialog" id="dialog">
-        <div class="dialog-content">
-            <i class="fas fa-check-circle"></i>
-            <p>Marked successfully.</p>
-            <button id="dialog-confirm-btn">OK</button>
-            <i class="fas fa-times close-icon" id="dialog-close-btn"></i>
+        <div class="dialog" id="dialog">
+            <div class="dialog-content">
+                <i class="fas fa-check-circle"></i>
+                <p>Marked successfully.</p>
+                <button id="dialog-confirm-btn">OK</button>
+                <i class="fas fa-times close-icon" id="dialog-close-btn"></i>
 
+            </div>
         </div>
-    </div>
 
-    <div class="dialog" id="dialog-comment">
-        <div class="dialog-content">
-            <i class="fas fa-check-circle"></i>
-            <p>Comment is saved successfully.</p>
-            <button id="dialog-confirm-btn-comment">OK</button>
-            <i class="fas fa-times close-icon" id="dialog-close-btn-comment"></i>
+        <div class="dialog" id="dialog-comment">
+            <div class="dialog-content">
+                <i class="fas fa-check-circle"></i>
+                <p>Comment is saved successfully.</p>
+                <button id="dialog-confirm-btn-comment">OK</button>
+                <i class="fas fa-times close-icon" id="dialog-close-btn-comment"></i>
 
+            </div>
         </div>
-    </div>
 
 
-    <div class="dialog" id="no-dialog-comment">
-        <div class="dialog-content">
-            <i class="fas fa-exclamation-circle"></i>
-            <p>Please fill comment!!.</p>
-            <button id="no-dialog-confirm-btn-comment">OK</button>
-            <i class="fas fa-times close-icon" id="no-dialog-close-btn-comment"></i>
+         <div class="dialog" id="no-dialog-comment">
+            <div class="dialog-content">
+                <i class="fas fa-exclamation-circle"></i>
+                <p>Please fill comment!!.</p>
+                <button id="no-dialog-confirm-btn-comment">OK</button>
+                <i class="fas fa-times close-icon" id="no-dialog-close-btn-comment"></i>
 
+            </div>
         </div>
-    </div>
 
-    <div class="dialog" id="setasmarked">
-        <div class="dialog-content">
-            <i class="fas fa-exclamation-circle"></i>
-            <p>Please fill acquired mark.Not greater than maximum marks.</p>
-            <button id="setasmarked-confirm-btn">OK</button>
-            <i class="fas fa-times close-icon" id="setasmarked-close-btn"></i>
+         <div class="dialog" id="setasmarked">
+            <div class="dialog-content">
+                <i class="fas fa-exclamation-circle"></i>
+                <p>Please fill acquired mark.Not greater than maximum marks.</p>
+                <button id="setasmarked-confirm-btn">OK</button>
+                <i class="fas fa-times close-icon" id="setasmarked-close-btn"></i>
 
+            </div>
         </div>
-    </div>
 
 
 
@@ -249,12 +249,12 @@
             var warning_message = document.getElementById("warning_" + test_question.id);
             var acquired_mark = document.getElementById("acquired_mark_" + test_question.id);
 
-            $("#setasmarked-close-btn").click(function () {
+             $("#setasmarked-close-btn").click(function () {
                 closeSetAsMarkDialog();
-            });
-            $("#setasmarked-confirm-btn").click(function () {
-                closeSetAsMarkDialog();
-            });
+             });
+             $("#setasmarked-confirm-btn").click(function () {
+                 closeSetAsMarkDialog();
+             });
 
             if (isNaN(acquired_mark.value)) {
                 warning_message.style.display = "block";
@@ -271,10 +271,10 @@
                 return;
             }
 
-            function closeSetAsMarkDialog() {
+             function closeSetAsMarkDialog() {
                 const dialogNoComment = document.getElementById("setasmarked");
                 dialogNoComment.style.visibility = "hidden";
-            }
+             }
 
             formData.append('id', parseInt(test_question.student_answer_id));
             formData.append('acquired_mark', parseInt(acquired_mark.value));
@@ -297,12 +297,12 @@
                 dialog.style.visibility = "visible";
             };
             dialogConfirmBtn.addEventListener("click", () => {
-                dialog.style.visibility = "hidden";
-                warning_message.style.display = "none";
-                acquired_mark.placeholder = acquired_mark.value;
+            dialog.style.visibility = "hidden";
+            warning_message.style.display = "none";
+            acquired_mark.placeholder = acquired_mark.value;
             });
             dialogCloseBtn.addEventListener("click", () => {
-                dialog.style.visibility = "hidden";
+            dialog.style.visibility = "hidden";
             });
             xhr.send(formData);
 
@@ -327,9 +327,9 @@
         var type = "Created";
 
         $("#submit").click(function (event) {
-            event.preventDefault(); // Prevent default form submission behavior
-            submitData(type);
-            submitData2(type);
+        event.preventDefault(); // Prevent default form submission behavior
+        submitData(type);
+        submitData2(type);
         });
 
         $("#dialog-confirm-btn-comment").click(function () {
@@ -363,7 +363,7 @@
 
                 }
                 data = JSON.stringify(data);
-
+                
                 fetch("/admin/comment", {
                     method: "POST",
                     headers: {
@@ -372,8 +372,8 @@
                     body: data
                 }).then(response => {
                     if (response.status == 200) {
-                        //setascomment();
-
+                       //setascomment();
+                        
 
 
                     }
@@ -405,8 +405,8 @@
                     body: data
                 }).then(response => {
                     if (response.status == 200) {
-                        //setascomment();
-
+                       //setascomment();
+                        
 
 
                     }
@@ -415,30 +415,30 @@
 
 
         }
-        function setascomment() {
-            var comment = document.getElementById("comment").value;
-            if (comment !== "") {
-                const dialog = document.getElementById("dialog-comment");
-                dialog.style.visibility = "visible";
-
-
-            } else {
-                const dialognocomment = document.getElementById("no-dialog-comment");
-                dialognocomment.style.visibility = "visible";
-
-            }
-
-        }
-
-
-        function closeDialog() {
+    function setascomment() {
+        var comment = document.getElementById("comment").value;
+        if(comment !== ""){
             const dialog = document.getElementById("dialog-comment");
-            dialog.style.visibility = "hidden";
+            dialog.style.visibility = "visible";
+            
+
+        }else{
+            const dialognocomment = document.getElementById("no-dialog-comment");
+            dialognocomment.style.visibility = "visible";
+        
         }
-        function closeNoCommentDialog() {
-            const dialogNoComment = document.getElementById("no-dialog-comment");
-            dialogNoComment.style.visibility = "hidden";
-        }
+
+    }
+   
+
+    function closeDialog() {
+        const dialog = document.getElementById("dialog-comment");
+        dialog.style.visibility = "hidden";
+    }
+     function closeNoCommentDialog() {
+        const dialogNoComment = document.getElementById("no-dialog-comment");
+        dialogNoComment.style.visibility = "hidden";
+    }
         /*function setascomment() {
             const dialog = document.getElementById("dialog-comment");
             var comment = document.getElementById("comment").value;
@@ -458,7 +458,7 @@
             const dialogCloseBtn = document.getElementById("dialog-comment");
             dialogCloseBtn.style.visibility = "hidden";
         }*/
-
+      
 
     </script>
 </body>
