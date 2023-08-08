@@ -26,7 +26,7 @@ import com.blissstock.mappingSite.model.FileInfo;
 import com.blissstock.mappingSite.model.StudentListForExamResult;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
 import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
-import com.blissstock.mappingSite.repository.ResultRepository;
+import com.blissstock.mappingSite.repository.TestResultRepository;
 import com.blissstock.mappingSite.repository.TestExamineeAnswerRepository;
 import com.blissstock.mappingSite.repository.TestExamineeRepository;
 import com.blissstock.mappingSite.repository.TestQuestionRepository;
@@ -54,7 +54,7 @@ public class ExamResultController {
     }
 
     @Autowired
-    private ResultRepository resultRepo;
+    private TestResultRepository resultRepo;
 
     @Autowired
     private TestExamineeAnswerRepository testStudentAnswerRepository;
