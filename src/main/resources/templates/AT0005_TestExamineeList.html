@@ -213,7 +213,7 @@
             var student_list = $("#student_list");
             student_list.empty();
             if (addstudent.value != "") {
-                var searchValue = addstudent.value.toLowerCase(); // Convert to lowercase
+                var searchValue = addstudent.value; // Convert to lowercase
                 fetch("/" + url + "/get-student?name=" + encodeURIComponent(searchValue), {
                     method: "GET",
                     headers: {

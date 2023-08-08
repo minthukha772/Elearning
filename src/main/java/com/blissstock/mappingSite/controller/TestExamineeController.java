@@ -110,7 +110,7 @@ public class TestExamineeController {
         logger.info("Initiate to Operation Save File {}", test_id);
         model.addAttribute("user_role", userSessionService.getRole());
         model.addAttribute("test_id", test_id);
-        model.addAttribute("test_students", testStudentList);
+        model.addAttribute("test_examinees", testStudentList);
         model.addAttribute("total_students", testStudents.size());
         model.addAttribute("check_students", checked_students);
         return "AT0005_TestExamineeList.html";
@@ -122,7 +122,8 @@ public class TestExamineeController {
             throws ParseException { 
                 logger.info("API name : {}.Parameter : {}", "getCustomStudent",name);
                 logger.info("Initiate to Operation Insert Table {} Data {}", "TestExaminee", name);
-        List<UserInfo> testStudents = userInfoRepository.findByName(name, name.toLowerCase());
+        String lowerName = name.toLowerCase();
+        List<UserInfo> testStudents = userInfoRepository.findByName(name, lowerName);
         return ResponseEntity.ok(testStudents);
     }
 

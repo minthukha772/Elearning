@@ -46,7 +46,7 @@ import com.blissstock.mappingSite.model.FileInfo;
 import com.blissstock.mappingSite.model.QuestionAndCorrectAnswer;
 import com.blissstock.mappingSite.model.QuestionAndCorrectAnswerAndStudentAnswer;
 import com.blissstock.mappingSite.model.StudentChoiceModel;
-import com.blissstock.mappingSite.repository.ResultRepository;
+import com.blissstock.mappingSite.repository.TestResultRepository;
 import com.blissstock.mappingSite.repository.TestQuestionCorrectAnswerRepositoy;
 import com.blissstock.mappingSite.repository.TestQuestionRepository;
 import com.blissstock.mappingSite.repository.TestRepository;
@@ -98,7 +98,7 @@ public class TestQuestionController {
     TestExamineeRepository TestExamineeRepository;
 
     @Autowired
-    ResultRepository resultRepository;
+    TestResultRepository resultRepository;
 
     @Valid
     @GetMapping(value = { "/teacher/exam/{test_id}/questions", "/admin/exam/{test_id}/questions" })
