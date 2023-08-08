@@ -106,11 +106,13 @@ public class CourseDetailsController {
             "/admin/course-details/{courseId}", "/guest/course-detail/{courseId}" })
     private String getCourseDetails(@PathVariable Long courseId, Model model) {
         Long userId;
+         logger.info("Api name is: {}. Parameter is courseId: {} ","getCourseDetails", courseId);
 
-
+         logger.info("Initiate to Operation Retrieve Table: {} by query: findById={}", "courseInfo",courseId);
         // Get course by ID
         CourseInfo courseInfo = courseInfoRepository.findById(courseId).get();
         FileInfo fileInfo = storageService.loadCoursePhoto(courseInfo);
+        logger.info("Initiate to Operation Retrieve Table: {} by query: findById={} Result  List : {} Success", "courseInfo",courseId,courseInfo.toString());
 
         // if profile is not found set as place holder
         if (fileInfo == null) {
@@ -199,11 +201,13 @@ public class CourseDetailsController {
         try {
             average = (int) total_stars / numCourseReviewList;
         } catch (ArithmeticException e) {
+            e.getLocalizedMessage();
             average = 0;
         }
         try {
             averageDouble = (double) total_stars / numCourseReviewList;
         } catch (ArithmeticException e) {
+            e.getLocalizedMessage();
             averageDouble = 0;
         }
         String averageFloat = String.format("%.2f", averageDouble);
@@ -246,6 +250,7 @@ public class CourseDetailsController {
                 syllabusList.remove(0);
             }
         } catch (Exception e) {
+            e.getLocalizedMessage();
             // TODO: handle exception
             logger.info(e.toString());
         }
@@ -264,6 +269,7 @@ public class CourseDetailsController {
         try {
             availableStuList = maxStudent - stuListSize;
         } catch (NullPointerException e) {
+            e.getLocalizedMessage();
             availableStuList = 0;
         }
         Integer currentAttending = studentList.size();
@@ -285,8 +291,10 @@ public class CourseDetailsController {
 
         } else if (userSessionService.getRole() == UserRole.STUDENT) {
             userId = userSessionService.getUserAccount().getAccountId();
+            logger.info("Initiate to Operation Retrieve Table: {} by query: findById={}", "user",userId);
             UserInfo user = userRepository.findById(userId).orElse(null);
             boolean studentRegistered = true;
+             logger.info("Operation Retrieve Table: {} by query: findById={} Result  List : {} Success", "user",userId,user.toString());
 
             List<JoinCourseUser> join = joinCourseService.getJoinCourseUser(userId, courseId);
             studentRegistered = join != null && !join.isEmpty();
@@ -350,16 +358,23 @@ public class CourseDetailsController {
             model.addAttribute("guest", "GUEST");
         }
 
+        logger.info("Called getCourseDetails with parameter course : {} Success", courseId);
         return "CM0003_CourseDetails";
     }
 
     @PostMapping(value = { "/teacher/course-details/insert-class-link", "/admin/course-details/insert-class-link" })
     private String courseDetailsLink(@ModelAttribute("class-link") String classLink,
             @ModelAttribute("courseId") Long courseId, @ModelAttribute("roleLink") String roleLink, Model model) {
+                logger.info("Api name is: {}. Parameter = classLink:{} courseId: {} roleLink:{}  ","courseDetailsLink", classLink,courseId,roleLink);
+                logger.info("Initiate to Operation Retrieve Table: {} by query: findById={} ", "courseInfo",courseId);        
         CourseInfo courseInfo = courseInfoRepository.findById(courseId).get();
+         logger.info("Operation Retrieve Table: {} by query: findById={} Result  List {} Success ", "courseInfo",courseId,courseInfo.toString());
         courseInfo.setClassLink(classLink);
+        logger.info("Initiate to Operation Insert Table {} Data {}", "courseInfo",courseInfo);
         courseInfoRepository.save(courseInfo);
-        return "redirect:/" + roleLink + "/course-details/" + courseId;
+        logger.info("Operation Insert Table {} Data {} Success", "courseInfo",courseInfo);
+        logger.info("Called courseDetailsLink with parameter classLink:{} courseId: {} roleLink:{} Success", classLink,courseId,roleLink);
+         return "redirect:/" + roleLink + "/course-details/" + courseId;
     }
 
     // ### Temporarily disble to fix some changes in 'Test' entity class ###
@@ -394,14 +409,19 @@ public class CourseDetailsController {
             Model model,
             Long courseId,
             HttpServletRequest httpServletRequest) {
+        logger.info("Api name is: {}. Parameter is courseId: {} ","deleteCourse", courseId);
         logger.info("DELETE Request for course {}", courseId);
         try {
             // UserInfo userInfo = userService.getUserInfoByID(uid);
+            logger.info("Initiate to Operation Retrieve Table: {} by query: findById={} ", "courseInfo",courseId);
             CourseInfo courseInfo = courseInfoRepository.findById(courseId).get();
             if (courseInfo == null) {
                 throw new CourseNotFoundException();
             }
             courseService.deleteCourseInfo(courseInfo);
+            logger.info("Operation Delete Table {} by {} = {} Success", "courseInfo",courseId,courseService);
+
+
         } catch (CourseNotFoundException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Course Not Found");
@@ -412,7 +432,7 @@ public class CourseDetailsController {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
         }
-
+            logger.info("Called deleteCourse [ResponseEntity.status(HttpStatus.OK).body(\"operation success\"] with parameter courseId:{} Success",courseId);
         return ResponseEntity.status(HttpStatus.OK).body("operation success");
 
     }
@@ -425,7 +445,9 @@ public class CourseDetailsController {
         logger.info("VERIFY Request for course {}", courseId);
         try {
             // UserInfo userInfo = userService.getUserInfoByID(uid);
+            logger.info("Initiate to Operation Retrieve Table: {} by query: findById={} ", "courseInfo",courseId);
             CourseInfo courseInfo = courseInfoRepository.findById(courseId).get();
+          
             if (courseInfo == null) {
                 throw new CourseNotFoundException();
             }
@@ -437,10 +459,11 @@ public class CourseDetailsController {
             e.printStackTrace();
 
         } catch (Exception e) {
+            e.getLocalizedMessage();
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
         }
-
+        logger.info("Called verifyCourse with parameter courseId:{} Success",courseId);
         return ResponseEntity.status(HttpStatus.OK).body("operation success");
 
     }
@@ -449,7 +472,8 @@ public class CourseDetailsController {
 
     public String enrollStudent(HttpServletRequest request, @PathVariable Long courseId, @PathVariable Long userId,
             Model model) {
-        logger.info("Request"); 
+                logger.info("Api name is: {}. Parameter is courseId: {}, userId : {} ","enrollStudent", courseId,userId);
+                logger.info("Request"); 
         JoinCourseDTO joinCourseDTO = new JoinCourseDTO();
         joinCourseDTO.setUid(userId);
         joinCourseDTO.setCourseId(courseId);
@@ -460,15 +484,20 @@ public class CourseDetailsController {
                 return "redirect:/student/course-details/" + courseId + "/?error";
             }
         } catch (NoSuchElementException e) {
+            e.getLocalizedMessage();
             e.printStackTrace();
             return "redirect:/student/course-details/" + courseId + "/?error";
         } catch (Exception e) {
+            e.getLocalizedMessage();
             // TODO Auto-generated catch block
             e.printStackTrace();
             return "redirect:/student/course-details/" + courseId + "/?error";
         }
 
+        logger.info("Initiate to Operation Retrieve Table: {} by query: findById={} ", "courseInfo",courseId);
         CourseInfo courseInfo = courseInfoRepository.findById(courseId).get();
+        logger.info("Operation Retrieve Table: {} by query: findById={} Result  List {} Success ", "courseInfo",courseId,courseInfo.toString());
+
         List<UserInfo> studentList = new ArrayList<>();
         for (JoinCourseUser joinCourseUser : courseInfo.getJoin()) {
             if (joinCourseUser.getUserInfo().getUserAccount().getRole().equals(UserRole.STUDENT.getValue()))
@@ -515,6 +544,8 @@ public class CourseDetailsController {
                     payment.setPaymentAmount(totalAmount);
                     payment.setPaymentAmountPercentage(totalAmountTenPercent);
                     paymentForTeacherService.savePaymentForTeacher(payment);
+                    logger.info("Operation Update Table : {} = Data : {} Success", "PaymentForTeacher",payment);
+
 
                     
                 }
@@ -553,7 +584,8 @@ public class CourseDetailsController {
                     paymentForTeacher.setPaymentAmountPercentage(totalAmountTenPercent);
                     paymentForTeacher.setStatus(paymentStatus);
                     paymentForTeacher.setPaymentVerify(false);
-                    paymentForTeacherService.savePaymentForTeacher(paymentForTeacher);                     
+                    paymentForTeacherService.savePaymentForTeacher(paymentForTeacher); 
+                    logger.info("Operation Update Table : {} = Data : {} Success", "PaymentForTeacher",payment);                    
                     
                     
                 }
@@ -567,7 +599,7 @@ public class CourseDetailsController {
                     payment.setPaymentAmount(totalAmount);
                     payment.setPaymentAmountPercentage(totalAmountTenPercent);
                     paymentForTeacherService.savePaymentForTeacher(payment);
-
+                    logger.info("Operation Update Table : {} = Data : {} Success", "PaymentForTeacher",payment);
 
 
                 }
@@ -578,7 +610,10 @@ public class CourseDetailsController {
             public void run() {
                 try {
                     UserInfo userInfo = userService.getUserInfoByID(userId);
+                    logger.info("Initiate to Operation Retrieve Table: {} by query: findById={} ", "courseInfo",courseId);
                     CourseInfo courseInfo = courseInfoRepository.findById(courseId).get();
+                    logger.info("Operation Retrieve Table: {} by query: findById={} Result  List {} Success ", "courseInfo",courseId,courseInfo.toString());
+
                     String appUrl = request.getServerName() + // "localhost"
                             ":" +
                             request.getServerPort(); // "8080"
@@ -591,11 +626,13 @@ public class CourseDetailsController {
                     mailService.SendTeacherNewStudentEnroll(userInfo, courseInfo);
 
                 } catch (Exception e) {
+                    e.getLocalizedMessage();
                     logger.info(e.toString());
                 }
             }
         }).start();
 
+        logger.info("Called getCourseDetails[redirect:/student/course-details/] with parameter course : {} Success", courseId);
         return "redirect:/student/course-details/" + courseId;
     }
 

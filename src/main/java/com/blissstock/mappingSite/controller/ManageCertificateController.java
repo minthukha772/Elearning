@@ -45,14 +45,22 @@ public class ManageCertificateController {
     Model model,
     @PathVariable(name = "id", required = false) Long id
   ) {
-    logger.info("GET Request, request id {}",id);
+    // logger.info("GET Request, request id {}",id);
+    logger.info("AT0007 with parameter: {}", id);
 
     Long uid = getUid(id);
     logger.info("User {}'s data is being processed ",uid);
+
+    logger.info("Initiate to Operation Retrieve Table {} by query {}",
+    "","storageService.loadCertificatesAsFileInfo(uid)");
     List<FileInfo> fileInfos = storageService.loadCertificatesAsFileInfo(uid);
+    logger.info("Operation Retrieve Table {} by query {} Result List {} Success",
+    "","storageService.loadCertificatesAsFileInfo(uid)",fileInfos.size());
     logger.info("{} photo has been retrieved",fileInfos.size());
+
     model.addAttribute("files", fileInfos);
 
+    logger.info("AT0007 with parameter: {} Success", id);
     return "AT0007_manage_certificate";
   }
 
@@ -66,10 +74,10 @@ public class ManageCertificateController {
   ) {
     
     //log
+    logger.info("AT0007 with parameter: {}", id);
     logger.info("POST mapping");
     logger.info("Files -> {}", file);
     
-
     // System.out.println(files.length);
     Long uid = getUid(id);
     logger.info("ID is {}", uid);
@@ -84,23 +92,27 @@ public class ManageCertificateController {
       // }
     } catch (NotImageFileException e) {
       e.printStackTrace();
+      logger.warn(e. getLocalizedMessage());
       model.addAttribute(
         "fileUploadError",
         "Only Jpg, Jpeg and Png are allowed"
       );
     } catch (UnauthorizedFileAccessException e) {
       e.printStackTrace();
+      logger.warn(e. getLocalizedMessage());
       model.addAttribute(
         "fileUploadError",
         "Unauthorized File Access"
       );
     } catch (Exception e) {
       e.printStackTrace();
+      logger.warn(e. getLocalizedMessage());
     }
 
     List<FileInfo> fileInfos = storageService.loadCertificatesAsFileInfo(uid);
     model.addAttribute("files", fileInfos);
 
+    logger.info("AT0007 with parameter: {} Success", id);
     return "AT0007_manage_certificate";
   }
 
@@ -111,19 +123,24 @@ public class ManageCertificateController {
     String name,
     @PathVariable(name = "id", required = false) Long id
   ) {
+    logger.info("delete_certificate with parameter: {},{}", name, id);
     logger.info("DELETE Requested, file name {}",name);
+
     Long uid = getUid(id);
     //return ResponseEntity.badRequest().body("something went wrong");
     try {
       storageService.deleteCertificate(uid, name);
     } catch (IOException e) {
       e.printStackTrace();
+      logger.warn(e. getLocalizedMessage());
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("something went wrong");
     } catch (UnauthorizedFileAccessException e) {
       e.printStackTrace();
+      logger.warn(e. getLocalizedMessage());
       return ResponseEntity.status(HttpStatus.FORBIDDEN).body("forbidden");
     }
 
+    logger.info("delete_certificate with parameter: {},{} Success", name, id);
     return ResponseEntity.ok().body("delete successfully");
   }
 

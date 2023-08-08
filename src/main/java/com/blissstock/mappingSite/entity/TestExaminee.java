@@ -18,20 +18,27 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "test_student")
-public class TestStudent {
+@Table(name = "test_examinee")
+public class TestExaminee {
     @Id
+    @Column(name = "test_examinee_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "test_id")
     private Test test;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "examinee_student_id")
     private UserInfo userInfo;
 
-    @Column(length = 15)
-    private String student_exam_start_time;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "examinee_guest_id")
+    private GuestUser guestUser;
+
+    @Column(name = "examinee_exam_start_time", length = 15)
+    private String examinee_exam_start_time;
 
     public Long getId() {
         return id;
@@ -58,17 +65,23 @@ public class TestStudent {
     }
 
     public String getStudentExamStartTime() {
-        return student_exam_start_time;
+        return examinee_exam_start_time;
     }
 
-    public void setStudentExamStartTime(String student_exam_start_time) {
-        this.student_exam_start_time = student_exam_start_time;
+    public void setStudentExamStartTime(String examinee_exam_start_time) {
+        this.examinee_exam_start_time = examinee_exam_start_time;
     }
 
-        public TestStudent(Long id, Test test, UserInfo userInfo, String student_exam_start_time) {
+    public TestExaminee(Long id, Test test, UserInfo userInfo, String examinee_exam_start_time) {
         this.id = id;
         this.test = test;
         this.userInfo = userInfo;
-        this.student_exam_start_time = student_exam_start_time;
+        this.examinee_exam_start_time = examinee_exam_start_time;
+    }
+
+    public String display() {
+        return this.id + ", " + this.test.getTest_id() + ", " + this.userInfo.getUserName() + ", "
+                + this.examinee_exam_start_time;
+
     }
 }

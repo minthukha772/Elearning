@@ -5,6 +5,8 @@ import com.blissstock.mappingSite.service.MailService;
 import com.blissstock.mappingSite.service.UserService;
 import com.blissstock.mappingSite.service.UserSessionService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class LoginController {
+
+  private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
   @Autowired
   UserSessionService userSessionService;
@@ -31,6 +35,9 @@ public class LoginController {
       String changeSuccess,
       String resetSuccess,
       String tokenError) {
+
+        logger.info("CM0005 with parameter: {}");
+
     /*
      * if(userSessionService.isAuthenticated()){
      * return "redirect:/home";
@@ -40,7 +47,7 @@ public class LoginController {
       message = "A password reset link has been sent to your email. Please check your email to continue.";
     }
     if (changeSuccess != null) {
-      message = "Your password has been changed successfully please login with new password to continue.";
+      message = "Your password has been changed successfully. Please login with new password to continue.";
     }
     if (tokenError != null) {
       error = "invalid token";
@@ -64,6 +71,8 @@ public class LoginController {
       model.addAttribute("message", message);
     }
     model.addAttribute("userInfo", new LoginDTO());
+
+    logger.info("CM0005 with parameter: {} Success");
     return "CM0005_login.html";
   }
   /*

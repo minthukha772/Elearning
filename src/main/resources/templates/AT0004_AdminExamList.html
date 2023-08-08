@@ -54,7 +54,7 @@
         document.getElementById("exam_end_time").value = "";
       });
 
-      
+
 
       $("#submit").click(function () {
         submitData(type);
@@ -318,19 +318,19 @@
       }
     }
 
-    $(document).ready(function(){
-      $("#search_date_btn").click(function(){
+    $(document).ready(function () {
+      $("#search_date_btn").click(function () {
         var fromDate = document.getElementById("exam_from").value;
         var toDate = document.getElementById("exam_to").value;
-        if(fromDate === "" && toDate != null){
+        if (fromDate === "" && toDate != null) {
           document.getElementById("filter_date_warning").textContent = "Please choose two date filters";
           document.getElementById("filter_date_warning").style.display = 'block';
-        }else if(fromDate != "" && toDate === ""){
+        } else if (fromDate != "" && toDate === "") {
           document.getElementById("filter_date_warning").textContent = "Please choose two date filters";
           document.getElementById("filter_date_warning").style.display = 'block';
-        }else if(fromDate >= toDate){
+        } else if (fromDate >= toDate) {
           document.getElementById("filter_date_warning").style.display = 'block';
-        }else{
+        } else {
           document.getElementById("filter_date_warning").style.display = 'none';
           window.location.replace("/admin/exam?fromDate=" + fromDate + "&toDate=" + toDate);
         }
@@ -470,14 +470,14 @@
   </div>
 
   <section class="main container mt-3">
-   
+
     <!-- to add filter start  -->
     <div class="mt-4" style="padding-top: 60px;">
       <form action="">
         <div class="d-flex flex-wrap align-items-end justify-content-between">
           <div class="">
             <label for="exam_from" class="fw-bold"><small>Exam From</small></label><br>
-            <input type="date" class="px-3 rounded shadow-sm border-1" id="exam_from" >
+            <input type="date" class="px-3 rounded shadow-sm border-1" id="exam_from">
           </div>
           <div class="">
             <label for="exam_to" class="fw-bold"><small>Exam To</small></label><br>
@@ -491,22 +491,22 @@
             <option value="Result Released"><small>Result Released</small></option>
             <option value="Deleted"><small>Deleted</small></option>
           </select>
-        
-        <div class="" style="display: none;" id="teacher_dropdown_main">
-          <select name="course" id="filterbyteacher" class="px-3 rounded shadow-sm">
-            <option value="Filter By Course" selected><small>Filter By Teacher</small></option>
-            <option th:each="teacher, index: ${teacherList}" th:text="${teacher.userName}" th:id="${teacher.uid}">
-          </select>
+
+          <div class="" style="display: none;" id="teacher_dropdown_main">
+            <select name="course" id="filterbyteacher" class="px-3 rounded shadow-sm">
+              <option value="Filter By Course" selected><small>Filter By Teacher</small></option>
+              <option th:each="teacher, index: ${teacherList}" th:text="${teacher.userName}" th:id="${teacher.uid}">
+            </select>
+          </div>
+          <div class="">
+            <select name="course" id="filterbycourse" class="px-3 rounded shadow-sm">
+              <option value="Filter By Course" selected><small>Filter By Course</small></option>
+              <option th:each="course, index: ${courseList}" th:text="${course.courseName}" th:id="${course.courseId}">
+            </select>
+            <input type="reset" class="ms-2 border-0 rounded bg-success text-white px-2" value="Clear Filter"
+              id="clearFilter">
+          </div>
         </div>
-        <div class="">
-          <select name="course" id="filterbycourse" class="px-3 rounded shadow-sm">
-            <option value="Filter By Course" selected><small>Filter By Course</small></option>
-            <option th:each="course, index: ${courseList}" th:text="${course.courseName}" th:id="${course.courseId}">
-          </select>
-          <input type="reset" class="ms-2 border-0 rounded bg-success text-white px-2" value="Clear Filter"
-            id="clearFilter">
-        </div>
-      </div>
       </form>
     </div>
 
@@ -516,17 +516,6 @@
     </div>
     <div style="color: red; font-size: 12px; display: none; padding-top: 10px;" id="filter_date_warning">End Date Must
       Be Greater Than Start Date</div>
-
-    <script>
-     
-
-
-    </script>
-
-
-
-    <!-- to add filter end  -->
-
     <div class="text-center mt-3">
       <div class="">
         <small class="fw-bold me-2">
@@ -598,7 +587,6 @@
                   });
                 }
               </script>
-
             </div>
             <div class="card-body pt-0 rounded">
               <div class="fw-bolder">

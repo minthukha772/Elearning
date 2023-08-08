@@ -52,8 +52,9 @@
                 <div class="input-group-sm mb-2 shadow-sm">
                     <label for="question_upload_box" class="form-label fw-bold mb-1"><small>Question Video, Image or
                             Audio Upload Box</small></label>
-                    <input type="file" class="form-control" id="question_upload_box" />
+                    <input type="file" class="form-control" id="question_upload_box" accept=".mp4, .mp3, .jpg, .png" />
                 </div>
+                <p id="error_message" style="color: red;"></p>
                 <p style="color: red; display: none;" id="description_warning">Please insert description or file</p>
 
                 <div class="input-group-sm mb-2 shadow-sm">
@@ -141,10 +142,10 @@
     </div>
     <!-- create exam end  -->
 
-    <section class="main container">
+    <section class="main container" style="padding-top: 80px;">
         <div class="d-flex align-items-center justify-content-between flex-wrap">
             <div class="mt-3">
-               
+
             </div>
             <div class="mt-3">
                 <small class="text-success fw-bold"><span th:text="${#lists.size(questionList)}"></span>
@@ -432,7 +433,7 @@
             if (file != null) {
                 formData.append('question_materials', file);
             }
-            
+
             if (removeYesRadio.checked) {
                 var dummyFile = new File([""], "dummy.blank", { type: "application/octet-stream" });
                 var dataTransfer = new DataTransfer();
@@ -447,7 +448,7 @@
             formData.append('maximum_mark', parseInt(document.getElementById("passing_score").value));
             if (mode == 'create') {
                 var xhr = new XMLHttpRequest();
-                xhr.open("POST", "https://pyinnyarsubuu.com/" + url + "/create-question", true);
+                xhr.open("POST", "/" + url + "/create-question", true);
                 xhr.onload = function () {
                     window.location.reload();
                 };
@@ -455,7 +456,7 @@
             } else {
                 formData.append('question_id', parseInt(question_id))
                 var xhr = new XMLHttpRequest();
-                xhr.open("POST", "https://pyinnyarsubuu.com/" + url + "/edit-question", true);
+                xhr.open("POST", "/" + url + "/edit-question", true);
                 xhr.onload = function () {
                     window.location.reload();
                 };
@@ -660,6 +661,52 @@
                 }
             })
         })
+        document.getElementById('question_upload_box').addEventListener('change', function () {
+            const fileInput = this;
+            const file = fileInput.files[0];
+
+
+            if (!file) {
+                showError('Please select a file.');
+                return;
+            }
+
+
+            const allowedVideoTypes = ['video/mp4'];
+            const allowedAudioTypes = ['audio/mpeg'];
+            const allowedImageTypes = ['image/jpeg', 'image/png'];
+            const maxVideoSizeMB = 10;
+            const maxAudioSizeMB = 10;
+            const maxImageSizeMB = 5;
+
+
+            if (!allowedVideoTypes.includes(file.type) && !allowedAudioTypes.includes(file.type) && !allowedImageTypes.includes(file.type)) {
+                showError('Invalid file type. Only mp4, mp3, jpg, and png files are allowed.');
+                fileInput.value = '';
+                return;
+            }
+
+            const fileSizeMB = file.size / (1024 * 1024);
+            if ((allowedVideoTypes.includes(file.type) || allowedAudioTypes.includes(file.type)) && fileSizeMB > maxVideoSizeMB) {
+                showError(`File size exceeds the maximum allowed (${maxVideoSizeMB}MB).`);
+                fileInput.value = '';
+                return;
+            } else if (allowedImageTypes.includes(file.type) && fileSizeMB > maxImageSizeMB) {
+                showError(`File size exceeds the maximum allowed (${maxImageSizeMB}MB).`);
+                fileInput.value = '';
+                return;
+            }
+
+
+            document.getElementById('error_message').textContent = '';
+        });
+
+        function showError(errorMessage) {
+            const errorMessageElement = document.getElementById('error_message');
+            errorMessageElement.textContent = errorMessage;
+        }
+
+
     </script>
 
     <script th:src="@{/js/main.js}"></script>
