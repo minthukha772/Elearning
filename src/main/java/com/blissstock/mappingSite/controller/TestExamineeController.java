@@ -1,7 +1,13 @@
 package com.blissstock.mappingSite.controller;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.io.LineNumberReader;
+import java.nio.charset.UnsupportedCharsetException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.validation.Valid;
 import org.json.JSONObject;
@@ -13,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.JoinCourseUser;
@@ -196,6 +203,87 @@ public class TestExamineeController {
         logger.info("Operation Insert Table {} Data {} Success", "TestExaminee", testid);
         logger.info("Operation Save File {} Success", testid);
         return "AT0005_TestExamineeList.html";
+    }
+
+    @Valid
+    @PostMapping(value = { "/teacher/set-multi-guest-examinee", "/admin/set-multi-guest-examinee" })
+    private String setMultiGuest(@RequestParam("csvFile") MultipartFile file) {
+        List<List<String>> records = new ArrayList<>();
+        String csvFileName = file.getOriginalFilename();
+        String COMMA_DELIMITER = ",";
+        String fileType = "text/csv";
+
+        if (!fileType.equals(file.getContentType())) {
+            // M0002 here
+            return "AT0005_TestStudentList.html";
+        }
+
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
+            // new FileReader(csvFileName)
+            String line;
+            if ((br.readLine()) == null) {
+                // M0001 here
+                return "AT0005_TestStudentList.html";
+            }
+
+            String csvEncoding = "UTF8";
+            String encoding = getEncoding(new InputStreamReader(file.getInputStream()));
+            System.out.println(encoding);
+            if (encoding != csvEncoding) {
+                // M0003 here
+                return "AT0005_TestExamineeList.html";
+            }
+
+            // long noOfLines = -1;
+
+            // try (LineNumberReader lineNumberReader = new LineNumberReader(new FileReader(csvFileName))) {
+            //     // new File(fileName)
+            //     lineNumberReader.skip(Long.MAX_VALUE);
+            //     noOfLines = lineNumberReader.getLineNumber() + 1;
+
+            //     if (noOfLines > 30) {
+            //         // M0004 here
+            //         return "AT0005_TestStudentList.html";
+            //     }
+            // } catch (Exception e) {
+            //     e.printStackTrace();
+            // }
+
+            while ((line = br.readLine()) != null) {
+                String[] values = line.split(COMMA_DELIMITER);
+                records.add(Arrays.asList(values));
+            }
+            System.out.println(records);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // JSONObject jsonObject = new JSONObject(testid);
+        // Long test_id = jsonObject.getLong("test_id");
+        // Long student_id = jsonObject.getLong("student_id");
+        // Test test = testRepository.getTestByID(test_id);
+        // UserInfo user = userInfoRepository.findStudentById(student_id);
+        // if (test.getExam_status().equals("Exam Created") ||
+        // test.getExam_status().equals("Questions Created")) {
+        // TestStudent existingStudent =
+        // testStudentRepository.getStudentByID(student_id, test_id);
+        // if (existingStudent == null) {
+        // TestStudent testStudent = new TestStudent(null, test, user, null);
+        // testStudentRepository.save(testStudent);
+        // }
+        // }
+
+        // M0006 here
+        return "AT0005_TestExamineeList.html";
+    }
+
+    private String getEncoding(InputStreamReader isr) {
+        try {
+            return isr.getEncoding();
+        } catch (UnsupportedCharsetException e) {
+            e.printStackTrace();
+        }
+        return "Unknown";
     }
 
     private Long getUid() {

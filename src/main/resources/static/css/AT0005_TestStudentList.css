@@ -40,6 +40,9 @@
     font-weight: 550 !important;
   }
   
+  .csvErrorMsgBox{
+    height: 70px;
+  }
   .add-student-box{
     animation: fadeIn 1s;
   }
