@@ -35,7 +35,7 @@ import com.blissstock.mappingSite.entity.TestExamineeAnswer;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
 import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
-import com.blissstock.mappingSite.repository.ResultRepository;
+import com.blissstock.mappingSite.repository.TestResultRepository;
 import com.blissstock.mappingSite.repository.TestRepository;
 import com.blissstock.mappingSite.repository.TestExamineeAnswerRepository;
 import com.blissstock.mappingSite.repository.TestExamineeRepository;
@@ -64,7 +64,7 @@ public class TestController {
     UserRepository userRepository;
 
     @Autowired
-    private ResultRepository resultRepo;
+    private TestResultRepository resultRepo;
 
     @Autowired
     private TestExamineeRepository TestExamineeRepository;

@@ -1,7 +1,7 @@
 package com.blissstock.mappingSite.service;
 
 import com.blissstock.mappingSite.entity.TestResult;
-import com.blissstock.mappingSite.repository.ResultRepository;
+import com.blissstock.mappingSite.repository.TestResultRepository;
 //import com.blissstock.mappingSite.service.ResultService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ import java.util.Optional;
 public class ResultServiceImpl implements ResultService {
 
     @Autowired
-    private ResultRepository resultRepository;
+    private TestResultRepository resultRepository;
 
     @Override
     public List<TestResult> getAllResults() {
