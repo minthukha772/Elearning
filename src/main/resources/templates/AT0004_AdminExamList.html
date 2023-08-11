@@ -17,6 +17,9 @@
   <link rel="stylesheet" th:href="@{/css/global.css}" />
   <link rel="icon" type="image/x-icon" href="/images/fav.png" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.css">
+  <!--TuTuMar-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <!--TuTuMar-->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.js"></script>
   <script th:inline="javascript">
@@ -354,6 +357,46 @@
       </div>
       <div class="px-3 pb-3">
         <h5 class="text-success text-center mb-3">To Create Exam Content</h5>
+        <!--TuTuMar-->
+      <div class="student_guest">
+        <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="student-guest" id="student" checked>
+        <label class="form-check-label" for="student">
+          Student
+        </label>
+        
+      </div>
+
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio"  name="student-guest" id="guest">
+        <label class="form-check-label" for="guest">
+          Guest
+        </label>
+      </div>
+    </div>
+    <!--new-->
+    <script>
+        $(document).ready(function(){
+          $("#sure_launch_exam").hide();
+          $("#launchExam").hide();
+          $("#student").click(function(){
+            
+            $("#launchExam").hide();
+          });
+          $("#guest").click(function(){
+    
+            $("#launchExam").show();
+          }); 
+
+
+          $("#launchExam").click(function(){
+    
+    $("#sure_launch_exam").show();
+  }); 
+        }); 
+    </script>
+   
+        <!--TuTuMar-->
         <div class="input-group-sm mb-2 shadow-sm">
           <label for="description" class="form-label fw-bold mb-1"><small style="color: black;">Teacher Name <span
                 class="text-danger">*</span></small></label>
@@ -442,12 +485,58 @@
           Number</div>
         <div style="color: red; font-size: 12px; display: none;" id="passing_score_number_limit">Please Add Between 0
           and 100</div>
+          <!--TuTuMar-->
+
+          <div class="dialog-sure-launch" id="sure_launch_exam">
+            <div class="dialog-launch" id="dialog-launch">
+               <i class="fas fa-times close-icon" id="dialog-close-btn-launch" style="color:red;position:absolute;padding:10px;top:0;right:0;font-size:20px;"></i>
+              <div class="dialog-content-launch">
+                  <i class="fas fa-check-circle" style="font-size: 20px; color:green;"></i>
+                  <p style="background-color: red;width:fit-content;color:white;">Are you sure to launch exam?</p>
+                  <div class="launch-Exam-Cancel">
+                    <input type="button" class="form-control btn btn-sm btn-success"  id="launchExamCancel" style="width: 100px" value="Cancel">
+                    <input type="button" class="form-control btn btn-sm btn-success"  id="launchExamOK" style="width: 100px" value="OK">
+                  </div>
+              </div>
+          </div>
+          </div> 
+
+          <script>
+            const dialogCloseBtnlaunch = document.getElementById("dialog-close-btn--launch");
+            $("#dialog-close-btn-launch").click(function () {
+              $("#sure_launch_exam").hide();
+                      // closelaunchDialog();
+                  });
+          
+            function closelaunchDialog() {
+                      const dialoglaunch = document.getElementById("sure_launch_exam");
+                      dialoglaunch.hide();
+                  }
+                </script>
+
+                <!--sure_launch_cancel_button-->
+                <script>
+                let surelaunchContainer = document.querySelector('.dialog-sure-launch');
+let launchcancelBtn = document.querySelector('#launchExamCancel');
+
+launchcancelBtn.addEventListener('click', () => {
+
+    $("#sure_launch_exam").hide();
+});
+</script>
+                <!--sure_launch_cancel_button-->
+
+          <!--TuTuMar beginning of launch button-->
+          <div class="launch-exam">
+            <input type="button" class="form-control btn btn-sm btn-success" name="launchExam"  id="launchExam" style="width: 100px" value="Launch Exam">
+          </div>
         <div class="input-group-sm text-end">
-          <input type="submit" class="form-control btn btn-sm btn-success" id="submit" style="width: 100px" />
+          <!--<input type="button" class="launch-exam form-control btn btn-sm btn-success  "  id="launchExam" style="width: 100px" value="Launch Exam">-->
+         <input type="submit" class="form-control btn btn-sm btn-success" id="submit" style="width: 100px" />
         </div>
       </div>
     </div>
-  </div>
+    </div>
   <!-- to create exam content end  -->
 
   <div
@@ -635,6 +724,19 @@
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
     crossorigin="anonymous"></script>
   <script th:src="@{/js/main.js}"></script>
+  <!--TuTuMar-->
+  <script>
+    const dialogCloseBtn = document.getElementById("dialog-close-btn");
+    $("#dialog-close-btn").click(function () {
+              closeDialog();
+          });
+  
+    function closeDialog() {
+              const dialog = document.getElementById("dialog");
+              dialog.style.visibility = "hidden";
+          }
+  </script>
+
 </body>
 <div th:replace="@{fragments/footer}"></div>
 
