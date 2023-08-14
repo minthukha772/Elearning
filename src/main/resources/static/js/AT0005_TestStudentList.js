@@ -31,22 +31,35 @@ add_multiple_guest_cancel.addEventListener('click', () => {
   add_multiple_guest_box.classList.add('animate__fadeOut');
   setTimeout(() => {
     add_multiple_guest_box.classList.add('d-none');
-    const noError = csvErrorMsgBox.classList.contains("d-none");
-    if (!noError) {
-      csvErrorMsgBox.classList.add("d-none");
-      csvErrorMsgBox.removeChild(csvErrorMsgBox.firstChild);
-    }
+    removeCsvErrorMsg();
     // csvErrorMsgBox.classList.contains("d-none") ? null : csvErrorMsgBox.classList.add("d-none");
   }, 1000);
 })
 // Add Multiple Guest Dialog end
+
+function removeAllChildNodes(parent) {
+  while (parent.firstChild) {
+    parent.removeChild(parent.firstChild);
+  }
+}
+
+function removeCsvErrorMsg() {
+  const noError = csvErrorMsgBox.classList.contains("d-none");
+  if (!noError) {
+    csvErrorMsgBox.classList.replace("d-flex", "d-none");
+    removeAllChildNodes(csvErrorMsgBox);
+  }
+}
 
 // CSV filename show start
 let csv_upload = document.querySelector('#csvUpload');
 const input = document.querySelector("#fileDialog");
 const preview = document.querySelector(".preview");
 
-const openFileDialog = () => input.click();
+const openFileDialog = () => {
+  input.click();
+  removeCsvErrorMsg();
+}
 csv_upload.addEventListener('click', openFileDialog)
 input.addEventListener("change", showFileName);
 

@@ -40,9 +40,13 @@
     font-weight: 550 !important;
   }
   
+  .add-multi-guest-content{
+    width: 500px !important;
+  }
   .csvErrorMsgBox{
     height: 70px;
   }
+
   .add-student-box{
     animation: fadeIn 1s;
   }
