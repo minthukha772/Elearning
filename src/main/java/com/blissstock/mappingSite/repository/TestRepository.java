@@ -20,7 +20,7 @@ public interface TestRepository extends JpaRepository<Test, Long> {
         public List<Test> getListByStatusAndUser(@Param("exam_status") String exam_status,
                         @Param("user_id") Long user_id);
 
-        @Query(value = "SELECT * FROM test, test_examinee WHERE exam_status = :exam_status and test.test_id = test_examinee.test_id and test_examinee.user_id = :user_id and is_delete <> 'true' ORDER BY test_id DESC", nativeQuery = true)
+        @Query(value = "SELECT * FROM test, test_examinee WHERE exam_status = :exam_status and test.test_id = test_examinee.test_id and test_examinee.examinee_student_id = :user_id and is_delete <> 'true' ORDER BY test_id DESC", nativeQuery = true)
         public List<Test> getListByStatusAndStudentId(@Param("exam_status") String exam_status,
                         @Param("user_id") Long user_id);
 
@@ -35,7 +35,7 @@ public interface TestRepository extends JpaRepository<Test, Long> {
                         @Param("user_id") Long user_id);
 
 
-        @Query(value = "Select * from test, test_examinee where date >= :fromDate and date <= :toDate and test.test_id = test_examinee.test_id and test_examinee.user_id = :user_id order by test_id desc", nativeQuery = true)
+        @Query(value = "Select * from test, test_examinee where date >= :fromDate and date <= :toDate and test.test_id = test_examinee.test_id and test_examinee.examinee_student_id = :user_id order by test_id desc", nativeQuery = true)
         public List<Test> getListByDateAndStudentId(@Param("fromDate") Date fromDate, @Param("toDate") Date toDate,
                         @Param("user_id") Long user_id);
 
@@ -45,9 +45,9 @@ public interface TestRepository extends JpaRepository<Test, Long> {
         public List<Test> getListByUser(@Param("user_id") Long user_id);
 
         // @Query(value = "Select * from test, test_examinee where test.test_id =
-        // test_examinee.test_id and test_examinee.user_id = :user_id
+        // test_examinee.test_id and test_examinee.examinee_student_id = :user_id
         // order by test_id desc", nativeQuery = true)
-        @Query(value = "SELECT * FROM test, test_examinee WHERE test.test_id = test_examinee.test_id and test_examinee.user_id = :user_id and test.is_delete <> 'true' ORDER BY test.test_id DESC", nativeQuery = true)
+        @Query(value = "SELECT * FROM test, test_examinee WHERE test.test_id = test_examinee.test_id and test_examinee.examinee_student_id = :user_id and test.is_delete <> 'true' ORDER BY test.test_id DESC", nativeQuery = true)
         public List<Test> getListByStudent(@Param("user_id") Long user_id);
 
         // @Query(value = "Select * from test order by test_id desc", nativeQuery =
