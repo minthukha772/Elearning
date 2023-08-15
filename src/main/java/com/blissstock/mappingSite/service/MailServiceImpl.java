@@ -17,7 +17,9 @@ import com.blissstock.mappingSite.config.GmailConfig;
 import com.blissstock.mappingSite.controller.CourseDetailsController;
 import com.blissstock.mappingSite.entity.AddAdmin;
 import com.blissstock.mappingSite.entity.CourseInfo;
+import com.blissstock.mappingSite.entity.GuestUser;
 import com.blissstock.mappingSite.entity.JoinCourseUser;
+import com.blissstock.mappingSite.entity.Test;
 import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.enums.TokenType;
@@ -35,6 +37,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
@@ -457,20 +460,20 @@ public class MailServiceImpl implements MailService {
   public void SendTeacherNewStudentEnroll(UserInfo userInfo, CourseInfo courseInfo) throws MessagingException {
     String appUrl = getServerAddress();
     String recipientAddress = courseInfo.getUserInfo().getUserAccount().getMail();
-    String subject =  "【Pyinnyar Subuu】A student has successfully enrolled in a course.";
+    String subject = "【Pyinnyar Subuu】A student has successfully enrolled in a course.";
 
     Integer maxStudent = courseInfo.getMaxStu();
     List<UserInfo> studentList = new ArrayList<>();
     for (JoinCourseUser joinCourseUser : courseInfo.getJoin()) {
-        if (joinCourseUser.getUserInfo().getUserAccount().getRole().equals(UserRole.STUDENT.getValue()))
-            studentList.add(joinCourseUser.getUserInfo());
+      if (joinCourseUser.getUserInfo().getUserAccount().getRole().equals(UserRole.STUDENT.getValue()))
+        studentList.add(joinCourseUser.getUserInfo());
     }
     Integer stuListSize = studentList.size();
     Integer availableStuList;
     try {
-        availableStuList = maxStudent - stuListSize;
+      availableStuList = maxStudent - stuListSize;
     } catch (NullPointerException e) {
-        availableStuList = 0;
+      availableStuList = 0;
     }
 
     appUrl = appUrl + "/guest/course-detail/" + courseInfo.getCourseId();
@@ -489,7 +492,6 @@ public class MailServiceImpl implements MailService {
     ctx.setVariable("studentName", userInfo.getUserName());
     ctx.setVariable("numSeatsLeft", availableStuList);
 
-
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
     message.setSubject(subject);
@@ -502,6 +504,69 @@ public class MailServiceImpl implements MailService {
     this.mailSender.send(mimeMessage);
   }
   
+  @Override
+  public void SendGuestOneTimePassword(GuestUser guestUser, Test test, String otp) throws MessagingException {
+    String appUrl = getServerAddress();
+    String recipientAddress = guestUser.getMail();
+
+    String subject = "【Pyinnyar Subuu】OTP for Exam Login";
+
+    final Context ctx = new Context();
+    ctx.setVariable("appUrl", appUrl);
+    ctx.setVariable("guestName", guestUser.getName());
+    ctx.setVariable("oneTimePassword", otp);
+    ctx.setVariable("sectionName", test.getSection_name());
+    ctx.setVariable("description", test.getDescription());
+    ctx.setVariable("date", test.getDate());
+    ctx.setVariable("startTime", test.getStart_time());
+    ctx.setVariable("endTime", test.getEnd_time());
+    ctx.setVariable("minutesAllowed", test.getMinutes_allowed());
+    ctx.setVariable("passingScorePercent", test.getPassing_score_percent());
+    ctx.setVariable("Date", new Date());
+
+    final MimeMessage mimeMessage = mailSender.createMimeMessage();
+    final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+    message.setSubject(subject);
+    message.setFrom("sys@pyinnyar-subuu.com");
+    message.setTo(recipientAddress);
+
+    final String htmlContent = templateEngine.process("SendGuestOTP", ctx);
+    message.setText(htmlContent, true);
+
+    this.mailSender.send(mimeMessage);
+
+  }
+
+  @Override
+  public void SendGuestRemovedNotification(GuestUser guestUser, Test test) throws MessagingException {
+    String appUrl = getServerAddress();
+    String recipientAddress = guestUser.getMail();
+
+    String subject = "【Pyinnyar Subuu】Removed";
+
+    final Context ctx = new Context();
+    ctx.setVariable("appUrl", appUrl);
+    ctx.setVariable("guestName", guestUser.getName());
+    ctx.setVariable("sectionName", test.getSection_name());
+    ctx.setVariable("description", test.getDescription());
+    ctx.setVariable("date", test.getDate());
+    ctx.setVariable("startTime", test.getStart_time());
+    ctx.setVariable("endTime", test.getEnd_time());
+    ctx.setVariable("minutesAllowed", test.getMinutes_allowed());
+    ctx.setVariable("passingScorePercent", test.getPassing_score_percent());
+    ctx.setVariable("Date", new Date());
+
+    final MimeMessage mimeMessage = mailSender.createMimeMessage();
+    final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+    message.setSubject(subject);
+    message.setFrom("sys@pyinnyar-subuu.com");
+    message.setTo(recipientAddress);
+
+    final String htmlContent = templateEngine.process("SendGuestRemovedNotification", ctx);
+    message.setText(htmlContent, true);
+
+    this.mailSender.send(mimeMessage);
+  }
 
 
   @Override
