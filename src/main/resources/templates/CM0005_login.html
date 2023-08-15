@@ -1,61 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="stylesheet" th:href="@{/css/CM0005_login.css}" />
-    <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
-    <title>Login</title>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="icon" type="image/x-icon" href="/images/fav.png" />
-    
-    <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
-    <link rel="stylesheet" th:href="@{/css/global.css}" />
-  </head>
+  <link rel="stylesheet" th:href="@{/css/CM0005_login.css}" />
+  <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
+  <title>Login</title>
 
-  <body>
-    
-    <div th:replace="@{fragments/nav}"></div>
+  <link rel="icon" type="image/x-icon" href="/images/fav.png" />
 
-  
-    <div class="container-custom mt-5 " >
-      <!-- TODO -->
-      <div
-        th:if="${error != null}"
-        class="alert alert-danger fade show mt-5"
-        role="alert"
-      >
-        <span class="text-danger errormessages" th:text="${error}"></span>
-      </div>
-      <div
-        th:if="${success != null}"
-        class="alert alert-success fade show mt-5"
-        role="alert"
-      >
-        <span th:text="${success}"></span>
-      </div>
-      <div
-        th:if="${message != null}"
-        class="alert alert-success fade show mt-5"
-        role="alert"
-      >
-        <span th:text="${message}"></span>
-      </div>
+  <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
+  <link rel="stylesheet" th:href="@{/css/global.css}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert@2.1.2/dist/sweetalert.min.js"></script>
 
-      <div class="card mt-3 ">
-        <div class="card-header " style="background: #02917F; color:#fff;">Login</div>
-        <div class="card-body cardbodycolors">
-          <div class="container">
-            <form
-              id="contactForm"
-              th:action="@{/sign_in}"
-              th:object="${userInfo}"
-              method="post"
-            >
-              <!--   -->
-              <!-- <div
+
+
+
+</head>
+
+<body>
+
+  <div th:replace="@{fragments/nav}"></div>
+
+
+  <div class="container-custom mt-5 ">
+    <!-- TODO -->
+    <div th:if="${error != null}" class="alert alert-danger fade show mt-5" role="alert">
+      <span class="text-danger errormessages" th:text="${error}"></span>
+    </div>
+    <div th:if="${success != null}" class="alert alert-success fade show mt-5" role="alert">
+      <span th:text="${success}"></span>
+    </div>
+    <div th:if="${message != null}" class="alert alert-success fade show mt-5" role="alert">
+      <span th:text="${message}"></span>
+    </div>
+
+    <div class="card mt-3 ">
+      <div class="card-header " style="background: #02917F; color:#fff;">Login</div>
+      <div class="card-body cardbodycolors">
+        <div class="container">
+          <form id="contactForm" th:action="@{/sign_in}" th:object="${userInfo}" method="post">
+            <!--   -->
+            <!-- <div
                 th:if="${error != null}"
                 class="alert alert-danger fade show"
                 role="alert"
@@ -76,104 +68,177 @@
               >
                 <span th:text="${message}"></span>
               </div> -->
-              <div>
-                <div class="mb-3 has-validation">
-                  <label class="form-label " for="emailAddress">
-                    Email Address</label
-                  >
-                  <input
-                    th:field="*{email}"
-                    class="form-control"
-                    id="email"
-                    type="email"
-                    th:classappend="${#fields.hasErrors('email')}?'is-invalid':''"
-                    placeholder="e.g. john@gmail.com"
-                  />
-                  <div
-                    class="invalid-feedback"
-                    th:if="${#fields.hasErrors('email')}"
-                    th:errors="*{email}"
-                  >
-                    This field is required.
-                  </div>
-                </div>
-
-                <div class="mb-3">
-                  <label class="form-label" for="password">Password</label>
-                  <span th:text="*{password}" class="invisible"></span>
-
-                  <input
-                    th:field="*{password}"
-                    th:attr="data-value=*{password}"
-                    class="form-control"
-                    id="password"
-                    type="password"
-                    automplete="new-password"
-                    placeholder="ExamplePassword001"
-                    data-toggle="password"
-                  />
-
-                  <div
-                    class="invalid-feedback"
-                    th:if="${#fields.hasErrors('password')}"
-                    th:errors="*{password}"
-                  ></div>
-                </div>
-
-                <div class="row justify-content-between">
-                  <a
-                    th:href="@{/check_email/reset_password}"
-                    class="col-auto btn btn-link "
-                    id="forgetPassword"
-                    type="submit"
-                    name="action"
-                    value="forget"
-                   style="color: rgb(47, 255, 75);"
-                  >
-                    Forget Password?
-                  </a>
-
-                  <button
-                    class="btn btn-primary col-auto"
-                    id="submitButton"
-                    type="submit"
-                    name="action"
-                    value="login"
-                  >
-                    Login
-                  </button>
+            <div>
+              <div th:if="${guestMessage != null}" class="mb-3 has-validation">
+                <label class="form-label " for="guestEmailAddress">
+                  Email Address</label>
+                <input th:field="*{email}" class="form-control" id="guestEmail" type="email"
+                  th:classappend="${#fields.hasErrors('email')}?'is-invalid':''" placeholder="e.g. john@gmail.com"
+                  readonly />
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">
+                  This field is required.
                 </div>
               </div>
-            </form>
-          </div>
+
+              <div th:if="${guestMessage == null}" class="mb-3 has-validation">
+                <label class="form-label " for="emailAddress">
+                  Email Address</label>
+                <input th:field="*{email}" class="form-control" id="email" type="email"
+                  th:classappend="${#fields.hasErrors('email')}?'is-invalid':''" placeholder="e.g. john@gmail.com" />
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">
+                  This field is required.
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label" for="password">Password</label>
+                <span th:text="*{password}" class="invisible"></span>
+
+                <input th:field="*{password}" th:attr="data-value=*{password}" class="form-control" id="password"
+                  type="password" automplete="new-password" placeholder="ExamplePassword001" data-toggle="password" />
+
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+              </div>
+
+              <div class="row justify-content-between">
+                <label class="form-label" for="onetimePassword" th:if="${guestMessage != null}"
+                  th:text="${guestMessage}" style="color: rgb(135, 18, 18);">
+                </label>
+
+
+              </div>
+
+              <div class="row justify-content-between">
+                <a th:if="${guestMessage == null}" th:href="@{/check_email/reset_password}"
+                  class="col-auto btn btn-link " id="forgetPassword" type="submit" name="action" value="forget"
+                  style="color: rgb(47, 255, 75);">
+                  Forget Password?
+                </a>
+
+                <a th:if="${guestMessage != null}" th:href="@{/check_email/reset_onetime_password}"
+                  class="col-auto btn btn-link" id="oneTimePassword" type="submit" name="action" value="forget"
+                  style="color: rgb(47, 255, 75);">
+                  Request New One-time Password?
+                </a>
+
+                <a th:if="${guestMessage != null}" href="javascript:void(0);" class="btn btn-primary col-auto"
+                  id="guestSubmitButton">
+                  Login
+                </a>
+
+
+
+                <button th:if="${guestMessage == null}" class="btn btn-primary col-auto" id="submitButton" type="submit"
+                  name="action" value="login">
+                  Login
+                </button>
+              </div>
+            </div>
+          </form>
         </div>
-        <!-- End of Card Body -->
       </div>
-      <!---End of Card-->
+      <!-- End of Card Body -->
     </div>
-    <!-- End of Container -->
+    <!---End of Card-->
+  </div>
+  <!-- End of Container -->
 
-    <div style="height: 100px"></div>
+  <div style="height: 100px"></div>
 
-    <div th:replace="@{fragments/footer}"></div>
+  <div th:replace="@{fragments/footer}"></div>
 
-    <script th:inline="javascript">
-      const uri = /*[[@{__${#httpServletRequest.requestURI}__}]]*/ "uri    ";
-      const serverContext = /*[[@{/}]]*/ "/";
-    </script>
+  <script th:inline="javascript">
+    const uri = /*[[@{__${#httpServletRequest.requestURI}__}]]*/ "uri    ";
+    const serverContext = /*[[@{/}]]*/ "/";
+  </script>
 
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://code.jquery.com/jquery-3.6.0.min.js"
-      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-      crossorigin="anonymous"
-    ></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
-    <script th:src="@{\js\show-hide-password.js}"></script>
-    <script th:src="@{/js/main.js}"></script>
-  </body>
+  <script th:src="@{\js\show-hide-password.js}"></script>
+  <script th:src="@{/js/main.js}"></script>
+
+
+  <script th:inline="javascript">
+    var forgetPasswordLink = document.getElementById("oneTimePassword");
+
+    forgetPasswordLink.addEventListener("click", function (event) {
+      event.preventDefault();
+
+      var currentURL = window.location.href;
+      var parts = currentURL.split("/");
+
+      if (parts.length >= 5) {
+        var emailAddressAndExamID = parts[parts.length - 1];
+        var emailAndExamIDArray = emailAddressAndExamID.split("_");
+
+        if (emailAndExamIDArray.length >= 2) {
+          var emailAddress = emailAndExamIDArray[0];
+          var examID = emailAndExamIDArray[1];
+
+          swal({
+            title: "Confirm Reset",
+            text: "Do you want to reset the one-time password for " + emailAddress + "?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          }).then(function (confirmed) {
+            if (confirmed) {
+              var backendURL = "/check_email/reset_onetime_password?email=" + encodeURIComponent(emailAddress) + "&examID=" + encodeURIComponent(examID);
+              window.location.href = backendURL;
+            }
+          });
+        }
+      }
+    });
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+      var emailInput = document.getElementById("guestEmail");
+      var currentURL = window.location.href;
+      var parts = currentURL.split("/");
+      var emailAndExamID = parts[parts.length - 1];
+      var emailAddress = emailAndExamID.split("_")[0];
+
+      emailInput.value = decodeURIComponent(emailAddress);
+    });
+
+  </script>
+
+
+
+  <script th:inline="javascript">
+    document.addEventListener("DOMContentLoaded", function () {
+      var guestSubmitButton = document.getElementById("guestSubmitButton");
+
+      guestSubmitButton.addEventListener("click", function (event) {
+        event.preventDefault();
+
+        var emailAddress = document.getElementById("guestEmail").value;
+        var password = document.getElementById("password").value;
+
+        if (emailAddress.trim() === "" || password.trim() === "") {
+          toastr.error("Both email address and password are required.");
+          return;
+        }
+
+        var encodedEmailAddress = encodeURIComponent(emailAddress);
+        var encodedPassword = encodeURIComponent(password);
+
+        var currentURL = window.location.href;
+        var parts = currentURL.split("/");
+        var examID = parts[parts.length - 1].split("_")[1];
+
+        var backendURL = "/guest-exam/" + encodedEmailAddress + "_" + encodedPassword + "_" + examID + "/login";
+
+        window.location.href = backendURL;
+      });
+    });
+  </script>
+
+</body>
+
 </html>

@@ -64,4 +64,6 @@ public interface MailService {
 
   public void StudentResetPassword(UserAccount user) throws MessagingException;
 
+  public void guestResetOneTimePassword(String guestUserName, String email, String examID, String guestUserPhoneNumber,String oneTimePassword) throws MessagingException;
+
 }
