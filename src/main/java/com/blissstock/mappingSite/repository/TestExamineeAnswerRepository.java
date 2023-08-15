@@ -27,6 +27,11 @@ public interface TestExamineeAnswerRepository extends JpaRepository<TestExaminee
                         @Param("test_id") Long test_id,
                         @Param("student_account_id") Long student_account_id);
 
+        @Query(value = "Select count(examinee_answer_id) from test_examinee_answer where examinee_guest_id = :guest_id and test_id = :test_id", nativeQuery = true)
+        public Integer getCountStudentAnswerListByTestAndGuest(
+                        @Param("test_id") Long test_id,
+                        @Param("guest_id") Long guest_id);
+
         @Query(value = "Select * from test_examinee_answer where test_id = :test_id", nativeQuery = true)
         public List<TestExamineeAnswer> getStudentAnswerListByTest(@Param("test_id") Long test_id);
 
@@ -47,4 +52,8 @@ public interface TestExamineeAnswerRepository extends JpaRepository<TestExaminee
         @Query(value = "Select count(examinee_answer_id) from test_examinee_answer where marked_status = 'MARKING' and test_id = :test_id and examinee_student_id = :student_account_id", nativeQuery = true)
         public Integer getUnCheckAnswerCountByTestAndStudent(@Param("test_id") Long test_id,
                         @Param("student_account_id") Long student_account_id);
+
+        @Query(value = "Select count(examinee_answer_id) from test_examinee_answer where marked_status = 'MARKING' and test_id = :test_id and examinee_guest_id = :examinee_guest_id", nativeQuery = true)
+        public Integer getUnCheckAnswerCountByTestAndGuest(@Param("test_id") Long test_id,
+                        @Param("examinee_guest_id") Long examinee_guest_id);
 }

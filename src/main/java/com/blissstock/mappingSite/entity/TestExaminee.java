@@ -72,12 +72,23 @@ public class TestExaminee {
         this.examinee_exam_start_time = examinee_exam_start_time;
     }
 
-    public TestExaminee(Long id, Test test, UserInfo userInfo, String examinee_exam_start_time) {
+    
+
+    public TestExaminee(Long id, Test test, UserInfo userInfo, GuestUser guestUser,
+            String examinee_exam_start_time) {
         this.id = id;
         this.test = test;
         this.userInfo = userInfo;
+        this.guestUser = guestUser;
         this.examinee_exam_start_time = examinee_exam_start_time;
     }
+
+    // public TestExaminee(Long id, Test test, UserInfo userInfo, String examinee_exam_start_time) {
+    //     this.id = id;
+    //     this.test = test;
+    //     this.userInfo = userInfo;
+    //     this.examinee_exam_start_time = examinee_exam_start_time;
+    // }
 
     public String display() {
         return this.id + ", " + this.test.getTest_id() + ", " + this.userInfo.getUserName() + ", "
