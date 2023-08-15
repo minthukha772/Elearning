@@ -148,6 +148,7 @@ public class GuestController {
                     model.addAttribute("status", status);
                     model.addAttribute("paragraph", paragraph);
                     model.addAttribute("header3", header3);
+                    return "GU0002_GuestUser.html";
 
                 } else {
                     String status = "invalid";
