@@ -581,7 +581,7 @@ public class TestController {
     @Valid
     @PostMapping(value = { "/admin/create-exam" })
     private ResponseEntity saveExamByAdmin(@RequestBody String payload) {
-        try {
+        try { 
             //logger.info("Called saveExamByAdmin");
             Long userID = getUid();
             logger.info("Called saveExamByAdmin with parameter(payload={})", payload);
@@ -617,18 +617,19 @@ public class TestController {
                         teacher_id);
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to find user with ID: " + teacher_id);
             }
-            Test test;
+          
              if(student_guest == "guest"){
-                 test = new Test(null,null,null,description, section_name, minutes_allowed, passing_score,
-                     examDate, exam_start_time, exam_end_time, exam_status, "false", "null",student_guest); 
+                //  test = new Test(null,null,null,description, section_name, minutes_allowed, passing_score,
+                //      examDate, exam_start_time, exam_end_time, exam_status, "false", "null",student_guest); 
                     testRepository.insertTest(description, student_guest, section_name, minutes_allowed, passing_score, examDate, exam_start_time, exam_end_time, exam_status, exam_start_time, exam_end_time, 1, null);
              }else{
-                 test = new Test(null, courseInfo, userInfo, description, section_name, minutes_allowed, passing_score,
+                
+             Test    test = new Test(null, courseInfo, userInfo, description, section_name, minutes_allowed, passing_score,
                     examDate, exam_start_time, exam_end_time, exam_status, "false", "null",student_guest);
             logger.info("Initiate to Operation Insert Table Test Data {}", test.display());
             
-            testRepository.save(test);}
-            logger.info("Operation Insert Table Test Data {} Success", test.display());
+            testRepository.save(test);
+            logger.info("Operation Insert Table Test Data {} Success", test.display());}
 
             logger.info("Called saveExamByAdmin with parameter(payload={}) Success", payload);
             logger.info("user_id: {}", userID);
