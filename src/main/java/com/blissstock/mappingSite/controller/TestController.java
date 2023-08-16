@@ -678,7 +678,7 @@ public class TestController {
             logger.info( "Operation Insert Table Test Data {} | Success", test.display());
 
             if (exam_status.equals("Result Released")) {
-                List<TestExaminee> TestExaminees = TestExamineeRepository.getStudentByTest(test_id);
+                List<TestExaminee> TestExaminees = TestExamineeRepository.getExamineeByTest(test_id);
                 for (TestExaminee student : TestExaminees) {
                     int total_acquired_mark = 0;
                     int total_mark = 0;
@@ -799,7 +799,7 @@ public class TestController {
             logger.info( "Operation Insert Table Test Data {} | Success",test.display());
 
             if (exam_status.equals("Result Released")) {
-                List<TestExaminee> TestExaminees = TestExamineeRepository.getStudentByTest(test_id);
+                List<TestExaminee> TestExaminees = TestExamineeRepository.getExamineeByTest(test_id);
                 for (TestExaminee student : TestExaminees) {
                     int total_acquired_mark = 0;
                     int total_mark = 0;
