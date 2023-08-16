@@ -1,5 +1,7 @@
 package com.blissstock.mappingSite.entity;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -27,7 +29,6 @@ public class GuestUser {
 
     @Column(name = "name", length = 255)
     private String name;
-
     
     @Column(name = "mail", length = 255)
     private String mail;
@@ -56,9 +57,14 @@ public class GuestUser {
         this.one_time_password = one_time_password;
         this.password_update_date_time = password_update_date_time;
         this.updated_date_time = updated_date_time;
-        this.deleted_date_time = deleted_date_time;
+        this.deleted_date_time = deleted_date_time;        
     }
 
-    
 
+    public String display() {
+        return this.guest_id + ", " + this.name + ", " + this.mail + ", "
+                + this.phone_no + ", " + this.one_time_password + ", " +
+                this.password_update_date_time + ", " + this.updated_date_time + ", " + this.deleted_date_time;
+
+    }
 }

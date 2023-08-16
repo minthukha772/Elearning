@@ -895,6 +895,35 @@ public class MailServiceImpl implements MailService {
   }
 
   @Override
+  public void guestResetOneTimePassword(String guestUserName, String email, String examID, String guestUserPhoneNumber, String oneTimePassword) throws MessagingException {
+    String appUrl = getServerAddress() + "/" + email + "_" +examID;
+    
+    logger.info("Guest one-time password renew request from :" + email);
+    String recipientAddress = email;
+    String subject = "【Pyinnyar Subuu】You have requested to renew your one-time password.";
+    
+    final Context ctx = new Context();
+    
+    ctx.setVariable("guestusername", guestUserName);
+    ctx.setVariable("guestphonenumber", guestUserPhoneNumber);
+    ctx.setVariable("onetimepassword", oneTimePassword);
+    ctx.setVariable("Date", new Date());    
+    ctx.setVariable("appUrl", appUrl);
+    final MimeMessage mimeMessage = mailSender.createMimeMessage();
+    final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
+    message.setSubject(subject);
+    message.setFrom("sys@pyinnyar-subuu.com");
+    message.setTo(recipientAddress);
+
+    final String htmlContent = templateEngine.process("GuestRenewOneTimePassword", ctx);
+
+    message.setText(htmlContent, true); // true = isHtml
+
+    this.mailSender.send(mimeMessage);
+
+  }
+
+  @Override
   public String getServerAddress() {
     String appUrl = "Empty";
     // logger.warn(ENVIRONMENT);
