@@ -664,9 +664,9 @@ public class TestController {
             String exam_start_time = jsonObject.getString("start_time");
             String exam_end_time = jsonObject.getString("end_time");
             int passing_score = Integer.parseInt(jsonObject.getString("passing_score"));
-            int minutes_allowed = jsonObject.getInt("minutes_allowed");
+            int minutes_allowed = jsonObject.getInt("minutes_allowed"); 
             CourseInfo courseInfo = courseInfoRepository.findByCourseID(course_id);
-
+//
             if (courseInfo == null && student_guest == "student") {
                 logger.warn("Operation Retrieve Table course_info by query course_id = {} Result No Data",
                         course_id);
