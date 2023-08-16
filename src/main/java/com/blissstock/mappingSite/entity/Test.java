@@ -28,21 +28,24 @@ public class Test {
 
     @Column(name = "test_id")
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long test_id;
 
     // mapping
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable=true)
     private UserInfo userInfo;
 
     // mapping
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "course_id")
+    @JoinColumn(name = "course_id" , nullable=true)
     private CourseInfo courseInfo;
 
     @Column(name = "description", length = 255)
     private String description;
+
+    @Column(name = "student_guest", length = 255)
+    private String student_guest;
 
     @Column(name = "section_name", length = 255)
     private String section_name;
@@ -79,10 +82,13 @@ public class Test {
 
     public Test(Long test_id, CourseInfo courseInfo, UserInfo userInfo, String description, String section_name,
             Integer minutes_allowed, Integer passing_score_percent, Date date, String start_time,
-            String end_time, String exam_status, String isDelete, String deletedAt) {
+            String end_time, String exam_status, String isDelete, String deletedAt, String student_guest) {
+                this.student_guest = student_guest;
         this.test_id = test_id;
-        this.courseInfo = courseInfo;
-        this.userInfo = userInfo;
+        if(courseInfo != null){
+        this.courseInfo = courseInfo;}
+        if(userInfo != null){
+        this.userInfo = userInfo;}
         this.description = description;
         this.section_name = section_name;
         this.minutes_allowed = minutes_allowed;
@@ -96,11 +102,11 @@ public class Test {
     }
 
     public String display() {
-        return this.test_id + ", " + this.courseInfo.getCourseName() + ", " + this.userInfo.getUserName() + ", "
+        return this.test_id + ", " +  ", " + ", "
                 + this.description + ", " + this.section_name + ", " +
                 this.minutes_allowed + ", " + this.passing_score_percent + ", " + this.Date + ", " + this.start_time
                 + ", " + this.end_time + ", " + this.exam_status + ", " +
-                this.isDelete + ", " + this.deletedAt;
+                this.isDelete + ", " + this.deletedAt+","+this.student_guest;
 
     }
     

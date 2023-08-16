@@ -134,11 +134,53 @@ justify-content: center;
  height: 160px;
      width:auto; 
      top:50%;
-     left:45%;
+     left:40%;
+     right:40%;
+      padding: 20px 30px; 
+     background-color: white;
+border-radius: 5px;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}  
+
+.dialog-sure-launch_M0006{
+    display:flex;
+  position: absolute;  
+  vertical-align: middle;
+  text-align: center;
+align-items: center;
+justify-content: center;
+  margin: 0 auto ; 
+ height: 160px;
+     width:auto; 
+     top:50%;
+     left:40%;
+     right:40%;
       padding: 20px 30px; 
      background-color: white;
 border-radius: 5px;
 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 
 }  
+
+.dialog-sure-launch_M0007{
+    display:flex;
+  position: absolute;  
+  vertical-align: middle;
+  text-align: center;
+align-items: center; 
+ justify-content: center; 
+  margin: 0 auto ; 
+ height: 160px;
+     width:auto; 
+     top:50%;
+     left:40%;
+     right:40%;
+      padding: 20px 30px; 
+     background-color: white;
+border-radius: 5px;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+}  
+
+
 
