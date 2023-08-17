@@ -261,11 +261,10 @@
 
       var exam_status = document.getElementById("exam_status");
       var exam_status_value = exam_status.value;
-
       var data;
       if(student_guest == "guest"){
-        teacherId = 0;
-        courseId = 0;
+        teacherId = 	10001;
+        courseId = 599;
       }
       if (submitType == "Created") {
         data = {
@@ -361,7 +360,7 @@
       </div>
       <div class="px-3 pb-3">
         <h5 class="text-success text-center mb-3">To Create Exam Content</h5>
-        <!--TuTuMar-->
+        <!--student_guest-->
       <div class="student_guest">
         <div class="form-check form-check-inline">
         <input class="form-check-input" type="radio" name="student-guest" id="student" value="student" checked>
@@ -416,7 +415,7 @@
     </script>
    
   
-        <!--TuTuMar-->
+        <!--student_guest-->
         <div class="input-group-sm mb-2 shadow-sm">
           <label id="teacher_name_label" for="description" class="form-label fw-bold mb-1"><small style="color: black;">Teacher Name <span
                 class="text-danger">*</span></small></label>
@@ -594,7 +593,7 @@ function closelaunchDialog_M0007() {
 
            <!--M0007(LaunchExam)-->
 
-          <!--TuTuMar-->
+          <!--student-guest-->
           
           <div class="dialog-sure-launch" id="sure_launch_exam">
             <div class="dialog-launch" id="dialog-launch">
@@ -632,7 +631,7 @@ function closelaunchDialog_M0007() {
                   });
                   </script> 
 
- <!--TuTuMar beginning of launch button-->
+ <!--beginning of launch button-->
           <div class="launch-exam">
             <input type="button" class="form-control btn btn-sm btn-success" name="launchExam"  id="launchExam" style="width: 100px" value="Launch Exam">
           </div>
@@ -831,7 +830,7 @@ function closelaunchDialog_M0007() {
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
     crossorigin="anonymous"></script>
   <script th:src="@{/js/main.js}"></script>
-  <!--TuTuMar-->
+  <!--student-guest-->
   <script>
     const dialogCloseBtn = document.getElementById("dialog-close-btn");
     $("#dialog-close-btn").click(function () {

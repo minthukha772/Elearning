@@ -101,13 +101,21 @@ public class Test {
         this.deletedAt = deletedAt;
     }
 
+    // public String display() {
+    //     return this.test_id + ", " + this.userInfo+ ", " + this.courseInfo+", "
+    //             + this.description + ", " + this.section_name + ", " +
+    //             this.minutes_allowed + ", " + this.passing_score_percent + ", " + this.Date + ", " + this.start_time
+    //             + ", " + this.end_time + ", " + this.exam_status + ", " +
+    //             this.isDelete + ", " + this.deletedAt+","+this.student_guest;
+
+    // }
+    
     public String display() {
-        return this.test_id + ", " +  ", " + ", "
+        return this.test_id +  ", "+  ", "  + ", "
                 + this.description + ", " + this.section_name + ", " +
                 this.minutes_allowed + ", " + this.passing_score_percent + ", " + this.Date + ", " + this.start_time
                 + ", " + this.end_time + ", " + this.exam_status + ", " +
                 this.isDelete + ", " + this.deletedAt+","+this.student_guest;
 
     }
-    
 }
