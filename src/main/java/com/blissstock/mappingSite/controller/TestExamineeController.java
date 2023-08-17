@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
+import java.lang.reflect.Array;
 import java.nio.charset.UnsupportedCharsetException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -25,8 +26,10 @@ import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.JoinCourseUser;
 import com.blissstock.mappingSite.entity.Test;
 import com.blissstock.mappingSite.entity.TestQuestion;
+import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.entity.TestExaminee;
 import com.blissstock.mappingSite.entity.UserInfo;
+import com.blissstock.mappingSite.model.ExamAddMultiGuest;
 import com.blissstock.mappingSite.model.TestExamineeWithMarkedCountModel;
 import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
 import com.blissstock.mappingSite.repository.TestQuestionRepository;
@@ -73,23 +76,26 @@ public class TestExamineeController {
     @Valid
     @GetMapping(value = { "/teacher/exam/{test_id}/examinee", "/admin/exam/{test_id}/examinee" })
     private String getTestExaminee(@PathVariable Long test_id, Model model,
-    
-            @RequestParam(required = false) String name) 
+
+            @RequestParam(required = false) String name)
             throws ParseException {
-                logger.info("API name : {}.Parameter : {}", "getTestExaminee",test_id);
-                logger.info("Operation Retrieve Table {} by query : findByNameandTestId {} {}", "TestExaminee", name, test_id);
-                logger.info("Initiate to Operation Retrieve Table {} by query : findByNameandTestId {}", "TestExaminee", name, test_id);
+        logger.info("API name : {}.Parameter : {}", "getTestExaminee", test_id);
+        logger.info("Operation Retrieve Table {} by query : findByNameandTestId {} {}", "TestExaminee", name, test_id);
+        logger.info("Initiate to Operation Retrieve Table {} by query : findByNameandTestId {}", "TestExaminee", name,
+                test_id);
         List<TestExaminee> testStudents = new ArrayList<>();
         List<TestExamineeWithMarkedCountModel> testStudentList = new ArrayList<>();
         int checked_students = 0;
         int total_free_questions = 0;
         if (name == null) {
-            
+
             testStudents = testStudentRepository.getStudentByTest(test_id);
         } else {
-            logger.info("Initiate to Operation Retrieve Table {} by query :findByNameandTestId{}{}","TestExaminee", name, test_id);
+            logger.info("Initiate to Operation Retrieve Table {} by query :findByNameandTestId{}{}", "TestExaminee",
+                    name, test_id);
             testStudents = testStudentRepository.findByNameandTestId(name, test_id);
-            logger.info("Operation Retrieve Table {} by query :findByNameandTestId{}{}Result List : {} Success","TestExaminee", name, test_id,testStudents.toString());
+            logger.info("Operation Retrieve Table {} by query :findByNameandTestId{}{}Result List : {} Success",
+                    "TestExaminee", name, test_id, testStudents.toString());
         }
         total_free_questions = testQuestionRepository.getFreeAnswerCount(test_id);
         for (TestExaminee TestExaminee : testStudents) {
@@ -126,9 +132,9 @@ public class TestExamineeController {
     @Valid
     @GetMapping(value = { "/teacher/get-student", "/admin/get-student" })
     private ResponseEntity getCustomStudent(@RequestParam(value = "name") String name)
-            throws ParseException { 
-                logger.info("API name : {}.Parameter : {}", "getCustomStudent",name);
-                logger.info("Initiate to Operation Insert Table {} Data {}", "TestExaminee", name);
+            throws ParseException {
+        logger.info("API name : {}.Parameter : {}", "getCustomStudent", name);
+        logger.info("Initiate to Operation Insert Table {} Data {}", "TestExaminee", name);
         String lowerName = name.toLowerCase();
         List<UserInfo> testStudents = userInfoRepository.findByName(name, lowerName);
         return ResponseEntity.ok(testStudents);
@@ -139,8 +145,8 @@ public class TestExamineeController {
     private ResponseEntity getCustomStudentExam(@RequestParam(value = "name") String name,
             @RequestParam(value = "test_id") Long test_id)
             throws ParseException {
-                 logger.info("API name : {}.Parameter : {}", "getCustomStudentExam",name);
-                 logger.info("Operation Retrieve Table {} by query : findByNameandTestId {} {}", "TestExaminee",name, test_id);
+        logger.info("API name : {}.Parameter : {}", "getCustomStudentExam", name);
+        logger.info("Operation Retrieve Table {} by query : findByNameandTestId {} {}", "TestExaminee", name, test_id);
 
         List<UserInfo> testStudents = userInfoRepository.findByNameandTestId(name, test_id);
         return ResponseEntity.ok(testStudents);
@@ -150,9 +156,10 @@ public class TestExamineeController {
     @PostMapping(value = { "/teacher/set-enrolled-examinee", "/admin/set-enrolled-examinee" })
     private String setEnrolledStudents(@RequestBody String testid)
             throws ParseException {
-                 logger.info("API name : {}.Parameter : {}", "setEnrolledStudents",testid);
-                 logger.info("Operation Retrieve Table {} by query : findByNameandTestId {} {}", "TestExaminee", testid);
-                 logger.info("Initiate to Operation Retrieve Table {} by query : findByNameandTestId {}", "TestExaminee",testid );
+        logger.info("API name : {}.Parameter : {}", "setEnrolledStudents", testid);
+        logger.info("Operation Retrieve Table {} by query : findByNameandTestId {} {}", "TestExaminee", testid);
+        logger.info("Initiate to Operation Retrieve Table {} by query : findByNameandTestId {}", "TestExaminee",
+                testid);
         JSONObject jsonObject = new JSONObject(testid);
         Long test_id = jsonObject.getLong("test_id");
         Test test = testRepository.getTestByID(test_id);
@@ -178,11 +185,12 @@ public class TestExamineeController {
     @PostMapping(value = { "/teacher/set-examinee", "/admin/set-examinee" })
     private String setCustomStudents(@RequestBody String testid)
             throws ParseException {
-                logger.info("API name : {}.Parameter : {}", "setCustomStudents",testid);
-                logger.info("Operation Retrieve Table {} by query : findByNameandTestId {} {}", "TestExaminee", testid);
-                 logger.info("Initiate to Operation Retrieve Table {} by query : findByNameandTestId {}", "TestExaminee",testid );
-                 logger.info("Initiate to Operation Insert Table {} Data {}", "TestExaminee", testid);
-                 logger.info("Initiate to Operation Save File {}", testid);
+        logger.info("API name : {}.Parameter : {}", "setCustomStudents", testid);
+        logger.info("Operation Retrieve Table {} by query : findByNameandTestId {} {}", "TestExaminee", testid);
+        logger.info("Initiate to Operation Retrieve Table {} by query : findByNameandTestId {}", "TestExaminee",
+                testid);
+        logger.info("Initiate to Operation Insert Table {} Data {}", "TestExaminee", testid);
+        logger.info("Initiate to Operation Save File {}", testid);
         JSONObject jsonObject = new JSONObject(testid);
         Long test_id = jsonObject.getLong("test_id");
         Long student_id = jsonObject.getLong("student_id");
@@ -191,12 +199,16 @@ public class TestExamineeController {
         if (test.getExam_status().equals("Exam Created")) {
             TestExaminee existingStudent = testStudentRepository.getStudentByID(student_id, test_id);
             if (existingStudent == null) {
-         logger.info("Initiate to Operation Retrieve Table {} by query :findByNameandTestId{}{}","TestExaminee", student_id, test_id);
-         logger.info("Initiate to Operation Update Table {} Data {} By {} = {}", "TestExaminee", testid, "student_id", student_id);
+                logger.info("Initiate to Operation Retrieve Table {} by query :findByNameandTestId{}{}", "TestExaminee",
+                        student_id, test_id);
+                logger.info("Initiate to Operation Update Table {} Data {} By {} = {}", "TestExaminee", testid,
+                        "student_id", student_id);
                 TestExaminee TestExaminee = new TestExaminee(null, test, user, null);
                 testStudentRepository.save(TestExaminee);
-            logger.info("Operation Retrieve Table {} by query :findByNameandTestId{}{}Result List : {} Success","TestExaminee", student_id, test_id,TestExaminee.toString()); 
-            logger.info("Operation Update Table {} Data {} By {} = {} Success", "TestExaminee", testid, "student_id", student_id);   
+                logger.info("Operation Retrieve Table {} by query :findByNameandTestId{}{}Result List : {} Success",
+                        "TestExaminee", student_id, test_id, TestExaminee.toString());
+                logger.info("Operation Update Table {} Data {} By {} = {} Success", "TestExaminee", testid,
+                        "student_id", student_id);
             }
         }
         logger.info("API name : {}. Parameter : {}", "setCustomStudents", testid);
@@ -206,84 +218,57 @@ public class TestExamineeController {
     }
 
     @Valid
-    @PostMapping(value = { "/teacher/set-multi-guest-examinee", "/admin/set-multi-guest-examinee" })
-    private String setMultiGuest(@RequestParam("csvFile") MultipartFile file) {
-        List<List<String>> records = new ArrayList<>();
-        String csvFileName = file.getOriginalFilename();
-        String COMMA_DELIMITER = ",";
-        String fileType = "text/csv";
+    @GetMapping(value = { "/teacher/is-email-registered", "/admin/is-email-registered" })
+    private ResponseEntity isEmailRegistered(@RequestParam(value = "email") String email)
+            throws ParseException {
+        logger.info("API name : {}.Parameter : {}", "isEmailRegistered", email);
+        // logger.info("Initiate to Operation Insert Table {} Data {}", "TestExaminee", name);
+        UserAccount registeredEmail = userAccountRepository.findByMail(email);
+        boolean Registered;
 
-        if (!fileType.equals(file.getContentType())) {
-            // M0002 here
-            return "AT0005_TestStudentList.html";
+        if (registeredEmail == null) {
+            Registered = false;
+        } else {
+            Registered = true;
         }
 
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
-            // new FileReader(csvFileName)
-            String line;
-            if ((br.readLine()) == null) {
-                // M0001 here
-                return "AT0005_TestStudentList.html";
-            }
-
-            String csvEncoding = "UTF8";
-            String encoding = getEncoding(new InputStreamReader(file.getInputStream()));
-            System.out.println(encoding);
-            if (encoding != csvEncoding) {
-                // M0003 here
-                return "AT0005_TestExamineeList.html";
-            }
-
-            // long noOfLines = -1;
-
-            // try (LineNumberReader lineNumberReader = new LineNumberReader(new FileReader(csvFileName))) {
-            //     // new File(fileName)
-            //     lineNumberReader.skip(Long.MAX_VALUE);
-            //     noOfLines = lineNumberReader.getLineNumber() + 1;
-
-            //     if (noOfLines > 30) {
-            //         // M0004 here
-            //         return "AT0005_TestStudentList.html";
-            //     }
-            // } catch (Exception e) {
-            //     e.printStackTrace();
-            // }
-
-            while ((line = br.readLine()) != null) {
-                String[] values = line.split(COMMA_DELIMITER);
-                records.add(Arrays.asList(values));
-            }
-            System.out.println(records);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        // JSONObject jsonObject = new JSONObject(testid);
-        // Long test_id = jsonObject.getLong("test_id");
-        // Long student_id = jsonObject.getLong("student_id");
-        // Test test = testRepository.getTestByID(test_id);
-        // UserInfo user = userInfoRepository.findStudentById(student_id);
-        // if (test.getExam_status().equals("Exam Created") ||
-        // test.getExam_status().equals("Questions Created")) {
-        // TestStudent existingStudent =
-        // testStudentRepository.getStudentByID(student_id, test_id);
-        // if (existingStudent == null) {
-        // TestStudent testStudent = new TestStudent(null, test, user, null);
-        // testStudentRepository.save(testStudent);
-        // }
-        // }
-
-        // M0006 here
-        return "AT0005_TestExamineeList.html";
+        return ResponseEntity.ok(Registered);
     }
 
-    private String getEncoding(InputStreamReader isr) {
-        try {
-            return isr.getEncoding();
-        } catch (UnsupportedCharsetException e) {
-            e.printStackTrace();
-        }
-        return "Unknown";
+    // @Valid
+    // @PostMapping(value = { "/teacher/set-multi-guest-examinee",
+    // "/admin/set-multi-guest-examinee" })
+    // private String setMultiGuest(
+    // @RequestParam("file") MultipartFile file,
+    // @RequestParam("test_id") Long testId
+    // // @RequestParam("csvFile") MultipartFile file
+    // ) {
+    // List<List<String>> records = new ArrayList<>();
+    // String csvFileName = file.getOriginalFilename();
+    // String COMMA_DELIMITER = ",";
+
+    // try (BufferedReader br = new BufferedReader(new FileReader(csvFileName))) {
+    // // new InputStreamReader(file.getInputStream())
+    // String line;
+    // while ((line = br.readLine()) != null) {
+    // String[] values = line.split(COMMA_DELIMITER);
+    // records.add(Arrays.asList(values));
+    // }
+    // System.out.println(records);
+    // } catch (Exception e) {
+    // e.printStackTrace();
+    // }
+
+    // return "AT0005_TestStudentList.html";
+    // }
+
+    @Valid
+    @PostMapping(value = { "/teacher/set-multi-guest-examinee", "/admin/set-multi-guest-examinee" })
+    private String setMultiGuest(@RequestBody String data) {
+        JSONObject jsonObject = new JSONObject(data);
+        Long test_id = jsonObject.getLong("test_id");
+
+        return "AT0005_TestStudentList.html";
     }
 
     private Long getUid() {
