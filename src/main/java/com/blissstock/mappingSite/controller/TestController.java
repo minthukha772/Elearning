@@ -669,32 +669,23 @@ public class TestController {
             int passing_score = Integer.parseInt(jsonObject.getString("passing_score"));
             int minutes_allowed = jsonObject.getInt("minutes_allowed"); 
             CourseInfo courseInfo = courseInfoRepository.findByCourseID(course_id);
-//
-            if (courseInfo == null && student_guest == "student") {
+
+            if (courseInfo == null) {
                 logger.warn("Operation Retrieve Table course_info by query course_id = {} Result No Data",
                         course_id);
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                         .body("Failed to find course with ID: " + course_id);
             }
-            UserInfo userInfo = userInfoRepository.findStudentById(teacher_id);
-            if (userInfo == null && student_guest == "student") {
+           // UserInfo userInfo = userInfoRepository.findStudentById(teacher_id);
+           UserInfo userInfo = userInfoRepository.findById(teacher_id).orElse(null);
+            if (userInfo == null) {
                 logger.warn("Operation Retrieve Table user_info, user_account by query user_id = {} Result No Data",
                         teacher_id);
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to find user with ID: " + teacher_id);
             }
 
-            Test test;
-            if(student_guest == "guest"){
-               test = new Test(null,null,null,description, section_name, minutes_allowed, passing_score,
-                   examDate, exam_start_time, exam_end_time, exam_status, "false", "null",student_guest); 
-            }else{
-                test = new Test(null, courseInfo, userInfo, description, section_name, minutes_allowed, passing_score,
-                   examDate, exam_start_time, exam_end_time, exam_status, "false", "null",student_guest);}
-
-        //  Test test = new Test(test_id, courseInfo, userInfo, description, section_name, minutes_allowed,
-  //edit      //              passing_score,
-        //             examDate, exam_start_time, exam_end_time, exam_status, "false", "null",student_guest);
-        //            logger.info( "Initiate to Operation Insert Table Test Data {}", test.display());
+             Test   test = new Test(null, courseInfo, userInfo, description, section_name, minutes_allowed, passing_score,
+                   examDate, exam_start_time, exam_end_time, exam_status, "false", "null",student_guest);
 
              testRepository.save(test);
              logger.info( "Operation Insert Table Test Data {} | Success", test.display());
@@ -814,17 +805,16 @@ public class TestController {
                 logger.warn("Failed to find teacher with ID: " + userID);
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to find user with ID: " + userID);
             }
-            Test test;
-             if(student_guest == "guest"){
-                test = new Test(null,null,null,description, section_name, minutes_allowed, passing_score,
-                    examDate, exam_start_time, exam_end_time, exam_status, "false", "null",student_guest); 
-             }else{
-                 test = new Test(null, courseInfo, userInfo, description, section_name, minutes_allowed, passing_score,
-                    examDate, exam_start_time, exam_end_time, exam_status, "false", "null",student_guest);}
+            // Test test;
+            //  if(student_guest == "guest"){
+            //     test = new Test(null,null,null,description, section_name, minutes_allowed, passing_score,
+            //         examDate, exam_start_time, exam_end_time, exam_status, "false", "null",student_guest); 
+            //  }else{
+               Test   test = new Test(null, courseInfo, userInfo, description, section_name, minutes_allowed, passing_score,
+                    examDate, exam_start_time, exam_end_time, exam_status, "false", "null",student_guest);
 
-      //origin      // Test test = new Test(test_id, courseInfo, userInfo, description, section_name, minutes_allowed,
-            //         passing_score,
-            //         examDate, exam_start_time, exam_end_time, exam_status, "false", "null");
+          //origin  //  Test test = new Test(test_id, courseInfo, userInfo, description, section_name, minutes_allowed,
+            //          passing_score, examDate, exam_start_time, exam_end_time, exam_status, "false", "null");
 
                     logger.info( "Initiate to Operation Insert Table Test Data {}", test.display());
             testRepository.save(test);
