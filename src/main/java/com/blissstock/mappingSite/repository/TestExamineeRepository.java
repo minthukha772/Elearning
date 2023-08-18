@@ -20,4 +20,8 @@ public interface TestExamineeRepository extends JpaRepository<TestExaminee, Long
 
     @Query(value = "Select * from test_examinee where test_id = :test_id and examinee_student_id = :uid limit 1", nativeQuery = true)
     public TestExaminee findByTestIdAndUid(@Param("test_id") Long test_id, @Param("uid") Long uid);
+
+    @Query(value = "Select * from test_examinee where test_id = :test_id and examinee_guest_id = :guest_id limit 1", nativeQuery = true)
+    public TestExaminee findByTestIdAndGuestId(@Param("test_id") Long test_id, @Param("guest_id") Long guest_id);
+    
 }

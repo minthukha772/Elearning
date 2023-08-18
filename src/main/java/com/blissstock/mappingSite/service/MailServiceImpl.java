@@ -17,7 +17,9 @@ import com.blissstock.mappingSite.config.GmailConfig;
 import com.blissstock.mappingSite.controller.CourseDetailsController;
 import com.blissstock.mappingSite.entity.AddAdmin;
 import com.blissstock.mappingSite.entity.CourseInfo;
+import com.blissstock.mappingSite.entity.GuestUser;
 import com.blissstock.mappingSite.entity.JoinCourseUser;
+import com.blissstock.mappingSite.entity.Test;
 import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.enums.TokenType;
@@ -39,8 +41,6 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.springframework.beans.factory.annotation.Value;
-
-
 
 @Service
 public class MailServiceImpl implements MailService {
@@ -145,7 +145,6 @@ public class MailServiceImpl implements MailService {
     ctx.setVariable("superAdminEmail", superAdminEmail);
     ctx.setVariable("adminEmail", userAccount.getMail());
 
-
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
     message.setSubject(subject);
@@ -158,7 +157,8 @@ public class MailServiceImpl implements MailService {
     this.mailSender.send(mimeMessage);
   }
 
-  public void SendSuperAdminNewAdmin(UserAccount userAccount, UserInfo adminInfo, String appUrl) throws MessagingException {
+  public void SendSuperAdminNewAdmin(UserAccount userAccount, UserInfo adminInfo, String appUrl)
+      throws MessagingException {
 
     String recipientAddress = "syspyinnyarsubuu.supadm@gmail.com";
     String superAdminName = "Pyinnyarsubuu Superadmin";
@@ -172,8 +172,6 @@ public class MailServiceImpl implements MailService {
     ctx.setVariable("appUrl", appUrl);
     ctx.setVariable("superAdminName", superAdminName);
     ctx.setVariable("adminEmail", userAccount.getMail());
-
-
 
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
@@ -271,7 +269,6 @@ public class MailServiceImpl implements MailService {
     ctx.setVariable("startDate", courseInfo.getStartDate());
     ctx.setVariable("endDate", courseInfo.getEndDate());
 
-
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
     message.setSubject(subject);
@@ -301,8 +298,6 @@ public class MailServiceImpl implements MailService {
     ctx.setVariable("startDate", courseInfo.getStartDate());
     ctx.setVariable("endDate", courseInfo.getEndDate());
 
-
-
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
     message.setSubject(subject);
@@ -315,7 +310,8 @@ public class MailServiceImpl implements MailService {
     this.mailSender.send(mimeMessage);
   }
 
-  public void SendAdminNewCourseByAdmin(UserAccount userAccount, CourseInfo courseInfo, String appUrl) throws MessagingException {
+  public void SendAdminNewCourseByAdmin(UserAccount userAccount, CourseInfo courseInfo, String appUrl)
+      throws MessagingException {
 
     String recipientAddress = userAccount.getMail();
     String subject = "【Pyinnyar Subuu】Course Registration by admin Successfully Completed!";
@@ -332,7 +328,6 @@ public class MailServiceImpl implements MailService {
     ctx.setVariable("courseName", courseInfo.getCourseName());
     ctx.setVariable("startDate", courseInfo.getStartDate());
     ctx.setVariable("endDate", courseInfo.getEndDate());
-
 
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
@@ -363,8 +358,6 @@ public class MailServiceImpl implements MailService {
     ctx.setVariable("startDate", courseInfo.getStartDate());
     ctx.setVariable("endDate", courseInfo.getEndDate());
 
-
-
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
     message.setSubject(subject);
@@ -377,9 +370,9 @@ public class MailServiceImpl implements MailService {
     this.mailSender.send(mimeMessage);
   }
 
-
   @Override
-  public void SendAdminNewStudentEnroll(UserInfo userInfo, long courseId, CourseInfo courseInfo) throws MessagingException {
+  public void SendAdminNewStudentEnroll(UserInfo userInfo, long courseId, CourseInfo courseInfo)
+      throws MessagingException {
     String appUrl = getServerAddress();
     String recipientAddress = "sys@pyinnyar-subuu.com";
     String ccAddress1 = "sys1pyinnyarsubuu@gmail.com";
@@ -422,7 +415,7 @@ public class MailServiceImpl implements MailService {
   public void SendStudentEnrollCourse(UserInfo userInfo, CourseInfo courseInfo) throws MessagingException {
     String appUrl = getServerAddress();
     String recipientAddress = userInfo.getUserAccount().getMail();
-    String subject =  "【Pyinnyar Subuu】You have successfully enrolled in a course.";
+    String subject = "【Pyinnyar Subuu】You have successfully enrolled in a course.";
 
     appUrl = appUrl + "/guest/course-detail/" + courseInfo.getCourseId();
 
@@ -457,20 +450,20 @@ public class MailServiceImpl implements MailService {
   public void SendTeacherNewStudentEnroll(UserInfo userInfo, CourseInfo courseInfo) throws MessagingException {
     String appUrl = getServerAddress();
     String recipientAddress = courseInfo.getUserInfo().getUserAccount().getMail();
-    String subject =  "【Pyinnyar Subuu】A student has successfully enrolled in a course.";
+    String subject = "【Pyinnyar Subuu】A student has successfully enrolled in a course.";
 
     Integer maxStudent = courseInfo.getMaxStu();
     List<UserInfo> studentList = new ArrayList<>();
     for (JoinCourseUser joinCourseUser : courseInfo.getJoin()) {
-        if (joinCourseUser.getUserInfo().getUserAccount().getRole().equals(UserRole.STUDENT.getValue()))
-            studentList.add(joinCourseUser.getUserInfo());
+      if (joinCourseUser.getUserInfo().getUserAccount().getRole().equals(UserRole.STUDENT.getValue()))
+        studentList.add(joinCourseUser.getUserInfo());
     }
     Integer stuListSize = studentList.size();
     Integer availableStuList;
     try {
-        availableStuList = maxStudent - stuListSize;
+      availableStuList = maxStudent - stuListSize;
     } catch (NullPointerException e) {
-        availableStuList = 0;
+      availableStuList = 0;
     }
 
     appUrl = appUrl + "/guest/course-detail/" + courseInfo.getCourseId();
@@ -489,7 +482,6 @@ public class MailServiceImpl implements MailService {
     ctx.setVariable("studentName", userInfo.getUserName());
     ctx.setVariable("numSeatsLeft", availableStuList);
 
-
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
     message.setSubject(subject);
@@ -501,8 +493,39 @@ public class MailServiceImpl implements MailService {
 
     this.mailSender.send(mimeMessage);
   }
-  
 
+  @Override
+  public void SendGuestOneTimePassword(GuestUser guestUser, Test test, String otp) throws MessagingException {
+    String appUrl = getServerAddress();
+    String recipientAddress = guestUser.getMail();
+
+    String subject = "【Pyinnyar Subuu】OTP for Exam Login";
+
+    final Context ctx = new Context();
+    ctx.setVariable("appUrl", appUrl);
+    ctx.setVariable("guestName", guestUser.getName());
+    ctx.setVariable("oneTimePassword", otp);
+    ctx.setVariable("sectionName", test.getSection_name());
+    ctx.setVariable("description", test.getDescription());
+    ctx.setVariable("date", test.getDate());
+    ctx.setVariable("startTime", test.getStart_time());
+    ctx.setVariable("endTime", test.getEnd_time());
+    ctx.setVariable("minutesAllowed", test.getMinutes_allowed());
+    ctx.setVariable("passingScorePercent", test.getPassing_score_percent());
+    ctx.setVariable("Date", new Date());
+
+    final MimeMessage mimeMessage = mailSender.createMimeMessage();
+    final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+    message.setSubject(subject);
+    message.setFrom("sys@pyinnyar-subuu.com");
+    message.setTo(recipientAddress);
+
+    final String htmlContent = templateEngine.process("SendGuestOTP", ctx);
+    message.setText(htmlContent, true);
+
+    this.mailSender.send(mimeMessage);
+
+  }
 
   @Override
   public void sendResetPasswordMail(UserAccount userAccount) throws MessagingException {
@@ -531,11 +554,10 @@ public class MailServiceImpl implements MailService {
     this.mailSender.send(mimeMessage);
 
   }
-  
+
   @Override
   public void PaymentByStudent(UserInfo userInfo, long courseId, CourseInfo courseInfo) throws MessagingException {
 
-    
     String subject = "【Pyinnyar Subuu】Course payment by a student successfully completed!";
 
     final Context ctx = new Context();
@@ -550,7 +572,6 @@ public class MailServiceImpl implements MailService {
     ctx.setVariable("coursefees", courseInfo.getFees());
     ctx.setVariable("startdate", courseInfo.getStartDate());
     ctx.setVariable("enddate", courseInfo.getEndDate());
-    
 
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
@@ -560,18 +581,18 @@ public class MailServiceImpl implements MailService {
 
     final String htmlContent = templateEngine.process("PaymentByStudentCss", ctx);
     message.setText(htmlContent, true);
-    
-    this.mailSender.send(mimeMessage);
 
+    this.mailSender.send(mimeMessage);
 
   }
 
   @Override
-  public void PaymentReceivedByAdmin(UserInfo userInfo, long courseId, CourseInfo courseInfo) throws MessagingException {
+  public void PaymentReceivedByAdmin(UserInfo userInfo, long courseId, CourseInfo courseInfo)
+      throws MessagingException {
     String appUrl = getServerAddress();
     String recipientAddress = "sys@pyinnyar-subuu.com";
     String subject = "【Pyinnyar Subuu】Please check student payment, course payment by a student is done successfully.";
-     
+
     final Context ctx = new Context();
     ctx.setVariable("studentname", userInfo.getUserName());
     ctx.setVariable("teachername", courseInfo.getUserInfo().getUserName());
@@ -590,28 +611,25 @@ public class MailServiceImpl implements MailService {
 
     final String htmlContent = templateEngine.process("PaymentReceivedByAdmin", ctx);
     message.setText(htmlContent, true);
-    
-    this.mailSender.send(mimeMessage);
 
+    this.mailSender.send(mimeMessage);
 
   }
 
   @Override
   public void VerifiedTeacherByAdmin(UserInfo teacherInfo, UserInfo adminInfo) throws MessagingException {
     String appUrl = getServerAddress();
-    
+
     String subject = "【Pyinnyar Subuu】Teacher Account Verification Successfully Completed! ";
 
     final Context ctx = new Context();
     UserAccount teacherAccount = teacherInfo.getUserAccount();
     UserAccount adminAccount = adminInfo.getUserAccount();
     String recipientAddress = adminAccount.getMail();
-    
-    
+
     ctx.setVariable("teachername", teacherInfo.getUserName());
     ctx.setVariable("teacheremail", teacherAccount.getMail());
-    
-   
+
     ctx.setVariable("Date", new Date());
     ctx.setVariable("appUrl", appUrl);
 
@@ -623,28 +641,25 @@ public class MailServiceImpl implements MailService {
 
     final String htmlContent = templateEngine.process("VerifiedTeacherByAdmin", ctx);
     message.setText(htmlContent, true);
-    
-    this.mailSender.send(mimeMessage);
 
+    this.mailSender.send(mimeMessage);
 
   }
 
   @Override
   public void VerifiedTeacherByAdminToTeacher(UserInfo teacherInfo, UserInfo adminInfo) throws MessagingException {
     String appUrl = getServerAddress();
-    
+
     String subject = "【Pyinnyar Subuu】Teacher Account Verification Successfully Completed! ";
 
     final Context ctx = new Context();
     UserAccount adminAccount = adminInfo.getUserAccount();
     UserAccount teacherAccount = teacherInfo.getUserAccount();
     String recipientAddress = teacherAccount.getMail();
-    
+
     ctx.setVariable("teachername", teacherInfo.getUserName());
     ctx.setVariable("adminemail", adminAccount.getMail());
-    
 
-   
     ctx.setVariable("Date", new Date());
     ctx.setVariable("appUrl", appUrl);
 
@@ -656,22 +671,21 @@ public class MailServiceImpl implements MailService {
 
     final String htmlContent = templateEngine.process("VerifiedTeacherByAdminToTeacher", ctx);
     message.setText(htmlContent, true);
-    
-    this.mailSender.send(mimeMessage);
 
+    this.mailSender.send(mimeMessage);
 
   }
 
   @Override
   public void StudentChangedPassword(UserInfo userInfo, UserAccount userAccount) throws MessagingException {
     String appUrl = getServerAddress();
-    
+
     String subject = "【Pyinnyar Subuu】You have successfully change your password.";
 
     final Context ctx = new Context();
     String recipientAddress = userAccount.getMail();
-    
-    ctx.setVariable("studentname", userInfo.getUserName());   
+
+    ctx.setVariable("studentname", userInfo.getUserName());
     ctx.setVariable("Date", new Date());
     ctx.setVariable("appUrl", appUrl);
 
@@ -679,26 +693,25 @@ public class MailServiceImpl implements MailService {
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
     message.setSubject(subject);
     message.setFrom("sys@pyinnyar-subuu.com");
-    message.setTo(recipientAddress);   
-    
+    message.setTo(recipientAddress);
+
     final String htmlContent = templateEngine.process("StudentChangedPassword", ctx);
     message.setText(htmlContent, true);
-    
-    this.mailSender.send(mimeMessage);
 
+    this.mailSender.send(mimeMessage);
 
   }
 
   @Override
   public void TeacherChangedPassword(UserInfo userInfo, UserAccount userAccount) throws MessagingException {
     String appUrl = getServerAddress();
-    
+
     String subject = "【Pyinnyar Subuu】You have successfully changed your password.";
 
     final Context ctx = new Context();
     String recipientAddress = userAccount.getMail();
-    
-    ctx.setVariable("teachername", userInfo.getUserName());   
+
+    ctx.setVariable("teachername", userInfo.getUserName());
     ctx.setVariable("Date", new Date());
     ctx.setVariable("appUrl", appUrl);
 
@@ -710,22 +723,21 @@ public class MailServiceImpl implements MailService {
 
     final String htmlContent = templateEngine.process("TeacherChangedPassword", ctx);
     message.setText(htmlContent, true);
-    
-    this.mailSender.send(mimeMessage);
 
+    this.mailSender.send(mimeMessage);
 
   }
 
   @Override
   public void AdminChangedPassword(UserInfo userInfo, UserAccount userAccount) throws MessagingException {
     String appUrl = getServerAddress();
-    
+
     String subject = "【Pyinnyar Subuu】You have successfully change your password.";
 
     final Context ctx = new Context();
     String recipientAddress = userAccount.getMail();
-    
-    // ctx.setVariable("adminname", userInfo.getUserName());   
+
+    // ctx.setVariable("adminname", userInfo.getUserName());
     ctx.setVariable("Date", new Date());
     ctx.setVariable("appUrl", appUrl);
 
@@ -737,7 +749,7 @@ public class MailServiceImpl implements MailService {
 
     final String htmlContent = templateEngine.process("AdminChangedPassword", ctx);
     message.setText(htmlContent, true);
-    
+
     this.mailSender.send(mimeMessage);
 
   }
@@ -829,6 +841,36 @@ public class MailServiceImpl implements MailService {
 
   }
 
+  // public void sendVerificationMail(UserAccount userAccount) throws
+  // MessagingException {
+  // String appUrl = getServerAddress();
+  // String token = UUID.randomUUID().toString();
+  // userService.createToken(userAccount, token, TokenType.VERIFICATION);
+
+  // String recipientAddress = userAccount.getMail();
+  // String subject = "Registration Confirmation";
+
+  // String confirmationUrl = appUrl + "/verify_password?token=" + token;
+
+  // final Context ctx = new Context();
+  // ctx.setVariable("confirmationUrl", confirmationUrl);
+  // ctx.setVariable("Date", new Date());
+  // ctx.setVariable("token", token);
+  // ctx.setVariable("appUrl", appUrl);
+
+  // final MimeMessage mimeMessage = mailSender.createMimeMessage();
+  // final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true,
+  // "UTF-8"); // true = multipart
+  // message.setSubject(subject);
+  // message.setFrom("sys@pyinnyar-subuu.com");
+  // message.setTo(recipientAddress);
+
+  // final String htmlContent = templateEngine.process("sampleCss", ctx);
+  // message.setText(htmlContent, true); // true = isHtml
+
+  // this.mailSender.send(mimeMessage);
+  // }
+
   @Override
   public String getServerAddress() {
     String appUrl = "Empty";
@@ -855,6 +897,6 @@ public class MailServiceImpl implements MailService {
   // MessagingException {
   // // TODO Auto-generated method stub
 
-    // }
+  // }
 
 }

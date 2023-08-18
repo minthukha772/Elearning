@@ -329,11 +329,12 @@
                 return;
             }
 
+            var csvdata;
             var ExamGuestUsers = [];
             var reader = new FileReader();
             reader.readAsText(file);
             reader.onload = function (event) {
-                var csvdata = event.target.result;
+                csvdata = event.target.result;
 
                 // Check if csv file has data or not
                 if (csvdata == "") {
@@ -348,7 +349,7 @@
                 }
 
                 var rowData = csvdata.split('\n');
-            
+
 
                 // Check if csv file has more than 31 rows(including headers)
                 if (rowData.length > 32) {
@@ -370,6 +371,7 @@
                     return;
                 }
 
+                var searchValue;
                 for (var row = 1; row < (rowData.length - 1); row++) {
                     rowColData = rowData[row].split(',');
                     ExamGuestUsers.push(rowColData);
@@ -381,34 +383,32 @@
                     }
 
                     // Check if email is already registered
-                    var searchValue = rowColData[1];
-                    fetch("/" + url + "/is-email-registered?email=" + encodeURIComponent(searchValue), {
-                        method: "GET",
-                        headers: { "Content-Type": "application/json" }
-                    }).then(response => response.json())
-                        .then(data => {
-                            console.log(data);
+                    // searchValue = rowColData[1];
+                    // fetch("/" + url + "/is-email-registered?email=" + encodeURIComponent(searchValue), {
+                    //     method: "GET",
+                    //     headers: { "Content-Type": "application/json" }
+                    // }).then(response => response.json())
+                    //     .then(data => {
+                    //         // console.log(data + "-" + searchValue + "-" + rowColData[1]);
 
-                        })
+                    //     })
                 }
-            };
 
-            data = {
-                test_id: test_id,
-                exam_guest_users: ExamGuestUsers
+                data = {
+                    test_id: test_id,
+                    exam_guest_users: ExamGuestUsers
+                };
+                data = JSON.stringify(data);
+                console.log(data);
+                fetch("/" + url + "/set-multi-guest-examinee", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: data
+                }).then(response => {
+                    window.location.reload();
+                })
+
             };
-            console.log(ExamGuestUsers);
-            console.log(ExamGuestUsers[1]);
-            data = JSON.stringify(data);
-            console.log(data);
-            console.log(data);
-            fetch("/" + url + "/set-multi-guest-examinee", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: data
-            }).then(response => {
-                // window.location.reload();
-            })
 
             // let formData = new FormData();
             // formData.append('file', file);
@@ -477,7 +477,7 @@
 
         // Email validation function
         function validateEmail(email) {
-            const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
+            const emailRegex = /^[\w+-]+(\.[\w+-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
             return emailRegex.test(email);
         }
 

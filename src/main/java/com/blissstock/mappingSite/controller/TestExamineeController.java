@@ -6,14 +6,21 @@ import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.lang.reflect.Array;
 import java.nio.charset.UnsupportedCharsetException;
+import java.security.SecureRandom;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import javax.validation.Valid;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.blissstock.mappingSite.entity.CourseInfo;
+import com.blissstock.mappingSite.entity.GuestUser;
 import com.blissstock.mappingSite.entity.JoinCourseUser;
 import com.blissstock.mappingSite.entity.Test;
 import com.blissstock.mappingSite.entity.TestQuestion;
@@ -31,6 +39,7 @@ import com.blissstock.mappingSite.entity.TestExaminee;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.model.ExamAddMultiGuest;
 import com.blissstock.mappingSite.model.TestExamineeWithMarkedCountModel;
+import com.blissstock.mappingSite.repository.GuestUserRepository;
 import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
 import com.blissstock.mappingSite.repository.TestQuestionRepository;
 import com.blissstock.mappingSite.repository.TestRepository;
@@ -38,7 +47,9 @@ import com.blissstock.mappingSite.repository.TestExamineeAnswerRepository;
 import com.blissstock.mappingSite.repository.TestExamineeRepository;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
 import com.blissstock.mappingSite.repository.UserInfoRepository;
+import com.blissstock.mappingSite.service.MailService;
 import com.blissstock.mappingSite.service.UserSessionService;
+import com.google.gson.Gson;
 
 import org.springframework.ui.Model;
 import org.slf4j.Logger;
@@ -51,6 +62,9 @@ public class TestExamineeController {
 
     @Autowired
     UserSessionService userSessionService;
+
+    @Autowired
+    TestExamineeRepository testExamineeRepository;
 
     @Autowired
     TestExamineeRepository testStudentRepository;
@@ -72,6 +86,15 @@ public class TestExamineeController {
 
     @Autowired
     UserInfoRepository userInfoRepository;
+
+    @Autowired
+    GuestUserRepository guestUserRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    MailService mailService;
 
     @Valid
     @GetMapping(value = { "/teacher/exam/{test_id}/examinee", "/admin/exam/{test_id}/examinee" })
@@ -170,7 +193,7 @@ public class TestExamineeController {
                 TestExaminee checkStudent = testStudentRepository.getStudentByID(student.getUserInfo().getUid(),
                         test_id);
                 if (checkStudent == null) {
-                    TestExaminee TestExaminee = new TestExaminee(null, test, student.getUserInfo(), null);
+                    TestExaminee TestExaminee = new TestExaminee(null, test, student.getUserInfo(), null, null);
                     testStudentRepository.save(TestExaminee);
                 }
             }
@@ -203,7 +226,7 @@ public class TestExamineeController {
                         student_id, test_id);
                 logger.info("Initiate to Operation Update Table {} Data {} By {} = {}", "TestExaminee", testid,
                         "student_id", student_id);
-                TestExaminee TestExaminee = new TestExaminee(null, test, user, null);
+                TestExaminee TestExaminee = new TestExaminee(null, test, user, null, null);
                 testStudentRepository.save(TestExaminee);
                 logger.info("Operation Retrieve Table {} by query :findByNameandTestId{}{}Result List : {} Success",
                         "TestExaminee", student_id, test_id, TestExaminee.toString());
@@ -221,8 +244,9 @@ public class TestExamineeController {
     @GetMapping(value = { "/teacher/is-email-registered", "/admin/is-email-registered" })
     private ResponseEntity isEmailRegistered(@RequestParam(value = "email") String email)
             throws ParseException {
-        logger.info("API name : {}.Parameter : {}", "isEmailRegistered", email);
-        // logger.info("Initiate to Operation Insert Table {} Data {}", "TestExaminee", name);
+        // logger.info("API name : {}.Parameter : {}", "isEmailRegistered", email);
+        // logger.info("Initiate to Operation Insert Table {} Data {}", "TestExaminee",
+        // name);
         UserAccount registeredEmail = userAccountRepository.findByMail(email);
         boolean Registered;
 
@@ -264,11 +288,127 @@ public class TestExamineeController {
 
     @Valid
     @PostMapping(value = { "/teacher/set-multi-guest-examinee", "/admin/set-multi-guest-examinee" })
-    private String setMultiGuest(@RequestBody String data) {
+    private String setMultiGuest(@RequestBody String data) throws ParseException {
         JSONObject jsonObject = new JSONObject(data);
         Long test_id = jsonObject.getLong("test_id");
+        JSONArray exam_guest_users = jsonObject.getJSONArray("exam_guest_users");
 
-        return "AT0005_TestStudentList.html";
+        Test test = testRepository.getTestByID(test_id);
+        if (test.getExam_status().equals("Exam Created") || test.getExam_status().equals("Questions Created")) {
+            Gson gson = new Gson();
+            try {
+                String[][] guestUsers = gson.fromJson(exam_guest_users.toString(), String[][].class);
+                for (int i = 0; i < guestUsers.length; i++) {
+                    String email = guestUsers[i][1];
+                    UserAccount registeredEmail = userAccountRepository.findByMail(email);
+
+                    if (registeredEmail == null) {
+                        GuestUser emailExist = GuestUserRepository.getGuestUserbyEmail(email);
+                        GuestUser guestUser;
+                        String one_time_password = "";
+
+                        if (emailExist == null) {
+                            String name = guestUsers[i][0];
+                            String phone_number = guestUsers[i][2];
+                            one_time_password = createOneTimePassword();
+                            String one_time_passwordEncoded = passwordEncoder.encode(one_time_password);
+                            String password_update_date_time = getDateAndTime();
+
+                            guestUser = new GuestUser(
+                                    null,
+                                    name,
+                                    email,
+                                    phone_number,
+                                    one_time_passwordEncoded,
+                                    password_update_date_time,
+                                    null,
+                                    null);
+
+                            guestUserRepository.save(guestUser);
+                            logger.info(
+                                    " Operation Insert Table: guest Data: name={}, mail={}, phone_no={} | Success",
+                                    name,
+                                    email,
+                                    phone_number);
+                        } else {
+                            guestUser = emailExist;
+                            TestExaminee testExamineeGuest = testExamineeRepository.findByTestIdAndGuestId(test_id,
+                                    guestUser.getGuest_id());
+
+                            if (testExamineeGuest != null) {
+                                continue;
+                            }
+                        }
+
+                        final String otp = one_time_password;
+
+                        TestExaminee testExaminee = new TestExaminee(
+                                null,
+                                test,
+                                null,
+                                guestUser,
+                                null);
+                        logger.info(
+                                "Initiate Operation Insert Table: test_examinee Data: test={}, guest_user={}",
+                                test,
+                                guestUser);
+
+                        testExamineeRepository.save(testExaminee);
+                        logger.info(
+                                "Initiate Operation Insert Table: test_examinee Data: test={}, guest_user={} | Success",
+                                test,
+                                guestUser);
+
+                        new Thread(new Runnable() {
+                            public void run() {
+                                try {
+                                    mailService.SendGuestOneTimePassword(guestUser, test, otp);
+                                    logger.info("One-time-password (OTP) sent to mail={} | Success", email);
+                                } catch (Exception e) {
+                                    logger.error(e.getLocalizedMessage());
+                                }
+                            }
+                        }).start();
+                    }
+
+                    logger.info(
+                            "Called API name: setMultipleGuest with Parameters: {}, {} | Success",
+                            test_id,
+                            exam_guest_users);
+                }
+            } catch (Exception e) {
+                System.out.println(e.toString());
+            }
+        }
+
+        return "AT0005_TestExamineeList.html";
+    }
+
+    private String createOneTimePassword() {
+
+        final int LENGTH = 8;
+        SecureRandom random = new SecureRandom();
+        String lowercase = "abcdefghijklmnopqrstuvwxyz";
+        String uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String digits = "0123456789";
+        String allChars = lowercase + uppercase + digits;
+
+        StringBuilder password = new StringBuilder();
+
+        for (int i = 0; i < LENGTH; i++) {
+            int randomIndex = random.nextInt(allChars.length());
+            char randomChar = allChars.charAt(randomIndex);
+            password.append(randomChar);
+        }
+
+        return password.toString();
+    }
+
+    private String getDateAndTime() {
+        Date currentDate = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = dateFormat.format(currentDate);
+        return formattedDate;
     }
 
     private Long getUid() {
