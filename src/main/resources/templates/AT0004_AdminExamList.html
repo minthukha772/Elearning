@@ -809,8 +809,14 @@ function closelaunchDialog_M0007() {
               <div class="d-flex flex-wrap justify-content-between align-items-center fw-bold mt-3">
                 <small class=""><a th:href="'/admin/exam/' + ${test.test_id} + '/questions'" class="text-success">Exam
                     Questions</a></small>
-                <small class=""><a th:href="'/admin/exam/' + ${test.test_id} + '/examinee'" class="text-success">Set
-                    Examinee</a></small>
+                <small class="">
+                  <span th:if="${test.exam_target == 0}">
+                    <a th:href="'/admin/exam/' + ${test.test_id} + '/examinee'" class="text-success">Set Examinee</a>
+                  </span>
+                  <span th:if="${test.exam_target == 1}">
+                    <a th:href="'/admin/exam/' + ${test.test_id} + '/guest/examinee'" class="text-success">Set Examinee</a>
+                  </span>
+                </small>
                 <small class=""><a th:href="'/admin/exam/' + ${test.test_id} + '/exam-result-list'"
                     class="text-success">Exam
                     Result</a></small>
