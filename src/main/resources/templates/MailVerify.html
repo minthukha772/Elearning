@@ -21,6 +21,8 @@
 <body>
     <div th:replace="@{fragments/nav}"></div>
 
+    <div style="height: 50px"></div>
+
     <div class="container-custom mt-5 " >
     <!-- Hello -->
     <div id="registercomplete">
@@ -49,7 +51,8 @@
             <div class="card-body">
                 <h5 class="card-title text-center" th:text="${header5}"></h5>
                 <p class="card-text text-center" th:text="${paragraph}"></p>
-                <a href="/login" class="btn btn-primary" style="float: right">Login</a>
+                <a href="/login" th:if="${loginlink == null}" class="btn btn-primary" style="float: right">Login</a>
+                <a th:href="${loginlink}" th:if="${loginlink != null}" class="btn btn-primary" style="float: right">Login</a>
             </div>
         </div>
     </div>

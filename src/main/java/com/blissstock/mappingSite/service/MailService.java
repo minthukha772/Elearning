@@ -3,6 +3,8 @@ package com.blissstock.mappingSite.service;
 import javax.mail.MessagingException;
 
 import com.blissstock.mappingSite.entity.CourseInfo;
+import com.blissstock.mappingSite.entity.GuestUser;
+import com.blissstock.mappingSite.entity.Test;
 import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.entity.CourseInfo;
@@ -56,6 +58,10 @@ public interface MailService {
 
   public void SendTeacherNewStudentEnroll(UserInfo userInfo, CourseInfo courseInfo) throws MessagingException;
 
+  public void SendGuestOneTimePassword(GuestUser guestUser, Test test, String otp) throws MessagingException;
+
+  public void SendGuestRemovedNotification(GuestUser guestUser, Test test) throws MessagingException;
+
   public void AdminChangedPassword(UserInfo userInfo, UserAccount userAccount) throws MessagingException;
 
   public void AdminResetPassword(UserAccount user) throws MessagingException;
@@ -63,5 +69,7 @@ public interface MailService {
   public void TeacherResetPassword(UserAccount user) throws MessagingException;
 
   public void StudentResetPassword(UserAccount user) throws MessagingException;
+
+  public void guestResetOneTimePassword(String guestUserName, String email, String examID, String guestUserPhoneNumber,String oneTimePassword) throws MessagingException;
 
 }
