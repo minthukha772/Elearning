@@ -923,6 +923,32 @@ public class MailServiceImpl implements MailService {
 
   }
 
+// guestExam
+
+  public void guestsendVerificationMail( String guestUserName,String email, String examID ) throws MessagingException {
+     String appUrl = getServerAddress() + "/guest-exam"+"/" + email + "_" +examID; 
+
+    String recipientAddress = email;
+    String subject = "Guest Exam";
+
+    final Context ctx = new Context();
+    ctx.setVariable("email", email);
+    ctx.setVariable("examID", examID);
+    ctx.setVariable("Date", new Date());
+    ctx.setVariable("appUrl", appUrl);
+
+    final MimeMessage mimeMessage = mailSender.createMimeMessage();
+    final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
+    message.setSubject(subject);
+    message.setFrom("sys@pyinnyar-subuu.com");
+    message.setTo(recipientAddress);
+
+    final String htmlContent = templateEngine.process("GuestExam", ctx);
+    message.setText(htmlContent, true); // true = isHtml
+
+    this.mailSender.send(mimeMessage);
+  }
+
   @Override
   public String getServerAddress() {
     String appUrl = "Empty";

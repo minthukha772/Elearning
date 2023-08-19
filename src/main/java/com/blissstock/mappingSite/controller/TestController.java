@@ -565,7 +565,7 @@ public class TestController {
             }
             logger.info("Operation Retrieve Table user_info by Query: user_id: {}. Result: user_info={} | Success", userID, userInfo);
             Test test = new Test(null, courseInfo, userInfo, description, section_name, minutes_allowed, passing_score,
-                    examDate, exam_start_time, exam_end_time, exam_status, "false", "null","null");
+                    examDate, exam_start_time, exam_end_time, exam_status, "false", "null","null",0);
                     logger.info( "Initiate to Operation Insert Table Test Data {}", test.display());
             testRepository.save(test);
             logger.info( "Operation Insert Table Test Data {} | Success", test.display());
@@ -626,8 +626,14 @@ public class TestController {
                     
             //  }else{
                 
-             Test    test = new Test(null, courseInfo, userInfo, description, section_name, minutes_allowed, passing_score,
-                    examDate, exam_start_time, exam_end_time, exam_status, "false", "null",student_guest);
+            int exam_target;
+            if(student_guest == "student"){
+                exam_target = 0;
+            } else{
+                exam_target = 1;
+            }
+                Test    test = new Test(null, courseInfo, userInfo, description, section_name, minutes_allowed, passing_score,
+                examDate, exam_start_time, exam_end_time, exam_status, "false", "null",student_guest,exam_target);
             logger.info("Initiate to Operation Insert Table Test Data {}", test.display());
             
             testRepository.save(test);
@@ -684,8 +690,17 @@ public class TestController {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to find user with ID: " + teacher_id);
             }
 
-             Test   test = new Test(null, courseInfo, userInfo, description, section_name, minutes_allowed, passing_score,
-                   examDate, exam_start_time, exam_end_time, exam_status, "false", "null",student_guest);
+            int exam_target;
+            if(student_guest == "student"){
+                exam_target = 0;
+            } else{
+                exam_target = 1;
+            }
+                Test    test = new Test(null, courseInfo, userInfo, description, section_name, minutes_allowed, passing_score,
+                examDate, exam_start_time, exam_end_time, exam_status, "false", "null",student_guest,exam_target);
+
+            //  Test   test = new Test(null, courseInfo, userInfo, description, section_name, minutes_allowed, passing_score,
+            //        examDate, exam_start_time, exam_end_time, exam_status, "false", "null",student_guest,exam_target);
 
              testRepository.save(test);
              logger.info( "Operation Insert Table Test Data {} | Success", test.display());
@@ -811,7 +826,7 @@ public class TestController {
             //         examDate, exam_start_time, exam_end_time, exam_status, "false", "null",student_guest); 
             //  }else{
                Test   test = new Test(null, courseInfo, userInfo, description, section_name, minutes_allowed, passing_score,
-                    examDate, exam_start_time, exam_end_time, exam_status, "false", "null",student_guest);
+                    examDate, exam_start_time, exam_end_time, exam_status, "false", "null",student_guest,0);
 
           //origin  //  Test test = new Test(test_id, courseInfo, userInfo, description, section_name, minutes_allowed,
             //          passing_score, examDate, exam_start_time, exam_end_time, exam_status, "false", "null");

@@ -82,13 +82,13 @@ public class Test {
 
     public Test(Long test_id, CourseInfo courseInfo, UserInfo userInfo, String description, String section_name,
             Integer minutes_allowed, Integer passing_score_percent, Date date, String start_time,
-            String end_time, String exam_status, String isDelete, String deletedAt, String student_guest) {
+            String end_time, String exam_status, String isDelete, String deletedAt, String student_guest, int exam_target) {
                 this.student_guest = student_guest;
         this.test_id = test_id;
-        if(courseInfo != null){
-        this.courseInfo = courseInfo;}
-        if(userInfo != null){
-        this.userInfo = userInfo;}
+    if(courseInfo != null){
+    this.courseInfo = courseInfo;}
+    if(userInfo != null){
+    this.userInfo = userInfo;}
         this.description = description;
         this.section_name = section_name;
         this.minutes_allowed = minutes_allowed;
@@ -99,14 +99,15 @@ public class Test {
         this.exam_status = exam_status;
         this.isDelete = isDelete;
         this.deletedAt = deletedAt;
+        this.exam_target = exam_target;
     }
 
-   public String display() {
-        return this.test_id +  ", "+  ", "  + ", "
-                + this.description + ", " + this.section_name + ", " +
-                this.minutes_allowed + ", " + this.passing_score_percent + ", " + this.Date + ", " + this.start_time
-                + ", " + this.end_time + ", " + this.exam_status + ", " +
-                this.isDelete + ", " + this.deletedAt+","+this.student_guest;
+public String display() {
+    return this.test_id +  ", "+  ", "  + ", "
+            + this.description + ", " + this.section_name + ", " +
+            this.minutes_allowed + ", " + this.passing_score_percent + ", " + this.Date + ", " + this.start_time
+            + ", " + this.end_time + ", " + this.exam_status + ", " +
+            this.isDelete + ", " + this.deletedAt+","+this.student_guest;
 
     }
 }
