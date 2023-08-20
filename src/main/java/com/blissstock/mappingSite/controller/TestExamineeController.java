@@ -37,7 +37,6 @@ import com.blissstock.mappingSite.entity.TestQuestion;
 import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.entity.TestExaminee;
 import com.blissstock.mappingSite.entity.UserInfo;
-import com.blissstock.mappingSite.model.ExamAddMultiGuest;
 import com.blissstock.mappingSite.model.TestExamineeWithMarkedCountModel;
 import com.blissstock.mappingSite.repository.GuestUserRepository;
 import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
@@ -241,69 +240,54 @@ public class TestExamineeController {
     }
 
     @Valid
-    @GetMapping(value = { "/teacher/is-email-registered", "/admin/is-email-registered" })
-    private ResponseEntity isEmailRegistered(@RequestParam(value = "email") String email)
-            throws ParseException {
-        // logger.info("API name : {}.Parameter : {}", "isEmailRegistered", email);
-        // logger.info("Initiate to Operation Insert Table {} Data {}", "TestExaminee",
-        // name);
-        UserAccount registeredEmail = userAccountRepository.findByMail(email);
-        boolean Registered;
-
-        if (registeredEmail == null) {
-            Registered = false;
-        } else {
-            Registered = true;
-        }
-
-        return ResponseEntity.ok(Registered);
-    }
-
-    // @Valid
-    // @PostMapping(value = { "/teacher/set-multi-guest-examinee",
-    // "/admin/set-multi-guest-examinee" })
-    // private String setMultiGuest(
-    // @RequestParam("file") MultipartFile file,
-    // @RequestParam("test_id") Long testId
-    // // @RequestParam("csvFile") MultipartFile file
-    // ) {
-    // List<List<String>> records = new ArrayList<>();
-    // String csvFileName = file.getOriginalFilename();
-    // String COMMA_DELIMITER = ",";
-
-    // try (BufferedReader br = new BufferedReader(new FileReader(csvFileName))) {
-    // // new InputStreamReader(file.getInputStream())
-    // String line;
-    // while ((line = br.readLine()) != null) {
-    // String[] values = line.split(COMMA_DELIMITER);
-    // records.add(Arrays.asList(values));
-    // }
-    // System.out.println(records);
-    // } catch (Exception e) {
-    // e.printStackTrace();
-    // }
-
-    // return "AT0005_TestStudentList.html";
-    // }
-
-    @Valid
     @PostMapping(value = { "/teacher/set-multi-guest-examinee", "/admin/set-multi-guest-examinee" })
     private String setMultiGuest(@RequestBody String data) throws ParseException {
+        logger.info("set-multi-guest-examinee with parameter: {}", data);
         JSONObject jsonObject = new JSONObject(data);
         Long test_id = jsonObject.getLong("test_id");
         JSONArray exam_guest_users = jsonObject.getJSONArray("exam_guest_users");
 
+        logger.info(
+                "Initiate to Operation Retrieve Table {} by query {}",
+                "test",
+                "testRepository.getTestByID(test_id)");
         Test test = testRepository.getTestByID(test_id);
+        logger.info(
+                "Operation Retrieve Table {} by query {} Result List {} Success",
+                "test",
+                "testRepository.getTestByID(test_id)",
+                test);
+
         if (test.getExam_status().equals("Exam Created") || test.getExam_status().equals("Questions Created")) {
             Gson gson = new Gson();
             try {
                 String[][] guestUsers = gson.fromJson(exam_guest_users.toString(), String[][].class);
                 for (int i = 0; i < guestUsers.length; i++) {
                     String email = guestUsers[i][1];
+
+                    logger.info(
+                            "Initiate to Operation Retrieve Table {} by query {}",
+                            "user_account",
+                            "userAccountRepository.findByMail(email)");
                     UserAccount registeredEmail = userAccountRepository.findByMail(email);
+                    logger.info(
+                            "Operation Retrieve Table {} by query {} Result List {} Success",
+                            "user_account",
+                            "userAccountRepository.findByMail(email)",
+                            registeredEmail);
 
                     if (registeredEmail == null) {
-                        GuestUser emailExist = GuestUserRepository.getGuestUserbyEmail(email);
+                        logger.info(
+                                "Initiate to Operation Retrieve Table {} by query {}",
+                                "guest",
+                                "GuestUserRepository.getGuestUserbyEmail(email)");
+                        GuestUser emailExist = guestUserRepository.getGuestUserbyEmail(email);
+                        logger.info(
+                                "Operation Retrieve Table {} by query {} Result List {} Success",
+                                "guest",
+                                "GuestUserRepository.getGuestUserbyEmail(email)",
+                                emailExist);
+
                         GuestUser guestUser;
                         String one_time_password = "";
 
@@ -324,16 +308,31 @@ public class TestExamineeController {
                                     null,
                                     null);
 
+                            logger.info(
+                                    "Initiate to Operation Insert Table {} Data {}",
+                                    "guest",
+                                    guestUser);
                             guestUserRepository.save(guestUser);
                             logger.info(
-                                    " Operation Insert Table: guest Data: name={}, mail={}, phone_no={} | Success",
+                                    " Operation Insert Table {} Data: name={}, mail={}, phone_no={} | Success",
+                                    "guest",
                                     name,
                                     email,
                                     phone_number);
                         } else {
                             guestUser = emailExist;
+
+                            logger.info(
+                                    "Initiate to Operation Retrieve Table {} by query {}",
+                                    "test_examinee",
+                                    "testExamineeRepository.findByTestIdAndGuestId(test_id, guestUser.getGuest_id())");
                             TestExaminee testExamineeGuest = testExamineeRepository.findByTestIdAndGuestId(test_id,
                                     guestUser.getGuest_id());
+                            logger.info(
+                                    "Operation Retrieve Table {} by query {} Result List {} Success",
+                                    "test_examinee",
+                                    "testExamineeRepository.findByTestIdAndGuestId(test_id, guestUser.getGuest_id())",
+                                    testExamineeGuest);
 
                             if (testExamineeGuest != null) {
                                 continue;
@@ -348,22 +347,29 @@ public class TestExamineeController {
                                 null,
                                 guestUser,
                                 null);
+
                         logger.info(
-                                "Initiate Operation Insert Table: test_examinee Data: test={}, guest_user={}",
+                                "Initiate to Operation Insert Table {} Data: test={}, guest_user={}",
+                                "test_examinee",
                                 test,
                                 guestUser);
-
                         testExamineeRepository.save(testExaminee);
                         logger.info(
-                                "Initiate Operation Insert Table: test_examinee Data: test={}, guest_user={} | Success",
+                                "Operation Insert Table {} Data: test={}, guest_user={} | Success",
+                                "test_examinee",
                                 test,
                                 guestUser);
 
                         new Thread(new Runnable() {
                             public void run() {
                                 try {
+                                    logger.info(
+                                        "Initiate Operation to send One-Time-Password to mail={}", 
+                                        email);
                                     mailService.SendGuestOneTimePassword(guestUser, test, otp);
-                                    logger.info("One-time-password (OTP) sent to mail={} | Success", email);
+                                    logger.info(
+                                        "Operation to send One-Time-Password to mail={} | Success", 
+                                        email);
                                 } catch (Exception e) {
                                     logger.error(e.getLocalizedMessage());
                                 }
@@ -372,15 +378,14 @@ public class TestExamineeController {
                     }
 
                     logger.info(
-                            "Called API name: setMultipleGuest with Parameters: {}, {} | Success",
+                            "set-multi-guest-examinee with parameter: test_id={}, data={} Success",
                             test_id,
                             exam_guest_users);
                 }
             } catch (Exception e) {
-                System.out.println(e.toString());
+                logger.error(e. getLocalizedMessage());
             }
         }
-
         return "AT0005_TestExamineeList.html";
     }
 

@@ -61,7 +61,7 @@
                 </div>
             </div>
             <div id="csvErrorMsgBox"
-                class=" csvErrorMsgBox d-none justify-content-center align-items-center animate__animated border border-danger p-1 mb-2">
+                class=" csvErrorMsgBox d-none justify-content-center align-items-center animate__animated border p-1 mb-2">
             </div>
             <div class=" w-100 mb-2 border d-flex justify-content-center align-items-center"
                 style=" height: 200px; border-style: dotted;">
@@ -381,17 +381,6 @@
                         createCsvErrorMsg("There is an error with the uploaded CSV file. Please check the CSV file content and upload again.");
                         return;
                     }
-
-                    // Check if email is already registered
-                    // searchValue = rowColData[1];
-                    // fetch("/" + url + "/is-email-registered?email=" + encodeURIComponent(searchValue), {
-                    //     method: "GET",
-                    //     headers: { "Content-Type": "application/json" }
-                    // }).then(response => response.json())
-                    //     .then(data => {
-                    //         // console.log(data + "-" + searchValue + "-" + rowColData[1]);
-
-                    //     })
                 }
 
                 data = {
@@ -405,48 +394,10 @@
                     headers: { "Content-Type": "application/json" },
                     body: data
                 }).then(response => {
-                    window.location.reload();
+                    createCsvSuccessMsg("Successfully add multiple guest user");
+                    // window.location.reload();
                 })
-
             };
-
-            // let formData = new FormData();
-            // formData.append('file', file);
-            // formData.append('test_id', test_id);
-            // fetch("/" + url + "/set-multi-guest-examinee", {
-            //     method: 'POST',
-            //     body: formData
-            // })
-            //     // .then(resp => resp.json())
-            //     // .then(data => {
-            //     //     if (data.errors) {
-            //     //         alert(data.errors)
-            //     //     }
-            //     //     else {
-            //     //         console.log(data)
-            //     //     }
-            //     // })
-
-            //     .then(response => {
-            //         window.location.reload();
-            //     })
-
-            // fetch("/" + url + "/set-multi-guest-examinee", {
-            //     method: 'POST',
-            //     headers: { "Content-Type": "multipart/form-data" },
-            //     body: formData
-            // })
-            //     .then(response => response.json())
-            //     .then(data => {
-            //         // Handle the response data here
-            //         console.log(data);
-            //         // You can update your UI or perform other actions based on the response
-            //         window.location.reload();
-            //     })
-            //     .catch(error => {
-            //         // Handle errors if the request fails
-            //         console.error("Error:", error);
-            //     });
         })
 
         // Create csv error message to put in csv error message box
@@ -455,7 +406,18 @@
             csvErrorMsg.classList.add("mb-0", "text-danger", "text-center")
             csvErrorMsg.textContent = errorMsg;
             csvErrorMsgBox.appendChild(csvErrorMsg);
-            csvErrorMsgBox.classList.add("animate__fadeIn");
+            csvErrorMsgBox.classList.add("animate__fadeIn","border-danger");
+            csvErrorMsgBox.classList.replace("d-none", "d-flex");
+            return;
+        }
+
+        // Create csv success message to put in csv error message box
+        function createCsvSuccessMsg(successMsg) {
+            const csvSuccessMsg = document.createElement("p");
+            csvSuccessMsg.classList.add("mb-0", "text-success", "text-center")
+            csvSuccessMsg.textContent = successMsg;
+            csvErrorMsgBox.appendChild(csvSuccessMsg);
+            csvErrorMsgBox.classList.add("animate__fadeIn","border-success");
             csvErrorMsgBox.classList.replace("d-none", "d-flex");
             return;
         }
