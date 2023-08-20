@@ -17,6 +17,7 @@
   <link rel="stylesheet" th:href="@{/css/global.css}" />
   <link rel="icon" type="image/x-icon" href="/images/fav.png" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.js"></script>
   <script th:inline="javascript">
@@ -285,6 +286,7 @@
   <!-- to create exam content start  -->
   <div
     class="create-exam-container min-vh-100 w-100 position-fixed top-0 d-flex justify-content-center align-items-center d-none fadeIn"
+    id="Create-ExamContainer"
     style="background-color: rgba(0, 0, 0, 0.4); z-index: 1000; padding-top: 80px; max-height: calc(100vh - 210px); overflow-y: auto;">
     <div class="create-exam-content rounded shadow bg-white">
       <div class="d-flex justify-content-end p-2">
@@ -296,7 +298,7 @@
       <div class="px-3 pb-3">
         <h5 class="text-success text-center mb-3">To Create Exam Content</h5>
         <div class="input-group-sm mb-2 shadow-sm">
-          <label for="description" class="form-label fw-bold mb-1"><small style="color: black;">Course Name <span
+          <label id="course_name_label" for="description" class="form-label fw-bold mb-1"><small style="color: black;">Course Name <span
                 class="text-danger">*</span></small></label>
           <select class="form-select" aria-label="Default select example" id="course_name">
             <option value="Choose Course" selected><small>Choose Course</small></option>
@@ -372,6 +374,7 @@
           Number</div>
         <div style="color: red; font-size: 12px; display: none;" id="passing_score_number_limit">Please Add Between 0
           and 100</div>
+        
         <div class="input-group-sm text-end">
           <input type="submit" class="form-control btn btn-sm btn-success" id="submit" style="width: 100px" />
         </div>
@@ -422,6 +425,7 @@
               <option value="Marking"><small>Marking</small></option>
               <option value="Result Released"><small>Result Released</small></option>
               <option value="Deleted"><small>Deleted</small></option>
+              <option value="Launch Exam"><small>Launch Exam</small></option>
             </select>
           </div>
           <!-- <div class="" style="display: none;" id="teacher_dropdown_main">
@@ -576,8 +580,8 @@
     crossorigin="anonymous"></script>
 
   <script th:src="@{/js/main.js}"></script>
-  <div th:replace="@{fragments/footer}"></div>
-</body>
 
+  <div th:replace="@{fragments/footer}"></div>   
+</body>
 
 </html>
