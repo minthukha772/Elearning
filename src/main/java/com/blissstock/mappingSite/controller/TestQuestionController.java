@@ -600,7 +600,7 @@ public class TestQuestionController {
 
 
     @Valid
-    @GetMapping(value = { "/guest-exam/76/questions" })
+    @GetMapping(value = { "/guest-exam/{examID}/questions" })
     private String getGuestUserQuestions(@PathVariable Long test_id, Model model)
             throws ParseException, JsonMappingException, JsonProcessingException {
         Long userID = getUid();
