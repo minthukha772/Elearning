@@ -58,7 +58,7 @@ public interface MailService {
 
   public void SendTeacherNewStudentEnroll(UserInfo userInfo, CourseInfo courseInfo) throws MessagingException;
 
-  public void SendGuestOneTimePassword(GuestUser guestUser, Test test, String otp) throws MessagingException;
+  public void SendGuestOneTimePassword(GuestUser guestUser, String otp) throws MessagingException;
 
   public void SendGuestRemovedNotification(GuestUser guestUser, Test test) throws MessagingException;
 

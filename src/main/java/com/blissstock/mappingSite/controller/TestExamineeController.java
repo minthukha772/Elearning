@@ -36,7 +36,6 @@ import com.blissstock.mappingSite.entity.TestQuestion;
 import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.entity.TestExaminee;
 import com.blissstock.mappingSite.entity.UserInfo;
-import com.blissstock.mappingSite.model.ExamAddMultiGuest;
 import com.blissstock.mappingSite.model.TestExamineeWithMarkedCountModel;
 import com.blissstock.mappingSite.repository.GuestUserRepository;
 import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
@@ -55,235 +54,6 @@ import org.slf4j.LoggerFactory;
 
 @Controller
 public class TestExamineeController {
-    private static Logger logger = LoggerFactory.getLogger(
-            TestExamineeController.class);
-
-    @Autowired
-    UserSessionService userSessionService;
-
-    @Autowired
-    TestExamineeRepository testStudentRepository;
-
-    @Autowired
-    TestExamineeAnswerRepository testStudentAnswerRepository;
-
-    @Autowired
-    TestRepository testRepository;
-
-    @Autowired
-    TestQuestionRepository testQuestionRepository;
-
-    @Autowired
-    JoinCourseUserRepository joinCourseUserRepository;
-
-    @Autowired
-    UserAccountRepository userAccountRepository;
-
-    @Autowired
-    UserInfoRepository userInfoRepository;
-
-    @Valid
-    @GetMapping(value = { "/teacher/exam/{test_id}/examinee", "/admin/exam/{test_id}/examinee" })
-    private String getTestExaminee(@PathVariable Long test_id, Model model,
-
-            @RequestParam(required = false) String name)
-            throws ParseException {
-        logger.info("API name : {}.Parameter : {}", "getTestExaminee", test_id);
-        logger.info("Operation Retrieve Table {} by query : findByNameandTestId {} {}", "TestExaminee", name, test_id);
-        logger.info("Initiate to Operation Retrieve Table {} by query : findByNameandTestId {}", "TestExaminee", name,
-                test_id);
-        List<TestExaminee> testStudents = new ArrayList<>();
-        List<TestExamineeWithMarkedCountModel> testStudentList = new ArrayList<>();
-        int checked_students = 0;
-        int total_free_questions = 0;
-        if (name == null) {
-
-            testStudents = testStudentRepository.getStudentByTest(test_id);
-        } else {
-            logger.info("Initiate to Operation Retrieve Table {} by query :findByNameandTestId{}{}", "TestExaminee",
-                    name, test_id);
-            testStudents = testStudentRepository.findByNameandTestId(name, test_id);
-            logger.info("Operation Retrieve Table {} by query :findByNameandTestId{}{}Result List : {} Success",
-                    "TestExaminee", name, test_id, testStudents.toString());
-        }
-        total_free_questions = testQuestionRepository.getFreeAnswerCount(test_id);
-        for (TestExaminee TestExaminee : testStudents) {
-            Integer answerCount = testStudentAnswerRepository.getCountStudentAnswerListByTestAndStudent(test_id,
-                    TestExaminee.getUserInfo().getUid());
-            if (answerCount == 0) {
-                TestExamineeWithMarkedCountModel testStudentWithMarkedCountModel = new TestExamineeWithMarkedCountModel(
-                        TestExaminee.getId(), TestExaminee.getTest(), TestExaminee.getUserInfo(), total_free_questions,
-                        0);
-                testStudentList.add(testStudentWithMarkedCountModel);
-            } else {
-                int uncheck_free_questions = testStudentAnswerRepository.getUnCheckAnswerCountByTestAndStudent(
-                        test_id,
-                        TestExaminee.getUserInfo().getUid());
-                TestExamineeWithMarkedCountModel testStudentWithMarkedCountModel = new TestExamineeWithMarkedCountModel(
-                        TestExaminee.getId(), TestExaminee.getTest(), TestExaminee.getUserInfo(), total_free_questions,
-                        total_free_questions - uncheck_free_questions);
-                if (uncheck_free_questions == 0) {
-                    checked_students++;
-                }
-                testStudentList.add(testStudentWithMarkedCountModel);
-            }
-        }
-        logger.info("API name : {}. Parameter : {}", "getTestExaminee", test_id);
-        logger.info("Initiate to Operation Save File {}", test_id);
-        model.addAttribute("user_role", userSessionService.getRole());
-        model.addAttribute("test_id", test_id);
-        model.addAttribute("test_examinees", testStudentList);
-        model.addAttribute("total_students", testStudents.size());
-        model.addAttribute("check_students", checked_students);
-        return "AT0005_TestExamineeList.html";
-    }
-
-    @Valid
-    @GetMapping(value = { "/teacher/get-student", "/admin/get-student" })
-    private ResponseEntity getCustomStudent(@RequestParam(value = "name") String name)
-            throws ParseException {
-        logger.info("API name : {}.Parameter : {}", "getCustomStudent", name);
-        logger.info("Initiate to Operation Insert Table {} Data {}", "TestExaminee", name);
-        String lowerName = name.toLowerCase();
-        List<UserInfo> testStudents = userInfoRepository.findByName(name, lowerName);
-        return ResponseEntity.ok(testStudents);
-    }
-
-    @Valid
-    @GetMapping(value = { "/teacher/get-student-exam", "/admin/get-student-exam" })
-    private ResponseEntity getCustomStudentExam(@RequestParam(value = "name") String name,
-            @RequestParam(value = "test_id") Long test_id)
-            throws ParseException {
-        logger.info("API name : {}.Parameter : {}", "getCustomStudentExam", name);
-        logger.info("Operation Retrieve Table {} by query : findByNameandTestId {} {}", "TestExaminee", name, test_id);
-
-        List<UserInfo> testStudents = userInfoRepository.findByNameandTestId(name, test_id);
-        return ResponseEntity.ok(testStudents);
-    }
-
-    @Valid
-    @PostMapping(value = { "/teacher/set-enrolled-examinee", "/admin/set-enrolled-examinee" })
-    private String setEnrolledStudents(@RequestBody String testid)
-            throws ParseException {
-        logger.info("API name : {}.Parameter : {}", "setEnrolledStudents", testid);
-        logger.info("Operation Retrieve Table {} by query : findByNameandTestId {} {}", "TestExaminee", testid);
-        logger.info("Initiate to Operation Retrieve Table {} by query : findByNameandTestId {}", "TestExaminee",
-                testid);
-        JSONObject jsonObject = new JSONObject(testid);
-        Long test_id = jsonObject.getLong("test_id");
-        Test test = testRepository.getTestByID(test_id);
-        if (test.getExam_status().equals("Exam Created")) {
-            CourseInfo course = test.getCourseInfo();
-            List<JoinCourseUser> enrolledList = joinCourseUserRepository.findByStudentByCourseID(course.getCourseId());
-            for (JoinCourseUser student : enrolledList) {
-                TestExaminee checkStudent = testStudentRepository.getStudentByID(student.getUserInfo().getUid(),
-                        test_id);
-                if (checkStudent == null) {
-                    TestExaminee TestExaminee = new TestExaminee(null, test, student.getUserInfo(), null);
-                    testStudentRepository.save(TestExaminee);
-                }
-            }
-        }
-        logger.info("API name : {}. Parameter : {}", "setCustomStudents", testid);
-        logger.info("Operation Insert Table {} Data {} Success", "TestExaminee", testid);
-        logger.info("Operation Save File {} Success", testid);
-        return "AT0005_TestExamineeList.html";
-    }
-
-    @Valid
-    @PostMapping(value = { "/teacher/set-examinee", "/admin/set-examinee" })
-    private String setCustomStudents(@RequestBody String testid)
-            throws ParseException {
-        logger.info("API name : {}.Parameter : {}", "setCustomStudents", testid);
-        logger.info("Operation Retrieve Table {} by query : findByNameandTestId {} {}", "TestExaminee", testid);
-        logger.info("Initiate to Operation Retrieve Table {} by query : findByNameandTestId {}", "TestExaminee",
-                testid);
-        logger.info("Initiate to Operation Insert Table {} Data {}", "TestExaminee", testid);
-        logger.info("Initiate to Operation Save File {}", testid);
-        JSONObject jsonObject = new JSONObject(testid);
-        Long test_id = jsonObject.getLong("test_id");
-        Long student_id = jsonObject.getLong("student_id");
-        Test test = testRepository.getTestByID(test_id);
-        UserInfo user = userInfoRepository.findStudentById(student_id);
-        if (test.getExam_status().equals("Exam Created")) {
-            TestExaminee existingStudent = testStudentRepository.getStudentByID(student_id, test_id);
-            if (existingStudent == null) {
-                logger.info("Initiate to Operation Retrieve Table {} by query :findByNameandTestId{}{}", "TestExaminee",
-                        student_id, test_id);
-                logger.info("Initiate to Operation Update Table {} Data {} By {} = {}", "TestExaminee", testid,
-                        "student_id", student_id);
-                TestExaminee TestExaminee = new TestExaminee(null, test, user, null);
-                testStudentRepository.save(TestExaminee);
-                logger.info("Operation Retrieve Table {} by query :findByNameandTestId{}{}Result List : {} Success",
-                        "TestExaminee", student_id, test_id, TestExaminee.toString());
-                logger.info("Operation Update Table {} Data {} By {} = {} Success", "TestExaminee", testid,
-                        "student_id", student_id);
-            }
-        }
-        logger.info("API name : {}. Parameter : {}", "setCustomStudents", testid);
-        logger.info("Operation Insert Table {} Data {} Success", "TestExaminee", testid);
-        logger.info("Operation Save File {} Success", testid);
-        return "AT0005_TestExamineeList.html";
-    }
-
-    @Valid
-    @GetMapping(value = { "/teacher/is-email-registered", "/admin/is-email-registered" })
-    private ResponseEntity isEmailRegistered(@RequestParam(value = "email") String email)
-            throws ParseException {
-        logger.info("API name : {}.Parameter : {}", "isEmailRegistered", email);
-        // logger.info("Initiate to Operation Insert Table {} Data {}", "TestExaminee", name);
-        UserAccount registeredEmail = userAccountRepository.findByMail(email);
-        boolean Registered;
-
-        if (registeredEmail == null) {
-            Registered = false;
-        } else {
-            Registered = true;
-        }
-
-        return ResponseEntity.ok(Registered);
-    }
-
-    // @Valid
-    // @PostMapping(value = { "/teacher/set-multi-guest-examinee",
-    // "/admin/set-multi-guest-examinee" })
-    // private String setMultiGuest(
-    // @RequestParam("file") MultipartFile file,
-    // @RequestParam("test_id") Long testId
-    // // @RequestParam("csvFile") MultipartFile file
-    // ) {
-    // List<List<String>> records = new ArrayList<>();
-    // String csvFileName = file.getOriginalFilename();
-    // String COMMA_DELIMITER = ",";
-
-    // try (BufferedReader br = new BufferedReader(new FileReader(csvFileName))) {
-    // // new InputStreamReader(file.getInputStream())
-    // String line;
-    // while ((line = br.readLine()) != null) {
-    // String[] values = line.split(COMMA_DELIMITER);
-    // records.add(Arrays.asList(values));
-    // }
-    // System.out.println(records);
-    // } catch (Exception e) {
-    // e.printStackTrace();
-    // }
-
-    // return "AT0005_TestStudentList.html";
-    // }
-
-    @Valid
-    @PostMapping(value = { "/teacher/set-multi-guest-examinee", "/admin/set-multi-guest-examinee" })
-    private String setMultiGuest(@RequestBody String data) {
-        JSONObject jsonObject = new JSONObject(data);
-        Long test_id = jsonObject.getLong("test_id");
-
-        return "AT0005_TestStudentList.html";
-    }
-
-    private Long getUid() {
-        Long uid = userSessionService.getUserAccount().getAccountId();
-        return uid;
-    }
 	private static Logger logger = LoggerFactory.getLogger(
 			TestExamineeController.class);
 
@@ -291,10 +61,10 @@ public class TestExamineeController {
 	UserSessionService userSessionService;
 
 	@Autowired
-	TestExamineeRepository testExamineeRepository;
+	TestExamineeRepository testStudentRepository;
 
 	@Autowired
-	TestExamineeAnswerRepository testExamineeAnswerRepository;
+	TestExamineeAnswerRepository testStudentAnswerRepository;
 
 	@Autowired
 	TestRepository testRepository;
@@ -312,6 +82,12 @@ public class TestExamineeController {
 	UserInfoRepository userInfoRepository;
 
 	@Autowired
+	TestExamineeRepository testExamineeRepository;
+
+	@Autowired
+	TestExamineeAnswerRepository testExamineeAnswerRepository;
+
+	@Autowired
 	GuestUserRepository guestUserRepository;
 
 	@Autowired
@@ -319,6 +95,61 @@ public class TestExamineeController {
 
 	@Autowired
 	MailService mailService;
+
+	@Valid
+	@GetMapping(value = { "/teacher/is-email-registered", "/admin/is-email-registered" })
+	private ResponseEntity isEmailRegistered(@RequestParam(value = "email") String email)
+			throws ParseException {
+		logger.info("API name : {}.Parameter : {}", "isEmailRegistered", email);
+		// logger.info("Initiate to Operation Insert Table {} Data {}", "TestExaminee",
+		// name);
+		UserAccount registeredEmail = userAccountRepository.findByMail(email);
+		boolean Registered;
+
+		if (registeredEmail == null) {
+			Registered = false;
+		} else {
+			Registered = true;
+		}
+
+		return ResponseEntity.ok(Registered);
+	}
+
+	// @Valid
+	// @PostMapping(value = { "/teacher/set-multi-guest-examinee",
+	// "/admin/set-multi-guest-examinee" })
+	// private String setMultiGuest(
+	// @RequestParam("file") MultipartFile file,
+	// @RequestParam("test_id") Long testId
+	// // @RequestParam("csvFile") MultipartFile file
+	// ) {
+	// List<List<String>> records = new ArrayList<>();
+	// String csvFileName = file.getOriginalFilename();
+	// String COMMA_DELIMITER = ",";
+
+	// try (BufferedReader br = new BufferedReader(new FileReader(csvFileName))) {
+	// // new InputStreamReader(file.getInputStream())
+	// String line;
+	// while ((line = br.readLine()) != null) {
+	// String[] values = line.split(COMMA_DELIMITER);
+	// records.add(Arrays.asList(values));
+	// }
+	// System.out.println(records);
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// }
+
+	// return "AT0005_TestStudentList.html";
+	// }
+
+	@Valid
+	@PostMapping(value = { "/teacher/set-multi-guest-examinee", "/admin/set-multi-guest-examinee" })
+	private String setMultiGuest(@RequestBody String data) {
+		JSONObject jsonObject = new JSONObject(data);
+		Long test_id = jsonObject.getLong("test_id");
+
+		return "AT0005_TestStudentList.html";
+	}
 
 	@Valid
 	@GetMapping(value = { "/teacher/exam/{test_id}/examinee", "/admin/exam/{test_id}/examinee" })
@@ -544,7 +375,8 @@ public class TestExamineeController {
 				}
 
 			}
-			logger.info("Called API name : getTestGuestExaminee by Parameter : {} Return to \"AT0005_TestGuestList.html\" | Success",
+			logger.info(
+					"Called API name : getTestGuestExaminee by Parameter : {} Return to \"AT0005_TestGuestList.html\" | Success",
 					"getTestExaminee", test_id);
 			model.addAttribute("user_role", userSessionService.getRole());
 			model.addAttribute("test_id", test_id);
@@ -574,23 +406,16 @@ public class TestExamineeController {
 			String name = jsonObject.getString("guest_name");
 			String email = jsonObject.getString("guest_email").toLowerCase();
 			String phone_number = jsonObject.getString("guest_ph_no");
-			String one_time_password = createOneTimePassword();
-			String one_time_passwordEncoded = passwordEncoder.encode(one_time_password);
-			String password_update_date_time = getDateAndTime();
+
 			Test test = testRepository.getTestByID(test_id);
 
 			if (test.getExam_status().equals("Exam Created") || test.getExam_status().equals("Questions Created")) {
 
-				GuestUser guestUser = new GuestUser(null, name, email, phone_number, one_time_passwordEncoded,
-						password_update_date_time,
-						null, null);
 				// logger.info(
 				// "Operation Insert Table: guest | Data name:{}, mail:{}, phone_no:{},
 				// one_time_password:{}, password_update_date_time:{}, updated_date_time:{},
 				// deleted_date_time:{}",
 				// name);
-				logger.info("Initiate Operation Insert Table: guest Data: name={}, mail={}, phone_no={}", name, email,
-						phone_number);
 
 				// Check if the email exists in the user_account table
 				List<String> userAccountEmails = userAccountRepository.getAllUserEmail();
@@ -602,7 +427,7 @@ public class TestExamineeController {
 							.body("{\"errorMessage\": \"Added Email is already associated with a Student account\"}");
 				}
 
-				// Check if the email exists in the guest table
+				// Check if the email exists in the guest and test table
 				GuestUser existingGuest = guestUserRepository.findGuestUserByGuestEmailAndTestId(email, test_id);
 				if (existingGuest != null) {
 					logger.warn("Opearation Insert Table: guest Data: name={}, mail={}, phone_no={} | Failed", name,
@@ -613,27 +438,58 @@ public class TestExamineeController {
 							.body("{\"errorMessage\": \"Added Email already associated with a Guest user within the Exam\"}");
 				}
 
-				guestUserRepository.save(guestUser);
-				logger.info(" Operation Insert Table: guest Data: name={}, mail={}, phone_no={} | Success", name, email,
-						phone_number);
+				// Check if the guest user email is already in the database
+				GuestUser guestUser = guestUserRepository.getGuestUserbyEmail(email);
+				if (guestUser == null) {
+					logger.info("Initiate Operation Insert Table: guest Data: name={}, mail={}, phone_no={}", name,
+							email,
+							phone_number);
+					String one_time_password = createOneTimePassword();
+					String one_time_passwordEncoded = passwordEncoder.encode(one_time_password);
+					String password_update_date_time = getDateAndTime();
 
-				TestExaminee testExaminee = new TestExaminee(null, test, null, guestUser, null);
-				logger.info("Initiate Operation Insert Table: test_examinee Data: test={}, guest_user={}", test,
-						guestUser);
-				testExamineeRepository.save(testExaminee);
-				logger.info("Initiate Operation Insert Table: test_examinee Data: test={}, guest_user={} | Success",
-						test, guestUser);
+					GuestUser newGuestUser = new GuestUser(null, name, email, phone_number, one_time_passwordEncoded,
+							password_update_date_time,
+							null, null);
+					guestUserRepository.save(newGuestUser);
+					logger.info(" Operation Insert Table: guest Data: name={}, mail={}, phone_no={} | Success", name,
+							email,
+							phone_number);
 
-				new Thread(new Runnable() {
-					public void run() {
-						try {
-							mailService.SendGuestOneTimePassword(guestUser, test, one_time_password);
-							logger.info("One-time-password (OTP) sent to mail={} | Success", email);
-						} catch (Exception e) {
-							logger.error(e.getLocalizedMessage());
+					TestExaminee testExaminee = new TestExaminee(null, test, null, newGuestUser, null);
+					logger.info("Initiate Operation Insert Table: test_examinee Data: test_id={}, guest_user={}",
+							test.getTest_id(),
+							newGuestUser.display());
+					testExamineeRepository.save(testExaminee);
+					logger.info("Operation Insert Table: test_examinee Data: test_id={}, guest_user={} | Success",
+							test.getTest_id(), newGuestUser.display());
+
+					new Thread(new Runnable() {
+						public void run() {
+							try {
+								mailService.SendGuestOneTimePassword(newGuestUser, one_time_password);
+								logger.info("One-time-password (OTP) sent to mail={} | Success", email);
+							} catch (Exception e) {
+								logger.error(e.getLocalizedMessage());
+							}
 						}
-					}
-				}).start();
+					}).start();
+
+				} else {
+					guestUser.setName(name);
+					guestUser.setPhone_no(phone_number);
+					guestUser.setUpdated_date_time(getDateAndTime());
+					logger.info("Guest User with email={} is updated with name={}, phone_no={}", email, name,
+							phone_number);
+					guestUserRepository.save(guestUser);
+
+					TestExaminee testExaminee = new TestExaminee(null, test, null, guestUser, null);
+					logger.info("Initiate Operation Insert Table: test_examinee Data: test_id={}, guest_user={}",
+							test.getTest_id(), guestUser.display());
+					testExamineeRepository.save(testExaminee);
+					logger.info("Operation Insert Table: test_examinee Data: test_id={}, guest_user={} | Success",
+							test.getTest_id(), guestUser.display());
+				}
 
 				logger.info("Called API name: setSingleGuest with Parameters: {} | Success", testid);
 
@@ -683,42 +539,34 @@ public class TestExamineeController {
 			String passwordUpdatedDateTime;
 			String updatedDateTime = getDateAndTime();
 
-			// Check the newly added email with the existing guest email
+			// Compare the newly added email with the existing guest email
 			if (existingGuest.getMail().equals(email)) {
 				GuestUser newGuestUser = new GuestUser(guest_id, name, existingGuest.getMail(), phone_number,
 						existingGuest.getOne_time_password(),
 						existingGuest.getPassword_update_date_time(), updatedDateTime, null);
 				guestUserRepository.save(newGuestUser);
 			} else {
-				// Check if the email exists in the guest table
-				GuestUser checkExistingGuest = guestUserRepository.findGuestUserByGuestEmailAndTestId(email, test_id);
-				if (checkExistingGuest != null) {
-					logger.warn("Opearation Insert Table: guest Data: name={}, mail={}, phone_no={} | Failed", name,
-							email, phone_number);
-					logger.warn("Email: {} already existes in Table: guest for test_id={}", email, test_id);
-					return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-							.body("{\"errorMessage\": \"Added Email already associated with a Guest user within the Exam\"}");
-				}
 
 				// Create a new password if not email doesn't match with the existing email
 				logger.info("New one-time-password is created for guest_id={}", guest_id);
 				String newOneTimePassword = createOneTimePassword();
-				newEncodedOneTimePassword = passwordEncoder.encode(createOneTimePassword());
+				newEncodedOneTimePassword = passwordEncoder.encode(newOneTimePassword);
 				passwordUpdatedDateTime = getDateAndTime();
 
-				GuestUser newGuestUser = new GuestUser(guest_id, name, email, phone_number, newEncodedOneTimePassword,
+				GuestUser updatedGuestUser = new GuestUser(guest_id, name, email, phone_number,
+						newEncodedOneTimePassword,
 						passwordUpdatedDateTime, updatedDateTime, null);
 				Test test = testRepository.getTestByID(test_id);
 
-				guestUserRepository.save(newGuestUser);
+				guestUserRepository.save(updatedGuestUser);
 
 				new Thread(new Runnable() {
 					public void run() {
 						try {
 							mailService.SendGuestRemovedNotification(existingGuest, test);
 							logger.info(
-									"Notification of Removal of guest user from exam test_id={} sent to mail={} | Success",
-									test_id, existingGuest.getMail());
+									"Notified Email of Removal of guest user guest_id={} from exam test_id={} sent to mail={} | Success",
+									guest_id, test_id, existingGuest.getMail());
 						} catch (Exception e) {
 							logger.info(e.getLocalizedMessage());
 						}
@@ -728,7 +576,7 @@ public class TestExamineeController {
 				new Thread(new Runnable() {
 					public void run() {
 						try {
-							mailService.SendGuestOneTimePassword(newGuestUser, test, newOneTimePassword);
+							mailService.SendGuestOneTimePassword(updatedGuestUser, newOneTimePassword);
 							logger.info("One-time-password (OTP) sent to mail={} | Success", email);
 						} catch (Exception e) {
 							logger.info(e.getLocalizedMessage());
@@ -768,7 +616,8 @@ public class TestExamineeController {
 			logger.info("Called API name: deleteGuest with parameters: test_id={}, guest_id={}, role={}", testId,
 					guestId,
 					roles);
-			logger.info("Redirect /{}/exam/{}/guest/examinee with parameter(test_id={}, guest_id={}, role={})", role, testId,
+			logger.info("Redirect /{}/exam/{}/guest/examinee with parameter(test_id={}, guest_id={}, role={})", role,
+					testId,
 					testId, guestId, role);
 
 			logger.info("Initiate Operation Delete Table: test_examinee by Query: test_id={}, guest_id={}",
@@ -778,10 +627,13 @@ public class TestExamineeController {
 			logger.info("Operation Delete Table: test_examinee by Query: test_id={}, guest_id={} | Success",
 					testId, guestId);
 
-			logger.info("Initiate Operation Delete Table: guest by Query: guest_id={}", guestId);
+			logger.info("Initiate Operation Update Table: guest by Query: guest_id={}", guestId);
 			GuestUser guestUser = guestUserRepository.findByGuestId(guestId);
-			guestUserRepository.delete(guestUser);
-			logger.info("Operation Delete Table: guest by Query: guest_id={} | Success", guestId);
+			String deletedDateTime = getDateAndTime();
+			guestUser.setDeleted_date_time(deletedDateTime);
+			guestUserRepository.save(guestUser);
+			logger.info("Operation Update Table: guest by Query: guest_id={}, deleted_date_time={} | Success", guestId,
+					deletedDateTime);
 
 			Test test = testRepository.getTestByID(testId);
 
@@ -798,7 +650,8 @@ public class TestExamineeController {
 				}
 			}).start();
 
-			logger.info("Redirect /{}/exam/{}/guest/examinee with parameter(test_id={}, guest_id={}, role={}) | Success",
+			logger.info(
+					"Redirect /{}/exam/{}/guest/examinee with parameter(test_id={}, guest_id={}, role={}) | Success",
 					role,
 					testId,
 					testId, guestId, role);

@@ -505,7 +505,7 @@ public class MailServiceImpl implements MailService {
   }
   
   @Override
-  public void SendGuestOneTimePassword(GuestUser guestUser, Test test, String otp) throws MessagingException {
+  public void SendGuestOneTimePassword(GuestUser guestUser, String otp) throws MessagingException {
     String appUrl = getServerAddress();
     String recipientAddress = guestUser.getMail();
 
@@ -515,13 +515,6 @@ public class MailServiceImpl implements MailService {
     ctx.setVariable("appUrl", appUrl);
     ctx.setVariable("guestName", guestUser.getName());
     ctx.setVariable("oneTimePassword", otp);
-    ctx.setVariable("sectionName", test.getSection_name());
-    ctx.setVariable("description", test.getDescription());
-    ctx.setVariable("date", test.getDate());
-    ctx.setVariable("startTime", test.getStart_time());
-    ctx.setVariable("endTime", test.getEnd_time());
-    ctx.setVariable("minutesAllowed", test.getMinutes_allowed());
-    ctx.setVariable("passingScorePercent", test.getPassing_score_percent());
     ctx.setVariable("Date", new Date());
 
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
