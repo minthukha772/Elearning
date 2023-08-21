@@ -308,7 +308,7 @@
             })
         }
 
-        // Add CSV file
+        // Check CSV data and send data to backend for Add Multiple Guest Dialog
         const csvUploadForm = document.querySelector('#csvUploadForm')
         const csvErrorMsgBox = document.getElementById("csvErrorMsgBox")
 
@@ -395,7 +395,7 @@
                     body: data
                 }).then(response => {
                     createCsvSuccessMsg("Successfully add multiple guest user");
-                    // window.location.reload();
+                    window.location.reload();
                 })
             };
         })

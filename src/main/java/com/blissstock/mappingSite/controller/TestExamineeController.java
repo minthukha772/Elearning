@@ -19,7 +19,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.ResponseEntity.BodyBuilder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -239,9 +241,10 @@ public class TestExamineeController {
         return "AT0005_TestExamineeList.html";
     }
 
+    // Add multiple guest in an exam
     @Valid
     @PostMapping(value = { "/teacher/set-multi-guest-examinee", "/admin/set-multi-guest-examinee" })
-    private String setMultiGuest(@RequestBody String data) throws ParseException {
+    private ResponseEntity setMultiGuest(@RequestBody String data) throws ParseException {
         logger.info("set-multi-guest-examinee with parameter: {}", data);
         JSONObject jsonObject = new JSONObject(data);
         Long test_id = jsonObject.getLong("test_id");
@@ -319,6 +322,25 @@ public class TestExamineeController {
                                     name,
                                     email,
                                     phone_number);
+
+                            final String otp = one_time_password;
+
+                            new Thread(new Runnable() {
+                                public void run() {
+                                    try {
+                                        logger.info(
+                                                "Initiate Operation to send One-Time-Password to mail={}",
+                                                email);
+                                        mailService.SendGuestOneTimePassword(guestUser, otp);
+                                        logger.info(
+                                                "Operation to send One-Time-Password to mail={} | Success",
+                                                email);
+                                    } catch (Exception e) {
+                                        logger.error(e.getLocalizedMessage());
+                                    }
+                                }
+                            }).start();
+
                         } else {
                             guestUser = emailExist;
 
@@ -339,8 +361,6 @@ public class TestExamineeController {
                             }
                         }
 
-                        final String otp = one_time_password;
-
                         TestExaminee testExaminee = new TestExaminee(
                                 null,
                                 test,
@@ -359,22 +379,6 @@ public class TestExamineeController {
                                 "test_examinee",
                                 test,
                                 guestUser);
-
-                        new Thread(new Runnable() {
-                            public void run() {
-                                try {
-                                    logger.info(
-                                        "Initiate Operation to send One-Time-Password to mail={}", 
-                                        email);
-                                    mailService.SendGuestOneTimePassword(guestUser, test, otp);
-                                    logger.info(
-                                        "Operation to send One-Time-Password to mail={} | Success", 
-                                        email);
-                                } catch (Exception e) {
-                                    logger.error(e.getLocalizedMessage());
-                                }
-                            }
-                        }).start();
                     }
 
                     logger.info(
@@ -383,10 +387,10 @@ public class TestExamineeController {
                             exam_guest_users);
                 }
             } catch (Exception e) {
-                logger.error(e. getLocalizedMessage());
+                logger.error(e.getLocalizedMessage());
             }
         }
-        return "AT0005_TestExamineeList.html";
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
     private String createOneTimePassword() {

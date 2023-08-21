@@ -32,7 +32,6 @@ add_multiple_guest_cancel.addEventListener('click', () => {
   setTimeout(() => {
     add_multiple_guest_box.classList.add('d-none');
     removeCsvErrorMsg();
-    // csvErrorMsgBox.classList.contains("d-none") ? null : csvErrorMsgBox.classList.add("d-none");
   }, 1000);
 })
 // Add Multiple Guest Dialog end
