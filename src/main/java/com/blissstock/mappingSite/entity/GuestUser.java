@@ -1,11 +1,15 @@
 package com.blissstock.mappingSite.entity;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import com.blissstock.mappingSite.validation.constrains.ValidEmail;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,7 +29,7 @@ public class GuestUser {
 
     @Column(name = "name", length = 255)
     private String name;
-
+    
     @Column(name = "mail", length = 255)
     private String mail;
 

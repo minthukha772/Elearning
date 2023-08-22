@@ -40,7 +40,7 @@
 
         <div class="container">
             <div class="col-12 mt-3">
-                
+
             </div>
 
             <h3 class="text-center text-success">Exam Answer Dashboard</h3>
@@ -56,11 +56,81 @@
                     <span id="examStatus" th:text="${examStatus}"
                         th:class="${examStatus == 'Complete'} ? 'text-success' : ''"></span>
                 </div>
-                <div class="col-12">
-                    <span class="fw-bold">Exam Date : </span>
-                    <span th:text="${examDate}" class=""></span>
-                    <span th:text="' (' + ${startTime} + ' - ' + ${endTime} + ')'"></span>
+
+                <div class="col-12 d-flex justify-content-between">
+                    <div>
+                        <span class="fw-bold">Exam Date : </span>
+                        <span th:text="${examDate}" class=""></span>
+                        <span th:text="' (' + ${startTime} + ' - ' + ${endTime} + ')'"></span>
+                    </div>
+                    <div>
+                        <div>
+
+                            <style>
+                                /* Style for the button */
+                                /* Style for the button container */
+
+                                #announceButton {
+                                    background-color: #3a9687;
+                                    color: white;
+                                    padding: 10px 20px;
+                                    margin-top: 8px;
+                                    border: none;
+                                    cursor: pointer;
+                                }gi
+                            </style>
+
+                            <button id="announceButton" onclick="announceResult()">Announce Exam Result</button>
+
+                            <script>
+                                function announceResult() {
+                                    const button = document.getElementById('announceButton');
+
+                                    // Disable the button after clicking
+                                    button.disabled = true;
+
+                                    // Change the button text
+                                    button.innerText = 'Finish Announce Exam Result';
+                                }
+                            </script>
+                        </div>
+
+
+                    </div>
+                    <!-- <span class="fw-bold">Exam Date : </span> -->
+                    <!-- <span th:text="${examDate}" class=""></span> -->
+                    <!-- <span th:text="' (' + ${startTime} + ' - ' + ${endTime} + ')'"></span> -->
                 </div>
+                <!-- This is where the button is created using HTML -->
+                <!-- <div>
+
+                    <style>
+                        /* Style for the button */
+                        /* Style for the button container */
+
+                        #announceButton {
+                            background-color: #3a9687;
+                            color: white;
+                            padding: 10px 20px;
+                            border: none;
+                            cursor: pointer;
+                        }
+                    </style>
+
+                    <button id="announceButton" onclick="announceResult()">Announce Exam Result</button>
+
+                    <script>
+                        function announceResult() {
+                            const button = document.getElementById('announceButton');
+
+                            // Disable the button after clicking
+                            button.disabled = true;
+
+                            // Change the button text
+                            button.innerText = 'Finish Announce Exam Result';
+                        }
+                    </script>
+                </div> -->
                 <div class="mt-2">
                     <span class="fw-bold">All : </span>
                     <span th:text="${totalExamineeList}" class=""></span>
@@ -91,6 +161,7 @@
         <!-- <div class="mt-3 d-flex justify-content-center" style="height: 500px;">
             <canvas id="myChart" class="bg-white"></canvas>
         </div> -->
+
 
 
 

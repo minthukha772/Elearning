@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.lang.reflect.Array;
 import java.nio.charset.UnsupportedCharsetException;
+
 import java.security.SecureRandom;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -18,10 +19,15 @@ import javax.validation.Valid;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.ResponseEntity.BodyBuilder;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -79,6 +85,9 @@ public class TestExamineeController {
     @Autowired
     TestQuestionRepository testQuestionRepository;
 
+	@Autowired
+	TestExamineeAnswerRepository testExamineeAnswerRepository;
+
     @Autowired
     JoinCourseUserRepository joinCourseUserRepository;
 
@@ -113,7 +122,7 @@ public class TestExamineeController {
         int total_free_questions = 0;
         if (name == null) {
 
-            testStudents = testStudentRepository.getStudentByTest(test_id);
+            testStudents = testStudentRepository.getExamineeByTest(test_id);
         } else {
             logger.info("Initiate to Operation Retrieve Table {} by query :findByNameandTestId{}{}", "TestExaminee",
                     name, test_id);
@@ -424,4 +433,361 @@ public class TestExamineeController {
         Long uid = userSessionService.getUserAccount().getAccountId();
         return uid;
     }
+	
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	@GetMapping(value = { "admin/exam/{test_id}/guest/examinee" })
+	private String getTestGuestExaminee(@PathVariable Long test_id, Model model,
+			@RequestParam(required = false) String name) throws ParseException {
+
+		try {
+			logger.info("Called API name: getTestGuestExaminee by Parameters: test_id={}", test_id);
+
+			Test test = testRepository.getTestByID(test_id);
+			String examStatus = test.getExam_status();
+			List<TestExaminee> testGuests = new ArrayList<>();
+			List<TestExamineeWithMarkedCountModel> testGuestList = new ArrayList<>();
+
+			int checked_guests = 0;
+			int total_free_questions = 0;
+			if (name == null) {
+				logger.info("Initiate Operation Retrieve Table: test_examinee by Query: getExamineeByTest({})",
+						test_id);
+				testGuests = testExamineeRepository.getExamineeByTest(test_id);
+				logger.info(
+						"Operation Retrieve Table: test_examinee by Query: getExamineeByTest({}) Result: numberOfTestGuests={} | Success",
+						test_id, testGuests.size());
+			} else {
+				logger.info(
+						"Initiate Operation Retrieve Table: test_examinee by Query: findByGuestNameandTestId({}, {})",
+						name, test_id);
+				testGuests = testExamineeRepository.findByGuestNameandTestId(name, test_id);
+				logger.info(
+						"Operation Retrieve Table: test_examinee by Query: findByGuestNameandTestId({}, {}) Result: {} | Success",
+						name, test_id, testGuests);
+			}
+			logger.info("Initiate Operation Retrieve Table: test_question by Query: getFreeAnswerCount({})",
+					test_id);
+			total_free_questions = testQuestionRepository.getFreeAnswerCount(test_id);
+			logger.info(
+					"Operation Retrieve Table: test_question by Query: getFreeAnswerCount({}) Result: total_free_questions={} | Success",
+					test_id, total_free_questions);
+
+			for (TestExaminee testExaminee : testGuests) {
+
+				Integer answerCount = testExamineeAnswerRepository.getCountStudentAnswerListByTestAndGuest(test_id,
+						testExaminee.getGuestUser().getGuest_id());
+				if (answerCount == 0) {
+					TestExamineeWithMarkedCountModel testGuestWithMarkedCountModel = new TestExamineeWithMarkedCountModel(
+							testExaminee.getId(), testExaminee.getTest(), testExaminee.getGuestUser(),
+							total_free_questions,
+							0);
+					testGuestList.add(testGuestWithMarkedCountModel);
+				} else {
+					// Left
+					int uncheck_free_questions = testExamineeAnswerRepository.getUnCheckAnswerCountByTestAndGuest(
+							test_id, testExaminee.getGuestUser().getGuest_id());
+
+					TestExamineeWithMarkedCountModel testGuestWithMarkedCoundtModel = new TestExamineeWithMarkedCountModel(
+							testExaminee.getId(), testExaminee.getTest(), testExaminee.getGuestUser(),
+							total_free_questions,
+							total_free_questions - uncheck_free_questions);
+					if (uncheck_free_questions == 0) {
+						checked_guests++;
+					}
+					testGuestList.add(testGuestWithMarkedCoundtModel);
+				}
+
+			}
+			logger.info("Called API name : getTestGuestExaminee by Parameter : {} Return to \"AT0005_TestGuestList.html\" | Success",
+					"getTestExaminee", test_id);
+			model.addAttribute("user_role", userSessionService.getRole());
+			model.addAttribute("test_id", test_id);
+			model.addAttribute("exam_status", examStatus);
+			model.addAttribute("test_guests", testGuestList);
+			model.addAttribute("total_guests", testGuests.size());
+			model.addAttribute("check_guests", checked_guests);
+
+			return "AT0005_TestGuestList.html";
+
+		} catch (Exception e) {
+			logger.error(e.getLocalizedMessage());
+			return "500";
+		}
+
+	}
+
+	@Valid
+	@PostMapping(value = { "/teacher/set-single-guest", "/admin/set-single-guest" })
+	private ResponseEntity setSingleGuest(@RequestBody String testid) throws ParseException {
+
+		try {
+			logger.info("Called API name: setSingleGuest with Parameters: {}", testid);
+
+			JSONObject jsonObject = new JSONObject(testid);
+			Long test_id = jsonObject.getLong("test_id");
+			String name = jsonObject.getString("guest_name");
+			String email = jsonObject.getString("guest_email").toLowerCase();
+			String phone_number = jsonObject.getString("guest_ph_no");
+			String one_time_password = createOneTimePassword();
+			String one_time_passwordEncoded = passwordEncoder.encode(one_time_password);
+			String password_update_date_time = getDateAndTime();
+			Test test = testRepository.getTestByID(test_id);
+
+			if (test.getExam_status().equals("Exam Created") || test.getExam_status().equals("Questions Created")) {
+
+				GuestUser guestUser = new GuestUser(null, name, email, phone_number, one_time_passwordEncoded,
+						password_update_date_time,
+						null, null);
+				// logger.info(
+				// "Operation Insert Table: guest | Data name:{}, mail:{}, phone_no:{},
+				// one_time_password:{}, password_update_date_time:{}, updated_date_time:{},
+				// deleted_date_time:{}",
+				// name);
+				logger.info("Initiate Operation Insert Table: guest Data: name={}, mail={}, phone_no={}", name, email,
+						phone_number);
+
+				// Check if the email exists in the user_account table
+				List<String> userAccountEmails = userAccountRepository.getAllUserEmail();
+				if (userAccountEmails.contains(email)) {
+					logger.warn("Opearation Insert Table: guest Data: name={}, mail={}, phone_no={} | Failed", name,
+							email, phone_number);
+					logger.warn("Email: {} already existes in Table: user_account | Operation Cancelled", email);
+					return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+							.body("{\"errorMessage\": \"Added Email is already associated with a Student account\"}");
+				}
+
+				// Check if the email exists in the guest table
+				GuestUser existingGuest = guestUserRepository.findGuestUserByGuestEmailAndTestId(email, test_id);
+				if (existingGuest != null) {
+					logger.warn("Opearation Insert Table: guest Data: name={}, mail={}, phone_no={} | Failed", name,
+							email, phone_number);
+					logger.warn("Email: {} already existes in Table: guest for test_id={} | Operation Cancelled", email,
+							test_id);
+					return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+							.body("{\"errorMessage\": \"Added Email already associated with a Guest user within the Exam\"}");
+				}
+
+				guestUserRepository.save(guestUser);
+				logger.info(" Operation Insert Table: guest Data: name={}, mail={}, phone_no={} | Success", name, email,
+						phone_number);
+
+				TestExaminee testExaminee = new TestExaminee(null, test, null, guestUser, null);
+				logger.info("Initiate Operation Insert Table: test_examinee Data: test={}, guest_user={}", test,
+						guestUser);
+				testExamineeRepository.save(testExaminee);
+				logger.info("Initiate Operation Insert Table: test_examinee Data: test={}, guest_user={} | Success",
+						test, guestUser);
+
+				new Thread(new Runnable() {
+					public void run() {
+						try {
+							mailService.SendGuestOneTimePassword(guestUser, one_time_password);
+							logger.info("One-time-password (OTP) sent to mail={} | Success", email);
+						} catch (Exception e) {
+							logger.error(e.getLocalizedMessage());
+						}
+					}
+				}).start();
+
+				logger.info("Called API name: setSingleGuest with Parameters: {} | Success", testid);
+
+				return ResponseEntity.ok(HttpStatus.OK);
+
+			}
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+
+		} catch (Exception e) {
+			logger.error(e.getLocalizedMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+			// return "500";
+		}
+	}
+
+	@Valid
+	@PostMapping(value = { "/teacher/edit-single-guest", "/admin/edit-single-guest" })
+	private ResponseEntity editSingleGuest(@RequestBody String body)
+			throws ParseException {
+
+		try {
+
+			logger.info("Called API name: editSingleGuest with Parameters: {}", body);
+
+			JSONObject jsonObject = new JSONObject(body);
+			Long test_id = jsonObject.getLong("test_id");
+			Long guest_id = jsonObject.getLong("guest_id");
+			String name = jsonObject.getString("guest_name");
+			String email = jsonObject.getString("guest_email").toLowerCase();
+			String phone_number = jsonObject.getString("guest_ph_no");
+
+			logger.info("Initiate Opearation Update Table: guest For guest_id={} Data: name={}, mail={}, phone_no={}",
+					guest_id, name, email, phone_number);
+
+			// Check if the email exists in the user_account table
+			List<String> userAccountEmails = userAccountRepository.getAllUserEmail();
+			if (userAccountEmails.contains(email)) {
+				logger.warn("Opearation Update Table: guest Data: guest_id={}, name={}, mail={}, phone_no={} | Failed",
+						guest_id, name, email, phone_number);
+				logger.warn("Email: {} already existes in Table: user_account", email);
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+						.body("{\"errorMessage\": \"Added Email is already associated with a Student account\"}");
+			}
+
+			GuestUser existingGuest = guestUserRepository.findByGuestId(guest_id);
+			String newEncodedOneTimePassword;
+			String passwordUpdatedDateTime;
+			String updatedDateTime = getDateAndTime();
+
+			// Check the newly added email with the existing guest email
+			if (existingGuest.getMail().equals(email)) {
+				GuestUser newGuestUser = new GuestUser(guest_id, name, existingGuest.getMail(), phone_number,
+						existingGuest.getOne_time_password(),
+						existingGuest.getPassword_update_date_time(), updatedDateTime, null);
+				guestUserRepository.save(newGuestUser);
+			} else {
+				// Check if the email exists in the guest table
+				GuestUser checkExistingGuest = guestUserRepository.findGuestUserByGuestEmailAndTestId(email, test_id);
+				if (checkExistingGuest != null) {
+					logger.warn("Opearation Insert Table: guest Data: name={}, mail={}, phone_no={} | Failed", name,
+							email, phone_number);
+					logger.warn("Email: {} already existes in Table: guest for test_id={}", email, test_id);
+					return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+							.body("{\"errorMessage\": \"Added Email already associated with a Guest user within the Exam\"}");
+				}
+
+				// Create a new password if not email doesn't match with the existing email
+				logger.info("New one-time-password is created for guest_id={}", guest_id);
+				String newOneTimePassword = createOneTimePassword();
+				newEncodedOneTimePassword = passwordEncoder.encode(createOneTimePassword());
+				passwordUpdatedDateTime = getDateAndTime();
+
+				GuestUser newGuestUser = new GuestUser(guest_id, name, email, phone_number, newEncodedOneTimePassword,
+						passwordUpdatedDateTime, updatedDateTime, null);
+				Test test = testRepository.getTestByID(test_id);
+
+				guestUserRepository.save(newGuestUser);
+
+				new Thread(new Runnable() {
+					public void run() {
+						try {
+							mailService.SendGuestRemovedNotification(existingGuest, test);
+							logger.info(
+									"Notification of Removal of guest user from exam test_id={} sent to mail={} | Success",
+									test_id, existingGuest.getMail());
+						} catch (Exception e) {
+							logger.info(e.getLocalizedMessage());
+						}
+					}
+				}).start();
+
+				new Thread(new Runnable() {
+					public void run() {
+						try {
+							mailService.SendGuestOneTimePassword(newGuestUser, newOneTimePassword);
+							logger.info("One-time-password (OTP) sent to mail={} | Success", email);
+						} catch (Exception e) {
+							logger.info(e.getLocalizedMessage());
+						}
+					}
+				}).start();
+			}
+			logger.info("Opearation Update Table: guest Data: guest_id={}, name={}, mail={}, phone_no={} | Success",
+					guest_id, name, email, phone_number);
+			logger.info("Called API name: editSingleGuest with Parameters: {} | Success", body);
+
+			return ResponseEntity.ok(HttpStatus.OK);
+
+		} catch (Exception e) {
+			logger.error(e.getLocalizedMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
+
+	}
+
+	@Valid
+	@PostMapping("/delete-guest/{testId}/{guestId}/{roles}")
+	public String deleteGuest(@PathVariable Long testId, @PathVariable Long guestId,
+			@PathVariable String roles) {
+
+		try {
+			Long userID = getUid();
+
+			logger.info("user_id: {}, role: {}", userID, roles);
+			String role = "";
+			if (roles.equals("SUPER_ADMIN") || roles.equals("ADMIN")) {
+				role = "admin";
+			} else if (roles.equals("TEACHER")) {
+				role = "teacher";
+			}
+
+			logger.info("Called API name: deleteGuest with parameters: test_id={}, guest_id={}, role={}", testId,
+					guestId,
+					roles);
+			logger.info("Redirect /{}/exam/{}/guest/examinee with parameter(test_id={}, guest_id={}, role={})", role, testId,
+					testId, guestId, role);
+
+			logger.info("Initiate Operation Delete Table: test_examinee by Query: test_id={}, guest_id={}",
+					testId, guestId);
+			TestExaminee viewTestGuest = testExamineeRepository.findByTestIdAndGuestId(testId, guestId);
+			testExamineeRepository.delete(viewTestGuest);
+			logger.info("Operation Delete Table: test_examinee by Query: test_id={}, guest_id={} | Success",
+					testId, guestId);
+
+			logger.info("Initiate Operation Delete Table: guest by Query: guest_id={}", guestId);
+			GuestUser guestUser = guestUserRepository.findByGuestId(guestId);
+			guestUserRepository.delete(guestUser);
+			logger.info("Operation Delete Table: guest by Query: guest_id={} | Success", guestId);
+
+			Test test = testRepository.getTestByID(testId);
+
+			new Thread(new Runnable() {
+				public void run() {
+					try {
+						mailService.SendGuestRemovedNotification(guestUser, test);
+						logger.info(
+								"Notification of Removal of guest user from exam test_id={} sent to mail={} | Success",
+								testId, guestUser.getMail());
+					} catch (Exception e) {
+						logger.error(e.getLocalizedMessage());
+					}
+				}
+			}).start();
+
+			logger.info("Redirect /{}/exam/{}/guest/examinee with parameter(test_id={}, guest_id={}, role={}) | Success",
+					role,
+					testId,
+					testId, guestId, role);
+
+			// return "redirect:/exam/" + redirectId + "/examinee-list/";
+			logger.info("Called API name: deleteGuest with parameters: test_id={}, guest_id={}, role={} | Success",
+					testId,
+					guestId, role);
+
+			return "redirect:/" + role + "/exam/" + testId + "/guest/examinee";
+
+		} catch (Exception e) {
+			logger.error(e.getLocalizedMessage());
+			return "500";
+		}
+	}
+
+	
+
+	
+
+	
 }

@@ -37,6 +37,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
@@ -521,6 +522,37 @@ public class MailServiceImpl implements MailService {
   }
 
   @Override
+  public void SendGuestRemovedNotification(GuestUser guestUser, Test test) throws MessagingException {
+    String appUrl = getServerAddress();
+    String recipientAddress = guestUser.getMail();
+
+    String subject = "【Pyinnyar Subuu】Removed";
+
+    final Context ctx = new Context();
+    ctx.setVariable("appUrl", appUrl);
+    ctx.setVariable("guestName", guestUser.getName());
+    ctx.setVariable("sectionName", test.getSection_name());
+    ctx.setVariable("description", test.getDescription());
+    ctx.setVariable("date", test.getDate());
+    ctx.setVariable("startTime", test.getStart_time());
+    ctx.setVariable("endTime", test.getEnd_time());
+    ctx.setVariable("minutesAllowed", test.getMinutes_allowed());
+    ctx.setVariable("passingScorePercent", test.getPassing_score_percent());
+    ctx.setVariable("Date", new Date());
+
+    final MimeMessage mimeMessage = mailSender.createMimeMessage();
+    final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+    message.setSubject(subject);
+    message.setFrom("sys@pyinnyar-subuu.com");
+    message.setTo(recipientAddress);
+
+    final String htmlContent = templateEngine.process("SendGuestRemovedNotification", ctx);
+    message.setText(htmlContent, true);
+
+    this.mailSender.send(mimeMessage);
+  }
+
+  @Override
   public void sendResetPasswordMail(UserAccount userAccount) throws MessagingException {
     String appUrl = getServerAddress();
     String token = UUID.randomUUID().toString();
@@ -833,6 +865,65 @@ public class MailServiceImpl implements MailService {
     this.mailSender.send(mimeMessage);
 
   }
+
+  @Override
+  public void guestResetOneTimePassword(String guestUserName, String email, String examID, String guestUserPhoneNumber, String oneTimePassword) throws MessagingException {
+    String appUrl = getServerAddress() + "/" + email + "_" +examID;
+    
+    logger.info("Guest one-time password renew request from :" + email);
+    String recipientAddress = email;
+    String subject = "【Pyinnyar Subuu】You have requested to renew your one-time password.";
+    
+    final Context ctx = new Context();
+    
+    ctx.setVariable("guestusername", guestUserName);
+    ctx.setVariable("guestphonenumber", guestUserPhoneNumber);
+    ctx.setVariable("onetimepassword", oneTimePassword);
+    ctx.setVariable("Date", new Date());    
+    ctx.setVariable("appUrl", appUrl);
+    final MimeMessage mimeMessage = mailSender.createMimeMessage();
+    final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
+    message.setSubject(subject);
+    message.setFrom("sys@pyinnyar-subuu.com");
+    message.setTo(recipientAddress);
+
+    final String htmlContent = templateEngine.process("GuestRenewOneTimePassword", ctx);
+
+    message.setText(htmlContent, true); // true = isHtml
+
+    this.mailSender.send(mimeMessage);
+
+  }
+
+  // public void sendVerificationMail(UserAccount userAccount) throws
+  // MessagingException {
+  // String appUrl = getServerAddress();
+  // String token = UUID.randomUUID().toString();
+  // userService.createToken(userAccount, token, TokenType.VERIFICATION);
+
+  // String recipientAddress = userAccount.getMail();
+  // String subject = "Registration Confirmation";
+
+  // String confirmationUrl = appUrl + "/verify_password?token=" + token;
+
+  // final Context ctx = new Context();
+  // ctx.setVariable("confirmationUrl", confirmationUrl);
+  // ctx.setVariable("Date", new Date());
+  // ctx.setVariable("token", token);
+  // ctx.setVariable("appUrl", appUrl);
+
+  // final MimeMessage mimeMessage = mailSender.createMimeMessage();
+  // final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true,
+  // "UTF-8"); // true = multipart
+  // message.setSubject(subject);
+  // message.setFrom("sys@pyinnyar-subuu.com");
+  // message.setTo(recipientAddress);
+
+  // final String htmlContent = templateEngine.process("sampleCss", ctx);
+  // message.setText(htmlContent, true); // true = isHtml
+
+  // this.mailSender.send(mimeMessage);
+  // }
 
   // public void sendVerificationMail(UserAccount userAccount) throws
   // MessagingException {
