@@ -23,7 +23,54 @@
   <script th:inline="javascript">
     var type;
     var test_id;
+    var currentTestInfo;
+    function launchExam()  {
+    console.log("launchExamOK");
 
+  const dialoglaunchOKBtn = document.getElementById("launchExamOK");
+ $("#launchExamOK").click(function () {
+             closeDialogOK();
+        });
+  function closeDialogOK() {
+            const dialogOK = document.getElementById("sure_launch_exam");
+             dialogOK.style.visibility = "hidden";
+       }
+       
+    // if (!currentTestInfo) {
+    //     alert("Checking Data please wait");
+    // }
+    if (currentTestInfo) {
+        if (currentTestInfo.questionCount == 0) {
+            // show error
+             alert("Exam can launch after the Questions are Created!"); 
+            return;
+        }
+        if (currentTestInfo.examineeCount == 0) {
+            // show error
+            alert("There is no examinee in this exam, please check again.");
+            return;
+        }
+        $.ajax({
+    url: "/admin/launchExam",
+    type: "POST",
+    data: {
+        test_id: currentTestInfo.test_id
+    },
+    success: function(data) {
+      
+        console.log(data);
+
+        document.getElementById("sure_launch_exam").style.display = 'none';
+  
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+        console.log(textStatus, errorThrown);
+        // handle error response
+    }
+});
+
+    }        
+}
     $(document).ready(() => {
       var role = /*[[${role}]]*/ "default";
       if (role == "admin") {
@@ -121,6 +168,30 @@
     })
 
     function setDataToEditDialog(test) {
+
+
+$.ajax({
+    url: "/admin/testInfo",
+    type: "GET",
+    data: {
+        test_id: test.test_id
+    },
+    success: function(data) {
+      currentTestInfo=data;
+        console.log(data);
+        // handle success response
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+        console.log(textStatus, errorThrown);
+        // handle error response
+    }
+});
+
+  
+
+
+
+
       var course_dropdown = $("#course_name");
       course_dropdown.empty();
       course_dropdown.append("<option value='Choose Course' selected><small>Choose Course</small></option>");
@@ -262,9 +333,9 @@
       var exam_status = document.getElementById("exam_status");
       var exam_status_value = exam_status.value;
       var data;
-
-      if(student_guest == "guest"){
-        teacherId = 	10001;
+if(student_guest == "guest"){
+        // teacherId = 	10001;
+        teacherId = 	40001;
         courseId = 599;
       }
       if (submitType == "Created") {
@@ -404,15 +475,12 @@
          $("#launchExam").hide();
           console.log(document.querySelector('input[name="student-guest"]:checked').value)
          });
-          
          $("#launchExam").click(function(){
             $("#sure_launch_exam").show();
          }); 
  }); 
   </script>
-   
-  
-        <!--student_guest-->
+  <!--student_guest-->
         <div class="input-group-sm mb-2 shadow-sm">
           <label id="teacher_name_label" for="description" class="form-label fw-bold mb-1"><small style="color: black;">Teacher Name <span
                 class="text-danger">*</span></small></label>
@@ -512,8 +580,7 @@
                <div class="launch-Exam-Cancel">
                  <input type="button" class="form-control btn btn-sm btn-success"  id="launchExamCancel_M0006" style="width: 100px" value="Cancel">
                  <input type="button" class="form-control btn btn-sm btn-success"  id="launchExamOK_M0006" style="width: 100px" value="OK">
-             </div>
-              </div>
+             </div> </div>
        </div>
        </div> 
         <script>
@@ -522,14 +589,12 @@
             $("#sure_launch_exam_M0006").hide();
                      
                  });
-          
-                function closelaunchDialog_M0006() {
+                 function closelaunchDialog_M0006() {
                      const dialoglaunch_M0006 = document.getElementById("sure_launch_exam_M0006");
                     dialoglaunch_M0006.hide();
                  }
-
-
-                function closelaunchDialog_M0006() {
+                 
+                 function closelaunchDialog_M0006() {
                     const dialoglaunch_M0006 = document.getElementById("sure_launch_exam_M0006");
                      dialoglaunch_M0006.hide();
                 }
@@ -594,24 +659,22 @@ function closelaunchDialog_M0007() {
                  <p style="background-color: red;width:fit-content;color:white;">Are you sure to launch exam?</p>
                 <div class="launch-Exam-Cancel">
                 <input type="button" class="form-control btn btn-sm btn-success"  id="launchExamCancel" style="width: 100px" value="Cancel">
-                <input type="button" class="form-control btn btn-sm btn-success"  id="launchExamOK" style="width: 100px" value="OK">
+                <input type="button" class="form-control btn btn-sm btn-success"  id="launchExamOK " onclick=launchExam() name="launchExamOK" style="width: 100px" value="OK">
                  </div>
              </div>
         </div>
          </div> 
-
-          <script>
+        <script>
           const dialogCloseBtnlaunch = document.getElementById("dialog-close-btn--launch");
-          $("#dialog-close-btn-launch").click(function () {
-            $("#sure_launch_exam").hide();
-                      });
-          
-          function closelaunchDialog() {
-                    const dialoglaunch = document.getElementById("sure_launch_exam");
-                    dialoglaunch.hide();
-                  }
-               </script>
-            <!--sure_launch_cancel_button-->
+         $("#dialog-close-btn-launch").click(function () {
+           $("#sure_launch_exam").hide();
+                     });
+         function closelaunchDialog() {
+                   const dialoglaunch = document.getElementById("sure_launch_exam");
+                   dialoglaunch.hide();
+                }
+             </script>
+           <!--sure_launch_cancel_button-->
                 <script>
                let surelaunchContainer = document.querySelector('.dialog-sure-launch');
                let launchcancelBtn = document.querySelector('#launchExamCancel');
@@ -619,8 +682,7 @@ function closelaunchDialog_M0007() {
                $("#sure_launch_exam").hide();
                 });
                 </script> 
-
- <!--beginning of launch button-->
+            <!--beginning of launch button-->
  <div class="launch-exam">
   <input type="button" class="form-control btn btn-sm btn-success" name="launchExam"  id="launchExam" style="width: 100px" value="Launch Exam">
 </div>

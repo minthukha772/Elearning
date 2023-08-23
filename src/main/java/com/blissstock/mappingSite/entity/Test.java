@@ -1,6 +1,7 @@
 package com.blissstock.mappingSite.entity;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
@@ -33,13 +35,19 @@ public class Test {
 
     // mapping
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id", nullable=true)
+    @JoinColumn(name = "user_id", nullable = true)
     private UserInfo userInfo;
 
     // mapping
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "course_id" , nullable=true)
+    @JoinColumn(name = "course_id", nullable = true)
     private CourseInfo courseInfo;
+    @OneToMany(mappedBy = "test")
+    @JsonIgnore
+    private List<TestExaminee> testExaminee;
+    @OneToMany(mappedBy = "test")
+    @JsonIgnore
+    private List<TestQuestion> testQuestions;
 
     @Column(name = "description", length = 255)
     private String description;
@@ -82,13 +90,16 @@ public class Test {
 
     public Test(Long test_id, CourseInfo courseInfo, UserInfo userInfo, String description, String section_name,
             Integer minutes_allowed, Integer passing_score_percent, Date date, String start_time,
-            String end_time, String exam_status, String isDelete, String deletedAt, String student_guest, int exam_target) {
-                this.student_guest = student_guest;
+            String end_time, String exam_status, String isDelete, String deletedAt, String student_guest,
+            int exam_target) {
+        this.student_guest = student_guest;
         this.test_id = test_id;
-    if(courseInfo != null){
-    this.courseInfo = courseInfo;}
-    if(userInfo != null){
-    this.userInfo = userInfo;}
+        if (courseInfo != null) {
+            this.courseInfo = courseInfo;
+        }
+        if (userInfo != null) {
+            this.userInfo = userInfo;
+        }
         this.description = description;
         this.section_name = section_name;
         this.minutes_allowed = minutes_allowed;
@@ -102,12 +113,12 @@ public class Test {
         this.exam_target = exam_target;
     }
 
-public String display() {
-    return this.test_id +  ", "+  ", "  + ", "
-            + this.description + ", " + this.section_name + ", " +
-            this.minutes_allowed + ", " + this.passing_score_percent + ", " + this.Date + ", " + this.start_time
-            + ", " + this.end_time + ", " + this.exam_status + ", " +
-            this.isDelete + ", " + this.deletedAt+","+this.student_guest;
+    public String display() {
+        return this.test_id + ", " + ", " + ", "
+                + this.description + ", " + this.section_name + ", " +
+                this.minutes_allowed + ", " + this.passing_score_percent + ", " + this.Date + ", " + this.start_time
+                + ", " + this.end_time + ", " + this.exam_status + ", " +
+                this.isDelete + ", " + this.deletedAt + "," + this.student_guest;
 
     }
 }
