@@ -77,12 +77,23 @@
                                     margin-top: 8px;
                                     border: none;
                                     cursor: pointer;
-                                }gi
+                                }
+
+                                
                             </style>
 
-                            <button id="announceButton" onclick="announceResult()">Announce Exam Result</button>
-
+                            
+                            <button id="announceButton" onclick="showConfirmationDialog()">Announce Exam Result</button>
                             <script>
+                                function showConfirmationDialog() {
+                                    var result = confirm("Are you sure you want to Announce Exam Result?");
+                                    if (result) {
+                                        // Proceed with announcing the result
+                                        announceResult();
+                                    } else {
+                                        // User clicked "No" or closed the dialog
+                                    }
+                                }
                                 function announceResult() {
                                     const button = document.getElementById('announceButton');
 
