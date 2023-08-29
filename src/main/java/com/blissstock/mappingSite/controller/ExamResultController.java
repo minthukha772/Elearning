@@ -9,12 +9,13 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.blissstock.mappingSite.entity.Test;
 import com.blissstock.mappingSite.entity.TestExaminee;
@@ -36,6 +37,7 @@ import com.blissstock.mappingSite.repository.UserRepository;
 import com.blissstock.mappingSite.service.StorageService;
 import com.blissstock.mappingSite.service.UserService;
 import com.blissstock.mappingSite.service.UserSessionService;
+import com.blissstock.mappingSite.service.GuestUserEmailService;
 
 @Controller
 public class ExamResultController {
@@ -85,6 +87,8 @@ public class ExamResultController {
 
     @Autowired
     UserSessionService userSessionService;
+
+    private GuestUserEmailService guestUserEmailService;
 
     @GetMapping("/student/exam-result/{testId}")
     // @GetMapping("/student/ExamResult")
@@ -159,7 +163,50 @@ public class ExamResultController {
         Test viewTestTable = testRepo.getById(testID);
         Long courseId = viewTestTable.getCourseInfo().getCourseId();
 
-        return courseId;
+        return courseId;}
+        @Autowired
+    private TestExamineeRepository testExamineeRepository;
+
+   
+    
+
+    @PostMapping("/send-emails")
+    public ResponseEntity<String> sendEmailsToAll(@RequestParam Long test_id,@RequestParam Long guest_account_id) {
+        List<TestExaminee> emails = testExamineeRepository.findEmailByStudentAndExam(test_id,guest_account_id);
+
+        for (TestExaminee emailEntity : emails) {
+            String email = ((UserSessionService) emailEntity).getEmail();
+            String subject = "[Pyinnyar Subuu]Exam result announce, that you answered at pyinnyar subuu ";
+            String body = String.format ("Dear Mr./Ms.%s\n\n" +
+            "Hello, We are from Pyinnyar Subuu Team.\n\n" +
+            "We are excited to announce that your exam result is officially announced.\n\n" +
+            "Exam Title: %s\n" +
+            "Exam Date & Time: %s (MMT)\n" +
+            "Time Allowance: $\n\n" +
+            "Examinee Name: %s\n" +
+            "Your Score: %d%%\n" +
+            "Pass Margin: %d%%\n\n" +
+            "============\n" +
+            "Result: PASS\n" +
+            "============\n\n" +
+            "* Depending on the email software you are using, the URL may be broken in the middle.\n" +
+            "In that case, enter the first \"https: //\" to the last alphanumerical in the browser.\n" +
+            "Please copy and paste directly to access.\n\n" +
+            "* This email is delivered from the send-only email address.\n" +
+            "Please note that we will not be able to answer even if you reply as it is.\n\n\n" +
+            "Thank you for using our service!\n\n" +
+            "Pyinnyar Subuu\n" +
+            "Bliss Stock JP",""
+            );
+            guestUserEmailService.sendEmail(email, subject, body);
+
+
+	// Note This is sample . Pls add your code for customize.
+        }
+
+        return ResponseEntity.ok("Emails sent to all recipients.");
+    
+
     }
 
     // @GetMapping("/exam/{testId}/examinee-list")

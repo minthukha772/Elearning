@@ -103,8 +103,102 @@
                                     // Change the button text
                                     button.innerText = 'Finish Announce Exam Result';
                                 }
+
                             </script>
                         </div>
+                        <!-- <title>Sending Mail</title> 
+<script src="https://smtpjs.com/v3/smtp.js"></script> 
+<script type="text/javascript"> 
+ function sendEmail() { 
+ Email.send({ 
+  Host: "smtp.gmail.com", 
+  Username: "sys@pyinyar-subuu.com", 
+  Password: "blissstockadmin123", 
+  To: 'wa.wa.winvy@gmail.com', 
+  From: "sys@pyinyar-subuu.com", 
+  Subject: "Sending Email using javascript", 
+  Body: "Well that was easy!!", 
+  Attachments: [ 
+  { 
+   name: "File_Name_with_Extension", 
+   path: "Full Path of the file" 
+  }] 
+ }) 
+  .then(function (message) { 
+  alert("Mail has been sent successfully") 
+  }); 
+ } 
+</script> 
+</head> 
+ 
+<body> 
+<form method="post"> 
+ <input type="button" value="Send Mail" 
+  onclick="sendEmail()" /> 
+</form> 
+</body> 
+</html> --> 
+<!-- <!DOCTYPE html> 
+<html> 
+<head> 
+  <title>Sending Email</title> 
+  <script src="https://cdn.emailjs.com/dist/email.min.js"></script> 
+</head> 
+<body> 
+ 
+<h1>Email Sending Form</h1> 
+<form id="email-form"> 
+  <label for="to">To:</label> 
+  <input type="email" id="to" name="to" required><br><br> 
+ 
+  <label for="subject">Subject:</label> 
+  <input type="text" id="subject" name="subject" required><br><br> 
+ 
+  <label for="message">Message:</label><br> 
+  <textarea id="message" name="message" rows="4" cols="50" required></textarea><br><br> 
+ 
+  <input type="submit" value="Send Email"> 
+</form> 
+ 
+<script> 
+  (function() { 
+    emailjs.init("CWhtKLSKXskdLQWRr"); 
+    // CWhtKLSKXskdLQWRr -> public key 
+ 
+    document.getElementById('email-form').onsubmit = function(event) { 
+      event.preventDefault(); 
+ 
+      const form = event.target; 
+      const to = form.to.value; 
+      const subject = form.subject.value; 
+      const message = form.message.value; 
+ 
+      $to = form.to.value; 
+      $subject = form.subject.value; 
+      $message = form.message.value; 
+ 
+      const emailParams = { 
+        to, 
+        subject, 
+        message 
+      }; 
+ 
+      emailjs.send("service_ox9c929", "template_5tymf19", emailParams) 
+      // service_ox9c929 -> serviceID , template_5tymf19 -> templateID  
+ 
+        .then(function(response) { 
+          console.log("Email sent successfully:", response); 
+          alert("Email sent successfully!"); 
+        }) 
+        .catch(function(error) { 
+          console.error("Email sending failed:", error); 
+          alert("Email sending failed. Please try again."); 
+        }); 
+    }; 
+  })(); 
+</script> 
+ 
+</body>  -->
 
 
                     </div>
