@@ -34,6 +34,7 @@ import com.blissstock.mappingSite.entity.TestResult;
 import com.blissstock.mappingSite.entity.Test;
 import com.blissstock.mappingSite.entity.TestExaminee;
 import com.blissstock.mappingSite.entity.TestExamineeAnswer;
+import com.blissstock.mappingSite.entity.TestQuestion;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
 import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
@@ -348,7 +349,8 @@ public class TestController {
                         model.addAttribute("testList", testList);
                         model.addAttribute("filterType", "Filter By Status");
                         model.addAttribute("filter", "( " + examStatus + " )");
-                    } else if (!examStatus.equals("Deleted")) {
+                    } 
+                    else if (!examStatus.equals("Deleted")) {
                         logger.info("Initiate to Operation Retrieve Table test by Query Status {}", examStatus);
                         testList = testRepository.getListByStatus(examStatus);
                         logger.info("Operation Retrieve Table test by Query Status {} Result list {} Success",
@@ -660,16 +662,6 @@ public class TestController {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to find user with ID: " + teacher_id);
             }
 
-            // if(student_guest == "guest"){
-            // Test test = new Test(null,null,null,description, section_name,
-            // minutes_allowed, passing_score,
-            // examDate, exam_start_time, exam_end_time, exam_status, "false",
-            // "null",student_guest);
-            // // testRepository.insertTest(description, student_guest, section_name,
-            // minutes_allowed, passing_score, examDate, exam_start_time, exam_end_time,
-            // exam_status, exam_start_time, exam_end_time, 1, null);
-
-            // }else{
 
             int exam_target;
             if (student_guest == "student") {
@@ -826,6 +818,7 @@ public class TestController {
             }
             logger.info("Called editExam with parameter(payload={}) Success", payload);
             logger.info("user_id: {}", userID);
+
             return ResponseEntity.ok(HttpStatus.OK);
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage());
@@ -996,13 +989,17 @@ public class TestController {
         logger.info("{}", testData.getTestExaminee().size());
         List<TestExaminee> examineeList = testData.getTestExaminee();
 
+        testData.setIsLaunch(true);
+        testRepository.save(testData);
+
+
         for (TestExaminee examinee : examineeList) {
             try {
                 String mail1 = examinee.getUserInfo().getUserAccount().getMail();
                 logger.info(mail1);
                 if (mail1 != null) {
                     mailService.guestsendVerificationMail(examinee.getUserInfo().getUserName(),
-                            mail1, test_id.toString());
+                            mail1, test_id.toString(), testData);
                 }
             } catch (Exception e) {
                 logger.info(e.toString());
@@ -1012,7 +1009,7 @@ public class TestController {
                 logger.info(mail2);
                 if (mail2 != null) {
                     mailService.guestsendVerificationMail(examinee.getGuestUser().getName(),
-                            mail2, test_id.toString());
+                            mail2, test_id.toString(),testData);
                 }
             }
 

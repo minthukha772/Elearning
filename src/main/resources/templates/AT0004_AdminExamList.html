@@ -24,6 +24,8 @@
     var type;
     var test_id;
     var currentTestInfo;
+    var currentTest;
+
     function launchExam()  {
     console.log("launchExamOK");
 
@@ -60,7 +62,9 @@
       
         console.log(data);
 
-        document.getElementById("sure_launch_exam").style.display = 'none';
+         document.getElementById("sure_launch_exam").style.display = 'none'; 
+
+        //hide
   
     },
     error: function(jqXHR, textStatus, errorThrown) {
@@ -169,7 +173,7 @@
 
     function setDataToEditDialog(test) {
 
-
+currentTest=test;
 $.ajax({
     url: "/admin/testInfo",
     type: "GET",
@@ -187,12 +191,7 @@ $.ajax({
     }
 });
 
-  
-
-
-
-
-      var course_dropdown = $("#course_name");
+  var course_dropdown = $("#course_name");
       course_dropdown.empty();
       course_dropdown.append("<option value='Choose Course' selected><small>Choose Course</small></option>");
 
@@ -222,8 +221,7 @@ $.ajax({
       document.getElementById("exam_date").value = datearray[0];
       document.getElementById("exam_start_time").value = test.start_time;
       document.getElementById("exam_end_time").value = test.end_time;
-
-      $("#exam_status_dropdown").css("display", "block");
+        $("#exam_status_dropdown").css("display", "block");
     }
 
     function setDataToDeleteDialog(test) {
@@ -336,9 +334,9 @@ $.ajax({
 if(student_guest == "guest"){
         // teacherId = 	10001;
         teacherId = 	40001;
-        courseId = 599;
-      }
-      if (submitType == "Created") {
+        courseId = 599;}
+
+       if (submitType == "Created") {
         data = {
          student_guest:student_guest,
           teacher_id: teacherId,
@@ -394,8 +392,7 @@ if(student_guest == "guest"){
           }
         })
       }
-    }
-
+     }
     $(document).ready(function () {
       $("#search_date_btn").click(function () {
         var fromDate = document.getElementById("exam_from").value;
@@ -456,7 +453,17 @@ if(student_guest == "guest"){
          $("#launchExam").hide();
 
          $("#guest").click(function(){
-          $("#launchExam").show();
+         if(!currentTest.isLaunch)
+         {$("#launchExam").show();
+         $("#questionCreated").show();
+          $("#examCreated").show();
+        }else{
+          $("#launchExam").hide();
+          $("#questionCreated").hide();
+          $("#examCreated").hide();
+        
+        }
+          
           $("#teacher_warning").hide(); 
            $("#teacher_name").hide();
             $("#course_name").hide();
@@ -514,11 +521,11 @@ if(student_guest == "guest"){
           <label for="exam_status" class="form-label fw-bold mb-1"><small style="color: black;">Exam Status <span
                 class="text-danger">*</span></small></label>
           <select class="form-select" aria-label="Default select example" id="exam_status" required>
-            <option value="Exam Created" selected>Exam Created</option>
-            <option value="Questions Created">Questions Created</option>
+            <option id = "examCreated" value="Exam Created" selected>Exam Created</option>
+            <option id="questionCreated" value="Questions Created">Questions Created</option>
             <option value="Marking">Marking</option>
             <option value="Result Released">Result Released</option> 
-            <option value="Result Released">Exam Launched</option>  
+            <option value="Exam Launched">Exam Launched</option>  
           </select>
         </div>
         <div style="color: red; font-size: 12px; display: none;" id="exam_status_warning">Please Choose Exam Status
@@ -648,8 +655,7 @@ function closelaunchDialog_M0007() {
                 $("#sure_launch_exam_M0007").hide();
                 });
                 </script> 
-
-              <!--M0007(LaunchExam)-->
+ <!--M0007(LaunchExam)-->
               <!--student-guest-->
         <div class="dialog-sure-launch" id="sure_launch_exam">
           <div class="dialog-launch" id="dialog-launch">
@@ -687,8 +693,7 @@ function closelaunchDialog_M0007() {
   <input type="button" class="form-control btn btn-sm btn-success" name="launchExam"  id="launchExam" style="width: 100px" value="Launch Exam">
 </div>
         <div class="input-group-sm text-end">
-          <!--<input type="button" class="launch-exam form-control btn btn-sm btn-success  "  id="launchExam" style="width: 100px" value="Launch Exam">-->
-         <input type="submit" class="form-control btn btn-sm btn-success" id="submit" style="width: 100px" />
+          <input type="submit" class="form-control btn btn-sm btn-success" id="submit" style="width: 100px" />
         </div>
       </div>
     </div>
@@ -735,7 +740,7 @@ function closelaunchDialog_M0007() {
             <option value="Marking"><small>Marking</small></option>
             <option value="Result Released"><small>Result Released</small></option>
             <option value="Deleted"><small>Deleted</small></option>
-            <option value="Launch Exam"><small>Exam Launched</small></option>
+            <option value="LaunchExam"><small>Exam Launched</small></option>
           </select>
 
           <div class="" style="display: none;" id="teacher_dropdown_main">

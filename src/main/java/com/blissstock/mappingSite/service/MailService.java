@@ -75,6 +75,6 @@ public interface MailService {
   public void guestResetOneTimePassword(String guestUserName, String email, String examID, String guestUserPhoneNumber,
       String oneTimePassword) throws MessagingException;
 
-  public void guestsendVerificationMail(String guestUserName, String email, String examID) throws MessagingException;
+  public void guestsendVerificationMail(String guestUserName, String email, String examID,Test testData) throws MessagingException;
 
 }

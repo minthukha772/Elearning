@@ -52,6 +52,9 @@ public class Test {
     @Column(name = "description", length = 255)
     private String description;
 
+    @Column(name = "isLaunch", length = 255)
+    private Boolean isLaunch=false;
+
     @Column(name = "student_guest", length = 255)
     private String student_guest;
 

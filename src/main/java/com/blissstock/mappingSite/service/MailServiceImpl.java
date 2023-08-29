@@ -15,6 +15,7 @@ import javax.mail.internet.MimeMessage;
 import com.blissstock.mappingSite.config.GmailConfig;
 
 import com.blissstock.mappingSite.controller.CourseDetailsController;
+import com.blissstock.mappingSite.controller.TestInfo;
 import com.blissstock.mappingSite.entity.AddAdmin;
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.GuestUser;
@@ -903,22 +904,28 @@ public class MailServiceImpl implements MailService {
 
   }
 
-  // guestExam
+  // guestExamLaunch
   @Override
-  public void guestsendVerificationMail(String guestUserName, String email, String examID) throws MessagingException {
+  public void guestsendVerificationMail(String guestUserName, String email, String examID,Test testData) throws MessagingException {
     logger.info("Guest exam request from :{} with exam id :{}, username:{}", email, examID, guestUserName);
-    String appUrl = getServerAddress() + "/guest-exam" + "/" + email + "_" + examID;
+    String ExamLink = getServerAddress() + "/guest-exam" + "/" + email + "_" + examID;
 
     String recipientAddress = email;
-    String subject = "Guest Exam";
+    String subject = "【Pyinnyar Subuu】Exam is already lunched and please take the exam";
 
     final Context ctx = new Context();
-    ctx.setVariable("email", email);
-    ctx.setVariable("examID", examID);
+    ctx.setVariable("guestName", guestUserName);
+     ctx.setVariable("email", email);
+     ctx.setVariable("examID", examID);
     ctx.setVariable("Date", new Date());
-    ctx.setVariable("appUrl", appUrl);
-
-    final MimeMessage mimeMessage = mailSender.createMimeMessage();
+    ctx.setVariable("ExamLink", ExamLink);
+    ctx.setVariable("startTime", testData.getStart_time());
+     ctx.setVariable("endTime", testData.getEnd_time());
+     ctx.setVariable("date", testData.getDate());
+     ctx.setVariable("description", testData.getDescription());
+      
+     
+     final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
     message.setSubject(subject);
     message.setFrom("sys@pyinnyar-subuu.com");
