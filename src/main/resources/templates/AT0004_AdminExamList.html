@@ -453,6 +453,14 @@ if(student_guest == "guest"){
          $("#launchExam").hide();
 
          $("#guest").click(function(){
+          $("#teacher_warning").hide(); 
+           $("#teacher_name").hide();
+            $("#course_name").hide();
+           $("#course_warning").hide();
+           $("#teacher_name_label").hide();
+          $("#course_name_label").hide();
+          console.log(document.querySelector('input[name="student-guest"]:checked').value)
+
          if(!currentTest.isLaunch)
          {$("#launchExam").show();
          $("#questionCreated").show();
@@ -464,13 +472,13 @@ if(student_guest == "guest"){
         
         }
           
-          $("#teacher_warning").hide(); 
-           $("#teacher_name").hide();
-            $("#course_name").hide();
-           $("#course_warning").hide();
-           $("#teacher_name_label").hide();
-          $("#course_name_label").hide();
-          console.log(document.querySelector('input[name="student-guest"]:checked').value)
+          // $("#teacher_warning").hide(); 
+          //  $("#teacher_name").hide();
+          //   $("#course_name").hide();
+          //  $("#course_warning").hide();
+          //  $("#teacher_name_label").hide();
+          // $("#course_name_label").hide();
+          // console.log(document.querySelector('input[name="student-guest"]:checked').value)
          }); 
           
         $("#student").click(function(){
