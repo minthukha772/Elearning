@@ -72,8 +72,6 @@ public class TestExaminee {
         this.examinee_exam_start_time = examinee_exam_start_time;
     }
 
-    
-
     public TestExaminee(Long id, Test test, UserInfo userInfo, GuestUser guestUser,
             String examinee_exam_start_time) {
         this.id = id;
