@@ -251,7 +251,6 @@ public class TestQuestionController {
                     acquired_mark = testQuestion.getMaximum_mark();
                 }
             }
-
             else {
                 TestExamineeAnswer TestExamineeAnswer = TestExamineeAnswerRepository.getStudentAnswer(student_id,
                         testQuestion.getId());
@@ -600,7 +599,7 @@ public class TestQuestionController {
 
 
     @Valid
-    @GetMapping(value = { "/guest-exam/{examID}/questions" })
+    @GetMapping(value = { "/guest-exam/{test_id}/questions" })
     private String getGuestUserQuestions(@PathVariable Long test_id, Model model)
             throws ParseException, JsonMappingException, JsonProcessingException {
         Long userID = getUid();

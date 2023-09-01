@@ -397,6 +397,7 @@
 
                 // Check if csv file's headers are correct
                 csvFileHeaders = rowData[0].split(',');
+                console.log(csvFileHeaders)
                 if (csvFileHeaders[0] != "Name" || csvFileHeaders[1] != "Email" || csvFileHeaders[2] != "PhoneNumber") {
                     createCsvErrorMsg("There is an error with the uploaded CSV file. Row Headers Must be match as described in CSV Import Item's Specification.");
                     return;
