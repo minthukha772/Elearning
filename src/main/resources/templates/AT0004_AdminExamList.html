@@ -17,12 +17,64 @@
   <link rel="stylesheet" th:href="@{/css/global.css}" />
   <link rel="icon" type="image/x-icon" href="/images/fav.png" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.js"></script>
   <script th:inline="javascript">
     var type;
     var test_id;
+    var currentTestInfo;
+    var currentTest;
 
+    function launchExam()  {
+    console.log("launchExamOK");
+
+  const dialoglaunchOKBtn = document.getElementById("launchExamOK");
+ $("#launchExamOK").click(function () {
+             closeDialogOK();
+        });
+  function closeDialogOK() {
+            const dialogOK = document.getElementById("sure_launch_exam");
+             dialogOK.style.visibility = "hidden";
+       }
+       
+    // if (!currentTestInfo) {
+    //     alert("Checking Data please wait");
+    // }
+    if (currentTestInfo) {
+        if (currentTestInfo.questionCount == 0) {
+            // show error
+             alert("Exam can launch after the Questions are Created!"); 
+            return;
+        }
+        if (currentTestInfo.examineeCount == 0) {
+            // show error
+            alert("There is no examinee in this exam, please check again.");
+            return;
+        }
+        $.ajax({
+    url: "/admin/launchExam",
+    type: "POST",
+    data: {
+        test_id: currentTestInfo.test_id
+    },
+    success: function(data) {
+      
+        console.log(data);
+
+         document.getElementById("sure_launch_exam").style.display = 'none'; 
+
+        //hide
+  
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+        console.log(textStatus, errorThrown);
+        // handle error response
+    }
+});
+
+    }        
+}
     $(document).ready(() => {
       var role = /*[[${role}]]*/ "default";
       if (role == "admin") {
@@ -120,7 +172,26 @@
     })
 
     function setDataToEditDialog(test) {
-      var course_dropdown = $("#course_name");
+
+currentTest=test;
+$.ajax({
+    url: "/admin/testInfo",
+    type: "GET",
+    data: {
+        test_id: test.test_id
+    },
+    success: function(data) {
+      currentTestInfo=data;
+        console.log(data);
+        // handle success response
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+        console.log(textStatus, errorThrown);
+        // handle error response
+    }
+});
+
+  var course_dropdown = $("#course_name");
       course_dropdown.empty();
       course_dropdown.append("<option value='Choose Course' selected><small>Choose Course</small></option>");
 
@@ -150,8 +221,7 @@
       document.getElementById("exam_date").value = datearray[0];
       document.getElementById("exam_start_time").value = test.start_time;
       document.getElementById("exam_end_time").value = test.end_time;
-
-      $("#exam_status_dropdown").css("display", "block");
+        $("#exam_status_dropdown").css("display", "block");
     }
 
     function setDataToDeleteDialog(test) {
@@ -163,18 +233,19 @@
     function submitData(submitType) {
       var courseDropDown = document.getElementById("course_name");
       var courseName = courseDropDown.value;
-      var teacherDropDown = document.getElementById("teacher_name");
+      var teacherDropDown = document.getElementById("teacher_name");    
+      var student_guest= document.querySelector('input[name="student-guest"]:checked').value; 
       var teacherName = teacherDropDown.value;
       var courseId = courseDropDown.options[courseDropDown.selectedIndex].id;
       var teacherId = teacherDropDown.options[teacherDropDown.selectedIndex].id;
-      if (teacherName == "Choose Teacher") {
+      if (teacherName == "Choose Teacher" && student_guest == "student") {
         document.getElementById("teacher_warning").style.display = 'block';
         return;
       } else {
         document.getElementById("teacher_warning").style.display = 'none';
       }
 
-      if (courseName == "Choose Course") {
+      if (courseName == "Choose Course" && student_guest=="student") {
         document.getElementById("course_warning").style.display = 'block';
         return;
       } else {
@@ -259,11 +330,15 @@
 
       var exam_status = document.getElementById("exam_status");
       var exam_status_value = exam_status.value;
-
       var data;
+if(student_guest == "guest"){
+        // teacherId = 	10001;
+        teacherId = 	40001;
+        courseId = 599;}
 
-      if (submitType == "Created") {
+       if (submitType == "Created") {
         data = {
+         student_guest:student_guest,
           teacher_id: teacherId,
           course_id: courseId,
           description: description,
@@ -290,6 +365,7 @@
         })
       } else {
         data = {
+        student_guest:student_guest,
           test_id: test_id,
           teacher_id: teacherId,
           course_id: courseId,
@@ -316,8 +392,7 @@
           }
         })
       }
-    }
-
+     }
     $(document).ready(function () {
       $("#search_date_btn").click(function () {
         var fromDate = document.getElementById("exam_from").value;
@@ -338,12 +413,12 @@
     });
   </script>
 </head>
-
 <body>
   <div th:replace="@{fragments/nav}"></div>
   <!-- to create exam content start  -->
   <div
     class="create-exam-container min-vh-100 w-100 position-fixed top-0 d-flex justify-content-center align-items-center d-none fadeIn"
+    id="Create-ExamContainer"
     style="background-color: rgba(0, 0, 0, 0.4); z-index: 1000; padding-top: 80px; max-height: calc(100vh - 210px); overflow-y: auto;">
     <div class="create-exam-content rounded shadow bg-white">
       <div class="d-flex justify-content-end p-2">
@@ -354,8 +429,75 @@
       </div>
       <div class="px-3 pb-3">
         <h5 class="text-success text-center mb-3">To Create Exam Content</h5>
+        <!--student_guest-->
+    <div class="student_guest">
+       <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" name="student-guest" id="student" value="student" checked>
+       <label class="form-check-label" for="student">
+         Student
+       </label>
+        </div>
+<div class="form-check form-check-inline">
+       <input class="form-check-input" type="radio"  name="student-guest" value="guest" id="guest">
+      <label class="form-check-label" for="guest">
+        Guest
+      </label>
+     </div>
+   </div>
+    
+  <script>
+      $(document).ready(function(){
+        $("#sure_launch_exam").hide();
+         $("#sure_launch_exam_M0006").hide();
+        $("#sure_launch_exam_M0007").hide();
+         $("#launchExam").hide();
+
+         $("#guest").click(function(){
+          $("#teacher_warning").hide(); 
+           $("#teacher_name").hide();
+            $("#course_name").hide();
+           $("#course_warning").hide();
+           $("#teacher_name_label").hide();
+          $("#course_name_label").hide();
+          console.log(document.querySelector('input[name="student-guest"]:checked').value)
+
+         if(!currentTest.isLaunch)
+         {$("#launchExam").show();
+         $("#questionCreated").show();
+          $("#examCreated").show();
+        }else{
+          $("#launchExam").hide();
+          $("#questionCreated").hide();
+          $("#examCreated").hide();
+        
+        }
+          
+          // $("#teacher_warning").hide(); 
+          //  $("#teacher_name").hide();
+          //   $("#course_name").hide();
+          //  $("#course_warning").hide();
+          //  $("#teacher_name_label").hide();
+          // $("#course_name_label").hide();
+          // console.log(document.querySelector('input[name="student-guest"]:checked').value)
+         }); 
+          
+        $("#student").click(function(){
+           $("#teacher_name").show();
+            $("#course_name").show();
+            $("#teacher_warning").show();
+           $("#teacher_name_label").show(); 
+           $("#course_name_label").show();
+         $("#launchExam").hide();
+          console.log(document.querySelector('input[name="student-guest"]:checked').value)
+         });
+         $("#launchExam").click(function(){
+            $("#sure_launch_exam").show();
+         }); 
+ }); 
+  </script>
+  <!--student_guest-->
         <div class="input-group-sm mb-2 shadow-sm">
-          <label for="description" class="form-label fw-bold mb-1"><small style="color: black;">Teacher Name <span
+          <label id="teacher_name_label" for="description" class="form-label fw-bold mb-1"><small style="color: black;">Teacher Name <span
                 class="text-danger">*</span></small></label>
           <select class="form-select" aria-label="Default select example" id="teacher_name">
             <option value="Choose Teacher" selected><small>Choose Teacher</small></option>
@@ -366,7 +508,7 @@
         </div>
         <div style="color: red; font-size: 12px; display: none;" id="teacher_warning">Please Select Teacher</div>
         <div class="input-group-sm mb-2 shadow-sm">
-          <label for="description" class="form-label fw-bold mb-1"><small style="color: black;">Course Name <span
+          <label id="course_name_label" for="description" class="form-label fw-bold mb-1"><small style="color: black;">Course Name <span
                 class="text-danger">*</span></small></label>
           <select class="form-select" aria-label="Default select example" id="course_name">
             <option value="Choose Course" selected><small>Choose Course</small></option>
@@ -387,10 +529,11 @@
           <label for="exam_status" class="form-label fw-bold mb-1"><small style="color: black;">Exam Status <span
                 class="text-danger">*</span></small></label>
           <select class="form-select" aria-label="Default select example" id="exam_status" required>
-            <option value="Exam Created" selected>Exam Created</option>
-            <option value="Questions Created">Questions Created</option>
+            <option id = "examCreated" value="Exam Created" selected>Exam Created</option>
+            <option id="questionCreated" value="Questions Created">Questions Created</option>
             <option value="Marking">Marking</option>
-            <option value="Result Released">Result Released</option>
+            <option value="Result Released">Result Released</option> 
+            <option value="Exam Launched">Exam Launched</option>  
           </select>
         </div>
         <div style="color: red; font-size: 12px; display: none;" id="exam_status_warning">Please Choose Exam Status
@@ -442,12 +585,127 @@
           Number</div>
         <div style="color: red; font-size: 12px; display: none;" id="passing_score_number_limit">Please Add Between 0
           and 100</div>
+     <!--M0006(LaunchExam)-->
+      <div class="dialog-sure-launch_M0006" id="sure_launch_exam_M0006">
+         <div class="dialog-launch_M0006" id="dialog-launch_M0006">
+            <i class="fas fa-times close-icon" id="dialog-close-btn-launch_M0006" style="color:red;position:absolute;padding:10px;top:0;right:0;font-size:20px;"></i>
+            <div class="dialog-content-launch_M0006">
+               <i class="fas fa-check-circle" style="font-size: 20px; color:green;"></i>
+              <p style="background-color: red;width:fit-content;color:white;">Exam can launch after the Questions are Created!</p>
+               <div class="launch-Exam-Cancel">
+                 <input type="button" class="form-control btn btn-sm btn-success"  id="launchExamCancel_M0006" style="width: 100px" value="Cancel">
+                 <input type="button" class="form-control btn btn-sm btn-success"  id="launchExamOK_M0006" style="width: 100px" value="OK">
+             </div> </div>
+       </div>
+       </div> 
+        <script>
+           const dialogCloseBtnlaunch_M0006 = document.getElementById("dialog-close-btn--launch_M0006");
+          $("#dialog-close-btn-launch_M0006").click(function () {
+            $("#sure_launch_exam_M0006").hide();
+                     
+                 });
+                 function closelaunchDialog_M0006() {
+                     const dialoglaunch_M0006 = document.getElementById("sure_launch_exam_M0006");
+                    dialoglaunch_M0006.hide();
+                 }
+                 
+                 function closelaunchDialog_M0006() {
+                    const dialoglaunch_M0006 = document.getElementById("sure_launch_exam_M0006");
+                     dialoglaunch_M0006.hide();
+                }
+              </script>             
+ <!--sure_launch_cancel_button-->
+ <script>
+  let surelaunchContainer_M0006 = document.querySelector('.dialog-sure-launch_M0006');
+  let launchcancelBtn_M0006 = document.querySelector('#launchExamCancel_M0006');
+  launchcancelBtn_M0006.addEventListener('click', () => {
+   $("#sure_launch_exam_M0006").hide();
+   });
+   </script> 
+
+      <!--M0006(LaunchExam)-->
+
+        <!--M0007(LaunchExam)-->
+      <div class="dialog-sure-launch_M0007" id="sure_launch_exam_M0007">
+          <div class="dialog-launch_M0007" id="dialog-launch_M0007">
+             <i class="fas fa-times close-icon" id="dialog-close-btn-launch_M0007" style="color:red;position:absolute;padding:10px;top:0;right:0;font-size:20px;"></i>
+           <div class="dialog-content-launch_M0007">
+              <i class="fas fa-check-circle" style="font-size: 20px; color:green;"></i>
+               <p style="background-color: red;width:fit-content;color:white;">There is no examinee in this exam, please check again.</p>
+               <div class="launch-Exam-Cancel">
+                  <input type="button" class="form-control btn btn-sm btn-success"  id="launchExamCancel_M0007" style="width: 100px" value="Cancel">
+                 <input type="button" class="form-control btn btn-sm btn-success"  id="launchExamOK_M0007" style="width: 100px" value="OK">
+             </div>
+           </div>
+          </div>
+      </div>
+       <script>
+           const dialogCloseBtnlaunch_M0007 = document.getElementById("dialog-close-btn--launch_M0007");
+          $("#dialog-close-btn-launch_M0007").click(function () {
+             $("#sure_launch_exam_M0007").hide();
+                      
+                 });
+          
+           function closelaunchDialog_M0007() {
+                    const dialoglaunch_M0007 = document.getElementById("sure_launch_exam_M0007");
+                    dialoglaunch_M0007.hide();
+                }
+function closelaunchDialog_M0007() {
+                    const dialoglaunch_M0007 = document.getElementById("sure_launch_exam_M0007");
+                    dialoglaunch_M0007.hide();
+                }
+              </script>
+<!--sure_launch_cancel_button-->
+               <script>
+                let surelaunchContainer_M0007 = document.querySelector('.dialog-sure-launch_M0007');
+                let launchcancelBtn_M0007 = document.querySelector('#launchExamCancel_M0007');
+                launchcancelBtn_M0007.addEventListener('click', () => {
+                $("#sure_launch_exam_M0007").hide();
+                });
+                </script> 
+ <!--M0007(LaunchExam)-->
+              <!--student-guest-->
+        <div class="dialog-sure-launch" id="sure_launch_exam">
+          <div class="dialog-launch" id="dialog-launch">
+             <i class="fas fa-times close-icon" id="dialog-close-btn-launch" style="color:red;position:absolute;padding:10px;top:0;right:0;font-size:20px;"></i>
+            <div class="dialog-content-launch">
+                <i class="fas fa-check-circle" style="font-size: 20px; color:green;"></i>
+                 <p style="background-color: red;width:fit-content;color:white;">Are you sure to launch exam?</p>
+                <div class="launch-Exam-Cancel">
+                <input type="button" class="form-control btn btn-sm btn-success"  id="launchExamCancel" style="width: 100px" value="Cancel">
+                <input type="button" class="form-control btn btn-sm btn-success"  id="launchExamOK " onclick=launchExam() name="launchExamOK" style="width: 100px" value="OK">
+                 </div>
+             </div>
+        </div>
+         </div> 
+        <script>
+          const dialogCloseBtnlaunch = document.getElementById("dialog-close-btn--launch");
+         $("#dialog-close-btn-launch").click(function () {
+           $("#sure_launch_exam").hide();
+                     });
+         function closelaunchDialog() {
+                   const dialoglaunch = document.getElementById("sure_launch_exam");
+                   dialoglaunch.hide();
+                }
+             </script>
+           <!--sure_launch_cancel_button-->
+                <script>
+               let surelaunchContainer = document.querySelector('.dialog-sure-launch');
+               let launchcancelBtn = document.querySelector('#launchExamCancel');
+               launchcancelBtn.addEventListener('click', () => {
+               $("#sure_launch_exam").hide();
+                });
+                </script> 
+            <!--beginning of launch button-->
+ <div class="launch-exam">
+  <input type="button" class="form-control btn btn-sm btn-success" name="launchExam"  id="launchExam" style="width: 100px" value="Launch Exam">
+</div>
         <div class="input-group-sm text-end">
           <input type="submit" class="form-control btn btn-sm btn-success" id="submit" style="width: 100px" />
         </div>
       </div>
     </div>
-  </div>
+    </div>
   <!-- to create exam content end  -->
 
   <div
@@ -490,6 +748,7 @@
             <option value="Marking"><small>Marking</small></option>
             <option value="Result Released"><small>Result Released</small></option>
             <option value="Deleted"><small>Deleted</small></option>
+            <option value="LaunchExam"><small>Exam Launched</small></option>
           </select>
 
           <div class="" style="display: none;" id="teacher_dropdown_main">
@@ -618,8 +877,15 @@
               <div class="d-flex flex-wrap justify-content-between align-items-center fw-bold mt-3">
                 <small class=""><a th:href="'/admin/exam/' + ${test.test_id} + '/questions'" class="text-success">Exam
                     Questions</a></small>
-                <small class=""><a th:href="'/admin/exam/' + ${test.test_id} + '/examinee'" class="text-success">Set
-                    Examinee</a></small>
+                <small class="">
+                  <!-- <span th:if="${test.exam_target == 0}">
+                    <a th:href="'/admin/exam/' + ${test.test_id} + '/examinee'" class="text-success">Set Examinee</a>
+                  </span>
+                  <span th:if="${test.exam_target == 1}">
+                    <a th:href="'/admin/exam/' + ${test.test_id} + '/guest/examinee'" class="text-success">Set Examinee</a>
+                  </span> -->
+                  <a th:href="'/admin/exam/' + ${test.test_id} + '/examinee'" class="text-success">Set Examinee</a>
+                </small>
                 <small class=""><a th:href="'/admin/exam/' + ${test.test_id} + '/exam-result-list'"
                     class="text-success">Exam
                     Result</a></small>
@@ -635,6 +901,17 @@
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
     crossorigin="anonymous"></script>
   <script th:src="@{/js/main.js}"></script>
+  <!--student-guest-->
+<script>
+ const dialogCloseBtn = document.getElementById("dialog-close-btn");
+$("#dialog-close-btn").click(function () {
+            closeDialog();
+       });
+ function closeDialog() {
+           const dialog = document.getElementById("dialog");
+            dialog.style.visibility = "hidden";
+      }
+      </script>
 </body>
 <div th:replace="@{fragments/footer}"></div>
 

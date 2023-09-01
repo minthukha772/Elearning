@@ -470,7 +470,7 @@ public class ExamResultController {
                 testId);
 
         Test viewTest = testRepo.getById(testId);
-        List<TestExaminee> viewTestStudents = testStudentRepo.getStudentByTest(testId);
+        List<TestExaminee> viewTestStudents = testStudentRepo.getExamineeByTest(testId);
         List<TestResult> viewResults = resultRepo.getListByTestId(testId);
         List<TestExamineeAnswer> viewStudentAnswer = testStudentAnswerRepository.getStudentAnswerListByTest(testId);
         List<TestQuestion> viewQuestions = questionRepo.getQuestionByTest(testId);

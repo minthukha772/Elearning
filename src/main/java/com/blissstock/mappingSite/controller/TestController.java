@@ -6,7 +6,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+import com.blissstock.mappingSite.service.MailService;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -32,6 +34,7 @@ import com.blissstock.mappingSite.entity.TestResult;
 import com.blissstock.mappingSite.entity.Test;
 import com.blissstock.mappingSite.entity.TestExaminee;
 import com.blissstock.mappingSite.entity.TestExamineeAnswer;
+import com.blissstock.mappingSite.entity.TestQuestion;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
 import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
@@ -59,7 +62,8 @@ public class TestController {
 
     @Autowired
     UserInfoRepository userInfoRepository;
-
+    @Autowired
+    MailService mailService;
     @Autowired
     UserRepository userRepository;
 
@@ -81,7 +85,7 @@ public class TestController {
             @RequestParam(required = false) String examStatus, @RequestParam(required = false) String courseid,
             @RequestParam(required = false) String fromDate, @RequestParam(required = false) String toDate)
             throws ParseException {
-                
+
         if (examStatus == null) {
             examStatus = "";
         }
@@ -94,59 +98,77 @@ public class TestController {
         }
 
         try {
-            Long userID = getUid();            
+            Long userID = getUid();
             List<Test> testList;
             List<CourseInfo> courseList;
-            //logger.info("user id {} start processing URL /teacher/exam", userID);
+            // logger.info("user id {} start processing URL /teacher/exam", userID);
             logger.info("Called getExamManagementPage with parameter(user_id={})", userID);
             if (examStatus != "" || courseid != "" || fromDate != "" || toDate != "") {
                 if (examStatus != "") {
                     if (examStatus.equals("Deleted")) {
 
-                        logger.info("Initiate Operation Retrieve Table test by Query: exam_status = Deleted, user_id={}", userID);
+                        logger.info(
+                                "Initiate Operation Retrieve Table test by Query: exam_status = Deleted, user_id={}",
+                                userID);
 
                         testList = testRepository.getDeletedListByUser(userID);
-                        //logger.info("userid {} get test list with user id and exam status by test id {}", userID, testList);                        
+                        // logger.info("userid {} get test list with user id and exam status by test id
+                        // {}", userID, testList);
                         model.addAttribute("testList", testList);
                         model.addAttribute("filterType", "Filter By Status");
                         model.addAttribute("filter", "( " + examStatus + " )");
-                        logger.info( "Operation Retrieve Table test by Query: exam_status = Deleted, user_id={}. Result List: test_list={}, filter_Type=Filter By Status, exam_status={}  | Success", userID, testList.size(), examStatus);
+                        logger.info(
+                                "Operation Retrieve Table test by Query: exam_status = Deleted, user_id={}. Result List: test_list={}, filter_Type=Filter By Status, exam_status={}  | Success",
+                                userID, testList.size(), examStatus);
 
                     } else if (!examStatus.equals("Deleted")) {
-                        logger.info("Initiate Operation Retrieve Table test by Query: exam_status = {}, user_id={}", examStatus, userID);
+                        logger.info("Initiate Operation Retrieve Table test by Query: exam_status = {}, user_id={}",
+                                examStatus, userID);
                         testList = testRepository.getListByStatusAndUser(examStatus, userID);
-                        //logger.info("userid {} get test list with user id and exam status by test id {}", userID, testList);
+                        // logger.info("userid {} get test list with user id and exam status by test id
+                        // {}", userID, testList);
                         model.addAttribute("testList", testList);
                         model.addAttribute("filterType", "Filter By Status");
                         model.addAttribute("filter", "( " + examStatus + " )");
-                        logger.info( "Operation Retrieve Table test by Query: exam_status = {}, user_id={}. Result List: test_list={}, filter_Type=Filter By Status, exam_status={}  | Success", examStatus, userID, testList.size(), examStatus);
+                        logger.info(
+                                "Operation Retrieve Table test by Query: exam_status = {}, user_id={}. Result List: test_list={}, filter_Type=Filter By Status, exam_status={}  | Success",
+                                examStatus, userID, testList.size(), examStatus);
                     }
                 } else if (courseid != "") {
-                    logger.info("Userid {} Initiate Operation Retrieve Table test by Query: course_id ={}", userID, courseid);
+                    logger.info("Userid {} Initiate Operation Retrieve Table test by Query: course_id ={}", userID,
+                            courseid);
                     CourseInfo course = courseInfoRepository.getById(Long.parseLong(courseid));
                     testList = testRepository.getListByCourseAndUser(Long.parseLong(courseid), userID);
-                    //logger.info("userid {} get test list with user id and course info by test id {}", userID, testList);
+                    // logger.info("userid {} get test list with user id and course info by test id
+                    // {}", userID, testList);
                     model.addAttribute("testList", testList);
                     model.addAttribute("filterType", "Filter By Course");
                     model.addAttribute("filter", "( " + course.getCourseName() + " )");
-                    logger.info( "Operation Retrieve Table test by Query: course_id ={}, user_id={}. Result List: test_list={}, course_name ={}  | Success", courseid, userID, testList.size(), course.getCourseName());
-                } else if (fromDate != "" && toDate != "") {                    
+                    logger.info(
+                            "Operation Retrieve Table test by Query: course_id ={}, user_id={}. Result List: test_list={}, course_name ={}  | Success",
+                            courseid, userID, testList.size(), course.getCourseName());
+                } else if (fromDate != "" && toDate != "") {
                     Date from = new SimpleDateFormat("yyyy-MM-dd").parse(fromDate);
                     Date to = new SimpleDateFormat("yyyy-MM-dd").parse(toDate);
                     testList = testRepository.getListByDateAndUser(from, to, userID);
-                    //logger.info("userid {} get test list with user id and from date to date by test id {}", userID, testList);
-                    logger.info("Initiate Operation Retrieve Table test by Query: user_id ={}, From ={}, To ={}", userID, from, to);
+                    // logger.info("userid {} get test list with user id and from date to date by
+                    // test id {}", userID, testList);
+                    logger.info("Initiate Operation Retrieve Table test by Query: user_id ={}, From ={}, To ={}",
+                            userID, from, to);
                     model.addAttribute("testList", testList);
                     model.addAttribute("filterType", "Filter By Date");
                     model.addAttribute("filter", "( " + fromDate + " - " + toDate + " )");
-                    logger.info( "Operation Retrieve Table test by Query: user_id ={}, From ={}, To ={}. Result List: test_list={}, From ={}, To ={}  | Success", userID, from, to, testList.size(), from,to);
+                    logger.info(
+                            "Operation Retrieve Table test by Query: user_id ={}, From ={}, To ={}. Result List: test_list={}, From ={}, To ={}  | Success",
+                            userID, from, to, testList.size(), from, to);
                 }
             } else {
                 logger.info("Initiate Operation Retrieve Table test by Query: user_id ={}", userID);
                 testList = testRepository.getListByUser(userID);
-                //logger.info("user id {} get test list by userid", userID);
+                // logger.info("user id {} get test list by userid", userID);
                 model.addAttribute("testList", testList);
-                logger.info( "Operation Retrieve Table test by Query: user_id ={}. Result List: test_list={} | Success", userID, testList.size());
+                logger.info("Operation Retrieve Table test by Query: user_id ={}. Result List: test_list={} | Success",
+                        userID, testList.size());
             }
 
             model.addAttribute("role", "teacher");
@@ -192,32 +214,40 @@ public class TestController {
             // List<CourseInfo> courseList;
             List<CourseInfo> courseList = new ArrayList<>();
             List<UserInfo> teacherList = new ArrayList<>();
-            //logger.info("user id {} start processing URL /teacher/exam", userID);
+            // logger.info("user id {} start processing URL /teacher/exam", userID);
             logger.info("Called getExamListPage with parameter(user_id={})", userID);
             if (examStatus != "" || courseid != "" || fromDate != "" || toDate != "" || teacherid != "") {
                 if (examStatus != "") {
-                    logger.info("Initiate Operation Retrieve Table test by Query: exam_status ={}, user_id={}", examStatus, userID);
+                    logger.info("Initiate Operation Retrieve Table test by Query: exam_status ={}, user_id={}",
+                            examStatus, userID);
                     testList = testRepository.getListByStatusAndStudentId(examStatus, userID);
                     // logger.info("userid {} get test list with user id and exam status by test id
                     // {}", userID, testList);
                     model.addAttribute("testList", testList);
                     model.addAttribute("filterType", "Filter By Status");
                     model.addAttribute("filter", "( " + examStatus + " )");
-                    logger.info( "Operation Retrieve Table test by Query: exam_status ={}, user_id={}. Result List: test_list={}, exam_status={}  | Success",examStatus, userID, testList.size(), examStatus);
+                    logger.info(
+                            "Operation Retrieve Table test by Query: exam_status ={}, user_id={}. Result List: test_list={}, exam_status={}  | Success",
+                            examStatus, userID, testList.size(), examStatus);
                 } else if (courseid != "") {
-                    logger.info("Userid {} Initiate Operation Retrieve Table test by Query: course_id ={}", userID, courseid);
+                    logger.info("Userid {} Initiate Operation Retrieve Table test by Query: course_id ={}", userID,
+                            courseid);
                     // Log the test list retrieval by course ID
-                    //logger.info("user id {} Retrieving test list by course ID: {}", userID, courseid);
+                    // logger.info("user id {} Retrieving test list by course ID: {}", userID,
+                    // courseid);
                     CourseInfo course = courseInfoRepository.getById(Long.parseLong(courseid));
                     testList = testRepository.getListByCourse(Long.parseLong(courseid));
                     model.addAttribute("testList", testList);
                     model.addAttribute("filterType", "Filter By Course");
                     model.addAttribute("filter", "( " + course.getCourseName() + " )");
-                    logger.info( "Operation Retrieve Table test by Query: course_id ={}. Result List: test_list={}, course_name ={}  | Success", courseid, testList.size(), course.getCourseName());
+                    logger.info(
+                            "Operation Retrieve Table test by Query: course_id ={}. Result List: test_list={}, course_name ={}  | Success",
+                            courseid, testList.size(), course.getCourseName());
                 } else if (fromDate != "" && toDate != "") {
                     Date from = new SimpleDateFormat("yyyy-MM-dd").parse(fromDate);
                     Date to = new SimpleDateFormat("yyyy-MM-dd").parse(toDate);
-                    logger.info("Initiate Operation Retrieve Table test by Query: user_id ={}, From ={}, To ={}", userID, from, to);
+                    logger.info("Initiate Operation Retrieve Table test by Query: user_id ={}, From ={}, To ={}",
+                            userID, from, to);
                     testList = testRepository.getListByDateAndStudentId(from, to, userID);
                     // logger.info("userid {} get test list with user id and from date to date by
                     // test id {}", userID,
@@ -225,24 +255,31 @@ public class TestController {
                     model.addAttribute("testList", testList);
                     model.addAttribute("filterType", "Filter By Date");
                     model.addAttribute("filter", "( " + fromDate + " - " + toDate + " )");
-                    logger.info( "Operation Retrieve Table test by Query: user_id ={}, From ={}, To ={}. Result List: test_list={}, From ={}, To ={}  | Success", userID, from, to, testList.size(), from,to);
+                    logger.info(
+                            "Operation Retrieve Table test by Query: user_id ={}, From ={}, To ={}. Result List: test_list={}, From ={}, To ={}  | Success",
+                            userID, from, to, testList.size(), from, to);
                 } else if (teacherid != "") {
                     // Log the test list retrieval by teacher ID
-                    //logger.info("user id {} Retrieving test list by teacher ID: {}", userID, teacherid);
-                    logger.info("user_id ={} Initiate Operation Retrieve Table test by Query: teacher_id ={}", userID, teacherid);
+                    // logger.info("user id {} Retrieving test list by teacher ID: {}", userID,
+                    // teacherid);
+                    logger.info("user_id ={} Initiate Operation Retrieve Table test by Query: teacher_id ={}", userID,
+                            teacherid);
                     UserInfo teacher = userRepository.findByAccount(Long.parseLong(teacherid));
                     testList = testRepository.getListByUser(Long.parseLong(teacherid));
                     model.addAttribute("testList", testList);
                     model.addAttribute("filterType", "Filter By Teacher");
                     model.addAttribute("filter", "( " + teacher.getUserName() + " )");
-                    logger.info( "Operation Retrieve Table test by Query: teacher_id ={}. Result List: test_list={}, teacher_name ={}  | Success", teacherid, testList.size(), teacher.getUserName());
+                    logger.info(
+                            "Operation Retrieve Table test by Query: teacher_id ={}. Result List: test_list={}, teacher_name ={}  | Success",
+                            teacherid, testList.size(), teacher.getUserName());
                 }
             } else {
                 logger.info("Initiate Operation Retrieve Table test by Query: user_id ={}", userID);
                 testList = testRepository.getListByStudent(userID);
                 // logger.info("user id {} get test list by userid", userID);
                 model.addAttribute("testList", testList);
-                logger.info( "Operation Retrieve Table test by Query:  user_id ={}. Result List: test_list={} | Success", userID, testList.size());
+                logger.info("Operation Retrieve Table test by Query:  user_id ={}. Result List: test_list={} | Success",
+                        userID, testList.size());
             }
 
             // model.addAttribute("role", "teacher");
@@ -312,7 +349,8 @@ public class TestController {
                         model.addAttribute("testList", testList);
                         model.addAttribute("filterType", "Filter By Status");
                         model.addAttribute("filter", "( " + examStatus + " )");
-                    } else if (!examStatus.equals("Deleted")) {
+                    } 
+                    else if (!examStatus.equals("Deleted")) {
                         logger.info("Initiate to Operation Retrieve Table test by Query Status {}", examStatus);
                         testList = testRepository.getListByStatus(examStatus);
                         logger.info("Operation Retrieve Table test by Query Status {} Result list {} Success",
@@ -395,7 +433,7 @@ public class TestController {
     @GetMapping(value = { "/teacher/delete-exam" })
     private ResponseEntity deleteExam(@RequestParam(required = false) Long test_id)
             throws ParseException {
-                
+
         try {
             Long userID = getUid();
             logger.info("Called deleteExam with parameter(test_id={})", test_id);
@@ -409,7 +447,7 @@ public class TestController {
                 logger.warn("Attempt to delete non-existent exam with ID {}", test_id);
                 return ResponseEntity.noContent().build();
             }
-            
+
             Test testData = testRepository.getTestByID(test_id);
             String isDelete = testData.getIsDelete();
             if (!isDelete.equals("true")) {
@@ -421,9 +459,9 @@ public class TestController {
 
                 testData.setDeletedAt(deletedAt);
                 testData.setIsDelete("true");
-                logger.info( "Initiate to Operation Insert Table Test Data {}", testData.display());
+                logger.info("Initiate to Operation Insert Table Test Data {}", testData.display());
                 testRepository.save(testData);
-                logger.info( "Operation Insert Table Test Data {} | Success", testData.display());
+                logger.info("Operation Insert Table Test Data {} | Success", testData.display());
                 logger.info("user_id: {}", userID);
             }
             if (isDelete.equals("true")) {
@@ -431,9 +469,9 @@ public class TestController {
                 logger.info("user_id: {}", userID);
                 testData.setDeletedAt("null");
                 testData.setIsDelete("false");
-                logger.info( "Initiate to Operation Insert Table Test Data {}", testData.display());
+                logger.info("Initiate to Operation Insert Table Test Data {}", testData.display());
                 testRepository.save(testData);
-                logger.info( "Operation Insert Table Test Data {} | Success", testData.display());
+                logger.info("Operation Insert Table Test Data {} | Success", testData.display());
                 logger.info("user_id: {}", userID);
             }
             // testRepository.deleteById(test_id);
@@ -476,9 +514,9 @@ public class TestController {
                 String deletedAt = currentDateTime.format(formatter);
                 testData.setDeletedAt(deletedAt);
                 testData.setIsDelete("true");
-                logger.info( "Initiate to Operation Insert Table Test Data {}", testData.display());
+                logger.info("Initiate to Operation Insert Table Test Data {}", testData.display());
                 testRepository.save(testData);
-                logger.info( "Operation Insert Table Test Data {} | Success", testData.display());
+                logger.info("Operation Insert Table Test Data {} | Success", testData.display());
                 logger.info("user_id: {}", userID);
             }
             if (isDelete.equals("true")) {
@@ -486,9 +524,9 @@ public class TestController {
                 logger.info("user_id: {}", userID);
                 testData.setDeletedAt("null");
                 testData.setIsDelete("false");
-                logger.info( "Initiate to Operation Insert Table Test Data {}", testData.display());
+                logger.info("Initiate to Operation Insert Table Test Data {}", testData.display());
                 testRepository.save(testData);
-                logger.info( "Operation Insert Table Test Data {} | Success", testData.display());
+                logger.info("Operation Insert Table Test Data {} | Success", testData.display());
                 logger.info("user_id: {}", userID);
             }
             // testRepository.deleteById(test_id);
@@ -513,7 +551,9 @@ public class TestController {
             Long teacherId = Long.parseLong(teacher_id);
             logger.info("Initiate Operation Retrieve Table course_info by Query: teacher_id: {}", teacherId);
             List<CourseInfo> courseInfos = courseInfoRepository.findByUID(teacherId);
-            logger.info("User ID {} Operation Retrieve Table course_info by Query: teacher_id: {}. Result: course(s)={} | Success", userID, teacherId, courseInfos.size());
+            logger.info(
+                    "User ID {} Operation Retrieve Table course_info by Query: teacher_id: {}. Result: course(s)={} | Success",
+                    userID, teacherId, courseInfos.size());
             logger.info("Called getCourseByTeacher with parameter(teacher_id={}) Success", teacher_id);
             logger.info("user_id: {}", userID);
             return ResponseEntity.ok(courseInfos);
@@ -551,7 +591,9 @@ public class TestController {
             int minutes_allowed = jsonObject.getInt("minutes_allowed");
             logger.info("Initiate Operation Retrieve Table course_info by Query: course_id: {}", course_id);
             CourseInfo courseInfo = courseInfoRepository.findByCourseID(course_id);
-            logger.info("User ID {} Operation Retrieve Table course_info by Query: course_id: {}. Result: course_info={} | Success", userID, course_id, courseInfo);
+            logger.info(
+                    "User ID {} Operation Retrieve Table course_info by Query: course_id: {}. Result: course_info={} | Success",
+                    userID, course_id, courseInfo);
             if (courseInfo == null) {
                 logger.warn("Failed to find course with ID: " + course_id);
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -563,13 +605,14 @@ public class TestController {
                 logger.warn("Failed to find user with ID: " + userID);
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to find user with ID: " + userID);
             }
-            logger.info("Operation Retrieve Table user_info by Query: user_id: {}. Result: user_info={} | Success", userID, userInfo);
+            logger.info("Operation Retrieve Table user_info by Query: user_id: {}. Result: user_info={} | Success",
+                    userID, userInfo);
             Test test = new Test(null, courseInfo, userInfo, description, section_name, minutes_allowed, passing_score,
-                    examDate, exam_start_time, exam_end_time, exam_status, "false", "null");
-                    logger.info( "Initiate to Operation Insert Table Test Data {}", test.display());
+                    examDate, exam_start_time, exam_end_time, exam_status, "false", "null", "null", 0);
+            logger.info("Initiate to Operation Insert Table Test Data {}", test.display());
             testRepository.save(test);
-            logger.info( "Operation Insert Table Test Data {} | Success", test.display());
-             logger.info("Called saveExam with parameter(payload={}) Success", payload);
+            logger.info("Operation Insert Table Test Data {} | Success", test.display());
+            logger.info("Called saveExam with parameter(payload={}) Success", payload);
             logger.info("user_id: {}", userID);
             return ResponseEntity.ok(HttpStatus.OK);
         } catch (Exception e) {
@@ -582,7 +625,7 @@ public class TestController {
     @PostMapping(value = { "/admin/create-exam" })
     private ResponseEntity saveExamByAdmin(@RequestBody String payload) {
         try {
-            //logger.info("Called saveExamByAdmin");
+            // logger.info("Called saveExamByAdmin");
             Long userID = getUid();
             logger.info("Called saveExamByAdmin with parameter(payload={})", payload);
             logger.info("user_id: {}", userID);
@@ -590,6 +633,7 @@ public class TestController {
             Long teacher_id = jsonObject.getLong("teacher_id");
             String description = jsonObject.getString("description");
             String section_name = jsonObject.getString("section_name");
+           String student_guest = jsonObject.getString("student_guest");
             String date = jsonObject.getString("date");
             Date examDate = null;
             try {
@@ -610,15 +654,25 @@ public class TestController {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                         .body("Failed to find course with ID: " + course_id);
             }
-            UserInfo userInfo = userInfoRepository.findStudentById(teacher_id);
+            // UserInfo userInfo = userInfoRepository.findStudentById(teacher_id);
+            UserInfo userInfo = userInfoRepository.findById(teacher_id).orElse(null);
             if (userInfo == null) {
                 logger.warn("Operation Retrieve Table user_info, user_account by query user_id = {} Result No Data",
                         teacher_id);
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to find user with ID: " + teacher_id);
             }
+
+
+            int exam_target;
+            if (student_guest == "student") {
+                exam_target = 0;
+            } else {
+                exam_target = 1;
+            }
             Test test = new Test(null, courseInfo, userInfo, description, section_name, minutes_allowed, passing_score,
-                    examDate, exam_start_time, exam_end_time, exam_status, "false", "null");
+                    examDate, exam_start_time, exam_end_time, exam_status, "false", "null", student_guest, exam_target);
             logger.info("Initiate to Operation Insert Table Test Data {}", test.display());
+
             testRepository.save(test);
             logger.info("Operation Insert Table Test Data {} Success", test.display());
 
@@ -643,6 +697,7 @@ public class TestController {
             Long test_id = jsonObject.getLong("test_id");
             String description = jsonObject.getString("description");
             String section_name = jsonObject.getString("section_name");
+    String student_guest = jsonObject.getString("student_guest");
             String date = jsonObject.getString("date");
             Date examDate = null;
             try {
@@ -664,21 +719,33 @@ public class TestController {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                         .body("Failed to find course with ID: " + course_id);
             }
-            UserInfo userInfo = userInfoRepository.findStudentById(teacher_id);
+            // UserInfo userInfo = userInfoRepository.findStudentById(teacher_id);
+            UserInfo userInfo = userInfoRepository.findById(teacher_id).orElse(null);
             if (userInfo == null) {
                 logger.warn("Operation Retrieve Table user_info, user_account by query user_id = {} Result No Data",
                         teacher_id);
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to find user with ID: " + teacher_id);
             }
-            Test test = new Test(test_id, courseInfo, userInfo, description, section_name, minutes_allowed,
-                    passing_score,
-                    examDate, exam_start_time, exam_end_time, exam_status, "false", "null");
-                    logger.info( "Initiate to Operation Insert Table Test Data {}", test.display());
+
+            int exam_target;
+            if (student_guest == "student") {
+                exam_target = 0;
+            } else {
+                exam_target = 1;
+            }
+            Test test = new Test(null, courseInfo, userInfo, description, section_name, minutes_allowed, passing_score,
+                    examDate, exam_start_time, exam_end_time, exam_status, "false", "null", student_guest, exam_target);
+
+            // Test test = new Test(null, courseInfo, userInfo, description, section_name,
+            // minutes_allowed, passing_score,
+            // examDate, exam_start_time, exam_end_time, exam_status, "false",
+            // "null",student_guest,exam_target);
+
             testRepository.save(test);
-            logger.info( "Operation Insert Table Test Data {} | Success", test.display());
+            logger.info("Operation Insert Table Test Data {} | Success", test.display());
 
             if (exam_status.equals("Result Released")) {
-                List<TestExaminee> TestExaminees = TestExamineeRepository.getStudentByTest(test_id);
+                List<TestExaminee> TestExaminees = TestExamineeRepository.getExamineeByTest(test_id);
                 for (TestExaminee student : TestExaminees) {
                     int total_acquired_mark = 0;
                     int total_mark = 0;
@@ -701,15 +768,17 @@ public class TestController {
                         fcalculate_percent = fcalculate_percent * 100;
                         UserInfo studentInfo = userInfoRepository.findStudentById(student.getUserInfo().getUid());
                         if (fcalculate_percent > passing_score_percent) {
-                            TestResult result = new TestResult(null, test, studentInfo, total_acquired_mark, "Passed", "");
-                            logger.info( "Initiate to Operation Insert Table Result Data {}", result.display());
+                            TestResult result = new TestResult(null, test, studentInfo, total_acquired_mark, "Passed",
+                                    "");
+                            logger.info("Initiate to Operation Insert Table Result Data {}", result.display());
                             resultRepo.save(result);
-                            logger.info( "Operation Insert Table Result Data {} | Success", result.display());
+                            logger.info("Operation Insert Table Result Data {} | Success", result.display());
                         } else {
-                            TestResult result = new TestResult(null, test, studentInfo, total_acquired_mark, "Failed", "");
-                            logger.info( "Initiate to Operation Insert Table Result Data {}", result.display());
+                            TestResult result = new TestResult(null, test, studentInfo, total_acquired_mark, "Failed",
+                                    "");
+                            logger.info("Initiate to Operation Insert Table Result Data {}", result.display());
                             resultRepo.save(result);
-                            logger.info( "Operation Insert Table Result Data {} | Success", result.display());
+                            logger.info("Operation Insert Table Result Data {} | Success", result.display());
                         }
                     } else {
                         List<TestExamineeAnswer> studentAnswerList = TestExamineeAnswerRepository
@@ -731,16 +800,16 @@ public class TestController {
 
                             viewExamResult.setResult("Passed");
                             viewExamResult.setResultMark(total_acquired_mark);
-                            logger.info( "Initiate to Operation Insert Table Result Data {}", viewExamResult.display());
+                            logger.info("Initiate to Operation Insert Table Result Data {}", viewExamResult.display());
                             resultRepo.save(viewExamResult);
-                            logger.info( "Operation Insert Table Result Data {} | Success", viewExamResult.display());
+                            logger.info("Operation Insert Table Result Data {} | Success", viewExamResult.display());
                         } else {
 
                             viewExamResult.setResult("Failed");
                             viewExamResult.setResultMark(total_acquired_mark);
-                            logger.info( "Initiate to Operation Insert Table Result Data {}", viewExamResult.display());
+                            logger.info("Initiate to Operation Insert Table Result Data {}", viewExamResult.display());
                             resultRepo.save(viewExamResult);
-                            logger.info( "Operation Insert Table Result Data {} | Success", viewExamResult.display());
+                            logger.info("Operation Insert Table Result Data {} | Success", viewExamResult.display());
                         }
 
                     }
@@ -749,6 +818,7 @@ public class TestController {
             }
             logger.info("Called editExam with parameter(payload={}) Success", payload);
             logger.info("user_id: {}", userID);
+
             return ResponseEntity.ok(HttpStatus.OK);
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage());
@@ -781,6 +851,7 @@ public class TestController {
             int passing_score = Integer.parseInt(jsonObject.getString("passing_score"));
             int minutes_allowed = jsonObject.getInt("minutes_allowed");
             CourseInfo courseInfo = courseInfoRepository.findByCourseID(course_id);
+            String student_guest = jsonObject.getString("student_guest");
             if (courseInfo == null) {
                 logger.warn("Failed to find course with ID: " + course_id);
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -791,15 +862,27 @@ public class TestController {
                 logger.warn("Failed to find teacher with ID: " + userID);
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to find user with ID: " + userID);
             }
-            Test test = new Test(test_id, courseInfo, userInfo, description, section_name, minutes_allowed,
-                    passing_score,
-                    examDate, exam_start_time, exam_end_time, exam_status, "false", "null");
-                    logger.info( "Initiate to Operation Insert Table Test Data {}", test.display());
+            // Test test;
+            // if(student_guest == "guest"){
+            // test = new Test(null,null,null,description, section_name, minutes_allowed,
+            // passing_score,
+            // examDate, exam_start_time, exam_end_time, exam_status, "false",
+            // "null",student_guest);
+            // }else{
+            Test test = new Test(null, courseInfo, userInfo, description, section_name, minutes_allowed, passing_score,
+                    examDate, exam_start_time, exam_end_time, exam_status, "false", "null", student_guest, 0);
+
+            // origin // Test test = new Test(test_id, courseInfo, userInfo, description,
+            // section_name, minutes_allowed,
+            // passing_score, examDate, exam_start_time, exam_end_time, exam_status,
+            // "false", "null");
+
+            logger.info("Initiate to Operation Insert Table Test Data {}", test.display());
             testRepository.save(test);
-            logger.info( "Operation Insert Table Test Data {} | Success",test.display());
+            logger.info("Operation Insert Table Test Data {} | Success", test.display());
 
             if (exam_status.equals("Result Released")) {
-                List<TestExaminee> TestExaminees = TestExamineeRepository.getStudentByTest(test_id);
+                List<TestExaminee> TestExaminees = TestExamineeRepository.getExamineeByTest(test_id);
                 for (TestExaminee student : TestExaminees) {
                     int total_acquired_mark = 0;
                     int total_mark = 0;
@@ -823,15 +906,17 @@ public class TestController {
                         UserInfo studentInfo = userInfoRepository.findStudentById(student.getUserInfo().getUid());
 
                         if (fcalculate_percent > passing_score_percent) {
-                            TestResult result = new TestResult(null, test, studentInfo, total_acquired_mark, "Passed", "");
-                            logger.info( "Initiate to Operation Insert Table Result Data {}", result.display());
+                            TestResult result = new TestResult(null, test, studentInfo, total_acquired_mark, "Passed",
+                                    "");
+                            logger.info("Initiate to Operation Insert Table Result Data {}", result.display());
                             resultRepo.save(result);
-                            logger.info( "Operation Insert Table Result Data {} | Success", result.display());
+                            logger.info("Operation Insert Table Result Data {} | Success", result.display());
                         } else {
-                            TestResult result = new TestResult(null, test, studentInfo, total_acquired_mark, "Failed", "");
-                            logger.info( "Initiate to Operation Insert Table Result Data {}", result.display());
+                            TestResult result = new TestResult(null, test, studentInfo, total_acquired_mark, "Failed",
+                                    "");
+                            logger.info("Initiate to Operation Insert Table Result Data {}", result.display());
                             resultRepo.save(result);
-                            logger.info( "Operation Insert Table Result Data {} | Success", result.display());
+                            logger.info("Operation Insert Table Result Data {} | Success", result.display());
                         }
                     } else {
                         List<TestExamineeAnswer> studentAnswerList = TestExamineeAnswerRepository
@@ -853,16 +938,16 @@ public class TestController {
 
                             viewExamResult.setResult("Passed");
                             viewExamResult.setResultMark(total_acquired_mark);
-                            logger.info( "Initiate to Operation Insert Table Result Data {}", viewExamResult.display());
+                            logger.info("Initiate to Operation Insert Table Result Data {}", viewExamResult.display());
                             resultRepo.save(viewExamResult);
-                            logger.info( "Operation Insert Table Result Data {} | Success", viewExamResult.display());
+                            logger.info("Operation Insert Table Result Data {} | Success", viewExamResult.display());
                         } else {
 
                             viewExamResult.setResult("Failed");
                             viewExamResult.setResultMark(total_acquired_mark);
-                            logger.info( "Initiate to Operation Insert Table Result Data {}", viewExamResult.display());
+                            logger.info("Initiate to Operation Insert Table Result Data {}", viewExamResult.display());
                             resultRepo.save(viewExamResult);
-                            logger.info( "Operation Insert Table Result Data {} | Success", viewExamResult.display());
+                            logger.info("Operation Insert Table Result Data {} | Success", viewExamResult.display());
                         }
 
                     }
@@ -877,10 +962,75 @@ public class TestController {
         }
     }
 
+    @GetMapping(value = { "/admin/testInfo" })
+    public ResponseEntity<TestInfo> getTestInfo(@RequestParam(required = false) Long test_id) {
+
+        try {
+
+            Test testData = testRepository.getTestByID(test_id);
+            logger.info("Called getTestInfo with parameter(test_id={}) Success", test_id);
+            TestInfo testInfo = new TestInfo();
+            testInfo.test_id = testData.getTest_id();
+            testInfo.questionCount = (long) testData.getTestQuestions().size();
+            testInfo.examineeCount = (long) testData.getTestExaminee().size();
+            return ResponseEntity.ok(testInfo);
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+
+    }
+
+    @PostMapping(value = { "/admin/launchExam" })
+    public ResponseEntity launchExam(@RequestParam(required = false) Long test_id) {
+
+        Test testData = testRepository.getTestByID(test_id);
+        logger.info("Called launchExam with parameter(test_id={}) Success", test_id);
+        logger.info("{}", testData.getTestExaminee().size());
+        List<TestExaminee> examineeList = testData.getTestExaminee();
+
+        testData.setIsLaunch(true);
+        testRepository.save(testData);
+
+
+        for (TestExaminee examinee : examineeList) {
+            try {
+                String mail1 = examinee.getUserInfo().getUserAccount().getMail();
+                logger.info(mail1);
+                if (mail1 != null) {
+                    mailService.guestsendVerificationMail(examinee.getUserInfo().getUserName(),
+                            mail1, test_id.toString(), testData);
+                }
+            } catch (Exception e) {
+                logger.info(e.toString());
+            }
+            try {
+                String mail2 = examinee.getGuestUser().getMail();
+                logger.info(mail2);
+                if (mail2 != null) {
+                    mailService.guestsendVerificationMail(examinee.getGuestUser().getName(),
+                            mail2, test_id.toString(),testData);
+                }
+            }
+
+            catch (MessagingException e) {
+                logger.info(e.toString());
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            // do something with examinee
+
+        }
+
+        return ResponseEntity.ok(HttpStatus.OK);
+
+    }
+
     private Long getUid() {
         Long uid = userSessionService.getUserAccount().getAccountId();
         return uid;
     }
+
     private String getUserRole() {
         String userRole = userSessionService.getUserAccount().getRole();
         return userRole;
