@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <title>Removed from the exam</title>
+    <title>Removed from the examinee list</title>
 
     <link rel="icon" type="image/x-icon" href="/images/fav.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -181,105 +181,66 @@
                                     Dear Mr./Mrs. <span th:text="${guestName}"></span>,
                                 </p>
                                 <br />
+                                <p style="margin: 0;">
+                                    Hello, We are from Pyinnyar Subuu Team.
+                                </p>
+                                <br>
                                 <p style="margin: 0">
                                     You have been removed from the exam. So you can no longer take the exam.<br>
-                                    You can check the <b>Exam details</b> below.
+                                    You can check the Exam details below.
                                 </p>
                                 <br />
-                                <h3 style="text-decoration: underline;">Exam Details:</h3>
                                 <p style="margin: 0">
-                                    Section Name : <span th:text="${sectionName}">Section Name</span>
+                                    Exam Title: <span th:text="${description}">Description</span>
                                 </p>
                                 <p style="margin: 0">
-                                    Description : <span th:text="${description}">Description</span>
-                                </p>
-                                <p style="margin: 0">
-                                    Exam date : <span th:text="${date}">Exam Date</span>
-                                </p>
-                                <p style="margin: 0">
-                                    Start From : <span th:text="${startTime}">Start from</span> / To: <span
-                                        th:text="${endTime}"> To</span>
-                                </p>
-                                <p style="margin: 0">
-                                    Time Allowed : <span th:text="${minutesAllowed}">Time Allowed</span> minutes
-                                </p>
-                                <p style="margin: 0">
-                                    Passing Score Percent : <span th:text="${passingScorePercent}">Passing Score
-                                        Percent</span>%
+                                    Exam Date & Time: <span th:text="${date} + '(' + ${startTime} + ' ~ ' + ${endTime} + ')">Date & Time</span>
                                 </p>
                             </td>
                         </tr>
                         <!-- end copy -->
 
-                        <!-- start button -->
-                        <tr>
-                            <td align="left" bgcolor="#ffffff">
-                                <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                                    <tr>
-                                        <td align="center" bgcolor="#ffffff" style="padding: 12px">
-                                            <table border="0" cellpadding="0" cellspacing="0">
-                                                <tr>
-                                                    <td align="center" bgcolor="#1a82e2" style="border-radius: 6px">
-                                                        <!-- url -->
-                                                        <!-- temporary local url change to real domain when release -->
-                                                        <a th:href="@{'https://' + ${appUrl} + '/check_email/register/student'}"
-                                                            target="_blank" style="display: inline-block;
-                                                                   padding: 16px 36px;
-                                                                   font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
-                                                                   font-size: 16px;
-                                                                   color: #ffffff;
-                                                                   text-decoration: none;
-                                                                   border-radius: 6px;">Register as Student
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                        <!-- end button -->
-
                         <!-- start copy -->
                         <tr>
                             <td align="left" bgcolor="#ffffff" style="padding: 24px;
-                                       font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
-                                       font-size: 16px;
-                                       line-height: 24px;">
+                                                               font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
+                                                               font-size: 16px;
+                                                               line-height: 24px;">
                                 <p style="margin: 0">
-                                    If you are interested in the Course that we <b>Pyinnyar Subuu</b> offered,
-                                    please click the link above to register as a student.
+                                <ul>
+                                    <li>This e-mail is sent to those who will take the exam at Pyinnyar Subuu website
+                                        that hold by Bliss Stock Company Ltd.</li>
+                                    <li>If you don't know clearly,Please contact the support desk.</li>
+                                    <li>The one-time password have to use at the exam time thus, please carefully note
+                                        this one-time password.</li>
+                                    <li>When the exam date and time come to close, you will be received the exam link to
+                                        take the exam.</li>
+                                </ul>
                                 </p>
-
+                        
                                 <br />
-                                <p style="margin: 0">
-                                    <span style="color: #dc3545">*</span> Depending on the email software you are using,
-                                    the URL may be broken in the
-                                    middle.
+                                <p>
+                                    <span style="color: #dc3545;">*</span> Depending on the email software you are
+                                    using, the URL may be broken in the middle.
                                     In that case, enter the first "https: //" to the last alphanumerical in the browser.
-                                    Please copy and paste directly to access.
+                                    Please copy and paste directly to access.<br>
                                 </p>
-
+                                <!-- <p style="margin: 0">
+                                                            <span style="color: #dc3545">*</span> Depending on the email software you are using, the URL may be broken in the
+                                                            middle.
+                                                            In that case, enter the first "https: //" to the last alphanumerical in the browser.
+                                                            Please copy and paste directly to access.
+                                                        </p> -->
+                        
                                 <br />
                                 <p style="margin: 0">
                                     <span style="color: #dc3545">*</span> This email is delivered from the send-only
                                     email address.
                                     Please note that we will not be able to answer even if you reply as it is.
                                 </p>
-
-                                <!-- url -->
-                                <!-- <p style="margin: 0"> -->
-                                <!-- temporary local url change to real domain when release -->
-                                <!-- <a
-                      th:href="@{'http://' + ${appUrl} + '/verify_password'(token=${token})}"
-                      target="_blank"
-                      th:text="${confirmationUrl}"
-                      >https://same-link-as-button.url/xxx-xxx-xxxx</a
-                    > -->
-                                <!-- </p> -->
                             </td>
                         </tr>
+                        <!-- end copy -->
                         <!-- end copy -->
 
                         <!-- start copy -->

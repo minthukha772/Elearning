@@ -148,7 +148,10 @@ public class GuestController {
                     model.addAttribute("status", status);
                     model.addAttribute("paragraph", paragraph);
                     model.addAttribute("header3", header3);
-                    return "GU0002_GuestUser.html";
+
+                    String redirectUrl = "/guest-exam/" + examID + "/questions";
+                    return "redirect:" + redirectUrl;
+
 
                 } else {
                     String status = "invalid";
