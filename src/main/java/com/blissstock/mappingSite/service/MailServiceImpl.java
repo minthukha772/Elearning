@@ -526,18 +526,15 @@ public class MailServiceImpl implements MailService {
     String appUrl = getServerAddress();
     String recipientAddress = guestUser.getMail();
 
-    String subject = "【Pyinnyar Subuu】Removed";
+    String subject = "【Pyinnyar Subuu】Removed from the Examinee List";
 
     final Context ctx = new Context();
     ctx.setVariable("appUrl", appUrl);
     ctx.setVariable("guestName", guestUser.getName());
-    ctx.setVariable("sectionName", test.getSection_name());
     ctx.setVariable("description", test.getDescription());
     ctx.setVariable("date", test.getDate());
     ctx.setVariable("startTime", test.getStart_time());
     ctx.setVariable("endTime", test.getEnd_time());
-    ctx.setVariable("minutesAllowed", test.getMinutes_allowed());
-    ctx.setVariable("passingScorePercent", test.getPassing_score_percent());
     ctx.setVariable("Date", new Date());
 
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
