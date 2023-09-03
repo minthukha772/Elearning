@@ -34,6 +34,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.blissstock.mappingSite.entity.TestResult;
+import com.blissstock.mappingSite.entity.GuestUser;
 import com.blissstock.mappingSite.entity.Test;
 import com.blissstock.mappingSite.entity.TestQuestion;
 import com.blissstock.mappingSite.entity.TestQuestionCorrectAnswer;
@@ -45,12 +46,13 @@ import com.blissstock.mappingSite.model.AnswerModel;
 import com.blissstock.mappingSite.model.ChoiceModel;
 import com.blissstock.mappingSite.model.FileInfo;
 import com.blissstock.mappingSite.model.QuestionAndCorrectAnswer;
-import com.blissstock.mappingSite.model.QuestionAndCorrectAnswerAndStudentAnswer;
-import com.blissstock.mappingSite.model.StudentChoiceModel;
+import com.blissstock.mappingSite.model.QuestionAndCorrectAnswerAndExamineeAnswer;
+import com.blissstock.mappingSite.model.ExamineeChoiceModel;
 import com.blissstock.mappingSite.repository.TestResultRepository;
 import com.blissstock.mappingSite.repository.TestQuestionCorrectAnswerRepositoy;
 import com.blissstock.mappingSite.repository.TestQuestionRepository;
 import com.blissstock.mappingSite.repository.TestRepository;
+import com.blissstock.mappingSite.repository.GuestUserRepository;
 import com.blissstock.mappingSite.repository.TestExamineeAnswerRepository;
 import com.blissstock.mappingSite.repository.TestExamineeRepository;
 import com.blissstock.mappingSite.repository.UserInfoRepository;
@@ -94,6 +96,9 @@ public class TestQuestionController {
 
     @Autowired
     UserInfoRepository userInfoRepository;
+
+    @Autowired
+    GuestUserRepository guestUserRepository;
 
     @Autowired
     TestExamineeRepository TestExamineeRepository;
@@ -164,7 +169,7 @@ public class TestQuestionController {
             throws ParseException, JsonMappingException, JsonProcessingException {
         Long userID = getUid();
         logger.info("Called getStudentAnswer with parameter(user_id={})", userID);
-        List<QuestionAndCorrectAnswerAndStudentAnswer> questionAndCorrectAnswers = new ArrayList<>();
+        List<QuestionAndCorrectAnswerAndExamineeAnswer> questionAndCorrectAnswers = new ArrayList<>();
         logger.info("Initiate Operation Retrieve Table test_question by Query: test_id={}", test_id);
         List<TestQuestion> testQuestions = testQuestionRepository.getQuestionByTest(test_id);
         logger.info(
@@ -198,7 +203,7 @@ public class TestQuestionController {
             FileInfo file = storageService.loadQuestionMaterials(fileSeparator, testQuestion.getQuestion_materials());
             testQuestion.setQuestion_materials(file.getUrl());
             int acquired_mark = 0;
-            List<StudentChoiceModel> choices = new ArrayList<>();
+            List<ExamineeChoiceModel> choices = new ArrayList<>();
             if (!testQuestion.getQuestion_type().equals("FREE_ANSWER")) {
                 TestQuestionCorrectAnswer testQuestionCorrectAnswer = testQuestionCorrectAnswerRepositoy
                         .getCorrectAnswerByQuestion(testQuestion.getId());
@@ -214,24 +219,24 @@ public class TestQuestionController {
                 for (int i = 0; i < choiceArrary.length(); i++) {
                     JSONObject choice = choiceArrary.getJSONObject(i);
                     String choiceData = choice.getString("choice");
-                    choices.add(new StudentChoiceModel(i, choiceData, false, false));
+                    choices.add(new ExamineeChoiceModel(i, choiceData, false, false));
                 }
 
                 for (int j = 0; j < answerArray.length(); j++) {
                     JSONObject answer = answerArray.getJSONObject(j);
                     int correct = answer.getInt("answer");
                     String choice = choices.get(correct).getChoice();
-                    choices.set(correct, new StudentChoiceModel(correct, choice, true, false));
+                    choices.set(correct, new ExamineeChoiceModel(correct, choice, true, false));
                 }
 
                 if (TestExamineeAnswer != null) {
                     for (int k = 0; k < studentchoiceArray.length(); k++) {
                         JSONObject answer = studentchoiceArray.getJSONObject(k);
-                        int student_choice = answer.getInt("student_choice");
+                        int student_choice = answer.getInt("examinee_choice");
                         String choice = choices.get(student_choice).getChoice();
                         Boolean correctAnswer = choices.get(student_choice).isCorrect();
                         choices.set(student_choice,
-                                new StudentChoiceModel(student_choice, choice, correctAnswer, true));
+                                new ExamineeChoiceModel(student_choice, choice, correctAnswer, true));
                     }
                 }
 
@@ -239,7 +244,7 @@ public class TestQuestionController {
 
                 for (int l = 0; l < choices.size(); l++) {
                     Boolean correctAnswer = choices.get(l).isCorrect();
-                    Boolean studentChoice = choices.get(l).isStudent_choice();
+                    Boolean studentChoice = choices.get(l).isExaminee_choice();
 
                     if (correctAnswer && !studentChoice) {
                         allCorrectAnswersMatched = false;
@@ -266,7 +271,7 @@ public class TestQuestionController {
                     markedStatus = TestExamineeAnswer.getMarked_status();
                 }
             }
-            QuestionAndCorrectAnswerAndStudentAnswer studentAnswerList = new QuestionAndCorrectAnswerAndStudentAnswer(
+            QuestionAndCorrectAnswerAndExamineeAnswer studentAnswerList = new QuestionAndCorrectAnswerAndExamineeAnswer(
                     testQuestion.getId(),
                     student_answer_id,
                     studentAnswer, studentAnswerURL,
@@ -303,6 +308,156 @@ public class TestQuestionController {
         logger.info("Called getStudentAnswer with parameter(user_id={})", userID);
         return "AT0006_StudentAnswerList.html";
     }
+    
+
+    @Valid
+    @GetMapping(value = { "/admin/exam/{test_id}/guest/{guest_id}" })
+    private String getGuestAnswer(@PathVariable Long test_id, @PathVariable Long guest_id, Model model)
+            throws ParseException, JsonMappingException, JsonProcessingException {
+        Long userID = getUid();
+        logger.info("Called getGuestAnswer with parameter(user_id={})", userID);
+        List<QuestionAndCorrectAnswerAndExamineeAnswer> questionAndCorrectAnswers = new ArrayList<>();
+        logger.info("Initiate Operation Retrieve Table test_question by Query: test_id={}", test_id);
+        List<TestQuestion> testQuestions = testQuestionRepository.getQuestionByTest(test_id);
+        logger.info(
+                "Operation Retrieve Table test_question by Query: test_id={}. Result List: testQuestions={} | Success",
+                test_id, testQuestions.size());
+        logger.info("Initiate Operation Retrieve Table test_question by Query: test_id={}", test_id);
+        Integer freeAnswerCount = testQuestionRepository.getFreeAnswerCount(test_id);
+        logger.info(
+                "Operation Retrieve Table test_question by Query: test_id={}. Result List: freeAnswerCount={} | Success",
+                test_id, freeAnswerCount);
+        logger.info("Initiate Operation Retrieve Table test_examinee_answer by Query: test_id={}", test_id);
+        Integer markingCount = TestExamineeAnswerRepository.getMarkingQuestionCount(test_id);
+        logger.info(
+                "Operation Retrieve Table test_examinee_answer by Query: test_id={}. Result List: markingCount={} | Success",
+                test_id, markingCount);
+        logger.info("Initiate Operation Retrieve Table test by Query: test_id={}", test_id);
+        Test test = testRepository.getTestByID(test_id);
+        logger.info("Operation Retrieve Table test by Query: test_id={}. Result List: test={} | Success", test_id,
+                test);
+        logger.info("Initiate Operation Retrieve Table guest by Query: guest_id={}", guest_id);
+        GuestUser guestUser = guestUserRepository.findByGuestId(guest_id);
+        logger.info("Operation Retrieve Table guest by Query: guest_id={}. Result List: guestUser={} | Success",
+                guest_id, guestUser);
+        String markedStatus = "";
+
+        for (TestQuestion testQuestion : testQuestions) {
+            String guestAnswer = "";
+            String guestAnswerURL = "";
+            Integer guest_answer_id = 0;
+            long fileSeparator = 100000L + test_id;
+            FileInfo file = storageService.loadQuestionMaterials(fileSeparator, testQuestion.getQuestion_materials());
+            testQuestion.setQuestion_materials(file.getUrl());
+            int acquired_mark = 0;
+            List<ExamineeChoiceModel> choices = new ArrayList<>();
+            if (!testQuestion.getQuestion_type().equals("FREE_ANSWER")) {
+                TestQuestionCorrectAnswer testQuestionCorrectAnswer = testQuestionCorrectAnswerRepositoy
+                        .getCorrectAnswerByQuestion(testQuestion.getId());
+                TestExamineeAnswer TestExamineeAnswer = TestExamineeAnswerRepository.getGuestAnswer(guest_id,
+                        testQuestion.getId());
+
+                JSONArray choiceArrary = new JSONArray(testQuestion.getChoices());
+                JSONArray answerArray = new JSONArray(testQuestionCorrectAnswer.getCorrectAnswer());
+                JSONArray guestchoiceArray = new JSONArray();
+                if (TestExamineeAnswer != null) {
+                    guestchoiceArray = new JSONArray(TestExamineeAnswer.getExaminee_answer());
+                }
+                for (int i = 0; i < choiceArrary.length(); i++) {
+                    JSONObject choice = choiceArrary.getJSONObject(i);
+                    String choiceData = choice.getString("choice");
+                    choices.add(new ExamineeChoiceModel(i, choiceData, false, false));
+                }
+
+                for (int j = 0; j < answerArray.length(); j++) {
+                    JSONObject answer = answerArray.getJSONObject(j);
+                    int correct = answer.getInt("answer");
+                    String choice = choices.get(correct).getChoice();
+                    choices.set(correct, new ExamineeChoiceModel(correct, choice, true, false));
+                }
+
+                if (TestExamineeAnswer != null) {
+                    for (int k = 0; k < guestchoiceArray.length(); k++) {
+                        JSONObject answer = guestchoiceArray.getJSONObject(k);
+                        int guest_choice = answer.getInt("examinee_choice");
+                        String choice = choices.get(guest_choice).getChoice();
+                        Boolean correctAnswer = choices.get(guest_choice).isCorrect();
+                        choices.set(guest_choice,
+                                new ExamineeChoiceModel(guest_choice, choice, correctAnswer, true));
+                    }
+                }
+
+                boolean allCorrectAnswersMatched = true;
+
+                for (int l = 0; l < choices.size(); l++) {
+                    Boolean correctAnswer = choices.get(l).isCorrect();
+                    Boolean guestChoice = choices.get(l).isExaminee_choice();
+
+                    if (correctAnswer && !guestChoice) {
+                        allCorrectAnswersMatched = false;
+                        break;
+                    }
+                }
+
+                if (allCorrectAnswersMatched) {
+                    acquired_mark = testQuestion.getMaximum_mark();
+                }
+            }
+            else {
+                TestExamineeAnswer TestExamineeAnswer = TestExamineeAnswerRepository.getGuestAnswer(guest_id,
+                        testQuestion.getId());
+                if (TestExamineeAnswer != null) {
+                    acquired_mark = TestExamineeAnswer.getAcquired_mark();
+                    long guestfileSeparator = Long.parseLong(test_id.toString()
+                            + TestExamineeAnswer.getQuestion().getId().toString() + guest_id.toString());
+                    guestAnswer = TestExamineeAnswer.getExaminee_answer();
+                    FileInfo guestAnswerFile = storageService.loadAnswermaterials(guestfileSeparator,
+                            TestExamineeAnswer.getExaminee_answer_link());
+                    guestAnswerURL = guestAnswerFile.getUrl();
+                    guest_answer_id = Integer.parseInt(TestExamineeAnswer.getId().toString());
+                    markedStatus = TestExamineeAnswer.getMarked_status();
+                }
+            }
+            QuestionAndCorrectAnswerAndExamineeAnswer guestAnswerList = new QuestionAndCorrectAnswerAndExamineeAnswer(
+                    testQuestion.getId(),
+                    guest_answer_id,
+                    guestAnswer, guestAnswerURL,
+                    testQuestion.getQuestion_text(), testQuestion.getQuestion_materials(),
+                    testQuestion.getQuestion_materials_type(), choices,
+                    testQuestion.getQuestion_type(), testQuestion.getMaximum_mark(),
+                    acquired_mark, markedStatus);
+            questionAndCorrectAnswers.add(guestAnswerList);
+
+        }
+        try {
+            TestResult viewExamResult = resultRepository.getResultByTestIdAndGuestUser(test_id, guest_id);
+            if (viewExamResult != null) {
+                model.addAttribute("comment", viewExamResult.getTeacherComment());
+
+            }
+        } catch (DataAccessException ex) {
+
+        }
+        model.addAttribute("test_id", test_id);
+        model.addAttribute("questionList", questionAndCorrectAnswers);
+        model.addAttribute("test_date", test.getDate());
+        model.addAttribute("name", guestUser.getName());
+        model.addAttribute("guestId", guestUser.getGuest_id());
+        model.addAttribute("totalTest", testQuestions.size());
+        model.addAttribute("freeTest", freeAnswerCount);
+        model.addAttribute("choiceTest", testQuestions.size() - freeAnswerCount);
+        model.addAttribute("user_role", userSessionService.getRole());
+        if (markingCount == 0) {
+            model.addAttribute("status", "Completed");
+        } else {
+            model.addAttribute("status", "Marking");
+        }
+        logger.info("Called getGuestAnswer with parameter(user_id={})", userID);
+        return "AT0006_GuestAnswerList.html";
+    }
+    
+
+
     @Valid
     @GetMapping(value = { "/student/exam/{test_id}/questions" })
     private String getStudentQuestions(@PathVariable Long test_id, Model model)
@@ -856,6 +1011,7 @@ public class TestQuestionController {
             JSONObject jsonObject = new JSONObject(payLoad);
             Long testId = jsonObject.getLong("test_Id");
             Long studentId = jsonObject.getLong("student_Id");
+            Long guestId = jsonObject.getLong("guest_Id");
             String comment = jsonObject.getString("comment");
             TestResult result = new TestResult();
 
@@ -864,22 +1020,54 @@ public class TestQuestionController {
             logger.info("Operation Retrieve Table test by Query: testId={}. Result List: test={} | Success", testId,
                     test);
 
-            logger.info("Initiate Operation Retrieve Table user_info by Query: studentId={}", studentId);
-            UserInfo userInfo = userInfoRepository.findStudentById(studentId);
-            logger.info("Operation Retrieve Table user_info by Query: studentId={}. Result List: userInfo={} | Success",
-                    studentId, userInfo);
+            if (studentId != null) {
+                logger.info("Initiate Operation Retrieve Table user_info by Query: studentId={}", studentId);
+                UserInfo userInfo = userInfoRepository.findStudentById(studentId);
+                logger.info(
+                        "Operation Retrieve Table user_info by Query: studentId={}. Result List: userInfo={} | Success",
+                        studentId, userInfo);
 
-            logger.info("Initiate Operation Retrieve Table result by Query: testId={}, studentId={}", testId,
-                    studentId);
-            TestResult viewCommentResult = resultRepository.getResultByTestIdAndUser(testId, studentId);
+                logger.info("Initiate Operation Retrieve Table result by Query: testId={}, studentId={}", testId,
+                        studentId);
+                TestResult viewCommentResult = resultRepository.getResultByTestIdAndUser(testId, studentId);
+                logger.info(
+                        "Operation Retrieve Table result by Query: testId={}, studentId={}. Result List: viewCommentResult={} | Success",
+                        testId, studentId, viewCommentResult);
+
+                if (viewCommentResult == null) {
+
+                result.setTest(test);
+                result.setUser(userInfo);
+                result.setTeacherComment(comment);
+
+                logger.info("Initiate to Operation Insert Table Result Data {}", result.display());
+                resultRepository.save(result);
+                logger.info("Operation Insert Table Result Data {} | Success", result.display());
+
+                } else {
+                    viewCommentResult.setTeacherComment(comment);
+
+                    logger.info("Initiate to Operation Insert Table Result Data {}", viewCommentResult.display());
+                    resultRepository.save(viewCommentResult);
+                    logger.info("Operation Insert Table Result Data {} | Success", viewCommentResult.display());
+                }
+            }
+            logger.info("Initiate Operation Retrieve Table guest by Query: guestId={}", guestId);
+            GuestUser guestUser = guestUserRepository.findByGuestId(guestId);
+            logger.info("Operation Retrieve Table guest by Query: guestId={}. Result List: guestUser={} | Success",
+                    guestId, guestUser);
+
+            logger.info("Initiate Operation Retrieve Table result by Query: testId={}, guestId={}", testId,
+                    guestId);
+            TestResult viewCommentResult = resultRepository.getResultByTestIdAndGuestUser(testId, guestId);
             logger.info(
-                    "Operation Retrieve Table result by Query: testId={}, studentId={}. Result List: viewCommentResult={} | Success",
-                    testId, studentId, viewCommentResult);
+                    "Operation Retrieve Table result by Query: testId={}, guestId={}. Result List: viewCommentResult={} | Success",
+                    testId, guestId, viewCommentResult);
 
             if (viewCommentResult == null) {
 
                 result.setTest(test);
-                result.setUser(userInfo);
+                result.setGuestUser(guestUser);
                 result.setTeacherComment(comment);
 
                 logger.info("Initiate to Operation Insert Table Result Data {}", result.display());
