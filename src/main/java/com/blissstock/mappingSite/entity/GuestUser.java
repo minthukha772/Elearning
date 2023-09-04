@@ -57,9 +57,8 @@ public class GuestUser {
         this.one_time_password = one_time_password;
         this.password_update_date_time = password_update_date_time;
         this.updated_date_time = updated_date_time;
-        this.deleted_date_time = deleted_date_time;        
+        this.deleted_date_time = deleted_date_time;
     }
-
 
     public String display() {
         return this.guest_id + ", " + this.name + ", " + this.mail + ", "

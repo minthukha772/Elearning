@@ -497,7 +497,7 @@ public class MailServiceImpl implements MailService {
   }
 
   @Override
-  public void SendGuestOneTimePassword(GuestUser guestUser, Test test, String otp) throws MessagingException {
+  public void SendGuestOneTimePassword(GuestUser guestUser, String otp) throws MessagingException {
     String appUrl = getServerAddress();
     String recipientAddress = guestUser.getMail();
 
@@ -507,13 +507,6 @@ public class MailServiceImpl implements MailService {
     ctx.setVariable("appUrl", appUrl);
     ctx.setVariable("guestName", guestUser.getName());
     ctx.setVariable("oneTimePassword", otp);
-    ctx.setVariable("sectionName", test.getSection_name());
-    ctx.setVariable("description", test.getDescription());
-    ctx.setVariable("date", test.getDate());
-    ctx.setVariable("startTime", test.getStart_time());
-    ctx.setVariable("endTime", test.getEnd_time());
-    ctx.setVariable("minutesAllowed", test.getMinutes_allowed());
-    ctx.setVariable("passingScorePercent", test.getPassing_score_percent());
     ctx.setVariable("Date", new Date());
 
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
@@ -534,18 +527,15 @@ public class MailServiceImpl implements MailService {
     String appUrl = getServerAddress();
     String recipientAddress = guestUser.getMail();
 
-    String subject = "【Pyinnyar Subuu】Removed";
+    String subject = "【Pyinnyar Subuu】Removed from the Examinee List";
 
     final Context ctx = new Context();
     ctx.setVariable("appUrl", appUrl);
     ctx.setVariable("guestName", guestUser.getName());
-    ctx.setVariable("sectionName", test.getSection_name());
     ctx.setVariable("description", test.getDescription());
     ctx.setVariable("date", test.getDate());
     ctx.setVariable("startTime", test.getStart_time());
     ctx.setVariable("endTime", test.getEnd_time());
-    ctx.setVariable("minutesAllowed", test.getMinutes_allowed());
-    ctx.setVariable("passingScorePercent", test.getPassing_score_percent());
     ctx.setVariable("Date", new Date());
 
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
@@ -904,6 +894,7 @@ public class MailServiceImpl implements MailService {
 
   }
 
+
   // guestExamLaunch
   @Override
   public void guestsendVerificationMail(String guestUserName, String email, String examID,Test testData) throws MessagingException {
@@ -936,6 +927,67 @@ public class MailServiceImpl implements MailService {
 
     this.mailSender.send(mimeMessage);
   }
+
+  // public void sendVerificationMail(UserAccount userAccount) throws
+  // MessagingException {
+  // String appUrl = getServerAddress();
+  // String token = UUID.randomUUID().toString();
+  // userService.createToken(userAccount, token, TokenType.VERIFICATION);
+
+  // String recipientAddress = userAccount.getMail();
+  // String subject = "Registration Confirmation";
+
+  // String confirmationUrl = appUrl + "/verify_password?token=" + token;
+
+  // final Context ctx = new Context();
+  // ctx.setVariable("confirmationUrl", confirmationUrl);
+  // ctx.setVariable("Date", new Date());
+  // ctx.setVariable("token", token);
+  // ctx.setVariable("appUrl", appUrl);
+
+  // final MimeMessage mimeMessage = mailSender.createMimeMessage();
+  // final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true,
+  // "UTF-8"); // true = multipart
+  // message.setSubject(subject);
+  // message.setFrom("sys@pyinnyar-subuu.com");
+  // message.setTo(recipientAddress);
+
+  // final String htmlContent = templateEngine.process("sampleCss", ctx);
+  // message.setText(htmlContent, true); // true = isHtml
+
+  // this.mailSender.send(mimeMessage);
+  // }
+
+  // public void sendVerificationMail(UserAccount userAccount) throws
+  // MessagingException {
+  // String appUrl = getServerAddress();
+  // String token = UUID.randomUUID().toString();
+  // userService.createToken(userAccount, token, TokenType.VERIFICATION);
+
+  // String recipientAddress = userAccount.getMail();
+  // String subject = "Registration Confirmation";
+
+  // String confirmationUrl = appUrl + "/verify_password?token=" + token;
+
+  // final Context ctx = new Context();
+  // ctx.setVariable("confirmationUrl", confirmationUrl);
+  // ctx.setVariable("Date", new Date());
+  // ctx.setVariable("token", token);
+  // ctx.setVariable("appUrl", appUrl);
+
+  // final MimeMessage mimeMessage = mailSender.createMimeMessage();
+  // final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true,
+  // "UTF-8"); // true = multipart
+  // message.setSubject(subject);
+  // message.setFrom("sys@pyinnyar-subuu.com");
+  // message.setTo(recipientAddress);
+
+  // final String htmlContent = templateEngine.process("sampleCss", ctx);
+  // message.setText(htmlContent, true); // true = isHtml
+
+  // this.mailSender.send(mimeMessage);
+  // }
+
 
   @Override
   public String getServerAddress() {
