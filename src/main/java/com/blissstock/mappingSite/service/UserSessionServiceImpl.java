@@ -4,9 +4,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.blissstock.mappingSite.entity.CustomUser;
+import com.blissstock.mappingSite.entity.GuestUser;
 import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.enums.UserRole;
+import com.blissstock.mappingSite.repository.GuestUserRepository;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,9 @@ public class UserSessionServiceImpl implements UserSessionService {
 
   @Autowired
   UserAccountRepository userAccountRepository;
+
+  @Autowired
+  GuestUserRepository guestUserRepository;
 
   @Autowired
   UserService userService;
@@ -91,5 +96,14 @@ public class UserSessionServiceImpl implements UserSessionService {
   @Override
   public UserInfo getUserInfo() {
     return userService.getUserInfoByID(getId());
+  }
+
+  @Override
+  public GuestUser getGuestUserAccount() {
+    Authentication auth = SecurityContextHolder
+        .getContext()
+        .getAuthentication();
+    String email = auth.getName();
+    return guestUserRepository.findByMail(email);
   }
 }
