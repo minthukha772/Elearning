@@ -182,6 +182,7 @@ $.ajax({
     },
     success: function(data) {
       currentTestInfo=data;
+
         console.log(data);
         // handle success response
     },
@@ -200,8 +201,10 @@ $.ajax({
       let createExam = document.querySelector('.create-exam-container');
       createExam.classList.remove('d-none');
       var datearray = test.date.split("T");
-
       document.getElementById("teacher_name").value = test.userInfo.uid;
+
+      
+
       fetch("/admin/get-course-by-teacher?teacher_id=" + test.userInfo.uid, {
         method: "GET",
         headers: {
@@ -233,19 +236,21 @@ $.ajax({
     function submitData(submitType) {
       var courseDropDown = document.getElementById("course_name");
       var courseName = courseDropDown.value;
-      var teacherDropDown = document.getElementById("teacher_name");    
-      var student_guest= document.querySelector('input[name="student-guest"]:checked').value; 
+           var teacherDropDown = document.getElementById("teacher_name");    
+         var student_guest= document.querySelector('input[name="student-guest"]:checked').value; 
       var teacherName = teacherDropDown.value;
-      var courseId = courseDropDown.options[courseDropDown.selectedIndex].id;
-      var teacherId = teacherDropDown.options[teacherDropDown.selectedIndex].id;
-      if (teacherName == "Choose Teacher" && student_guest == "student") {
+      // var courseId = courseDropDown.options[courseDropDown.selectedIndex].id;
+      // var teacherId = teacherDropDown.options[teacherDropDown.selectedIndex].id;
+      var courseId = courseDropDown.options[courseDropDown.selectedIndex]?.id;
+      var teacherId = teacherDropDown.options[teacherDropDown.selectedIndex]?.id;
+      if (teacherName == "Choose Teacher" && student_guest == "student")    {
         document.getElementById("teacher_warning").style.display = 'block';
         return;
       } else {
         document.getElementById("teacher_warning").style.display = 'none';
       }
 
-      if (courseName == "Choose Course" && student_guest=="student") {
+      if (courseName == "Choose Course" && student_guest=="student")   {
         document.getElementById("course_warning").style.display = 'block';
         return;
       } else {
@@ -451,11 +456,13 @@ if(student_guest == "guest"){
          $("#sure_launch_exam_M0006").hide();
         $("#sure_launch_exam_M0007").hide();
          $("#launchExam").hide();
+         $("#ExamLaunched").hide();
 
          $("#guest").click(function(){
           $("#teacher_warning").hide(); 
            $("#teacher_name").hide();
             $("#course_name").hide();
+            $("#ExamLaunched").show();
            $("#course_warning").hide();
            $("#teacher_name_label").hide();
           $("#course_name_label").hide();
@@ -482,17 +489,20 @@ if(student_guest == "guest"){
          }); 
           
         $("#student").click(function(){
+           
            $("#teacher_name").show();
             $("#course_name").show();
             $("#teacher_warning").show();
            $("#teacher_name_label").show(); 
            $("#course_name_label").show();
+           $("#ExamLaunched").hide();
          $("#launchExam").hide();
           console.log(document.querySelector('input[name="student-guest"]:checked').value)
          });
          $("#launchExam").click(function(){
             $("#sure_launch_exam").show();
          }); 
+
  }); 
   </script>
   <!--student_guest-->
@@ -533,7 +543,7 @@ if(student_guest == "guest"){
             <option id="questionCreated" value="Questions Created">Questions Created</option>
             <option value="Marking">Marking</option>
             <option value="Result Released">Result Released</option> 
-            <option value="Exam Launched">Exam Launched</option>  
+            <option id="ExamLaunched" value="Exam Launched">Exam Launched</option>  
           </select>
         </div>
         <div style="color: red; font-size: 12px; display: none;" id="exam_status_warning">Please Choose Exam Status
