@@ -61,7 +61,7 @@
                 </div>
             </div>
             <div id="csvErrorMsgBox"
-                class=" csvErrorMsgBox d-none justify-content-center align-items-center animate__animated border border-danger p-1 mb-2">
+                class=" csvErrorMsgBox d-none justify-content-center align-items-center animate__animated border p-1 mb-2">
             </div>
             <div class=" w-100 mb-2 border d-flex justify-content-center align-items-center"
                 style=" height: 200px; border-style: dotted;">
@@ -108,7 +108,9 @@
                     Add All Enrolled Students
                 </div>
                 <div class="btn btn-success btn-sm mt-2" id="add_student"
-                    th:if="${exam_status != 'Marking' and exam_status != 'Result Released'}">Add Custom Students</div>
+                    th:if="${exam_status != 'Marking' and exam_status != 'Result Released'}">
+                    Add Custom Students
+                </div>
             </div>
         </div>
 
@@ -142,9 +144,21 @@
                                 <img th:src="@{/images/profile.png}" alt="" class="img-fluid rounded-circle"
                                     style="width: 50px; height: 50px" />
 
+                                <!-- delete button for student examinee -->
                                 <form
                                     th:action="@{'/delete-teststudent/' + ${test_id} + '/' + ${test_examinee.userInfo.uid} + '/' + ${user_role}}"
-                                    method="POST" class="deleteForm">
+                                    th:if="${exam_target == null}" method="POST" class="deleteForm">
+                                    <button type="submit" onclick="showConfirmation(event)"
+                                        class="rounded-circle bg-danger text-white d-flex justify-content-center align-items-center fw-bold"
+                                        style="cursor: pointer; width: 25px; height: 25px">
+                                        <i class="fa-solid fa-xmark"></i>
+                                    </button>
+                                </form>
+
+                                <!-- delete button for guest examinee -->
+                                <form
+                                    th:action="@{'/delete-teststudent/' + ${test_id} + '/' + ${test_examinee.guestUserInfo.guest_id} + '/' + ${user_role}}"
+                                    th:if="${exam_target == 1}" method="POST" class="deleteForm">
                                     <button type="submit" onclick="showConfirmation(event)"
                                         class="rounded-circle bg-danger text-white d-flex justify-content-center align-items-center fw-bold"
                                         style="cursor: pointer; width: 25px; height: 25px">
@@ -173,24 +187,48 @@
                                 }
                             </script>
 
-
                             <div class="mt-3">
-                                <small class="fw-bold name" th:text="${test_examinee.userInfo.userName}"></small><br />
-                                <small class="fw-bold ph-no" th:text="${test_examinee.userInfo.phoneNo}"></small><br />
-                                <small class="fw-bold mail"
-                                    th:text="${test_examinee.userInfo.userAccount.mail}"></small><br />
+                                <small class="fw-bold name">
+                                    <span th:if="${exam_target == 1}"
+                                        th:text="${test_examinee.guestUserInfo.name}"></span>
+                                    <span th:if="${exam_target == null}"
+                                        th:text="${test_examinee.userInfo.userName}"></span>
+                                </small><br />
+                                <small class="fw-bold ph-no">
+                                    <span th:if="${exam_target == 1}"
+                                        th:text="${test_examinee.guestUserInfo.phone_no}"></span>
+                                    <span th:if="${exam_target == null}"
+                                        th:text="${test_examinee.userInfo.phoneNo}"></span>
+                                </small><br />
+                                <small class="fw-bold mail">
+                                    <span th:if="${exam_target == 1}"
+                                        th:text="${test_examinee.guestUserInfo.mail}"></span>
+                                    <span th:if="${exam_target == null}"
+                                        th:text="${test_examinee.userInfo.userAccount.mail}"></span>
+                                </small><br />
                                 <small class="fw-bold text-muted">Checked Questions (
                                     <span th:text="${test_examinee.total_unmark_answer}"></span> /
                                     <span th:text="${test_examinee.total_free_answer}"></span>
                                     )</small>
                                 <div class="text-end mt-2">
-                                    <small class="fw-bold">
+                                    <!-- go to answers link for student examinee -->
+                                    <small class="fw-bold" th:if="${exam_target == null}">
                                         <a class="adminLink text-success text-decoration-underline"
-                                            th:href="'/admin/exam/' + ${test_examinee.test.test_id} + '/student/'+ ${test_examinee.userInfo.uid}">Go
-                                            To Answers</a>
+                                            th:href="'/admin/exam/' + ${test_examinee.test.test_id} + '/student/'+ ${test_examinee.userInfo.uid}">
+                                            Go To Answers
+                                        </a>
                                         <a class="teacherLink text-success text-decoration-underline"
-                                            th:href="'/teacher/exam/' + ${test_examinee.test.test_id} + '/student/'+ ${test_examinee.userInfo.uid}">Go
-                                            To Answers</a>
+                                            th:href="'/teacher/exam/' + ${test_examinee.test.test_id} + '/student/'+ ${test_examinee.userInfo.uid}">
+                                            Go To Answers
+                                        </a>
+                                    </small>
+
+                                    <!-- go to answers link for guest examinee -->
+                                    <small class="fw-bold" th:if="${exam_target == 1}">
+                                        <a class="adminLink text-success text-decoration-underline"
+                                            th:href="'/admin/exam/' + ${test_examinee.test.test_id} + '/student/'+ ${test_examinee.guestUserInfo.guest_id}">
+                                            Go To Answers
+                                        </a>
                                     </small>
                                 </div>
                             </div>
@@ -308,7 +346,7 @@
             })
         }
 
-        // Add CSV file
+        // Check CSV data and send data to backend for Add Multiple Guest Dialog
         const csvUploadForm = document.querySelector('#csvUploadForm')
         const csvErrorMsgBox = document.getElementById("csvErrorMsgBox")
 
@@ -329,11 +367,12 @@
                 return;
             }
 
+            var csvdata;
             var ExamGuestUsers = [];
             var reader = new FileReader();
             reader.readAsText(file);
             reader.onload = function (event) {
-                var csvdata = event.target.result;
+                csvdata = event.target.result;
 
                 // Check if csv file has data or not
                 if (csvdata == "") {
@@ -348,7 +387,7 @@
                 }
 
                 var rowData = csvdata.split('\n');
-            
+
 
                 // Check if csv file has more than 31 rows(including headers)
                 if (rowData.length > 32) {
@@ -358,6 +397,7 @@
 
                 // Check if csv file's headers are correct
                 csvFileHeaders = rowData[0].split(',');
+                console.log(csvFileHeaders)
                 if (csvFileHeaders[0] != "Name" || csvFileHeaders[1] != "Email" || csvFileHeaders[2] != "PhoneNumber") {
                     createCsvErrorMsg("There is an error with the uploaded CSV file. Row Headers Must be match as described in CSV Import Item's Specification.");
                     return;
@@ -370,6 +410,7 @@
                     return;
                 }
 
+                var searchValue;
                 for (var row = 1; row < (rowData.length - 1); row++) {
                     rowColData = rowData[row].split(',');
                     ExamGuestUsers.push(rowColData);
@@ -379,74 +420,23 @@
                         createCsvErrorMsg("There is an error with the uploaded CSV file. Please check the CSV file content and upload again.");
                         return;
                     }
-
-                    // Check if email is already registered
-                    var searchValue = rowColData[1];
-                    fetch("/" + url + "/is-email-registered?email=" + encodeURIComponent(searchValue), {
-                        method: "GET",
-                        headers: { "Content-Type": "application/json" }
-                    }).then(response => response.json())
-                        .then(data => {
-                            console.log(data);
-
-                        })
                 }
+
+                data = {
+                    test_id: test_id,
+                    exam_guest_users: ExamGuestUsers
+                };
+                data = JSON.stringify(data);
+                console.log(data);
+                fetch("/" + url + "/set-multi-guest-examinee", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: data
+                }).then(response => {
+                    createCsvSuccessMsg("Successfully add multiple guest user");
+                    window.location.reload();
+                })
             };
-
-            data = {
-                test_id: test_id,
-                exam_guest_users: ExamGuestUsers
-            };
-            console.log(ExamGuestUsers);
-            console.log(ExamGuestUsers[1]);
-            data = JSON.stringify(data);
-            console.log(data);
-            console.log(data);
-            fetch("/" + url + "/set-multi-guest-examinee", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: data
-            }).then(response => {
-                // window.location.reload();
-            })
-
-            // let formData = new FormData();
-            // formData.append('file', file);
-            // formData.append('test_id', test_id);
-            // fetch("/" + url + "/set-multi-guest-examinee", {
-            //     method: 'POST',
-            //     body: formData
-            // })
-            //     // .then(resp => resp.json())
-            //     // .then(data => {
-            //     //     if (data.errors) {
-            //     //         alert(data.errors)
-            //     //     }
-            //     //     else {
-            //     //         console.log(data)
-            //     //     }
-            //     // })
-
-            //     .then(response => {
-            //         window.location.reload();
-            //     })
-
-            // fetch("/" + url + "/set-multi-guest-examinee", {
-            //     method: 'POST',
-            //     headers: { "Content-Type": "multipart/form-data" },
-            //     body: formData
-            // })
-            //     .then(response => response.json())
-            //     .then(data => {
-            //         // Handle the response data here
-            //         console.log(data);
-            //         // You can update your UI or perform other actions based on the response
-            //         window.location.reload();
-            //     })
-            //     .catch(error => {
-            //         // Handle errors if the request fails
-            //         console.error("Error:", error);
-            //     });
         })
 
         // Create csv error message to put in csv error message box
@@ -455,7 +445,18 @@
             csvErrorMsg.classList.add("mb-0", "text-danger", "text-center")
             csvErrorMsg.textContent = errorMsg;
             csvErrorMsgBox.appendChild(csvErrorMsg);
-            csvErrorMsgBox.classList.add("animate__fadeIn");
+            csvErrorMsgBox.classList.add("animate__fadeIn", "border-danger");
+            csvErrorMsgBox.classList.replace("d-none", "d-flex");
+            return;
+        }
+
+        // Create csv success message to put in csv error message box
+        function createCsvSuccessMsg(successMsg) {
+            const csvSuccessMsg = document.createElement("p");
+            csvSuccessMsg.classList.add("mb-0", "text-success", "text-center")
+            csvSuccessMsg.textContent = successMsg;
+            csvErrorMsgBox.appendChild(csvSuccessMsg);
+            csvErrorMsgBox.classList.add("animate__fadeIn", "border-success");
             csvErrorMsgBox.classList.replace("d-none", "d-flex");
             return;
         }
@@ -477,7 +478,7 @@
 
         // Email validation function
         function validateEmail(email) {
-            const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
+            const emailRegex = /^[\w+-]+(\.[\w+-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
             return emailRegex.test(email);
         }
 

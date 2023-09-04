@@ -9,9 +9,8 @@ import com.blissstock.mappingSite.entity.GuestUser;
 
 public interface GuestUserRepository extends JpaRepository<GuestUser, Long> {
 
-
     @Query(value = "Select * from guest where mail = :mail limit 1", nativeQuery = true)
-        public GuestUser getGuestUserbyEmail(@Param("mail") String mail);
+    public GuestUser getGuestUserbyEmail(@Param("mail") String mail);
 
     @Query(value = "Select * from guest where guest_id = :guest_id", nativeQuery = true)
     public GuestUser findByGuestId(@Param("guest_id") Long guest_id);
@@ -21,7 +20,7 @@ public interface GuestUserRepository extends JpaRepository<GuestUser, Long> {
             "JOIN te.test t " +
             "WHERE gu.mail = :guestEmail " +
             "AND t.test_id = :testId")
-    GuestUser findGuestUserByGuestEmailAndTestId(@Param("guestEmail") String guestEmail,
+    public GuestUser findGuestUserByGuestEmailAndTestId(@Param("guestEmail") String guestEmail,
             @Param("testId") Long testId);
-    
+
 }

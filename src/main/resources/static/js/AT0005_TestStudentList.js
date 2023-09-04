@@ -32,7 +32,6 @@ add_multiple_guest_cancel.addEventListener('click', () => {
   setTimeout(() => {
     add_multiple_guest_box.classList.add('d-none');
     removeCsvErrorMsg();
-    // csvErrorMsgBox.classList.contains("d-none") ? null : csvErrorMsgBox.classList.add("d-none");
   }, 1000);
 })
 // Add Multiple Guest Dialog end
@@ -47,6 +46,12 @@ function removeCsvErrorMsg() {
   const noError = csvErrorMsgBox.classList.contains("d-none");
   if (!noError) {
     csvErrorMsgBox.classList.replace("d-flex", "d-none");
+    if (csvErrorMsgBox.classList.contains("border-danger")) {
+      csvErrorMsgBox.classList.remove("border-danger");
+    }
+    if (csvErrorMsgBox.classList.contains("border-success")) {
+      csvErrorMsgBox.classList.remove("border-success");
+    }
     removeAllChildNodes(csvErrorMsgBox);
   }
 }
@@ -83,13 +88,6 @@ function showFileName() {
   }
 }
 // CSV filename show end
-
-// CSV file upload function start
-// function setAction(form) {
-//   form.action = "/" + url + "/set-multi-guest-examinee";
-//   alert(form.action);
-// }
-// CSV file upload function end
 
 let student_search_icon = document.querySelector('#student_search_icon');
 let student_search = document.querySelector('#student_search');

@@ -168,7 +168,7 @@ public class CheckEmailController {
         emailRegister.getEmail() +
         "/");
   }
-
+                
   /// A Get Method For Email Check Before Register
   @GetMapping(path = { "/check_email/reset_password" })
   public String passwordResetForm(Model model, String error, String email) {
