@@ -2,15 +2,15 @@ package com.blissstock.mappingSite.model;
 
 import java.util.List;
 
-public class QuestionAndCorrectAnswerAndStudentAnswer {
+public class QuestionAndCorrectAnswerAndExamineeAnswer {
     private long id;
-    private Integer student_answer_id;
-    private String student_answer;
-    private String student_answer_link;
+    private Integer examinee_answer_id;
+    private String examinee_answer;
+    private String examinee_answer_link;
     private String question_text;
     private String question_materials;
     private String question_materials_type;
-    private List<StudentChoiceModel> choices;
+    private List<ExamineeChoiceModel> choices;
     private String question_type;
     private Integer maximum_mark;
     private Integer acquired_mark;
@@ -49,11 +49,11 @@ public class QuestionAndCorrectAnswerAndStudentAnswer {
         this.question_materials_type = question_materials_type;
     }
 
-    public List<StudentChoiceModel> getChoices() {
+    public List<ExamineeChoiceModel> getChoices() {
         return choices;
     }
 
-    public void setChoices(List<StudentChoiceModel> choices) {
+    public void setChoices(List<ExamineeChoiceModel> choices) {
         this.choices = choices;
     }
 
@@ -89,30 +89,30 @@ public class QuestionAndCorrectAnswerAndStudentAnswer {
         this.markedStatus = markedStatus;
     }
 
-    public String getStudent_answer() {
-        return student_answer;
+    public String getExaminee_answer() {
+        return examinee_answer;
     }
 
-    public void setStudent_answer(String student_answer) {
-        this.student_answer = student_answer;
+    public void setExaminee_answer(String examinee_answer) {
+        this.examinee_answer = examinee_answer;
     }
 
-    public String getStudent_answer_link() {
-        return student_answer_link;
+    public String getExaminee_answer_link() {
+        return examinee_answer_link;
     }
 
-    public void setStudent_answer_link(String student_answer_link) {
-        this.student_answer_link = student_answer_link;
+    public void setExaminee_answer_link(String examinee_answer_link) {
+        this.examinee_answer_link = examinee_answer_link;
     }
 
-    public QuestionAndCorrectAnswerAndStudentAnswer(long id, Integer student_answer_id, String student_answer,
-            String student_answer_link,
+    public QuestionAndCorrectAnswerAndExamineeAnswer(long id, Integer examinee_answer_id, String examinee_answer,
+            String examinee_answer_link,
             String question_text, String question_materials, String question_materials_type,
-            List<StudentChoiceModel> choices, String question_type, Integer maximum_mark, Integer acquired_mark, String markedStatus) {
+            List<ExamineeChoiceModel> choices, String question_type, Integer maximum_mark, Integer acquired_mark, String markedStatus) {
         this.id = id;
-        this.student_answer_id = student_answer_id;
-        this.student_answer = student_answer;
-        this.student_answer_link = student_answer_link;
+        this.examinee_answer_id = examinee_answer_id;
+        this.examinee_answer = examinee_answer;
+        this.examinee_answer_link = examinee_answer_link;
         this.question_text = question_text;
         this.question_materials = question_materials;
         this.question_materials_type = question_materials_type;
@@ -123,12 +123,12 @@ public class QuestionAndCorrectAnswerAndStudentAnswer {
         this.markedStatus = markedStatus;
     }
 
-    public Integer getStudent_answer_id() {
-        return student_answer_id;
+    public Integer getExaminee_answer_id() {
+        return examinee_answer_id;
     }
 
-    public void setStudent_answer_id(Integer student_answer_id) {
-        this.student_answer_id = student_answer_id;
+    public void setExaminee_answer_id(Integer examinee_answer_id) {
+        this.examinee_answer_id = examinee_answer_id;
     }
 
 }
