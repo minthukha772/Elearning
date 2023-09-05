@@ -39,6 +39,10 @@ public interface TestExamineeAnswerRepository extends JpaRepository<TestExaminee
         public TestExamineeAnswer getStudentAnswer(@Param("student_account_id") Long student_account_id,
                         @Param("question_id") Long question_id);
 
+        @Query(value = "Select * from test_examinee_answer where examinee_guest_id = :guest_id and question_id = :question_id limit 1", nativeQuery = true)
+        public TestExamineeAnswer getGuestAnswer(@Param("guest_id") Long guest_id,
+                        @Param("question_id") Long question_id);
+
         @Query(value = "Select count(examinee_answer_id) from test_examinee_answer where marked_status = 'MARKING' and test_id = :test_id", nativeQuery = true)
         public Integer getMarkingQuestionCount(@Param("test_id") Long test_id);
 

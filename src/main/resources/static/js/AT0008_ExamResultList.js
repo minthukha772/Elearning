@@ -24,6 +24,59 @@ $( "select" ).change(function() {
       $('.card[data-custom-type="' + selectedEventType + '"]').removeClass('d-none');
   }
 });
+// const nodemailer = require('nodemailer');
+
+// async function sendExamResultEmail(recipientEmail, guestName, examTitle, examDateTime, score, passMargin) {
+//     const transporter = nodemailer.createTransport({
+//         service: 'smtp', // e.g., 'gmail'
+//         auth: {
+//             user: 'sys@pyinyar-subuu.com',
+//             pass: 'blissstockadmin123',
+//         },
+//     });
+        
+//     const mailOptions = {
+//         from: 'sys@pyinyar-subuu.com',
+//         to: recipientEmail,
+//         subject: '【Pyinnyar Subuu】Exam result announce',
+        // text: `Dear Mr./Ms. ${guestName}\n\n` +
+        //       'Hello, We are from Pyinnyar Subuu Team.\n\n' +
+        //       'We are excited to announce that your exam result is officially announced.\n\n' +
+        //       `Exam Title: ${examTitle}\n` +
+        //       `Exam Date & Time: ${examDateTime}\n` +
+        //           Time Allowance :$
+        //       `Your Score: ${score}%\n` +
+        //       `Pass Margin: ${passMargin}%\n\n` +
+        //       '============\n' +
+        //       'Result: PASS\n' +
+        //       '============\n\n' +
+        //       '* Depending on the email software you are using, the URL may be broken in the middle.\n' +
+        //       'In that case, enter the first "https: //" to the last alphanumerical in the browser.\n' +
+        //       'Please copy and paste directly to access.\n\n' +
+        //       '* This email is delivered from the send-only email address.\n' +
+        //       'Please note that we will not be able to answer even if you reply as it is.\n\n' +
+        //       'Thank you for using our service!\n\n' +
+        //       'Pyinnyar Subuu\n' +
+        //       'Bliss Stock JP\n',;
+
+
+//     try {
+//         const info = await transporter.sendMail(mailOptions);
+//         console.log('Email sent:', info.response);
+//     } catch (error) {
+//         console.error('Error sending email:', error);
+//     }
+// }
+
+// // Example usage
+// sendExamResultEmail(
+//     'guest@example.com',
+//     'Guest\'s Name',
+//     'Exam Title',
+//     '2023/08/16 10:00 AM',
+//     '75',
+//     '60'
+// );
 
 
 

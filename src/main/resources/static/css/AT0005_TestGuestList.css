@@ -60,6 +60,15 @@ body {
     width: 500px !important;
 }
 
+/* Add Multiple Guest */
+.add-multi-guest-content {
+    width: 500px !important;
+}
+
+.csvErrorMsgBox {
+    height: 70px;
+}
+
 #add_guest_search:focus {
     outline: none;
 }
