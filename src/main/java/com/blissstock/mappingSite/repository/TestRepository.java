@@ -78,5 +78,9 @@ public interface TestRepository extends JpaRepository<Test, Long> {
         //  @Modifying
         //  @Query(value = "INSERT IGNORE INTO test (  user_id, course_id,description, student_guest, section_name, minutes_allowed, passing_score_percent, date, start_time, end_time, exam_status, is_delete, deleted_at, exam_target, exam_announce) VALUES (1, 1, :description, :student_guest, :section_name, :minutes_allowed, :passing_score_percent, :date, :start_time, :end_time, :exam_status, :is_delete, :deleted_at, :exam_target, :exam_announce)", nativeQuery = true)
         //  void insertTest( @Param("description") String description, @Param("student_guest") String student_guest, @Param("section_name") String section_name, @Param("minutes_allowed") Integer minutes_allowed, @Param("passing_score_percent") Integer passing_score_percent, @Param("date") Date date, @Param("start_time") String start_time, @Param("end_time") String end_time, @Param("exam_status") String exam_status, @Param("is_delete") String is_delete, @Param("deleted_at") String deleted_at, @Param("exam_target") Integer exam_target, @Param("exam_announce") Integer exam_announce);
+
+        @Query(value = "Select * from test where exam_target = 1", nativeQuery = true)
+        public Test getTargetByID();
+
 }
 
