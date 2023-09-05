@@ -15,6 +15,7 @@ import javax.mail.internet.MimeMessage;
 import com.blissstock.mappingSite.config.GmailConfig;
 
 import com.blissstock.mappingSite.controller.CourseDetailsController;
+import com.blissstock.mappingSite.controller.TestInfo;
 import com.blissstock.mappingSite.entity.AddAdmin;
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.GuestUser;
@@ -526,18 +527,15 @@ public class MailServiceImpl implements MailService {
     String appUrl = getServerAddress();
     String recipientAddress = guestUser.getMail();
 
-    String subject = "【Pyinnyar Subuu】Removed";
+    String subject = "【Pyinnyar Subuu】Removed from the Examinee List";
 
     final Context ctx = new Context();
     ctx.setVariable("appUrl", appUrl);
     ctx.setVariable("guestName", guestUser.getName());
-    ctx.setVariable("sectionName", test.getSection_name());
     ctx.setVariable("description", test.getDescription());
     ctx.setVariable("date", test.getDate());
     ctx.setVariable("startTime", test.getStart_time());
     ctx.setVariable("endTime", test.getEnd_time());
-    ctx.setVariable("minutesAllowed", test.getMinutes_allowed());
-    ctx.setVariable("passingScorePercent", test.getPassing_score_percent());
     ctx.setVariable("Date", new Date());
 
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
@@ -867,19 +865,20 @@ public class MailServiceImpl implements MailService {
   }
 
   @Override
-  public void guestResetOneTimePassword(String guestUserName, String email, String examID, String guestUserPhoneNumber, String oneTimePassword) throws MessagingException {
-    String appUrl = getServerAddress() + "/" + email + "_" +examID;
-    
+  public void guestResetOneTimePassword(String guestUserName, String email, String examID, String guestUserPhoneNumber,
+      String oneTimePassword) throws MessagingException {
+    String appUrl = getServerAddress() + "/" + email + "_" + examID;
+
     logger.info("Guest one-time password renew request from :" + email);
     String recipientAddress = email;
     String subject = "【Pyinnyar Subuu】You have requested to renew your one-time password.";
-    
+
     final Context ctx = new Context();
-    
+
     ctx.setVariable("guestusername", guestUserName);
     ctx.setVariable("guestphonenumber", guestUserPhoneNumber);
     ctx.setVariable("onetimepassword", oneTimePassword);
-    ctx.setVariable("Date", new Date());    
+    ctx.setVariable("Date", new Date());
     ctx.setVariable("appUrl", appUrl);
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
@@ -893,6 +892,40 @@ public class MailServiceImpl implements MailService {
 
     this.mailSender.send(mimeMessage);
 
+  }
+
+
+  // guestExamLaunch
+  @Override
+  public void guestsendVerificationMail(String guestUserName, String email, String examID,Test testData) throws MessagingException {
+    logger.info("Guest exam request from :{} with exam id :{}, username:{}", email, examID, guestUserName);
+    String ExamLink = getServerAddress() + "/guest-exam" + "/" + email + "_" + examID;
+
+    String recipientAddress = email;
+    String subject = "【Pyinnyar Subuu】Exam is already lunched and please take the exam";
+
+    final Context ctx = new Context();
+    ctx.setVariable("guestName", guestUserName);
+     ctx.setVariable("email", email);
+     ctx.setVariable("examID", examID);
+    ctx.setVariable("Date", new Date());
+    ctx.setVariable("ExamLink", ExamLink);
+    ctx.setVariable("startTime", testData.getStart_time());
+     ctx.setVariable("endTime", testData.getEnd_time());
+     ctx.setVariable("date", testData.getDate());
+     ctx.setVariable("description", testData.getDescription());
+      
+     
+     final MimeMessage mimeMessage = mailSender.createMimeMessage();
+    final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
+    message.setSubject(subject);
+    message.setFrom("sys@pyinnyar-subuu.com");
+    message.setTo(recipientAddress);
+
+    final String htmlContent = templateEngine.process("GuestExam", ctx);
+    message.setText(htmlContent, true); // true = isHtml
+
+    this.mailSender.send(mimeMessage);
   }
 
   // public void sendVerificationMail(UserAccount userAccount) throws
@@ -954,6 +987,7 @@ public class MailServiceImpl implements MailService {
 
   // this.mailSender.send(mimeMessage);
   // }
+
 
   @Override
   public String getServerAddress() {

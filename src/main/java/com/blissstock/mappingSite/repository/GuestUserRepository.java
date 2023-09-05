@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.blissstock.mappingSite.entity.GuestUser;
+import com.blissstock.mappingSite.entity.UserAccount;
 
 public interface GuestUserRepository extends JpaRepository<GuestUser, Long> {
 
@@ -20,7 +21,10 @@ public interface GuestUserRepository extends JpaRepository<GuestUser, Long> {
             "JOIN te.test t " +
             "WHERE gu.mail = :guestEmail " +
             "AND t.test_id = :testId")
-    GuestUser findGuestUserByGuestEmailAndTestId(@Param("guestEmail") String guestEmail,
+    public GuestUser findGuestUserByGuestEmailAndTestId(@Param("guestEmail") String guestEmail,
             @Param("testId") Long testId);
+
+
+    GuestUser findByMail(String mail);
 
 }

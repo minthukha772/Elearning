@@ -51,6 +51,7 @@ import com.blissstock.mappingSite.repository.TestResultRepository;
 import com.blissstock.mappingSite.repository.TestQuestionCorrectAnswerRepositoy;
 import com.blissstock.mappingSite.repository.TestQuestionRepository;
 import com.blissstock.mappingSite.repository.TestRepository;
+import com.blissstock.mappingSite.repository.GuestUserRepository;
 import com.blissstock.mappingSite.repository.TestExamineeAnswerRepository;
 import com.blissstock.mappingSite.repository.TestExamineeRepository;
 import com.blissstock.mappingSite.repository.UserInfoRepository;
@@ -100,6 +101,9 @@ public class TestQuestionController {
 
     @Autowired
     TestResultRepository resultRepository;
+
+    @Autowired
+    GuestUserRepository guestUserRepository;
 
     @Valid
     @GetMapping(value = { "/teacher/exam/{test_id}/questions", "/admin/exam/{test_id}/questions" })
@@ -251,7 +255,6 @@ public class TestQuestionController {
                     acquired_mark = testQuestion.getMaximum_mark();
                 }
             }
-
             else {
                 TestExamineeAnswer TestExamineeAnswer = TestExamineeAnswerRepository.getStudentAnswer(student_id,
                         testQuestion.getId());
@@ -600,12 +603,15 @@ public class TestQuestionController {
 
 
     @Valid
-    @GetMapping(value = { "/guest-exam/76/questions" })
-    private String getGuestUserQuestions(@PathVariable Long test_id, Model model)
+    @GetMapping(value = { "/guest-exam/{test_id}/questions" })
+    private String getGuestUserQuestions(@PathVariable Long test_id,Model model)
             throws ParseException, JsonMappingException, JsonProcessingException {
-        Long userID = getUid();
-        logger.info("Called getGuestQuestions with parameter(user_id={})", userID);
+        Long guestUserID = getGuestUserID();
+        logger.info("Called getGuestQuestions with parameter(user_id={})", guestUserID);
         logger.info("Initiate Operation Retrieve Table test by Query: test_id={}", test_id);
+        Test target = testRepository.getTargetByID();
+
+    if(target.getExam_target() == 1){
         Test testinfo = testRepository.getTestByID(test_id);
         logger.info("Operation Retrieve Table test by Query: test_id={}. Result List: testinfo={} | Success", test_id,
                 testinfo);
@@ -613,7 +619,7 @@ public class TestQuestionController {
         LocalDate convertedExamDate = examDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         LocalDate currentDate = LocalDate.now();
         Long guestuserId = userSessionService.getId();
-
+        
         logger.info("Initiate Operation Retrieve Table test_student by Query: test_id={}, guestuserId={}", test_id,
                 guestuserId);
         TestExaminee studentInfo = TestExamineeRepository.findByTestIdAndUidGuest(test_id, guestuserId);
@@ -844,8 +850,13 @@ public class TestQuestionController {
         }
 
         model.addAttribute("exam_announce", examAnnouncement);
-        logger.info("Called getGuestUserQuestions with parameter(user_id={}) Success", userID);
+        logger.info("Called getGuestUserQuestions with parameter(user_id={}) Success", guestUserID);
         return "GU0002_GuestUser.html";
+    }else{
+        return "Your taregt_exam ID is wrong";
+    }
+
+        
     }
 
     @Valid
@@ -1060,4 +1071,10 @@ public class TestQuestionController {
         Long uid = userSessionService.getUserAccount().getAccountId();
         return uid;
     }
+
+    private Long getGuestUserID(){
+        Long guid = userSessionService.getGuestUserAccount().getGuest_id();
+        return guid;
+    }
+
 }

@@ -23,6 +23,8 @@
   <script th:inline="javascript">
     var type;
     var test_id;
+    var currentTestInfo;
+    var currentTest;
 
     function launchExam() {
       console.log("launchExamOK");
@@ -73,6 +75,55 @@
 
       }
     }
+    function launchExam()  {
+    console.log("launchExamOK");
+
+  const dialoglaunchOKBtn = document.getElementById("launchExamOK");
+ $("#launchExamOK").click(function () {
+             closeDialogOK();
+        });
+  function closeDialogOK() {
+            const dialogOK = document.getElementById("sure_launch_exam");
+             dialogOK.style.visibility = "hidden";
+       }
+       
+    // if (!currentTestInfo) {
+    //     alert("Checking Data please wait");
+    // }
+    if (currentTestInfo) {
+        if (currentTestInfo.questionCount == 0) {
+            // show error
+             alert("Exam can launch after the Questions are Created!"); 
+            return;
+        }
+        if (currentTestInfo.examineeCount == 0) {
+            // show error
+            alert("There is no examinee in this exam, please check again.");
+            return;
+        }
+        $.ajax({
+    url: "/admin/launchExam",
+    type: "POST",
+    data: {
+        test_id: currentTestInfo.test_id
+    },
+    success: function(data) {
+      
+        console.log(data);
+
+         document.getElementById("sure_launch_exam").style.display = 'none'; 
+
+        //hide
+  
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+        console.log(textStatus, errorThrown);
+        // handle error response
+    }
+});
+
+    }        
+}
     $(document).ready(() => {
       var role = /*[[${role}]]*/ "default";
       if (role == "admin") {
@@ -171,6 +222,7 @@
 
     function setDataToEditDialog(test) {
 
+
       currentTest = test;
       $.ajax({
         url: "/admin/testInfo",
@@ -190,6 +242,27 @@
       });
 
       var course_dropdown = $("#course_name");
+
+currentTest=test;
+$.ajax({
+    url: "/admin/testInfo",
+    type: "GET",
+    data: {
+        test_id: test.test_id
+    },
+    success: function(data) {
+      currentTestInfo=data;
+        console.log(data);
+        // handle success response
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+        console.log(textStatus, errorThrown);
+        // handle error response
+    }
+});
+
+  var course_dropdown = $("#course_name");
+
       course_dropdown.empty();
       course_dropdown.append("<option value='Choose Course' selected><small>Choose Course</small></option>");
 
@@ -219,8 +292,10 @@
       document.getElementById("exam_date").value = datearray[0];
       document.getElementById("exam_start_time").value = test.start_time;
       document.getElementById("exam_end_time").value = test.end_time;
+
       $("#exam_status_dropdown").css("display", "block");
-    }
+
+
 
     function setDataToDeleteDialog(test) {
       test_id = test.test_id;
@@ -236,7 +311,7 @@
       var teacherName = teacherDropDown.value;
       var courseId = courseDropDown.options[courseDropDown.selectedIndex].id;
       var teacherId = teacherDropDown.options[teacherDropDown.selectedIndex].id;
-      if (teacherName == "Choose Teacher" && student_guest=="student") {
+      if (teacherName == "Choose Teacher" && student_guest == "student") {
         document.getElementById("teacher_warning").style.display = 'block';
         return;
       } else {
@@ -336,6 +411,7 @@
       }
 
       if (submitType == "Created") {
+
         data = {
           student_guest: student_guest,
           teacher_id: teacherId,
@@ -391,7 +467,9 @@
           }
         })
       }
+
     }
+
     $(document).ready(function () {
       $("#search_date_btn").click(function () {
         var fromDate = document.getElementById("exam_from").value;
@@ -630,6 +708,7 @@
 
         <!--M0006(LaunchExam)-->
 
+
         <!--M0007(LaunchExam)-->
         <div class="dialog-sure-launch_M0007" id="sure_launch_exam_M0007">
           <div class="dialog-launch_M0007" id="dialog-launch_M0007">
@@ -651,6 +730,7 @@
         <script>
           const dialogCloseBtnlaunch_M0007 = document.getElementById("dialog-close-btn--launch_M0007");
           $("#dialog-close-btn-launch_M0007").click(function () {
+
             $("#sure_launch_exam_M0007").hide();
 
           });
@@ -674,6 +754,7 @@
         </script>
         <!--M0007(LaunchExam)-->
         <!--student-guest-->
+
         <div class="dialog-sure-launch" id="sure_launch_exam">
           <div class="dialog-launch" id="dialog-launch">
             <i class="fas fa-times close-icon" id="dialog-close-btn-launch"
@@ -714,8 +795,7 @@
             style="width: 100px" value="Launch Exam">
         </div>
         <div class="input-group-sm text-end">
-          <!--<input type="button" class="launch-exam form-control btn btn-sm btn-success  "  id="launchExam" style="width: 100px" value="Launch Exam">-->
-         <input type="submit" class="form-control btn btn-sm btn-success" id="submit" style="width: 100px" />
+          <input type="submit" class="form-control btn btn-sm btn-success" id="submit" style="width: 100px" />
         </div>
       </div>
     </div>
@@ -762,7 +842,7 @@
             <option value="Marking"><small>Marking</small></option>
             <option value="Result Released"><small>Result Released</small></option>
             <option value="Deleted"><small>Deleted</small></option>
-            <option value="Launch Exam"><small>Exam Launched</small></option>
+            <option value="LaunchExam"><small>Exam Launched</small></option>
           </select>
 
           <div class="" style="display: none;" id="teacher_dropdown_main">
@@ -898,6 +978,11 @@
                   <span th:if="${test.exam_target == 1}">
                     <a th:href="'/admin/exam/' + ${test.test_id} + '/guest/examinee'" class="text-success">Set
                       Examinee</a>
+                  <span th:if="${test.exam_target == 0}">
+                    <a th:href="'/admin/exam/' + ${test.test_id} + '/examinee'" class="text-success">Set Examinee</a>
+                  </span>
+                  <span th:if="${test.exam_target == 1}">
+                    <a th:href="'/admin/exam/' + ${test.test_id} + '/guest/examinee'" class="text-success">Set Examinee</a>
                   </span>
                   <!-- <a th:href="'/admin/exam/' + ${test.test_id} + '/examinee'" class="text-success">Set Examinee</a> -->
                 </small>
@@ -927,6 +1012,16 @@
       dialog.style.visibility = "hidden";
     }
   </script>
+<script>
+ const dialogCloseBtn = document.getElementById("dialog-close-btn");
+$("#dialog-close-btn").click(function () {
+            closeDialog();
+       });
+ function closeDialog() {
+           const dialog = document.getElementById("dialog");
+            dialog.style.visibility = "hidden";
+      }
+      </script>
 </body>
 <div th:replace="@{fragments/footer}"></div>
 
