@@ -75,55 +75,6 @@
 
       }
     }
-    function launchExam()  {
-    console.log("launchExamOK");
-
-  const dialoglaunchOKBtn = document.getElementById("launchExamOK");
- $("#launchExamOK").click(function () {
-             closeDialogOK();
-        });
-  function closeDialogOK() {
-            const dialogOK = document.getElementById("sure_launch_exam");
-             dialogOK.style.visibility = "hidden";
-       }
-       
-    // if (!currentTestInfo) {
-    //     alert("Checking Data please wait");
-    // }
-    if (currentTestInfo) {
-        if (currentTestInfo.questionCount == 0) {
-            // show error
-             alert("Exam can launch after the Questions are Created!"); 
-            return;
-        }
-        if (currentTestInfo.examineeCount == 0) {
-            // show error
-            alert("There is no examinee in this exam, please check again.");
-            return;
-        }
-        $.ajax({
-    url: "/admin/launchExam",
-    type: "POST",
-    data: {
-        test_id: currentTestInfo.test_id
-    },
-    success: function(data) {
-      
-        console.log(data);
-
-         document.getElementById("sure_launch_exam").style.display = 'none'; 
-
-        //hide
-  
-    },
-    error: function(jqXHR, textStatus, errorThrown) {
-        console.log(textStatus, errorThrown);
-        // handle error response
-    }
-});
-
-    }        
-}
     $(document).ready(() => {
       var role = /*[[${role}]]*/ "default";
       if (role == "admin") {
@@ -222,7 +173,6 @@
 
     function setDataToEditDialog(test) {
 
-
       currentTest = test;
       $.ajax({
         url: "/admin/testInfo",
@@ -232,6 +182,7 @@
         },
         success: function (data) {
           currentTestInfo = data;
+
           console.log(data);
           // handle success response
         },
@@ -242,28 +193,6 @@
       });
 
       var course_dropdown = $("#course_name");
-
-currentTest=test;
-$.ajax({
-    url: "/admin/testInfo",
-    type: "GET",
-    data: {
-        test_id: test.test_id
-    },
-    success: function(data) {
-      currentTestInfo=data;
-
-        console.log(data);
-        // handle success response
-    },
-    error: function(jqXHR, textStatus, errorThrown) {
-        console.log(textStatus, errorThrown);
-        // handle error response
-    }
-});
-
-  var course_dropdown = $("#course_name");
-
       course_dropdown.empty();
       course_dropdown.append("<option value='Choose Course' selected><small>Choose Course</small></option>");
 
@@ -274,7 +203,7 @@ $.ajax({
       var datearray = test.date.split("T");
       document.getElementById("teacher_name").value = test.userInfo.uid;
 
-      
+
 
       fetch("/admin/get-course-by-teacher?teacher_id=" + test.userInfo.uid, {
         method: "GET",
@@ -295,10 +224,8 @@ $.ajax({
       document.getElementById("exam_date").value = datearray[0];
       document.getElementById("exam_start_time").value = test.start_time;
       document.getElementById("exam_end_time").value = test.end_time;
-
       $("#exam_status_dropdown").css("display", "block");
-
-
+    }
 
     function setDataToDeleteDialog(test) {
       test_id = test.test_id;
@@ -309,23 +236,21 @@ $.ajax({
     function submitData(submitType) {
       var courseDropDown = document.getElementById("course_name");
       var courseName = courseDropDown.value;
-           var teacherDropDown = document.getElementById("teacher_name");    
-         var student_guest= document.querySelector('input[name="student-guest"]:checked').value; 
-
+      var teacherDropDown = document.getElementById("teacher_name");
+      var student_guest = document.querySelector('input[name="student-guest"]:checked').value;
       var teacherName = teacherDropDown.value;
       // var courseId = courseDropDown.options[courseDropDown.selectedIndex].id;
       // var teacherId = teacherDropDown.options[teacherDropDown.selectedIndex].id;
       var courseId = courseDropDown.options[courseDropDown.selectedIndex]?.id;
       var teacherId = teacherDropDown.options[teacherDropDown.selectedIndex]?.id;
-      if (teacherName == "Choose Teacher" && student_guest == "student")    {
+      if (teacherName == "Choose Teacher" && student_guest == "student") {
         document.getElementById("teacher_warning").style.display = 'block';
         return;
       } else {
         document.getElementById("teacher_warning").style.display = 'none';
       }
 
-      if (courseName == "Choose Course" && student_guest=="student")   {
-
+      if (courseName == "Choose Course" && student_guest == "student") {
         document.getElementById("course_warning").style.display = 'block';
         return;
       } else {
@@ -418,7 +343,6 @@ $.ajax({
       }
 
       if (submitType == "Created") {
-
         data = {
           student_guest: student_guest,
           teacher_id: teacherId,
@@ -474,9 +398,7 @@ $.ajax({
           }
         })
       }
-
     }
-
     $(document).ready(function () {
       $("#search_date_btn").click(function () {
         var fromDate = document.getElementById("exam_from").value;
@@ -530,70 +452,62 @@ $.ajax({
           </div>
         </div>
 
-<div class="form-check form-check-inline">
-       <input class="form-check-input" type="radio"  name="student-guest" value="guest" id="guest">
-      <label class="form-check-label" for="guest">
-        Guest
-      </label>
-     </div>
-   </div>
-    
-  <script>
-      $(document).ready(function(){
-        $("#sure_launch_exam").hide();
-         $("#sure_launch_exam_M0006").hide();
-        $("#sure_launch_exam_M0007").hide();
-         $("#launchExam").hide();
-         $("#ExamLaunched").hide();
+        <script>
+          $(document).ready(function () {
+            $("#sure_launch_exam").hide();
+            $("#sure_launch_exam_M0006").hide();
+            $("#sure_launch_exam_M0007").hide();
+            $("#launchExam").hide();
+            $("#ExamLaunched").hide();
 
-         $("#guest").click(function(){
-          $("#teacher_warning").hide(); 
-           $("#teacher_name").hide();
-            $("#course_name").hide();
-            $("#ExamLaunched").show();
-           $("#course_warning").hide();
-           $("#teacher_name_label").hide();
-          $("#course_name_label").hide();
-          console.log(document.querySelector('input[name="student-guest"]:checked').value)
+            $("#guest").click(function () {
+              $("#teacher_warning").hide();
+              $("#teacher_name").hide();
+              $("#course_name").hide();
+              $("#ExamLaunched").show();
+              $("#course_warning").hide();
+              $("#teacher_name_label").hide();
+              $("#course_name_label").hide();
+              console.log(document.querySelector('input[name="student-guest"]:checked').value)
 
-         if(!currentTest.isLaunch)
-         {$("#launchExam").show();
-         $("#questionCreated").show();
-          $("#examCreated").show();
-        }else{
-          $("#launchExam").hide();
-          $("#questionCreated").hide();
-          $("#examCreated").hide();
-        
-        }
-          
-          // $("#teacher_warning").hide(); 
-          //  $("#teacher_name").hide();
-          //   $("#course_name").hide();
-          //  $("#course_warning").hide();
-          //  $("#teacher_name_label").hide();
-          // $("#course_name_label").hide();
-          // console.log(document.querySelector('input[name="student-guest"]:checked').value)
-         }); 
-          
-        $("#student").click(function(){
-           
-           $("#teacher_name").show();
-            $("#course_name").show();
-            $("#teacher_warning").show();
-           $("#teacher_name_label").show(); 
-           $("#course_name_label").show();
-           $("#ExamLaunched").hide();
-         $("#launchExam").hide();
-          console.log(document.querySelector('input[name="student-guest"]:checked').value)
-         });
-         $("#launchExam").click(function(){
-            $("#sure_launch_exam").show();
-         }); 
+              if (!currentTest.isLaunch) {
+                $("#launchExam").show();
+                $("#questionCreated").show();
+                $("#examCreated").show();
+              } else {
+                $("#launchExam").hide();
+                $("#questionCreated").hide();
+                $("#examCreated").hide();
 
- }); 
-  </script>
-  <!--student_guest-->
+              }
+
+              // $("#teacher_warning").hide(); 
+              //  $("#teacher_name").hide();
+              //   $("#course_name").hide();
+              //  $("#course_warning").hide();
+              //  $("#teacher_name_label").hide();
+              // $("#course_name_label").hide();
+              // console.log(document.querySelector('input[name="student-guest"]:checked').value)
+            });
+
+            $("#student").click(function () {
+
+              $("#teacher_name").show();
+              $("#course_name").show();
+              $("#teacher_warning").show();
+              $("#teacher_name_label").show();
+              $("#course_name_label").show();
+              $("#ExamLaunched").hide();
+              $("#launchExam").hide();
+              console.log(document.querySelector('input[name="student-guest"]:checked').value)
+            });
+            $("#launchExam").click(function () {
+              $("#sure_launch_exam").show();
+            });
+
+          }); 
+        </script>
+        <!--student_guest-->
         <div class="input-group-sm mb-2 shadow-sm">
           <label id="teacher_name_label" for="description" class="form-label fw-bold mb-1"><small
               style="color: black;">Teacher Name <span class="text-danger">*</span></small></label>
@@ -630,10 +544,8 @@ $.ajax({
             <option id="examCreated" value="Exam Created" selected>Exam Created</option>
             <option id="questionCreated" value="Questions Created">Questions Created</option>
             <option value="Marking">Marking</option>
-
-            <option value="Result Released">Result Released</option> 
-            <option id="ExamLaunched" value="Exam Launched">Exam Launched</option>  
-
+            <option value="Result Released">Result Released</option>
+            <option id="ExamLaunched" value="Exam Launched">Exam Launched</option>
           </select>
         </div>
         <div style="color: red; font-size: 12px; display: none;" id="exam_status_warning">Please Choose Exam Status
@@ -730,7 +642,6 @@ $.ajax({
 
         <!--M0006(LaunchExam)-->
 
-
         <!--M0007(LaunchExam)-->
         <div class="dialog-sure-launch_M0007" id="sure_launch_exam_M0007">
           <div class="dialog-launch_M0007" id="dialog-launch_M0007">
@@ -752,7 +663,6 @@ $.ajax({
         <script>
           const dialogCloseBtnlaunch_M0007 = document.getElementById("dialog-close-btn--launch_M0007");
           $("#dialog-close-btn-launch_M0007").click(function () {
-
             $("#sure_launch_exam_M0007").hide();
 
           });
@@ -776,7 +686,6 @@ $.ajax({
         </script>
         <!--M0007(LaunchExam)-->
         <!--student-guest-->
-
         <div class="dialog-sure-launch" id="sure_launch_exam">
           <div class="dialog-launch" id="dialog-launch">
             <i class="fas fa-times close-icon" id="dialog-close-btn-launch"
@@ -994,19 +903,13 @@ $.ajax({
                 <small class=""><a th:href="'/admin/exam/' + ${test.test_id} + '/questions'" class="text-success">Exam
                     Questions</a></small>
                 <small class="">
-                  <span th:if="${test.exam_target == 0 or test.exam_target == null}">
+                  <span th:if="${test.exam_target == 0}">
                     <a th:href="'/admin/exam/' + ${test.test_id} + '/examinee'" class="text-success">Set Examinee</a>
                   </span>
                   <span th:if="${test.exam_target == 1}">
                     <a th:href="'/admin/exam/' + ${test.test_id} + '/guest/examinee'" class="text-success">Set
                       Examinee</a>
-                  <span th:if="${test.exam_target == 0}">
-                    <a th:href="'/admin/exam/' + ${test.test_id} + '/examinee'" class="text-success">Set Examinee</a>
                   </span>
-                  <span th:if="${test.exam_target == 1}">
-                    <a th:href="'/admin/exam/' + ${test.test_id} + '/guest/examinee'" class="text-success">Set Examinee</a>
-                  </span>
-                  <!-- <a th:href="'/admin/exam/' + ${test.test_id} + '/examinee'" class="text-success">Set Examinee</a> -->
                 </small>
                 <small class=""><a th:href="'/admin/exam/' + ${test.test_id} + '/exam-result-list'"
                     class="text-success">Exam
@@ -1034,16 +937,6 @@ $.ajax({
       dialog.style.visibility = "hidden";
     }
   </script>
-<script>
- const dialogCloseBtn = document.getElementById("dialog-close-btn");
-$("#dialog-close-btn").click(function () {
-            closeDialog();
-       });
- function closeDialog() {
-           const dialog = document.getElementById("dialog");
-            dialog.style.visibility = "hidden";
-      }
-      </script>
 </body>
 <div th:replace="@{fragments/footer}"></div>
 

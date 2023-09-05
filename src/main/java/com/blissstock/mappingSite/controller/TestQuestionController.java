@@ -106,9 +106,6 @@ public class TestQuestionController {
     @Autowired
     TestResultRepository resultRepository;
 
-    @Autowired
-    GuestUserRepository guestUserRepository;
-
     @Valid
     @GetMapping(value = { "/teacher/exam/{test_id}/questions", "/admin/exam/{test_id}/questions" })
     private String getQuestionsByTest(@PathVariable Long test_id, Model model)
@@ -874,7 +871,7 @@ public class TestQuestionController {
                     model.addAttribute("exam_end_time", examEndTime);
                     model.addAttribute("exam_title", examTitle);
                     model.addAttribute("questionList", questionAndCorrectAnswers);
-                    logger.info("Called getGuestUserQuestions with parameter(user_id={}) Success", userID);
+                    logger.info("Called getGuestUserQuestions with parameter(user_id={}) Success", guestUserID);
                     return "GU0002_GuestUser.html";
                 } else if (studentExamStartTime != null) {
 
@@ -933,7 +930,7 @@ public class TestQuestionController {
                     model.addAttribute("exam_end_time", examEndTime);
                     model.addAttribute("exam_title", examTitle);
                     model.addAttribute("questionList", questionAndCorrectAnswers);
-                    logger.info("Called getGuestUserQuestions with parameter(user_id={}) Success", userID);
+                    logger.info("Called getGuestUserQuestions with parameter(user_id={}) Success", guestUserID);
                     return "GU0002_GuestUser.html";
                 }
 
@@ -986,7 +983,7 @@ public class TestQuestionController {
                     model.addAttribute("exam_end_time", examEndTime);
                     model.addAttribute("exam_title", examTitle);
                     model.addAttribute("questionList", questionAndCorrectAnswers);
-                    logger.info("Called getGuestUserQuestions with parameter(user_id={}) Success", userID);
+                    logger.info("Called getGuestUserQuestions with parameter(user_id={}) Success", guestUserID);
                     return "GU0002_GuestUser.html";
                 }
             }
