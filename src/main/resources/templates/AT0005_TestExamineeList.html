@@ -48,7 +48,7 @@
     <!-- add student modal box end -->
 
     <!-- add multiple guest modal box start  -->
-    <div class="add-multiple-guest-box animate__animated animate__fadeOut min-vh-100 position-fixed w-100 top-0 d-flex justify-content-center align-items-center d-none"
+    <!-- <div class="add-multiple-guest-box animate__animated animate__fadeOut min-vh-100 position-fixed w-100 top-0 d-flex justify-content-center align-items-center d-none"
         style="z-index: 1000;background: rgba(0,0,0,0.4); max-height: 500px; overflow-y: auto;">
         <div class="add-multi-guest-content p-3 rounded shadow-sm bg-white">
             <div class="d-flex justify-content-between align-items-center mb-3">
@@ -86,7 +86,7 @@
                 <button class=" btn btn-success btn-sm" form="csvUploadForm">Add</button>
             </div>
         </div>
-    </div>
+    </div> -->
     <!-- add multiple guest modal box end -->
 
     <section class="main container mt-3" style="padding-top: 80px;">
@@ -99,10 +99,10 @@
                         exam status.</strong></p>
             </div>
             <div class="">
-                <div class="btn btn-success btn-sm mt-2" id="add_multiple_guest"
+                <!-- <div class="btn btn-success btn-sm mt-2" id="add_multiple_guest"
                     th:if="${exam_status != 'Marking' and exam_status != 'Result Released'}">
                     Add Multiple Guest
-                </div>
+                </div> -->
                 <div class="btn btn-success btn-sm mt-2 mx-2" id="add_enrolled_student"
                     th:if="${exam_status != 'Marking' and exam_status != 'Result Released'}">
                     Add All Enrolled Students
@@ -346,141 +346,142 @@
             })
         }
 
-        // Check CSV data and send data to backend for Add Multiple Guest Dialog
-        const csvUploadForm = document.querySelector('#csvUploadForm')
-        const csvErrorMsgBox = document.getElementById("csvErrorMsgBox")
+        // // Check CSV data and send data to backend for Add Multiple Guest Dialog
+        // const csvUploadForm = document.querySelector('#csvUploadForm')
+        // const csvErrorMsgBox = document.getElementById("csvErrorMsgBox")
 
-        csvUploadForm.addEventListener('submit', function (e) {
-            e.preventDefault()
-            let file = e.target.csvFile.files[0]
+        // csvUploadForm.addEventListener('submit', function (e) {
+        //     e.preventDefault()
+        //     let file = e.target.csvFile.files[0]
 
-            // Check if a file is selected
-            if (file == null) {
-                createCsvErrorMsg("Please select a CSV file!");
-                return;
-            }
+        //     // Check if a file is selected
+        //     if (file == null) {
+        //         createCsvErrorMsg("Please select a CSV file!");
+        //         return;
+        //     }
 
-            // Check if file type is correct
-            const allowedFileType = "text/csv";
-            if (file.type != allowedFileType) {
-                createCsvErrorMsg("There is an error with the uploaded CSV file. The uploaded file type must be CSV file.");
-                return;
-            }
+        //     // Check if file type is correct
+        //     const allowedFileType = "text/csv";
+        //     if (file.type != allowedFileType) {
+        //         createCsvErrorMsg("There is an error with the uploaded CSV file. The uploaded file type must be CSV file.");
+        //         return;
+        //     }
 
-            var csvdata;
-            var ExamGuestUsers = [];
-            var reader = new FileReader();
-            reader.readAsText(file);
-            reader.onload = function (event) {
-                csvdata = event.target.result;
+        //     var csvdata;
+        //     var ExamGuestUsers = [];
+        //     var reader = new FileReader();
+        //     reader.readAsText(file);
+        //     reader.onload = function (event) {
+        //         csvdata = event.target.result;
 
-                // Check if csv file has data or not
-                if (csvdata == "") {
-                    createCsvErrorMsg("There is an error with the uploaded CSV file. Please check the CSV file content and upload again.");
-                    return;
-                }
+        //         // Check if csv file has data or not
+        //         if (csvdata == "") {
+        //             createCsvErrorMsg("There is an error with the uploaded CSV file. Please check the CSV file content and upload again.");
+        //             return;
+        //         }
 
-                // Check if csv file's data is encoded in utf-8 or not
-                if (!isUTF8Encoded(csvdata)) {
-                    createCsvErrorMsg("There is an error with the uploaded CSV file. The uploaded file encoding type must be UTF-8.");
-                    return;
-                }
+        //         // Check if csv file's data is encoded in utf-8 or not
+        //         if (!isUTF8Encoded(csvdata)) {
+        //             createCsvErrorMsg("There is an error with the uploaded CSV file. The uploaded file encoding type must be UTF-8.");
+        //             return;
+        //         }
 
-                var rowData = csvdata.split('\n');
+        //         var rowData = csvdata.split('\n');
 
 
-                // Check if csv file has more than 31 rows(including headers)
-                if (rowData.length > 32) {
-                    createCsvErrorMsg("There is an error with the uploaded CSV file. The uploaded record is exceeded to maximum [30].");
-                    return;
-                }
+        //         // Check if csv file has more than 31 rows(including headers)
+        //         if (rowData.length > 32) {
+        //             createCsvErrorMsg("There is an error with the uploaded CSV file. The uploaded record is exceeded to maximum [30].");
+        //             return;
+        //         }
 
-                // Check if csv file's headers are correct
-                csvFileHeaders = rowData[0].split(',');
-                console.log(csvFileHeaders)
-                if (csvFileHeaders[0] != "Name" || csvFileHeaders[1] != "Email" || csvFileHeaders[2] != "PhoneNumber") {
-                    createCsvErrorMsg("There is an error with the uploaded CSV file. Row Headers Must be match as described in CSV Import Item's Specification.");
-                    return;
-                }
+        //         // Check if csv file's headers are correct
+        //         csvFileHeaders = rowData[0].split(',');
+        //         console.log(csvFileHeaders)
+        //         if (csvFileHeaders[0] != "Name" || csvFileHeaders[1] != "Email" || csvFileHeaders[2] != "PhoneNumber") {
+        //             createCsvErrorMsg("There is an error with the uploaded CSV file. Row Headers Must be match as described in CSV Import Item's Specification.");
+        //             return;
+        //         }
 
-                // Check if csv file has at least one data row
-                csvFirstRow = rowData[1].split(',');
-                if (csvFirstRow[0] == "" || csvFirstRow[1] == "" || csvFirstRow[2] == "") {
-                    createCsvErrorMsg("There is no record in the uploaded CSV file. Please check the CSV file content and upload again.");
-                    return;
-                }
+        //         // Check if csv file has at least one data row
+        //         csvFirstRow = rowData[1].split(',');
+        //         if (csvFirstRow[0] == "" || csvFirstRow[1] == "" || csvFirstRow[2] == "") {
+        //             createCsvErrorMsg("There is no record in the uploaded CSV file. Please check the CSV file content and upload again.");
+        //             return;
+        //         }
 
-                var searchValue;
-                for (var row = 1; row < (rowData.length - 1); row++) {
-                    rowColData = rowData[row].split(',');
-                    ExamGuestUsers.push(rowColData);
+        //         var searchValue;
+        //         for (var row = 1; row < (rowData.length - 1); row++) {
+        //             rowColData = rowData[row].split(',');
+        //             ExamGuestUsers.push(rowColData);
 
-                    // Check if there are incorrect email format
-                    if (!validateEmail(rowColData[1])) {
-                        createCsvErrorMsg("There is an error with the uploaded CSV file. Please check the CSV file content and upload again.");
-                        return;
-                    }
-                }
+        //             // Check if there are incorrect email format
+        //             if (!validateEmail(rowColData[1])) {
+        //                 createCsvErrorMsg("There is an error with the uploaded CSV file. Please check the CSV file content and upload again.");
+        //                 return;
+        //             }
+        //         }
 
-                data = {
-                    test_id: test_id,
-                    exam_guest_users: ExamGuestUsers
-                };
-                data = JSON.stringify(data);
-                console.log(data);
-                fetch("/" + url + "/set-multi-guest-examinee", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: data
-                }).then(response => {
-                    createCsvSuccessMsg("Successfully add multiple guest user");
-                    window.location.reload();
-                })
-            };
-        })
+        //         data = {
+        //             test_id: test_id,
+        //             exam_guest_users: ExamGuestUsers
+        //         };
+        //         data = JSON.stringify(data);
+        //         console.log(data);
+        //         fetch("/" + url + "/set-multi-guest-examinee", {
+        //             method: "POST",
+        //             headers: { "Content-Type": "application/json" },
+        //             body: data
+        //         }).then(response => {
+        //             createCsvSuccessMsg("Successfully add multiple guest user");
+        //             window.location.reload();
+        //         })
+        //     };
+        // })
 
-        // Create csv error message to put in csv error message box
-        function createCsvErrorMsg(errorMsg) {
-            const csvErrorMsg = document.createElement("p");
-            csvErrorMsg.classList.add("mb-0", "text-danger", "text-center")
-            csvErrorMsg.textContent = errorMsg;
-            csvErrorMsgBox.appendChild(csvErrorMsg);
-            csvErrorMsgBox.classList.add("animate__fadeIn", "border-danger");
-            csvErrorMsgBox.classList.replace("d-none", "d-flex");
-            return;
-        }
+        // // Create csv error message to put in csv error message box
+        // function createCsvErrorMsg(errorMsg) {
+        //     const csvErrorMsg = document.createElement("p");
+        //     csvErrorMsg.classList.add("mb-0", "text-danger", "text-center")
+        //     csvErrorMsg.textContent = errorMsg;
+        //     csvErrorMsgBox.appendChild(csvErrorMsg);
+        //     csvErrorMsgBox.classList.add("animate__fadeIn", "border-danger");
+        //     csvErrorMsgBox.classList.replace("d-none", "d-flex");
+        //     return;
+        // }
 
-        // Create csv success message to put in csv error message box
-        function createCsvSuccessMsg(successMsg) {
-            const csvSuccessMsg = document.createElement("p");
-            csvSuccessMsg.classList.add("mb-0", "text-success", "text-center")
-            csvSuccessMsg.textContent = successMsg;
-            csvErrorMsgBox.appendChild(csvSuccessMsg);
-            csvErrorMsgBox.classList.add("animate__fadeIn", "border-success");
-            csvErrorMsgBox.classList.replace("d-none", "d-flex");
-            return;
-        }
+        // // Create csv success message to put in csv error message box
+        // function createCsvSuccessMsg(successMsg) {
+        //     const csvSuccessMsg = document.createElement("p");
+        //     csvSuccessMsg.classList.add("mb-0", "text-success", "text-center")
+        //     csvSuccessMsg.textContent = successMsg;
+        //     csvErrorMsgBox.appendChild(csvSuccessMsg);
+        //     csvErrorMsgBox.classList.add("animate__fadeIn", "border-success");
+        //     csvErrorMsgBox.classList.replace("d-none", "d-flex");
+        //     return;
+        // }
 
-        // Check inputString is encoded in utf-8 or not
-        function isUTF8Encoded(inputString) {
-            const encoder = new TextEncoder();
-            const decoder = new TextDecoder('utf-8');
+        // // Check inputString is encoded in utf-8 or not
+        // function isUTF8Encoded(inputString) {
+        //     const encoder = new TextEncoder();
+        //     const decoder = new TextDecoder('utf-8');
 
-            const encodedData = encoder.encode(inputString);
+        //     const encodedData = encoder.encode(inputString);
 
-            try {
-                decoder.decode(encodedData);
-                return true;
-            } catch (error) {
-                return false;
-            }
-        }
+        //     try {
+        //         decoder.decode(encodedData);
+        //         return true;
+        //     } catch (error) {
+        //         return false;
+        //     }
+        // }
 
-        // Email validation function
-        function validateEmail(email) {
-            const emailRegex = /^[\w+-]+(\.[\w+-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
-            return emailRegex.test(email);
-        }
+        // // Email validation function
+        // function validateEmail(email) {
+        //     const emailRegex = /^[\w+-]+(\.[\w+-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
+        //     return emailRegex.test(email);
+        // }
+
 
     </script>
 
