@@ -664,7 +664,8 @@ public class TestController {
 
 
             int exam_target;
-            if (student_guest == "student") {
+            // if (student_guest == "student") {
+                if(student_guest.equals("student")){
                 exam_target = 0;
             } else {
                 exam_target = 1;
