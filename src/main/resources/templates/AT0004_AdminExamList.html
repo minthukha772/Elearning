@@ -94,6 +94,7 @@
       cancelBtn.addEventListener('click', () => createExamContainer.classList.add('d-none'));
       deleteCancelBtn.addEventListener('click', () => deleteExamContainer.classList.add('d-none'));
       createExam.addEventListener('click', () => {
+        $("#student_guest_check").css("display", "block")
         createExamContainer.classList.remove('d-none')
         $("#exam_status_dropdown").css("display", "none");
         type = "Created";
@@ -172,7 +173,7 @@
     })
 
     function setDataToEditDialog(test) {
-
+      $("#student_guest_check").css("display", "none")
       currentTest = test;
       $.ajax({
         url: "/admin/testInfo",
@@ -182,7 +183,15 @@
         },
         success: function (data) {
           currentTestInfo = data;
-
+          if (currentTestInfo.examTarget == 1) {
+            $("#teacher_sector").css("display", "none")
+            $("#course_sector").css("display", "none")
+            $("#ExamLaunched").show();
+            $("#launchExam").show();
+          } else {
+            $("#teacher_sector").css("display", "block")
+            $("#course_sector").css("display", "block")
+          }
           console.log(data);
           // handle success response
         },
@@ -437,7 +446,7 @@
       <div class="px-3 pb-3">
         <h5 class="text-success text-center mb-3">To Create Exam Content</h5>
         <!--student_guest-->
-        <div class="student_guest">
+        <div class="student_guest" id="student_guest_check">
           <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="student-guest" id="student" value="student" checked>
             <label class="form-check-label" for="student">
@@ -508,7 +517,7 @@
           }); 
         </script>
         <!--student_guest-->
-        <div class="input-group-sm mb-2 shadow-sm">
+        <div class="input-group-sm mb-2 shadow-sm" id="teacher_sector">
           <label id="teacher_name_label" for="description" class="form-label fw-bold mb-1"><small
               style="color: black;">Teacher Name <span class="text-danger">*</span></small></label>
           <select class="form-select" aria-label="Default select example" id="teacher_name">
@@ -519,7 +528,7 @@
           </select>
         </div>
         <div style="color: red; font-size: 12px; display: none;" id="teacher_warning">Please Select Teacher</div>
-        <div class="input-group-sm mb-2 shadow-sm">
+        <div class="input-group-sm mb-2 shadow-sm" id="course_sector">
           <label id="course_name_label" for="description" class="form-label fw-bold mb-1"><small
               style="color: black;">Course Name <span class="text-danger">*</span></small></label>
           <select class="form-select" aria-label="Default select example" id="course_name">

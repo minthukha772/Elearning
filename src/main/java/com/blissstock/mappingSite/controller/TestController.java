@@ -974,6 +974,7 @@ public class TestController {
             testInfo.test_id = testData.getTest_id();
             testInfo.questionCount = (long) testData.getTestQuestions().size();
             testInfo.examineeCount = (long) testData.getTestExaminee().size();
+            testInfo.examTarget = testData.getExam_target();
             return ResponseEntity.ok(testInfo);
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage());

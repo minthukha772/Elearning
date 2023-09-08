@@ -138,7 +138,6 @@ public class GuestController {
             if (guestUser != null) {
 
                 String oneTimePassword = guestUser.getOne_time_password();
-
                 if (passwordEncoder.matches(encodedPassword, oneTimePassword)) {
                     String status = "success";
                     String header3 = "Entered password is correct !";

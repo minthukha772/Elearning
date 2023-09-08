@@ -1248,7 +1248,9 @@ public class TestExamineeController {
                         model.addAttribute("total_guests", testGuests.size());
                         model.addAttribute("check_guests", checked_guests);
 
-                        return "AT0005_TestGuestList.html";
+                        //return "AT0005_TestGuestList.html";
+                        return "AT0005_TestExamineeList.html";
+                        
 
                 } catch (Exception e) {
                         logger.error(e.getLocalizedMessage());
