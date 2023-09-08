@@ -1,10 +1,8 @@
 package com.blissstock.mappingSite.config;
 
 import com.blissstock.mappingSite.enums.UserRole;
-import com.blissstock.mappingSite.service.GuestDetailsServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -33,7 +31,6 @@ import org.springframework.security.web.session.HttpSessionEventPublisher;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Autowired
-  @Qualifier("userAccountDetailsService")
   private UserDetailsService userDetailsService;
 
   // フォームの値と比較するDBから取得したパスワードは暗号化されているのでフォームの値も暗号化するために利用
