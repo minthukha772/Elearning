@@ -233,6 +233,13 @@
       document.getElementById("exam_date").value = datearray[0];
       document.getElementById("exam_start_time").value = test.start_time;
       document.getElementById("exam_end_time").value = test.end_time;
+      if (test.examTarget == 1) {
+        var guestCheckBox = document.getElementById("guest");
+        guestCheckBox.checked = true
+      } else {
+        var studentCheckBox = document.getElementById("student");
+        studentCheckBox.checked = true
+      }
       $("#exam_status_dropdown").css("display", "block");
     }
 
@@ -345,7 +352,7 @@
       var exam_status = document.getElementById("exam_status");
       var exam_status_value = exam_status.value;
       var data;
-      if (student_guest == "guest") {
+      if (courseId == undefined && teacherId == undefined) {
         // teacherId = 	10001;
         teacherId = 40001;
         courseId = 599;
@@ -393,8 +400,9 @@
           end_time: exam_end_time,
           exam_status: exam_status_value
         }
+        console.log(data)
         data = JSON.stringify(data);
-
+        console.log(data)
         fetch("/admin/edit-exam", {
           method: "POST",
           headers: {

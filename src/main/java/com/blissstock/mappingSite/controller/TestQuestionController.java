@@ -34,6 +34,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.blissstock.mappingSite.entity.TestResult;
+import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.entity.GuestUser;
 import com.blissstock.mappingSite.entity.Test;
 import com.blissstock.mappingSite.entity.TestQuestion;
@@ -760,7 +761,7 @@ public class TestQuestionController {
         Long guestUserID = getGuestUserID();
         logger.info("Called getGuestQuestions with parameter(user_id={})", guestUserID);
         logger.info("Initiate Operation Retrieve Table test by Query: test_id={}", test_id);
-        Test target = testRepository.getTargetByID();
+        Test target = testRepository.getTargetByID(test_id);
 
     if(target.getExam_target() == 1){
         Test testinfo = testRepository.getTestByID(test_id);
@@ -769,22 +770,21 @@ public class TestQuestionController {
         Date examDate = testinfo.getDate();
         LocalDate convertedExamDate = examDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         LocalDate currentDate = LocalDate.now();
-        Long guestuserId = userSessionService.getId();
         
         logger.info("Initiate Operation Retrieve Table test_student by Query: test_id={}, guestuserId={}", test_id,
-                guestuserId);
-        TestExaminee studentInfo = TestExamineeRepository.findByTestIdAndUidGuest(test_id, guestuserId);
+                guestUserID);
+        TestExaminee studentInfo = TestExamineeRepository.findByTestIdAndUidGuest(test_id, guestUserID);
         logger.info(
                 "Operation Retrieve Table TestExaminee by Query: test_id={}, guestuserId={}. Result List: guestuserInfo={} | Success",
-                test_id, guestuserId, studentInfo);
+                test_id, guestUserID, studentInfo);
 
         logger.info("Initiate Operation Retrieve Table test_student_answer by Query: guestuserId={}, test_id={}",
-                guestuserId, test_id);
-        TestExamineeAnswer studentAnswerInfo = TestExamineeAnswerRepository.getStudentAnswerByTestAndStudent(guestuserId,
+                guestUserID, test_id);
+        TestExamineeAnswer guestAnswerInfo = TestExamineeAnswerRepository.getGuestAnswerByTestAndStudent(guestUserID,
                 test_id);
         logger.info(
                 "Operation Retrieve Table test_student_answer by Query: guestUserId={}, test_id={}. Result List:guestUserAnswerInfo={} | Success",
-                guestuserId, test_id, studentAnswerInfo);
+                guestUserID, test_id, guestAnswerInfo);
 
         String studentExamStartTime = studentInfo.getStudentExamStartTime();
         String examTitle = testinfo.getDescription();
@@ -801,7 +801,7 @@ public class TestQuestionController {
 
         String examAnnouncement = null;
 
-        if (studentAnswerInfo != null) {
+        if (guestAnswerInfo != null) {
             examAnnouncement = "Apologies! Exam answer is already submitted. Examinees are not allowed to submit the answer more than once! ";
             model.addAttribute("exam_announce", examAnnouncement);
             return "GU0002_GuestUser.html";
@@ -822,9 +822,9 @@ public class TestQuestionController {
 
                     studentExamStartTime = currentTime.toString();
                     studentInfo.setStudentExamStartTime(studentExamStartTime);
-                    logger.info("Initiate to Operation Insert Table Test Guest User Data {}", studentInfo.display());
+                    logger.info("Initiate to Operation Insert Table Test Guest User Data {}");
                     TestExamineeRepository.save(studentInfo);
-                    logger.info("Operation Insert Table Test GuestUser Data {} | Success", studentInfo.display());
+                    logger.info("Operation Insert Table Test GuestUser Data {} | Success");
 
                     List<QuestionAndCorrectAnswer> questionAndCorrectAnswers = new ArrayList<>();
                     Test test = testRepository.getTestByID(test_id);
@@ -1252,7 +1252,8 @@ public class TestQuestionController {
     }
 
     private Long getUid() {
-        Long uid = userSessionService.getUserAccount().getAccountId();
+        UserAccount userAccount = userSessionService.getUserAccount();
+        Long uid = userAccount.getAccountId();
         return uid;
     }
 

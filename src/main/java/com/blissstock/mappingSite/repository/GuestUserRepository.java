@@ -25,6 +25,6 @@ public interface GuestUserRepository extends JpaRepository<GuestUser, Long> {
                         @Param("testId") Long testId);
 
         @Query(value = "Select * from guest where mail = :mail", nativeQuery = true)
-        GuestUser findByMail(String mail);
+        GuestUser findByMail(@Param("mail") String mail);
 
 }

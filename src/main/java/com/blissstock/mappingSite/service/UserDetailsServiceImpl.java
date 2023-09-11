@@ -7,6 +7,7 @@ import com.blissstock.mappingSite.entity.CustomUser;
 import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.enums.AccountStatus;
 import com.blissstock.mappingSite.exceptions.NonMailVerifiedUserException;
+import com.blissstock.mappingSite.repository.GuestUserRepository;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +25,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
   @Autowired
   private UserAccountRepository userAccountRepository;
 
+  @Autowired
+  private GuestUserRepository guestUserRepository;
+
   @Override
   @Transactional(readOnly = true)
   public UserDetails loadUserByUsername(String email)
-    throws UsernameNotFoundException {
+      throws UsernameNotFoundException {
     UserAccount user;
     try {
       user = userAccountRepository.findByMail(email);
@@ -38,17 +42,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     Set<SimpleGrantedAuthority> grantedAuthorities = new HashSet<>();
     grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole()));
-    if(user.getAccountStatus().equals(AccountStatus.SUSPENDED.getValue())){
-      throw new DisabledException("Account id "+user.getAccountId()+" is Suspended");
+    if (user.getAccountStatus().equals(AccountStatus.SUSPENDED.getValue())) {
+      throw new DisabledException("Account id " + user.getAccountId() + " is Suspended");
     }
-    if(!user.isMailVerified()){
-      throw new NonMailVerifiedUserException("Account id "+user.getAccountId()+" has not verified the email yet!");
+    if (!user.isMailVerified()) {
+      throw new NonMailVerifiedUserException("Account id " + user.getAccountId() + " has not verified the email yet!");
     }
     return new CustomUser(
-      user.getAccountId(),
-      user.getMail(),
-      user.getPassword(),
-      grantedAuthorities
-    );
+        user.getAccountId(),
+        user.getMail(),
+        user.getPassword(),
+        grantedAuthorities);
   }
 }

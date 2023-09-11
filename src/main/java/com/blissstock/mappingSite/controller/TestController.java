@@ -349,8 +349,7 @@ public class TestController {
                         model.addAttribute("testList", testList);
                         model.addAttribute("filterType", "Filter By Status");
                         model.addAttribute("filter", "( " + examStatus + " )");
-                    } 
-                    else if (!examStatus.equals("Deleted")) {
+                    } else if (!examStatus.equals("Deleted")) {
                         logger.info("Initiate to Operation Retrieve Table test by Query Status {}", examStatus);
                         testList = testRepository.getListByStatus(examStatus);
                         logger.info("Operation Retrieve Table test by Query Status {} Result list {} Success",
@@ -633,7 +632,7 @@ public class TestController {
             Long teacher_id = jsonObject.getLong("teacher_id");
             String description = jsonObject.getString("description");
             String section_name = jsonObject.getString("section_name");
-           String student_guest = jsonObject.getString("student_guest");
+            String student_guest = jsonObject.getString("student_guest");
             String date = jsonObject.getString("date");
             Date examDate = null;
             try {
@@ -662,10 +661,9 @@ public class TestController {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to find user with ID: " + teacher_id);
             }
 
-
             int exam_target;
             // if (student_guest == "student") {
-                if(student_guest.equals("student")){
+            if (student_guest.equals("student")) {
                 exam_target = 0;
             } else {
                 exam_target = 1;
@@ -698,7 +696,7 @@ public class TestController {
             Long test_id = jsonObject.getLong("test_id");
             String description = jsonObject.getString("description");
             String section_name = jsonObject.getString("section_name");
-    String student_guest = jsonObject.getString("student_guest");
+            String student_guest = jsonObject.getString("student_guest");
             String date = jsonObject.getString("date");
             Date examDate = null;
             try {
@@ -729,12 +727,12 @@ public class TestController {
             }
 
             int exam_target;
-            if (student_guest == "student") {
+            if (student_guest.equals("student")) {
                 exam_target = 0;
             } else {
                 exam_target = 1;
             }
-            Test test = new Test(null, courseInfo, userInfo, description, section_name, minutes_allowed, passing_score,
+            Test test = new Test(test_id, courseInfo, userInfo, description, section_name, minutes_allowed, passing_score,
                     examDate, exam_start_time, exam_end_time, exam_status, "false", "null", student_guest, exam_target);
 
             // Test test = new Test(null, courseInfo, userInfo, description, section_name,
@@ -994,7 +992,6 @@ public class TestController {
         testData.setIsLaunch(true);
         testRepository.save(testData);
 
-
         for (TestExaminee examinee : examineeList) {
             try {
                 String mail1 = examinee.getUserInfo().getUserAccount().getMail();
@@ -1011,7 +1008,7 @@ public class TestController {
                 logger.info(mail2);
                 if (mail2 != null) {
                     mailService.guestsendVerificationMail(examinee.getGuestUser().getName(),
-                            mail2, test_id.toString(),testData);
+                            mail2, test_id.toString(), testData);
                 }
             }
 
