@@ -185,7 +185,7 @@ public class ExamResultController {
                     "Exam Date & Time: " + TestExam.getTest().getDate() + " (MMT)\n" +
                     "Time Allowance: " + TestExam.getTest().getMinutes_allowed() + " Minutes \n\n" +
                     "Examinee Name: " + TestExam.getGuestUser().getName() + "\n" +
-                    "Your Score: "+result.getResultMark()+" \n" +
+                    "Your Score: "+result.getResultMark()+ " \n" +
                     "Pass Margin: " + TestExam.getTest().getPassing_score_percent() + "\n\n" +
                     "============\n" +
                     "Result: " + result.getResult() + "\n" +

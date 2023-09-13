@@ -1,4 +1,4 @@
-curl 'http://localhost:8080/register/student/kyawzlinnkb007@gmail.com/' \
+curl 'https://pyinnyarsubuu.com/register/student/kyawzlinnkb007@gmail.com/' \
   -H 'Connection: keep-alive' \
   -H 'Cache-Control: max-age=0' \
   -H 'sec-ch-ua: " Not A;Brand";v="99", "Chromium";v="98", "Google Chrome";v="98"' \
@@ -14,7 +14,7 @@ curl 'http://localhost:8080/register/student/kyawzlinnkb007@gmail.com/' \
   -H 'Sec-Fetch-Mode: navigate' \
   -H 'Sec-Fetch-User: ?1' \
   -H 'Sec-Fetch-Dest: document' \
-  -H 'Referer: http://localhost:8080/register/student/kyawzlinnkb007@gmail.com/' \
+  -H 'Referer: https://pyinnyarsubuu.com/register/student/kyawzlinnkb007@gmail.com/' \
   -H 'Accept-Language: en-GB,en-US;q=0.9,en;q=0.8,my;q=0.7' \
   -H 'Cookie: SESSION=ZGFmNTFkOWMtNTdmZS00YjA1LWI3OWMtNjIyY2Y0NjhmMjll' \
   --data-raw 'email=kyawzlinnkb007%40gmail.com&name=kzl&password=asdf1234&confirmPassword=asdf1234&phone=09123456789&gender=male&dob=1999-02-10&zipCode=0&city=kalaw&division=shan&address=kama+street&education=Master&acceptTerm=true&_acceptTerm=on&action=submit' \
@@ -22,7 +22,7 @@ curl 'http://localhost:8080/register/student/kyawzlinnkb007@gmail.com/' \
 
 #######
 
-  curl "http://localhost:8080/register/student/kyawzayarlinnkb10^@gmail.com/" ^
+  curl "https://pyinnyarsubuu.com/register/student/kyawzayarlinnkb10^@gmail.com/" ^
   -H "Connection: keep-alive" ^
   -H "Cache-Control: max-age=0" ^
   -H "sec-ch-ua: ^\^" Not A;Brand^\^";v=^\^"99^\^", ^\^"Chromium^\^";v=^\^"98^\^", ^\^"Google Chrome^\^";v=^\^"98^\^"" ^
@@ -38,7 +38,7 @@ curl 'http://localhost:8080/register/student/kyawzlinnkb007@gmail.com/' \
   -H "Sec-Fetch-Mode: navigate" ^
   -H "Sec-Fetch-User: ?1" ^
   -H "Sec-Fetch-Dest: document" ^
-  -H "Referer: http://localhost:8080/register/student/kyawzayarlinnkb10^@gmail.com/" ^
+  -H "Referer: https://pyinnyarsubuu.com/register/student/kyawzayarlinnkb10^@gmail.com/" ^
   -H "Accept-Language: en-GB,en-US;q=0.9,en;q=0.8,my;q=0.7" ^
   -H "Cookie: SESSION=Y2M4ODQyYzQtYjc0My00Yjk4LWE5NGUtZmU1NGJmMTZjZTRl" ^
   --data-raw "email=kyawzayarlinnkb10^%^40gmail.com&name=king&password=asdf1234&confirmPassword=asdf1234&phone=09123456789&gender=male&dob=2000-02-15&zipCode=0&city=kalaw&division=shan&address=block&education=Bachelor&acceptTerm=true&_acceptTerm=on&action=submit" ^
