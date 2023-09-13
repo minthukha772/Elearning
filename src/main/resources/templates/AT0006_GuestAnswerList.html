@@ -92,7 +92,7 @@
                                             <div class="form-check border rounded py-2 px-5 mt-2 false"
                                                 th:style="${choice.correct} ? 'background-color: green' : 'background-color: white'">
                                                 <input class="form-check-input" type="checkbox" disabled
-                                                    th:checked="${choice.student_choice}" />
+                                                    th:checked="${choice.examinee_choice}" />
                                                 <label class="form-check-label" th:text="${choice.choice}">
                                                 </label>
                                             </div>
@@ -103,7 +103,7 @@
                                             <div class="form-check border rounded py-2 px-5 mt-2 false"
                                                 th:style="${choice.correct} ? 'background-color: green' : 'background-color: white'">
                                                 <input class="form-check-input" type="checkbox" disabled
-                                                    th:checked="${choice.student_choice}" />
+                                                    th:checked="${choice.examinee_choice}" />
                                                 <label class="form-check-label" th:text="${choice.choice}">
                                                 </label>
                                             </div>
@@ -115,7 +115,7 @@
                                                 <h6 class="">Answer as Text</h6>
                                             </label>
                                             <textarea class="form-control"
-                                                th:placeholder="${testquestion.student_answer}" rows="3"
+                                                th:placeholder="${testquestion.examinee_answer}" rows="3"
                                                 disabled></textarea>
                                         </div>
                                         <h6 class="text-muted text-center mb-3">OR</h6>
@@ -123,7 +123,7 @@
                                             <label class="form-label text-success">
                                                 <h6 class="">Answer as Image</h6>
                                             </label>
-                                            <img th:src="${testquestion.student_answer_link}" style="width: 100%;" />
+                                            <img th:src="${testquestion.examinee_answer_link}" style="width: 100%;" />
                                         </div>
                                     </div>
                                     <div class="mt-3">
@@ -249,7 +249,7 @@
             let formData = new FormData();
             var warning_message = document.getElementById("warning_" + test_question.id);
             var acquired_mark = document.getElementById("acquired_mark_" + test_question.id);
-
+            console.log(acquired_mark)
             $("#setasmarked-close-btn").click(function () {
                 closeSetAsMarkDialog();
             });
@@ -277,14 +277,14 @@
                 dialogNoComment.style.visibility = "hidden";
             }
 
-            formData.append('id', parseInt(test_question.student_answer_id));
+            formData.append('id', parseInt(test_question.examinee_answer_id));
             formData.append('acquired_mark', parseInt(acquired_mark.value));
             var xhr = new XMLHttpRequest();
             const dialog = document.getElementById("dialog");
             const dialogConfirmBtn = document.getElementById("dialog-confirm-btn");
             const dialogCloseBtn = document.getElementById("dialog-close-btn");
 
-            xhr.open("POST", "http://localhost:8080/admin/mark-student-question", true);
+            xhr.open("POST", "https://localhost:8080/admin/mark-student-question", true);
             /*xhr.onload = () => {
                 //alert("Marked Successfully.");
                  

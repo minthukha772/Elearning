@@ -1404,7 +1404,12 @@ public class TestExamineeController {
                                         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                                                         .body("{\"errorMessage\": \"Added Email already associated with a Guest user within the Exam\"}");
                                 }
-                                guestUserRepository.save(guestUser);
+                                GuestUser checkGuestUser = guestUserRepository.findByMail(email);
+                                if (checkGuestUser == null) {
+                                        guestUserRepository.save(guestUser);
+                                }else{
+                                        guestUser.setGuest_id(checkGuestUser.getGuest_id());
+                                }
                                 logger.info(" Operation Insert Table: guest Data: name={}, mail={}, phone_no={} | Success",
                                                 name, email,
                                                 phone_number);

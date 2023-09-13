@@ -25,6 +25,7 @@
     var test_id;
     var currentTestInfo;
     var currentTest;
+    var currentTestTarget;
 
     function launchExam() {
       console.log("launchExamOK");
@@ -183,12 +184,15 @@
         },
         success: function (data) {
           currentTestInfo = data;
+          currentTestTarget = currentTestInfo.examTarget
           if (currentTestInfo.examTarget == 1) {
+            currentTestTarget = "guest"
             $("#teacher_sector").css("display", "none")
             $("#course_sector").css("display", "none")
             $("#ExamLaunched").show();
             $("#launchExam").show();
           } else {
+            currentTestTarget = "student"
             $("#teacher_sector").css("display", "block")
             $("#course_sector").css("display", "block")
           }
@@ -211,8 +215,6 @@
       createExam.classList.remove('d-none');
       var datearray = test.date.split("T");
       document.getElementById("teacher_name").value = test.userInfo.uid;
-
-
 
       fetch("/admin/get-course-by-teacher?teacher_id=" + test.userInfo.uid, {
         method: "GET",
@@ -352,7 +354,7 @@
       var exam_status = document.getElementById("exam_status");
       var exam_status_value = exam_status.value;
       var data;
-      if (courseId == undefined && teacherId == undefined) {
+      if (student_guest == "guest") {
         // teacherId = 	10001;
         teacherId = 40001;
         courseId = 599;
@@ -386,19 +388,36 @@
           }
         })
       } else {
-        data = {
-          student_guest: student_guest,
-          test_id: test_id,
-          teacher_id: teacherId,
-          course_id: courseId,
-          description: description,
-          section_name: section_name,
-          passing_score: passing_score,
-          date: exam_date,
-          minutes_allowed: minutes_allowed,
-          start_time: exam_start_time,
-          end_time: exam_end_time,
-          exam_status: exam_status_value
+        if (currentTestTarget == "guest") {
+          data = {
+            student_guest: currentTestTarget,
+            test_id: test_id,
+            teacher_id: 40001,
+            course_id: 599,
+            description: description,
+            section_name: section_name,
+            passing_score: passing_score,
+            date: exam_date,
+            minutes_allowed: minutes_allowed,
+            start_time: exam_start_time,
+            end_time: exam_end_time,
+            exam_status: exam_status_value
+          }
+        } else {
+          data = {
+            student_guest: currentTestTarget,
+            test_id: test_id,
+            teacher_id: teacherId,
+            course_id: courseId,
+            description: description,
+            section_name: section_name,
+            passing_score: passing_score,
+            date: exam_date,
+            minutes_allowed: minutes_allowed,
+            start_time: exam_start_time,
+            end_time: exam_end_time,
+            exam_status: exam_status_value
+          }
         }
         console.log(data)
         data = JSON.stringify(data);

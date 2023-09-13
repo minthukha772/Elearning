@@ -163,49 +163,45 @@ public class ExamResultController {
         Test viewTestTable = testRepo.getById(testID);
         Long courseId = viewTestTable.getCourseInfo().getCourseId();
 
-        return courseId;}
-        @Autowired
+        return courseId;
+    }
+
+    @Autowired
     private TestExamineeRepository testExamineeRepository;
 
-   
-    
+    @GetMapping("/send-emails")
+    public ResponseEntity<String> sendEmailsToAll(@RequestParam Long test_id) {
+        List<TestExaminee> TestExamineeList = testExamineeRepository.getExamineeByTest(test_id);
 
-    @PostMapping("/send-emails")
-    public ResponseEntity<String> sendEmailsToAll(@RequestParam Long test_id,@RequestParam Long guest_account_id) {
-        List<TestExaminee> emails = testExamineeRepository.findEmailByStudentAndExam(test_id,guest_account_id);
-
-        for (TestExaminee emailEntity : emails) {
-            String email = ((UserSessionService) emailEntity).getEmail();
+        for (TestExaminee TestExam : TestExamineeList) {
+            String email = TestExam.getGuestUser().getMail();
             String subject = "[Pyinnyar Subuu]Exam result announce, that you answered at pyinnyar subuu ";
-            String body = String.format ("Dear Mr./Ms.%s\n\n" +
-            "Hello, We are from Pyinnyar Subuu Team.\n\n" +
-            "We are excited to announce that your exam result is officially announced.\n\n" +
-            "Exam Title: %s\n" +
-            "Exam Date & Time: %s (MMT)\n" +
-            "Time Allowance: $\n\n" +
-            "Examinee Name: %s\n" +
-            "Your Score: %d%%\n" +
-            "Pass Margin: %d%%\n\n" +
-            "============\n" +
-            "Result: PASS\n" +
-            "============\n\n" +
-            "* Depending on the email software you are using, the URL may be broken in the middle.\n" +
-            "In that case, enter the first \"https: //\" to the last alphanumerical in the browser.\n" +
-            "Please copy and paste directly to access.\n\n" +
-            "* This email is delivered from the send-only email address.\n" +
-            "Please note that we will not be able to answer even if you reply as it is.\n\n\n" +
-            "Thank you for using our service!\n\n" +
-            "Pyinnyar Subuu\n" +
-            "Bliss Stock JP",""
-            );
+            String body = "Dear Mr./Ms. " + TestExam.getGuestUser().getName() + "\n\n" +
+                    "Hello, We are from Pyinnyar Subuu Team.\n\n" +
+                    "We are excited to announce that your exam result is officially announced.\n\n" +
+                    // "Exam Title: %s\n" +
+                    // "Exam Date & Time: %s (MMT)\n" +
+                    // "Time Allowance: $\n\n" +
+                    // "Examinee Name: %s\n" +
+                    // "Your Score: %d%%\n" +
+                    // "Pass Margin: %d%%\n\n" +
+                    // "============\n" +
+                    // "Result: PASS\n" +
+                    // "============\n\n" +
+                    "* Depending on the email software you are using, the URL may be broken in the middle.\n" +
+                    "In that case, enter the first \"https: //\" to the last alphanumerical in the browser.\n" +
+                    "Please copy and paste directly to access.\n\n" +
+                    "* This email is delivered from the send-only email address.\n" +
+                    "Please note that we will not be able to answer even if you reply as it is.\n\n\n" +
+                    "Thank you for using our service!\n\n" +
+                    "Pyinnyar Subuu\n" +
+                    "Bliss Stock JP";
             guestUserEmailService.sendEmail(email, subject, body);
 
-
-	// Note This is sample . Pls add your code for customize.
+            // Note This is sample . Pls add your code for customize.
         }
 
         return ResponseEntity.ok("Emails sent to all recipients.");
-    
 
     }
 
@@ -462,6 +458,7 @@ public class ExamResultController {
     public String getExamResultListForTeacherAndAdmin(@PathVariable Long testId,
             Model model) {
         Long userID = getUid();
+        model.addAttribute("test_id", testId);
         // public String getExamResultListForTeacherAndAdmin( Model model) {
         logger.info("Called AT0008_ExamResultList with parameter(test_id={})", testId);
         logger.info("user_id: {}, role: {}", userID, userSessionService.getRole());
@@ -469,7 +466,7 @@ public class ExamResultController {
                 "Initiate Operation Retrieve Table test, test_student, result, test_student_answer, test_question by Query: test_id={}",
                 testId);
 
-        Test viewTest = testRepo.getById(testId);
+        Test viewTest = testRepo.getTestByID(testId);
         List<TestExaminee> viewTestStudents = testStudentRepo.getExamineeByTest(testId);
         List<TestResult> viewResults = resultRepo.getListByTestId(testId);
         List<TestExamineeAnswer> viewStudentAnswer = testStudentAnswerRepository.getStudentAnswerListByTest(testId);
@@ -499,18 +496,34 @@ public class ExamResultController {
                 if (!viewResults.isEmpty()) {
 
                     for (TestResult result : viewResults) {
-                        if (testStudent.getUserInfo().getUid()
-                                .equals(result.getUser().getUid())
-                                && result.getResultMark() != 0) {
-                            answeredStudents = answeredStudents + 1;
+                        if (viewTest.getExam_target() == 1) {
+                            if (testStudent.getGuestUser().getGuest_id()
+                                    .equals(result.getGuestUser().getGuest_id())
+                                    && result.getResultMark() != 0) {
+                                answeredStudents = answeredStudents + 1;
 
-                        }
-                        if (testStudent.getUserInfo().getUid()
-                                .equals(result.getUser().getUid())
-                                && result.getResult().equals("Passed")) {
-                            passedStudents = passedStudents + 1;
+                            }
+                            if (testStudent.getGuestUser().getGuest_id()
+                                    .equals(result.getGuestUser().getGuest_id())
+                                    && result.getResult().equals("Passed")) {
+                                passedStudents = passedStudents + 1;
 
+                            }
+                        } else {
+                            if (testStudent.getUserInfo().getUid()
+                                    .equals(result.getUser().getUid())
+                                    && result.getResultMark() != 0) {
+                                answeredStudents = answeredStudents + 1;
+
+                            }
+                            if (testStudent.getUserInfo().getUid()
+                                    .equals(result.getUser().getUid())
+                                    && result.getResult().equals("Passed")) {
+                                passedStudents = passedStudents + 1;
+
+                            }
                         }
+
                     }
 
                 } else {
@@ -582,16 +595,26 @@ public class ExamResultController {
         if (!viewTestStudents.isEmpty()) {
 
             for (TestExaminee testStudent : viewTestStudents) {
-                String studentEmail = testStudent.getUserInfo().getUserAccount().getMail();
-                String studentName = testStudent.getUserInfo().getUserName();
-                String studentPhone = testStudent.getUserInfo().getPhoneNo();
-
+                String studentEmail = "";
+                String studentName = "";
+                String studentPhone = "";
+                Long userId = 000000L;
+                if (viewTest.getExam_target() == 0) {
+                    studentEmail = testStudent.getUserInfo().getUserAccount().getMail();
+                    studentName = testStudent.getUserInfo().getUserName();
+                    studentPhone = testStudent.getUserInfo().getPhoneNo();
+                    userId = testStudent.getGuestUser().getGuest_id();
+                } else {
+                    studentEmail = testStudent.getGuestUser().getMail();
+                    studentName = testStudent.getGuestUser().getName();
+                    studentPhone = testStudent.getGuestUser().getPhone_no();
+                    userId = testStudent.getGuestUser().getGuest_id();
+                }
                 Integer maxMarks = 0;
                 for (TestQuestion checkQuestionTable : viewQuestions) {
                     int marksForEachQuest = checkQuestionTable.getMaximum_mark();
                     maxMarks += marksForEachQuest;
                 }
-                Long userId = testStudent.getUserInfo().getUid();
 
                 logger.info("Initiate Operation Retrieve Table result by Query: test_id={}, user_id={}", testId,
                         userID);
@@ -601,8 +624,13 @@ public class ExamResultController {
 
                     Integer stuMarks = viewExamResult.getResultMark();
                     String examResult = viewExamResult.getResult();
+                    Long uid = 00000L;
+                    if (viewTest.getExam_target() == 0) {
+                        uid = testStudent.getUserInfo().getUid();
+                    } else {
+                        uid = testStudent.getGuestUser().getGuest_id();
+                    }
 
-                    Long uid = testStudent.getUserInfo().getUid();
                     UserInfo userInfo = userRepo.getById(uid);
 
                     try {
@@ -633,7 +661,7 @@ public class ExamResultController {
                     userID);
         }
         model.addAttribute("user_role", userSessionService.getRole());
-        model.addAttribute("test_id", testId);
+
         logger.info(
                 "Operation Retrieve Table test, test_student, result, test_student_answer, test_question by Query: test_id={}\nResult {} | Success",
                 testId, model);
@@ -641,9 +669,6 @@ public class ExamResultController {
         logger.info("Called AT0008_ExamResultList with parameter(test_id={}) | Success", testId);
 
         return "AT0008_ExamResultList";
-    }
-
-    private void info(String string, Long testId) {
     }
 
 }
