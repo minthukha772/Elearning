@@ -88,6 +88,7 @@ public class ExamResultController {
     @Autowired
     UserSessionService userSessionService;
 
+    @Autowired
     private GuestUserEmailService guestUserEmailService;
 
     @GetMapping("/student/exam-result/{testId}")
@@ -174,20 +175,21 @@ public class ExamResultController {
         List<TestExaminee> TestExamineeList = testExamineeRepository.getExamineeByTest(test_id);
 
         for (TestExaminee TestExam : TestExamineeList) {
+            TestResult result = resultRepo.getResultByTestIdAndGuestUser(test_id, TestExam.getGuestUser().getGuest_id());
             String email = TestExam.getGuestUser().getMail();
             String subject = "[Pyinnyar Subuu]Exam result announce, that you answered at pyinnyar subuu ";
             String body = "Dear Mr./Ms. " + TestExam.getGuestUser().getName() + "\n\n" +
                     "Hello, We are from Pyinnyar Subuu Team.\n\n" +
                     "We are excited to announce that your exam result is officially announced.\n\n" +
-                    // "Exam Title: %s\n" +
-                    // "Exam Date & Time: %s (MMT)\n" +
-                    // "Time Allowance: $\n\n" +
-                    // "Examinee Name: %s\n" +
-                    // "Your Score: %d%%\n" +
-                    // "Pass Margin: %d%%\n\n" +
-                    // "============\n" +
-                    // "Result: PASS\n" +
-                    // "============\n\n" +
+                    "Exam Title: " + TestExam.getTest().getDescription() + "\n" +
+                    "Exam Date & Time: " + TestExam.getTest().getDate() + " (MMT)\n" +
+                    "Time Allowance: " + TestExam.getTest().getMinutes_allowed() + " Minutes \n\n" +
+                    "Examinee Name: " + TestExam.getGuestUser().getName() + "\n" +
+                    "Your Score: "+result.getResultMark()+" \n" +
+                    "Pass Margin: " + TestExam.getTest().getPassing_score_percent() + "\n\n" +
+                    "============\n" +
+                    "Result: " + result.getResult() + "\n" +
+                    "============\n\n" +
                     "* Depending on the email software you are using, the URL may be broken in the middle.\n" +
                     "In that case, enter the first \"https: //\" to the last alphanumerical in the browser.\n" +
                     "Please copy and paste directly to access.\n\n" +
@@ -197,7 +199,6 @@ public class ExamResultController {
                     "Pyinnyar Subuu\n" +
                     "Bliss Stock JP";
             guestUserEmailService.sendEmail(email, subject, body);
-
             // Note This is sample . Pls add your code for customize.
         }
 
