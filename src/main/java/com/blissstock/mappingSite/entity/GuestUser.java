@@ -1,12 +1,17 @@
 package com.blissstock.mappingSite.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.blissstock.mappingSite.validation.constrains.ValidEmail;
@@ -20,7 +25,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "guest")
-public class GuestUser {
+public class GuestUser implements Serializable{
 
     @Column(name = "guest_id")
     @Id
@@ -29,7 +34,7 @@ public class GuestUser {
 
     @Column(name = "name", length = 255)
     private String name;
-    
+
     @Column(name = "mail", length = 255)
     private String mail;
 
