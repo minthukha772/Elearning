@@ -129,43 +129,6 @@ public class TestExamineeController {
         }
 
         // @Valid
-        // @PostMapping(value = { "/teacher/set-multi-guest-examinee",
-        // "/admin/set-multi-guest-examinee" })
-        // private String setMultiGuest(
-        // @RequestParam("file") MultipartFile file,
-        // @RequestParam("test_id") Long testId
-        // // @RequestParam("csvFile") MultipartFile file
-        // ) {
-        // List<List<String>> records = new ArrayList<>();
-        // String csvFileName = file.getOriginalFilename();
-        // String COMMA_DELIMITER = ",";
-
-        // try (BufferedReader br = new BufferedReader(new FileReader(csvFileName))) {
-        // // new InputStreamReader(file.getInputStream())
-        // String line;
-        // while ((line = br.readLine()) != null) {
-        // String[] values = line.split(COMMA_DELIMITER);
-        // records.add(Arrays.asList(values));
-        // }
-        // System.out.println(records);
-        // } catch (Exception e) {
-        // e.printStackTrace();
-        // }
-
-        // return "AT0005_TestStudentList.html";
-        // }
-
-        // @Valid
-        // @PostMapping(value = { "/teacher/set-multi-guest-examinee",
-        // "/admin/set-multi-guest-examinee" })
-        // private String setMultiGuest(@RequestBody String data) {
-        // JSONObject jsonObject = new JSONObject(data);
-        // Long test_id = jsonObject.getLong("test_id");
-
-        // return "AT0005_TestStudentList.html";
-        // }
-
-        // @Valid
         // @GetMapping(value = { "/teacher/exam/{test_id}/examinee",
         // "/admin/exam/{test_id}/examinee" })
         // private String getTestExaminee(@PathVariable Long test_id, Model model,
@@ -1071,7 +1034,7 @@ public class TestExamineeController {
                 return "AT0005_TestExamineeList.html";
         }
 
-        // Add multiple guest in an exam
+        // Add multiple guests to an exam
         @Valid
         @PostMapping(value = { "/teacher/set-multi-guest-examinee", "/admin/set-multi-guest-examinee" })
         private ResponseEntity setMultiGuest(@RequestBody String data) throws ParseException {
@@ -1080,13 +1043,11 @@ public class TestExamineeController {
                 Long test_id = jsonObject.getLong("test_id");
                 JSONArray exam_guest_users = jsonObject.getJSONArray("exam_guest_users");
 
-                logger.info(
-                                "Initiate to Operation Retrieve Table {} by query {}",
+                logger.info("Initiate to Operation Retrieve Table {} by query {}",
                                 "test",
                                 "testRepository.getTestByID(test_id)");
                 Test test = testRepository.getTestByID(test_id);
-                logger.info(
-                                "Operation Retrieve Table {} by query {} Result List {} Success",
+                logger.info("Operation Retrieve Table {} by query {} Result List {} Success",
                                 "test",
                                 "testRepository.getTestByID(test_id)",
                                 test);
@@ -1098,25 +1059,22 @@ public class TestExamineeController {
                                 for (int i = 0; i < guestUsers.length; i++) {
                                         String email = guestUsers[i][1];
 
-                                        logger.info(
-                                                        "Initiate to Operation Retrieve Table {} by query {}",
+                                        logger.info("Initiate to Operation Retrieve Table {} by query {}",
                                                         "user_account",
                                                         "userAccountRepository.findByMail(email)");
                                         UserAccount registeredEmail = userAccountRepository.findByMail(email);
-                                        logger.info(
-                                                        "Operation Retrieve Table {} by query {} Result List {} Success",
+                                        logger.info("Operation Retrieve Table {} by query {} Result List {} Success",
                                                         "user_account",
                                                         "userAccountRepository.findByMail(email)",
                                                         registeredEmail);
 
+                                        // Check if email address is already registered in user_account table
                                         if (registeredEmail == null) {
-                                                logger.info(
-                                                                "Initiate to Operation Retrieve Table {} by query {}",
+                                                logger.info("Initiate to Operation Retrieve Table {} by query {}",
                                                                 "guest",
                                                                 "GuestUserRepository.getGuestUserbyEmail(email)");
                                                 GuestUser emailExist = guestUserRepository.getGuestUserbyEmail(email);
-                                                logger.info(
-                                                                "Operation Retrieve Table {} by query {} Result List {} Success",
+                                                logger.info("Operation Retrieve Table {} by query {} Result List {} Success",
                                                                 "guest",
                                                                 "GuestUserRepository.getGuestUserbyEmail(email)",
                                                                 emailExist);
@@ -1124,6 +1082,8 @@ public class TestExamineeController {
                                                 GuestUser guestUser;
                                                 String one_time_password = "";
 
+                                                // Check if guest user is already registered in guest table by email
+                                                // address
                                                 if (emailExist == null) {
                                                         String name = guestUsers[i][0];
                                                         String phone_number = guestUsers[i][2];
@@ -1141,13 +1101,11 @@ public class TestExamineeController {
                                                                         null,
                                                                         null);
 
-                                                        logger.info(
-                                                                        "Initiate to Operation Insert Table {} Data {}",
+                                                        logger.info("Initiate to Operation Insert Table {} Data {}",
                                                                         "guest",
                                                                         guestUser);
                                                         guestUserRepository.save(guestUser);
-                                                        logger.info(
-                                                                        " Operation Insert Table {} Data: name={}, mail={}, phone_no={} | Success",
+                                                        logger.info(" Operation Insert Table {} Data: name={}, mail={}, phone_no={} | Success",
                                                                         "guest",
                                                                         name,
                                                                         email,
@@ -1155,6 +1113,7 @@ public class TestExamineeController {
 
                                                         final String otp = one_time_password;
 
+                                                        // Send a one-time password to new guest user
                                                         new Thread(new Runnable() {
                                                                 public void run() {
                                                                         try {
@@ -1175,19 +1134,18 @@ public class TestExamineeController {
                                                 } else {
                                                         guestUser = emailExist;
 
-                                                        logger.info(
-                                                                        "Initiate to Operation Retrieve Table {} by query {}",
+                                                        logger.info("Initiate to Operation Retrieve Table {} by query {}",
                                                                         "test_examinee",
                                                                         "testExamineeRepository.findByTestIdAndGuestId(test_id, guestUser.getGuest_id())");
                                                         TestExaminee testExamineeGuest = testExamineeRepository
                                                                         .findByTestIdAndGuestId(test_id,
                                                                                         guestUser.getGuest_id());
-                                                        logger.info(
-                                                                        "Operation Retrieve Table {} by query {} Result List {} Success",
+                                                        logger.info("Operation Retrieve Table {} by query {} Result List {} Success",
                                                                         "test_examinee",
                                                                         "testExamineeRepository.findByTestIdAndGuestId(test_id, guestUser.getGuest_id())",
                                                                         testExamineeGuest);
 
+                                                        // Check if guest user is already added to exam or not
                                                         if (testExamineeGuest != null) {
                                                                 continue;
                                                         }
@@ -1200,21 +1158,18 @@ public class TestExamineeController {
                                                                 guestUser,
                                                                 null);
 
-                                                logger.info(
-                                                                "Initiate to Operation Insert Table {} Data: test={}, guest_user={}",
+                                                logger.info("Initiate to Operation Insert Table {} Data: test={}, guest_user={}",
                                                                 "test_examinee",
                                                                 test,
                                                                 guestUser);
                                                 testExamineeRepository.save(testExaminee);
-                                                logger.info(
-                                                                "Operation Insert Table {} Data: test={}, guest_user={} | Success",
+                                                logger.info("Operation Insert Table {} Data: test={}, guest_user={} | Success",
                                                                 "test_examinee",
                                                                 test,
                                                                 guestUser);
                                         }
 
-                                        logger.info(
-                                                        "set-multi-guest-examinee with parameter: test_id={}, data={} Success",
+                                        logger.info("set-multi-guest-examinee with parameter: test_id={}, data={} Success",
                                                         test_id,
                                                         exam_guest_users);
                                 }
@@ -1344,6 +1299,7 @@ public class TestExamineeController {
 
         }
 
+        // Add single guest to an exam
         @Valid
         @PostMapping(value = { "/teacher/set-single-guest", "/admin/set-single-guest" })
         private ResponseEntity setSingleGuest(@RequestBody String testid) throws ParseException {
@@ -1359,7 +1315,15 @@ public class TestExamineeController {
                         String one_time_password = createOneTimePassword();
                         String one_time_passwordEncoded = passwordEncoder.encode(one_time_password);
                         String password_update_date_time = getDateAndTime();
+
+                        logger.info("Initiate to Operation Retrieve Table {} by query {}",
+                                        "test",
+                                        "getTestByID(test_id)");
                         Test test = testRepository.getTestByID(test_id);
+                        logger.info("Operation Retrieve Table {} by query {} Result List {} Success",
+                                        "test",
+                                        "getTestByID(test_id)",
+                                        test);
 
                         if (test.getExam_status().equals("Exam Created")
                                         || test.getExam_status().equals("Questions Created")) {
@@ -1391,9 +1355,33 @@ public class TestExamineeController {
                                 // account\"}");
                                 // }
 
-                                // Check if the email exists in the guest table
+                                logger.info("Initiate to Operation Retrieve Table {} by query {}",
+                                                "user_account",
+                                                "userAccountRepository.findByMail(email)");
+                                UserAccount registeredEmail = userAccountRepository.findByMail(email);
+                                logger.info("Operation Retrieve Table {} by query {} Result List {} Success",
+                                                "user_account",
+                                                "userAccountRepository.findByMail(email)",
+                                                registeredEmail);
+
+                                // Check if email address is already registered in user_account table
+                                if (registeredEmail != null) {
+                                        logger.warn("Email: {} already registered in table: {} | Operation Cancelled");
+                                        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                                                        .body("{\"errorMessage\": \"Email address is already registered.\"}");
+                                }
+
+                                logger.info("Initiate to Operation Retrieve Table {} by query {}",
+                                                "guest",
+                                                "findGuestUserByGuestEmailAndTestId(email, test_id)");
                                 GuestUser existingGuest = guestUserRepository.findGuestUserByGuestEmailAndTestId(email,
                                                 test_id);
+                                logger.info("Operation Retrieve Table {} by query {} Result List {} Success",
+                                                "guest",
+                                                "findGuestUserByGuestEmailAndTestId(email, test_id)",
+                                                existingGuest);
+
+                                // Check if guest user is already added to exam or not
                                 if (existingGuest != null) {
                                         logger.warn("Opearation Insert Table: guest Data: name={}, mail={}, phone_no={} | Failed",
                                                         name,
@@ -1404,36 +1392,62 @@ public class TestExamineeController {
                                         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                                                         .body("{\"errorMessage\": \"Added Email already associated with a Guest user within the Exam\"}");
                                 }
-                                GuestUser checkGuestUser = guestUserRepository.findByMail(email);
-                                if (checkGuestUser == null) {
-                                        guestUserRepository.save(guestUser);
-                                }else{
-                                        guestUser.setGuest_id(checkGuestUser.getGuest_id());
-                                }
-                                logger.info(" Operation Insert Table: guest Data: name={}, mail={}, phone_no={} | Success",
-                                                name, email,
-                                                phone_number);
 
-                                TestExaminee testExaminee = new TestExaminee(null, test, null, guestUser, null);
+                                logger.info("Initiate to Operation Retrieve Table {} by query {}",
+                                                "guest",
+                                                "findByMail(email)");
+                                GuestUser checkGuestUser = guestUserRepository.findByMail(email);
+                                logger.info("Operation Retrieve Table {} by query {} Result List {} Success",
+                                                "guest",
+                                                "findByMail(email)",
+                                                checkGuestUser);
+
+                                // Check if guest user is already registered in guest table by email address
+                                if (checkGuestUser == null) {
+
+                                        logger.info("Initiate to Operation Insert Table {} Data {}",
+                                                        "guest",
+                                                        guestUser);
+                                        guestUserRepository.save(guestUser);
+                                        logger.info(" Operation Insert Table {} Data: name={}, mail={}, phone_no={} | Success",
+                                                        "guest",
+                                                        name,
+                                                        email,
+                                                        phone_number);
+
+                                        final GuestUser newGuestUser = guestUser;
+
+                                        // Send a one-time password to new guest user
+                                        new Thread(new Runnable() {
+                                                public void run() {
+                                                        try {
+                                                                mailService.SendGuestOneTimePassword(newGuestUser,
+                                                                                one_time_password);
+                                                                logger.info("One-time-password (OTP) sent to mail={} | Success",
+                                                                                email);
+                                                        } catch (Exception e) {
+                                                                logger.error(e.getLocalizedMessage());
+                                                        }
+                                                }
+                                        }).start();
+
+                                } else {
+                                        guestUser = checkGuestUser;
+                                }
+
+                                TestExaminee testExaminee = new TestExaminee(
+                                                null,
+                                                test,
+                                                null,
+                                                guestUser,
+                                                null);
+
                                 logger.info("Initiate Operation Insert Table: test_examinee Data: test={}, guest_user={}",
                                                 test,
                                                 guestUser);
                                 testExamineeRepository.save(testExaminee);
                                 logger.info("Initiate Operation Insert Table: test_examinee Data: test={}, guest_user={} | Success",
                                                 test, guestUser);
-
-                                new Thread(new Runnable() {
-                                        public void run() {
-                                                try {
-                                                        mailService.SendGuestOneTimePassword(guestUser,
-                                                                        one_time_password);
-                                                        logger.info("One-time-password (OTP) sent to mail={} | Success",
-                                                                        email);
-                                                } catch (Exception e) {
-                                                        logger.error(e.getLocalizedMessage());
-                                                }
-                                        }
-                                }).start();
 
                                 logger.info("Called API name: setSingleGuest with Parameters: {} | Success", testid);
 
@@ -1449,10 +1463,10 @@ public class TestExamineeController {
                 }
         }
 
+        // Edit a guest in an exam
         @Valid
         @PostMapping(value = { "/teacher/edit-single-guest", "/admin/edit-single-guest" })
-        private ResponseEntity editSingleGuest(@RequestBody String body)
-                        throws ParseException {
+        private ResponseEntity editSingleGuest(@RequestBody String body) throws ParseException {
 
                 try {
 
@@ -1478,7 +1492,15 @@ public class TestExamineeController {
                                                 .body("{\"errorMessage\": \"Added Email is already associated with a Student account\"}");
                         }
 
+                        logger.info("Initiate to Operation Retrieve Table {} by query {}",
+                                        "guest",
+                                        "findByGuestId(guest_id)");
                         GuestUser existingGuest = guestUserRepository.findByGuestId(guest_id);
+                        logger.info("Operation Retrieve Table {} by query {} Result List {} Success",
+                                        "guest",
+                                        "findByGuestId(guest_id)",
+                                        existingGuest);
+
                         String newEncodedOneTimePassword;
                         String passwordUpdatedDateTime;
                         String updatedDateTime = getDateAndTime();
@@ -1489,11 +1511,26 @@ public class TestExamineeController {
                                                 phone_number,
                                                 existingGuest.getOne_time_password(),
                                                 existingGuest.getPassword_update_date_time(), updatedDateTime, null);
+
+                                logger.info("Initiate to Operation Update Table {} Data {}",
+                                                "guest",
+                                                newGuestUser);
                                 guestUserRepository.save(newGuestUser);
+                                logger.info("Operation Update Table {} Data {} Success",
+                                                "guest",
+                                                newGuestUser);
+
                         } else {
                                 // Check if the email exists in the guest table
-                                GuestUser checkExistingGuest = guestUserRepository
-                                                .findGuestUserByGuestEmailAndTestId(email, test_id);
+                                logger.info("Initiate to Operation Retrieve Table {} by query {}",
+                                                "guest",
+                                                "getGuestUserbyEmail(email)");
+                                GuestUser checkExistingGuest = guestUserRepository.getGuestUserbyEmail(email);
+                                logger.info("Operation Retrieve Table {} by query {} Result List {} Success",
+                                                "guest",
+                                                "getGuestUserbyEmail(email)",
+                                                checkExistingGuest);
+
                                 if (checkExistingGuest != null) {
                                         logger.warn("Opearation Insert Table: guest Data: name={}, mail={}, phone_no={} | Failed",
                                                         name,
@@ -1501,7 +1538,7 @@ public class TestExamineeController {
                                         logger.warn("Email: {} already existes in Table: guest for test_id={}", email,
                                                         test_id);
                                         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                                                        .body("{\"errorMessage\": \"Added Email already associated with a Guest user within the Exam\"}");
+                                                        .body("{\"errorMessage\": \"Email address is already registered.\"}");
                                 }
 
                                 // Create a new password if not email doesn't match with the existing email
@@ -1512,9 +1549,23 @@ public class TestExamineeController {
                                 GuestUser newGuestUser = new GuestUser(guest_id, name, email, phone_number,
                                                 newEncodedOneTimePassword,
                                                 passwordUpdatedDateTime, updatedDateTime, null);
-                                Test test = testRepository.getTestByID(test_id);
 
+                                logger.info("Initiate to Operation Retrieve Table {} by query {}",
+                                                "test",
+                                                "getTestByID(test_id)");
+                                Test test = testRepository.getTestByID(test_id);
+                                logger.info("Operation Retrieve Table {} by query {} Result List {} Success",
+                                                "test",
+                                                "getTestByID(test_id)",
+                                                test);
+
+                                logger.info("Initiate to Operation Update Table {} Data {}",
+                                                "guest",
+                                                newGuestUser);
                                 guestUserRepository.save(newGuestUser);
+                                logger.info("Operation Update Table {} Data {} Success",
+                                                "guest",
+                                                newGuestUser);
 
                                 new Thread(new Runnable() {
                                         public void run() {
@@ -1526,11 +1577,7 @@ public class TestExamineeController {
                                                 } catch (Exception e) {
                                                         logger.info(e.getLocalizedMessage());
                                                 }
-                                        }
-                                }).start();
 
-                                new Thread(new Runnable() {
-                                        public void run() {
                                                 try {
                                                         mailService.SendGuestOneTimePassword(newGuestUser,
                                                                         newOneTimePassword);
@@ -1541,6 +1588,19 @@ public class TestExamineeController {
                                                 }
                                         }
                                 }).start();
+
+                                // new Thread(new Runnable() {
+                                // public void run() {
+                                // try {
+                                // mailService.SendGuestOneTimePassword(newGuestUser,
+                                // newOneTimePassword);
+                                // logger.info("One-time-password (OTP) sent to mail={} | Success",
+                                // email);
+                                // } catch (Exception e) {
+                                // logger.info(e.getLocalizedMessage());
+                                // }
+                                // }
+                                // }).start();
                         }
                         logger.info("Opearation Update Table: guest Data: guest_id={}, name={}, mail={}, phone_no={} | Success",
                                         guest_id, name, email, phone_number);
@@ -1555,6 +1615,7 @@ public class TestExamineeController {
 
         }
 
+        // Delete a guest from an exam
         @Valid
         @PostMapping("/delete-guest/{testId}/{guestId}/{roles}")
         public String deleteGuest(@PathVariable Long testId, @PathVariable Long guestId,
@@ -1579,20 +1640,41 @@ public class TestExamineeController {
                                         role, testId,
                                         testId, guestId, role);
 
+                        logger.info("Initiate to Operation Retrieve Table {} by query {}",
+                                        "test_examinee",
+                                        "findByTestIdAndGuestId(testId, guestId)");
+                        TestExaminee viewTestGuest = testExamineeRepository.findByTestIdAndGuestId(testId, guestId);
+                        logger.info("Operation Retrieve Table {} by query {} Result List {} Success",
+                                        "test_examinee",
+                                        "findByTestIdAndGuestId(testId, guestId)",
+                                        viewTestGuest);
+
+                        // Delete guest from test_examinee table
                         logger.info("Initiate Operation Delete Table: test_examinee by Query: test_id={}, guest_id={}",
                                         testId, guestId);
-                        TestExaminee viewTestGuest = testExamineeRepository.findByTestIdAndGuestId(testId, guestId);
                         testExamineeRepository.delete(viewTestGuest);
                         logger.info("Operation Delete Table: test_examinee by Query: test_id={}, guest_id={} | Success",
                                         testId, guestId);
 
-                        logger.info("Initiate Operation Delete Table: guest by Query: guest_id={}", guestId);
+                        logger.info("Initiate to Operation Retrieve Table {} by query {}",
+                                        "guest",
+                                        "findByGuestId(guestId)");
                         GuestUser guestUser = guestUserRepository.findByGuestId(guestId);
-                        guestUserRepository.delete(guestUser);
-                        logger.info("Operation Delete Table: guest by Query: guest_id={} | Success", guestId);
+                        logger.info("Operation Retrieve Table {} by query {} Result List {} Success",
+                                        "guest",
+                                        "findByGuestId(guestId)",
+                                        guestUser);
 
+                        logger.info("Initiate to Operation Retrieve Table {} by query {}",
+                                        "test",
+                                        "getTestByID(testId)");
                         Test test = testRepository.getTestByID(testId);
+                        logger.info("Operation Retrieve Table {} by query {} Result List {} Success",
+                                        "test",
+                                        "getTestByID(testId)",
+                                        test);
 
+                        // Send examinee removal email to guest examinee
                         new Thread(new Runnable() {
                                 public void run() {
                                         try {
