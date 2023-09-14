@@ -6,4 +6,5 @@ public class TestInfo {
     public Long test_id;
     public Long questionCount;
     public Long examineeCount;
+    public Integer examTarget;
 }

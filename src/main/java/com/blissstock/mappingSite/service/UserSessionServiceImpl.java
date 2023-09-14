@@ -31,14 +31,14 @@ public class UserSessionServiceImpl implements UserSessionService {
   @Override
   public UserRole getRole() {
     Authentication auth = SecurityContextHolder
-      .getContext()
-      .getAuthentication();
+        .getContext()
+        .getAuthentication();
     System.out.println(auth.getAuthorities());
     List<UserRole> userRoles = auth
-      .getAuthorities()
-      .stream()
-      .map(e -> UserRole.strToUserRole(e.getAuthority()))
-      .collect(Collectors.toList());
+        .getAuthorities()
+        .stream()
+        .map(e -> UserRole.strToUserRole(e.getAuthority()))
+        .collect(Collectors.toList());
     if (userRoles.isEmpty()) {
       return UserRole.GUEST_USER;
     }
@@ -48,8 +48,8 @@ public class UserSessionServiceImpl implements UserSessionService {
   @Override
   public String getEmail() {
     Authentication auth = SecurityContextHolder
-      .getContext()
-      .getAuthentication();
+        .getContext()
+        .getAuthentication();
     return auth.getName();
   }
 
@@ -57,8 +57,8 @@ public class UserSessionServiceImpl implements UserSessionService {
   public Long getId() {
     Long id = 0L;
     Authentication auth = SecurityContextHolder
-      .getContext()
-      .getAuthentication();
+        .getContext()
+        .getAuthentication();
     if (auth != null) {
       Object principal = auth.getPrincipal();
       if (principal instanceof CustomUser) {
@@ -73,9 +73,10 @@ public class UserSessionServiceImpl implements UserSessionService {
   @Override
   public boolean isAuthenticated() {
     Authentication auth = SecurityContextHolder
-      .getContext()
-      .getAuthentication();
-    if (auth == null) return false;
+        .getContext()
+        .getAuthentication();
+    if (auth == null)
+      return false;
     return auth.isAuthenticated();
   }
 
@@ -87,8 +88,8 @@ public class UserSessionServiceImpl implements UserSessionService {
   @Override
   public UserAccount getUserAccount() {
     Authentication auth = SecurityContextHolder
-      .getContext()
-      .getAuthentication();
+        .getContext()
+        .getAuthentication();
     String email = auth.getName();
     return userAccountRepository.findByMail(email);
   }
@@ -103,7 +104,12 @@ public class UserSessionServiceImpl implements UserSessionService {
     Authentication auth = SecurityContextHolder
         .getContext()
         .getAuthentication();
-    String email = auth.getName();
+    Object principal = auth.getPrincipal();
+    String email = "";
+    if (principal instanceof GuestUser) {
+      GuestUser guestUser = (GuestUser) principal;
+      email = guestUser.getMail();
+    }
     return guestUserRepository.findByMail(email);
   }
 }
