@@ -256,27 +256,27 @@ public class TestExamineeAnswerController {
         }
 
         @Valid
-        @PostMapping(value = { "/teacher/mark-student-question", "/admin/mark-student-question" })
-        private ResponseEntity updateStudentFreeQuestion(
+        @PostMapping(value = { "/teacher/mark-examinee-question", "/admin/mark-examinee-question" })
+        private ResponseEntity updateExamineeFreeQuestion(
                         @RequestParam(value = "id") Long id,
                         @RequestParam(value = "acquired_mark") Integer acquired_mark)
                         throws UnauthorizedFileAccessException {
-                logger.info("Called updateStudentFreeQuestion with parameter(id={}, acquired_mark={})", id,
+                logger.info("Called updateExamineeFreeQuestion with parameter(id={}, acquired_mark={})", id,
                                 acquired_mark);
-                logger.info("Initiate Operation Retrieve Table test_student_answer by Query: id={}",
+                logger.info("Initiate Operation Retrieve Table test_examinee_answer by Query: id={}",
                                 id);
-                TestExamineeAnswer TestExamineeAnswer = TestExamineeAnswerRepository.getStudentAnswerByID(id);
+                TestExamineeAnswer TestExamineeAnswer = TestExamineeAnswerRepository.getExamineeAnswerByID(id);
                 logger.info(
-                                "Operation Retrieve Table test_student_answer by Query: id={}. Result List: TestExamineeAnswer={} | Success",
+                                "Operation Retrieve Table test_examinee_answer by Query: id={}. Result List: TestExamineeAnswer={} | Success",
                                 TestExamineeAnswer);
                 TestExamineeAnswer.setAcquired_mark(acquired_mark);
                 TestExamineeAnswer.setMarked_status("MARKED");
-                logger.info("Initiate to Operation Insert Table Test Student Answer Data {}",
+                logger.info("Initiate to Operation Insert Table test_examinee_answer Data {}",
                                 TestExamineeAnswer.display());
                 TestExamineeAnswerRepository.save(TestExamineeAnswer);
-                logger.info("Operation Insert Table Test Student Answer Data {} | Success",
+                logger.info("Operation Insert Table test_examinee_answer Data {} | Success",
                                 TestExamineeAnswer.display());
-                logger.info("Called updateStudentFreeQuestion with parameter(id={}, acquired_mark={}) Success", id,
+                logger.info("Called updateExamineeFreeQuestion with parameter(id={}, acquired_mark={}) Success", id,
                                 acquired_mark);
                 return ResponseEntity.ok(HttpStatus.OK);
         }
