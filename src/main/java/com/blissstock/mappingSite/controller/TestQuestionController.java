@@ -871,7 +871,8 @@ public class TestQuestionController {
                     model.addAttribute("exam_end_time", examEndTime);
                     model.addAttribute("exam_title", examTitle);
                     model.addAttribute("questionList", questionAndCorrectAnswers);
-                    logger.info("Called getGuestUserQuestions with parameter(user_id={}) Success", guestUserID);
+                    logger.info("Called getGuestUserQuestions with parameter(test_id={}) Success", test_id);
+
                     return "GU0002_GuestUser.html";
                 } else if (studentExamStartTime != null) {
 
@@ -930,7 +931,9 @@ public class TestQuestionController {
                     model.addAttribute("exam_end_time", examEndTime);
                     model.addAttribute("exam_title", examTitle);
                     model.addAttribute("questionList", questionAndCorrectAnswers);
-                    logger.info("Called getGuestUserQuestions with parameter(user_id={}) Success", guestUserID);
+
+                    logger.info("Called getGuestUserQuestions with parameter(test_id={}) Success", test_id);
+
                     return "GU0002_GuestUser.html";
                 }
 
@@ -983,7 +986,8 @@ public class TestQuestionController {
                     model.addAttribute("exam_end_time", examEndTime);
                     model.addAttribute("exam_title", examTitle);
                     model.addAttribute("questionList", questionAndCorrectAnswers);
-                    logger.info("Called getGuestUserQuestions with parameter(user_id={}) Success", guestUserID);
+                    logger.info("Called getGuestUserQuestions with parameter(test_id={}) Success", test_id);
+
                     return "GU0002_GuestUser.html";
                 }
             }
