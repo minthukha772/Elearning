@@ -293,6 +293,7 @@ public class TestQuestionController {
 
         }
         model.addAttribute("test_id", test_id);
+        model.addAttribute("exam_target", test.getExam_target());
         model.addAttribute("questionList", questionAndCorrectAnswers);
         model.addAttribute("test_date", test.getDate());
         model.addAttribute("name", userInfo.getUserName());
@@ -307,7 +308,7 @@ public class TestQuestionController {
             model.addAttribute("status", "Marking");
         }
         logger.info("Called getStudentAnswer with parameter(user_id={})", userID);
-        return "AT0006_StudentAnswerList.html";
+        return "AT0006_ExamineeAnswerList.html";
     }
     
 
@@ -440,6 +441,7 @@ public class TestQuestionController {
 
         }
         model.addAttribute("test_id", test_id);
+        model.addAttribute("exam_target", test.getExam_target());
         model.addAttribute("questionList", questionAndCorrectAnswers);
         model.addAttribute("test_date", test.getDate());
         model.addAttribute("name", guestUser.getName());
@@ -454,7 +456,7 @@ public class TestQuestionController {
             model.addAttribute("status", "Marking");
         }
         logger.info("Called getGuestAnswer with parameter(user_id={})", userID);
-        return "AT0006_GuestAnswerList.html";
+        return "AT0006_ExamineeAnswerList.html";
     }
     
 
@@ -871,8 +873,7 @@ public class TestQuestionController {
                     model.addAttribute("exam_end_time", examEndTime);
                     model.addAttribute("exam_title", examTitle);
                     model.addAttribute("questionList", questionAndCorrectAnswers);
-                    logger.info("Called getGuestUserQuestions with parameter(test_id={}) Success", test_id);
-
+                    logger.info("Called getGuestUserQuestions with parameter(user_id={}) Success", guestUserID);
                     return "GU0002_GuestUser.html";
                 } else if (studentExamStartTime != null) {
 
@@ -931,9 +932,7 @@ public class TestQuestionController {
                     model.addAttribute("exam_end_time", examEndTime);
                     model.addAttribute("exam_title", examTitle);
                     model.addAttribute("questionList", questionAndCorrectAnswers);
-
-                    logger.info("Called getGuestUserQuestions with parameter(test_id={}) Success", test_id);
-
+                    logger.info("Called getGuestUserQuestions with parameter(user_id={}) Success", guestUserID);
                     return "GU0002_GuestUser.html";
                 }
 
@@ -986,8 +985,7 @@ public class TestQuestionController {
                     model.addAttribute("exam_end_time", examEndTime);
                     model.addAttribute("exam_title", examTitle);
                     model.addAttribute("questionList", questionAndCorrectAnswers);
-                    logger.info("Called getGuestUserQuestions with parameter(test_id={}) Success", test_id);
-
+                    logger.info("Called getGuestUserQuestions with parameter(user_id={}) Success", guestUserID);
                     return "GU0002_GuestUser.html";
                 }
             }
