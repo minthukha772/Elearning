@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.Date;
 import com.blissstock.mappingSite.entity.CourseInfo;
+import com.blissstock.mappingSite.entity.GuestUser;
 import com.blissstock.mappingSite.entity.JoinCourseUser;
 import com.blissstock.mappingSite.entity.PaymentHistory;
 import com.blissstock.mappingSite.entity.TestResult;
@@ -37,6 +38,7 @@ import com.blissstock.mappingSite.entity.TestExamineeAnswer;
 import com.blissstock.mappingSite.entity.TestQuestion;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
+import com.blissstock.mappingSite.repository.GuestUserRepository;
 import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
 import com.blissstock.mappingSite.repository.TestResultRepository;
 import com.blissstock.mappingSite.repository.TestRepository;
@@ -78,6 +80,9 @@ public class TestController {
 
     @Autowired
     private JoinCourseUserRepository joinCourseUserRepository;
+
+    @Autowired
+    private GuestUserRepository guestUserRepository;
 
     @Valid
     @GetMapping(value = { "/teacher/exam" })
@@ -349,8 +354,7 @@ public class TestController {
                         model.addAttribute("testList", testList);
                         model.addAttribute("filterType", "Filter By Status");
                         model.addAttribute("filter", "( " + examStatus + " )");
-                    } 
-                    else if (!examStatus.equals("Deleted")) {
+                    } else if (!examStatus.equals("Deleted")) {
                         logger.info("Initiate to Operation Retrieve Table test by Query Status {}", examStatus);
                         testList = testRepository.getListByStatus(examStatus);
                         logger.info("Operation Retrieve Table test by Query Status {} Result list {} Success",
@@ -633,7 +637,7 @@ public class TestController {
             Long teacher_id = jsonObject.getLong("teacher_id");
             String description = jsonObject.getString("description");
             String section_name = jsonObject.getString("section_name");
-           String student_guest = jsonObject.getString("student_guest");
+            String student_guest = jsonObject.getString("student_guest");
             String date = jsonObject.getString("date");
             Date examDate = null;
             try {
@@ -662,9 +666,9 @@ public class TestController {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to find user with ID: " + teacher_id);
             }
 
-
             int exam_target;
-            if (student_guest == "student") {
+            // if (student_guest == "student") {
+            if (student_guest.equals("student")) {
                 exam_target = 0;
             } else {
                 exam_target = 1;
@@ -697,7 +701,7 @@ public class TestController {
             Long test_id = jsonObject.getLong("test_id");
             String description = jsonObject.getString("description");
             String section_name = jsonObject.getString("section_name");
-    String student_guest = jsonObject.getString("student_guest");
+            String student_guest = jsonObject.getString("student_guest");
             String date = jsonObject.getString("date");
             Date examDate = null;
             try {
@@ -728,12 +732,13 @@ public class TestController {
             }
 
             int exam_target;
-            if (student_guest == "student") {
+            if (student_guest.equals("student")) {
                 exam_target = 0;
             } else {
                 exam_target = 1;
             }
-            Test test = new Test(null, courseInfo, userInfo, description, section_name, minutes_allowed, passing_score,
+            Test test = new Test(test_id, courseInfo, userInfo, description, section_name, minutes_allowed,
+                    passing_score,
                     examDate, exam_start_time, exam_end_time, exam_status, "false", "null", student_guest, exam_target);
 
             // Test test = new Test(null, courseInfo, userInfo, description, section_name,
@@ -749,12 +754,27 @@ public class TestController {
                 for (TestExaminee student : TestExaminees) {
                     int total_acquired_mark = 0;
                     int total_mark = 0;
-                    TestResult viewExamResult = resultRepo.getResultByTestIdAndUser(test_id,
-                            student.getUserInfo().getUid());
+                    TestResult viewExamResult;
+                    if (test.getExam_target() == 1) {
+                        viewExamResult = resultRepo.getResultByTestIdAndUser(test_id,
+                                student.getGuestUser().getGuest_id());
+                    } else {
+                        viewExamResult = resultRepo.getResultByTestIdAndUser(test_id,
+                                student.getUserInfo().getUid());
+                    }
+
                     if (viewExamResult == null) {
-                        List<TestExamineeAnswer> studentAnswerList = TestExamineeAnswerRepository
-                                .getStudentAnswerListByTestAndStudent(student.getUserInfo().getUid(),
-                                        test_id);
+                        List<TestExamineeAnswer> studentAnswerList;
+                        if (test.getExam_target() == 1) {
+                            studentAnswerList = TestExamineeAnswerRepository
+                                    .getGuestAnswerListByTestAndGuest(student.getGuestUser().getGuest_id(),
+                                            test_id);
+                        } else {
+                            studentAnswerList = TestExamineeAnswerRepository
+                                    .getStudentAnswerListByTestAndStudent(student.getUserInfo().getUid(),
+                                            test_id);
+                        }
+
                         for (TestExamineeAnswer studentAnswer : studentAnswerList) {
                             int acquired_mark = studentAnswer.getAcquired_mark();
                             int max_mark = studentAnswer.getQuestion().getMaximum_mark();
@@ -766,19 +786,40 @@ public class TestController {
                         int passing_score_percent = test.getPassing_score_percent();
                         Float fcalculate_percent = (float) (ftotal_acquired_mark / ftotal_mark);
                         fcalculate_percent = fcalculate_percent * 100;
-                        UserInfo studentInfo = userInfoRepository.findStudentById(student.getUserInfo().getUid());
                         if (fcalculate_percent > passing_score_percent) {
-                            TestResult result = new TestResult(null, test, studentInfo, total_acquired_mark, "Passed",
-                                    "");
-                            logger.info("Initiate to Operation Insert Table Result Data {}", result.display());
+                            TestResult result;
+                            if (test.getExam_target() == 1) {
+                                GuestUser guestUser = guestUserRepository
+                                        .findByGuestId(student.getGuestUser().getGuest_id());
+                                result = new TestResult(null, test, null, guestUser, total_acquired_mark,
+                                        "Passed",
+                                        "");
+                            } else {
+                                UserInfo studentInfo = userInfoRepository
+                                        .findStudentById(student.getUserInfo().getUid());
+                                result = new TestResult(null, test, studentInfo, null, total_acquired_mark,
+                                        "Passed",
+                                        "");
+                            }
+
+                   
                             resultRepo.save(result);
-                            logger.info("Operation Insert Table Result Data {} | Success", result.display());
                         } else {
-                            TestResult result = new TestResult(null, test, studentInfo, total_acquired_mark, "Failed",
-                                    "");
-                            logger.info("Initiate to Operation Insert Table Result Data {}", result.display());
+                            TestResult result;
+                            if (test.getExam_target() == 1) {
+                                GuestUser guestUser = guestUserRepository
+                                        .findByGuestId(student.getGuestUser().getGuest_id());
+                                result = new TestResult(null, test, null, guestUser, total_acquired_mark,
+                                        "Failed",
+                                        "");
+                            } else {
+                                UserInfo studentInfo = userInfoRepository
+                                        .findStudentById(student.getUserInfo().getUid());
+                                result = new TestResult(null, test, studentInfo, null, total_acquired_mark,
+                                        "Failed",
+                                        "");
+                            }
                             resultRepo.save(result);
-                            logger.info("Operation Insert Table Result Data {} | Success", result.display());
                         }
                     } else {
                         List<TestExamineeAnswer> studentAnswerList = TestExamineeAnswerRepository
@@ -795,7 +836,6 @@ public class TestController {
                         int passing_score_percent = test.getPassing_score_percent();
                         Float fcalculate_percent = (float) (ftotal_acquired_mark / ftotal_mark);
                         fcalculate_percent = fcalculate_percent * 100;
-                        UserInfo studentInfo = userInfoRepository.findStudentById(student.getUserInfo().getUid());
                         if (fcalculate_percent > passing_score_percent) {
 
                             viewExamResult.setResult("Passed");
@@ -886,8 +926,14 @@ public class TestController {
                 for (TestExaminee student : TestExaminees) {
                     int total_acquired_mark = 0;
                     int total_mark = 0;
-                    TestResult viewExamResult = resultRepo.getResultByTestIdAndUser(test_id,
-                            student.getUserInfo().getUid());
+                    TestResult viewExamResult;
+                    if (test.getExam_target() == 1) {
+                        viewExamResult = resultRepo.getResultByTestIdAndUser(test_id,
+                                student.getGuestUser().getGuest_id());
+                    } else {
+                        viewExamResult = resultRepo.getResultByTestIdAndUser(test_id,
+                                student.getUserInfo().getUid());
+                    }
                     if (viewExamResult == null) {
                         List<TestExamineeAnswer> studentAnswerList = TestExamineeAnswerRepository
                                 .getStudentAnswerListByTestAndStudent(student.getUserInfo().getUid(),
@@ -903,20 +949,10 @@ public class TestController {
                         int passing_score_percent = test.getPassing_score_percent();
                         Float fcalculate_percent = (float) (ftotal_acquired_mark / ftotal_mark);
                         fcalculate_percent = fcalculate_percent * 100;
-                        UserInfo studentInfo = userInfoRepository.findStudentById(student.getUserInfo().getUid());
-
                         if (fcalculate_percent > passing_score_percent) {
-                            TestResult result = new TestResult(null, test, studentInfo, total_acquired_mark, "Passed",
-                                    "");
-                            logger.info("Initiate to Operation Insert Table Result Data {}", result.display());
-                            resultRepo.save(result);
-                            logger.info("Operation Insert Table Result Data {} | Success", result.display());
+                            resultRepo.save(viewExamResult);
                         } else {
-                            TestResult result = new TestResult(null, test, studentInfo, total_acquired_mark, "Failed",
-                                    "");
-                            logger.info("Initiate to Operation Insert Table Result Data {}", result.display());
-                            resultRepo.save(result);
-                            logger.info("Operation Insert Table Result Data {} | Success", result.display());
+                            resultRepo.save(viewExamResult);
                         }
                     } else {
                         List<TestExamineeAnswer> studentAnswerList = TestExamineeAnswerRepository
@@ -933,7 +969,6 @@ public class TestController {
                         int passing_score_percent = test.getPassing_score_percent();
                         Float fcalculate_percent = (float) (ftotal_acquired_mark / ftotal_mark);
                         fcalculate_percent = fcalculate_percent * 100;
-                        UserInfo studentInfo = userInfoRepository.findStudentById(student.getUserInfo().getUid());
                         if (fcalculate_percent > passing_score_percent) {
 
                             viewExamResult.setResult("Passed");
@@ -973,6 +1008,7 @@ public class TestController {
             testInfo.test_id = testData.getTest_id();
             testInfo.questionCount = (long) testData.getTestQuestions().size();
             testInfo.examineeCount = (long) testData.getTestExaminee().size();
+            testInfo.examTarget = testData.getExam_target();
             return ResponseEntity.ok(testInfo);
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage());
@@ -992,7 +1028,6 @@ public class TestController {
         testData.setIsLaunch(true);
         testRepository.save(testData);
 
-
         for (TestExaminee examinee : examineeList) {
             try {
                 String mail1 = examinee.getUserInfo().getUserAccount().getMail();
@@ -1009,7 +1044,7 @@ public class TestController {
                 logger.info(mail2);
                 if (mail2 != null) {
                     mailService.guestsendVerificationMail(examinee.getGuestUser().getName(),
-                            mail2, test_id.toString(),testData);
+                            mail2, test_id.toString(), testData);
                 }
             }
 

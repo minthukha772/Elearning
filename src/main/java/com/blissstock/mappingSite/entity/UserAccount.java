@@ -1,5 +1,6 @@
 package com.blissstock.mappingSite.entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -30,7 +31,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "user_account")
-public class UserAccount {
+public class UserAccount implements Serializable{
 
 	@Column(name = "account_id")
 	@Id
@@ -86,6 +87,4 @@ public class UserAccount {
 		this.registeredDate = registeredDate;
 		this.userInfo = userInfo;
 	}
-
-
 }

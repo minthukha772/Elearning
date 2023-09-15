@@ -95,11 +95,12 @@ public class TestResult {
         this.teacherComment = teacherComment;
     }
 
-    public TestResult(Long resultId, Test test, UserInfo user, Integer resultMark, String result,
+    public TestResult(Long resultId, Test test, UserInfo user, GuestUser guestUser, Integer resultMark, String result,
             String teacherComment) {
         this.resultId = resultId;
         this.test = test;
         this.user = user;
+        this.guestUser = guestUser;
         this.resultMark = resultMark;
         this.result = result;
         this.teacherComment = teacherComment;

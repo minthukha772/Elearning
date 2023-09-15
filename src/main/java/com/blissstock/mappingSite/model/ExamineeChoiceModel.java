@@ -1,10 +1,10 @@
 package com.blissstock.mappingSite.model;
 
-public class StudentChoiceModel {
+public class ExamineeChoiceModel {
     public int index;
     public String choice;
     public boolean correct;
-    public boolean student_choice;
+    public boolean examinee_choice;
 
     public int getIndex() {
         return index;
@@ -30,18 +30,18 @@ public class StudentChoiceModel {
         this.correct = correct;
     }
 
-    public boolean isStudent_choice() {
-        return student_choice;
+    public boolean isExaminee_choice() {
+        return examinee_choice;
     }
 
-    public void setStudent_choice(boolean student_choice) {
-        this.student_choice = student_choice;
+    public void setExaminee_choice(boolean examinee_choice) {
+        this.examinee_choice = examinee_choice;
     }
 
-    public StudentChoiceModel(int index, String choice, boolean correct, boolean student_choice) {
+    public ExamineeChoiceModel(int index, String choice, boolean correct, boolean examinee_choice) {
         this.index = index;
         this.choice = choice;
         this.correct = correct;
-        this.student_choice = student_choice;
+        this.examinee_choice = examinee_choice;
     }
 }

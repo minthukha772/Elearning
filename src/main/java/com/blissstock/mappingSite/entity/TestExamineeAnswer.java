@@ -56,11 +56,12 @@ public class TestExamineeAnswer {
     @Column(name = "marked_status", length = 255)
     private String marked_status;
 
-    public TestExamineeAnswer(Long id, Test test, UserInfo student, TestQuestion question, String examinee_answer,
+    public TestExamineeAnswer(Long id, Test test, UserInfo student, GuestUser guestUser, TestQuestion question, String examinee_answer,
             String examinee_answer_link, String correct_status, Integer acquired_mark, String marked_status) {
         this.id = id;
         this.test = test;
         this.student = student;
+        this.guestUser = guestUser;
         this.question = question;
         this.examinee_answer = examinee_answer;
         this.examinee_answer_link = examinee_answer_link;
