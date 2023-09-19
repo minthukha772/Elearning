@@ -2,10 +2,18 @@ package com.blissstock.mappingSite.controller;
 
 import java.text.ParseException;
 import java.security.SecureRandom;
+
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -35,6 +43,9 @@ public class GuestController {
 
     @Autowired
     MailServiceImpl mailService;
+
+    @Autowired
+    UserDetailsService userDetailsService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -116,8 +127,9 @@ public class GuestController {
         model.addAttribute("paragraph", paragraph);
         model.addAttribute("header3", header3);
         model.addAttribute("header5", header5);
-        
-        logger.info("Called resetOnetimePassword with parameter(guestEmail={}) ,(GuestExamID={}) | Success", email, examID);
+
+        logger.info("Called resetOnetimePassword with parameter(guestEmail={}) ,(GuestExamID={}) | Success", email,
+                examID);
         return "MailVerify";
 
     }
@@ -138,8 +150,13 @@ public class GuestController {
             if (guestUser != null) {
 
                 String oneTimePassword = guestUser.getOne_time_password();
-
                 if (passwordEncoder.matches(encodedPassword, oneTimePassword)) {
+                    GuestUser userDetails = guestUserRepository.findByMail(encodedEmailAddress);
+                    Set<SimpleGrantedAuthority> grantedAuthorities = new HashSet<>();
+                    grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_GUEST"));
+                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                            userDetails, null, grantedAuthorities);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
                     String status = "success";
                     String header3 = "Entered password is correct !";
                     String paragraph = "Guest Account is verified successfully!";
@@ -148,6 +165,9 @@ public class GuestController {
                     model.addAttribute("status", status);
                     model.addAttribute("paragraph", paragraph);
                     model.addAttribute("header3", header3);
+
+                    String redirectUrl = "/guest-exam/" + examID + "/questions";
+                    return "redirect:" + redirectUrl;
 
                 } else {
                     String status = "invalid";
@@ -184,7 +204,7 @@ public class GuestController {
 
     private String generateRandomText(int length) {
         logger.info("Called generateRandomText with parameter(Password Length={})",
-                   length);
+                length);
         String allowedCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         SecureRandom random = new SecureRandom();
         StringBuilder randomText = new StringBuilder(length);
@@ -194,7 +214,7 @@ public class GuestController {
             randomText.append(allowedCharacters.charAt(randomIndex));
         }
         logger.info("Called generateRandomText with parameter(Password Length={})  | Success",
-                   length);
+                length);
         return randomText.toString();
     }
 

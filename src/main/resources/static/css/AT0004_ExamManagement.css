@@ -14,6 +14,9 @@
 .btn-success {
     background-color: #309986 !important;
 }
+ .launch-exam  {
+       float:left;
+    }
 .text-success {
     color: #309986 !important;
 }
@@ -64,3 +67,82 @@ body{
 .card[data-custom-type="result_bad"]:hover{
     background-color: rgba(255, 0, 0, 0.2) !important;
 }
+ .student_guest {
+ float: right;}
+ input[type="radio"]{
+ display:none;
+ }
+ label {
+ cursor: pointer;
+ border:2px solid #309986;
+  border-radius:5px;
+  padding: 5px 10px;
+ display: flex;
+  align-items:center; 
+}
+label:before {
+content: "";
+width:200px;
+border-radius:50%;}
+
+input[type="radio"]:checked+label{
+      background-color:  #309986;
+     color:white;
+ }
+
+
+
+.dialog-sure-launch {
+display:flex;
+position: absolute;  
+vertical-align: middle;
+text-align: center;
+ align-items: center;
+ justify-content: center;
+margin: 0 auto ; 
+height: 160px;
+ width:auto; 
+    top:50%;
+    left:40%;
+    right:40%;
+     padding: 20px 30px; 
+ background-color: white;
+  border-radius: 5px;
+   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);}  
+
+.dialog-sure-launch_M0006 {
+display:flex;
+position: absolute;  
+vertical-align: middle;
+text-align: center;
+ align-items: center;
+  justify-content: center;
+margin: 0 auto ; 
+height: 160px;
+    width:auto; 
+    top:50%;
+    left:40%;
+    right:40%;
+    padding: 20px 30px; 
+ background-color: white;
+ border-radius: 5px;
+ box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}  
+.dialog-sure-launch_M0007 {
+display:flex;
+position: absolute;  
+vertical-align: middle;
+text-align: center;
+ align-items: center; 
+justify-content: center; 
+margin: 0 auto ; 
+height: 160px;
+ width:auto; 
+ top:50%;
+  left:40%;
+ right:40%;
+     padding: 20px 30px; 
+ background-color: white;
+ border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}  
