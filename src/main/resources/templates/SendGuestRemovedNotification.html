@@ -194,7 +194,20 @@
                                     Exam Title: <span th:text="${description}">Description</span>
                                 </p>
                                 <p style="margin: 0">
-                                    Exam Date & Time: <span th:text="${date} + '(' + ${startTime} + ' ~ ' + ${endTime} + ')">Date & Time</span>
+                                    Description : <span th:text="${description}">Description</span>
+                                </p>
+                                <p style="margin: 0">
+                                    Exam date : <span th:text="${date}">Exam Date</span>
+                                </p>
+                                <p style="margin: 0">
+                                    Start From : <span th:text="${startTime}">Start from</span> / To: <span
+                                        th:text="${endTime}"> To</span>
+                                </p>
+                                <p style="margin: 0">
+                                    Time Allowed : <span th:text="${minutesAllowed}">Time Allowed</span> minutes
+                                </p>
+                                <p style="margin: 0">
+                                    Exam Date & Time: <span th:text="${date} + '(' + ${startTime} + ' ~ ' + ${endTime} + ')'">Date & Time</span>
                                 </p>
                             </td>
                         </tr>
