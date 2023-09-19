@@ -23,6 +23,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -256,8 +257,7 @@ public class TestQuestionController {
                 if (allCorrectAnswersMatched) {
                     acquired_mark = testQuestion.getMaximum_mark();
                 }
-            }
-            else {
+            } else {
                 TestExamineeAnswer TestExamineeAnswer = TestExamineeAnswerRepository.getStudentAnswer(student_id,
                         testQuestion.getId());
                 if (TestExamineeAnswer != null) {
@@ -310,7 +310,6 @@ public class TestQuestionController {
         logger.info("Called getStudentAnswer with parameter(user_id={})", userID);
         return "AT0006_ExamineeAnswerList.html";
     }
-    
 
     @Valid
     @GetMapping(value = { "/admin/exam/{test_id}/guest/{guest_id}" })
@@ -404,8 +403,7 @@ public class TestQuestionController {
                 if (allCorrectAnswersMatched) {
                     acquired_mark = testQuestion.getMaximum_mark();
                 }
-            }
-            else {
+            } else {
                 TestExamineeAnswer TestExamineeAnswer = TestExamineeAnswerRepository.getGuestAnswer(guest_id,
                         testQuestion.getId());
                 if (TestExamineeAnswer != null) {
@@ -458,8 +456,6 @@ public class TestQuestionController {
         logger.info("Called getGuestAnswer with parameter(user_id={})", userID);
         return "AT0006_ExamineeAnswerList.html";
     }
-    
-
 
     @Valid
     @GetMapping(value = { "/student/exam/{test_id}/questions" })
@@ -755,261 +751,263 @@ public class TestQuestionController {
         return "ST0006_ExamQuestionListStudent.html";
     }
 
-
     @Valid
     @GetMapping(value = { "/guest-exam/{test_id}/questions" })
-    private String getGuestUserQuestions(@PathVariable Long test_id,Model model)
+    private String getGuestUserQuestions(@PathVariable Long test_id, Model model)
             throws ParseException, JsonMappingException, JsonProcessingException {
         Long guestUserID = getGuestUserID();
         logger.info("Called getGuestQuestions with parameter(user_id={})", guestUserID);
         logger.info("Initiate Operation Retrieve Table test by Query: test_id={}", test_id);
         Test target = testRepository.getTargetByID(test_id);
 
-    if(target.getExam_target() == 1){
-        Test testinfo = testRepository.getTestByID(test_id);
-        logger.info("Operation Retrieve Table test by Query: test_id={}. Result List: testinfo={} | Success", test_id,
-                testinfo);
-        Date examDate = testinfo.getDate();
-        LocalDate convertedExamDate = examDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        LocalDate currentDate = LocalDate.now();
-        
-        logger.info("Initiate Operation Retrieve Table test_student by Query: test_id={}, guestuserId={}", test_id,
-                guestUserID);
-        TestExaminee studentInfo = TestExamineeRepository.findByTestIdAndUidGuest(test_id, guestUserID);
-        logger.info(
-                "Operation Retrieve Table TestExaminee by Query: test_id={}, guestuserId={}. Result List: guestuserInfo={} | Success",
-                test_id, guestUserID, studentInfo);
+        if (target.getExam_target() == 1) {
+            Test testinfo = testRepository.getTestByID(test_id);
+            logger.info("Operation Retrieve Table test by Query: test_id={}. Result List: testinfo={} | Success",
+                    test_id,
+                    testinfo);
+            Date examDate = testinfo.getDate();
+            LocalDate convertedExamDate = examDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            LocalDate currentDate = LocalDate.now();
 
-        logger.info("Initiate Operation Retrieve Table test_student_answer by Query: guestuserId={}, test_id={}",
-                guestUserID, test_id);
-        TestExamineeAnswer guestAnswerInfo = TestExamineeAnswerRepository.getGuestAnswerByTestAndStudent(guestUserID,
-                test_id);
-        logger.info(
-                "Operation Retrieve Table test_student_answer by Query: guestUserId={}, test_id={}. Result List:guestUserAnswerInfo={} | Success",
-                guestUserID, test_id, guestAnswerInfo);
+            logger.info("Initiate Operation Retrieve Table test_student by Query: test_id={}, guestuserId={}", test_id,
+                    guestUserID);
+            TestExaminee studentInfo = TestExamineeRepository.findByTestIdAndUidGuest(test_id, guestUserID);
+            logger.info(
+                    "Operation Retrieve Table TestExaminee by Query: test_id={}, guestuserId={}. Result List: guestuserInfo={} | Success",
+                    test_id, guestUserID, studentInfo);
 
-        String studentExamStartTime = studentInfo.getStudentExamStartTime();
-        String examTitle = testinfo.getDescription();
+            logger.info("Initiate Operation Retrieve Table test_student_answer by Query: guestuserId={}, test_id={}",
+                    guestUserID, test_id);
+            TestExamineeAnswer guestAnswerInfo = TestExamineeAnswerRepository.getGuestAnswerByTestAndStudent(
+                    guestUserID,
+                    test_id);
+            logger.info(
+                    "Operation Retrieve Table test_student_answer by Query: guestUserId={}, test_id={}. Result List:guestUserAnswerInfo={} | Success",
+                    guestUserID, test_id, guestAnswerInfo);
 
-        DateTimeFormatter examTimeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+            String studentExamStartTime = studentInfo.getStudentExamStartTime();
+            String examTitle = testinfo.getDescription();
 
-        String examStartTimeString = testinfo.getStart_time();
-        LocalTime examStartTime = LocalTime.parse(examStartTimeString, examTimeFormatter);
-        LocalTime currentTime = LocalTime.now().withSecond(0).withNano(0);
-        String examEndTimeString = testinfo.getEnd_time();
-        LocalTime examEndTime = LocalTime.parse(examEndTimeString, examTimeFormatter);
+            DateTimeFormatter examTimeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
-        LocalTime examStartTimeFinal = examStartTime.plusMinutes(30);
+            String examStartTimeString = testinfo.getStart_time();
+            LocalTime examStartTime = LocalTime.parse(examStartTimeString, examTimeFormatter);
+            LocalTime currentTime = LocalTime.now().withSecond(0).withNano(0);
+            String examEndTimeString = testinfo.getEnd_time();
+            LocalTime examEndTime = LocalTime.parse(examEndTimeString, examTimeFormatter);
 
-        String examAnnouncement = null;
+            LocalTime examStartTimeFinal = examStartTime.plusMinutes(30);
 
-        if (guestAnswerInfo != null) {
-            examAnnouncement = "Apologies! Exam answer is already submitted. Examinees are not allowed to submit the answer more than once! ";
-            model.addAttribute("exam_announce", examAnnouncement);
-            return "GU0002_GuestUser.html";
-        }
+            String examAnnouncement = null;
 
-        if (currentDate.isBefore(convertedExamDate)) {
-            examAnnouncement = "Apologies! Exam is not currently available yet. Please note that the exam will be accessible on "
-                    + convertedExamDate + " " + examStartTime + " (Japan Standard Time, JST).";
-        } else if (currentDate.isEqual(convertedExamDate)) {
-
-            if (currentTime.isBefore(examStartTime)) {
-                examAnnouncement = "Apologies! Exam is not currently available yet. Please note that the exam will be accessible on "
-                        + convertedExamDate + " " + examStartTime + " (Japan Standard Time, JST).";
-            } else if (currentTime.equals(examStartTime) || currentTime.isBefore(examStartTimeFinal)
-                    || currentTime.equals(examStartTimeFinal)) {
-
-                if (studentExamStartTime == null || studentExamStartTime.isEmpty()) {
-
-                    studentExamStartTime = currentTime.toString();
-                    studentInfo.setStudentExamStartTime(studentExamStartTime);
-                    logger.info("Initiate to Operation Insert Table Test Guest User Data {}");
-                    TestExamineeRepository.save(studentInfo);
-                    logger.info("Operation Insert Table Test GuestUser Data {} | Success");
-
-                    List<QuestionAndCorrectAnswer> questionAndCorrectAnswers = new ArrayList<>();
-                    Test test = testRepository.getTestByID(test_id);
-                    List<TestQuestion> testQuestions = testQuestionRepository.getQuestionByTest(test_id);
-                    for (TestQuestion testQuestion : testQuestions) {
-                        long fileSeparator = 100000L + test_id;
-                        FileInfo file = storageService.loadQuestionMaterials(fileSeparator,
-                                testQuestion.getQuestion_materials());
-                        testQuestion.setQuestion_materials(file.getUrl());
-
-                        List<ChoiceModel> choices = new ArrayList<>();
-                        if (!testQuestion.getQuestion_type().equals("FREE_ANSWER")) {
-                            TestQuestionCorrectAnswer testQuestionCorrectAnswer = testQuestionCorrectAnswerRepositoy
-                                    .getCorrectAnswerByQuestion(testQuestion.getId());
-                            JSONArray choiceArrary = new JSONArray(testQuestion.getChoices());
-                            JSONArray answerArray = new JSONArray(testQuestionCorrectAnswer.getCorrectAnswer());
-                            for (int i = 0; i < choiceArrary.length(); i++) {
-                                JSONObject choice = choiceArrary.getJSONObject(i);
-                                String choiceData = choice.getString("choice");
-                                choices.add(new ChoiceModel(i, choiceData, false));
-                            }
-
-                            for (int j = 0; j < answerArray.length(); j++) {
-                                JSONObject answer = answerArray.getJSONObject(j);
-                                int correct = answer.getInt("answer");
-                                String choice = choices.get(correct).getChoice();
-                                choices.set(correct, new ChoiceModel(correct, choice, true));
-                            }
-                        }
-
-                        QuestionAndCorrectAnswer questionAndCorrectAnswer = new QuestionAndCorrectAnswer(
-                                testQuestion.getId(),
-                                testQuestion.getQuestion_text(), testQuestion.getQuestion_materials(),
-                                testQuestion.getQuestion_materials_type(), choices,
-                                testQuestion.getQuestion_type(), testQuestion.getMaximum_mark());
-                        questionAndCorrectAnswers.add(questionAndCorrectAnswer);
-                    }
-                    model.addAttribute("test_date", test.getDate());
-                    model.addAttribute("test_start_time", test.getStart_time());
-                    model.addAttribute("test_end_time", test.getEnd_time());
-                    model.addAttribute("test_id", test_id);
-                    model.addAttribute("exam_announce", examAnnouncement);
-                    model.addAttribute("exam_start_time", currentTime);
-                    model.addAttribute("exam_end_time", examEndTime);
-                    model.addAttribute("exam_title", examTitle);
-                    model.addAttribute("questionList", questionAndCorrectAnswers);
-                    logger.info("Called getGuestUserQuestions with parameter(user_id={}) Success", guestUserID);
-                    return "GU0002_GuestUser.html";
-                } else if (studentExamStartTime != null) {
-
-                    List<QuestionAndCorrectAnswer> questionAndCorrectAnswers = new ArrayList<>();
-
-                    logger.info("Initiate Operation Retrieve Table test by Query: test_id={}", test_id);
-                    Test test = testRepository.getTestByID(test_id);
-                    logger.info("Operation Retrieve Table test by Query: test_id={}. Result List: test={} | Success",
-                            test_id, test);
-
-                    logger.info("Initiate Operation Retrieve Table test_question by Query: test_id={}", test_id);
-                    List<TestQuestion> testQuestions = testQuestionRepository.getQuestionByTest(test_id);
-                    logger.info(
-                            "Operation Retrieve Table test_question by Query: test_id={}. Result List: testQuestions={} | Success",
-                            test_id, testQuestions.size());
-
-                    for (TestQuestion testQuestion : testQuestions) {
-                        long fileSeparator = 100000L + test_id;
-                        FileInfo file = storageService.loadQuestionMaterials(fileSeparator,
-                                testQuestion.getQuestion_materials());
-                        testQuestion.setQuestion_materials(file.getUrl());
-
-                        List<ChoiceModel> choices = new ArrayList<>();
-                        if (!testQuestion.getQuestion_type().equals("FREE_ANSWER")) {
-                            TestQuestionCorrectAnswer testQuestionCorrectAnswer = testQuestionCorrectAnswerRepositoy
-                                    .getCorrectAnswerByQuestion(testQuestion.getId());
-                            JSONArray choiceArrary = new JSONArray(testQuestion.getChoices());
-                            JSONArray answerArray = new JSONArray(testQuestionCorrectAnswer.getCorrectAnswer());
-                            for (int i = 0; i < choiceArrary.length(); i++) {
-                                JSONObject choice = choiceArrary.getJSONObject(i);
-                                String choiceData = choice.getString("choice");
-                                choices.add(new ChoiceModel(i, choiceData, false));
-                            }
-
-                            for (int j = 0; j < answerArray.length(); j++) {
-                                JSONObject answer = answerArray.getJSONObject(j);
-                                int correct = answer.getInt("answer");
-                                String choice = choices.get(correct).getChoice();
-                                choices.set(correct, new ChoiceModel(correct, choice, true));
-                            }
-                        }
-
-                        QuestionAndCorrectAnswer questionAndCorrectAnswer = new QuestionAndCorrectAnswer(
-                                testQuestion.getId(),
-                                testQuestion.getQuestion_text(), testQuestion.getQuestion_materials(),
-                                testQuestion.getQuestion_materials_type(), choices,
-                                testQuestion.getQuestion_type(), testQuestion.getMaximum_mark());
-                        questionAndCorrectAnswers.add(questionAndCorrectAnswer);
-                    }
-                    model.addAttribute("test_date", test.getDate());
-                    model.addAttribute("test_start_time", test.getStart_time());
-                    model.addAttribute("test_end_time", test.getEnd_time());
-                    model.addAttribute("test_id", test_id);
-                    model.addAttribute("exam_announce", examAnnouncement);
-                    model.addAttribute("exam_start_time", currentTime);
-                    model.addAttribute("exam_end_time", examEndTime);
-                    model.addAttribute("exam_title", examTitle);
-                    model.addAttribute("questionList", questionAndCorrectAnswers);
-                    logger.info("Called getGuestUserQuestions with parameter(user_id={}) Success", guestUserID);
-                    return "GU0002_GuestUser.html";
-                }
-
-            } else if (currentTime.isAfter(examStartTimeFinal) && currentTime.isBefore(examEndTime)) {
-                if (studentExamStartTime == null || studentExamStartTime.isEmpty()) {
-                    examAnnouncement = "Apologies! The exam is currently in progress. Late examinees are not allowed to take the exam.";
-                } else if (studentExamStartTime != null) {
-                    List<QuestionAndCorrectAnswer> questionAndCorrectAnswers = new ArrayList<>();
-                    Test test = testRepository.getTestByID(test_id);
-                    List<TestQuestion> testQuestions = testQuestionRepository.getQuestionByTest(test_id);
-                    for (TestQuestion testQuestion : testQuestions) {
-                        long fileSeparator = 100000L + test_id;
-                        FileInfo file = storageService.loadQuestionMaterials(fileSeparator,
-                                testQuestion.getQuestion_materials());
-                        testQuestion.setQuestion_materials(file.getUrl());
-
-                        List<ChoiceModel> choices = new ArrayList<>();
-                        if (!testQuestion.getQuestion_type().equals("FREE_ANSWER")) {
-                            TestQuestionCorrectAnswer testQuestionCorrectAnswer = testQuestionCorrectAnswerRepositoy
-                                    .getCorrectAnswerByQuestion(testQuestion.getId());
-                            JSONArray choiceArrary = new JSONArray(testQuestion.getChoices());
-                            JSONArray answerArray = new JSONArray(testQuestionCorrectAnswer.getCorrectAnswer());
-                            for (int i = 0; i < choiceArrary.length(); i++) {
-                                JSONObject choice = choiceArrary.getJSONObject(i);
-                                String choiceData = choice.getString("choice");
-                                choices.add(new ChoiceModel(i, choiceData, false));
-                            }
-
-                            for (int j = 0; j < answerArray.length(); j++) {
-                                JSONObject answer = answerArray.getJSONObject(j);
-                                int correct = answer.getInt("answer");
-                                String choice = choices.get(correct).getChoice();
-                                choices.set(correct, new ChoiceModel(correct, choice, true));
-                            }
-                        }
-
-                        QuestionAndCorrectAnswer questionAndCorrectAnswer = new QuestionAndCorrectAnswer(
-                                testQuestion.getId(),
-                                testQuestion.getQuestion_text(), testQuestion.getQuestion_materials(),
-                                testQuestion.getQuestion_materials_type(), choices,
-                                testQuestion.getQuestion_type(), testQuestion.getMaximum_mark());
-                        questionAndCorrectAnswers.add(questionAndCorrectAnswer);
-                    }
-                    model.addAttribute("test_date", test.getDate());
-                    model.addAttribute("test_start_time", test.getStart_time());
-                    model.addAttribute("test_end_time", test.getEnd_time());
-                    model.addAttribute("test_id", test_id);
-                    model.addAttribute("exam_announce", examAnnouncement);
-                    model.addAttribute("exam_start_time", currentTime);
-                    model.addAttribute("exam_end_time", examEndTime);
-                    model.addAttribute("exam_title", examTitle);
-                    model.addAttribute("questionList", questionAndCorrectAnswers);
-                    logger.info("Called getGuestUserQuestions with parameter(user_id={}) Success", guestUserID);
-                    return "GU0002_GuestUser.html";
-                }
+            if (guestAnswerInfo != null) {
+                examAnnouncement = "Apologies! Exam answer is already submitted. Examinees are not allowed to submit the answer more than once! ";
+                model.addAttribute("exam_announce", examAnnouncement);
+                return "GU0002_GuestUser.html";
             }
 
-            else if (currentTime.isAfter(examEndTime) || currentTime.equals(examEndTime)) {
+            if (currentDate.isBefore(convertedExamDate)) {
+                examAnnouncement = "Apologies! Exam is not currently available yet. Please note that the exam will be accessible on "
+                        + convertedExamDate + " " + examStartTime + " (Japan Standard Time, JST).";
+            } else if (currentDate.isEqual(convertedExamDate)) {
+
+                if (currentTime.isBefore(examStartTime)) {
+                    examAnnouncement = "Apologies! Exam is not currently available yet. Please note that the exam will be accessible on "
+                            + convertedExamDate + " " + examStartTime + " (Japan Standard Time, JST).";
+                } else if (currentTime.equals(examStartTime) || currentTime.isBefore(examStartTimeFinal)
+                        || currentTime.equals(examStartTimeFinal)) {
+
+                    if (studentExamStartTime == null || studentExamStartTime.isEmpty()) {
+
+                        studentExamStartTime = currentTime.toString();
+                        studentInfo.setStudentExamStartTime(studentExamStartTime);
+                        logger.info("Initiate to Operation Insert Table Test Guest User Data {}");
+                        TestExamineeRepository.save(studentInfo);
+                        logger.info("Operation Insert Table Test GuestUser Data {} | Success");
+
+                        List<QuestionAndCorrectAnswer> questionAndCorrectAnswers = new ArrayList<>();
+                        Test test = testRepository.getTestByID(test_id);
+                        List<TestQuestion> testQuestions = testQuestionRepository.getQuestionByTest(test_id);
+                        for (TestQuestion testQuestion : testQuestions) {
+                            long fileSeparator = 100000L + test_id;
+                            FileInfo file = storageService.loadQuestionMaterials(fileSeparator,
+                                    testQuestion.getQuestion_materials());
+                            testQuestion.setQuestion_materials(file.getUrl());
+
+                            List<ChoiceModel> choices = new ArrayList<>();
+                            if (!testQuestion.getQuestion_type().equals("FREE_ANSWER")) {
+                                TestQuestionCorrectAnswer testQuestionCorrectAnswer = testQuestionCorrectAnswerRepositoy
+                                        .getCorrectAnswerByQuestion(testQuestion.getId());
+                                JSONArray choiceArrary = new JSONArray(testQuestion.getChoices());
+                                JSONArray answerArray = new JSONArray(testQuestionCorrectAnswer.getCorrectAnswer());
+                                for (int i = 0; i < choiceArrary.length(); i++) {
+                                    JSONObject choice = choiceArrary.getJSONObject(i);
+                                    String choiceData = choice.getString("choice");
+                                    choices.add(new ChoiceModel(i, choiceData, false));
+                                }
+
+                                for (int j = 0; j < answerArray.length(); j++) {
+                                    JSONObject answer = answerArray.getJSONObject(j);
+                                    int correct = answer.getInt("answer");
+                                    String choice = choices.get(correct).getChoice();
+                                    choices.set(correct, new ChoiceModel(correct, choice, true));
+                                }
+                            }
+
+                            QuestionAndCorrectAnswer questionAndCorrectAnswer = new QuestionAndCorrectAnswer(
+                                    testQuestion.getId(),
+                                    testQuestion.getQuestion_text(), testQuestion.getQuestion_materials(),
+                                    testQuestion.getQuestion_materials_type(), choices,
+                                    testQuestion.getQuestion_type(), testQuestion.getMaximum_mark());
+                            questionAndCorrectAnswers.add(questionAndCorrectAnswer);
+                        }
+                        model.addAttribute("test_date", test.getDate());
+                        model.addAttribute("test_start_time", test.getStart_time());
+                        model.addAttribute("test_end_time", test.getEnd_time());
+                        model.addAttribute("test_id", test_id);
+                        model.addAttribute("exam_announce", examAnnouncement);
+                        model.addAttribute("exam_start_time", currentTime);
+                        model.addAttribute("exam_end_time", examEndTime);
+                        model.addAttribute("exam_title", examTitle);
+                        model.addAttribute("questionList", questionAndCorrectAnswers);
+                        logger.info("Called getGuestUserQuestions with parameter(user_id={}) Success", guestUserID);
+                        return "GU0002_GuestUser.html";
+                    } else if (studentExamStartTime != null) {
+
+                        List<QuestionAndCorrectAnswer> questionAndCorrectAnswers = new ArrayList<>();
+
+                        logger.info("Initiate Operation Retrieve Table test by Query: test_id={}", test_id);
+                        Test test = testRepository.getTestByID(test_id);
+                        logger.info(
+                                "Operation Retrieve Table test by Query: test_id={}. Result List: test={} | Success",
+                                test_id, test);
+
+                        logger.info("Initiate Operation Retrieve Table test_question by Query: test_id={}", test_id);
+                        List<TestQuestion> testQuestions = testQuestionRepository.getQuestionByTest(test_id);
+                        logger.info(
+                                "Operation Retrieve Table test_question by Query: test_id={}. Result List: testQuestions={} | Success",
+                                test_id, testQuestions.size());
+
+                        for (TestQuestion testQuestion : testQuestions) {
+                            long fileSeparator = 100000L + test_id;
+                            FileInfo file = storageService.loadQuestionMaterials(fileSeparator,
+                                    testQuestion.getQuestion_materials());
+                            testQuestion.setQuestion_materials(file.getUrl());
+
+                            List<ChoiceModel> choices = new ArrayList<>();
+                            if (!testQuestion.getQuestion_type().equals("FREE_ANSWER")) {
+                                TestQuestionCorrectAnswer testQuestionCorrectAnswer = testQuestionCorrectAnswerRepositoy
+                                        .getCorrectAnswerByQuestion(testQuestion.getId());
+                                JSONArray choiceArrary = new JSONArray(testQuestion.getChoices());
+                                JSONArray answerArray = new JSONArray(testQuestionCorrectAnswer.getCorrectAnswer());
+                                for (int i = 0; i < choiceArrary.length(); i++) {
+                                    JSONObject choice = choiceArrary.getJSONObject(i);
+                                    String choiceData = choice.getString("choice");
+                                    choices.add(new ChoiceModel(i, choiceData, false));
+                                }
+
+                                for (int j = 0; j < answerArray.length(); j++) {
+                                    JSONObject answer = answerArray.getJSONObject(j);
+                                    int correct = answer.getInt("answer");
+                                    String choice = choices.get(correct).getChoice();
+                                    choices.set(correct, new ChoiceModel(correct, choice, true));
+                                }
+                            }
+
+                            QuestionAndCorrectAnswer questionAndCorrectAnswer = new QuestionAndCorrectAnswer(
+                                    testQuestion.getId(),
+                                    testQuestion.getQuestion_text(), testQuestion.getQuestion_materials(),
+                                    testQuestion.getQuestion_materials_type(), choices,
+                                    testQuestion.getQuestion_type(), testQuestion.getMaximum_mark());
+                            questionAndCorrectAnswers.add(questionAndCorrectAnswer);
+                        }
+                        model.addAttribute("test_date", test.getDate());
+                        model.addAttribute("test_start_time", test.getStart_time());
+                        model.addAttribute("test_end_time", test.getEnd_time());
+                        model.addAttribute("test_id", test_id);
+                        model.addAttribute("exam_announce", examAnnouncement);
+                        model.addAttribute("exam_start_time", currentTime);
+                        model.addAttribute("exam_end_time", examEndTime);
+                        model.addAttribute("exam_title", examTitle);
+                        model.addAttribute("questionList", questionAndCorrectAnswers);
+                        logger.info("Called getGuestUserQuestions with parameter(user_id={}) Success", guestUserID);
+                        return "GU0002_GuestUser.html";
+                    }
+
+                } else if (currentTime.isAfter(examStartTimeFinal) && currentTime.isBefore(examEndTime)) {
+                    if (studentExamStartTime == null || studentExamStartTime.isEmpty()) {
+                        examAnnouncement = "Apologies! The exam is currently in progress. Late examinees are not allowed to take the exam.";
+                    } else if (studentExamStartTime != null) {
+                        List<QuestionAndCorrectAnswer> questionAndCorrectAnswers = new ArrayList<>();
+                        Test test = testRepository.getTestByID(test_id);
+                        List<TestQuestion> testQuestions = testQuestionRepository.getQuestionByTest(test_id);
+                        for (TestQuestion testQuestion : testQuestions) {
+                            long fileSeparator = 100000L + test_id;
+                            FileInfo file = storageService.loadQuestionMaterials(fileSeparator,
+                                    testQuestion.getQuestion_materials());
+                            testQuestion.setQuestion_materials(file.getUrl());
+
+                            List<ChoiceModel> choices = new ArrayList<>();
+                            if (!testQuestion.getQuestion_type().equals("FREE_ANSWER")) {
+                                TestQuestionCorrectAnswer testQuestionCorrectAnswer = testQuestionCorrectAnswerRepositoy
+                                        .getCorrectAnswerByQuestion(testQuestion.getId());
+                                JSONArray choiceArrary = new JSONArray(testQuestion.getChoices());
+                                JSONArray answerArray = new JSONArray(testQuestionCorrectAnswer.getCorrectAnswer());
+                                for (int i = 0; i < choiceArrary.length(); i++) {
+                                    JSONObject choice = choiceArrary.getJSONObject(i);
+                                    String choiceData = choice.getString("choice");
+                                    choices.add(new ChoiceModel(i, choiceData, false));
+                                }
+
+                                for (int j = 0; j < answerArray.length(); j++) {
+                                    JSONObject answer = answerArray.getJSONObject(j);
+                                    int correct = answer.getInt("answer");
+                                    String choice = choices.get(correct).getChoice();
+                                    choices.set(correct, new ChoiceModel(correct, choice, true));
+                                }
+                            }
+
+                            QuestionAndCorrectAnswer questionAndCorrectAnswer = new QuestionAndCorrectAnswer(
+                                    testQuestion.getId(),
+                                    testQuestion.getQuestion_text(), testQuestion.getQuestion_materials(),
+                                    testQuestion.getQuestion_materials_type(), choices,
+                                    testQuestion.getQuestion_type(), testQuestion.getMaximum_mark());
+                            questionAndCorrectAnswers.add(questionAndCorrectAnswer);
+                        }
+                        model.addAttribute("test_date", test.getDate());
+                        model.addAttribute("test_start_time", test.getStart_time());
+                        model.addAttribute("test_end_time", test.getEnd_time());
+                        model.addAttribute("test_id", test_id);
+                        model.addAttribute("exam_announce", examAnnouncement);
+                        model.addAttribute("exam_start_time", currentTime);
+                        model.addAttribute("exam_end_time", examEndTime);
+                        model.addAttribute("exam_title", examTitle);
+                        model.addAttribute("questionList", questionAndCorrectAnswers);
+                        logger.info("Called getGuestUserQuestions with parameter(user_id={}) Success", guestUserID);
+                        return "GU0002_GuestUser.html";
+                    }
+                }
+
+                else if (currentTime.isAfter(examEndTime) || currentTime.equals(examEndTime)) {
+                    examAnnouncement = "Apologies! This exam has already been conducted. It was held on "
+                            + convertedExamDate
+                            + " " + examStartTime + " (Japan Standard Time, JST).";
+
+                }
+
+            } else if (currentDate.isAfter(convertedExamDate)) {
                 examAnnouncement = "Apologies! This exam has already been conducted. It was held on "
                         + convertedExamDate
                         + " " + examStartTime + " (Japan Standard Time, JST).";
-
             }
 
-        } else if (currentDate.isAfter(convertedExamDate)) {
-            examAnnouncement = "Apologies! This exam has already been conducted. It was held on " + convertedExamDate
-                    + " " + examStartTime + " (Japan Standard Time, JST).";
+            model.addAttribute("exam_announce", examAnnouncement);
+            logger.info("Called getGuestUserQuestions with parameter(user_id={}) Success", guestUserID);
+            return "GU0002_GuestUser.html";
+        } else {
+            return "Your taregt_exam ID is wrong";
         }
 
-        model.addAttribute("exam_announce", examAnnouncement);
-        logger.info("Called getGuestUserQuestions with parameter(user_id={}) Success", guestUserID);
-        return "GU0002_GuestUser.html";
-    }else{
-        return "Your taregt_exam ID is wrong";
-    }
-
-        
     }
 
     @Valid
@@ -1046,13 +1044,13 @@ public class TestQuestionController {
 
                 if (viewCommentResult == null) {
 
-                result.setTest(test);
-                result.setUser(userInfo);
-                result.setTeacherComment(comment);
+                    result.setTest(test);
+                    result.setUser(userInfo);
+                    result.setTeacherComment(comment);
 
-                logger.info("Initiate to Operation Insert Table Result Data {}", result.display());
-                resultRepository.save(result);
-                logger.info("Operation Insert Table Result Data {} | Success", result.display());
+                    logger.info("Initiate to Operation Insert Table Result Data {}", result.display());
+                    resultRepository.save(result);
+                    logger.info("Operation Insert Table Result Data {} | Success", result.display());
 
                 } else {
                     viewCommentResult.setTeacherComment(comment);
@@ -1259,7 +1257,7 @@ public class TestQuestionController {
         return uid;
     }
 
-    private Long getGuestUserID(){
+    private Long getGuestUserID() {
         Long guid = userSessionService.getGuestUserAccount().getGuest_id();
         return guid;
     }

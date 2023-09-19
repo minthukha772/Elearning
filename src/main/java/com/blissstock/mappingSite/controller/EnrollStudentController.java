@@ -61,7 +61,7 @@ public class EnrollStudentController {
                     logger.info("user_id: {}, role: {}", userID, userRole);
                     logger.info("Initiate to Operation Retrieve Table course_info by Query: course_id={}", id);
 
-                    // https://pyinnyarsubuu.com/admin/enrollStudent/course/50001
+                    // https://localhost:8080/admin/enrollStudent/course/50001
                     Optional<CourseInfo> courseInfo = courseRepo.findById(id);
                     if (courseInfo.isPresent()) {
                         CourseInfo course = courseInfo.get();

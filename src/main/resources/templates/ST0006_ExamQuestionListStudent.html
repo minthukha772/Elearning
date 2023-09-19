@@ -390,7 +390,7 @@
                 formData.append('question_id', parseInt(question.id));
                 formData.append('student_answer', student_answer);
                 var xhr = new XMLHttpRequest();
-                xhr.open("POST", "https://pyinnyarsubuu.com/student/submit-answer", true);
+                xhr.open("POST", "https://localhost:8080/student/submit-answer", true);
                 xhr.send(formData);
             });
             //alert("Submitted Successfully.")
