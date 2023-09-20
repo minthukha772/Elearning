@@ -361,7 +361,7 @@
         if (guestLogoutButton != null) {
             guestLogoutButton.addEventListener('click', () => {
                 var xhr = new XMLHttpRequest();
-                xhr.open("GET", "https://localhost:8080/guest-user/logout", true);
+                xhr.open("GET", "https://pyinnyarsubuu.com/guest-user/logout", true);
                 history.back()
             })
         }
@@ -406,13 +406,13 @@
                 formData.append('question_id', parseInt(question.id));
                 formData.append('student_answer', student_answer);
                 var xhr = new XMLHttpRequest();
-                xhr.open("POST", "https://localhost:8080/guestUser/submit-answer", true);
+                xhr.open("POST", "https://pyinnyarsubuu.com/guestUser/submit-answer", true);
                 xhr.send(formData);
             });
             //alert("Submitted Successfully.")
             dialog.style.visibility = "visible";
             var xhr = new XMLHttpRequest();
-            xhr.open("GET", "https://localhost:8080/guest-user/logout", true);
+            xhr.open("GET", "https://pyinnyarsubuu.com/guest-user/logout", true);
             history.back()
         });
 
