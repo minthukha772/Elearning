@@ -46,8 +46,11 @@
                 </div>
             </div>
             <div class="">
-                <div class="fw-bold text-success" style="display: none;">
+                <div th:if="${exam_target == 1}" class="fw-bold text-success" style="display: none;">
                     Guest Id: <span class="" id="guestId" th:text="${guestId}"></span>
+                </div>
+                <div th:unless="${exam_target == 1}" class="fw-bold text-success" style="display: none;">
+                    Student Id: <span class="" id="studentId" th:text="${userId}"></span>
                 </div>
                 <div class="fw-bold text-success">
                     Answered Date : <span class="" th:text="${test_date}"></span>
@@ -249,7 +252,7 @@
             let formData = new FormData();
             var warning_message = document.getElementById("warning_" + test_question.id);
             var acquired_mark = document.getElementById("acquired_mark_" + test_question.id);
-            console.log(acquired_mark)
+
             $("#setasmarked-close-btn").click(function () {
                 closeSetAsMarkDialog();
             });
@@ -284,7 +287,7 @@
             const dialogConfirmBtn = document.getElementById("dialog-confirm-btn");
             const dialogCloseBtn = document.getElementById("dialog-close-btn");
 
-            xhr.open("POST", "https://localhost:8080/admin/mark-student-question", true);
+            xhr.open("POST", "http://localhost:8080/admin/mark-examinee-question", true);
             /*xhr.onload = () => {
                 //alert("Marked Successfully.");
                  
@@ -351,6 +354,7 @@
 
         function submitData(submitType) {
             var testId = document.getElementById("testId").textContent;
+            var studentId = document.getElementById("studentId").textContent;
             var guestId = document.getElementById("guestId").textContent;
             var comment = document.getElementById("comment").value;
 
@@ -359,6 +363,7 @@
             if (submitType == "Created") {
                 data = {
                     test_Id: testId,
+                    student_Id: studentId,
                     guest_id: guestId,
                     comment: comment
 
@@ -385,6 +390,7 @@
         }
         function submitData2(submitType) {
             var testId = document.getElementById("testId").textContent;
+            var studentId = document.getElementById("studentId").textContent;
             var guestId = document.getElementById("guestId").textContent;
             var comment = document.getElementById("comment").value;
 
@@ -393,6 +399,7 @@
             if (submitType == "Created") {
                 data = {
                     test_Id: testId,
+                    student_Id: studentId,
                     guest_Id: guestId,
                     comment: comment
 

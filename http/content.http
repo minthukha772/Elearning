@@ -1,4 +1,4 @@
-fetch("http://localhost:8080/admin/course_syllabus/1", {
+fetch("https://pyinnyarsubuu.com/admin/course_syllabus/1", {
   "headers": {
     "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
     "accept-language": "en-GB,en;q=0.9,my-MM;q=0.8,my;q=0.7,en-US;q=0.6",
@@ -13,7 +13,7 @@ fetch("http://localhost:8080/admin/course_syllabus/1", {
     "sec-fetch-user": "?1",
     "upgrade-insecure-requests": "1"
   },
-  "referrer": "http://localhost:8080/admin/course_syllabus/1",
+  "referrer": "https://pyinnyarsubuu.com/admin/course_syllabus/1",
   "referrerPolicy": "strict-origin-when-cross-origin",
   "body": "syllabusId=0&title=&content%5B%5D.contentId=&content%5B%5D.content=&content%5B%5D.contentId=&content%5B%5D.content=&content%5B%5D.contentId=&content%5B%5D.content=",
   "method": "POST",
