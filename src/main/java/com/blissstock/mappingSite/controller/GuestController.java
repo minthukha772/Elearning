@@ -15,11 +15,15 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.springframework.ui.Model;
@@ -76,7 +80,6 @@ public class GuestController {
     }
 
     @GetMapping(value = "/check_email/reset_onetime_password")
-
     public String resetOnetimePassword(Model model, String status, String paragraph, String header3, String header5,
             @RequestParam String email, @RequestParam String examID) {
 
@@ -132,6 +135,13 @@ public class GuestController {
                 examID);
         return "MailVerify";
 
+    }
+
+    @Valid
+    @GetMapping(value = { "/guest-exam/logout" })
+    private ResponseEntity guestLogout() {
+        SecurityContextHolder.clearContext();
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @GetMapping(value = "/guest-exam/{encodedEmailAddress}_{encodedPassword}_{examID}/login")
