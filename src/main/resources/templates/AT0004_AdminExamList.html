@@ -31,6 +31,10 @@
       console.log("launchExamOK");
       document.getElementById("sure_launch_exam").style.display = 'none';
 
+      document.getElementById("launchExam").style.display = 'none';
+      // currentTestInfo.isLaunch=true;
+      // currentTest.isLaunch=true;
+
       const dialoglaunchOKBtn = document.getElementById("launchExamOK");
       $("#launchExamOK").click(function () {
         closeDialogOK();
@@ -186,9 +190,10 @@
             $("#teacher_sector").css("display", "none")
             $("#course_sector").css("display", "none")
             $("#ExamLaunched").show();
-            $("#launchExam").show();
-
-            if (!currentTest.isLaunch) {
+            // $("#launchExam").show();
+console.log("CurrentTestInfo",currentTestInfo)
+              
+            if (!currentTestInfo.isLaunch) {
                 $("#launchExam").show();
                 $("#questionCreated").show();
                 $("#examCreated").show();
@@ -202,7 +207,7 @@
           } else {
             currentTestTarget = "student"
             $("#teacher_sector").css("display", "block")
-            $("#course_sector").css("display", "block")     //tutumar
+            $("#course_sector").css("display", "block")     
             $("#ExamLaunched").hide();
             $("#launchExam").hide();
           }
@@ -495,7 +500,7 @@
             </label>
           </div>
         </div> 
-<!-- tutumar -->
+
         <script>
           $(document).ready(function () {
             $("#sure_launch_exam").hide();
@@ -514,16 +519,16 @@
               $("#course_name_label").hide();
               console.log(document.querySelector('input[name="student-guest"]:checked').value)
 
-              if (!currentTest.isLaunch) {
-                $("#launchExam").show();
-                $("#questionCreated").show();
-                $("#examCreated").show();
-              } else {
-                $("#launchExam").hide();
-                $("#questionCreated").hide();
-                $("#examCreated").hide();
+              // if (!currentTest.isLaunch) {
+              //   $("#launchExam").show();
+              //   $("#questionCreated").show();
+              //   $("#examCreated").show();
+              // } else {
+              //   $("#launchExam").hide();
+              //   $("#questionCreated").hide();
+              //   $("#examCreated").hide();
 
-              }
+              // }
             });
 
             $("#student").click(function () {
