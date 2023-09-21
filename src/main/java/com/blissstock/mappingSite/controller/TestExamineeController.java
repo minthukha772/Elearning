@@ -2052,17 +2052,18 @@ public class TestExamineeController {
                                         "guest",
                                         "findByGuestId(guest_id)",
                                         existingGuest);
-
+                        GuestUser newGuestUser;
+                        String newOneTimePassword;
                         String newEncodedOneTimePassword;
                         String passwordUpdatedDateTime;
                         String updatedDateTime = getDateAndTime();
 
                         // Check the newly added email with the existing guest email
                         if (existingGuest.getMail().equals(email)) {
-                                GuestUser newGuestUser = new GuestUser(guest_id, name, existingGuest.getMail(),
+                                newGuestUser = new GuestUser(guest_id, name, existingGuest.getMail(),
                                                 phone_number,
                                                 existingGuest.getOne_time_password(),
-                                                existingGuest.getPassword_update_date_time(), updatedDateTime, null);
+                                                existingGuest.getPassword_update_date_time(), updatedDateTime, existingGuest.getDeleted_date_time());
 
                                 logger.info("Initiate to Operation Update Table {} Data {}",
                                                 "guest",
@@ -2083,76 +2084,108 @@ public class TestExamineeController {
                                                 "getGuestUserbyEmail(email)",
                                                 checkExistingGuest);
 
+                                // If the email exists in the table, delete the existing examinee and insert the guest associated with the email
                                 if (checkExistingGuest != null) {
-                                        logger.warn("Opearation Insert Table: guest Data: name={}, mail={}, phone_no={} | Failed",
-                                                        name,
-                                                        email, phone_number);
-                                        logger.warn("Email: {} already existes in Table: guest for test_id={}", email,
-                                                        test_id);
-                                        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                                                        .body("{\"errorMessage\": \"Email address is already registered.\"}");
+                                        logger.warn("Email: {} already existes in Table: guest", email);
+                                        newGuestUser = new GuestUser(
+                                                        checkExistingGuest.getGuest_id(), name,
+                                                        checkExistingGuest.getMail(), phone_number,
+                                                        checkExistingGuest.getOne_time_password(),
+                                                        checkExistingGuest.getPassword_update_date_time(),
+                                                        updatedDateTime,
+                                                        checkExistingGuest.getDeleted_date_time());
+
+                                        Test test = testRepository.getTestByID(test_id);
+
+                                        // Insert new test_examinee data
+                                        TestExaminee newTestExaminee = new TestExaminee(
+                                                        null,
+                                                        test,
+                                                        null,
+                                                        newGuestUser,
+                                                        null);
+                                        logger.info("Initiate to Operation Insert Table: test_examinee Data: {}",
+                                                        newTestExaminee);
+                                        testExamineeRepository.save(newTestExaminee);
+                                        logger.info("Operation Insert Table: test_examinee Data: {} | Success",
+                                                        newTestExaminee);
+
+                                        // Update guest data
+                                        logger.info("Initiate to Operation Update Table: guest Data: guest_id={}, name={}, email={}, phone_number={}",
+                                                        guest_id, name, email, phone_number);
+                                        guestUserRepository.save(newGuestUser);
+                                        logger.info("Operation Update Table: guest Data: guest_id={}, name={}, email={}, phone_number={} | Success",
+                                                        guest_id, name, email, phone_number);
+
+                                        logger.info("Initiate to Operation Retrieve Table {} by query {}",
+                                                        "test_examinee",
+                                                        "findByTestIdAndGuestId(testId, guestId)");
+                                        TestExaminee viewTestGuest = testExamineeRepository
+                                                        .findByTestIdAndGuestId(test_id, guest_id);
+                                        logger.info("Operation Retrieve Table {} by query {} Result List {} } Success Result List: {}",
+                                                        "test_examinee",
+                                                        "findByTestIdAndGuestId(testId, guestId)",
+                                                        viewTestGuest);
+                                        // Delete old test_examinee data
+                                        logger.info("Initiate to Operation Delete Table {} by query ",
+                                                        "test_examinee");
+                                        testExamineeRepository.delete(viewTestGuest);
+                                        logger.info("Initiate to Operation Delete Table {} {}",
+                                                        "test_examinee",
+                                                        "findByTestIdAndGuestId(testId, guestId)");
+                                        
+                                        new Thread(new Runnable() {
+                                                public void run() {
+                                                        try {
+                                                                mailService.SendGuestRemovedNotification(existingGuest, test);
+                                                                logger.info("Notification of Removal of guest user from exam test_id={} sent to mail={} | Success",
+                                                                                test_id, existingGuest.getMail());
+                                                        } catch (Exception e) {
+                                                                logger.info(e.getLocalizedMessage());
+                                                        }
+                                                }
+                                        }).start();
+                                }
+                                // Create a new password if the email does not exist in the table
+                                else {
+                                        logger.info("New one-time-password is created for guest_id={}", guest_id);
+                                        newOneTimePassword = createOneTimePassword();
+                                        newEncodedOneTimePassword = passwordEncoder.encode(newOneTimePassword);
+                                        passwordUpdatedDateTime = getDateAndTime();
+                                        newGuestUser = new GuestUser(guest_id, name, email, phone_number,
+                                                        newEncodedOneTimePassword,
+                                                        passwordUpdatedDateTime, updatedDateTime, null);
+
+                                        logger.info("Initiate to Operation Update Table {} Data {}",
+                                                        "guest",
+                                                        newGuestUser);
+                                        guestUserRepository.save(newGuestUser);
+                                        logger.info("Operation Update Table {} Data {} Success",
+                                                        "guest",
+                                                        newGuestUser);
+
+                                        new Thread(new Runnable() {
+                                                public void run() {
+                                                        try {
+                                                                mailService.SendGuestRemovedNotification(existingGuest, testRepository.getTestByID(test_id));
+                                                                logger.info(
+                                                                                "Notification of Removal of guest user from exam test_id={} sent to mail={} | Success",
+                                                                                test_id, existingGuest.getMail());
+                                                        } catch (Exception e) {
+                                                                logger.info(e.getLocalizedMessage());
+                                                        }
+
+                                                        try {
+                                                                mailService.SendGuestOneTimePassword(newGuestUser, newOneTimePassword);
+                                                                logger.info("One-time-password (OTP) sent to mail={} | Success",
+                                                                                email);
+                                                        } catch (Exception e) {
+                                                                logger.info(e.getLocalizedMessage());
+                                                        }
+                                                }
+                                        }).start();
                                 }
 
-                                // Create a new password if not email doesn't match with the existing email
-                                logger.info("New one-time-password is created for guest_id={}", guest_id);
-                                String newOneTimePassword = createOneTimePassword();
-                                newEncodedOneTimePassword = passwordEncoder.encode(createOneTimePassword());
-                                passwordUpdatedDateTime = getDateAndTime();
-                                GuestUser newGuestUser = new GuestUser(guest_id, name, email, phone_number,
-                                                newEncodedOneTimePassword,
-                                                passwordUpdatedDateTime, updatedDateTime, null);
-
-                                logger.info("Initiate to Operation Retrieve Table {} by query {}",
-                                                "test",
-                                                "getTestByID(test_id)");
-                                Test test = testRepository.getTestByID(test_id);
-                                logger.info("Operation Retrieve Table {} by query {} Result List {} Success",
-                                                "test",
-                                                "getTestByID(test_id)",
-                                                test);
-
-                                logger.info("Initiate to Operation Update Table {} Data {}",
-                                                "guest",
-                                                newGuestUser);
-                                guestUserRepository.save(newGuestUser);
-                                logger.info("Operation Update Table {} Data {} Success",
-                                                "guest",
-                                                newGuestUser);
-
-                                new Thread(new Runnable() {
-                                        public void run() {
-                                                try {
-                                                        mailService.SendGuestRemovedNotification(existingGuest, test);
-                                                        logger.info(
-                                                                        "Notification of Removal of guest user from exam test_id={} sent to mail={} | Success",
-                                                                        test_id, existingGuest.getMail());
-                                                } catch (Exception e) {
-                                                        logger.info(e.getLocalizedMessage());
-                                                }
-
-                                                try {
-                                                        mailService.SendGuestOneTimePassword(newGuestUser,
-                                                                        newOneTimePassword);
-                                                        logger.info("One-time-password (OTP) sent to mail={} | Success",
-                                                                        email);
-                                                } catch (Exception e) {
-                                                        logger.info(e.getLocalizedMessage());
-                                                }
-                                        }
-                                }).start();
-
-                                // new Thread(new Runnable() {
-                                // public void run() {
-                                // try {
-                                // mailService.SendGuestOneTimePassword(newGuestUser,
-                                // newOneTimePassword);
-                                // logger.info("One-time-password (OTP) sent to mail={} | Success",
-                                // email);
-                                // } catch (Exception e) {
-                                // logger.info(e.getLocalizedMessage());
-                                // }
-                                // }
-                                // }).start();
                         }
                         logger.info("Opearation Update Table: guest Data: guest_id={}, name={}, mail={}, phone_no={} | Success",
                                         guest_id, name, email, phone_number);
@@ -2175,6 +2208,7 @@ public class TestExamineeController {
 
                 try {
                         Long userID = getUid();
+                        String deletedDateTime = getDateAndTime();
 
                         logger.info("user_id: {}, role: {}", userID, roles);
                         String role = "";
@@ -2208,6 +2242,7 @@ public class TestExamineeController {
                         logger.info("Operation Delete Table: test_examinee by Query: test_id={}, guest_id={} | Success",
                                         testId, guestId);
 
+                        // Update guest deleted_date_time
                         logger.info("Initiate to Operation Retrieve Table {} by query {}",
                                         "guest",
                                         "findByGuestId(guestId)");
@@ -2216,6 +2251,13 @@ public class TestExamineeController {
                                         "guest",
                                         "findByGuestId(guestId)",
                                         guestUser);
+                        
+                        logger.info("Initiate to Operation Update Table guest Data: deleted_date_time={}", deletedDateTime);
+                        guestUser.setDeleted_date_time(deletedDateTime);
+                        guestUserRepository.save(guestUser);
+                        logger.info("Operation Update Table guest Data: deleted_date_time={} | Success", deletedDateTime);
+                        
+
 
                         logger.info("Initiate to Operation Retrieve Table {} by query {}",
                                         "test",
