@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.blissstock.mappingSite.entity.GuestUser;
 import com.blissstock.mappingSite.entity.Test;
 import com.blissstock.mappingSite.entity.TestExaminee;
 import com.blissstock.mappingSite.entity.TestExamineeAnswer;
@@ -26,6 +27,7 @@ import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.model.FileInfo;
 import com.blissstock.mappingSite.model.StudentListForExamResult;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
+import com.blissstock.mappingSite.repository.GuestUserRepository;
 import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
 import com.blissstock.mappingSite.repository.TestResultRepository;
 import com.blissstock.mappingSite.repository.TestExamineeAnswerRepository;
@@ -90,6 +92,9 @@ public class ExamResultController {
 
     @Autowired
     private GuestUserEmailService guestUserEmailService;
+
+    @Autowired
+    private GuestUserRepository guestUserRepository;
 
     @GetMapping("/student/exam-result/{testId}")
     // @GetMapping("/student/ExamResult")
@@ -175,7 +180,8 @@ public class ExamResultController {
         List<TestExaminee> TestExamineeList = testExamineeRepository.getExamineeByTest(test_id);
 
         for (TestExaminee TestExam : TestExamineeList) {
-            TestResult result = resultRepo.getResultByTestIdAndGuestUser(test_id, TestExam.getGuestUser().getGuest_id());
+            TestResult result = resultRepo.getResultByTestIdAndGuestUser(test_id,
+                    TestExam.getGuestUser().getGuest_id());
             String email = TestExam.getGuestUser().getMail();
             String subject = "[Pyinnyar Subuu]Exam result announce, that you answered at pyinnyar subuu ";
             String body = "Dear Mr./Ms. " + TestExam.getGuestUser().getName() + "\n\n" +
@@ -185,7 +191,7 @@ public class ExamResultController {
                     "Exam Date & Time: " + TestExam.getTest().getDate() + " (MMT)\n" +
                     "Time Allowance: " + TestExam.getTest().getMinutes_allowed() + " Minutes \n\n" +
                     "Examinee Name: " + TestExam.getGuestUser().getName() + "\n" +
-                    "Your Score: "+result.getResultMark()+ " \n" +
+                    "Your Score: " + result.getResultMark() + " \n" +
                     "Pass Margin: " + TestExam.getTest().getPassing_score_percent() + "\n\n" +
                     "============\n" +
                     "Result: " + result.getResult() + "\n" +
@@ -619,8 +625,12 @@ public class ExamResultController {
 
                 logger.info("Initiate Operation Retrieve Table result by Query: test_id={}, user_id={}", testId,
                         userID);
-                TestResult viewExamResult = resultRepo.getResultByTestIdAndUser(testId, userId);
-
+                TestResult viewExamResult;
+                if (viewTest.getExam_target() == 0) {
+                    viewExamResult = resultRepo.getResultByTestIdAndUser(testId, userId);
+                } else {
+                    viewExamResult = resultRepo.getResultByTestIdAndGuestUser(testId, userId);
+                }
                 if (viewExamResult != null) {
 
                     Integer stuMarks = viewExamResult.getResultMark();
@@ -628,19 +638,28 @@ public class ExamResultController {
                     Long uid = 00000L;
                     if (viewTest.getExam_target() == 0) {
                         uid = testStudent.getUserInfo().getUid();
+
                     } else {
                         uid = testStudent.getGuestUser().getGuest_id();
+
                     }
 
-                    UserInfo userInfo = userRepo.getById(uid);
-
                     try {
-                        FileInfo profilePic = storageService.loadProfileAsFileInfo(userInfo);
-                        // model.addAttribute("profilePic", profilePic);
-                        studentListForExamResults.add(new StudentListForExamResult(studentName,
-                                studentEmail,
-                                studentPhone, examResult, stuMarks, maxMarks, profilePic, uid));
-                        model.addAttribute("students", studentListForExamResults);
+                        if (viewTest.getExam_target() == 0) {
+                            UserInfo userInfo = userRepo.getById(uid);
+                            FileInfo profilePic = storageService.loadProfileAsFileInfo(userInfo);
+                            // model.addAttribute("profilePic", profilePic);
+                            studentListForExamResults.add(new StudentListForExamResult(studentName,
+                                    studentEmail,
+                                    studentPhone, examResult, stuMarks, maxMarks, profilePic, uid));
+                            model.addAttribute("students", studentListForExamResults);
+                        } else {
+                            FileInfo profilePic = storageService.loadProfileAsFileInfoGuest();
+                            studentListForExamResults.add(new StudentListForExamResult(studentName,
+                                    studentEmail,
+                                    studentPhone, examResult, stuMarks, maxMarks, profilePic, uid));
+                            model.addAttribute("students", studentListForExamResults);
+                        }
 
                     } catch (Exception e) {
                         e.printStackTrace();
