@@ -99,7 +99,9 @@ public class TestQuestionController {
     @Autowired
     UserInfoRepository userInfoRepository;
 
-   
+    @Autowired
+    GuestUserRepository guestUserRepository;
+
     @Autowired
     TestExamineeRepository TestExamineeRepository;
 
@@ -931,31 +933,6 @@ public class TestQuestionController {
                         logger.info("Called getGuestUserQuestions with parameter(user_id={}) Success", guestUserID);
                         return "GU0002_GuestUser.html";
                     }
-                    model.addAttribute("test_date", test.getDate());
-                    model.addAttribute("test_start_time", test.getStart_time());
-                    model.addAttribute("test_end_time", test.getEnd_time());
-                    model.addAttribute("test_id", test_id);
-                    model.addAttribute("exam_announce", examAnnouncement);
-                    model.addAttribute("exam_start_time", currentTime);
-                    model.addAttribute("exam_end_time", examEndTime);
-                    model.addAttribute("exam_title", examTitle);
-                    model.addAttribute("questionList", questionAndCorrectAnswers);
-                    logger.info("Called getGuestUserQuestions with parameter(user_id={}) Success");
-                    return "GU0002_GuestUser.html";
-                } else if (studentExamStartTime != null) {
-
-                    List<QuestionAndCorrectAnswer> questionAndCorrectAnswers = new ArrayList<>();
-
-                    logger.info("Initiate Operation Retrieve Table test by Query: test_id={}", test_id);
-                    Test test = testRepository.getTestByID(test_id);
-                    logger.info("Operation Retrieve Table test by Query: test_id={}. Result List: test={} | Success",
-                            test_id, test);
-
-                    logger.info("Initiate Operation Retrieve Table test_question by Query: test_id={}", test_id);
-                    List<TestQuestion> testQuestions = testQuestionRepository.getQuestionByTest(test_id);
-                    logger.info(
-                            "Operation Retrieve Table test_question by Query: test_id={}. Result List: testQuestions={} | Success",
-                            test_id, testQuestions.size());
 
                 } else if (currentTime.isAfter(examStartTimeFinal) && currentTime.isBefore(examEndTime)) {
                     if (studentExamStartTime == null || studentExamStartTime.isEmpty()) {
@@ -1009,64 +986,12 @@ public class TestQuestionController {
                         logger.info("Called getGuestUserQuestions with parameter(user_id={}) Success", guestUserID);
                         return "GU0002_GuestUser.html";
                     }
-
-                    model.addAttribute("test_date", test.getDate());
-                    model.addAttribute("test_start_time", test.getStart_time());
-                    model.addAttribute("test_end_time", test.getEnd_time());
-                    model.addAttribute("test_id", test_id);
-                    model.addAttribute("exam_announce", examAnnouncement);
-                    model.addAttribute("exam_start_time", currentTime);
-                    model.addAttribute("exam_end_time", examEndTime);
-                    model.addAttribute("exam_title", examTitle);
-                    model.addAttribute("questionList", questionAndCorrectAnswers);
-                    logger.info("Called getGuestUserQuestions with parameter(user_id={}) Success");
-                    return "GU0002_GuestUser.html";
-
                 }
 
                 else if (currentTime.isAfter(examEndTime) || currentTime.equals(examEndTime)) {
                     examAnnouncement = "Apologies! This exam has already been conducted. It was held on "
                             + convertedExamDate
                             + " " + examStartTime + " (Japan Standard Time, JST).";
-
-                        List<ChoiceModel> choices = new ArrayList<>();
-                        if (!testQuestion.getQuestion_type().equals("FREE_ANSWER")) {
-                            TestQuestionCorrectAnswer testQuestionCorrectAnswer = testQuestionCorrectAnswerRepositoy
-                                    .getCorrectAnswerByQuestion(testQuestion.getId());
-                            JSONArray choiceArrary = new JSONArray(testQuestion.getChoices());
-                            JSONArray answerArray = new JSONArray(testQuestionCorrectAnswer.getCorrectAnswer());
-                            for (int i = 0; i < choiceArrary.length(); i++) {
-                                JSONObject choice = choiceArrary.getJSONObject(i);
-                                String choiceData = choice.getString("choice");
-                                choices.add(new ChoiceModel(i, choiceData, false));
-                            }
-
-                            for (int j = 0; j < answerArray.length(); j++) {
-                                JSONObject answer = answerArray.getJSONObject(j);
-                                int correct = answer.getInt("answer");
-                                String choice = choices.get(correct).getChoice();
-                                choices.set(correct, new ChoiceModel(correct, choice, true));
-                            }
-                        }
-
-                        QuestionAndCorrectAnswer questionAndCorrectAnswer = new QuestionAndCorrectAnswer(
-                                testQuestion.getId(),
-                                testQuestion.getQuestion_text(), testQuestion.getQuestion_materials(),
-                                testQuestion.getQuestion_materials_type(), choices,
-                                testQuestion.getQuestion_type(), testQuestion.getMaximum_mark());
-                        questionAndCorrectAnswers.add(questionAndCorrectAnswer);
-                    }
-                    model.addAttribute("test_date", test.getDate());
-                    model.addAttribute("test_start_time", test.getStart_time());
-                    model.addAttribute("test_end_time", test.getEnd_time());
-                    model.addAttribute("test_id", test_id);
-                    model.addAttribute("exam_announce", examAnnouncement);
-                    model.addAttribute("exam_start_time", currentTime);
-                    model.addAttribute("exam_end_time", examEndTime);
-                    model.addAttribute("exam_title", examTitle);
-                    model.addAttribute("questionList", questionAndCorrectAnswers);
-                    logger.info("Called getGuestUserQuestions with parameter(user_id={}) Success");
-                    return "GU0002_GuestUser.html";
 
                 }
 
