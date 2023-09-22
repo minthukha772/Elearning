@@ -597,6 +597,17 @@
         var emailValid = true;
         var phoneNumberValid = true;
 
+        var guestName = document.getElementById("guest_name");
+        var guestEmail = document.getElementById("guest_email");
+        var guestPhoneNumber = document.getElementById("guest_ph_no");
+        var guestNameWarning = document.getElementById("guest_name_warning");
+        var guestEmailWarning = document.getElementById("guest_email_warning");
+        var guestPhoneNumberWarning = document.getElementById("guest_ph_no_warning");
+
+        var editGuestName = document.getElementById("edit_guest_name");
+        var editGuestEmail = document.getElementById("edit_guest_email");
+        var editGuestPhonenumber = document.getElementById("edit_guest_ph_no");
+
         var user_role =/*[[${user_role}]]*/ null;
 
         if (user_role == "TEACHER") {
@@ -608,14 +619,6 @@
         function submitData() {
             console.log("Submit Examinee")
             var data;
-            var guestName = document.getElementById("guest_name");
-            var guestNameWarning = document.getElementById("guest_name_warning");
-
-            var guestEmail = document.getElementById("guest_email");
-            var guestEmailWarning = document.getElementById("guest_email_warning");
-
-            var guestPhoneNumber = document.getElementById("guest_ph_no");
-            var guestPhoneNumberWarning = document.getElementById("guest_ph_no_warning");
 
             if (guestName.value === "" || guestEmail.value === "" || guestPhoneNumber.value === "") {
                 // Swal.fire({
@@ -722,19 +725,16 @@
         function editData() {
 
             var data;
-            var guestName = document.getElementById("edit_guest_name").value;
-            var guestEmail = document.getElementById("edit_guest_email").value;
-            var guestPhoneNumber = document.getElementById("edit_guest_ph_no").value;
-
+            
             if (!inputValidation()) {
                 return;
             }
             data = {
                 test_id: test_id,
                 guest_id: guest_id,
-                guest_name: guestName,
-                guest_email: guestEmail,
-                guest_ph_no: guestPhoneNumber
+                guest_name: editGuestName.value,
+                guest_email: editGuestEmail.value,
+                guest_ph_no: editGuestPhonenumber.value
             }
             data = JSON.stringify(data);
 
@@ -849,9 +849,19 @@
             guest_id = test_guest.guestUserInfo.guest_id;
             document.querySelector('.edit_single_guest_box').classList.remove('d-none');
 
-            document.getElementById("edit_guest_name").value = test_guest.guestUserInfo.name;
-            document.getElementById("edit_guest_email").value = test_guest.guestUserInfo.mail;
-            document.getElementById("edit_guest_ph_no").value = test_guest.guestUserInfo.phone_no;
+            /* Reset the css class */
+            editGuestName.classList.remove("is-invalid");
+            document.getElementById("edit_guest_name_warning").style.display = "none";
+
+            editGuestEmail.classList.remove("is-invalid");
+            document.getElementById("edit_guest_email_warning").style.display = "none";
+
+            editGuestPhonenumber.classList.remove("is-invalid");
+            document.getElementById("edit_guest_ph_no_warning").style.display = "none";
+
+            editGuestName.value = test_guest.guestUserInfo.name;
+            editGuestEmail.value = test_guest.guestUserInfo.mail;
+            editGuestPhonenumber.value = test_guest.guestUserInfo.phone_no;
 
         }
 

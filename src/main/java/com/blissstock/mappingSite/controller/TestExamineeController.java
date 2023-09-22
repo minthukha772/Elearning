@@ -2238,6 +2238,7 @@ public class TestExamineeController {
 
                 try {
                         Long userID = getUid();
+                        String deletedDateTime = getDateAndTime();
 
                         logger.info("user_id: {}, role: {}", userID, roles);
                         String role = "";
@@ -2271,6 +2272,7 @@ public class TestExamineeController {
                         logger.info("Operation Delete Table: test_examinee by Query: test_id={}, guest_id={} | Success",
                                         testId, guestId);
 
+                        // Update guest deleted_date_time
                         logger.info("Initiate to Operation Retrieve Table {} by query {}",
                                         "guest",
                                         "findByGuestId(guestId)");
@@ -2279,6 +2281,13 @@ public class TestExamineeController {
                                         "guest",
                                         "findByGuestId(guestId)",
                                         guestUser);
+                        
+                        logger.info("Initiate to Operation Update Table guest Data: deleted_date_time={}", deletedDateTime);
+                        guestUser.setDeleted_date_time(deletedDateTime);
+                        guestUserRepository.save(guestUser);
+                        logger.info("Operation Update Table guest Data: deleted_date_time={} | Success", deletedDateTime);
+                        
+
 
                         logger.info("Initiate to Operation Retrieve Table {} by query {}",
                                         "test",
