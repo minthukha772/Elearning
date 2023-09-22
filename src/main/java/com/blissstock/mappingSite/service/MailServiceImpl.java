@@ -501,7 +501,7 @@ public class MailServiceImpl implements MailService {
     String appUrl = getServerAddress();
     String recipientAddress = guestUser.getMail();
 
-    String subject = "【Pyinnyar Subuu】OTP for Exam Login";
+    String subject = "【Pyinnyar Subuu】One-time password is issued for you.";
 
     final Context ctx = new Context();
     ctx.setVariable("appUrl", appUrl);
