@@ -1006,6 +1006,7 @@ public class TestController {
             logger.info("Called getTestInfo with parameter(test_id={}) Success", test_id);
             TestInfo testInfo = new TestInfo();
             testInfo.test_id = testData.getTest_id();
+            testInfo.isLaunch= testData.getIsLaunch();
             testInfo.questionCount = (long) testData.getTestQuestions().size();
             testInfo.examineeCount = (long) testData.getTestExaminee().size();
             testInfo.examTarget = testData.getExam_target();
