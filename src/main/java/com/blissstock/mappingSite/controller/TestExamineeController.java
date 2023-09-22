@@ -1975,6 +1975,7 @@ public class TestExamineeController {
                                 // }
 
                                 logger.info("Initiate to Operation Retrieve Table {} by query {}",
+
                                                 "guest",
                                                 "findGuestUserByGuestEmailAndTestId(email, test_id)");
                                 GuestUser guestUser = guestUserRepository.findByMail(email);
@@ -1986,6 +1987,7 @@ public class TestExamineeController {
                                                 checkExaminee);
 
                                 // Check if guest user is already added to exam or not
+
                                 if (guestUser == null) {
                                         GuestUser newGuestUser = new GuestUser(null, name, email, phone_number,
                                                         one_time_passwordEncoded,
@@ -2280,5 +2282,80 @@ public class TestExamineeController {
                         logger.error(e.getLocalizedMessage());
                         return "500";
                 }
+        }
+
+        // Renew a guest user's one-time password and sent it to guest user's email
+        // address
+        @Valid
+        @PostMapping("/admin/renew-one-time-password")
+        public ResponseEntity renewOneTimePassword(@RequestBody String data) throws ParseException {
+
+                try {
+                        logger.info("Called renewOneTimePassword with parameter: {}", data);
+
+                        JSONObject jsonObject = new JSONObject(data);
+                        String email = jsonObject.getString("guest_email").toLowerCase();
+                        String one_time_password = createOneTimePassword();
+                        String one_time_passwordEncoded = passwordEncoder.encode(one_time_password);
+                        String password_update_date_time = getDateAndTime();
+
+                        logger.info("Initiate to Operation Retrieve Table {} by query {}",
+                                        "guest",
+                                        "getGuestUserbyEmail(email)");
+                        GuestUser guestUser = guestUserRepository.getGuestUserbyEmail(email);
+                        logger.info("Operation Retrieve Table {} by query {} Result List {} Success",
+                                        "guest",
+                                        "getGuestUserbyEmail(email)",
+                                        guestUser);
+
+                        // Check if guest user actually exists
+                        if (guestUser != null) {
+                                guestUser.setPassword_update_date_time(password_update_date_time);
+                                guestUser.setOne_time_password(one_time_passwordEncoded);
+
+                                // Update one-time password and password update date time of guest user in guest
+                                // table
+                                logger.info("Initiate to Operation Update Table {} Data {} By {} = {}, {} = {}",
+                                                "guest",
+                                                guestUser,
+                                                "one_time_password",
+                                                one_time_passwordEncoded,
+                                                "password_update_date_time",
+                                                password_update_date_time);
+                                guestUserRepository.save(guestUser);
+                                logger.info("Operation Update Table {} Data {} By {} = {}, {} = {} Success",
+                                                "guest",
+                                                guestUser,
+                                                "one_time_password",
+                                                one_time_passwordEncoded,
+                                                "password_update_date_time",
+                                                password_update_date_time);
+
+                                // Send a new one-time password to guest user
+                                new Thread(new Runnable() {
+                                        public void run() {
+                                                try {
+                                                        logger.info("Initiate Operation to send One-Time-Password to mail={}",
+                                                                        email);
+                                                        mailService.SendGuestOneTimePassword(
+                                                                        guestUser, one_time_password);
+                                                        logger.info("Operation to send One-Time-Password to mail={} | Success",
+                                                                        email);
+                                                } catch (Exception e) {
+                                                        logger.warn(e.getLocalizedMessage());
+                                                }
+                                        }
+                                }).start();
+                        }
+
+                } catch (Exception e) {
+                        logger.warn("Called renewOneTimePassword with parameter: {} Failed", data);
+                        logger.warn(e.getLocalizedMessage());
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                                        .body("{\"errorMessage\": \"Something went wrong. Please try again.\"}");
+                }
+
+                logger.warn("Called renewOneTimePassword with parameter: {} Success", data);
+                return ResponseEntity.ok(HttpStatus.OK);
         }
 }
