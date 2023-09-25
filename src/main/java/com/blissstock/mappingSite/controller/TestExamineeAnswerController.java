@@ -172,9 +172,6 @@ public class TestExamineeAnswerController {
                 Long guestUserId = getGuestid();
                 GuestUser guestUser = guestUserRepository.findByGuestId(guestUserId);
                 logger.info("Initiate Operation Retrieve Table user_info by Query: guestUserId={}", guestUserId);
-                UserInfo student = userInfoRepository.findStudentById(guestUserId);
-                logger.info("Operation Retrieve Table user_info by Query: student_id={}. Result List: guestUser={} | Success",
-                                guestUserId, student);
                 String answerStatus = "FALSE";
                 Integer acquiredmarks = 0;
                 logger.info("Initiate Operation Retrieve Table test_question by Query: question_id={}", question_id);

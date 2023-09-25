@@ -1786,7 +1786,6 @@ public class TestExamineeController {
                                                         }
                                                 }
                                         }).start();
-
                                 }
                         } catch (Exception e) {
                                 logger.error(e.getLocalizedMessage());

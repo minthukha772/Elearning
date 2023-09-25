@@ -10,7 +10,7 @@ curl 'https://pyinnyarsubuu.com/register/student/what' \
   -H 'sec-ch-ua-platform: "Android"' \
   -H 'Upgrade-Insecure-Requests: 1' \
   -H 'User-Agent: Mozilla/5.0 (Linux; Android 6.0.1; Moto G (4)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Mobile Safari/537.36' \
-  -H 'Origin: http://localhost:8080' \
+  -H 'Origin: http://pyinnyarsubuu.com' \
   -H 'Content-Type: application/x-www-form-urlencoded' \
   -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9' \
   -H 'Sec-Fetch-Site: same-origin' \
@@ -34,7 +34,7 @@ curl 'https://pyinnyarsubuu.com/register/teacher/wait' \
   -H 'sec-ch-ua-mobile: ?0' \
   -H 'sec-ch-ua-platform: "Linux"' \
   -H 'Upgrade-Insecure-Requests: 1' \
-  -H 'Origin: http://localhost:8080' \
+  -H 'Origin: http://pyinnyarsubuu.com' \
   -H 'Content-Type: application/x-www-form-urlencoded' \
   -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36' \
   -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9' \
@@ -60,7 +60,7 @@ curl 'https://pyinnyarsubuu.com/teacher/profile_edit' \
   -H 'sec-ch-ua-mobile: ?0' \
   -H 'sec-ch-ua-platform: "Linux"' \
   -H 'Upgrade-Insecure-Requests: 1' \
-  -H 'Origin: http://localhost:8080' \
+  -H 'Origin: http://pyinnyarsubuu.com' \
   -H 'Content-Type: application/x-www-form-urlencoded' \
   -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36' \
   -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9' \
@@ -84,7 +84,7 @@ curl 'https://pyinnyarsubuu.com/register/teacher/sai@gmail.com/' \
   -H 'sec-ch-ua: " Not A;Brand";v="99", "Chromium";v="96", "Google Chrome";v="96"' \
   -H 'sec-ch-ua-mobile: ?0' \
   -H 'sec-ch-ua-platform: "Windows"' \
-  -H 'Origin: http://localhost:8080' \
+  -H 'Origin: http://pyinnyarsubuu.com' \
   -H 'Upgrade-Insecure-Requests: 1' \
   -H 'DNT: 1' \
   -H 'Content-Type: application/x-www-form-urlencoded' \

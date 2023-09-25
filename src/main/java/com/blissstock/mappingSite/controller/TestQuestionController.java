@@ -380,7 +380,7 @@ public class TestQuestionController {
                 if (TestExamineeAnswer != null) {
                     for (int k = 0; k < guestchoiceArray.length(); k++) {
                         JSONObject answer = guestchoiceArray.getJSONObject(k);
-                        int guest_choice = answer.getInt("examinee_choice");
+                        int guest_choice = answer.getInt("student_choice");
                         String choice = choices.get(guest_choice).getChoice();
                         Boolean correctAnswer = choices.get(guest_choice).isCorrect();
                         choices.set(guest_choice,
