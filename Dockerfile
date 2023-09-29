@@ -1,7 +1,7 @@
 
 FROM openjdk:11-jre-slim
 
-ADD   cert/live/www.pyinnyar-subuu.com /www.pyinnyar-subuu.com
+ADD cert/live/www.pyinnyar-subuu.com /www.pyinnyar-subuu.com
 
 VOLUME /tmp
 
