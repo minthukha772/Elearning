@@ -72,7 +72,7 @@ public interface TestExamineeAnswerRepository extends JpaRepository<TestExaminee
                         @Param("examinee_student_id") Long examinee_student_id);
 
         @Query(value = "Select * from test_examinee_answer where examinee_guest_id = :guest_account_id and test_id = :test_id limit 1", nativeQuery = true)
-        public TestExamineeAnswer getStudentAnswerByTestAndGuest(
+        public List<TestExamineeAnswer> getStudentAnswerByTestAndGuest(
                         @Param("guest_account_id") Long guest_account_id,
                         @Param("test_id") Long test_id);
 

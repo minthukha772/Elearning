@@ -597,6 +597,17 @@
         var emailValid = true;
         var phoneNumberValid = true;
 
+        var guestName = document.getElementById("guest_name");
+        var guestEmail = document.getElementById("guest_email");
+        var guestPhoneNumber = document.getElementById("guest_ph_no");
+        var guestNameWarning = document.getElementById("guest_name_warning");
+        var guestEmailWarning = document.getElementById("guest_email_warning");
+        var guestPhoneNumberWarning = document.getElementById("guest_ph_no_warning");
+
+        var editGuestName = document.getElementById("edit_guest_name");
+        var editGuestEmail = document.getElementById("edit_guest_email");
+        var editGuestPhonenumber = document.getElementById("edit_guest_ph_no");
+
         var user_role =/*[[${user_role}]]*/ null;
 
         if (user_role == "TEACHER") {
@@ -608,14 +619,6 @@
         function submitData() {
             console.log("Submit Examinee")
             var data;
-            var guestName = document.getElementById("guest_name");
-            var guestNameWarning = document.getElementById("guest_name_warning");
-
-            var guestEmail = document.getElementById("guest_email");
-            var guestEmailWarning = document.getElementById("guest_email_warning");
-
-            var guestPhoneNumber = document.getElementById("guest_ph_no");
-            var guestPhoneNumberWarning = document.getElementById("guest_ph_no_warning");
 
             if (guestName.value === "" || guestEmail.value === "" || guestPhoneNumber.value === "") {
                 // Swal.fire({
@@ -669,7 +672,50 @@
                     });
                 } else {
                     response.json().then(error => {
-                        displayErrorMessage(error.errorMessage)
+                        errorType = error.errorMessage;
+
+                        if (errorType == "M0001") {
+                            Swal.fire({
+                                title: 'Renew One-Time Password?',
+                                text: "This guest user already exists in the system. Are you sure you want to renew the one-time password for this user and add this guest user to this exam?",
+                                icon: 'question',
+                                showCancelButton: true,
+                                confirmButtonColor: '#198754',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Renew',
+                                cancelButtonText: "Cancel"
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    fetch("/" + url + "/renew-one-time-password", {
+                                        method: "POST",
+                                        headers: { "Content-Type": "application/json" },
+                                        body: data
+                                    }).then(response => {
+                                        if (response.ok) {
+                                            Swal.fire({
+                                                title: 'Success',
+                                                icon: 'success',
+                                                text: "One-time password is renewed and sent to guest user's email address.",
+                                                confirmButtonColor: '#198754'
+                                            }).then((result) => {
+                                                window.location.reload();
+                                            });
+                                        } else {
+                                            response.json().then(error => {
+                                                Swal.fire({
+                                                    title: 'Failed',
+                                                    icon: 'error',
+                                                    text: error.errorMessage,
+                                                    confirmButtonColor: '#198754'
+                                                }).then((result) => {
+                                                    window.location.reload();
+                                                });
+                                            })
+                                        }
+                                    })
+                                }
+                            })
+                        } else { displayErrorMessage(error.errorMessage); }
                     });
                 }
             });
@@ -679,9 +725,6 @@
         function editData() {
 
             var data;
-            var guestName = document.getElementById("edit_guest_name").value;
-            var guestEmail = document.getElementById("edit_guest_email").value;
-            var guestPhoneNumber = document.getElementById("edit_guest_ph_no").value;
 
             if (!inputValidation()) {
                 return;
@@ -689,9 +732,9 @@
             data = {
                 test_id: test_id,
                 guest_id: guest_id,
-                guest_name: guestName,
-                guest_email: guestEmail,
-                guest_ph_no: guestPhoneNumber
+                guest_name: editGuestName.value,
+                guest_email: editGuestEmail.value,
+                guest_ph_no: editGuestPhonenumber.value
             }
             data = JSON.stringify(data);
 
@@ -806,9 +849,19 @@
             guest_id = test_guest.guestUserInfo.guest_id;
             document.querySelector('.edit_single_guest_box').classList.remove('d-none');
 
-            document.getElementById("edit_guest_name").value = test_guest.guestUserInfo.name;
-            document.getElementById("edit_guest_email").value = test_guest.guestUserInfo.mail;
-            document.getElementById("edit_guest_ph_no").value = test_guest.guestUserInfo.phone_no;
+            /* Reset the css class */
+            editGuestName.classList.remove("is-invalid");
+            document.getElementById("edit_guest_name_warning").style.display = "none";
+
+            editGuestEmail.classList.remove("is-invalid");
+            document.getElementById("edit_guest_email_warning").style.display = "none";
+
+            editGuestPhonenumber.classList.remove("is-invalid");
+            document.getElementById("edit_guest_ph_no_warning").style.display = "none";
+
+            editGuestName.value = test_guest.guestUserInfo.name;
+            editGuestEmail.value = test_guest.guestUserInfo.mail;
+            editGuestPhonenumber.value = test_guest.guestUserInfo.phone_no;
 
         }
 
@@ -879,7 +932,10 @@
                 }
 
                 var rowData = csvdata.split('\r\n');
-
+                csvFileHeaders = rowData[0].split(',');
+                if (csvFileHeaders[0] != "Name" || csvFileHeaders[1] != "Email" || csvFileHeaders[2] != "PhoneNumber") {
+                    rowData = csvdata.split('\n');
+                }
 
                 // Check if csv file has more than 31 rows(including headers)
                 if (rowData.length > 32) {
@@ -1017,7 +1073,6 @@
         var test_id = /*[[${test_id}]]*/ null;
         var guest_id = /*[[${guest_id}]]*/ null;
         var emailVerificationMessage = document.getElementById("email_verification_warning");
-
         var nameValid = true;
         var emailValid = true;
         var phoneNumberValid = true;
@@ -1413,48 +1468,35 @@
             return emailRegex.test(email);
         }
 
+
     </script>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <!-- <script>
     $(document).ready(function () {
+            $("#search_guest").click(function () {
+                var totalGuests = 0
+                var searchValue = $("#search_guest_name").val().toLowerCase();
 
-        $("#search_guest").click(function () {
-            var totalGuests = 0
-            var searchValue = $("#search_guest_name").val().toLowerCase();
-
-            $(".guest-item").each(function () {
-                var guestName = $(this).find(".name").text().toLowerCase();
-                var guestEmail = $(this).find(".mail").text().toLowerCase();
-                var guestPhoneNumber = $(this).find(".ph-no").text();
+                $(".guest-item").each(function () {
+                    var guestName = $(this).find(".name").text().toLowerCase();
+                    var guestEmail = $(this).find(".mail").text().toLowerCase();
+                    var guestPhoneNumber = $(this).find(".ph-no").text();
 
 
-                if (guestName.includes(searchValue) || guestEmail.includes(searchValue) || guestPhoneNumber.includes(searchValue)) {
-                    $(this).show();
-                    totalGuests++;
-                } else {
-                    $(this).hide();
-                }
+                    if (guestName.includes(searchValue) || guestEmail.includes(searchValue) || guestPhoneNumber.includes(searchValue)) {
+                        $(this).show();
+                        totalGuests++;
+                    } else {
+                        $(this).hide();
+                    }
+                });
+                $(".total_guests_found").text(totalGuests);
             });
-            $(".total_guests_found").text(totalGuests);
-        });
-
-        $("#submit-single-guest").click(function (event) {
-            // Prevent the default form submission behavior
-            event.preventDefault();
-            submitData();
-        });
-
-        $("#update-single-guest").click(function (event) {
-            // Prevent the default form submission behavior
-            event.preventDefault();
-            editData();
         });
     });
 </script> -->
-
-
-
     <script th:src="@{/js/main.js}"></script>
 </body>
 
