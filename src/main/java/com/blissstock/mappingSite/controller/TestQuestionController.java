@@ -192,11 +192,24 @@ public class TestQuestionController {
         logger.info("Operation Retrieve Table test by Query: test_id={}. Result List: test={} | Success", test_id,
                 test);
         logger.info("Initiate Operation Retrieve Table user_info by Query: student_id={}", student_id);
-        UserInfo userInfo = userInfoRepository.findStudentById(student_id);
-        logger.info("Operation Retrieve Table user_info by Query: student_id={}. Result List: userInfo={} | Success",
-                student_id, userInfo);
+        String userName;
+        Long userId;
+        if (test.getExam_target() == 1) {
+            GuestUser guestUser = guestUserRepository.findByGuestId(student_id);
+            userName = guestUser.getName();
+            userId = guestUser.getGuest_id();
+            logger.info(
+                    "Operation Retrieve Table user_info by Query: student_id={}. Result List: userInfo={} | Success",
+                    student_id, guestUser);
+        } else {
+            UserInfo userInfo = userInfoRepository.findStudentById(student_id);
+            userName = userInfo.getUserName();
+            userId = userInfo.getUid();
+            logger.info(
+                    "Operation Retrieve Table user_info by Query: student_id={}. Result List: userInfo={} | Success",
+                    student_id, userInfo);
+        }
         String markedStatus = "";
-
         for (TestQuestion testQuestion : testQuestions) {
             String studentAnswer = "";
             String studentAnswerURL = "";
@@ -207,10 +220,16 @@ public class TestQuestionController {
             int acquired_mark = 0;
             List<ExamineeChoiceModel> choices = new ArrayList<>();
             if (!testQuestion.getQuestion_type().equals("FREE_ANSWER")) {
+                TestExamineeAnswer TestExamineeAnswer;
                 TestQuestionCorrectAnswer testQuestionCorrectAnswer = testQuestionCorrectAnswerRepositoy
                         .getCorrectAnswerByQuestion(testQuestion.getId());
-                TestExamineeAnswer TestExamineeAnswer = TestExamineeAnswerRepository.getStudentAnswer(student_id,
-                        testQuestion.getId());
+                if (test.getExam_target() == 1) {
+                    TestExamineeAnswer = TestExamineeAnswerRepository.getGuestAnswer(student_id,
+                            testQuestion.getId());
+                } else {
+                    TestExamineeAnswer = TestExamineeAnswerRepository.getStudentAnswer(student_id,
+                            testQuestion.getId());
+                }
 
                 JSONArray choiceArrary = new JSONArray(testQuestion.getChoices());
                 JSONArray answerArray = new JSONArray(testQuestionCorrectAnswer.getCorrectAnswer());
@@ -234,7 +253,7 @@ public class TestQuestionController {
                 if (TestExamineeAnswer != null) {
                     for (int k = 0; k < studentchoiceArray.length(); k++) {
                         JSONObject answer = studentchoiceArray.getJSONObject(k);
-                        int student_choice = answer.getInt("examinee_choice");
+                        int student_choice = answer.getInt("student_choice");
                         String choice = choices.get(student_choice).getChoice();
                         Boolean correctAnswer = choices.get(student_choice).isCorrect();
                         choices.set(student_choice,
@@ -258,8 +277,14 @@ public class TestQuestionController {
                     acquired_mark = testQuestion.getMaximum_mark();
                 }
             } else {
-                TestExamineeAnswer TestExamineeAnswer = TestExamineeAnswerRepository.getStudentAnswer(student_id,
-                        testQuestion.getId());
+                TestExamineeAnswer TestExamineeAnswer;
+                if (test.getExam_target() == 1) {
+                    TestExamineeAnswer = TestExamineeAnswerRepository.getGuestAnswer(student_id,
+                            testQuestion.getId());
+                } else {
+                    TestExamineeAnswer = TestExamineeAnswerRepository.getStudentAnswer(student_id,
+                            testQuestion.getId());
+                }
                 if (TestExamineeAnswer != null) {
                     acquired_mark = TestExamineeAnswer.getAcquired_mark();
                     long studentfileSeparator = Long.parseLong(test_id.toString()
@@ -296,8 +321,8 @@ public class TestQuestionController {
         model.addAttribute("exam_target", test.getExam_target());
         model.addAttribute("questionList", questionAndCorrectAnswers);
         model.addAttribute("test_date", test.getDate());
-        model.addAttribute("name", userInfo.getUserName());
-        model.addAttribute("userId", userInfo.getUid());
+        model.addAttribute("name", userName);
+        model.addAttribute("userId", userId);
         model.addAttribute("totalTest", testQuestions.size());
         model.addAttribute("freeTest", freeAnswerCount);
         model.addAttribute("choiceTest", testQuestions.size() - freeAnswerCount);
@@ -380,7 +405,7 @@ public class TestQuestionController {
                 if (TestExamineeAnswer != null) {
                     for (int k = 0; k < guestchoiceArray.length(); k++) {
                         JSONObject answer = guestchoiceArray.getJSONObject(k);
-                        int guest_choice = answer.getInt("examinee_choice");
+                        int guest_choice = answer.getInt("student_choice");
                         String choice = choices.get(guest_choice).getChoice();
                         Boolean correctAnswer = choices.get(guest_choice).isCorrect();
                         choices.set(guest_choice,

@@ -725,7 +725,7 @@
         function editData() {
 
             var data;
-            
+
             if (!inputValidation()) {
                 return;
             }
@@ -932,7 +932,10 @@
                 }
 
                 var rowData = csvdata.split('\r\n');
-
+                csvFileHeaders = rowData[0].split(',');
+                if (csvFileHeaders[0] != "Name" || csvFileHeaders[1] != "Email" || csvFileHeaders[2] != "PhoneNumber") {
+                    rowData = csvdata.split('\n');
+                }
 
                 // Check if csv file has more than 31 rows(including headers)
                 if (rowData.length > 32) {
