@@ -267,7 +267,7 @@ function setDataToCopyDialog(test) {
   
       else if (submitType == "Copy") {
           data = {
-
+            test_id: test_id,
             course_id: courseId,
             description: description,
             section_name: section_name,
@@ -275,7 +275,7 @@ function setDataToCopyDialog(test) {
             date: exam_date,
             minutes_allowed: minutes_allowed,
             start_time: exam_start_time,
-            end_time: exam_end_time
+            end_time: exam_end_time            
           }
 
         data = JSON.stringify(data);
@@ -382,7 +382,6 @@ function setDataToCopyDialog(test) {
             <option value="Exam Created" selected>Exam Created</option>
             <option value="Questions Created">Questions Created</option>
             <option value="Marking">Marking</option>
-            <option value="Result Released">Result Released</option>
           </select>
         </div>
         <div style="color: red; font-size: 12px; display: none;" id="exam_status_warning">Please Choose Exam Status
@@ -482,7 +481,6 @@ function setDataToCopyDialog(test) {
               <option value="Exam Created"><small>Exam Created</small></option>
               <option value="Questions Created"><small>Questions Created</small></option>
               <option value="Marking"><small>Marking</small></option>
-              <option value="Result Released"><small>Result Released</small></option>
               <option value="Deleted"><small>Deleted</small></option>
             </select>
           </div>
