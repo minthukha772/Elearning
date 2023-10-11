@@ -361,18 +361,20 @@
         if (guestLogoutButton != null) {
             guestLogoutButton.addEventListener('click', () => {
                 var xhr = new XMLHttpRequest();
-                xhr.open("GET", "https://localhost:8080/guest-user/logout", true);
+                xhr.open("GET", "https://pyinnyarsubuu.com/guest-user/logout", true);
                 history.back()
             })
         }
 
 
         submit = document.getElementById("submit");
-        console.log(submit);
         submit.addEventListener('click', () => {
-            console.log("ggwp");
+            var allCheck = true;
+            answerList = [];
+            var questionID;
+            let formData = new FormData();
             questionList.forEach(question => {
-                let formData = new FormData();
+                answer = { "question_id": parseInt(question.id) };
                 student_choice = [];
                 var student_answer;
                 var answer_material;
@@ -383,8 +385,10 @@
                         var choice = { "student_choice": parseInt(check_index) }
                         student_choice.push(choice);
                         student_answer = JSON.stringify(student_choice);
+                    } else {
+                        allCheck = false;
                     }
-                    formData.append('answer_type', 'SINGLE_ANSWER');
+                    answer = { "answer_type": "SINGLE_ANSWER" };
                 } else if (question.question_type == 'MULTIPLE_ANSWER') {
                     var selectedAnswer = $('input[name="' + question.id + '"]:checked');
                     if (selectedAnswer.length > 0) {
@@ -394,28 +398,39 @@
                             student_choice.push(choice);
                         }
                         student_answer = JSON.stringify(student_choice);
+                    } else {
+                        allCheck = false;
                     }
-                    formData.append('answer_type', 'MULTIPLE_ANSWER');
+                    answer = { "answer_type": "MULTIPLE_ANSWER" };
                 } else {
                     student_answer = $('#' + question.id + "_text").val();
                     answer_material = document.getElementById(question.id + "_image").files[0];
-                    formData.append('answer_type', 'FREE_ANSWER');
-                    formData.append('answer_material', answer_material);
+                    if (student_answer == "" && answer_material == undefined) {
+                        allCheck = false;
+                    }
+                    answer = { "answer_type": "FREE_ANSWER" };
+                    answer = { "answer_material": answer_material };
                 }
-                formData.append('test_id', parseInt(test_id));
-                formData.append('question_id', parseInt(question.id));
-                formData.append('student_answer', student_answer);
-                var xhr = new XMLHttpRequest();
-                xhr.open("POST", "https://localhost:8080/guestUser/submit-answer", true);
-                xhr.send(formData);
-            });
-            //alert("Submitted Successfully.")
-            dialog.style.visibility = "visible";
-            var xhr = new XMLHttpRequest();
-            xhr.open("GET", "https://localhost:8080/guest-user/logout", true);
-            history.back()
-        });
 
+                answer = { "answer_type": "FREE_ANSWER" };
+                answerList.push(answer);
+
+                // var xhr = new XMLHttpRequest();
+                // xhr.open("POST", "https://pyinnyarsubuu.com/guestUser/submit-answer", true);
+                // xhr.send(formData);
+            });
+            if (allCheck) {
+                formData.append('test_id', parseInt(test_id));
+                formData.append('student_answer', JSON.stringify(answerList));
+            } else {
+                alert("Not All Answered")
+            }
+            //alert("Submitted Successfully.")
+            // dialog.style.visibility = "visible";
+            // var xhr = new XMLHttpRequest();
+            // // xhr.open("GET", "https://pyinnyarsubuu.com/guest-exam/logout", true);
+            // history.back()
+        });
 
         $("#dialog-confirm-btn").click(function () {
             continueDialog();

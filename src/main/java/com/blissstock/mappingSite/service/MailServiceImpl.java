@@ -1003,7 +1003,7 @@ public class MailServiceImpl implements MailService {
 
     }
     if (ENVIRONMENT.equals("local")) {
-      appUrl = "localhost:8080";
+      appUrl = "pyinnyarsubuu.com";
 
     }
     return appUrl;

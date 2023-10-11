@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
 import com.blissstock.mappingSite.service.StorageService;
+import com.blissstock.mappingSite.service.UserSessionService;
 
 @Controller
 @RequestMapping("/")
@@ -29,11 +30,13 @@ public class IndexController {
     private CourseInfoRepository courseRepo;
     @Autowired
     StorageService storageService;
+    @Autowired
+    UserSessionService sessionService;
 
     @GetMapping("/")
     private String getCourses(Model model) {
-        logger.info("index.html with parameter: {}");
 
+        logger.info("index.html with parameter: {}");
         try {
             // logger.info("GET request");
             logger.info("Initiate to Operation Retrieve Table {course_info} by query {courseRepo.findByClassTypeAndIsCourseApproved(ClassType.LIVE.getValue(),true)}");
@@ -51,7 +54,6 @@ public class IndexController {
 
             List<HomeCourseInfoDTO> liveInfoDTOs = new ArrayList<HomeCourseInfoDTO>();
             List<HomeCourseInfoDTO> videoInfoDTOs = new ArrayList<HomeCourseInfoDTO>();
-            ;
 
             for (CourseInfo info : liveList) {
                 HomeCourseInfoDTO dto = new HomeCourseInfoDTO();

@@ -26,7 +26,7 @@
     var currentTestInfo;
     var currentTest;
     var currentTestTarget;
-
+ 
     function launchExam() {
       console.log("launchExamOK");
       document.getElementById("sure_launch_exam").style.display = 'none';
@@ -39,6 +39,7 @@
       $("#launchExamOK").click(function () {
         closeDialogOK();
       });
+
 
 
       function closeDialogOK() {
@@ -65,9 +66,11 @@
             test_id: currentTestInfo.test_id
           },
           success: function (data) {
+
             // document.getElementById("sure_launch_exam").style.display = 'none';
             console.log(data);
           },
+
           error: function (jqXHR, textStatus, errorThrown) {
             console.log(textStatus, errorThrown);
             // handle error response
@@ -239,6 +242,7 @@
             $("#course_sector").css("display", "none")
             $("#ExamLaunched").show();
             // $("#launchExam").show();
+
             console.log("CurrentTestInfo", currentTestInfo)
 
             if (!currentTestInfo.isLaunch) {
@@ -251,6 +255,7 @@
               $("#examCreated").hide();
 
             }
+
 
           } else {
             currentTestTarget = "student"
@@ -299,7 +304,7 @@
       document.getElementById("exam_start_time").value = test.start_time;
       document.getElementById("exam_end_time").value = test.end_time;
       if (test.examTarget == 1) {
-        var guestCheckBox = document.getElementById("guest");
+        var guestCheckBox = document.getElementById("guest");    
         guestCheckBox.checked = true
       } else {
         var studentCheckBox = document.getElementById("student");
@@ -421,7 +426,7 @@
         // teacherId = 	10001;
         teacherId = 40001;
         courseId = 599;
-      }
+    }
 
       if (submitType == "Created") {
         data = {
@@ -594,7 +599,7 @@
               Guest
             </label>
           </div>
-        </div>
+        </div> 
 
         <script>
           $(document).ready(function () {
@@ -691,6 +696,7 @@
                 class="text-danger">*</span></small></label>
           <input type="text" class="form-control" id="section_name" style="border-radius: 50px"
             placeholder="Add section about exam" required />
+
         </div>
         <div style="color: red; font-size: 12px; display: none;" id="section_name_warning">Please Add Section Name</div>
         <div class="input-group-sm mb-2 shadow-sm">
@@ -980,7 +986,7 @@
     crossorigin="anonymous"></script>
   <script th:src="@{/js/main.js}"></script>
   <!--student-guest-->
-  <script>
+<script>
     const dialogCloseBtn = document.getElementById("dialog-close-btn");
     $("#dialog-close-btn").click(function () {
       closeDialog();
