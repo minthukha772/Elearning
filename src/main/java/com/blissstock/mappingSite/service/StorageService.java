@@ -56,4 +56,6 @@ public interface StorageService {
   public FileInfo loadQuestionMaterials(Long fileSeparator, String fileName) ;
 
   public FileInfo loadAnswermaterials(Long fileSeparator, String fileName) ;
+
+  public void questionCopy(String sourceFolderName, String targetFolderName);
 }
