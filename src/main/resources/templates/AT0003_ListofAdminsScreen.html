@@ -503,7 +503,7 @@
                       <!-- <td th:text="${dr.phoneNo}"></td> -->
 
                       <td th:text="${dr.accountStatus}" class="accStatus"></td>
-                      <td th:text="${dr.registeredDate}"></td>
+                      <td th:text="${#dates.format(dr.registeredDate, 'yyyy-MM-dd')}"></td>
                       <td>
                         <!-- <a href="#" class="del"  > -->
                           <!-- <button type="button" th:value="${dr.accountId}" class="confirm_del_btn btn-danger btn-sm" style="margin-left:30px">Delete</button> -->
