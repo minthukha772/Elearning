@@ -7,4 +7,5 @@ public class TestInfo {
     public Long questionCount;
     public Long examineeCount;
     public Integer examTarget;
+    public boolean isLaunch;
 }

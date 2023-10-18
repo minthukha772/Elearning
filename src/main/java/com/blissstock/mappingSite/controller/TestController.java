@@ -771,7 +771,7 @@ public class TestController {
                     int total_mark = 0;
                     TestResult viewExamResult;
                     if (test.getExam_target() == 1) {
-                        viewExamResult = resultRepo.getResultByTestIdAndUser(test_id,
+                        viewExamResult = resultRepo.getResultByTestIdAndGuestUser(test_id,
                                 student.getGuestUser().getGuest_id());
                     } else {
                         viewExamResult = resultRepo.getResultByTestIdAndUser(test_id,
@@ -835,38 +835,43 @@ public class TestController {
                             }
                             resultRepo.save(result);
                         }
-                    } else {
-                        List<TestExamineeAnswer> studentAnswerList = TestExamineeAnswerRepository
-                                .getStudentAnswerListByTestAndStudent(student.getUserInfo().getUid(),
-                                        test_id);
-                        for (TestExamineeAnswer studentAnswer : studentAnswerList) {
-                            int acquired_mark = studentAnswer.getAcquired_mark();
-                            int max_mark = studentAnswer.getQuestion().getMaximum_mark();
-                            total_acquired_mark += acquired_mark;
-                            total_mark += max_mark;
-                        }
-                        Float ftotal_acquired_mark = (float) (total_acquired_mark);
-                        Float ftotal_mark = (float) (total_mark);
-                        int passing_score_percent = test.getPassing_score_percent();
-                        Float fcalculate_percent = (float) (ftotal_acquired_mark / ftotal_mark);
-                        fcalculate_percent = fcalculate_percent * 100;
-                        if (fcalculate_percent > passing_score_percent) {
-
-                            viewExamResult.setResult("Passed");
-                            viewExamResult.setResultMark(total_acquired_mark);
-                            logger.info("Initiate to Operation Insert Table Result Data {}", viewExamResult.display());
-                            resultRepo.save(viewExamResult);
-                            logger.info("Operation Insert Table Result Data {} | Success", viewExamResult.display());
-                        } else {
-
-                            viewExamResult.setResult("Failed");
-                            viewExamResult.setResultMark(total_acquired_mark);
-                            logger.info("Initiate to Operation Insert Table Result Data {}", viewExamResult.display());
-                            resultRepo.save(viewExamResult);
-                            logger.info("Operation Insert Table Result Data {} | Success", viewExamResult.display());
-                        }
-
                     }
+                    // } else {
+                    // List<TestExamineeAnswer> studentAnswerList = TestExamineeAnswerRepository
+                    // .getStudentAnswerListByTestAndStudent(student.getUserInfo().getUid(),
+                    // test_id);
+                    // for (TestExamineeAnswer studentAnswer : studentAnswerList) {
+                    // int acquired_mark = studentAnswer.getAcquired_mark();
+                    // int max_mark = studentAnswer.getQuestion().getMaximum_mark();
+                    // total_acquired_mark += acquired_mark;
+                    // total_mark += max_mark;
+                    // }
+                    // Float ftotal_acquired_mark = (float) (total_acquired_mark);
+                    // Float ftotal_mark = (float) (total_mark);
+                    // int passing_score_percent = test.getPassing_score_percent();
+                    // Float fcalculate_percent = (float) (ftotal_acquired_mark / ftotal_mark);
+                    // fcalculate_percent = fcalculate_percent * 100;
+                    // if (fcalculate_percent > passing_score_percent) {
+
+                    // viewExamResult.setResult("Passed");
+                    // viewExamResult.setResultMark(total_acquired_mark);
+                    // logger.info("Initiate to Operation Insert Table Result Data {}",
+                    // viewExamResult.display());
+                    // resultRepo.save(viewExamResult);
+                    // logger.info("Operation Insert Table Result Data {} | Success",
+                    // viewExamResult.display());
+                    // } else {
+
+                    // viewExamResult.setResult("Failed");
+                    // viewExamResult.setResultMark(total_acquired_mark);
+                    // logger.info("Initiate to Operation Insert Table Result Data {}",
+                    // viewExamResult.display());
+                    // resultRepo.save(viewExamResult);
+                    // logger.info("Operation Insert Table Result Data {} | Success",
+                    // viewExamResult.display());
+                    // }
+
+                    // }
 
                 }
             }
@@ -1020,6 +1025,7 @@ public class TestController {
             logger.info("Called getTestInfo with parameter(test_id={}) Success", test_id);
             TestInfo testInfo = new TestInfo();
             testInfo.test_id = testData.getTest_id();
+            testInfo.isLaunch = testData.getIsLaunch();
             testInfo.questionCount = (long) testData.getTestQuestions().size();
             testInfo.examineeCount = (long) testData.getTestExaminee().size();
             testInfo.examTarget = testData.getExam_target();

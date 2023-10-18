@@ -1,7 +1,8 @@
-
-
-
 <div th:unless="${#authorization.expression('isAuthenticated()')}">
+    <div th:replace="fragments/guestnav-home"></div>
+</div>
+
+<div th:if="${#authorization.expression('hasRole(''ROLE_GUEST'')')}">
     <div th:replace="fragments/guestnav-home"></div>
 </div>
 
