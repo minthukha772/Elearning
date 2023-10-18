@@ -135,6 +135,7 @@ public class CourseEditController {
                 }
                 model.addAttribute("courseTimeList", sorted_list);
                 model.addAttribute("classActiveVideo", true);
+                model.addAttribute("CourseListHtml", courseService.getAllCourseCategory());
             }
             
             FileInfo cphoto = storageService.loadCoursePhoto(course);
