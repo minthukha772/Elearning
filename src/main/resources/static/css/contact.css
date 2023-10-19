@@ -1,0 +1,77 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.inquiry-form-container{
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 15px;
+}
+.inquiry-form{
+    width: 500px;
+}
+.text{
+    display: block;
+    margin-top: 5px;
+}
+.form-container{
+    color: white;
+    margin-top: 15px;
+}
+form label{
+    display: block;
+    margin-bottom: 5px;
+}
+form input,form textarea, form select{
+    padding: 5px 10px;
+    border-radius: 5px !important;
+    outline: none !important;
+    border: none !important;
+}
+.group{
+    background-color: #0F8173;
+    padding: 7px 15px;
+}
+.group:first-child{
+    border-radius: 10px 10px 0 0;
+    padding-top: 20px;
+}
+.group:nth-child(6){
+    border-radius: 0 0 10px 10px;
+    padding-bottom: 20px;
+}
+.inquiry-form .w-100{
+    width: 100%;
+}
+form .required{
+    color: red;
+    margin-left: 5px;
+}
+form textarea{
+    resize: vertical;
+}
+.submit-box{
+    text-align: end;
+    margin-top: 15px;
+}
+input[type='submit']{
+    background-color: black;
+    color: white;
+    width: 120px;
+    padding: 10px 0px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+input[type='submit']:hover{
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+@media (max-width:768px) {
+    .inquiry-form{
+        width: 90% !important;
+    }
+}
+  

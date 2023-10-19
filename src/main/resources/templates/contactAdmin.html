@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" th:href="@{/css/contact.css}" />
+  <link rel="stylesheet" th:href="@{/css/AT0004_ExamManagement.css}" />
+  <link rel="stylesheet" th:href="@{/css/CM0004_Student Profile.css}" />
+  <title>Contact Us</title>
+
+  <link rel="icon" type="image/x-icon" href="/images/fav.png" />
+
+  <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
+  <link rel="stylesheet" th:href="@{/css/global.css}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert@2.1.2/dist/sweetalert.min.js"></script>
+</head>
+
+
+<body>
+
+  <div th:replace="@{fragments/nav}"></div>
+
+  <section class="inquiry-form-container" style="margin-top: 100px;">
+    <div class="inquiry-form">
+        <h2>Inquiry Form</h2>
+        <span class="text">
+            To contact us by phone, please dial +959 98-656-3091. To contact us by email, please use the contact form.
+        </span>
+        <div class="form-container">
+            <form>
+                <div class="group">
+                    <label for="name" class="">Name <span class="required">*</span></label>
+                    <input type="text" id="name" placeholder="Enter your full name" required class="w-100">
+                </div>
+                
+                <div class="group">
+                    <label for="email" class="">Email <span class="required">*</span></label>
+                    <input type="email" id="email" placeholder="Enter your email" required class="w-100">
+                </div>
+                <div class="group">
+                    <label for="number" class="">Phone Number<span class="required">*</span></label>
+                    <input type="number" id="number" placeholder="Enter your phone number" required class="w-100">
+                </div>
+                <div class="group">
+                    <label for="select">Details<span class="required">*</span></label>
+                    <select name="" id="select" required class="w-100">
+                        <option value="Service">Service</option>
+                        <option value="Payment">Payment</option>
+                        <option value="want to be teacher">Want to be teacher?</option>
+                        <option value="Want to be admin">want to be admin?</option>
+                        <option value="Consulation">Consultation</option>
+                        <option value="Complain">Complain</option>
+                        <option value="Others">Others</option>
+                    </select>
+                </div>
+                <div class="group">
+                    <label for="textarea">Description<span class="required">*</span></label>
+                    <textarea name="" id="description" rows="5" placeholder="Please fill in information you want to know" required class="w-100"></textarea>
+                </div>
+                <div class="group">
+                    <input type="checkbox" id="confirmationCheckbox" required>
+                    <span>Please check the box after confirming the above transmission contents.</span>
+                </div>
+                <div class="submit-box">
+                    <input type="submit" id="submit" value="Contact Us">
+                </div>
+            </form>
+
+        </div>
+        
+    </div>
+        
+
+</section>
+
+
+
+
+
+  
+
+  <div style="height: 120px"></div>
+
+  <div th:replace="@{fragments/footer}"></div>
+
+  <script th:inline="javascript">
+    const uri = /*[[@{__${#httpServletRequest.requestURI}__}]]*/ "uri    ";
+    const serverContext = /*[[@{/}]]*/ "/";
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <script th:inline="javascript">
+
+       $(document).ready(function (){
+        $("#submit").click(function (event){
+           //event.preventDefault(); // Prevent default form submission behavior
+
+           
+            
+            
+            var name = document.getElementById("name").value;
+            if (name == "") {
+                return;
+            }
+
+            var email = document.getElementById("email").value;
+            if (email == "") {
+                return;
+          
+            }
+            
+            var number = document.getElementById("number").value;
+            if (number == "") {
+                return;
+            }
+           
+            var DetailsDropdown = document.getElementById("select");
+            var details = DetailsDropdown.value;
+
+            DetailsDropdown.addEventListener("change", function () {
+                details = dropdown.value;
+                console.log("Selected option value changed: " + details);
+            });
+           
+
+            var description = document.getElementById("description").value;
+            if (description == "") {
+                return;
+            }
+
+            var confirmationCheckbox = document.getElementById("confirmationCheckbox");
+
+            if (confirmationCheckbox.checked) {
+                
+            }else{
+                return;
+            } 
+            
+           
+
+
+
+            var data;
+
+             data = {
+                //key : value
+                name: name,
+                email: email,
+                number: number,
+                details: details,
+                description: description
+            }
+
+            data = JSON.stringify(data);
+            fetch("/guest/saveInquiry", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: data
+            }).then(response => {
+                if (response.status == 200) {
+                    window.location.reload();
+                    
+                }
+            });
+
+        });
+        
+        });
+
+       
+
+       
+    
+    
+    </script>
+
+  
+
+</body>
+
+</html>
