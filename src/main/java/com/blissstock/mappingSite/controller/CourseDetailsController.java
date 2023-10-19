@@ -1,5 +1,10 @@
 package com.blissstock.mappingSite.controller;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.security.GeneralSecurityException;
 import java.time.DayOfWeek;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -7,10 +12,12 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import javax.mail.Multipart;
 import javax.servlet.http.HttpServletRequest;
 
 import com.blissstock.mappingSite.dto.JoinCourseDTO;
@@ -35,10 +42,14 @@ import com.blissstock.mappingSite.repository.UserAccountRepository;
 import com.blissstock.mappingSite.repository.UserInfoRepository;
 import com.blissstock.mappingSite.repository.UserRepository;
 import com.blissstock.mappingSite.service.CourseService;
+import com.blissstock.mappingSite.service.GoogleDriveService;
 import com.blissstock.mappingSite.service.JoinCourseService;
 import com.blissstock.mappingSite.service.StorageService;
 import com.blissstock.mappingSite.service.UserService;
 import com.blissstock.mappingSite.service.UserSessionService;
+import com.google.api.client.http.InputStreamContent;
+import com.google.api.services.drive.Drive;
+import com.google.api.services.drive.model.FileList;
 import com.blissstock.mappingSite.service.MailService;
 import com.blissstock.mappingSite.service.PaymentForTeacherService;
 
@@ -54,8 +65,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.google.api.services.drive.model.File;
+import com.google.api.services.drive.model.FileList;
 
 @Controller
 public class CourseDetailsController {
@@ -102,17 +117,21 @@ public class CourseDetailsController {
     @Autowired
     private PaymentForTeacherService paymentForTeacherService;
 
+    @Autowired
+    private GoogleDriveService driveService;
+
     @GetMapping(value = { "/student/course-details/{courseId}", "/teacher/course-details/{courseId}",
             "/admin/course-details/{courseId}", "/guest/course-detail/{courseId}" })
     private String getCourseDetails(@PathVariable Long courseId, Model model) {
         Long userId;
-         logger.info("Api name is: {}. Parameter is courseId: {} ","getCourseDetails", courseId);
+        logger.info("Api name is: {}. Parameter is courseId: {} ", "getCourseDetails", courseId);
 
-         logger.info("Initiate to Operation Retrieve Table: {} by query: findById={}", "courseInfo",courseId);
+        logger.info("Initiate to Operation Retrieve Table: {} by query: findById={}", "courseInfo", courseId);
         // Get course by ID
         CourseInfo courseInfo = courseInfoRepository.findById(courseId).get();
         FileInfo fileInfo = storageService.loadCoursePhoto(courseInfo);
-        logger.info("Initiate to Operation Retrieve Table: {} by query: findById={} Result  List : {} Success", "courseInfo",courseId,courseInfo.toString());
+        logger.info("Initiate to Operation Retrieve Table: {} by query: findById={} Result  List : {} Success",
+                "courseInfo", courseId, courseInfo.toString());
 
         // if profile is not found set as place holder
         if (fileInfo == null) {
@@ -291,10 +310,11 @@ public class CourseDetailsController {
 
         } else if (userSessionService.getRole() == UserRole.STUDENT) {
             userId = userSessionService.getUserAccount().getAccountId();
-            logger.info("Initiate to Operation Retrieve Table: {} by query: findById={}", "user",userId);
+            logger.info("Initiate to Operation Retrieve Table: {} by query: findById={}", "user", userId);
             UserInfo user = userRepository.findById(userId).orElse(null);
             boolean studentRegistered = true;
-             logger.info("Operation Retrieve Table: {} by query: findById={} Result  List : {} Success", "user",userId,user.toString());
+            logger.info("Operation Retrieve Table: {} by query: findById={} Result  List : {} Success", "user", userId,
+                    user.toString());
 
             List<JoinCourseUser> join = joinCourseService.getJoinCourseUser(userId, courseId);
             studentRegistered = join != null && !join.isEmpty();
@@ -365,33 +385,36 @@ public class CourseDetailsController {
     @PostMapping(value = { "/teacher/course-details/insert-class-link", "/admin/course-details/insert-class-link" })
     private String courseDetailsLink(@ModelAttribute("class-link") String classLink,
             @ModelAttribute("courseId") Long courseId, @ModelAttribute("roleLink") String roleLink, Model model) {
-                logger.info("Api name is: {}. Parameter = classLink:{} courseId: {} roleLink:{}  ","courseDetailsLink", classLink,courseId,roleLink);
-                logger.info("Initiate to Operation Retrieve Table: {} by query: findById={} ", "courseInfo",courseId);        
+        logger.info("Api name is: {}. Parameter = classLink:{} courseId: {} roleLink:{}  ", "courseDetailsLink",
+                classLink, courseId, roleLink);
+        logger.info("Initiate to Operation Retrieve Table: {} by query: findById={} ", "courseInfo", courseId);
         CourseInfo courseInfo = courseInfoRepository.findById(courseId).get();
-         logger.info("Operation Retrieve Table: {} by query: findById={} Result  List {} Success ", "courseInfo",courseId,courseInfo.toString());
+        logger.info("Operation Retrieve Table: {} by query: findById={} Result  List {} Success ", "courseInfo",
+                courseId, courseInfo.toString());
         courseInfo.setClassLink(classLink);
-        logger.info("Initiate to Operation Insert Table {} Data {}", "courseInfo",courseInfo);
+        logger.info("Initiate to Operation Insert Table {} Data {}", "courseInfo", courseInfo);
         courseInfoRepository.save(courseInfo);
-        logger.info("Operation Insert Table {} Data {} Success", "courseInfo",courseInfo);
-        logger.info("Called courseDetailsLink with parameter classLink:{} courseId: {} roleLink:{} Success", classLink,courseId,roleLink);
-         return "redirect:/" + roleLink + "/course-details/" + courseId;
+        logger.info("Operation Insert Table {} Data {} Success", "courseInfo", courseInfo);
+        logger.info("Called courseDetailsLink with parameter classLink:{} courseId: {} roleLink:{} Success", classLink,
+                courseId, roleLink);
+        return "redirect:/" + roleLink + "/course-details/" + courseId;
     }
 
     // ### Temporarily disble to fix some changes in 'Test' entity class ###
     // @PostMapping("/admin/course-details/insert-test-link")
     // private String courseTestLink(@ModelAttribute("test-link") String testLink,
-    //         @ModelAttribute("courseId") Long courseId, Model model) {
-    //     CourseInfo courseInfo = courseInfoRepository.findById(courseId).get();
-    //     List<Test> testList = courseInfo.getTest();
-    //     logger.info("The size of test list is {}" + testList.size());
-    //     Test test = new Test();
-    //     test.setTestLink(testLink);
-    //     test.setCourseInfo(courseInfo);
-    //     testList.add(test);
-    //     courseInfo.setTest(testList);
-    //     courseInfoRepository.save(courseInfo);
+    // @ModelAttribute("courseId") Long courseId, Model model) {
+    // CourseInfo courseInfo = courseInfoRepository.findById(courseId).get();
+    // List<Test> testList = courseInfo.getTest();
+    // logger.info("The size of test list is {}" + testList.size());
+    // Test test = new Test();
+    // test.setTestLink(testLink);
+    // test.setCourseInfo(courseInfo);
+    // testList.add(test);
+    // courseInfo.setTest(testList);
+    // courseInfoRepository.save(courseInfo);
 
-    //     return "redirect:/admin/course-details/" + courseId;
+    // return "redirect:/admin/course-details/" + courseId;
     // }
 
     // ### Temporarily disble to fix some changes in 'Test' entity class ###
@@ -404,23 +427,52 @@ public class CourseDetailsController {
     // return "hello";
     // }
 
+    @GetMapping("/admin/hehe")
+    public ResponseEntity<Object> ggwp() throws IOException, GeneralSecurityException {
+        Drive service = driveService.getInstance();
+        FileList result = service.files().list()
+                .setFields("nextPageToken, files(id, name)")
+                .setPageSize(100)
+                .execute();
+        List<File> files = result.getFiles();
+        return ResponseEntity.status(HttpStatus.OK).body(files);
+    }
+
+    @PostMapping("/admin/upload")
+    public ResponseEntity<Object> upload(
+            @RequestParam(required = false, value = "multipartFile") MultipartFile multipartFile)
+            throws IOException, GeneralSecurityException {
+        String folderId = "1iYfuwGBSVvM66N1sRZ_kQTT--fLLkv6M";
+        Drive service = driveService.getInstance();
+        File filemeta = new File();
+        filemeta.setParents(Collections.singletonList(folderId));
+        filemeta.setName(multipartFile.getOriginalFilename());
+        File uploadFile = service
+                .files()
+                .create(filemeta, new InputStreamContent(
+                        multipartFile.getContentType(),
+                        new ByteArrayInputStream(multipartFile.getBytes())))
+                .setFields("id").execute();
+        System.out.println(uploadFile);
+        return ResponseEntity.status(HttpStatus.OK).body(uploadFile.getId());
+    }
+
     @DeleteMapping("/admin/course-details/delete/")
     public ResponseEntity<Object> deleteCourse(
             Model model,
             Long courseId,
             HttpServletRequest httpServletRequest) {
-        logger.info("Api name is: {}. Parameter is courseId: {} ","deleteCourse", courseId);
+        logger.info("Api name is: {}. Parameter is courseId: {} ", "deleteCourse", courseId);
         logger.info("DELETE Request for course {}", courseId);
         try {
             // UserInfo userInfo = userService.getUserInfoByID(uid);
-            logger.info("Initiate to Operation Retrieve Table: {} by query: findById={} ", "courseInfo",courseId);
+            logger.info("Initiate to Operation Retrieve Table: {} by query: findById={} ", "courseInfo", courseId);
             CourseInfo courseInfo = courseInfoRepository.findById(courseId).get();
             if (courseInfo == null) {
                 throw new CourseNotFoundException();
             }
             courseService.deleteCourseInfo(courseInfo);
-            logger.info("Operation Delete Table {} by {} = {} Success", "courseInfo",courseId,courseService);
-
+            logger.info("Operation Delete Table {} by {} = {} Success", "courseInfo", courseId, courseService);
 
         } catch (CourseNotFoundException e) {
             e.printStackTrace();
@@ -432,7 +484,9 @@ public class CourseDetailsController {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
         }
-            logger.info("Called deleteCourse [ResponseEntity.status(HttpStatus.OK).body(\"operation success\"] with parameter courseId:{} Success",courseId);
+        logger.info(
+                "Called deleteCourse [ResponseEntity.status(HttpStatus.OK).body(\"operation success\"] with parameter courseId:{} Success",
+                courseId);
         return ResponseEntity.status(HttpStatus.OK).body("operation success");
 
     }
@@ -445,9 +499,9 @@ public class CourseDetailsController {
         logger.info("VERIFY Request for course {}", courseId);
         try {
             // UserInfo userInfo = userService.getUserInfoByID(uid);
-            logger.info("Initiate to Operation Retrieve Table: {} by query: findById={} ", "courseInfo",courseId);
+            logger.info("Initiate to Operation Retrieve Table: {} by query: findById={} ", "courseInfo", courseId);
             CourseInfo courseInfo = courseInfoRepository.findById(courseId).get();
-          
+
             if (courseInfo == null) {
                 throw new CourseNotFoundException();
             }
@@ -463,7 +517,7 @@ public class CourseDetailsController {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
         }
-        logger.info("Called verifyCourse with parameter courseId:{} Success",courseId);
+        logger.info("Called verifyCourse with parameter courseId:{} Success", courseId);
         return ResponseEntity.status(HttpStatus.OK).body("operation success");
 
     }
@@ -472,8 +526,8 @@ public class CourseDetailsController {
 
     public String enrollStudent(HttpServletRequest request, @PathVariable Long courseId, @PathVariable Long userId,
             Model model) {
-                logger.info("Api name is: {}. Parameter is courseId: {}, userId : {} ","enrollStudent", courseId,userId);
-                logger.info("Request"); 
+        logger.info("Api name is: {}. Parameter is courseId: {}, userId : {} ", "enrollStudent", courseId, userId);
+        logger.info("Request");
         JoinCourseDTO joinCourseDTO = new JoinCourseDTO();
         joinCourseDTO.setUid(userId);
         joinCourseDTO.setCourseId(courseId);
@@ -494,125 +548,118 @@ public class CourseDetailsController {
             return "redirect:/student/course-details/" + courseId + "/?error";
         }
 
-        logger.info("Initiate to Operation Retrieve Table: {} by query: findById={} ", "courseInfo",courseId);
+        logger.info("Initiate to Operation Retrieve Table: {} by query: findById={} ", "courseInfo", courseId);
         CourseInfo courseInfo = courseInfoRepository.findById(courseId).get();
-        logger.info("Operation Retrieve Table: {} by query: findById={} Result  List {} Success ", "courseInfo",courseId,courseInfo.toString());
+        logger.info("Operation Retrieve Table: {} by query: findById={} Result  List {} Success ", "courseInfo",
+                courseId, courseInfo.toString());
 
         List<UserInfo> studentList = new ArrayList<>();
         for (JoinCourseUser joinCourseUser : courseInfo.getJoin()) {
             if (joinCourseUser.getUserInfo().getUserAccount().getRole().equals(UserRole.STUDENT.getValue()))
                 studentList.add(joinCourseUser.getUserInfo());
         }
-        
+
         Integer stuListSize = studentList.size();
-        System.out.println("Student size is : "+ stuListSize);
+        System.out.println("Student size is : " + stuListSize);
 
         List<PaymentForTeacher> paymentList = paymentForTeacherService.getPaymentForTeacherByCourseId(courseId);
-            
-            for (PaymentForTeacher payment : paymentList) {
 
-                
-                if (payment.getCourseInfo().getStartDate() == null && payment.getStatus().equals("PENDING")) {
-                    int studentFromDatabase = payment.getNoOfEnrollPerson();
-                    int noOfStudent = studentFromDatabase + 1;
-                    
-                    LocalDate enrollDate = LocalDate.now();
-                    
-                    LocalDate firstDayOfMonth = enrollDate.withDayOfMonth(1);
-                    Date firstDay = Date.from(firstDayOfMonth.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        for (PaymentForTeacher payment : paymentList) {
 
-                    
-                    LocalDate lastDayOfMonth = enrollDate.withDayOfMonth(enrollDate.lengthOfMonth());
-                    Date lastDay = Date.from(lastDayOfMonth.atStartOfDay(ZoneId.systemDefault()).toInstant());
+            if (payment.getCourseInfo().getStartDate() == null && payment.getStatus().equals("PENDING")) {
+                int studentFromDatabase = payment.getNoOfEnrollPerson();
+                int noOfStudent = studentFromDatabase + 1;
 
-                    LocalDate paymentDate = enrollDate.plusMonths(1).withDayOfMonth(5);
-                    if (paymentDate.getDayOfWeek() == DayOfWeek.SATURDAY) {
-                        paymentDate = paymentDate.plusDays(2);
-                    } else if (paymentDate.getDayOfWeek() == DayOfWeek.SUNDAY) {
-                        paymentDate = paymentDate.plusDays(1);
-                    }
-                    
+                LocalDate enrollDate = LocalDate.now();
 
-                    double courseFee = payment.getCourseInfo().getFees();
-                    double totalAmount = courseFee * noOfStudent;
-                    double totalAmountTenPercent = totalAmount * 0.90 ;
+                LocalDate firstDayOfMonth = enrollDate.withDayOfMonth(1);
+                Date firstDay = Date.from(firstDayOfMonth.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-                    payment.setNoOfEnrollPerson(noOfStudent);
-                    payment.setPaymentDate(paymentDate);
-                    payment.setCalculateDateFrom(firstDay); 
-                    payment.setCalculateDateTo(lastDay);
-                    payment.setPaymentAmount(totalAmount);
-                    payment.setPaymentAmountPercentage(totalAmountTenPercent);
-                    paymentForTeacherService.savePaymentForTeacher(payment);
-                    logger.info("Operation Update Table : {} = Data : {} Success", "PaymentForTeacher",payment);
+                LocalDate lastDayOfMonth = enrollDate.withDayOfMonth(enrollDate.lengthOfMonth());
+                Date lastDay = Date.from(lastDayOfMonth.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-
-                    
-                }
-                else if (payment.getCourseInfo().getStartDate() == null && payment.getStatus().equals("COMPLETE")) {
-
-                    PaymentForTeacher paymentForTeacher = new PaymentForTeacher();
-                    paymentForTeacher.setCourseInfo(courseInfo);
-                    paymentForTeacher.setNoOfEnrollPerson(1);
-                    
-                    
-                    LocalDate enrollDate = LocalDate.now();
-                    
-                    LocalDate firstDayOfMonth = enrollDate.withDayOfMonth(1);
-                    Date firstDay = Date.from(firstDayOfMonth.atStartOfDay(ZoneId.systemDefault()).toInstant());
-
-                    
-                    LocalDate lastDayOfMonth = enrollDate.withDayOfMonth(enrollDate.lengthOfMonth());
-                    Date lastDay = Date.from(lastDayOfMonth.atStartOfDay(ZoneId.systemDefault()).toInstant());
-
-                    LocalDate paymentDate = enrollDate.plusMonths(1).withDayOfMonth(5);
-                    if (paymentDate.getDayOfWeek() == DayOfWeek.SATURDAY) {
-                        paymentDate = paymentDate.plusDays(2);
-                    } else if (paymentDate.getDayOfWeek() == DayOfWeek.SUNDAY) {
-                        paymentDate = paymentDate.plusDays(1);
-                    }
-
-                    double courseFee = paymentForTeacher.getCourseInfo().getFees();
-                    double totalAmount = courseFee * 1;
-                    double totalAmountTenPercent = totalAmount * 0.90 ;
-                    String paymentStatus = "PENDING";  
-                    paymentForTeacher.setCalculateDateFrom(firstDay);
-                    paymentForTeacher.setCalculateDateTo(lastDay);               
-                    paymentForTeacher.setCourseFee(courseFee);
-                    paymentForTeacher.setPaymentDate(paymentDate);
-                    paymentForTeacher.setPaymentAmount(totalAmount);
-                    paymentForTeacher.setPaymentAmountPercentage(totalAmountTenPercent);
-                    paymentForTeacher.setStatus(paymentStatus);
-                    paymentForTeacher.setPaymentVerify(false);
-                    paymentForTeacherService.savePaymentForTeacher(paymentForTeacher); 
-                    logger.info("Operation Update Table : {} = Data : {} Success", "PaymentForTeacher",payment);                    
-                    
-                    
+                LocalDate paymentDate = enrollDate.plusMonths(1).withDayOfMonth(5);
+                if (paymentDate.getDayOfWeek() == DayOfWeek.SATURDAY) {
+                    paymentDate = paymentDate.plusDays(2);
+                } else if (paymentDate.getDayOfWeek() == DayOfWeek.SUNDAY) {
+                    paymentDate = paymentDate.plusDays(1);
                 }
 
-                else if (payment.getCalculateDateFrom() != null && payment.getStatus().equals("PENDING")) {
-                    int noOfStudent = stuListSize;
-                    double courseFee = payment.getCourseInfo().getFees();
-                    double totalAmount = courseFee * noOfStudent;
-                    double totalAmountTenPercent = totalAmount * 0.90 ;
-                    payment.setNoOfEnrollPerson(noOfStudent); 
-                    payment.setPaymentAmount(totalAmount);
-                    payment.setPaymentAmountPercentage(totalAmountTenPercent);
-                    paymentForTeacherService.savePaymentForTeacher(payment);
-                    logger.info("Operation Update Table : {} = Data : {} Success", "PaymentForTeacher",payment);
+                double courseFee = payment.getCourseInfo().getFees();
+                double totalAmount = courseFee * noOfStudent;
+                double totalAmountTenPercent = totalAmount * 0.90;
 
+                payment.setNoOfEnrollPerson(noOfStudent);
+                payment.setPaymentDate(paymentDate);
+                payment.setCalculateDateFrom(firstDay);
+                payment.setCalculateDateTo(lastDay);
+                payment.setPaymentAmount(totalAmount);
+                payment.setPaymentAmountPercentage(totalAmountTenPercent);
+                paymentForTeacherService.savePaymentForTeacher(payment);
+                logger.info("Operation Update Table : {} = Data : {} Success", "PaymentForTeacher", payment);
 
+            } else if (payment.getCourseInfo().getStartDate() == null && payment.getStatus().equals("COMPLETE")) {
+
+                PaymentForTeacher paymentForTeacher = new PaymentForTeacher();
+                paymentForTeacher.setCourseInfo(courseInfo);
+                paymentForTeacher.setNoOfEnrollPerson(1);
+
+                LocalDate enrollDate = LocalDate.now();
+
+                LocalDate firstDayOfMonth = enrollDate.withDayOfMonth(1);
+                Date firstDay = Date.from(firstDayOfMonth.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+                LocalDate lastDayOfMonth = enrollDate.withDayOfMonth(enrollDate.lengthOfMonth());
+                Date lastDay = Date.from(lastDayOfMonth.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+                LocalDate paymentDate = enrollDate.plusMonths(1).withDayOfMonth(5);
+                if (paymentDate.getDayOfWeek() == DayOfWeek.SATURDAY) {
+                    paymentDate = paymentDate.plusDays(2);
+                } else if (paymentDate.getDayOfWeek() == DayOfWeek.SUNDAY) {
+                    paymentDate = paymentDate.plusDays(1);
                 }
+
+                double courseFee = paymentForTeacher.getCourseInfo().getFees();
+                double totalAmount = courseFee * 1;
+                double totalAmountTenPercent = totalAmount * 0.90;
+                String paymentStatus = "PENDING";
+                paymentForTeacher.setCalculateDateFrom(firstDay);
+                paymentForTeacher.setCalculateDateTo(lastDay);
+                paymentForTeacher.setCourseFee(courseFee);
+                paymentForTeacher.setPaymentDate(paymentDate);
+                paymentForTeacher.setPaymentAmount(totalAmount);
+                paymentForTeacher.setPaymentAmountPercentage(totalAmountTenPercent);
+                paymentForTeacher.setStatus(paymentStatus);
+                paymentForTeacher.setPaymentVerify(false);
+                paymentForTeacherService.savePaymentForTeacher(paymentForTeacher);
+                logger.info("Operation Update Table : {} = Data : {} Success", "PaymentForTeacher", payment);
 
             }
+
+            else if (payment.getCalculateDateFrom() != null && payment.getStatus().equals("PENDING")) {
+                int noOfStudent = stuListSize;
+                double courseFee = payment.getCourseInfo().getFees();
+                double totalAmount = courseFee * noOfStudent;
+                double totalAmountTenPercent = totalAmount * 0.90;
+                payment.setNoOfEnrollPerson(noOfStudent);
+                payment.setPaymentAmount(totalAmount);
+                payment.setPaymentAmountPercentage(totalAmountTenPercent);
+                paymentForTeacherService.savePaymentForTeacher(payment);
+                logger.info("Operation Update Table : {} = Data : {} Success", "PaymentForTeacher", payment);
+
+            }
+
+        }
 
         new Thread(new Runnable() {
             public void run() {
                 try {
                     UserInfo userInfo = userService.getUserInfoByID(userId);
-                    logger.info("Initiate to Operation Retrieve Table: {} by query: findById={} ", "courseInfo",courseId);
+                    logger.info("Initiate to Operation Retrieve Table: {} by query: findById={} ", "courseInfo",
+                            courseId);
                     CourseInfo courseInfo = courseInfoRepository.findById(courseId).get();
-                    logger.info("Operation Retrieve Table: {} by query: findById={} Result  List {} Success ", "courseInfo",courseId,courseInfo.toString());
+                    logger.info("Operation Retrieve Table: {} by query: findById={} Result  List {} Success ",
+                            "courseInfo", courseId, courseInfo.toString());
 
                     String appUrl = request.getServerName() + // "localhost"
                             ":" +
@@ -632,7 +679,8 @@ public class CourseDetailsController {
             }
         }).start();
 
-        logger.info("Called getCourseDetails[redirect:/student/course-details/] with parameter course : {} Success", courseId);
+        logger.info("Called getCourseDetails[redirect:/student/course-details/] with parameter course : {} Success",
+                courseId);
         return "redirect:/student/course-details/" + courseId;
     }
 
