@@ -74,9 +74,17 @@ public class TestExamineeAnswerController {
                         @RequestParam(value = "answer_material", required = false) MultipartFile answer_material)
                         throws JsonMappingException, JsonProcessingException, UnauthorizedFileAccessException {
                 Long userID = getUid();
-                logger.info(
-                                "Called submitAnswer with parameter (test_id={}, question_id={}, student_answer={}, answer_type={}, answer_material={})",
-                                test_id, question_id, student_answer, answer_type, answer_material.getSize());
+                
+                if (answer_material != null) {
+                        logger.info(
+                            "Called submitAnswer with parameter (test_id={}, question_id={}, student_answer={}, answer_type={}, answer_material={})",
+                            test_id, question_id, student_answer, answer_type, answer_material.getSize());
+                    } else {
+                        logger.info(
+                            "Called submitAnswer with parameter (test_id={}, question_id={}, student_answer={}, answer_type={}, answer_material is empty)",
+                            test_id, question_id, student_answer, answer_type);
+                    }
+
                 logger.info("user_id: {}", userID);
                 Long student_id = userSessionService.getUserAccount().getAccountId();
                 logger.info("Initiate Operation Retrieve Table user_info by Query: student_id={}", student_id);
