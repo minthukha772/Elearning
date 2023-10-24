@@ -438,6 +438,16 @@ public class CourseDetailsController {
         return ResponseEntity.status(HttpStatus.OK).body(files);
     }
 
+    @GetMapping("/admin/haha")
+    public String videoPlayer() throws IOException, GeneralSecurityException {
+        Drive service = driveService.getInstance();
+        FileList result = service.files().list()
+                .setFields("nextPageToken, files(id, name)")
+                .setPageSize(100)
+                .execute();
+        return "TestVideoPlayer";
+    }
+
     @PostMapping("/admin/upload")
     public ResponseEntity<Object> upload(
             @RequestParam(required = false, value = "multipartFile") MultipartFile multipartFile)
