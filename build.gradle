@@ -44,6 +44,10 @@ dependencies {
 	
 	// Google Drive API
 	implementation 'com.google.apis:google-api-services-drive:v3-rev20220815-2.0.0'
+
+	// https://mvnrepository.com/artifact/org.bytedeco/javacv-platform
+	implementation 'org.bytedeco:javacv-platform:1.5.5'
+
 	// https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
 	implementation 'org.json:json:20171018'
 
