@@ -894,10 +894,10 @@ public class MailServiceImpl implements MailService {
 
   }
 
-
   // guestExamLaunch
   @Override
-  public void guestsendVerificationMail(String guestUserName, String email, String examID,Test testData) throws MessagingException {
+  public void guestsendVerificationMail(String guestUserName, String email, String examID, Test testData)
+      throws MessagingException {
     logger.info("Guest exam request from :{} with exam id :{}, username:{}", email, examID, guestUserName);
     String ExamLink = getServerAddress() + "/guest-exam" + "/" + email + "_" + examID;
 
@@ -906,17 +906,16 @@ public class MailServiceImpl implements MailService {
 
     final Context ctx = new Context();
     ctx.setVariable("guestName", guestUserName);
-     ctx.setVariable("email", email);
-     ctx.setVariable("examID", examID);
+    ctx.setVariable("email", email);
+    ctx.setVariable("examID", examID);
     ctx.setVariable("Date", new Date());
     ctx.setVariable("ExamLink", ExamLink);
     ctx.setVariable("startTime", testData.getStart_time());
-     ctx.setVariable("endTime", testData.getEnd_time());
-     ctx.setVariable("date", testData.getDate());
-     ctx.setVariable("description", testData.getDescription());
-      
-     
-     final MimeMessage mimeMessage = mailSender.createMimeMessage();
+    ctx.setVariable("endTime", testData.getEnd_time());
+    ctx.setVariable("date", testData.getDate());
+    ctx.setVariable("description", testData.getDescription());
+
+    final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
     message.setSubject(subject);
     message.setFrom("sys@pyinnyar-subuu.com");
@@ -987,7 +986,6 @@ public class MailServiceImpl implements MailService {
 
   // this.mailSender.send(mimeMessage);
   // }
-
 
   @Override
   public String getServerAddress() {

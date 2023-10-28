@@ -50,13 +50,13 @@
                 <div class="group">
                     <label for="select">Details<span class="required">*</span></label>
                     <select name="" id="select" required class="w-100">
-                        <option value="Service">Service</option>
-                        <option value="Payment">Payment</option>
-                        <option value="want to be teacher">Want to be teacher?</option>
-                        <option value="Want to be admin">want to be admin?</option>
-                        <option value="Consulation">Consultation</option>
-                        <option value="Complain">Complain</option>
-                        <option value="Others">Others</option>
+                        <option value="service">Service</option>
+                        <option value="payment">Payment</option>
+                        <option value="wanttobeteacher">Want to be teacher?</option>
+                        <option value="wanttobeadmin">want to be admin?</option>
+                        <option value="consultation">Consultation</option>
+                        <option value="complain">Complain</option>
+                        <option value="others">Others</option>
                     </select>
                 </div>
                 <div class="group">
@@ -95,139 +95,81 @@
     integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
     <script th:inline="javascript">
-
-
-        
-       
-    
-       /* $("#submit").click(function (event) {
-            event.preventDefault();
-            submitData(type);       
-        });
-    
-        function submitData(submitType){
-            var name = document.getElementById("name").value;
-            var email = document.getElementById("email").value;
-            var number = document.getElementById("number").value;
-    
-            var DetailsDropdown = document.getElementById("select");
-            
-            var details = DetailsDropdown.value;
-    
-                DetailsDropdown.addEventListener("change", function () {
-                details = dropdown.value;
-                console.log("Selected option value changed: " + details);
-                });
-    
-            var description = document.getElementById("description").value;
-    
-            var data;
-    
-            if(submitType == "Created"){
-            
-            data = {
-                name:name,
-                email:email,
-                number:number,
-                details:details,
-                description:description
-    
-            }
-            data = JSON.stringify(data);
-            fetch("/saveInquiry",{
-                method:"POST",
-                headers: {
-                "Content-Type": "application/json"
-              },
-              body: data
-            }).then(response => {
-                if(response.status == 200){
-                    window.location.reload();
-                }
-    
-            });
-    
-            }
-    
-            
-    
-        }*/
-
-       $(document).ready(function (){
-        $("#submit").click(function (event){
-           // event.preventDefault(); // Prevent default form submission behavior
-            
-            var name = document.getElementById("name").value;
-            if (name == "") {
-                return;
-            }
-
-            var email = document.getElementById("email").value;
-            if (email == "") {
-                return;
-          
-            }
-            
-            var number = document.getElementById("number").value;
-            if (number == "") {
-                return;
-            }
-           
-            var DetailsDropdown = document.getElementById("select");
-            var details = DetailsDropdown.value;
-
-            DetailsDropdown.addEventListener("change", function () {
-                details = dropdown.value;
-                console.log("Selected option value changed: " + details);
-            });
-           
-
-            var description = document.getElementById("description").value;
-            if (description == "") {
-                return;
-            }
-
-            var confirmationCheckbox = document.getElementById("confirmationCheckbox");
-
-            if (confirmationCheckbox.checked) {
+        $(document).ready(function (){
+            $("#submit").click(function (event){
+            // event.preventDefault(); // Prevent default form submission behavior
                 
-            }else{
-                return;
-            } 
+                var name = document.getElementById("name").value;
+                if (name == "") {
+                    return;
+                }
+
+                var email = document.getElementById("email").value;
+                if (email == "") {
+                    return;
+            
+                }
+                
+                var number = document.getElementById("number").value;
+                if (number == "") {
+                    return;
+                }
+            
+                var DetailsDropdown = document.getElementById("select");
+                var details = DetailsDropdown.value;
+
+                DetailsDropdown.addEventListener("change", function () {
+                    details = dropdown.value;
+                    console.log("Selected option value changed: " + details);
+                });
             
 
-
-
-            var data;
-
-             data = {
-                //key : value
-                name: name,
-                email: email,
-                number: number,
-                details: details,
-                description: description
-            }
-
-            data = JSON.stringify(data);
-            fetch("/saveInquiry", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: data
-            }).then(response => {
-                if (response.status == 200) {
-                    
-                    window.location.reload();
-                  
-                    
+                var description = document.getElementById("description").value;
+                if (description == "") {
+                    return;
                 }
-            });
 
-        });
-        
-        });
+                var confirmationCheckbox = document.getElementById("confirmationCheckbox");
+
+                if (confirmationCheckbox.checked) {
+                    
+                }else{
+                    return;
+                } 
+                
+
+
+
+                var data;
+
+                data = {
+                    //key : value
+                    name: name,
+                    email: email,
+                    number: number,
+                    details: details,
+                    description: description
+                }
+
+                data = JSON.stringify(data);
+                fetch("/saveInquiry", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: data
+                }).then(response => {
+                    if (response.status == 200) {
+                        
+                        window.location.reload();
+                    
+                        
+                    }
+                });
+
+            });
+            
+            });
     
     
     </script>
