@@ -71,6 +71,7 @@ public class CourseEditController {
             Model model,
             @PathVariable(required = false) Long userId,
             @PathVariable Long courseId) {
+                logger.info("Api name is: {}. Parameter = userId: {}, courseId : {}"," editCourse", userId,courseId);
         logger.info("GET Requested");
 
         UserRole currentRole = userSessionService.getRole();
@@ -78,6 +79,7 @@ public class CourseEditController {
             userId = userSessionService.getId();
         }
 
+        logger.info("Initiate to Operation Retrieve Table: {} by query: findByCourseIDUID= courseId:{}, userId: {} ", "courseInfo",courseId, userId);
         CourseInfo course = courseInfoRepo.findByCourseIDUID(courseId, userId);
         logger.info("Get Requested {}", course);
 
@@ -175,21 +177,28 @@ public class CourseEditController {
                 model.addAttribute("postAction", "/admin/edit/course/"+courseId +"/" +userId + "/confirm");
                 //model.addAttribute("photoPostAction", "/admin/edit/"+courseId+"/photo-upload");
             }
-
+            logger.info("Called editCourse with parameter: {} Success", userId);
             return "AT0001_EditCourse";
         } else {
+            logger.info("redirect:/ Success");
             return "redirect:/";
         }
 
     }
     @PostMapping(value =  { "/teacher/edit/course/{courseId}/confirm", "/admin/edit/course/{courseId}/{userId}/confirm" }, params = "photoSubmit")
     private String uploadCoursePhoto( @PathVariable Long courseId,@RequestParam("course_pic") MultipartFile cphoto) {
+        logger.info("Api name is: {}. Parameter is courseId: {} ","uploadCoursePhoto", courseId);
         // course.setUserInfo(userInfoRepository.findById(userSessionService.getId()).get());
+        logger.info("Initiate to Operation Retrieve Table: {} by query: findById={} ", "courseInfo",courseId);
         CourseInfo course=courseInfoRepo.findById(courseId).orElse(null);
 
         logger.info("Post Requested");
 
+        logger.info("Initiate to Operation Update Table: {} Data: {} By {} = {} ", "courseInfo",course.getCourseId(),"courseInfo","updateCourse");
+
         CourseInfo updateCourse = courseInfoRepo.findById(course.getCourseId()).get();
+        logger.info("Initiate to Operation Update Table: {} Data: {} By {} = {} Success", "courseInfo",course.getCourseId(),"courseInfo",updateCourse.toString());
+
         logger.info("Get Requested {}", updateCourse);
         if (!cphoto.isEmpty() && CheckUploadFileType.checkType(cphoto)) {
             // get original photo name and generate a new file name
@@ -199,16 +208,20 @@ public class CourseEditController {
             try {
               storageService.store(updateCourse.getCourseId(), cphoto, StorageServiceImpl.COURSE_PATH, true);
             } catch (UnauthorizedFileAccessException e) {
+                e.getLocalizedMessage();
               e.printStackTrace();
             }
             // insert photo
             updateCourse.setCoursePhoto(originalFileName);
+            logger.info("Initiate to Operation Insert Table {} Data {}","courseInfo",updateCourse);
             courseInfoRepo.save(updateCourse);
+            logger.info("Operation Insert Table {} Data {} Success", "courseInfo",updateCourse);
     
             logger.info("profile photo {} stored", originalFileName);
             //return  "redirect:/teacher/course-registration";
           }
         
+        logger.info("Initiate to Operation Update Table {} Data {}","courseInfo",updateCourse);
         courseInfoRepo.save(updateCourse);
         logger.info("Update Course for CourseID {}", updateCourse.getCourseId());
 
@@ -342,18 +355,23 @@ public class CourseEditController {
             String nav_type = "fragments/adminnav";
             model.addAttribute("nav_type", nav_type);
         }
+        logger.info("Called editCourseConfirm with parameter: {} Success", course);
         return "AT0002_EditCourseConfirm";
     }
 
     @PostMapping(value = { "/teacher/edit/complete", "/admin/edit/course/complete"})
     private String editCourseComplete(@ModelAttribute("course") CourseInfo course,@RequestParam("course_pic") MultipartFile cphoto) {
+        logger.info("Api name is: {}. Parameter = course: {}, cphoto :{} ","editCourseComplete", course,cphoto);
         // course.setUserInfo(userInfoRepository.findById(userSessionService.getId()).get());
-
+        logger.info("Initiate to Operation Retrieve Table: {} by query: findById={} ", "userInfo",course.getUid());
         course.setUserInfo(userInfoRepository.findById(course.getUid()).get());
+        logger.info("Operation Retrieve Table: {} by query: findById={} Result  List {} Success", "userInfo",course.getUid(),course.toString());
         System.out.print("Teacher id:" + course.getUid());
         System.out.print("Course photo" + cphoto);
 
         logger.info("Post Requested");
+        
+
 
         // course.setIsCourseApproved(true); //was string "true"
 
@@ -418,12 +436,14 @@ public class CourseEditController {
         // course.getAboutCourse(), course.getPrerequisite(), course.getFees(),
         // course.isCourseApproved());
         // System.out.print(course);
+        logger.info("Initiate to Operation Update Table {} Data {}","courseInfo",updateCourse);
         courseInfoRepo.save(updateCourse);
         logger.info("Update Course for CourseID {}", updateCourse.getCourseId());
         // System.out.println("HoeHoe" + ctList);
         for (CourseTime courseTime : ctList) {
             courseTime.setCourseInfo(updateCourse);
             // System.out.print("Course Time List :"+courseTime);
+            logger.info("Initiate to Operation Update Table {} Data {}","courseInfo",updateCourse);
             courseTimeRepo.save(courseTime);
             logger.info("Update Course Time List for CourseID {}", updateCourse.getCourseId());
         }
@@ -431,12 +451,16 @@ public class CourseEditController {
         UserRole role = userSessionService.getRole();
 
         if (role == UserRole.TEACHER) {
+            logger.info("Called redirect:/teacher/course-edit/complete with parameter course : {},cphoto :{} Success", course,cphoto);
             return "redirect:/teacher/course-edit/complete";
         } else {
+            logger.info("Called redirect:/admin/course-edit/complete with parameter course : {},cphoto :{} Success", course,cphoto);
             return "redirect:/admin/course-edit/complete";
         }
         // return "takealeave";
     }
+
+    
 
     // @RequestMapping("/admin/course")
     // public String courseTest()

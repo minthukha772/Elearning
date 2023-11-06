@@ -108,9 +108,12 @@ public class PaymentListController {
 
     @RequestMapping("/admin/student-payment-list")
     public String PaymentList(Model model) {
+
+        logger.info("Before Operation Retrieve on Table{}", model);
+
         List<PaymentReceive> viewPayment = paymentRepo.findAll();
 
-        logger.info("Payment Receive List {}", viewPayment);
+        logger.info("Operation Retrieve on Table PaymentReceive{}", viewPayment);
 
         // List<String> breadcrumbList = new ArrayList<>();
         // breadcrumbList.add("Top");
@@ -125,10 +128,13 @@ public class PaymentListController {
         for (PaymentReceive paymentReceive : viewPayment) {
             String paymentDate = format.format(paymentReceive.getPaymentReceiveDate());
             String paymentStatus = paymentReceive.getPaymentStatus();
+            logger.info("Operation Retrieve From Table PaymentReceive {}", paymentDate, paymentStatus);
 
             JoinCourseUser joinCourseUser = paymentReceive.getJoin();
+            logger.info("Operation Save On Table JoinCourseUser {}", joinCourseUser);
 
             UserInfo payUserInfo = joinCourseUser.getUserInfo();
+            logger.info("Operation Retrieve On Table UserInfo{}", payUserInfo);
             String userName = payUserInfo.getUserName();
             Long userId = payUserInfo.getUid();
             CourseInfo payCouresInfo = joinCourseUser.getCourseInfo();
@@ -148,9 +154,11 @@ public class PaymentListController {
             int courseFees = payCouresInfo.getFees();
             payUserList.add(new PaymentLists(paymentDate, courseStartDate, courseEndDate, paymentStatus, userName,
                     teacherName, courseName, courseFees, userId, courseId));
+            logger.info("Operation Save On Model PaymentLists", payUserList);
+
         }
 
-        logger.info("Payment Receive List including user's information {}", payUserList);
+        logger.info("Operation Save On Model PaymentLists", payUserList);
 
         // System.out.println("All Payments"+payUserList);
         model.addAttribute("allPaymentList", payUserList);
@@ -161,9 +169,11 @@ public class PaymentListController {
     @RequestMapping("/admin/student-unpaid-list")
     public String StudentUnpaidList(Model model) {
 
+        logger.info("Before Operation Retrieve On Table {}");
+
         List<JoinCourseUser> unpaidList = joinCourseUserRepository.findUnpaidList();
 
-        logger.info("Unpaid List {}", unpaidList);
+        logger.info("Operation Retrieve On Table JoinCourseUser {}", unpaidList);
 
         // List<String> breadcrumbList = new ArrayList<>();
         // breadcrumbList.add("Top");
@@ -178,13 +188,18 @@ public class PaymentListController {
         for (JoinCourseUser unpaidData : unpaidList) {
             // String paymentDate = format.format(paymentReceive.getPaymentReceiveDate())
             String userRole = unpaidData.getUserInfo().getUserAccount().getRole();
+            logger.info("Operation Retrieve From Table JoinCourseUser", userRole);
             if (!userRole.equals("ROLE_TEACHER")) {
                 UserInfo payUserInfo = unpaidData.getUserInfo();
+                logger.info("Operation Retrieve On Table UserInfo {}", payUserInfo);
                 String userName = payUserInfo.getUserName();
                 Long userId = payUserInfo.getUid();
+                logger.info("Operation Retrieve From UserInfo {}", userName, userId);
                 CourseInfo payCouresInfo = unpaidData.getCourseInfo();
+                logger.info("Operation Retrieve On Table CourseInfo {}", payUserInfo);
                 String courseName = payCouresInfo.getCourseName();
                 String courseType = payCouresInfo.getClassType();
+                logger.info("Operation Retrieve From Table UserInfo {}", courseName, courseType);
                 String courseStartDate;
                 String courseEndDate;
                 Calendar cal = Calendar.getInstance();
@@ -202,11 +217,13 @@ public class PaymentListController {
                 studentUnpaidList
                         .add(new StudentUnpaidLists(userName, courseName, teacherName, courseType, courseStartDate,
                                 courseEndDate, courseFees, userId, teacherId, courseId, "Pending"));
+                logger.info("Operation Save On Model StudentUnpaidLists{}", studentUnpaidList);
+
             }
 
         }
 
-        logger.info("Payment Receive List including user's information {}", studentUnpaidList);
+        logger.info("Operation Save On Model StudentUnpaidLists{}", studentUnpaidList);
 
         // System.out.println("All Payments"+studentUnpaidList);
         model.addAttribute("allStuUnpaidList", studentUnpaidList);
@@ -217,9 +234,10 @@ public class PaymentListController {
     @RequestMapping("/admin/teacher-payment-list")
     public String TeacherPaymentList(Model model) {
         // List<PaymentReceive> viewPayment = paymentRepo.findAll();
+        logger.info("Before Operation Retrieve On Table{}");
         List<PaymentForTeacher> viewPayment = paymentForTeacherRepo.findAll();
 
-        // logger.info("Payment Receive List {}", viewPayment);
+        logger.info("Operation Retrieve On Table PaymentForTeacher{} ", viewPayment);
 
         // List<String> breadcrumbList = new ArrayList<>();
         // breadcrumbList.add("Top");
@@ -234,17 +252,19 @@ public class PaymentListController {
         for (PaymentForTeacher paymentReceive : viewPayment) {
             LocalDate paymentDate = paymentReceive.getPaymentDate();
             String paymentStatus = paymentReceive.getStatus();
+            logger.info("Operation Retrieve From Table PaymentForTeacher {}", paymentDate, paymentStatus);
 
             List<UserInfo> studentList = new ArrayList<>();
             for (JoinCourseUser joinCourseUser : paymentReceive.getCourseInfo().getJoin()) {
                 if (joinCourseUser.getUserInfo().getUserAccount().getRole().equals(UserRole.STUDENT.getValue()))
                     studentList.add(joinCourseUser.getUserInfo());
+                logger.info("Operation Save On UserInfo Table {}", studentList);
             }
 
             Integer numberOfStudents = studentList.size();
             Long paymentForTeacherId = paymentReceive.getPaymentForTeacherId();
-
             String courseName = paymentReceive.getCourseInfo().getCourseName();
+            logger.info("Operation Retrieve From Table PaymentForTeacher {}", paymentForTeacherId, courseName);
             String courseStartDate;
             String courseEndDate;
             Calendar cal = Calendar.getInstance();
@@ -280,6 +300,7 @@ public class PaymentListController {
                 teacherPayList.add(new TeacherPaymentLists(paymentForTeacherId, teacherName, courseName,
                         courseStartDate, courseEndDate, duration, paymentDate, calculateFrom, calculateTo, courseFees,
                         totalAmount, payAmount, paymentStatus, teacherId, courseId, varifyStateString));
+                logger.info("Operation Save On Model TeacherPaymentLists {} ", teacherPayList);
 
             } else {
 
@@ -301,6 +322,7 @@ public class PaymentListController {
                     teacherPayList.add(new TeacherPaymentLists(paymentForTeacherId, teacherName, courseName,
                             courseStartDate, courseEndDate, duration, paymentDate, calculateFrom, calculateTo,
                             courseFees, totalAmount, payAmount, paymentStatus, teacherId, courseId, varifyStateString));
+                    logger.info("Operation Save On Model TeacherPayList {}", teacherPayList);
 
                 } else {
 
@@ -319,14 +341,15 @@ public class PaymentListController {
                     teacherPayList.add(new TeacherPaymentLists(paymentForTeacherId, teacherName, courseName,
                             courseStartDate, courseEndDate, duration, paymentDate, calculateFrom, calculateTo,
                             courseFees, totalAmount, payAmount, paymentStatus, teacherId, courseId, varifyStateString));
+                    logger.info("Operation Save On Model teacherPayList {}", teacherPayList);
+
                 }
 
             }
 
         }
 
-        // logger.info("Payment Receive List including user's information {}",
-        // teacherPayList);
+        logger.info("Operation Save On Model teacherPayList {}", teacherPayList);
 
         model.addAttribute("TeacherPaymentList", teacherPayList);
 
@@ -336,12 +359,15 @@ public class PaymentListController {
     @PostMapping("/admin/teacher-payment-list/verifyPayment")
     @ResponseBody
     public ResponseEntity<String> verifyPayment(@RequestParam("paymentId") Long paymentId) {
+        logger.info("Before Operation Save On Table {}");
         PaymentForTeacher payment = paymentForTeacherRepo.getById(paymentId);
+        logger.info("Operation Retrieve on Table PaymentForTeacher", payment);
         if (payment != null && payment.getStatus().equals("COMPLETE")) {
             // String paystatus = "COMPLETE";
             // payment.setStatus(paystatus);
             payment.setPaymentVerify(true);
             paymentForTeacherService.savePaymentForTeacher(payment);
+            logger.info("Data Save is successfully {}", paymentForTeacherService);
             return ResponseEntity.ok("Payment verified");
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -353,11 +379,14 @@ public class PaymentListController {
     @ResponseBody
     public ResponseEntity<String> deletePaymentRemark(@RequestParam("paymentRemarkId") Long paymentRemarkId) {
         try {
+            logger.info("Before Operation Save On Table {}", paymentRemarkId);
             PaymentRemark paymentRemark = paymentRemarkRepo.getById(paymentRemarkId);
+            logger.info("Operation retrieve on Table PaymentRemark {}", paymentRemark);
             if (paymentRemark != null) {
 
                 paymentRemark.setRemarkStatus(false);
                 paymentRemarkRepo.save(paymentRemark);
+                logger.info("Operation Save On Table PaymentRemark {}", paymentRemarkRepo);
                 return ResponseEntity.ok("Remark deleted");
             } else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -365,37 +394,42 @@ public class PaymentListController {
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error deleting payment remark: " + e.getMessage());
+                    .body("Error deleting payment remark: " + e.getLocalizedMessage());
         }
     }
 
     @GetMapping("/admin/PaymentHistoryRegistration/{paymentForTeacherId}")
     public String getPaymentHistory(@PathVariable Long paymentForTeacherId, Model model) {
+        logger.info("Operation Retrieve On Table{}", paymentForTeacherId);
         String nav_type = "fragments/adminnav";
         model.addAttribute("nav_type", nav_type);
 
         PaymentForTeacher paymentForTeacher = paymentForTeacherRepo.getById(paymentForTeacherId);
+        logger.info("Operation Retrieve on Table PaymentRemark {}", paymentForTeacher);
 
         List<PaymentHistory> viewHistory = paymentHistoryRepo.findAll();
+        logger.info("Operation Retrieve On Table PaymentHistory {}", viewHistory);
         if (!viewHistory.isEmpty()) {
             int idStatus = 0;
             for (PaymentHistory viewHistoryTable : viewHistory) {
                 Long payTeacherId = viewHistoryTable.getPaymentForTeacher().getPaymentForTeacherId();
+                logger.info("Operation Retrieve From Table PaymentHistory {} ", payTeacherId);
                 if (payTeacherId.equals(paymentForTeacherId)) {
                     idStatus = idStatus + 1;
                     Long findPaymentHistoryId = viewHistoryTable.getPaymentHistoryId();
-
+                    logger.info("Operation Retrieve From PaymentHistory Table {} ", findPaymentHistoryId);
                     long fileSeparator = 100000L + findPaymentHistoryId;
                     System.out.println("file separator" + fileSeparator);
 
                     try {
                         FileInfo profilePic = storageService.loadPaymentSlip(fileSeparator, viewHistoryTable);
+                        logger.info("Operation Save file" + profilePic);
                         model.addAttribute("profilePic", profilePic);
                         model.addAttribute("slip", profilePic.getUrl());
                         System.out.println("Inside Profile Pic: " + profilePic);
                         System.out.println("Inside viewHistory: " + viewHistoryTable.getSlipImg());
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        e.getLocalizedMessage();
                         model.addAttribute("profilePic", null);
                         model.addAttribute("slip", null);
                         logger.info("unable to get profile {}", fileSeparator);
@@ -408,6 +442,8 @@ public class PaymentListController {
 
                         Long payHistoryIdFromRemarkTable = paymentRemark.getPaymentHistory().getPaymentHistoryId();
                         boolean remarkStatus = paymentRemark.getRemarkStatus();
+                        logger.info("Operation Retrieve From PaymentRemark Table {}", payHistoryIdFromRemarkTable,
+                                remarkStatus);
 
                         if (payHistoryIdFromRemarkTable.equals(findPaymentHistoryId) && remarkStatus == true) {
                             String adminEmail = paymentRemark.getUserInfo().getUserAccount().getMail();
@@ -417,6 +453,7 @@ public class PaymentListController {
                             paymentRemarkLists
                                     .add(new PaymentRemarkList(adminEmail, remarkText, remarkDate, paymentRemarkId));
                             model.addAttribute("RemarkList", paymentRemarkLists);
+                            logger.info("Opearion Save On Model PaymentRemark{}", paymentRemarkLists);
 
                         }
 
@@ -478,6 +515,9 @@ public class PaymentListController {
         model.addAttribute("courseId", courseId);
         model.addAttribute("varifyStateString", varifyStateString);
 
+        logger.info("Operation Retrieve On Table PaymentForTeacher {}", teacherName, courseName, paymentFrom,
+                paymentTo, payAmount, paymentDate, paymentTeacherId, courseId, varifyStateString);
+
         return "AD0007_PaymentHistoryRegistration";
     }
 
@@ -492,15 +532,19 @@ public class PaymentListController {
             @RequestParam("amountDate") java.sql.Date amountDate,
             @RequestParam(value = "comments", required = false) String comments,
             @RequestParam(value = "photo", required = false) MultipartFile photo) {
-
+        logger.info("Before Operation Save On Table {}", paymentTeacherId, courseId, teacherName, courseName,
+                courseStartTime, courseEndTime, amountPaid, amountDate, comments, photo);
         PaymentForTeacher paymentForTeacher = paymentForTeacherRepo.getById(paymentTeacherId);
+        logger.info("Operation Retrieve Table On PaymentForTeacher{}", paymentForTeacher);
         LocalDate paidDate = amountDate.toLocalDate();
         paymentForTeacher.setPaymentAmountPercentage(amountPaid);
         paymentForTeacher.setPaymentDate(paidDate);
         paymentForTeacher.setStatus("COMPLETE");
         paymentForTeacherService.savePaymentForTeacher(paymentForTeacher);
+        logger.info("Opearion Save PaymentForTeacher{}", paymentForTeacherService);
 
         List<PaymentHistory> paymentHistory = paymentHistoryRepo.findAll();
+        logger.info("Operation Retrieve On Table PaymentHistory", paymentHistory);
 
         if (paymentHistory.isEmpty()) {
             PaymentHistory payHistory = new PaymentHistory();
@@ -509,17 +553,24 @@ public class PaymentListController {
             payHistory.setPaymentDate(amountDate);
             payHistory.setPaymentForTeacher(paymentForTeacher);
             paymentHistoryService.savePaymentHistory(payHistory);
+            logger.info("Opearion Save On Table PaymentForTeacher{}", paymentHistoryService);
             PaymentForTeacher paymentTeacher = paymentForTeacherRepo.getById(paymentTeacherId);
             Long courseIdForPaymentHistory = paymentTeacher.getCourseInfo().getCourseId();
+            logger.info("Operation Retrieve From Table PaymentForTeacher{}", courseIdForPaymentHistory);
             PaymentHistory viewHistory = paymentHistoryRepo.findByCourseId(courseIdForPaymentHistory);
+            logger.info("Operation Retrieve From Table PaymentHistory{}", viewHistory);
+
             Long paymentHistoryId = viewHistory.getPaymentHistoryId();
+            logger.info("Operation Retrieve From Table PaymentHistory{}", paymentHistoryId);
 
             System.out.println("Newly created PayHistoryID: " + paymentHistoryId);
 
             PaymentHistory history = paymentHistoryRepo.getById(paymentHistoryId);
+            logger.info("Operation Retrieve From Table PaymentHistory{}", paymentHistory);
 
             Long uid = history.getPaymentHistoryId();
             System.out.println("Assigned Payment History ID: " + uid);
+            logger.info("Operation Retrieve From Table PaymentHistory{}", uid);
 
             long fileSeparator = 100000L + uid;
             if (photo != null && CheckUploadFileType.checkType(photo)) {
@@ -531,10 +582,14 @@ public class PaymentListController {
 
                     storageService.store(fileSeparator, photo, StorageServiceImpl.PROFILE_PATH, true);
                     PaymentHistory paySlipHistory = paymentHistoryRepo.getById(uid);
+                    logger.info("Operation Retrieve From Table PaymentHistory{}", paySlipHistory);
                     paySlipHistory.setSlipImg(originalFileName);
+
                     paymentHistoryService.savePaymentHistory(paySlipHistory);
+                    logger.info("Opearion Save On PaymentHistoryService{}", paymentHistoryService);
+
                 } catch (UnauthorizedFileAccessException e) {
-                    e.printStackTrace();
+                    e.getLocalizedMessage();
                 }
 
                 logger.info("Payment Slip photo {} stored", originalFileName);
@@ -552,15 +607,19 @@ public class PaymentListController {
                     paymentRemark.setPaymentHistory(history);
                     paymentRemark.setUserInfo(userAccount.getUserInfo());
                     paymentRemarkService.savePaymentRemark(paymentRemark);
+                    logger.info("Opearion Save Table PaymentRemarkService{}", paymentRemarkService);
+
                 }
             }
         } else {
             Long findPaymentHistoryId = 0L;
             for (PaymentHistory payHistory : paymentHistory) {
                 Long paymentForTeacherID = payHistory.getPaymentForTeacher().getPaymentForTeacherId();
+                logger.info("Opearion Retrieve On PaymentHistory Table{}", paymentForTeacherID);
 
                 if (paymentForTeacherID.equals(paymentTeacherId)) {
                     findPaymentHistoryId = payHistory.getPaymentHistoryId();
+                    logger.info("Operation Retrieve From Table PaymentHistory{} ", findPaymentHistoryId);
 
                 }
 
@@ -568,9 +627,11 @@ public class PaymentListController {
 
             if (findPaymentHistoryId != 0) {
                 PaymentHistory existingHistory = paymentHistoryRepo.getById(findPaymentHistoryId);
+                logger.info("Operation Retrieve From Table PaymentHistory {}", existingHistory);
                 existingHistory.setPaymentAmount(amountPaid);
                 existingHistory.setPaymentDate(amountDate);
                 paymentHistoryService.savePaymentHistory(existingHistory);
+                logger.info("Opearion Save On PaymentHistory Table{}", paymentHistoryService);
                 Long uid = findPaymentHistoryId;
 
                 long fileSeparator = 100000L + uid;
@@ -585,8 +646,10 @@ public class PaymentListController {
                         PaymentHistory paySlipHistory = paymentHistoryRepo.getById(uid);
                         paySlipHistory.setSlipImg(originalFileName);
                         paymentHistoryService.savePaymentHistory(paySlipHistory);
+                        logger.info("Opearion Save On Table PaymentHistory {}", paymentHistoryService);
+
                     } catch (UnauthorizedFileAccessException e) {
-                        e.printStackTrace();
+                        e.getLocalizedMessage();
                     }
 
                     logger.info("Payment Slip photo {} stored", originalFileName);
@@ -603,6 +666,7 @@ public class PaymentListController {
                     paymentRemark.setPaymentHistory(existingHistory);
                     paymentRemark.setUserInfo(userAccount.getUserInfo());
                     paymentRemarkService.savePaymentRemark(paymentRemark);
+                    logger.info("Operation Save On Table PaymentRemark {}", paymentRemarkService);
                 }
             } else if (findPaymentHistoryId == 0) {
                 PaymentHistory newPaymentHistory = new PaymentHistory();
@@ -611,6 +675,7 @@ public class PaymentListController {
                 newPaymentHistory.setPaymentDate(amountDate);
                 newPaymentHistory.setPaymentForTeacher(paymentForTeacher);
                 paymentHistoryService.savePaymentHistory(newPaymentHistory);
+                logger.info("Opearion Save On PaymentHistory Table{}", paymentHistoryService);
 
                 // PaymentForTeacher paymentTeacher =
                 // paymentForTeacherRepo.getById(paymentTeacherId);
@@ -618,15 +683,18 @@ public class PaymentListController {
                 // paymentTeacher.getCourseInfo().getCourseId();
 
                 List<PaymentHistory> viewHistory = paymentHistoryRepo.findAll();
-
+                logger.info("Operation Retrieve On Table PaymentHistory{}", viewHistory);
                 for (PaymentHistory checkHistoryTable : viewHistory) {
                     Long paymentForTeacherID = checkHistoryTable.getPaymentForTeacher().getPaymentForTeacherId();
-
+                    logger.info("Operation Retrieve From Table PaymentHistory{} ", paymentForTeacherID);
                     if (paymentForTeacherID.equals(paymentTeacherId)) {
 
                         findPaymentHistoryId = checkHistoryTable.getPaymentHistoryId();
+                        logger.info("Operation Retrieve From Table PaymentHistory{} ", findPaymentHistoryId);
+
                         System.out.println("Additional created PayHistoryID: " + findPaymentHistoryId);
                         PaymentHistory history = paymentHistoryRepo.getById(findPaymentHistoryId);
+                        logger.info("Operation Retrieve On Table PaymentHistory{}", history);
                         Long uid = findPaymentHistoryId;
                         System.out.println("Assigned Payment History ID: " + uid);
                         long fileSeparator = 100000L + uid;
@@ -642,6 +710,8 @@ public class PaymentListController {
                                 PaymentHistory paySlipHistory = paymentHistoryRepo.getById(uid);
                                 paySlipHistory.setSlipImg(originalFileName);
                                 paymentHistoryService.savePaymentHistory(paySlipHistory);
+                                logger.info("Opearion Save On PaymentHistory Table{}", paymentHistoryService);
+
                             } catch (UnauthorizedFileAccessException e) {
                                 e.printStackTrace();
                             }
@@ -660,6 +730,8 @@ public class PaymentListController {
                             paymentRemark.setPaymentHistory(history);
                             paymentRemark.setUserInfo(userAccount.getUserInfo());
                             paymentRemarkService.savePaymentRemark(paymentRemark);
+                            logger.info("Opearion Save On Table PaymentRemark Table{}", paymentRemark);
+
                         }
                     }
 
@@ -668,17 +740,19 @@ public class PaymentListController {
             }
 
         }
-
+        logger.info("Payment History is already exists{}", paymentHistory);
         return "redirect:/admin/teacher-payment-list";
 
     }
 
     @RequestMapping("/admin/teacher-payment-history-list")
     public String TeacherPaymentHistoryList(Model model) {
-
+        logger.info("Before Operation Retrieve On Table{}");
         // List<PaymentReceive> viewPayment =
         // paymentRepo.findByPaymentStatus(PaymentStatus.COMPLETED.toString());
         List<PaymentHistory> viewPayment = paymentHistoryRepo.findAll();
+        logger.info("Before Operation Retrieve On Table{}", viewPayment);
+
         // List<PaymentReceive> viewPayment = paymentRepo.findAll();
 
         // logger.info("Payment Receive List {}", viewPayment);
@@ -696,7 +770,7 @@ public class PaymentListController {
         for (PaymentHistory paymentReceive : viewPayment) {
             // String paymentDate = format.format(paymentReceive.getPaymentReceiveDate());
             // String paymentStatus = paymentReceive.getPaymentStatus();
-
+            
             // JoinCourseUser joinCourseUser = paymentReceive.getJoin();
 
             // // UserInfo payUserInfo = joinCourseUser.getUserInfo();
@@ -742,6 +816,8 @@ public class PaymentListController {
 
             teacherPayHistoryList.add(new TeacherPaymentHistoryLists(courseName, teacherName, teacherId, paymentDate,
                     courseFees, courseId, paymentForTeacherId));
+            logger.info("Operation Save On Model TeacherPaymentHistoryLists", teacherPayHistoryList);
+
         }
 
         logger.info("Payment Receive List including user's information {}", teacherPayHistoryList);

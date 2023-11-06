@@ -48,6 +48,13 @@ public class ReviewListController {
     })
     private String getReviewList(@PathVariable Long courseId, @PathVariable(name = "id", required = false) Long id,
             Model model) {
+        Long userID = getUid();
+        String role = getUserRole();
+        logger.info("Called CM0009_ReviewList with parameter(course_id={})", courseId);
+        logger.info("user_id: {}, role: {}", userID, role);
+        logger.info("Initiate Operation Retrieve Table course_info by Query: Course ID ={}, User ID ={}", courseId,
+                userID);
+
         Long userId = id == null ? userSessionService.getUserAccount().getAccountId() : id;
 
         CourseInfo courseInfo = courseInfoRepo.findById(courseId).orElse(null);
@@ -57,6 +64,9 @@ public class ReviewListController {
         // Display course name
         String courseName = courseInfo.getCourseName();
         model.addAttribute("courseName", courseName);
+        logger.info(
+                "Operation Retrieve Table course_info by Query: Teacher Name ={}, Course Name ={}, user_id={}  | Success",
+                trName, courseName, userID);
 
         // Get review list and teacher name of course
         List<JoinCourseUser> joinList = courseInfo.getJoin();
@@ -124,12 +134,31 @@ public class ReviewListController {
                 model.addAttribute("stuReviews", studentReviewList);
             }
         }
-
+        logger.info("Called CM0009_ReviewList with parameter(course_id={}) Success", courseId);
+        logger.info("user_id: {}, role: {}", userID, role);
         return "CM0009_ReviewList";
+    }
+
+    private Long getUid() {
+        Long uid = userSessionService.getUserAccount().getAccountId();
+        return uid;
+    }
+
+    private String getUserRole() {
+        String userRole = userSessionService.getUserAccount().getRole();
+        return userRole;
     }
 
     @GetMapping(value = "/guest/review-list/course_id/{courseId}")
     public String guestReviewList(@PathVariable Long courseId, Model model) {
+        Long userID = getUid();
+        String role = getUserRole();
+
+        logger.info("Called CM0009_ReviewList with parameter(course_id={})", courseId);
+        logger.info("user_id: {}, role: {}", userID, role);
+        logger.info("Initiate Operation Retrieve Table course_info by Query: Course ID ={}, User ID ={}", courseId,
+                userID);
+
         CourseInfo courseInfo = courseInfoRepo.findById(courseId).orElse(null);
         String trName = courseInfo.getUserInfo().getUserName();
         model.addAttribute("trName", trName);
@@ -137,6 +166,10 @@ public class ReviewListController {
         // Display course name
         String courseName = courseInfo.getCourseName();
         model.addAttribute("courseName", courseName);
+
+        logger.info(
+                "Operation Retrieve Table course_info by Query: Teacher Name ={}, Course Name ={}, user_id={}  | Success",
+                trName, courseName, userID);
 
         // Get review list and teacher name of course
         List<JoinCourseUser> joinList = courseInfo.getJoin();
@@ -185,7 +218,8 @@ public class ReviewListController {
         model.addAttribute("averageFloat", averageFloat);
 
         // Display student reviews
-
+        logger.info("Called CM0009_ReviewList with parameter(course_id={}) Success", courseId);
+        logger.info("user_id: {}, role: {}", userID, role);
         return "CM0009_ReviewList";
     }
 

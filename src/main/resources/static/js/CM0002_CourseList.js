@@ -153,8 +153,14 @@ const renderCourseList = (courseList) => {
       $("#courseList").hide();
       $("#courseList").empty();
       data.forEach((e) => {
-        const startDate = new Date(e.startDate).toLocaleDateString();
-        const endDate = new Date(e.endDate).toLocaleDateString();
+        const options = {
+          timeZone: 'Asia/Tokyo',
+          year: 'numeric',
+          month: 'numeric',
+          day: 'numeric',
+        };
+        const startDate = new Date(e.startDate).toLocaleDateString('en-US', options);
+        const endDate = new Date(e.endDate).toLocaleDateString('en-US', options);
         var dates;
         if (e.classType == "VIDEO") {
           dates = ` <h4>&nbsp</h4>
@@ -175,7 +181,7 @@ const renderCourseList = (courseList) => {
               <h6 class="mt-1">${e.category} &gt;${e.level}</h6>
               
                <span>${dates}</span>
-              <h4 class="mt-2">${e.fees ? e.fees + 'MMK' : ''}</h4>
+              <h4 class="mt-2">${e.fees ? e.fees + 'MMK' : 'FREE'}</h4>
               <a href="/guest/course-detail/${e.courseId}" class="btn btn-primary">See Detail</a>
             </div>
           </div>

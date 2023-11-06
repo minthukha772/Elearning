@@ -16,6 +16,7 @@ import java.util.stream.Stream;
 
 import com.blissstock.mappingSite.controller.FileController;
 import com.blissstock.mappingSite.entity.CourseInfo;
+//import com.blissstock.mappingSite.entity.GuestUser;
 import com.blissstock.mappingSite.entity.PaymentHistory;
 import com.blissstock.mappingSite.entity.PaymentReceive;
 import com.blissstock.mappingSite.entity.UserAccount;
@@ -54,7 +55,7 @@ public class StorageServiceImpl implements StorageService {
   public static final Path PROFILE_PATH = Paths.get(
       root + File.separator + "profiles");
   public static final Path PAYSLIP_PATH = Paths.get(
-      root + File.separator + "slipimg");     
+      root + File.separator + "slipimg");
   public final static Path SLIP_PATH = Paths.get(
       root + File.separator + "slip");
   public final static Path COURSE_PATH = Paths.get(
@@ -383,6 +384,11 @@ public class StorageServiceImpl implements StorageService {
   }
 
   @Override
+  public FileInfo loadProfileAsFileInfoGuest() {
+    return new FileInfo("default", "/images/profile.png");
+  }
+
+  @Override
   public FileInfo loadCoursePhoto(CourseInfo courseInfo) {
 
     String name = courseInfo.getCoursePhoto();
@@ -491,29 +497,62 @@ public class StorageServiceImpl implements StorageService {
     logger.info("Get Data as Resource name: {}, url: {}", fileName, url);
     return new FileInfo(fileName, url);
   }
-  @Override  
+
+  @Override
   public FileInfo loadPaymentSlip(Long fileSeparator, PaymentHistory viewHistory) {
-     
+
     String fileName = viewHistory.getSlipImg();
-      if (fileName == null || fileName.isEmpty()) {
-          return new FileInfo("default", null);
-      }
+    if (fileName == null || fileName.isEmpty()) {
+      return new FileInfo("default", null);
+    }
 
-      String url = MvcUriComponentsBuilder
-              .fromMethodName(
-                      FileController.class,
-                      "getResource",
-                      //"slipimg",
-                      "profiles",
-                      //payHistory.getPaymentHistoryId(),
-                      fileSeparator,
-                      fileName)
-              .build()
-              .toString();
+    String url = MvcUriComponentsBuilder
+        .fromMethodName(
+            FileController.class,
+            "getResource",
+            // "slipimg",
+            "profiles",
+            // payHistory.getPaymentHistoryId(),
+            fileSeparator,
+            fileName)
+        .build()
+        .toString();
 
-      logger.info("Get Data as Resource name: {}, url: {}", fileName, url);
-      return new FileInfo(fileName, url);
+    logger.info("Get Data as Resource name: {}, url: {}", fileName, url);
+    return new FileInfo(fileName, url);
   }
 
+
+  public void questionCopy(String srcName, String tgtName) {
+    Path srcPath = QUESTION_MATERIAL_PATH.resolve(srcName);
+    Path tgtPath = QUESTION_MATERIAL_PATH.resolve(tgtName);
+
+    try {
+      logger.info("Copying '{}' to '{}'", srcPath, tgtPath);
+
+      if (Files.exists(srcPath) && Files.isDirectory(srcPath)) {
+        
+        Files.createDirectories(tgtPath);
+
+        
+        try (Stream<Path> paths = Files.walk(srcPath)) {
+          paths.forEach(source -> {
+            Path target = tgtPath.resolve(srcPath.relativize(source));
+            try {
+              Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException e) {
+              logger.error("Error copying file '{}' to '{}': {}", source, target, e.getMessage());
+            }
+          });
+        }
+
+        logger.info(" '{}' copied to '{}'", srcName, tgtName);
+      } else {
+        logger.error("Source '{}' does not exist", srcName);
+      }
+    } catch (IOException e) {
+      logger.error("Error copying  '{}' to '{}': {}", srcName, tgtName, e.getMessage());
+    }
+  }
 
 }

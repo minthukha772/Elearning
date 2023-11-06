@@ -49,9 +49,17 @@ public class ListOfUserController {
     @RequestMapping("/admin/teacher-list")
     public String ListOfTeacher(Model model)
     {
+        logger.info("AT0003_ListofTeachersScreen with parameter: {}");
+
+        logger.info("Initiate to Operation Retrieve Table {user_info,user_account} by query {SELECT i.*,u.* FROM user_info i,user_account u WHERE i.account_id=u.account_id AND u.role=:role}");
         List<UserInfo> tAllRecord = userRepo.findByUserRoleI("ROLE_TEACHER");
         // System.out.println(tAllRecord);
-        logger.info("Teacher List of Pyinnyar Subuu {}",tAllRecord);
+        // logger.info("Teacher List of Pyinnyar Subuu {}",tAllRecord);
+        logger.info("Operation Retrieve Table {tablename} by query {} Result List {} Success",
+        "user_info,user_account",
+        "SELECT i.*,u.* FROM user_info i,user_account u WHERE i.account_id=u.account_id AND u.role=:role",
+        tAllRecord);
+
         model.addAttribute("tAllTeacherList", tAllRecord);
         // List<String> breadcrumbList = new ArrayList<>();
         // breadcrumbList.add("Top");
@@ -61,17 +69,27 @@ public class ListOfUserController {
         model.addAttribute("nav_type",nav_type);
         String accountStatus = "VERIFIED";
         model.addAttribute("accountStatus", accountStatus);
+
+        logger.info("AT0003_ListofTeachersScreen with parameter: {} Success");
         return "AT0003_ListofTeachersScreen";
     }
+
     @RequestMapping(value = "/admin/student-list",method = RequestMethod.GET)
     public String ListOfStudent(Model model)
     {
+        logger.info("AT0003_ListofStudentsScreen with parameter: {}");
+
         System.out.println("Student Console");
+
         // List<UserInfo> sAllRecord = userRepo.findAll();
+        logger.info("Initiate to Operation Retrieve Table {user_info,user_account} by query {SELECT i.*,u.* FROM user_info i,user_account u WHERE i.account_id=u.account_id AND u.role=:role}");
         List<UserInfo> sAllRecord = userRepo.findByUserRoleI("ROLE_STUDENT");
         // System.out.println("Student List Console"+sAllRecord);
-        
-        logger.info("Student List of Pyinnyar Subuu {}",sAllRecord);
+        // logger.info("Student List of Pyinnyar Subuu {}",sAllRecord);
+        logger.info("Operation Retrieve Table {tablename} by query {} Result List {} Success",
+        "user_info,user_account",
+        "SELECT i.*,u.* FROM user_info i,user_account u WHERE i.account_id=u.account_id AND u.role=:role",
+        sAllRecord);
 
         model.addAttribute("sAllStudentList", sAllRecord);
         // System.out.println(sAllRecord);
@@ -85,22 +103,26 @@ public class ListOfUserController {
         String nav_type = "fragments/adminnav";
         model.addAttribute("nav_type",nav_type);
 
+        logger.info("AT0003_ListofStudentsScreen with parameter: {} Success");
         return "AT0003_ListofStudentsScreen";
     }
     
     @RequestMapping("/admin/admin-list")
     public String ListOfAdmin(Model model)
     {
+        logger.info("AT0003_ListofAdminsScreen with parameter: {}");
+
         String adminRole = "ROLE_ADMIN";
         System.out.println(adminRole);
         AddAdmin newAdmin = new AddAdmin();
         
+        logger.info("Initiate to Operation Retrieve Table {} by query {}",
+        "user_info,user_account","userAccountRepo.findByRole('ROLE_ADMIN')");
         List<UserAccount> aAllRecord = userAccountRepo.findByRole("ROLE_ADMIN");
-
-        logger.info("Admin List of Pyinnyar Subuu {}",aAllRecord);
-
-
-        
+        // logger.info("Admin List of Pyinnyar Subuu {}",aAllRecord);
+        logger.info("Operation Retrieve Table {tablename} by query {} Result List {} Success",
+        "user_info,user_account","userAccountRepo.findByRole('ROLE_ADMIN')",aAllRecord);
+       
         model.addAttribute("aAllAdminList", aAllRecord);
         model.addAttribute("adminRegister", newAdmin);
         model.addAttribute("adminRole", adminRole);
@@ -113,6 +135,7 @@ public class ListOfUserController {
         String nav_type = "fragments/adminnav";
         model.addAttribute("nav_type",nav_type);
 
+        logger.info("AT0003_ListofAdminsScreen with parameter: {} Success");
         return "AT0003_ListofAdminsScreen";
     }
 
@@ -121,11 +144,16 @@ public class ListOfUserController {
     @RequestMapping(value = "/teacher/student-list/{courseId}",method = RequestMethod.GET)
     public String ListOfStudentByTeacher(@PathVariable Long courseId,Model model)
     {
+        logger.info("AT0003_ListofStudentsByT with parameter: {}",courseId);
         // Long courseId = (long) 50004;
         
+        logger.info("Initiate to Operation Retrieve Table {} by query {}",
+        "course_info","courseInfoRepo.findById(courseId).get()");
         CourseInfo course = courseInfoRepo.findById(courseId).get();
+        // logger.info("Course ID {}","Course Info {}",courseId,course);
+        logger.info("Operation Retrieve Table {} by query {} Result List {} Success",
+        "course_info","courseInfoRepo.findById(courseId).get()",course);
 
-        logger.info("Course ID {}","Course Info {}",courseId,course);
 
         List<JoinCourseUser> joinCourseUser = course.getJoin();
         // List<UserInfo> userList = new ArrayList<>();
@@ -160,10 +188,18 @@ public class ListOfUserController {
         model.addAttribute("allStudentList", userList);
         model.addAttribute("postAction", "/teacher/course-details/" + courseId);
         
+        logger.info("Initiate to Operation Retrieve Table {user_info,user_account} by query {SELECT i.*,u.* FROM user_info i,user_account u WHERE i.account_id=u.account_id AND u.role=:role}");
         List<UserInfo> tAllRecord = userRepo.findByUserRoleI("ROLE_TEACHER");
+        logger.info("Operation Retrieve Table {tablename} by query {} Result List {} Success",
+        "user_info,user_account",
+        "SELECT i.*,u.* FROM user_info i,user_account u WHERE i.account_id=u.account_id AND u.role=:role",
+        tAllRecord);
+
         System.out.println("Teacher List"+tAllRecord);
 
         // model.addAttribute("tAllTeacherList", tAllRecord);
+
+        logger.info("AT0003_ListofStudentsByT with parameter: {} Success",courseId);
         return "AT0003_ListofStudentsByT";
     }
 }

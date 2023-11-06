@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class CheckEmailController {
 
   private static final Logger logger = LoggerFactory.getLogger(CheckEmailController.class);
+  
 
   @Autowired
   UserService userService;
@@ -36,12 +37,16 @@ public class CheckEmailController {
       Model model,
       String email) {
     logger.info("Role is {}, email is {}", role, email);
+    logger.info("API name : {}.Parameter : {}", "registerForm",role);
+    logger.info("Called API ID or API Name with parameter: {} Success",role);
+    logger.info("Initiate to Operation Save File {}", role);
+
     // Tell Thymeleaf to render as Reister
     model.addAttribute("action", "register");
 
     // For Post Method Action
     model.addAttribute("postAction", "/check_email/register/");
-
+    logger.info("Operation Save File {} Success", role);
     /*
      * if (email != null && !email.isBlank()) {
      * EmailValidator emailValidator = new EmailValidator();
@@ -61,6 +66,8 @@ public class CheckEmailController {
       if (userRole.equals(UserRole.SUPER_ADMIN)) {
 
         logger.info("User is super admin");
+        logger.info("Initiate to Operation Retrieve Table {} by query {}", "TableName", "Query");
+
         System.out.println("user is super admin");
         // Initialize Form
 
@@ -113,6 +120,7 @@ public class CheckEmailController {
       UserAccount userAccount = userService.getUserAccountByEmail(
           emailRegister.getEmail());
       logger.debug("userAccount: ", userAccount);
+      logger.info("Operation Retrieve Table {} by query {} Result  List {} Success", "TableName", "Query", "ResultList");
       if (userService.getUserAccountByEmail(emailRegister.getEmail()) != null) {
         logger.warn(
             "user with {} email already exists",
@@ -146,7 +154,9 @@ public class CheckEmailController {
         model.addAttribute("postAction", "/newadmin");
         model.addAttribute("message", "Do you want to register new admin with mail: "
             + emailRegister.getEmail());
+            logger.info("Operation Retrieve Table {} by query {} Result  List {} Success", "TableName", "Query", "ResultList");
         System.out.println("emailis " + emailRegister.getEmail());
+        logger.info("Operation Retrieve Table {} by query {} Result  List {} Success", "TableName", "Query", "ResultList");
       } else {
         return "redirect:/error/404";
       }
@@ -158,7 +168,7 @@ public class CheckEmailController {
         emailRegister.getEmail() +
         "/");
   }
-
+                
   /// A Get Method For Email Check Before Register
   @GetMapping(path = { "/check_email/reset_password" })
   public String passwordResetForm(Model model, String error, String email) {
@@ -182,8 +192,9 @@ public class CheckEmailController {
   public String passwordReset(Model model, BindingResult bindingResult) {
     // Tell Thymeleaf to render as Reister
     if (bindingResult.hasErrors()) {
+      logger.info("Initiate to Operation Retrieve Table {} by query {}", "TableName", "Query");
       model.addAttribute("action", "verify_password");
-
+ logger.info("Operation Retrieve Table {} by query {} Result  List {} Success", "TableName", "Query", "ResultList");
       // For Post Method Action
       model.addAttribute("postAction", "/check_email/reset_password/");
       model.addAttribute("emailCheck", new EmailCheckRegisterDTO());

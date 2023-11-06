@@ -3,6 +3,7 @@ package com.blissstock.mappingSite.service;
 import com.blissstock.mappingSite.entity.PaymentReceive;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.entity.CourseInfo;
+import com.blissstock.mappingSite.entity.GuestUser;
 import com.blissstock.mappingSite.entity.PaymentHistory;
 import com.blissstock.mappingSite.exceptions.UnauthorizedFileAccessException;
 import com.blissstock.mappingSite.model.FileInfo;
@@ -37,6 +38,8 @@ public interface StorageService {
 
   public FileInfo loadProfileAsFileInfo(UserInfo userInfo);
 
+  public FileInfo loadProfileAsFileInfoGuest();
+
   public void deleteCertificate(Long uid, String filename)
     throws IOException, UnauthorizedFileAccessException;
 
@@ -53,4 +56,6 @@ public interface StorageService {
   public FileInfo loadQuestionMaterials(Long fileSeparator, String fileName) ;
 
   public FileInfo loadAnswermaterials(Long fileSeparator, String fileName) ;
+
+  public void questionCopy(String sourceFolderName, String targetFolderName);
 }

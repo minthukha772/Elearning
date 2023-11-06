@@ -1,11 +1,13 @@
 package com.blissstock.mappingSite.controller;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.Locale;
 
 import javax.mail.MessagingException;
 
 import com.blissstock.mappingSite.entity.UserAccount;
+import com.blissstock.mappingSite.repository.UserAccountRepository;
 import com.blissstock.mappingSite.service.MailServiceImpl;
 import com.blissstock.mappingSite.service.UserService;
 
@@ -30,16 +32,29 @@ public class MailCheckController {
     UserService userService;
 
     @Autowired
+    UserAccountRepository userAccountRepository;
+
+    @Autowired
     MailServiceImpl mailServiceImpl;
 
     @GetMapping(path = { "/verify_password" })
     public String mailVerify(
             @RequestParam(value = "token", required = true) String token, Model model) {
+        logger.info("MailVerify.html with parameter: {}");
+
         System.out.println("mail verify called" + token);
         final String tokenType = "VERIFICATION";
         try {
             System.out.println("get token callsed");
+
+            logger.info("Initiate to Operation Retrieve Table {} by query {}",
+                    "user_account", "userService.getUserAccountByToken(token, tokenType)");
             UserAccount userAccount = userService.getUserAccountByToken(token, tokenType);
+            userAccount.setRegisteredDate(new Date());
+            userAccountRepository.save(userAccount);
+            logger.info("Operation Retrieve Table {tablename} by query {} Result List {} Success",
+                    "user_account", "userService.getUserAccountByToken(token, tokenType)", userAccount.toString());
+
             System.out.println(userAccount.toString());
 
             if (userAccount.isMailVerified()) {
@@ -47,10 +62,13 @@ public class MailCheckController {
                 String header3 = "Mail has already been verified ";
                 String header5 = "";
                 String paragraph = "Please login with email and password to continue.";
+
                 model.addAttribute("status", "alreadyverified");
                 model.addAttribute("header3", header3);
                 model.addAttribute("header5", header5);
                 model.addAttribute("paragraph", paragraph);
+
+                logger.info("MailVerify.html with parameter: {} Success");
                 return "MailVerify.html";
             } else {
 
@@ -66,11 +84,14 @@ public class MailCheckController {
                 model.addAttribute("header3", header3);
                 model.addAttribute("header5", header5);
                 model.addAttribute("paragraph", paragraph);
+
+                logger.info("MailVerify.html with parameter: {} Success");
                 return "MailVerify.html";
             }
 
         } catch (Exception e) {
             System.out.println(e.toString());
+            logger.error(e.getLocalizedMessage());
         }
         System.out.println("Invalid token");
         String header3 = "Invalid token";
@@ -80,6 +101,8 @@ public class MailCheckController {
         model.addAttribute("header3", header3);
         model.addAttribute("header5", header5);
         model.addAttribute("paragraph", paragraph);
+
+        logger.info("MailVerify.html with parameter: {} Success");
         return "MailVerify.html";
 
         // System.out.println(token);
@@ -87,17 +110,17 @@ public class MailCheckController {
 
     }
 
-    //test impl
+    // test impl
     // @RequestMapping("/sendMailWithInlineImage"
     // )
     // public String sendMailWithInline(
     // )
     // throws MessagingException, IOException {
-    //     logger.info("Requested");
-    //     mailServiceImpl.sendMailWithInline(
-    //         "kyaw", "lycuzmarki@gmail.com"
-    //         );
-    //     return "redirect:/home";
+    // logger.info("Requested");
+    // mailServiceImpl.sendMailWithInline(
+    // "kyaw", "lycuzmarki@gmail.com"
+    // );
+    // return "redirect:/home";
 
     // }
 }

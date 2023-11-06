@@ -57,13 +57,17 @@ public class AdminTopController {
     Long userId = userSessionService.getUserAccount().getAccountId();
     UserInfo userInfo = userRepo.findById(userId).orElse(null);
     UserAccount userAcc = userInfo.getUserAccount();
-
+     
     logger.info("GET Requested");
     logger.info("Getting admininfo: {} from database", userId);
+    logger.info("Initiate to Operation Retrieve Table {}. by query {}", "tablename", userId);
     Optional<UserInfo> optionalUserInfo = userRepo.findById(userId);
+    logger.info("API name : {}.Parameter : {}", "getAdminTopScreen",userId);
+    logger.info("Initiate to Operation Save File {}", userId); 
     // If request id does not exist
     if (!optionalUserInfo.isPresent()) {
       logger.info("User {} does not exist", userId);
+      logger.info("Operation Save File {} Success", userId);
       return "redirect:/404";
     }
     // load profile picture
@@ -92,7 +96,7 @@ public class AdminTopController {
       HttpServletRequest httpServletRequest) {
     logger.info("Post Requested");
     logger.info("Payment Edit Info {}", photo);
-
+    logger.info("API name : {}.Parameter : {}", "editProfilePicture",action);
     Long uid = userSessionService.getUserAccount().getAccountId();
     UserInfo userInfo = userRepo.findById(uid).orElse(null);
     UserAccount userAcc = userAccRepo.findById(uid).orElse(null);
@@ -100,7 +104,7 @@ public class AdminTopController {
     String redirectAddress = "redirect:" +
         httpServletRequest.getRequestURI().replace("/edit/", "");
     logger.debug("Redirect Addresss {}", redirectAddress);
-
+    logger.info("API name : {}.Parameter : {}", "redirectAddress",userAcc);
     if (action.equals("pic-edit")) {
       if (!photo.isEmpty() && CheckUploadFileType.checkType(photo)) {
         // get original photo name and generate a new file name
@@ -108,7 +112,7 @@ public class AdminTopController {
             photo.getOriginalFilename());
         // String saveFileName = FileNameGenerator.renameFileName(
         // originalFileName,
-
+      
         // upload photo
         try {
           storageService.store(uid, photo, StorageServiceImpl.PROFILE_PATH, true);
@@ -117,9 +121,12 @@ public class AdminTopController {
         }
         // insert photo
         userInfo.setPhoto(originalFileName);
+        logger.info("Initiate to Operation Update Table: {}. Data: {} By {}: {} = {}", "tablename", userInfo.toString(), "photo", originalFileName);
+        logger.info("Initiate to Operation Save File {}", originalFileName);   
         userRepo.save(userInfo);
-
+        logger.info("Operation Update Table: {}. Data: {}. By {}: {} = {}. Success", "tablename", userInfo.toString(), "photo", originalFileName);
         logger.info("profile photo {} stored", originalFileName);
+        logger.info("Operation Save File {} Success", originalFileName);
         return redirectAddress + "/";
       }
     }

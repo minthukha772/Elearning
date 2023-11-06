@@ -17,12 +17,68 @@
   <link rel="stylesheet" th:href="@{/css/global.css}" />
   <link rel="icon" type="image/x-icon" href="/images/fav.png" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.js"></script>
   <script th:inline="javascript">
     var type;
     var test_id;
+    var currentTestInfo;
+    var currentTest;
+    var currentTestTarget;
+ 
+    function launchExam() {
+      console.log("launchExamOK");
+      document.getElementById("sure_launch_exam").style.display = 'none';
 
+      document.getElementById("launchExam").style.display = 'none';
+      // currentTestInfo.isLaunch=true;
+      // currentTest.isLaunch=true;
+
+      const dialoglaunchOKBtn = document.getElementById("launchExamOK");
+      $("#launchExamOK").click(function () {
+        closeDialogOK();
+      });
+
+
+
+      function closeDialogOK() {
+        const dialogOK = document.getElementById("sure_launch_exam");
+        dialogOK.style.visibility = "hidden";
+      }
+
+
+      if (currentTestInfo) {
+        if (currentTestInfo.questionCount == 0) {
+          // show error
+          alert("Exam can launch after the Questions are Created!");
+          return;
+        }
+        if (currentTestInfo.examineeCount == 0) {
+          // show error
+          alert("There is no examinee in this exam, please check again.");
+          return;
+        }
+        $.ajax({
+          url: "/admin/launchExam",
+          type: "POST",
+          data: {
+            test_id: currentTestInfo.test_id
+          },
+          success: function (data) {
+
+            // document.getElementById("sure_launch_exam").style.display = 'none';
+            console.log(data);
+          },
+
+          error: function (jqXHR, textStatus, errorThrown) {
+            console.log(textStatus, errorThrown);
+            // handle error response
+          }
+        });
+
+      }
+    }
     $(document).ready(() => {
       var role = /*[[${role}]]*/ "default";
       if (role == "admin") {
@@ -42,6 +98,7 @@
       cancelBtn.addEventListener('click', () => createExamContainer.classList.add('d-none'));
       deleteCancelBtn.addEventListener('click', () => deleteExamContainer.classList.add('d-none'));
       createExam.addEventListener('click', () => {
+        $("#student_guest_check").css("display", "block")
         createExamContainer.classList.remove('d-none')
         $("#exam_status_dropdown").css("display", "none");
         type = "Created";
@@ -53,6 +110,8 @@
         document.getElementById("exam_start_time").value = "";
         document.getElementById("exam_end_time").value = "";
       });
+
+
 
       $("#submit").click(function () {
         submitData(type);
@@ -117,7 +176,103 @@
       });
     })
 
+    // Copy Exam dialog show function
+    function setDataToCopyDialog(test) {
+      $("#student_guest_check").css("display", "none")
+      $("#launchExam").hide();
+      examTarget = test.exam_target;
+
+      if (examTarget == 1) {
+        $("#teacher_sector").css("display", "none")
+        $("#course_sector").css("display", "none")
+
+      } else {
+        $("#teacher_sector").css("display", "block")
+        $("#course_sector").css("display", "block")
+      }
+
+      var course_dropdown = $("#course_name");
+      course_dropdown.empty();
+      course_dropdown.append("<option value='Choose Course' selected><small>Choose Course</small></option>");
+
+      test_id = test.test_id;
+      type = "Copy";
+      let copyExam = document.querySelector('.create-exam-container');
+      let dialogTitle = document.querySelector('#dialogTitle');
+      dialogTitle.innerHTML = "To Copy Exam Content";
+      copyExam.classList.remove('d-none');
+      var datearray = test.date.split("T");
+      document.getElementById("teacher_name").value = test.userInfo.uid;
+
+      fetch("/admin/get-course-by-teacher?teacher_id=" + test.userInfo.uid, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }).then(response => response.json())
+        .then(data => {
+          for (var i = 0; i < data.length; i++) {
+            course_dropdown.append("<option value='" + data[i]["courseName"] + "' id='" + data[i]["courseId"] + "'><small>" + data[i]["courseName"] + "</small></option>");
+          }
+          document.getElementById("course_name").value = test.courseInfo.courseName;
+        })
+      document.getElementById("description").value = test.description;
+      document.getElementById("section_name").value = test.section_name;
+      document.getElementById("passing_score").value = test.passing_score_percent;
+      document.getElementById("exam_date").value = datearray[0];
+      document.getElementById("exam_start_time").value = test.start_time;
+      document.getElementById("exam_end_time").value = test.end_time;
+    }
+
     function setDataToEditDialog(test) {
+      $("#student_guest_check").css("display", "none")
+      currentTest = test;
+      $.ajax({
+        url: "/admin/testInfo",
+        type: "GET",
+        data: {
+          test_id: test.test_id
+        },
+        success: function (data) {
+          currentTestInfo = data;
+          currentTestTarget = currentTestInfo.examTarget
+          if (currentTestInfo.examTarget == 1) {
+            currentTestTarget = "guest"
+            $("#teacher_sector").css("display", "none")
+            $("#course_sector").css("display", "none")
+            $("#ExamLaunched").show();
+            // $("#launchExam").show();
+
+            console.log("CurrentTestInfo", currentTestInfo)
+
+            if (!currentTestInfo.isLaunch) {
+              $("#launchExam").show();
+              $("#questionCreated").show();
+              $("#examCreated").show();
+            } else {
+              $("#launchExam").hide();
+              $("#questionCreated").hide();
+              $("#examCreated").hide();
+
+            }
+
+
+          } else {
+            currentTestTarget = "student"
+            $("#teacher_sector").css("display", "block")
+            $("#course_sector").css("display", "block")
+            $("#ExamLaunched").hide();
+            $("#launchExam").hide();
+          }
+          console.log(data);
+          // handle success response
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          console.log(textStatus, errorThrown);
+          // handle error response
+        }
+      });
+
       var course_dropdown = $("#course_name");
       course_dropdown.empty();
       course_dropdown.append("<option value='Choose Course' selected><small>Choose Course</small></option>");
@@ -127,8 +282,8 @@
       let createExam = document.querySelector('.create-exam-container');
       createExam.classList.remove('d-none');
       var datearray = test.date.split("T");
-
       document.getElementById("teacher_name").value = test.userInfo.uid;
+
       fetch("/admin/get-course-by-teacher?teacher_id=" + test.userInfo.uid, {
         method: "GET",
         headers: {
@@ -148,7 +303,13 @@
       document.getElementById("exam_date").value = datearray[0];
       document.getElementById("exam_start_time").value = test.start_time;
       document.getElementById("exam_end_time").value = test.end_time;
-
+      if (test.examTarget == 1) {
+        var guestCheckBox = document.getElementById("guest");    
+        guestCheckBox.checked = true
+      } else {
+        var studentCheckBox = document.getElementById("student");
+        studentCheckBox.checked = true
+      }
       $("#exam_status_dropdown").css("display", "block");
     }
 
@@ -162,17 +323,20 @@
       var courseDropDown = document.getElementById("course_name");
       var courseName = courseDropDown.value;
       var teacherDropDown = document.getElementById("teacher_name");
+      var student_guest = document.querySelector('input[name="student-guest"]:checked').value;
       var teacherName = teacherDropDown.value;
-      var courseId = courseDropDown.options[courseDropDown.selectedIndex].id;
-      var teacherId = teacherDropDown.options[teacherDropDown.selectedIndex].id;
-      if (teacherName == "Choose Teacher") {
+      // var courseId = courseDropDown.options[courseDropDown.selectedIndex].id;
+      // var teacherId = teacherDropDown.options[teacherDropDown.selectedIndex].id;
+      var courseId = courseDropDown.options[courseDropDown.selectedIndex]?.id;
+      var teacherId = teacherDropDown.options[teacherDropDown.selectedIndex]?.id;
+      if (teacherName == "Choose Teacher" && student_guest == "student") {
         document.getElementById("teacher_warning").style.display = 'block';
         return;
       } else {
         document.getElementById("teacher_warning").style.display = 'none';
       }
 
-      if (courseName == "Choose Course") {
+      if (courseName == "Choose Course" && student_guest == "student") {
         document.getElementById("course_warning").style.display = 'block';
         return;
       } else {
@@ -257,11 +421,16 @@
 
       var exam_status = document.getElementById("exam_status");
       var exam_status_value = exam_status.value;
-
       var data;
+      if (student_guest == "guest") {
+        // teacherId = 	10001;
+        teacherId = 40001;
+        courseId = 599;
+    }
 
       if (submitType == "Created") {
         data = {
+          student_guest: student_guest,
           teacher_id: teacherId,
           course_id: courseId,
           description: description,
@@ -286,23 +455,88 @@
             window.location.reload();
           }
         })
-      } else {
-        data = {
-          test_id: test_id,
-          teacher_id: teacherId,
-          course_id: courseId,
-          description: description,
-          section_name: section_name,
-          passing_score: passing_score,
-          date: exam_date,
-          minutes_allowed: minutes_allowed,
-          start_time: exam_start_time,
-          end_time: exam_end_time,
-          exam_status: exam_status_value
-        }
-        data = JSON.stringify(data);
 
+      } else if (submitType == "Update") {
+        if (currentTestTarget == "guest") {
+          data = {
+            student_guest: currentTestTarget,
+            test_id: test_id,
+            teacher_id: 40001,
+            course_id: 599,
+            description: description,
+            section_name: section_name,
+            passing_score: passing_score,
+            date: exam_date,
+            minutes_allowed: minutes_allowed,
+            start_time: exam_start_time,
+            end_time: exam_end_time,
+            exam_status: exam_status_value
+          }
+        } else {
+          data = {
+            student_guest: currentTestTarget,
+            test_id: test_id,
+            teacher_id: teacherId,
+            course_id: courseId,
+            description: description,
+            section_name: section_name,
+            passing_score: passing_score,
+            date: exam_date,
+            minutes_allowed: minutes_allowed,
+            start_time: exam_start_time,
+            end_time: exam_end_time,
+            exam_status: exam_status_value
+          }
+        }
+        console.log(data)
+        data = JSON.stringify(data);
+        console.log(data)
         fetch("/admin/edit-exam", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: data
+        }).then(response => {
+          if (response.status == 200) {
+            window.location.reload();
+          }
+        })
+
+      } else if (submitType == "Copy") {
+        if (examTarget == 1) {
+          data = {
+            student_guest: examTarget,
+            test_id: test_id,
+            teacher_id: 40001,
+            course_id: 599,
+            description: description,
+            section_name: section_name,
+            passing_score: passing_score,
+            date: exam_date,
+            minutes_allowed: minutes_allowed,
+            start_time: exam_start_time,
+            end_time: exam_end_time
+          }
+
+        } else {
+          data = {
+            student_guest: examTarget,
+            test_id: test_id,
+            teacher_id: teacherId,
+            course_id: courseId,
+            description: description,
+            section_name: section_name,
+            passing_score: passing_score,
+            date: exam_date,
+            minutes_allowed: minutes_allowed,
+            start_time: exam_start_time,
+            end_time: exam_end_time
+          }
+        }
+
+        data = JSON.stringify(data);
+        fetch("/admin/copy-exam", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -316,17 +550,24 @@
       }
     }
 
-    function toHandler(e) {
-      var fromDate = document.getElementById("exam_from").value;
-      var toDate = document.getElementById("exam_to").value;
-      if (fromDate >= toDate) {
-        document.getElementById("filter_date_warning").style.display = 'block';
-        return;
-      } else {
-        document.getElementById("filter_date_warning").style.display = 'none';
-        window.location.replace("/admin/exam?fromDate=" + fromDate + "&toDate=" + toDate);
-      }
-    }
+    $(document).ready(function () {
+      $("#search_date_btn").click(function () {
+        var fromDate = document.getElementById("exam_from").value;
+        var toDate = document.getElementById("exam_to").value;
+        if (fromDate === "" && toDate != null) {
+          document.getElementById("filter_date_warning").textContent = "Please choose two date filters";
+          document.getElementById("filter_date_warning").style.display = 'block';
+        } else if (fromDate != "" && toDate === "") {
+          document.getElementById("filter_date_warning").textContent = "Please choose two date filters";
+          document.getElementById("filter_date_warning").style.display = 'block';
+        } else if (fromDate >= toDate) {
+          document.getElementById("filter_date_warning").style.display = 'block';
+        } else {
+          document.getElementById("filter_date_warning").style.display = 'none';
+          window.location.replace("/admin/exam?fromDate=" + fromDate + "&toDate=" + toDate);
+        }
+      });
+    });
   </script>
 </head>
 
@@ -335,6 +576,7 @@
   <!-- to create exam content start  -->
   <div
     class="create-exam-container min-vh-100 w-100 position-fixed top-0 d-flex justify-content-center align-items-center d-none fadeIn"
+    id="Create-ExamContainer"
     style="background-color: rgba(0, 0, 0, 0.4); z-index: 1000; padding-top: 80px; max-height: calc(100vh - 210px); overflow-y: auto;">
     <div class="create-exam-content rounded shadow bg-white">
       <div class="d-flex justify-content-end p-2">
@@ -344,10 +586,72 @@
         </div>
       </div>
       <div class="px-3 pb-3">
-        <h5 class="text-success text-center mb-3">To Create Exam Content</h5>
-        <div class="input-group-sm mb-2 shadow-sm">
-          <label for="description" class="form-label fw-bold mb-1"><small style="color: black;">Teacher Name <span
-                class="text-danger">*</span></small></label>
+        <h5 class="text-success text-center mb-3" id="dialogTitle">To Create Exam Content</h5>
+        <!--student_guest-->
+        <div class="student_guest" id="student_guest_check">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="student-guest" id="student" value="student" checked>
+            <label class="form-check-label" for="student">Student</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="student-guest" value="guest" id="guest">
+            <label class="form-check-label" for="guest">
+              Guest
+            </label>
+          </div>
+        </div> 
+
+        <script>
+          $(document).ready(function () {
+            $("#sure_launch_exam").hide();
+            // $("#sure_launch_exam_M0006").hide();
+            // $("#sure_launch_exam_M0007").hide();
+            $("#launchExam").hide();
+            $("#ExamLaunched").hide();
+
+            $("#guest").click(function () {
+              $("#teacher_warning").hide();
+              $("#teacher_name").hide();
+              $("#course_name").hide();
+              $("#ExamLaunched").show();
+              $("#course_warning").hide();
+              $("#teacher_name_label").hide();
+              $("#course_name_label").hide();
+              console.log(document.querySelector('input[name="student-guest"]:checked').value)
+
+              // if (!currentTest.isLaunch) {
+              //   $("#launchExam").show();
+              //   $("#questionCreated").show();
+              //   $("#examCreated").show();
+              // } else {
+              //   $("#launchExam").hide();
+              //   $("#questionCreated").hide();
+              //   $("#examCreated").hide();
+
+              // }
+            });
+
+            $("#student").click(function () {
+
+              $("#teacher_name").show();
+              $("#course_name").show();
+              $("#teacher_warning").show();
+              $("#teacher_name_label").show();
+              $("#course_name_label").show();
+              $("#ExamLaunched").hide();
+              $("#launchExam").hide();
+              console.log(document.querySelector('input[name="student-guest"]:checked').value)
+            });
+            $("#launchExam").click(function () {
+              $("#sure_launch_exam").show();
+            });
+
+          }); 
+        </script>
+        <!--student_guest-->
+        <div class="input-group-sm mb-2 shadow-sm" id="teacher_sector">
+          <label id="teacher_name_label" for="description" class="form-label fw-bold mb-1"><small
+              style="color: black;">Teacher Name <span class="text-danger">*</span></small></label>
           <select class="form-select" aria-label="Default select example" id="teacher_name">
             <option value="Choose Teacher" selected><small>Choose Teacher</small></option>
             <option th:each="teacher, index: ${teacherList}" th:text="${teacher.userName}" th:id="${teacher.uid}"
@@ -356,9 +660,9 @@
           </select>
         </div>
         <div style="color: red; font-size: 12px; display: none;" id="teacher_warning">Please Select Teacher</div>
-        <div class="input-group-sm mb-2 shadow-sm">
-          <label for="description" class="form-label fw-bold mb-1"><small style="color: black;">Course Name <span
-                class="text-danger">*</span></small></label>
+        <div class="input-group-sm mb-2 shadow-sm" id="course_sector">
+          <label id="course_name_label" for="description" class="form-label fw-bold mb-1"><small
+              style="color: black;">Course Name <span class="text-danger">*</span></small></label>
           <select class="form-select" aria-label="Default select example" id="course_name">
             <option value="Choose Course" selected><small>Choose Course</small></option>
             <!-- <option th:each="course, index: ${courseList}" th:text="${course.courseName}" th:id="${course.courseId}"
@@ -378,10 +682,11 @@
           <label for="exam_status" class="form-label fw-bold mb-1"><small style="color: black;">Exam Status <span
                 class="text-danger">*</span></small></label>
           <select class="form-select" aria-label="Default select example" id="exam_status" required>
-            <option value="Exam Created" selected>Exam Created</option>
-            <option value="Questions Created">Questions Created</option>
+            <option id="examCreated" value="Exam Created" selected>Exam Created</option>
+            <option id="questionCreated" value="Questions Created">Questions Created</option>
             <option value="Marking">Marking</option>
             <option value="Result Released">Result Released</option>
+            <option id="ExamLaunched" value="Exam Launched">Exam Launched</option>
           </select>
         </div>
         <div style="color: red; font-size: 12px; display: none;" id="exam_status_warning">Please Choose Exam Status
@@ -389,13 +694,15 @@
         <div class="input-group-sm mb-2 shadow-sm">
           <label for="section_name" class="form-label fw-bold mb-1"><small style="color: black;">Section Name <span
                 class="text-danger">*</span></small></label>
-          <input type="text" class="form-control" id="section_name" placeholder="Add section about exam" required />
+          <input type="text" class="form-control" id="section_name" style="border-radius: 50px"
+            placeholder="Add section about exam" required />
+
         </div>
         <div style="color: red; font-size: 12px; display: none;" id="section_name_warning">Please Add Section Name</div>
         <div class="input-group-sm mb-2 shadow-sm">
           <label for="exam_date" class="form-label fw-bold mb-1"><small style="color: black;">Exam Date <span
                 class="text-danger">*</span></small></label>
-          <input type="date" class="form-control" id="exam_date" required />
+          <input type="date" class="form-control" id="exam_date" style="border-radius: 50px;" required />
         </div>
         <div style="color: red; font-size: 12px; display: none;" id="exam_date_warning">Please Exam Date</div>
         <div class="d-flex align-items-center">
@@ -403,7 +710,7 @@
             <div class="input-group-sm mb-2 shadow-sm">
               <label for="exam_start_time" class="form-label fw-bold mb-1"><small style="color: black;">Start Time
                   <span class="text-danger">*</span></small></label>
-              <input type="time" class="form-control" id="exam_start_time" required />
+              <input type="time" class="form-control" id="exam_start_time" style="border-radius: 50px;" required />
             </div>
             <div style="color: red; font-size: 12px; display: none;" id="exam_start_time_warning">Please Add Exam Start
               Time</div>
@@ -412,7 +719,7 @@
             <div class="input-group-sm mb-2 shadow-sm">
               <label for="exam_end_time" class="form-label fw-bold mb-1"><small style="color: black;">End Time <span
                     class="text-danger">*</span></small></label>
-              <input type="time" class="form-control" id="exam_end_time" required />
+              <input type="time" class="form-control" id="exam_end_time" style="border-radius: 50px;" required />
             </div>
             <div style="color: red; font-size: 12px; display: none;" id="exam_end_time_warning">Please Add Exam End Time
             </div>
@@ -425,7 +732,7 @@
           <label for="passing_score" class="form-label fw-bold mb-1"><small style="color: black;">Passing Score <span
                 class="text-danger">*</span></small></label>
           <input type="text" class="form-control" id="passing_score" placeholder="Enter minimum passing score"
-            required />
+            style="border-radius: 50px;" required />
         </div>
         <div style="color: red; font-size: 12px; display: none;" id="passing_score_warning">Please Add Minimum Passing
           Score</div>
@@ -433,6 +740,46 @@
           Number</div>
         <div style="color: red; font-size: 12px; display: none;" id="passing_score_number_limit">Please Add Between 0
           and 100</div>
+        <!--student-guest-->
+        <div class="dialog-sure-launch" id="sure_launch_exam">
+          <div class="dialog-launch" id="dialog-launch">
+            <i class="fas fa-times close-icon" id="dialog-close-btn-launch"
+              style="color:red;position:absolute;padding:10px;top:0;right:0;font-size:20px;"></i>
+            <div class="dialog-content-launch">
+              <i class="fas fa-check-circle" style="font-size: 20px; color:green;"></i>
+              <p style="background-color: red;width:fit-content;color:white;">Are you sure to launch exam?</p>
+              <div class="launch-Exam-Cancel">
+                <input type="button" class="form-control btn btn-sm btn-success" id="launchExamCancel"
+                  style="width: 100px" value="Cancel">
+                <input type="button" class="form-control btn btn-sm btn-success" id="launchExamOK " onclick=launchExam()
+                  name="launchExamOK" style="width: 100px" value="OK">
+              </div>
+            </div>
+          </div>
+        </div>
+        <script>
+          const dialogCloseBtnlaunch = document.getElementById("dialog-close-btn--launch");
+          $("#dialog-close-btn-launch").click(function () {
+            $("#sure_launch_exam").hide();
+          });
+          function closelaunchDialog() {
+            const dialoglaunch = document.getElementById("sure_launch_exam");
+            dialoglaunch.hide();
+          }
+        </script>
+        <!--sure_launch_cancel_button-->
+        <script>
+          let surelaunchContainer = document.querySelector('.dialog-sure-launch');
+          let launchcancelBtn = document.querySelector('#launchExamCancel');
+          launchcancelBtn.addEventListener('click', () => {
+            $("#sure_launch_exam").hide();
+          });
+        </script>
+        <!--beginning of launch button-->
+        <div class="launch-exam">
+          <input type="button" class="form-control btn btn-sm btn-success" name="launchExam" id="launchExam"
+            style="width: 100px" value="Launch Exam">
+        </div>
         <div class="input-group-sm text-end">
           <input type="submit" class="form-control btn btn-sm btn-success" id="submit" style="width: 100px" />
         </div>
@@ -461,14 +808,6 @@
   </div>
 
   <section class="main container mt-3">
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item">
-          <a href="#" class="text-decoration-none">Home</a>
-        </li>
-        <li class="breadcrumb-item active" aria-current="page">Exam</li>
-      </ol>
-    </nav>
 
     <!-- to add filter start  -->
     <div class="mt-4" style="padding-top: 60px;">
@@ -476,23 +815,22 @@
         <div class="d-flex flex-wrap align-items-end justify-content-between">
           <div class="">
             <label for="exam_from" class="fw-bold"><small>Exam From</small></label><br>
-            <input type="date" class="px-3 rounded shadow-sm border-1" id="exam_from" onchange="fromHandler(event)">
+            <input type="date" class="px-3 rounded shadow-sm border-1" id="exam_from">
           </div>
           <div class="">
             <label for="exam_to" class="fw-bold"><small>Exam To</small></label><br>
-            <input type="date" class="px-3 rounded shadow-sm border-1" id="exam_to" onchange="toHandler(event)"
-              disabled>
+            <input type="date" class="px-3 rounded shadow-sm border-1" id="exam_to">
           </div>
-          <div class="">
-            <select name="status" id="filterbystatus" class="px-3 rounded shadow-sm">
-              <option value="Filter By Exam Status" selected><small>Search By Exam Status</small></option>
-              <option value="Exam Created"><small>Exam Created</small></option>
-              <option value="Questions Created"><small>Questions Created</small></option>
-              <option value="Marking"><small>Marking</small></option>
-              <option value="Result Released"><small>Result Released</small></option>
-              <option value="Deleted"><small>Deleted</small></option>
-            </select>
-          </div>
+          <select name="status" id="filterbystatus" class="px-3 rounded shadow-sm">
+            <option value="Filter By Exam Status" selected><small>Search By Exam Status</small></option>
+            <option value="Exam Created"><small>Exam Created</small></option>
+            <option value="Questions Created"><small>Questions Created</small></option>
+            <option value="Marking"><small>Marking</small></option>
+            <option value="Result Released"><small>Result Released</small></option>
+            <option value="Deleted"><small>Deleted</small></option>
+            <option value="LaunchExam"><small>Exam Launched</small></option>
+          </select>
+
           <div class="" style="display: none;" id="teacher_dropdown_main">
             <select name="course" id="filterbyteacher" class="px-3 rounded shadow-sm">
               <option value="Filter By Course" selected><small>Filter By Teacher</small></option>
@@ -511,27 +849,12 @@
       </form>
     </div>
 
+    <div style="margin-top: 10px;margin-left: 250px;">
+      <small class="bg-success rounded text-white px-2 py-1 fw-bold" style="cursor: pointer" id="search_date_btn">Search
+        Date</small>
+    </div>
     <div style="color: red; font-size: 12px; display: none; padding-top: 10px;" id="filter_date_warning">End Date Must
       Be Greater Than Start Date</div>
-
-    <script>
-      function fromHandler(event) {
-        var examToInput = document.getElementById("exam_to");
-        var examFromInput = document.getElementById("exam_from");
-        examToInput.disabled = false;
-        if (examFromInput.value === "") {
-          examToInput.disabled = true;
-          examToInput.value = "";
-        }
-      }
-
-
-    </script>
-
-
-
-    <!-- to add filter end  -->
-
     <div class="text-center mt-3">
       <div class="">
         <small class="fw-bold me-2">
@@ -555,6 +878,10 @@
           <div class="card bg-white mt-3 shadow-sm" data-custom-type="result_good">
             <div class="d-flex justify-content-end align-items-center p-2">
               <div th:unless="${#strings.contains(test.isDelete, 'true')}">
+                <i class="fa-regular fa-copy text-success" style="cursor: pointer"
+                  th:onclick="setDataToCopyDialog([[${test}]]);"></i>
+              </div>
+              <div th:unless="${#strings.contains(test.isDelete, 'true')}" class="ms-2">
                 <i class="fa-solid fa-pen-to-square text-success" style="cursor: pointer"
                   th:onclick="setDataToEditDialog([[${test}]]);"></i>
               </div>
@@ -603,7 +930,6 @@
                   });
                 }
               </script>
-
             </div>
             <div class="card-body pt-0 rounded">
               <div class="fw-bolder">
@@ -635,8 +961,15 @@
               <div class="d-flex flex-wrap justify-content-between align-items-center fw-bold mt-3">
                 <small class=""><a th:href="'/admin/exam/' + ${test.test_id} + '/questions'" class="text-success">Exam
                     Questions</a></small>
-                <small class=""><a th:href="'/admin/exam/' + ${test.test_id} + '/examinee'" class="text-success">Set
-                    Examinee</a></small>
+                <small class="">
+                  <span th:if="${test.exam_target == 0}">
+                    <a th:href="'/admin/exam/' + ${test.test_id} + '/examinee'" class="text-success">Set Examinee</a>
+                  </span>
+                  <span th:if="${test.exam_target == 1}">
+                    <a th:href="'/admin/exam/' + ${test.test_id} + '/guest/examinee'" class="text-success">Set
+                      Examinee</a>
+                  </span>
+                </small>
                 <small class=""><a th:href="'/admin/exam/' + ${test.test_id} + '/exam-result-list'"
                     class="text-success">Exam
                     Result</a></small>
@@ -652,6 +985,17 @@
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
     crossorigin="anonymous"></script>
   <script th:src="@{/js/main.js}"></script>
+  <!--student-guest-->
+<script>
+    const dialogCloseBtn = document.getElementById("dialog-close-btn");
+    $("#dialog-close-btn").click(function () {
+      closeDialog();
+    });
+    function closeDialog() {
+      const dialog = document.getElementById("dialog");
+      dialog.style.visibility = "hidden";
+    }
+  </script>
 </body>
 <div th:replace="@{fragments/footer}"></div>
 

@@ -13,7 +13,6 @@
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
   <link rel="stylesheet" type="text/css" href="css/dataTables.bootstrap5.css"
     th:href="@{/css/dataTables.bootstrap5.css}" />
-  <link rel="stylesheet" type="text/css" src="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" />
   <link rel="stylesheet" type="text/css" href="css/shCore.css" th:href="@{/css/shCore.css}" />
   <link rel="stylesheet" type="text/css" href="css/demo.css" th:href="@{/css/demo.css}" />
   <link rel="stylesheet" type="text/css" href="css/AD0003_PaymentList.css" th:href="@{/css/AD0003_PaymentList.css}" />
@@ -38,13 +37,11 @@
     th:src="@{/js/jquery.dataTables.js}"></script>
   <script type="text/javascript" language="javascript" src="js/dataTables.bootstrap5.js"
     th:src="@{/js/dataTables.bootstrap5.js}"></script>
-
   <script type="text/javascript" language="javascript" src="js/shCore.js" th:src="@{/js/shCore.js}"></script>
   <script type="text/javascript" language="javascript" src="js/demo.js" th:src="@{/js/demo.js}"></script>
 </head>
 
 <body>
-
   <div style="position: relative">
     <!-- <div id="mySidebar" class="sidebar" style="float:left;">
           
@@ -149,12 +146,9 @@
              </div>                                                                  -->
 
 
-    <div id="pc-view-message">
-      <p><i style="color: yellowgreen;font-size: 25px;" class="fas fa-exclamation-triangle"></i> Please only use PC View
-        for this page.</p>
-    </div>
 
-    <div id="whole-container" class="advanced-search-body">
+
+    <div class="advanced-search-body">
       <div class="row">
         <div class="col-md-12">
           <form id="myForm">
@@ -164,15 +158,15 @@
                   <div class="input-group">
                     <input type="text" class="form-control w-25 me-3" id="courseNameSearch"
                       placeholder="Search with Course Name" aria-label="Search with Course Name"
-                      aria-describedby="courseNameSearch" />
+                      aria-describedby="courseNameSearch" onkeydown="if(event.keyCode == 13) return false;" />
 
                     <input type="text" class="form-control w-25 me-3" id="studentNameSearch"
                       placeholder="Search with Student Name" aria-label="Search with Student Name"
-                      aria-describedby="studentNameSearch" />
+                      aria-describedby="studentNameSearch" onkeydown="if(event.keyCode == 13) return false;" />
 
                     <input type="text" class="form-control w-25" id="teacherNameSearch"
                       placeholder="Search with Teacher Name" aria-label="Search with Teacher Name"
-                      aria-describedby="teacherNameSearch" />
+                      aria-describedby="teacherNameSearch" onkeydown="if(event.keyCode == 13) return false;" />
 
                   </div>
                 </div>
@@ -182,27 +176,27 @@
                     </div> -->
                 <div class="form-group col-md-3 p-1">
                   <label for="" class="text-muted">Course Amount From</label>
-                  <input type="number" id="amount_min" class="form-control mt-2 w-100" placeholder="MMK">
+                  <input type="number" id="amount_min" class="form-control mt-2 w-100" placeholder="MMK"
+                    onkeydown="if(event.keyCode == 13) return false;">
                 </div>
-
                 <div class="form-group col-md-3 p-1">
                   <label for="" class="text-muted">Course Amount To</label>
-                  <input type="number" id="amount_max" class="form-control mt-2 w-100" placeholder="MMK">
+                  <input type="number" id="amount_max" class="form-control mt-2 w-100" placeholder="MMK"
+                    onkeydown="if(event.keyCode == 13) return false;">
                 </div>
 
                 <div class="form-group col-md-3 p-1">
                   <label for="" class="text-muted">Course Period From</label>
-                  <input type="date" id="min" class="form-control mt-2 w-100">
+                  <input type="date" id="min" class="form-control mt-2 w-100"
+                    onkeydown="if(event.keyCode == 13) return false;">
                 </div>
                 <div class="form-group col-md-3 p-1">
                   <label for="" class="text-muted">Course Period To</label>
-                  <input type="date" id="max" class="form-control mt-2 w-100">
+                  <input type="date" id="max" class="form-control mt-2 w-100"
+                    onkeydown="if(event.keyCode == 13) return false;">
                 </div>
-
               </div>
-
           </form>
-          <p id="message"></p>
           <div class="row mt-3">
             <div class="col-md-12">
               <button class="btn btn-primary mb-3" id="downloadpaylist">
@@ -238,7 +232,6 @@
     <!-- <div class="mx-auto p-3" > -->
     <!-- <div>
                                                                         <section> -->
-
 
 
     <div class="container d-none d-md-block d-lg-block d-xl-block">
@@ -468,66 +461,34 @@
 
 
       $("#btnSearch").click(function () {
-        $.fn.dataTable.ext.search.push(
-          function (settings, data, dataIndex) {
-            var min = parseInt($('#amount_min').val(), 10);
-            var max = parseInt($('#amount_max').val(), 10);
-            if (min > max) {
-              let message = "Search Conditions is Incorrect ";
-              document.getElementById("message").style.color = "red";
-              document.getElementById("message").innerHTML = message;
-            }
-            var salesAmount = parseFloat(data[7].replace(/[\$,]/g, '')) || 0; // Removing $ and , from the sales amount
-            if ((isNaN(min) && isNaN(max)) ||
-              (isNaN(min) && salesAmount <= max) ||
-              (min <= salesAmount && isNaN(max)) ||
-              (min <= salesAmount && salesAmount <= max)) {
-              return true;
-            }
-            return false;
-          }
-        );
-        $('#payListTable').DataTable().draw();
-      });
-      // var min = $("#min").val();
-      // var max = $("#max").val();
+        // var min = $("#min").val();
+        // var max = $("#max").val();
 
-      //$('#payListTable').DataTable();
+        t.draw();
 
-
-      /*var from = $("#amount_min").val();
-      var to = $("#amount_max").val();
-
-      if(from > to){
-        let message = "Search Conditions is Incorrect ";
-        document.getElementById("message").style.color = "red";
-        document.getElementById("message").innerHTML = message;
-      }
-      // console.log(from);
-      // console.log(to);
-      if(from || to){
-        $("tbody tr").each(function(){
-          // console.log($(this));
-          var price = $(this).children("td.course_amount").text();
-          console.log(price);
-          if(price >= from && price <= to){
+        var from = $("#amount_min").val();
+        var to = $("#amount_max").val();
+        // console.log(from);
+        // console.log(to);
+        if (from || to) {
+          $("tbody tr").each(function () {
+            // console.log($(this));
+            var price = $(this).children("td.course_amount").text();
+            console.log(price);
+            if (price >= from && price <= to) {
               // $(this).show();
               t.draw();
 
               // console.log(this);
               // t.column(3).search(this.value).draw();
-          }else{
-              
+            } else {
               $(this).hide();
-
             }
-        });
-      }*/
+          });
+        }
 
+      });
     });
-
-
-
 
     function resetForm() {
       document.getElementById("myForm").reset();

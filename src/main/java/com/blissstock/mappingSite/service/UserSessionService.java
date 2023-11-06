@@ -1,5 +1,6 @@
 package com.blissstock.mappingSite.service;
 
+import com.blissstock.mappingSite.entity.GuestUser;
 import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.enums.UserRole;
@@ -13,5 +14,7 @@ public interface UserSessionService {
     public String getEmail();
     public boolean isAuthenticated();
     public Long getId();
+
+    public GuestUser getGuestUserAccount();
 
 }

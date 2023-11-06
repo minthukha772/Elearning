@@ -210,6 +210,7 @@
                       <th>Teacher Name</th>
                       <th>Phone Number</th>
                       <th>Email</th>
+                      <th>Registered Date</th>
                       <th>Total numbers of course</th>
                       <th>List of course</th>
                       <th>Account Status</th>
@@ -225,6 +226,7 @@
                       </td>
                       <td th:text="${dr.phoneNo}"></td>
                       <td th:text="${dr.userAccount.mail}"></td>
+                      <td th:text="${#dates.format(dr.userAccount.registeredDate, 'yyyy-MM-dd')}"></td>
                       <td th:text="${dr.courseInfo.size}" class="text-center"></td>
                       <td class="">
                         <div class="dropdown">
