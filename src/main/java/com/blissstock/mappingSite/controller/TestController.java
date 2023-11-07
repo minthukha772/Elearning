@@ -1140,7 +1140,7 @@ public class TestController {
             CourseInfo courseInfo = courseInfoRepository.findByCourseID(course_id);
             String exam_start_time = jsonObject.getString("start_time");
             String exam_end_time = jsonObject.getString("end_time");
-            int passing_score = Integer.parseInt(jsonObject.getString("passing_score"));
+            int passing_score = jsonObject.getInt("passing_score");
             int minutes_allowed = jsonObject.getInt("minutes_allowed");
 
             Test copyTest = testRepository.getById(test_id);
@@ -1242,7 +1242,7 @@ public class TestController {
             CourseInfo courseInfo = courseInfoRepository.findByCourseID(course_id);
             String exam_start_time = jsonObject.getString("start_time");
             String exam_end_time = jsonObject.getString("end_time");
-            int passing_score = Integer.parseInt(jsonObject.getString("passing_score"));
+            int passing_score = jsonObject.getInt("passing_score");
             int minutes_allowed = jsonObject.getInt("minutes_allowed");
 
             Test copyTest = testRepository.getById(test_id);

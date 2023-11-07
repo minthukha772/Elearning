@@ -20,6 +20,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
   <script th:inline="javascript">
     var type;
     var test_id;
@@ -86,6 +87,7 @@
       } else {
         document.getElementById("teacher_dropdown_main").style.display = 'none';
       }
+      var copiedData;
 
       let today = new Date().toISOString().slice(0, 10)
       document.getElementById("exam_date").setAttribute("min", today);
@@ -98,6 +100,16 @@
       cancelBtn.addEventListener('click', () => createExamContainer.classList.add('d-none'));
       deleteCancelBtn.addEventListener('click', () => deleteExamContainer.classList.add('d-none'));
       createExam.addEventListener('click', () => {
+        document.getElementById("teacher_warning").style.display = 'none';
+        document.getElementById("course_warning").style.display = 'none';
+        document.getElementById("description_warning").style.display = 'none';
+        document.getElementById("section_name_warning").style.display = 'none';
+        document.getElementById("exam_date_less_than_current_warning").style.display = 'none';
+        document.getElementById("exam_start_time_warning").style.display = 'none';
+        document.getElementById("exam_end_time_warning").style.display = 'none';
+        document.getElementById("passing_score_warning").style.display = 'none';
+        document.getElementById("passing_score_number_limit").style.display = 'none';
+        document.getElementById("copy_warning").style.display = 'none';
         $("#student_guest_check").css("display", "block")
         createExamContainer.classList.remove('d-none')
         $("#exam_status_dropdown").css("display", "none");
@@ -183,6 +195,17 @@
 
     // Copy Exam dialog show function
     function setDataToCopyDialog(test) {
+      copiedData = test
+      document.getElementById("teacher_warning").style.display = 'none';
+      document.getElementById("course_warning").style.display = 'none';
+      document.getElementById("description_warning").style.display = 'none';
+      document.getElementById("section_name_warning").style.display = 'none';
+      document.getElementById("exam_date_less_than_current_warning").style.display = 'none';
+      document.getElementById("exam_start_time_warning").style.display = 'none';
+      document.getElementById("exam_end_time_warning").style.display = 'none';
+      document.getElementById("passing_score_warning").style.display = 'none';
+      document.getElementById("passing_score_number_limit").style.display = 'none';
+      document.getElementById("copy_warning").style.display = 'none';
       $("#student_guest_check").css("display", "none")
       $("#launchExam").hide();
       examTarget = test.exam_target;
@@ -230,6 +253,16 @@
     }
 
     function setDataToEditDialog(test) {
+      document.getElementById("teacher_warning").style.display = 'none';
+      document.getElementById("course_warning").style.display = 'none';
+      document.getElementById("description_warning").style.display = 'none';
+      document.getElementById("section_name_warning").style.display = 'none';
+      document.getElementById("exam_date_less_than_current_warning").style.display = 'none';
+      document.getElementById("exam_start_time_warning").style.display = 'none';
+      document.getElementById("exam_end_time_warning").style.display = 'none';
+      document.getElementById("passing_score_warning").style.display = 'none';
+      document.getElementById("passing_score_number_limit").style.display = 'none';
+      document.getElementById("copy_warning").style.display = 'none';
       $("#student_guest_check").css("display", "none")
       currentTest = test;
       $.ajax({
@@ -258,10 +291,7 @@
               $("#launchExam").hide();
               $("#questionCreated").hide();
               $("#examCreated").hide();
-
             }
-
-
           } else {
             currentTestTarget = "student"
             $("#teacher_sector").css("display", "block")
@@ -365,11 +395,19 @@
       }
 
       var exam_date = document.getElementById("exam_date").value;
+      var ToDate = new Date();
       if (exam_date == "") {
         document.getElementById("exam_date_warning").style.display = 'block';
         return;
       } else {
         document.getElementById("exam_date_warning").style.display = 'none';
+      }
+
+      if (new Date(exam_date).getTime() <= ToDate.getTime()) {
+        document.getElementById("exam_date_less_than_current_warning").style.display = 'block';
+        return;
+      } else {
+        document.getElementById("exam_date_less_than_current_warning").style.display = 'none';
       }
 
       var exam_start_time = document.getElementById("exam_start_time").value;
@@ -507,8 +545,8 @@
             window.location.reload();
           }
         })
-
       } else if (submitType == "Copy") {
+        exam_date_splited = exam_date.split('T')[0];
         if (examTarget == 1) {
           data = {
             student_guest: examTarget,
@@ -517,27 +555,43 @@
             course_id: 599,
             description: description,
             section_name: section_name,
-            passing_score: passing_score,
-            date: exam_date,
+            passing_score: parseInt(passing_score),
+            date: exam_date_splited,
             minutes_allowed: minutes_allowed,
             start_time: exam_start_time,
             end_time: exam_end_time
           }
-
         } else {
           data = {
             student_guest: examTarget,
             test_id: test_id,
-            teacher_id: teacherId,
-            course_id: courseId,
+            teacher_id: parseInt(teacherId),
+            course_id: parseInt(courseId),
             description: description,
             section_name: section_name,
-            passing_score: passing_score,
+            passing_score: parseInt(passing_score),
             date: exam_date,
             minutes_allowed: minutes_allowed,
             start_time: exam_start_time,
             end_time: exam_end_time
           }
+        }
+        checkCopiedData = {
+          student_guest: copiedData.exam_target,
+          test_id: copiedData.test_id,
+          teacher_id: copiedData.userInfo.uid,
+          course_id: copiedData.courseInfo.courseId,
+          description: copiedData.description,
+          section_name: copiedData.section_name,
+          passing_score: parseInt(copiedData.passing_score_percent),
+          date: copiedData.date.split('T')[0],
+          minutes_allowed: copiedData.minutes_allowed,
+          start_time: copiedData.start_time,
+          end_time: copiedData.end_time
+        }
+        if (_.isEqual(data, checkCopiedData)) {
+          document.getElementById("copy_warning").style.display = 'block';
+          return;
         }
 
         data = JSON.stringify(data);
@@ -592,6 +646,7 @@
       </div>
       <div class="px-3 pb-3">
         <h5 class="text-success text-center mb-3" id="dialogTitle">To Create Exam Content</h5>
+        <div class="text-center" style="color: red; font-size: 16px; display: none;" id="copy_warning">Cannot Copy Exact Exam</div>
         <!--student_guest-->
         <div class="student_guest" id="student_guest_check">
           <div class="form-check form-check-inline">
@@ -709,7 +764,9 @@
                 class="text-danger">*</span></small></label>
           <input type="date" class="form-control" id="exam_date" style="border-radius: 50px;" required />
         </div>
-        <div style="color: red; font-size: 12px; display: none;" id="exam_date_warning">Please Exam Date</div>
+        <div style="color: red; font-size: 12px; display: none;" id="exam_date_warning">Please Add Exam Date</div>
+        <div style="color: red; font-size: 12px; display: none;" id="exam_date_less_than_current_warning">Exam Date Must
+          Be Greater Than Today</div>
         <div class="d-flex align-items-center">
           <div class="col-6 px-1">
             <div class="input-group-sm mb-2 shadow-sm">

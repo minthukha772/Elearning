@@ -20,6 +20,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
   <script th:inline="javascript">
     var type;
     var test_id;
@@ -31,7 +32,7 @@
       // }else{
       //   document.getElementById("teacher_dropdown_main").style.display = 'none';
       // }
-
+      var copiedData;
       let today = new Date().toISOString().slice(0, 10)
       document.getElementById("exam_date").setAttribute("min", today);
       let createExamContainer = document.querySelector('.create-exam-container');
@@ -43,6 +44,15 @@
       cancelBtn.addEventListener('click', () => createExamContainer.classList.add('d-none'));
       deleteCancelBtn.addEventListener('click', () => deleteExamContainer.classList.add('d-none'));
       createExam.addEventListener('click', () => {
+        document.getElementById("course_warning").style.display = 'none';
+        document.getElementById("description_warning").style.display = 'none';
+        document.getElementById("section_name_warning").style.display = 'none';
+        document.getElementById("exam_date_less_than_current_warning").style.display = 'none';
+        document.getElementById("exam_start_time_warning").style.display = 'none';
+        document.getElementById("exam_end_time_warning").style.display = 'none';
+        document.getElementById("passing_score_warning").style.display = 'none';
+        document.getElementById("passing_score_number_limit").style.display = 'none';
+        document.getElementById("copy_warning").style.display = 'none';
         createExamContainer.classList.remove('d-none')
         $("#exam_status_dropdown").css("display", "none");
         type = "Created";
@@ -93,6 +103,15 @@
     })
 
     function setDataToEditDialog(test) {
+      document.getElementById("course_warning").style.display = 'none';
+      document.getElementById("description_warning").style.display = 'none';
+      document.getElementById("section_name_warning").style.display = 'none';
+      document.getElementById("exam_date_less_than_current_warning").style.display = 'none';
+      document.getElementById("exam_start_time_warning").style.display = 'none';
+      document.getElementById("exam_end_time_warning").style.display = 'none';
+      document.getElementById("passing_score_warning").style.display = 'none';
+      document.getElementById("passing_score_number_limit").style.display = 'none';
+      document.getElementById("copy_warning").style.display = 'none';
       test_id = test.test_id;
       type = "Update"
       let createExam = document.querySelector('.create-exam-container');
@@ -120,6 +139,16 @@
     // EditCopy beginning
 
     function setDataToCopyDialog(test) {
+      copiedData = test
+      document.getElementById("course_warning").style.display = 'none';
+      document.getElementById("description_warning").style.display = 'none';
+      document.getElementById("section_name_warning").style.display = 'none';
+      document.getElementById("exam_date_less_than_current_warning").style.display = 'none';
+      document.getElementById("exam_start_time_warning").style.display = 'none';
+      document.getElementById("exam_end_time_warning").style.display = 'none';
+      document.getElementById("passing_score_warning").style.display = 'none';
+      document.getElementById("passing_score_number_limit").style.display = 'none';
+      document.getElementById("copy_warning").style.display = 'none';
       test_id = test.test_id;
       type = "Copy"
       let copyExam = document.querySelector('.create-exam-container');
@@ -179,11 +208,19 @@
       }
 
       var exam_date = document.getElementById("exam_date").value;
+      var ToDate = new Date();
       if (exam_date == "") {
         document.getElementById("exam_date_warning").style.display = 'block';
         return;
       } else {
         document.getElementById("exam_date_warning").style.display = 'none';
+      }
+
+      if (new Date(exam_date).getTime() <= ToDate.getTime()) {
+        document.getElementById("exam_date_less_than_current_warning").style.display = 'block';
+        return;
+      } else {
+        document.getElementById("exam_date_less_than_current_warning").style.display = 'none';
       }
 
       var exam_start_time = document.getElementById("exam_start_time").value;
@@ -273,16 +310,30 @@
       else if (submitType == "Copy") {
         data = {
           test_id: test_id,
-          course_id: courseId,
+          course_id: parseInt(courseId),
           description: description,
           section_name: section_name,
-          passing_score: passing_score,
+          passing_score: parseInt(passing_score),
           date: exam_date,
           minutes_allowed: minutes_allowed,
           start_time: exam_start_time,
           end_time: exam_end_time
         }
-
+        checkCopiedData = {
+          test_id: copiedData.test_id,
+          course_id: copiedData.courseInfo.courseId,
+          description: copiedData.description,
+          section_name: copiedData.section_name,
+          passing_score: parseInt(copiedData.passing_score_percent),
+          date: copiedData.date.split('T')[0],
+          minutes_allowed: copiedData.minutes_allowed,
+          start_time: copiedData.start_time,
+          end_time: copiedData.end_time
+        }
+        if (_.isEqual(data, checkCopiedData)) {
+          document.getElementById("copy_warning").style.display = 'block';
+          return;
+        }
         data = JSON.stringify(data);
         fetch("/teacher/copy-exam", {
           method: "POST",
@@ -362,6 +413,8 @@
       </div>
       <div class="px-3 pb-3">
         <h5 class="text-success text-center mb-3" id="toCreateExam">To Create Exam Content</h5>
+        <div class="text-center" style="color: red; font-size: 16px; display: none;" id="copy_warning">Cannot Copy Exact
+          Exam</div>
         <div class="input-group-sm mb-2 shadow-sm">
           <label id="course_name_label" for="description" class="form-label fw-bold mb-1"><small
               style="color: black;">Course Name <span class="text-danger">*</span></small></label>
@@ -404,6 +457,8 @@
           <input type="date" class="form-control" id="exam_date" required />
         </div>
         <div style="color: red; font-size: 12px; display: none;" id="exam_date_warning">Please Exam Date</div>
+        <div style="color: red; font-size: 12px; display: none;" id="exam_date_less_than_current_warning">Exam Date Must
+          Be Greater Than Today</div>
         <div class="d-flex align-items-center">
           <div class="col-6 px-1">
             <div class="input-group-sm mb-2 shadow-sm">
@@ -521,9 +576,7 @@
         Date</small>
     </div>
     <div style="color: red; font-size: 12px; display: none; padding-top: 10px;" id="filter_date_warning">End Date Must
-      Be Greater
-      Than Start Date</div>
-
+      Be Greater Than Start Date</div>
     <script>
 
     </script>
@@ -637,8 +690,7 @@
                 <small class=""><a th:href="'/teacher/exam/' + ${test.test_id} + '/examinee'" class="text-success">Set
                     Examinee</a></small>
                 <small class=""><a th:href="'/teacher/exam/' + ${test.test_id} + '/exam-result-list'"
-                    class="text-success">Exam
-                    Result</a></small>
+                    class="text-success">Exam Result</a></small>
               </div>
             </div>
           </div>
