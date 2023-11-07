@@ -26,7 +26,7 @@
     var currentTestInfo;
     var currentTest;
     var currentTestTarget;
- 
+
     function launchExam() {
       console.log("launchExamOK");
       document.getElementById("sure_launch_exam").style.display = 'none';
@@ -133,6 +133,11 @@
       $("#filterbystatus").change(function () {
         console.log($("#filterbystatus :selected").text());
         window.location.href = "/admin/exam?examStatus=" + $("#filterbystatus :selected").text();
+      });
+
+      $("#filterbyexaminee").change(function () {
+        console.log($("#examineetype :selected").val());
+        window.location.href = "/admin/exam?examineetype=" + $("#filterbyexaminee :selected").val();
       });
 
       $("#clearFilter").click(function () {
@@ -304,7 +309,7 @@
       document.getElementById("exam_start_time").value = test.start_time;
       document.getElementById("exam_end_time").value = test.end_time;
       if (test.examTarget == 1) {
-        var guestCheckBox = document.getElementById("guest");    
+        var guestCheckBox = document.getElementById("guest");
         guestCheckBox.checked = true
       } else {
         var studentCheckBox = document.getElementById("student");
@@ -426,7 +431,7 @@
         // teacherId = 	10001;
         teacherId = 40001;
         courseId = 599;
-    }
+      }
 
       if (submitType == "Created") {
         data = {
@@ -599,7 +604,7 @@
               Guest
             </label>
           </div>
-        </div> 
+        </div>
 
         <script>
           $(document).ready(function () {
@@ -838,6 +843,13 @@
             </select>
           </div>
           <div class="">
+            <select name="guestorstudent" id="filterbyexaminee" class="px-3 rounded shadow-sm">
+              <option value="Filter By Examinee" selected><small>Filter By Examinee</small></option>
+              <option value="guest"><small>Guest Exam</small></option>
+              <option value="student"><small>Student Exam</small></option>
+            </select>
+          </div>
+          <div class="">
             <select name="course" id="filterbycourse" class="px-3 rounded shadow-sm">
               <option value="Filter By Course" selected><small>Filter By Course</small></option>
               <option th:each="course, index: ${courseList}" th:text="${course.courseName}" th:id="${course.courseId}">
@@ -986,7 +998,7 @@
     crossorigin="anonymous"></script>
   <script th:src="@{/js/main.js}"></script>
   <!--student-guest-->
-<script>
+  <script>
     const dialogCloseBtn = document.getElementById("dialog-close-btn");
     $("#dialog-close-btn").click(function () {
       closeDialog();

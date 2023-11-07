@@ -103,7 +103,8 @@ public class TestController {
     @GetMapping(value = { "/teacher/exam" })
     private String getExamManagementPage(Model model,
             @RequestParam(required = false) String examStatus, @RequestParam(required = false) String courseid,
-            @RequestParam(required = false) String fromDate, @RequestParam(required = false) String toDate)
+            @RequestParam(required = false) String fromDate, @RequestParam(required = false) String toDate,
+            @RequestParam(required = false) String examineetype)
             throws ParseException {
 
         if (examStatus == null) {
@@ -116,14 +117,16 @@ public class TestController {
             fromDate = "";
             toDate = "";
         }
-
+        if (examineetype == null) {
+            examineetype = "";
+        }
         try {
             Long userID = getUid();
             List<Test> testList;
             List<CourseInfo> courseList;
             // logger.info("user id {} start processing URL /teacher/exam", userID);
             logger.info("Called getExamManagementPage with parameter(user_id={})", userID);
-            if (examStatus != "" || courseid != "" || fromDate != "" || toDate != "") {
+            if (examStatus != "" || courseid != "" || fromDate != "" || toDate != "" || examineetype != "") {
                 if (examStatus != "") {
                     if (examStatus.equals("Deleted")) {
 
@@ -181,6 +184,16 @@ public class TestController {
                     logger.info(
                             "Operation Retrieve Table test by Query: user_id ={}, From ={}, To ={}. Result List: test_list={}, From ={}, To ={}  | Success",
                             userID, from, to, testList.size(), from, to);
+                } else if (examineetype != "") {
+                    if (examineetype.equals("guest")) {
+                        testList = testRepository.getExamByTargetAndTeacherID(1, userID);
+                        model.addAttribute("filter", "( Guest )");
+                    } else {
+                        testList = testRepository.getExamByTargetAndTeacherID(0, userID);
+                        model.addAttribute("filter", "( Student )");
+                    }
+                    model.addAttribute("testList", testList);
+                    model.addAttribute("filterType", "Filter By Examinee");
                 }
             } else {
                 logger.info("Initiate Operation Retrieve Table test by Query: user_id ={}", userID);
@@ -218,9 +231,7 @@ public class TestController {
             if (courseid == null) {
                 courseid = "";
             }
-
             if (teacherid == null) {
-
                 teacherid = "";
             }
             if (fromDate == null && toDate == null) {
@@ -338,7 +349,7 @@ public class TestController {
     private String getExamManagementPageByAdmin(Model model,
             @RequestParam(required = false) String examStatus, @RequestParam(required = false) String courseid,
             @RequestParam(required = false) String fromDate, @RequestParam(required = false) String toDate,
-            @RequestParam(required = false) String teacherid) {
+            @RequestParam(required = false) String teacherid, @RequestParam(required = false) String examineetype) {
         try {
             if (examStatus == null) {
                 examStatus = "";
@@ -349,6 +360,9 @@ public class TestController {
             if (teacherid == null) {
                 teacherid = "";
             }
+            if (examineetype == null) {
+                examineetype = "";
+            }
             if (fromDate == null && toDate == null) {
                 fromDate = "";
                 toDate = "";
@@ -357,7 +371,8 @@ public class TestController {
             List<CourseInfo> courseList;
             List<UserInfo> teacherList;
             String responseString = "";
-            if (examStatus != "" || courseid != "" || fromDate != "" || toDate != "" || teacherid != "") {
+            if (examStatus != "" || courseid != "" || fromDate != "" || toDate != "" || teacherid != ""
+                    || examineetype != "") {
                 if (examStatus != "") {
                     logger.info("Called getExamManagementPageByAdmin with parameters: examStatus={}", examStatus);
                     responseString = "Called AT_0004 with parameters: examStatus=" + examStatus + " Success";
@@ -416,6 +431,16 @@ public class TestController {
                     model.addAttribute("testList", testList);
                     model.addAttribute("filterType", "Filter By Teacher");
                     model.addAttribute("filter", "( " + teacher.getUserName() + " )");
+                } else if (examineetype != "") {
+                    if (examineetype.equals("guest")) {
+                        testList = testRepository.getExamByTarget(1);
+                        model.addAttribute("filter", "( Guest )");
+                    } else {
+                        testList = testRepository.getExamByTarget(0);
+                        model.addAttribute("filter", "( Student )");
+                    }
+                    model.addAttribute("testList", testList);
+                    model.addAttribute("filterType", "Filter By Examinee");
                 }
             } else {
                 responseString = "Called AT_0004 with parameters: None Success";
@@ -1080,9 +1105,9 @@ public class TestController {
         return ResponseEntity.ok(HttpStatus.OK);
 
     }
-    
+
     @Valid
-    @PostMapping(value = { "/admin/copy-exam"})
+    @PostMapping(value = { "/admin/copy-exam" })
     private ResponseEntity copyExamForAdmin(@RequestBody String payload) {
 
         try {
@@ -1105,11 +1130,10 @@ public class TestController {
                 logger.warn("Failed to parse date: " + e.getMessage());
             }
             String exam_status = null;
-            List<TestQuestion> checkQuestion = testQuestionRepository.getQuestionByTest(test_id);           
+            List<TestQuestion> checkQuestion = testQuestionRepository.getQuestionByTest(test_id);
             if (checkQuestion.size() == 0) {
-                exam_status = "Exam Created"; 
-            }
-            else {
+                exam_status = "Exam Created";
+            } else {
                 exam_status = "Questions Created";
             }
             Long course_id = jsonObject.getLong("course_id");
@@ -1184,7 +1208,6 @@ public class TestController {
 
     }
 
-
     @Valid
     @PostMapping(value = { "/teacher/copy-exam" })
     private ResponseEntity copyExamForTeacher(@RequestBody String payload) {
@@ -1209,11 +1232,10 @@ public class TestController {
                 logger.warn("Failed to parse date: " + e.getMessage());
             }
             String exam_status = null;
-            List<TestQuestion> checkQuestion = testQuestionRepository.getQuestionByTest(test_id);           
+            List<TestQuestion> checkQuestion = testQuestionRepository.getQuestionByTest(test_id);
             if (checkQuestion.size() == 0) {
-                exam_status = "Exam Created"; 
-            }
-            else {
+                exam_status = "Exam Created";
+            } else {
                 exam_status = "Questions Created";
             }
             Long course_id = jsonObject.getLong("course_id");
