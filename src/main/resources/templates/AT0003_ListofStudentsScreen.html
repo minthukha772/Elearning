@@ -347,7 +347,7 @@
                           style="text-decoration: none"></a></b>
                     </td>
                     <td th:text="${dr.userAccount.mail}"></td>
-                    <td th:text="${#dates.format(dr.userAccount.registeredDate, 'yyyy-MM-dd')}"></td>
+		    <td th:text="${dr.userAccount.registeredDate}"></td>
                     <td th:text="${dr.phoneNo}"></td>
                     <td th:text="${dr.userAccount.accountStatus}" class="accStatus"></td>
                     <td th:text="${dr.join.size}" class="text-center"></td>
