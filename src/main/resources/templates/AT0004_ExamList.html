@@ -20,6 +20,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
   <script th:inline="javascript">
     var type;
     var test_id;
@@ -31,7 +32,7 @@
       // }else{
       //   document.getElementById("teacher_dropdown_main").style.display = 'none';
       // }
-
+      var copiedData;
       let today = new Date().toISOString().slice(0, 10)
       document.getElementById("exam_date").setAttribute("min", today);
       let createExamContainer = document.querySelector('.create-exam-container');
@@ -42,7 +43,21 @@
 
       cancelBtn.addEventListener('click', () => createExamContainer.classList.add('d-none'));
       deleteCancelBtn.addEventListener('click', () => deleteExamContainer.classList.add('d-none'));
+
+      // New Exam Create dialog show function
       createExam.addEventListener('click', () => {
+        document.getElementById("course_warning").style.display = 'none';
+        document.getElementById("description_warning").style.display = 'none';
+        document.getElementById("section_name_warning").style.display = 'none';
+        document.getElementById("exam_date_less_than_current_warning").style.display = 'none';
+        document.getElementById("exam_start_time_warning").style.display = 'none';
+        document.getElementById("exam_end_time_warning").style.display = 'none';
+        document.getElementById("passing_score_warning").style.display = 'none';
+        document.getElementById("passing_score_number_limit").style.display = 'none';
+        document.getElementById("copy_warning").style.display = 'none';
+
+        let dialogTitle = document.getElementById("toCreateExam");
+        dialogTitle.innerHTML = "New Exam Create";
         createExamContainer.classList.remove('d-none')
         $("#exam_status_dropdown").css("display", "none");
         type = "Created";
@@ -58,8 +73,6 @@
       $("#submit").click(function () {
         submitData(type);
       })
-
-     
 
       $("#deleteSubmit").click(function () {
         fetch("/teacher/delete-exam?test_id=" + test_id, {
@@ -78,6 +91,11 @@
         window.location.href = "/teacher/exam?examStatus=" + $("#filterbystatus :selected").text();
       });
 
+      $("#filterbyexaminee").change(function () {
+        console.log($("#examineetype :selected").val());
+        window.location.href = "/teacher/exam?examineetype=" + $("#filterbyexaminee :selected").val();
+      });
+
       $("#clearFilter").click(function () {
         window.location.href = "/teacher/exam"
       })
@@ -89,10 +107,26 @@
       });
     })
 
+    // Exam Edit dialog show function
     function setDataToEditDialog(test) {
+      document.getElementById("course_warning").style.display = 'none';
+      document.getElementById("description_warning").style.display = 'none';
+      document.getElementById("section_name_warning").style.display = 'none';
+      document.getElementById("exam_date_less_than_current_warning").style.display = 'none';
+      document.getElementById("exam_start_time_warning").style.display = 'none';
+      document.getElementById("exam_end_time_warning").style.display = 'none';
+      document.getElementById("passing_score_warning").style.display = 'none';
+      document.getElementById("passing_score_number_limit").style.display = 'none';
+      document.getElementById("copy_warning").style.display = 'none';
       test_id = test.test_id;
       type = "Update"
       let createExam = document.querySelector('.create-exam-container');
+
+      let createExamButton = document.getElementById("toCreateExam");
+      if (type == "Update") {
+        createExamButton.innerHTML = "Exam Edit";
+      }
+
       createExam.classList.remove('d-none');
       var datearray = test.date.split("T");
 
@@ -108,6 +142,45 @@
       $("#exam_status_dropdown").css("display", "block");
     }
 
+    // EditCopy beginning
+
+    function setDataToCopyDialog(test) {
+      copiedData = test
+      document.getElementById("course_warning").style.display = 'none';
+      document.getElementById("description_warning").style.display = 'none';
+      document.getElementById("section_name_warning").style.display = 'none';
+      document.getElementById("exam_date_less_than_current_warning").style.display = 'none';
+      document.getElementById("exam_start_time_warning").style.display = 'none';
+      document.getElementById("exam_end_time_warning").style.display = 'none';
+      document.getElementById("passing_score_warning").style.display = 'none';
+      document.getElementById("passing_score_number_limit").style.display = 'none';
+      document.getElementById("copy_warning").style.display = 'none';
+      test_id = test.test_id;
+      type = "Copy"
+      let copyExam = document.querySelector('.create-exam-container');
+      let createExamButton = document.getElementById("toCreateExam");
+      if (type == "Copy") {
+        createExamButton.innerHTML = "Exam Copy";
+      }
+
+      copyExam.classList.remove('d-none');
+      var datearray = test.date.split("T");
+
+      document.getElementById("course_name").value = test.courseInfo.courseId;
+      document.getElementById("exam_status").value = test.exam_status;
+      document.getElementById("description").value = test.description;
+      document.getElementById("section_name").value = test.section_name;
+      document.getElementById("passing_score").value = test.passing_score_percent;
+      document.getElementById("exam_date").value = datearray[0];
+      document.getElementById("exam_start_time").value = test.start_time;
+      document.getElementById("exam_end_time").value = test.end_time;
+
+      $("#exam_status_dropdown").css("display", "none");
+    }
+
+    // EditCopy End
+
+    // Exam Delete dialog show function
     function setDataToDeleteDialog(test) {
       test_id = test.test_id;
       let deleteExamDialog = document.querySelector('.delete-exam-container');
@@ -142,11 +215,19 @@
       }
 
       var exam_date = document.getElementById("exam_date").value;
+      var ToDate = new Date();
       if (exam_date == "") {
         document.getElementById("exam_date_warning").style.display = 'block';
         return;
       } else {
         document.getElementById("exam_date_warning").style.display = 'none';
+      }
+
+      if (new Date(exam_date).getTime() <= ToDate.getTime()) {
+        document.getElementById("exam_date_less_than_current_warning").style.display = 'block';
+        return;
+      } else {
+        document.getElementById("exam_date_less_than_current_warning").style.display = 'none';
       }
 
       var exam_start_time = document.getElementById("exam_start_time").value;
@@ -231,7 +312,49 @@
             window.location.reload();
           }
         })
-      } else {
+      }
+
+      else if (submitType == "Copy") {
+        data = {
+          test_id: test_id,
+          course_id: parseInt(courseId),
+          description: description,
+          section_name: section_name,
+          passing_score: parseInt(passing_score),
+          date: exam_date,
+          minutes_allowed: minutes_allowed,
+          start_time: exam_start_time,
+          end_time: exam_end_time
+        }
+        checkCopiedData = {
+          test_id: copiedData.test_id,
+          course_id: copiedData.courseInfo.courseId,
+          description: copiedData.description,
+          section_name: copiedData.section_name,
+          passing_score: parseInt(copiedData.passing_score_percent),
+          date: copiedData.date.split('T')[0],
+          minutes_allowed: copiedData.minutes_allowed,
+          start_time: copiedData.start_time,
+          end_time: copiedData.end_time
+        }
+        if (_.isEqual(data, checkCopiedData)) {
+          document.getElementById("copy_warning").style.display = 'block';
+          return;
+        }
+        data = JSON.stringify(data);
+        fetch("/teacher/copy-exam", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: data
+        }).then(response => {
+          if (response.status == 200) {
+            window.location.reload();
+          }
+        })
+      }
+      else {
         data = {
           test_id: test_id,
           course_id: courseId,
@@ -260,19 +383,19 @@
       }
     }
 
-    $(document).ready(function(){
-      $("#search_date_btn").click(function(){
+    $(document).ready(function () {
+      $("#search_date_btn").click(function () {
         var fromDate = document.getElementById("exam_from").value;
         var toDate = document.getElementById("exam_to").value;
-        if(fromDate === "" && toDate != null){
+        if (fromDate === "" && toDate != null) {
           document.getElementById("filter_date_warning").textContent = "Please choose two date filters";
           document.getElementById("filter_date_warning").style.display = 'block';
-        }else if(fromDate != "" && toDate === ""){
+        } else if (fromDate != "" && toDate === "") {
           document.getElementById("filter_date_warning").textContent = "Please choose two date filters";
           document.getElementById("filter_date_warning").style.display = 'block';
-        }else if(fromDate >= toDate){
+        } else if (fromDate >= toDate) {
           document.getElementById("filter_date_warning").style.display = 'block';
-        }else{
+        } else {
           document.getElementById("filter_date_warning").style.display = 'none';
           window.location.replace("/teacher/exam?fromDate=" + fromDate + "&toDate=" + toDate);
         }
@@ -296,10 +419,12 @@
         </div>
       </div>
       <div class="px-3 pb-3">
-        <h5 class="text-success text-center mb-3">To Create Exam Content</h5>
+        <h5 class="text-success text-center mb-3" id="toCreateExam">New Exam Create</h5>
+        <div class="text-center" style="color: red; font-size: 16px; display: none;" id="copy_warning">Cannot Copy Exact
+          Exam</div>
         <div class="input-group-sm mb-2 shadow-sm">
-          <label id="course_name_label" for="description" class="form-label fw-bold mb-1"><small style="color: black;">Course Name <span
-                class="text-danger">*</span></small></label>
+          <label id="course_name_label" for="description" class="form-label fw-bold mb-1"><small
+              style="color: black;">Course Name <span class="text-danger">*</span></small></label>
           <select class="form-select" aria-label="Default select example" id="course_name">
             <option value="Choose Course" selected><small>Choose Course</small></option>
             <option th:each="course, index: ${courseList}" th:text="${course.courseName}" th:id="${course.courseId}"
@@ -339,6 +464,8 @@
           <input type="date" class="form-control" id="exam_date" required />
         </div>
         <div style="color: red; font-size: 12px; display: none;" id="exam_date_warning">Please Exam Date</div>
+        <div style="color: red; font-size: 12px; display: none;" id="exam_date_less_than_current_warning">Exam Date Must
+          Be Greater Than Today</div>
         <div class="d-flex align-items-center">
           <div class="col-6 px-1">
             <div class="input-group-sm mb-2 shadow-sm">
@@ -374,7 +501,7 @@
           Number</div>
         <div style="color: red; font-size: 12px; display: none;" id="passing_score_number_limit">Please Add Between 0
           and 100</div>
-        
+
         <div class="input-group-sm text-end">
           <input type="submit" class="form-control btn btn-sm btn-success" id="submit" style="width: 100px" />
         </div>
@@ -382,7 +509,6 @@
     </div>
   </div>
   <!-- to create exam content end  -->
-
   <div
     class="delete-exam-container min-vh-100 w-100 position-fixed top-0 d-flex justify-content-center align-items-center d-none fadeIn"
     style="background-color: rgba(0, 0, 0, 0.4); z-index: 1000; padding-top: 80px;">
@@ -403,9 +529,9 @@
   </div>
 
   <section class="main container mt-3">
-   
 
-     <!-- to add filter start  -->
+
+    <!-- to add filter start  -->
     <div class="mt-4" style="padding-top: 60px;">
       <form action="">
         <div class="d-flex flex-wrap align-items-end justify-content-between">
@@ -415,7 +541,7 @@
           </div>
           <div class="">
             <label for="exam_to" class="fw-bold"><small>Exam To</small></label><br>
-            <input type="date" class="px-3 rounded shadow-sm border-1" id="exam_to" >
+            <input type="date" class="px-3 rounded shadow-sm border-1" id="exam_to">
           </div>
           <div class="">
             <select name="status" id="filterbystatus" class="px-3 rounded shadow-sm">
@@ -434,6 +560,13 @@
             </select>
           </div> -->
           <div class="">
+            <select name="guestorstudent" id="filterbyexaminee" class="px-3 rounded shadow-sm">
+              <option value="Filter By Examinee" selected><small>Filter By Examinee</small></option>
+              <option value="guest"><small>Guest Exam</small></option>
+              <option value="student"><small>Student Exam</small></option>
+            </select>
+          </div>
+          <div class="">
             <select name="course" id="filterbycourse" class="px-3 rounded shadow-sm">
               <option value="Filter By Course" selected><small>Filter By Course</small></option>
               <option th:each="course, index: ${courseList}" th:text="${course.courseName}" th:id="${course.courseId}">
@@ -450,11 +583,9 @@
         Date</small>
     </div>
     <div style="color: red; font-size: 12px; display: none; padding-top: 10px;" id="filter_date_warning">End Date Must
-      Be Greater
-      Than Start Date</div>
-
+      Be Greater Than Start Date</div>
     <script>
-     
+
     </script>
 
     <!-- to add filter end  -->
@@ -482,6 +613,8 @@
           <div class="card bg-white mt-3 shadow-sm" data-custom-type="result_good">
             <div class="d-flex justify-content-end align-items-center p-2">
               <div th:unless="${#strings.contains(test.isDelete, 'true')}">
+                <i class="fa-regular fa-copy text-success" style="cursor: pointer;padding-right: 5px; font-size: 18px;"
+                  th:onclick="setDataToCopyDialog([[${test}]]);"></i>
                 <i class="fa-solid fa-pen-to-square text-success" style="cursor: pointer"
                   th:onclick="setDataToEditDialog([[${test}]]);"></i>
               </div>
@@ -564,8 +697,7 @@
                 <small class=""><a th:href="'/teacher/exam/' + ${test.test_id} + '/examinee'" class="text-success">Set
                     Examinee</a></small>
                 <small class=""><a th:href="'/teacher/exam/' + ${test.test_id} + '/exam-result-list'"
-                    class="text-success">Exam
-                    Result</a></small>
+                    class="text-success">Exam Result</a></small>
               </div>
             </div>
           </div>
@@ -580,7 +712,7 @@
 
   <script th:src="@{/js/main.js}"></script>
 
-  <div th:replace="@{fragments/footer}"></div>   
+  <div th:replace="@{fragments/footer}"></div>
 </body>
 
 </html>
