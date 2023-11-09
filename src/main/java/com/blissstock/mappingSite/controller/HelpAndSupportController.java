@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -24,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.blissstock.mappingSite.entity.Contact;
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.repository.ContactRepository;
-+import com.blissstock.mappingSite.service.UserSessionService;
+import com.blissstock.mappingSite.service.UserSessionService;
 
 @Controller
 public class HelpAndSupportController {
@@ -34,8 +35,6 @@ public class HelpAndSupportController {
 
     @Autowired
     ContactRepository contactRepository;
-
-   
 
     private static final Logger logger = LoggerFactory.getLogger(HelpAndSupportController.class);
 
@@ -68,9 +67,10 @@ public class HelpAndSupportController {
     }
 
     @PostMapping(value = { "/saveInquiry", "/guest/saveInquiry" })
-    private ResponseEntity saveInquiry(@RequestBody String payload) {
+    private String saveInquiry(Model model, @RequestBody String payload) {
         try {
             JSONObject jsonObject = new JSONObject(payload);
+            Contact contact = new Contact();
             String name = jsonObject.getString("name");
             String email = jsonObject.getString("email");
             String number = jsonObject.getString("number");
@@ -78,7 +78,6 @@ public class HelpAndSupportController {
             String description = jsonObject.getString("description");
             // Contact contact = new
             // Contact(null,name,email,number,details,description,null);
-            Contact contact = new Contact();
             contact.setName(name);
             contact.setEmail(email);
             contact.setPhoneNumber(number);
@@ -88,15 +87,26 @@ public class HelpAndSupportController {
             // Contact contact = new Contact(null,name,email,number,details,description);
             contactRepository.save(contact);
 
-            return ResponseEntity.ok(HttpStatus.OK);
-        } catch (Exception e) {
+            return "redirect:/email-confirmscreen";
 
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return null;
     }
 
-    
-   
+    @GetMapping("/email-confirmscreen")
+    public String confirmScreen(Model model) {
+        Long userId = 52L;
+
+        Contact contact = contactRepository.findById(userId).orElse(null);
+        String name = contact.getName();
+
+        model.addAttribute("name", name);
+
+        return "CM0011_EmailConfirm.html";
+
+    }
 
     private Long getUid() {
         Long uid = userSessionService.getUserAccount().getAccountId();
