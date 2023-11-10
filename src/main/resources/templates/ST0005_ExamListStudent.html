@@ -12,7 +12,7 @@
         integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" th:href="@{/css/AT0004_ExamManagement.css}" />
-    <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
+    <!-- <link rel="stylesheet" th:href="@{/css/bootstrap.css}" /> -->
     <link rel="stylesheet" th:href="@{/css/CM0004_Student Profile.css}" />
     <link rel="stylesheet" th:href="@{/css/global.css}" />
     <link rel="icon" type="image/x-icon" href="/images/fav.png" />
@@ -302,7 +302,9 @@
 
         <div class="exam-list mt-2" style="padding-bottom: 50px;">
             <div class="row">
-                <div class="col-12 col-lg-4" th:each="test, index:${testList}">
+
+                 <!-- ### Original Code starts here. -->
+                <!-- <div class="col-12 col-lg-4" th:each="test, index:${testList}">
                     <div class="card bg-white mt-3 shadow-sm" data-custom-type="result_good">
                         <div class="d-flex justify-content-end align-items-center p-2">
                         </div>
@@ -344,7 +346,63 @@
                             </div>
                         </div>
                     </div>
+                </div> -->
+                 <!-- ### Original Code ends here. -->
+
+                 <div class="col-12 col-lg-6 col-xl-4" th:each="test, index:${testList}">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <div class="header">
+                                <div class="d-flex align-items-start justify-content-between">
+                                    <h2 class="text-primary" id="index_no" th:text="${index.count}">01.</h2>
+                                </div>
+                            </div>
+                            <div class="group-1 mt-0">
+                                <div class="d-flex justify-content-start align-items-center gap-3">
+                                    Title : 
+                                    <span class="title fw-bold" id="title" th:text="${test.section_name}">20231102_Guest Exam</span>
+                                </div>
+                                <div class="d-flex justify-content-start align-items-center gap-3 mt-2">
+                                    Status : 
+                                    <span class="status bg-primary text-white px-3 py-1 rounded-pill" id="status" th:text="${test.exam_status}">Questions Created</span>
+                                </div>
+                            </div>
+                            <div class="group-2 mt-3">
+                                <div class="d-flex justify-content-start align-items-center gap-3">
+                                    <i class="fa-solid fa-user"></i>
+                                    <span class="teacher-name fw-bold" id="teacher_name" th:text="${test.userInfo.userName}">Angela Yu</span>
+                                </div>
+                                <div class="d-flex justify-content-start align-items-center gap-3 mt-2">
+                                    <img src="/images/calendar-time.svg" alt="" style="width: 20px;height:20px;">
+                                    <span class="exam-date" id="exam_date" th:text="${#dates.format(test.date, 'yyyy-MM-dd')}" >2023-10-20 (09:00 - 11:00) </span>
+                                    ( <span th:text="${test.start_time}"></span> - <span th:text="${test.end_time}"></span> )
+                                </div>
+                                <div class="d-flex justify-content-start align-items-center gap-3 mt-2">
+                                    <i class="fa-solid fa-clock"></i>
+                                    <span class="exam-take-time" id="exam_take_time" th:text="${test.minutes_allowed + ' minutes'}">60 Mins </span>
+                                </div>
+                            </div>
+                            <div class="group-3 mt-3">
+                                <p class="mt-0 mb-1 fw-bold">Description : </p>
+                                <div class="description shadow-sm px-3 py-2" id="description" th:text="${test.description}">
+                                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nec Lorem ipsum dolor sit, amet consectetur adipisicing elit. Qui, eaque. Quis hic aspernatur ratione assumenda molestias unde quam sequi. Quod porro in eveniet, repellat voluptatum odit at quasi deleniti nostrum?
+                                </div>
+                            </div>
+                            <div class="group-4 mt-3">
+                                <div class="d-flex justify-content-between align-items-center gap-2">
+                                    <button class="btn btn-outline-primary"><a th:href="'/student/exam/' + ${test.test_id} + '/questions'"
+                                        class="text-success">Exam
+                                        Questions</a></button>
+                                    
+                                    <button class="btn btn-outline-primary"><a th:href="'/student/exam-result/' + ${test.test_id}"
+                                        class="text-success">Exam
+                                        Result</a></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
             </div>
         </div>
     </section>

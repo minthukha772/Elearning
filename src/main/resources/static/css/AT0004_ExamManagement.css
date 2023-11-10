@@ -1,4 +1,4 @@
-{
+/* {
     margin: 0;
     padding: 0;
     -webkit-touch-callout: none;
@@ -9,7 +9,9 @@
     user-select: none;
     box-sizing: border-box;
     scroll-behavior: smooth;
-}
+} */
+
+
 .bg-success,
 .btn-success {
     background-color: #309986 !important;
@@ -19,6 +21,9 @@
     }
 .text-success {
     color: #309986 !important;
+}
+.text-success:hover {
+    color: #ffffff !important;
 }
 .fw-bold{
     font-weight: 550 !important;
@@ -116,6 +121,73 @@ height: 160px;
  background-color: white;
   border-radius: 5px;
    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);}  
+
+   /* ### New addition ### */
+
+   *{
+    padding: 0;
+    margin:  0;
+    box-sizing: border-box;
+}
+
+a{
+    text-decoration: none !important;
+}
+
+/* all */
+section.card-container,button{
+    font-size: 14px !important;
+}
+.text-primary{
+    color: #198754 !important;
+}
+.bg-primary{
+    background-color: #198754 !important;
+}
+.btn-outline-primary{
+    border: 1px solid #198754;
+    background-color: white;
+    color: #198754;
+    transition: 0.3s ease-in-out;
+}
+.btn-outline-primary:hover{
+    background-color: #198754;
+    color: white;
+}
+i{
+    color: #198754;
+    font-size: 20px;
+}
+.col-12.col-lg-6.col-xl-4{
+    padding: 10px;
+}
+.card{
+    transition: 0.3s ease-in-out;
+}
+.card:hover{
+    transform: scale(1.01);
+    background-color: #D6EBE7;
+}
+/* header in card  */
+a.clc-icon{
+    display: inline-block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 22px;
+    height: 22px;
+}
+i.fa-x{
+    color: #fff !important;
+    font-size: 15px !important;
+}
+
+/* group-3 in card  */
+.description{
+    border: 1px solid rgba(83, 83, 83,0.2);
+    max-height: 100px;
+    overflow-y: auto;
+}
 
 /* .dialog-sure-launch_M0006 {
 display:flex;
