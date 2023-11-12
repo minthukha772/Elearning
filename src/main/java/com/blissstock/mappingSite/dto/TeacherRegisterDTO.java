@@ -27,7 +27,7 @@ public class TeacherRegisterDTO extends UserRegisterDTO{
     LinkedHashMap<String,String> map = super.toMap();
     map.put("NRC",this.nrc);
     //map.put("award",this.award);
-    map.put("Self Description",this.selfDescription);
+    map.put("Profile Description",this.selfDescription);
     return map;
   }
 
