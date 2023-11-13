@@ -1003,7 +1003,7 @@ public class MailServiceImpl implements MailService {
 
     }
     if (ENVIRONMENT.equals("local")) {
-      appUrl = "pyinnyarsubuu.com";
+      appUrl = "pyinnyar-subuu.com";
 
     }
     return appUrl;
