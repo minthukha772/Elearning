@@ -1,0 +1,78 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  
+.fadeIn {
+    animation: fadeIn 0.1s linear;
+}
+input,select{
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px !important;
+}
+
+.message-box-container>div,.reply-box-container>div{
+    background-color: rgba(0,0,0,0.4);
+    z-index: 7000;
+}
+.message-box{
+    max-height: 70vh;
+    min-width: 320px;
+    max-width: 750px;
+    border-radius: 10px;
+    overflow-y: auto;
+}
+
+.reply-box{
+    max-height: 70vh;
+    width: 600px;
+    overflow-y: auto;
+}
+
+.card{
+    max-width: 360px;
+    transition: 0.3s ease;
+    z-index: 3000;
+}
+.card:hover{
+    transform: scale(1.03);
+    background-color: rgba(25, 135, 84, 0.2);
+}
+
+.card .detail{
+    font-size: 18px !important;
+    color: #198754 !important;
+}
+.card .messge-status.replied{
+    color: #198754 !important;
+}
+.card .messge-status.not.reply{
+    color: #ff0000 !important;
+}
+.card .btn{
+    background-color: #198754 !important;
+    color: white;
+    padding: 0px 10px !important;
+}
+.filter{
+    margin: 30px;
+}
+.clear-filter-btn{
+    background-color: #198754 !important;
+    color: white;
+    margin-bottom: 28px;
+}
+.search-btn{
+    background-color: #198754 !important;
+    color: white;
+    height: 30px;
+    font-size: 10px;
+    margin-left: 330px;
+    margin-top: -45px;
+
+} 

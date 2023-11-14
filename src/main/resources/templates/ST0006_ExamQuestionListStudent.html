@@ -19,9 +19,10 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
 </head>
 
-<body>
+<body style="padding-top: 80px;">
     <div th:replace="@{fragments/nav}"></div>
     <section class="main container">
+
 
       <div class="dialog" id="timedialog">
             <div class="dialog-content">
@@ -201,6 +202,15 @@
         <div class="d-flex justify-content-center align-items-center flex-wrap" style="padding-bottom: 50px;">
             <div class="box">
                 <div class="row">
+               
+               <div style="display: flex; justify-content: center; align-items: center;">
+                <div class="fw-bold text-success" style="padding-top: 20px;"> 
+                   Exam Title: <span class="" th:text="${exam_title}"></span>
+                </div>
+            </div>
+
+            
+
                     <div class="col-12 col-lg-12" th:each="testquestion, index:${questionList}">
                         <div class="col-12 mt-4 question1">
                             <div class="card border-0">
@@ -276,7 +286,15 @@
                         </div>
                     </div>
                 </div>
-            </div>
+                <div class="mx-auto" style="padding-top: 30px;">
+                    <p style="color: red;"><strong>Important Notes before submitting your answer:</strong></p>
+                    <ol style="list-style-position: inside; padding-left: 0; color: red;">
+                        <li style="text-align: left;">The answer can be submitted only one time, please be aware you
+                            have answered all questions.</li>
+                        <li style="text-align: left;">The answer must be submitted not before the exam time is up.</li>
+                    </ol>
+                </div>
+             </div>
         </div>
     </section>
 
@@ -390,7 +408,7 @@
                 formData.append('question_id', parseInt(question.id));
                 formData.append('student_answer', student_answer);
                 var xhr = new XMLHttpRequest();
-                xhr.open("POST", "https://pyinnyarsubuu.com/student/submit-answer", true);
+                xhr.open("POST", "/student/submit-answer", true);
                 xhr.send(formData);
             });
             //alert("Submitted Successfully.")
