@@ -27,7 +27,7 @@
 	width: fit-content;
 	height: 34px;
 	border-radius: 4px;
-	
+
 
 
 }
@@ -99,6 +99,61 @@
 	font-size: 16px;
 	font-weight: 400;
 	margin-bottom: 50px;
+}
+
+/* Upload and Edit video content */
+.upload-a-video-content,
+.edit-a-video-content {
+	width: 500px !important;
+}
+
+.errorMsgBox {
+	height: 70px;
+}
+
+/* Video List section */
+.video-list-header {
+	background-color: #3f877a;
+}
+
+.heading1 {
+	font-size: 20px;
+}
+
+.heading2 {
+	font-size: 16px;
+}
+
+.video-list-table {
+	background-color: #3f877a;
+}
+
+.t-header {
+	padding: 15px;
+}
+
+.video-no {
+	text-align: top;
+}
+
+.video-text {
+	font-size: 16px;
+}
+
+.video-description {
+	display: none;
+}
+
+@media only screen and (min-width: 950px) {
+	.video-description {
+		display: block;
+	}
+}
+
+.video-edit-delete-btn {
+	cursor: pointer;
+	width: 40px;
+	height: 40px;
 }
 
 .syllabus__holder {
@@ -199,7 +254,7 @@
 }
 
 
-table {
+.student-list-table {
 	width: 100%;
 	height: 300px;
 	background-color: #3f877a;
@@ -209,6 +264,6 @@ table {
 	text-align: center;
 }
 
-table thead {
+.student-list-table>thead {
 	font-size: larger;
 }

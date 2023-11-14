@@ -20,6 +20,10 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	//WebSocket
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'	
+	implementation 'org.springframework.boot:spring-boot-starter'
+	// 
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
@@ -49,7 +53,7 @@ dependencies {
 	implementation 'org.bytedeco:javacv-platform:1.5.5'
 
 	// https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
-	implementation 'org.json:json:20171018'
+	implementation 'org.json:json:20230227'
 
 	// [https://mvnrepository.com/artifact/ch.qos.logback/logback-core](https://mvnrepository.com/artifact/ch.qos.logback/logback-core)
 	implementation 'ch.qos.logback:logback-core:1.2.7'

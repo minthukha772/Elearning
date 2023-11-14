@@ -1763,32 +1763,65 @@ public class TestExamineeController {
                                                                 password_update_date_time,
                                                                 null, null);
                                                 guestUserRepository.save(newGuestUser);
+
+                                                new Thread(new Runnable() {
+                                                        public void run() {
+                                                                try {
+                                                                        mailService.SendGuestOneTimePassword(
+                                                                                        newGuestUser,
+                                                                                        one_time_password);
+                                                                        logger.info("One-time-password (OTP) sent to mail={} | Success",
+                                                                                        email);
+                                                                } catch (Exception e) {
+                                                                        logger.info(e.getLocalizedMessage());
+                                                                }
+                                                        }
+                                                }).start();
+
+                                                if (checkExaminee == null) {
+                                                        TestExaminee testExaminee = new TestExaminee(null, test, null,
+                                                                        newGuestUser, null);
+                                                        testExamineeRepository.save(testExaminee);
+
+                                                }
+
                                         } else {
                                                 guestUser.setOne_time_password(one_time_passwordEncoded);
                                                 guestUserRepository.save(guestUser);
-                                        }
-                                        if (checkExaminee == null) {
-                                                TestExaminee testExaminee = new TestExaminee(null, test, null,
-                                                                guestUser, null);
-                                                testExamineeRepository.save(testExaminee);
-                                        } else {
-                                                GuestUser existingGuestUser = guestUserRepository
-                                                                .getGuestUserbyEmail(email);
-                                                existingGuestUser.setOne_time_password(one_time_passwordEncoded);
-                                                guestUserRepository.save(existingGuestUser);
-                                        }
-                                        new Thread(new Runnable() {
-                                                public void run() {
-                                                        try {
-                                                                mailService.SendGuestOneTimePassword(guestUser,
-                                                                                one_time_password);
-                                                                logger.info("One-time-password (OTP) sent to mail={} | Success",
-                                                                                email);
-                                                        } catch (Exception e) {
-                                                                logger.info(e.getLocalizedMessage());
+
+                                                new Thread(new Runnable() {
+                                                        public void run() {
+                                                                try {
+                                                                        mailService.SendGuestOneTimePassword(guestUser,
+                                                                                        one_time_password);
+                                                                        logger.info("One-time-password (OTP) sent to mail={} | Success",
+                                                                                        email);
+                                                                } catch (Exception e) {
+                                                                        logger.info(e.getLocalizedMessage());
+                                                                }
                                                         }
+                                                }).start();
+
+                                                if (checkExaminee == null) {
+                                                        TestExaminee testExaminee = new TestExaminee(null, test, null,
+                                                                        guestUser, null);
+                                                        testExamineeRepository.save(testExaminee);
+
                                                 }
-                                        }).start();
+                                        }
+
+                                        // new Thread(new Runnable() {
+                                        // public void run() {
+                                        // try {
+                                        // mailService.SendGuestOneTimePassword(guestUser,
+                                        // one_time_password);
+                                        // logger.info("One-time-password (OTP) sent to mail={} | Success",
+                                        // email);
+                                        // } catch (Exception e) {
+                                        // logger.info(e.getLocalizedMessage());
+                                        // }
+                                        // }
+                                        // }).start();
                                 }
                         } catch (Exception e) {
                                 logger.error(e.getLocalizedMessage());

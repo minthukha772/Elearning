@@ -8,6 +8,14 @@
 	<link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
 	<link rel="stylesheet" type="text/css" th:href="@{/css/course.css}" />
 	<link rel="stylesheet" type="text/css" th:href="@{/css/global.css}" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+		integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+		crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 	<title>Course Details</title>
 </head>
@@ -15,6 +23,180 @@
 <body>
 	<div th:replace="@{fragments/nav}"></div>
 	<main>
+		<!-- upload a video modal box start  -->
+		<div class="upload-a-video-box p-2 animate__animated animate__fadeOut min-vh-100 position-fixed w-100 top-0 d-flex justify-content-center align-items-center d-none"
+			style="z-index: 1000;background: rgba(0,0,0,0.4); height: 100vh; overflow-y: auto;">
+			<div class="upload-a-video-content p-3 rounded shadow-sm bg-white">
+				<div class="d-flex justify-content-between align-items-center mb-3">
+					<div class=" fw-bold text-success" style="font-size: 18px;">
+						Upload a video
+					</div>
+					<div class="bg-danger text-white rounded-circle d-flex justify-content-center align-items-center"
+						style="width: 30px;height: 30px;cursor: pointer;" id="upload_a_video_cancel">
+						<i class="fa-solid fa-xmark"></i>
+					</div>
+				</div>
+				<div id="uploadVideoErrorMsgBox"
+					class=" errorMsgBox d-none justify-content-center align-items-center animate__animated border p-1 mb-2">
+				</div>
+
+				<div class="input-group-sm mb-2">
+					<label for="order_no" class="form-label mb-1">
+						<small style="color: black;">
+							Order No <span class="text-danger">*</span>
+						</small>
+					</label>
+					<input type="number" class="form-control shadow-sm" id="upload_order_no" placeholder="Order No"
+						required />
+				</div>
+				<div style="color: red; font-size: 12px; display: none;" id="order_no_warning">
+					Please add Order No
+				</div>
+
+				<div class="input-group-sm mb-2">
+					<label for="title" class="form-label mb-1">
+						<small style="color: black;">
+							Title <span class="text-danger">*</span>
+						</small>
+					</label>
+					<input type="text" class="form-control shadow-sm" id="upload_title" placeholder="Title" required />
+				</div>
+				<div style="color: red; font-size: 12px; display: none;" id="title_warning">
+					Please add Title
+				</div>
+
+				<div class="input-group-sm mb-2">
+					<label for="description" class="form-label mb-1">
+						<small style="color: black;">
+							Description <span class="text-danger">*</span>
+						</small>
+					</label>
+					<textarea class="form-control shadow-sm" placeholder="Description" required name="description"
+						id="upload_description" rows="4"></textarea>
+					<!-- <textarea class="form-control shadow-sm" placeholder="Description" th:text="${courseInfo.courseId}" required name="description"
+						id="courseIdElement"></textarea>	 -->
+					<!-- <span id="courseIdElement" th:text="${courseInfo.courseId}" ></span> -->
+					<input type="hidden" id="courseIdElement" th:value="${courseInfo.courseId}" />
+
+
+				</div>
+				<div style="color: red; font-size: 12px; display: none;" id="description">
+					Please add Description
+				</div>
+
+				<div class=" w-100 mb-2 p-3 form-control shadow-sm">
+					<div class=" text-center">
+						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+							class="bi bi-upload me-1" viewBox="0 0 16 16">
+							<path
+								d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
+							<path
+								d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z" />
+						</svg>
+						<a href="#" id="videoUpload" class=" text-decoration-underline" style="font-size: 14px;">
+							Choose a video
+						</a>
+						<form id="videoUploadForm">
+							<input type="file" style="display:none" id="fileDialog" name="videoFile" accept=".mp4">
+						</form>
+						<div class="preview">
+							<div style="font-size: 14px;">...</div>
+						</div>
+					</div>
+				</div>
+				<div id="successDialog" class="dialog-box" style="display: none;">
+					<p id="successMessage" style="color: green;"></p>
+				</div>
+
+
+				<div class="mb-3" id="upload_progressbar">
+					<div style="font-size: 12px;">
+						<!-- <span id="upload_percentage_no">0</span>% uploaded -->
+						<span id="progressValue">0%</span>
+					</div>
+					<div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25"
+						aria-valuemin="0" aria-valuemax="100">
+						<!-- <progress id="progressBar" value="0" max="100"></progress> -->
+						<div class="progress-bar bg-success" id="progressBar" value="0" max="100"></div>
+						<!-- <div class="progress-bar bg-success" id="upload_percentage_bar" style="width: 25%"></div> -->
+					</div>
+				</div>
+
+
+
+				<div class=" d-flex justify-content-between">
+					<button id="cancelUploadButton" class=" btn btn-secondary btn-sm">Cancel Upload</button>
+					<button class=" btn btn-success btn-sm" form="videoUploadForm">Upload</button>
+				</div>
+			</div>
+		</div>
+		<!-- upload a video modal box end -->
+
+		<!-- edit a video modal box start  -->
+		<div class="edit-a-video-box p-2 animate__animated animate__fadeOut min-vh-100 position-fixed w-100 top-0 d-flex justify-content-center align-items-center d-none"
+			style="z-index: 1000;background: rgba(0,0,0,0.4); max-height: 500px; overflow-y: auto;">
+			<div class="edit-a-video-content p-3 rounded shadow-sm bg-white">
+				<div class="d-flex justify-content-between align-items-center mb-3">
+					<div class=" fw-bold text-success" style="font-size: 18px;">
+						Edit a video
+					</div>
+					<div class="bg-danger text-white rounded-circle d-flex justify-content-center align-items-center"
+						style="width: 30px;height: 30px;cursor: pointer;" id="edit_a_video_cancel">
+						<i class="fa-solid fa-xmark"></i>
+					</div>
+				</div>
+				<div id="editVideoErrorMsgBox"
+					class=" errorMsgBox d-none justify-content-center align-items-center animate__animated border p-1 mb-2">
+				</div>
+
+				<div class="input-group-sm mb-2">
+					<label for="order_no" class="form-label mb-1">
+						<small style="color: black;">
+							Order No <span class="text-danger">*</span>
+						</small>
+					</label>
+					<input type="number" class="form-control shadow-sm" id="edit_order_no" placeholder="Order No"
+						required />
+				</div>
+				<div style="color: red; font-size: 12px; display: none;" id="order_no_warning">
+					Please add Order No
+				</div>
+
+				<div class="input-group-sm mb-2">
+					<label for="title" class="form-label mb-1">
+						<small style="color: black;">
+							Title <span class="text-danger">*</span>
+						</small>
+					</label>
+					<input type="text" class="form-control shadow-sm" id="edit_title" placeholder="Title" required />
+				</div>
+				<div style="color: red; font-size: 12px; display: none;" id="title_warning">
+					Please add Title
+				</div>
+
+				<div class="input-group-sm mb-3">
+					<label for="description" class="form-label mb-1">
+						<small style="color: black;">
+							Description <span class="text-danger">*</span>
+						</small>
+					</label>
+					<textarea class="form-control shadow-sm" placeholder="Description" required name="description"
+						id="edit_description" rows="4"></textarea>
+				</div>
+				<div style="color: red; font-size: 12px; display: none;" id="description">
+					Please add Description
+				</div>
+				<div id="successDialogs" class="dialog-box" style="display: none;">
+					<p id="successMessages" style="color: green;"></p>
+				</div>
+
+				<div class=" d-flex justify-content-end">
+					<button class=" btn btn-success btn-sm" id="editVideoBtn">Submit</button>
+				</div>
+			</div>
+		</div>
+		<!-- edit a video modal box end -->
+
 		<section class="container-fluid section__detail">
 			<h1 th:text="${courseInfo.courseName}"></h1>
 			<p class="section__description">
@@ -117,6 +299,13 @@
 								<i class="fas fa-plus"></i> Write Review
 							</button></a>
 
+						<a th:if="${!isLiveClass and studentRegistered and paymentComplete}" href="#video_list_section"
+							class="btn btn-primary">
+							Go to Videos
+						</a>
+
+						<!-- class link -->
+						<div th:if="${studentRegistered and isLiveClass}" class="mt-3">
 						<!-- class link -->
 						<div th:if="${studentRegistered}" class="mt-3">
 							<a th:href="@{${classLink}}" target="_blank">Link to the course</a>
@@ -134,6 +323,144 @@
 							th:href="@{'/teacher/course_syllabus/course_id/' + ${courseInfo.courseId}}"><button
 								class="btn btn-primary">Manage Syllabus</button></a>
 
+						<div th:if="${teacherRegistered and !isLiveClass}" class="btn btn-primary" id="upload_a_video">
+							Upload video
+						</div>
+						<div th:if="${teacherRegistered and !isLiveClass}">
+							<a href="#video_list_section" class="btn btn-primary">
+								Go to Videos
+							</a>
+						</div>
+
+						<div th:if="${teacherRegistered and isLiveClass}">
+							<p class="prerequisites my-3">Class Link</p>
+
+							<form th:action="@{/teacher/course-details/insert-class-link}" method="POST">
+								<input type="hidden" name="courseId" th:value="${courseInfo.courseId}" />
+								<input type="hidden" name="roleLink" value="teacher" />
+								<div class="input-group">
+									<input type="text" name="class-link" id="class-link" th:value="${classlink}"
+										class="form-control" placeholder="Insert class link" />
+									<!-- <button class="btn btn-primary">Submit</button> -->
+								</div>
+							</form>
+						</div>
+					</div>
+
+					<!-- Admin -->
+					<div th:if="${admin == 'ADMIN'}">
+
+						<!-- live class  -->
+						<span th:if="${isCourseDateValid}!=null">
+							<span th:if="${!isCourseDateValid}">
+								<div class="text-primary">
+									This course has already passed the starting date
+								</div>
+							</span>
+
+							<span th:if="${isCourseDateValid}">
+								<a th:if="${!courseNotApprove}"
+									th:href="@{'/admin/enrollStudent/course/' + ${courseInfo.courseId} }"><button
+										th:if="${availableStuList > 0}" class="btn btn-primary">
+										Enroll students
+									</button></a>
+							</span>
+						</span>
+
+						<!-- video class -->
+						<span th:if="${isCourseDateValid}==null">
+							<a th:if="${!courseNotApprove}"
+								th:href="@{'/admin/enrollStudent/course/' + ${courseInfo.courseId} }"><button
+									th:if="${availableStuList > 0}" class="btn btn-primary">
+									Enroll students
+								</button></a>
+						</span>
+
+						<a
+							th:href="@{'/admin/edit/course/' + ${courseInfo.courseId} + '/' + ${courseInfo.userInfo.uid}}"><button
+								class="btn btn-primary">Edit Course</button></a>
+						<!-- verify -->
+						<button th:if="${courseNotApprove}" type="button" class="btn btn-primary" data-bs-toggle="modal"
+							data-bs-target="#verifyCourseConfirmModal" th:attr="data-bs-id=${courseInfo.courseId}"
+							th:attrappend="data-bs-title=${courseInfo.courseName}">
+							Verify Course
+						</button>
+
+						<!-- Verify Confirm Modal -->
+						<div class="modal fade" id="verifyCourseConfirmModal" tabindex="-1"
+							aria-labelledby="courseFormModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="courseFormModalLabel">
+											Verify Course
+										</h5>
+										<button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+											aria-label="Close"></button>
+									</div>
+									<div class="modal-body">
+										<p>Are you sure to verify this course?</p>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+											Close
+										</button>
+										<button type="button" id="verifyCourse" class="btn btn-primary">
+											VERIFY
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<button type="button" class="btn btn-primary" data-bs-toggle="modal"
+							data-bs-target="#deleteCourseConfirmModal" th:attr="data-bs-id=${courseInfo.courseId}"
+							th:attrappend="data-bs-title=${courseInfo.courseName}">
+							Delete Course
+						</button>
+
+						<!-- Delete Confirm Modal -->
+						<div class="modal fade" id="deleteCourseConfirmModal" tabindex="-1"
+							aria-labelledby="courseFormModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="courseFormModalLabel">
+											Delete Course
+										</h5>
+										<button type="button" class="btn btn-close" data-bs-dismiss="modal"
+											aria-label="Close"></button>
+									</div>
+									<div class="modal-body">
+										<p>
+											The data will permentently delete! recovery is not
+											possible!
+										</p>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+											Close
+										</button>
+										<button type="button" id="deleteCourse" class="btn btn-primary">
+											DELETE
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<a th:href="@{'/admin/course_syllabus/course_id/' + ${courseInfo.courseId}}"><button
+								class="btn btn-primary">Manage Syllabus</button></a>
+
+						<div th:if="${isCourseDateValid} == null" class="btn btn-primary" id="upload_a_video">
+							Upload video
+						</div>
+						<div th:if="${!isLiveClass}">
+							<a href="#video_list_section" class="btn btn-primary">
+								Go to Videos
+							</a>
+						</div>
+
+						<div th:if="@{isLiveClass}">
 						<div th:if="${teacherRegistered}">
 							<p class="prerequisites my-3">Class Link</p>
 
@@ -319,6 +646,167 @@
 			<h3 class="prerequisites__title my-3">Prequisites</h3>
 			<p class="prerequisites__description" th:text="${courseInfo.prerequisite}">
 			</p>
+
+			<!-- Video List section -->
+			<!-- Video List for Student -->
+			<div th:if="${student == 'STUDENT'}">
+				<div th:if="${!isLiveClass and (studentRegistered and paymentComplete)}" style="margin-bottom: 60px;"
+					id="video_list_section">
+					<div class=" video-list-header p-3 rounded-3 mb-2">
+						<p class=" text-center heading1 mb-0 fw-bolder text-white">Video List</p>
+						<p class=" text-center heading2 mb-0 fw-semibold text-white"
+							th:text="${noOfVideo + ' Lessons'}">0 Lessons</p>
+					</div>
+					<table id="" class=" video-list-table rounded-3">
+						<thead>
+							<th class=" text-center t-header">No</th>
+							<th class=" text-center t-header">Video</th>
+							<th class=" text-center t-header">Video Title</th>
+						</thead>
+						<tbody>
+							<tr th:each="dr,index:${videoClassLists}">
+								<td class=" text-center text-white p-2 mb-auto video-no video-text" style="width: 5%;"
+									th:text="${dr.videoOrderNo}">
+									1
+								</td>
+								<td class=" text-center text-white p-2" style="width: 15%;">
+									<a th:href="@{'/video-class/' + ${courseInfo.courseId} + '/' + ${dr.id}}">
+										<img th:src="@{'https://lh3.googleusercontent.com/d/' + ${dr.thumbnail}}"
+										
+										onerror="this.onerror=null; this.src='/images/uploading.gif';"
+											class="shadow-sm" alt="Lesson Thumbnail" width="168" height="94">
+									</a>
+								</td>
+								<td class=" text-white video-no p-2">
+									<p class=" video-text mb-2" th:text="${dr.videoTitle}">Lesson 1</p>
+									<p class=" video-text video-description mb-0" th:text="${dr.videoDesc}"></p>
+								</td>
+							</tr>
+
+							<!-- static rows start - testing only for frontend -->
+
+
+							<!-- static rows end - testing only for frontend -->
+
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<!-- Video List for Teacher -->
+			<div th:if="${teacher == 'TEACHER'}">
+				<div th:if="${!isLiveClass and teacherRegistered}" style="margin-bottom: 60px;" id="video_list_section">
+					<div class=" video-list-header p-3 rounded-3 mb-2">
+						<p class=" text-center heading1 mb-0 fw-bolder text-white">Video List</p>
+						<p class=" text-center heading2 mb-0 fw-semibold text-white"
+							th:text="${noOfVideo + ' Lessons'}">0 Lessons</p>
+					</div>
+					<table id="" class=" video-list-table rounded-3">
+						<thead>
+							<th class=" text-center t-header">No</th>
+							<th class=" text-center t-header">Video</th>
+							<th class=" text-center t-header">Video Title</th>
+						</thead>
+						<tbody>
+							<tr th:each="dr,index:${videoClassLists}">
+								<td class=" text-center text-white p-2 mb-auto video-no video-text" style="width: 5%;"
+									th:text="${dr.videoOrderNo}">1
+								</td>
+
+								<td class="text-center text-white p-2" style="width: 15%;">
+									<a th:href="@{'/video-class/' + ${courseInfo.courseId} + '/' + ${dr.id}}">
+										<img th:src="@{'https://lh3.googleusercontent.com/d/' + ${dr.thumbnail}}"
+										
+										onerror="this.onerror=null; this.src='/images/uploading.gif';"
+											class="shadow-sm" alt="Lesson Thumbnail" width="168" height="94">
+									</a>
+								</td>
+
+
+								<td class=" text-white video-no p-2">
+									<p class=" video-text mb-2" th:text="${dr.videoTitle}">Lesson 1</p>
+									<p class=" video-text video-description mb-0" th:text="${dr.videoDesc}"></p>
+								</td>
+								<td class="p-2" style="width: 10%; text-align: center;">
+									<div class="btn-group" role="group" aria-label="Basic example">
+										<button type="button" class="btn btn-secondary edit_a_video" data-video-id=""
+											th:data-video-id="${dr.id}">
+											<i class="fa-solid fa-pen-to-square"></i>
+										</button>
+										<button type="button" class="btn btn-danger delete_a_video" data-video-id=""
+											th:data-video-id="${dr.id}">
+											<i class="bi bi-trash-fill"></i>
+										</button>
+									</div>
+								</td>
+							</tr>
+
+							<!-- static rows start - testing only for frontend -->
+
+
+							<!-- static rows end - testing only for frontend -->
+
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<!-- Video List for Admin -->
+			<div th:if="${admin == 'ADMIN'}">
+				<div th:if="${!isLiveClass}" style="margin-bottom: 60px;" id="video_list_section">
+					<div class=" video-list-header p-3 rounded-3 mb-2">
+						<p class=" text-center heading1 mb-0 fw-bolder text-white">Video List</p>
+						<p class=" text-center heading2 mb-0 fw-semibold text-white"
+							th:text="${noOfVideo + ' Lessons'}">0 Lessons</p>
+					</div>
+					<table id="" class=" video-list-table rounded-3">
+						<thead>
+							<th class=" text-center t-header">No</th>
+							<th class=" text-center t-header">Video</th>
+							<th class=" text-center t-header">Video Title</th>
+						</thead>
+						<tbody>
+							<tr th:each="dr,index:${videoClassLists}">
+								<td class=" text-center text-white p-2 mb-auto video-no video-text" style="width: 5%;"
+									th:text="${dr.videoOrderNo}">1
+								</td>
+
+								<td class="text-center text-white p-2" style="width: 15%;">
+									<a th:href="@{'/video-class/' + ${courseInfo.courseId} + '/' + ${dr.id}}">
+										<img th:src="@{'https://lh3.googleusercontent.com/d/' + ${dr.thumbnail}}"
+										onerror="this.onerror=null; this.src='/images/uploading.gif';"
+											class="shadow-sm" alt="Lesson Thumbnail" width="168" height="94">
+									</a>
+								</td>
+
+
+								<td class=" text-white video-no p-2">
+									<p class=" video-text mb-2" th:text="${dr.videoTitle}">Lesson 1</p>
+									<p class=" video-text video-description mb-0" th:text="${dr.videoDesc}"></p>
+								</td>
+								<td class="p-2" style="width: 10%; text-align: center;">
+									<div class="btn-group" role="group" aria-label="Basic example">
+										<button type="button" class="btn btn-secondary edit_a_video" data-video-id=""
+											th:data-video-id="${dr.id}">
+											<i class="fa-solid fa-pen-to-square"></i>
+										</button>
+										<button type="button" class="btn btn-danger delete_a_video" data-video-id=""
+											th:data-video-id="${dr.id}">
+											<i class="bi bi-trash-fill"></i>
+										</button>
+									</div>
+								</td>
+							</tr>
+
+
+
+							<!-- static rows end - testing only for frontend -->
+
+						</tbody>
+					</table>
+				</div>
+			</div>
+
 			<div class="syllabus__holder">
 				<h3 class="syllabus__title">Syllabus</h3>
 				<!-- syllabus update -->
@@ -366,7 +854,7 @@
 		<div sec:authorize="hasAuthority('ROLE_ADMIN') || hasAuthority('ROLE_SUPER_ADMIN')">
 			<div class="container">
 				<h2 class=" text-center">Student List</h2>
-				<table id="studentListTable" class=" my-3">
+				<table id="studentListTable" class=" student-list-table my-3">
 					<thead>
 						<th>No</th>
 						<th>Name</th>
@@ -406,12 +894,16 @@
 	<img src="/images/arrow-up-square-fill.svg" class="scrollToTop show-scroll" onclick="handleScrollToTop()" />
 
 
+
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
 		th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js}"
 		integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
 		crossorigin="anonymous"></script>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"
 		integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.9.0/dist/sweetalert2.all.min.js"></script>
+
 
 	<script th:src="@{/js/main.js}"></script>
 	<script th:src="@{/js/CM0003_CourseDetails.js}"></script>
