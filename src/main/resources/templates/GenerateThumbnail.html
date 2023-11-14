@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thumbnail</title>
+</head>
+
+<body>
+    <h2>Thumbnail</h2>
+    <form id="fileUploadForm" enctype="multipart/form-data">
+        <input type="file" name="fileInput" id="fileInput" accept="video/*">
+        <input type="submit" value="Upload File">
+    </form>
+    <script>
+        document.getElementById("fileUploadForm").addEventListener("submit", function (e) {
+            e.preventDefault(); // Prevent the default form submission behavior
+
+            // Get the selected file from the input element
+            const fileInput = document.getElementById("fileInput");
+            const selectedFile = fileInput.files[0];
+
+            // Create a FormData object to send the file
+            const formData = new FormData();
+            formData.append("fileInput", selectedFile);
+
+            // Send the FormData to the server using AJAX (you can use a library like jQuery or fetch)
+            fetch("/admin/thumbnail", {
+                method: "POST",
+                body: formData,
+            })
+                .then((response) => {
+                    // Handle the server's response here
+                    window.location.reload();
+                    console.log("Thumbnail created successfully.");
+                })
+                .catch((error) => {
+                    console.error("Error uploading the file:", error);
+                });
+        });
+    </script>
+</body>
+</html>

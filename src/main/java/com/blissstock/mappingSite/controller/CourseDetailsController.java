@@ -4,6 +4,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.GeneralSecurityException;
 import java.text.DecimalFormat;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.security.GeneralSecurityException;
 import java.time.DayOfWeek;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -21,6 +26,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.CancellationException;
+
+import javax.mail.Multipart;
 import javax.servlet.http.HttpServletRequest;
 import com.blissstock.mappingSite.dto.JoinCourseDTO;
 import com.blissstock.mappingSite.entity.CourseInfo;
@@ -61,6 +68,9 @@ import com.google.api.services.drive.model.FileList;
 import com.google.api.services.drive.model.Permission;
 
 import com.google.api.services.drive.model.File;
+import com.google.api.client.http.InputStreamContent;
+import com.google.api.services.drive.Drive;
+import com.google.api.services.drive.model.FileList;
 import com.blissstock.mappingSite.service.MailService;
 import com.blissstock.mappingSite.service.PaymentForTeacherService;
 
@@ -86,8 +96,11 @@ import org.springframework.web.context.request.async.DeferredResult;
 import org.springframework.web.multipart.MultipartFile;
 
 import org.json.JSONObject;
+import org.springframework.web.multipart.MultipartFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.google.api.services.drive.model.File;
+import com.google.api.services.drive.model.FileList;
 
 @Controller
 public class CourseDetailsController {
@@ -1194,6 +1207,8 @@ public class CourseDetailsController {
             }
         }).start();
 
+        logger.info("Called getCourseDetails[redirect:/student/course-details/] with parameter course : {} Success",
+                courseId);
         logger.info("Called getCourseDetails[redirect:/student/course-details/] with parameter course : {} Success",
                 courseId);
         return "redirect:/student/course-details/" + courseId;

@@ -260,8 +260,8 @@
 						<span th:if="${isCourseDateValid}==null">
 							<form th:action="@{/guest/save/course-id/{courseId}(courseId = ${courseInfo.courseId})}"
 								method="post">
-								<!-- <button th:if="${availableStuList > 0}" class="btn__enroll"
-									type="submit">Enroll</button> -->
+								<button th:if="${availableStuList > 0}" class="btn__enroll"
+									type="submit">Enroll</button>
 							</form>
 						</span>
 					</div>
@@ -306,6 +306,8 @@
 
 						<!-- class link -->
 						<div th:if="${studentRegistered and isLiveClass}" class="mt-3">
+						<!-- class link -->
+						<div th:if="${studentRegistered}" class="mt-3">
 							<a th:href="@{${classLink}}" target="_blank">Link to the course</a>
 						</div>
 					</div>
@@ -459,6 +461,140 @@
 						</div>
 
 						<div th:if="@{isLiveClass}">
+						<div th:if="${teacherRegistered}">
+							<p class="prerequisites my-3">Class Link</p>
+
+							<form th:action="@{/teacher/course-details/insert-class-link}" method="POST">
+								<input type="hidden" name="courseId" th:value="${courseInfo.courseId}" />
+								<input type="hidden" name="roleLink" value="teacher" />
+								<div class="input-group">
+									<input type="text" name="class-link" id="class-link" th:value="${classlink}"
+										class="form-control" placeholder="Insert class link" />
+									<!-- <button class="btn btn-primary">Submit</button> -->
+								</div>
+							</form>
+						</div>
+					</div>
+
+					<!-- Admin -->
+					<div th:if="${admin == 'ADMIN'}">
+
+						<!-- live class  -->
+						<span th:if="${isCourseDateValid}!=null">
+							<span th:if="${!isCourseDateValid}">
+								<div class="text-primary">
+									This course has already passed the starting date
+								</div>
+							</span>
+
+							<span th:if="${isCourseDateValid}">
+								<a th:if="${!courseNotApprove}"
+									th:href="@{'/admin/enrollStudent/course/' + ${courseInfo.courseId} }"><button
+										th:if="${availableStuList > 0}" class="btn btn-primary">
+										Enroll students
+									</button></a>
+							</span>
+						</span>
+
+						<!-- video class -->
+						<span th:if="${isCourseDateValid}==null">
+							<a th:if="${!courseNotApprove}"
+								th:href="@{'/admin/enrollStudent/course/' + ${courseInfo.courseId} }"><button
+									th:if="${availableStuList > 0}" class="btn btn-primary">
+									Enroll students
+								</button></a>
+						</span>
+
+						<a
+							th:href="@{'/admin/edit/course/' + ${courseInfo.courseId} + '/' + ${courseInfo.userInfo.uid}}"><button
+								class="btn btn-primary">Edit Course</button></a>
+						<!-- verify -->
+						<button th:if="${courseNotApprove}" type="button" class="btn btn-primary" data-bs-toggle="modal"
+							data-bs-target="#verifyCourseConfirmModal" th:attr="data-bs-id=${courseInfo.courseId}"
+							th:attrappend="data-bs-title=${courseInfo.courseName}">
+							Verify Course
+						</button>
+
+						<!-- Verify Confirm Modal -->
+						<div class="modal fade" id="verifyCourseConfirmModal" tabindex="-1"
+							aria-labelledby="courseFormModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="courseFormModalLabel">
+											Verify Course
+										</h5>
+										<button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+											aria-label="Close"></button>
+									</div>
+									<div class="modal-body">
+										<p>Are you sure to verify this course?</p>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+											Close
+										</button>
+										<button type="button" id="verifyCourse" class="btn btn-primary">
+											VERIFY
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<button type="button" class="btn btn-primary" data-bs-toggle="modal"
+							data-bs-target="#deleteCourseConfirmModal" th:attr="data-bs-id=${courseInfo.courseId}"
+							th:attrappend="data-bs-title=${courseInfo.courseName}">
+							Delete Course
+						</button>
+
+						<!-- Delete Confirm Modal -->
+						<div class="modal fade" id="deleteCourseConfirmModal" tabindex="-1"
+							aria-labelledby="courseFormModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="courseFormModalLabel">
+											Delete Course
+										</h5>
+										<button type="button" class="btn btn-close" data-bs-dismiss="modal"
+											aria-label="Close"></button>
+									</div>
+									<div class="modal-body">
+										<p>
+											The data will permentently delete! recovery is not
+											possible!
+										</p>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+											Close
+										</button>
+										<button type="button" id="deleteCourse" class="btn btn-primary">
+											DELETE
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<a th:href="@{'/admin/course_syllabus/course_id/' + ${courseInfo.courseId}}"><button
+								class="btn btn-primary">Manage Syllabus</button></a>
+						<div>
+							<input type="file" id="testinguploadfile" name="filename">
+							<button id="testingupload">Submit</button>
+						</div>
+						<script>
+							var upload = document.getElementById("testingupload");
+							var image = document.getElementById("testinguploadfile");
+							let formData = new FormData();
+							upload.addEventListener('click', function () {
+								formData.append('multipartFile', image.files[0]);
+								var xhr = new XMLHttpRequest();
+								xhr.open("POST", "https://localhost:8080/admin/upload", true);
+								xhr.send(formData);
+							})
+						</script>
+						<div>
 							<p class="prerequisites my-3">Class Link</p>
 							<form th:action="@{/admin/course-details/insert-class-link}" method="POST">
 								<input type="hidden" name="courseId" th:value="${courseInfo.courseId}" />

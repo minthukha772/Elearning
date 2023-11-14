@@ -393,7 +393,7 @@ public class StorageServiceImpl implements StorageService {
 
     String name = courseInfo.getCoursePhoto();
     if (name == null || name.isEmpty()) {
-      return new FileInfo("default", "/images/course.png");
+      return new FileInfo("default", "/images/default_course.png");
     }
     String url = MvcUriComponentsBuilder
         .fromMethodName(

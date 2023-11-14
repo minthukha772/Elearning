@@ -20,13 +20,14 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
   <script th:inline="javascript">
     var type;
     var test_id;
     var currentTestInfo;
     var currentTest;
     var currentTestTarget;
- 
+
     function launchExam() {
       console.log("launchExamOK");
       document.getElementById("sure_launch_exam").style.display = 'none';
@@ -86,6 +87,7 @@
       } else {
         document.getElementById("teacher_dropdown_main").style.display = 'none';
       }
+      var copiedData;
 
       let today = new Date().toISOString().slice(0, 10)
       document.getElementById("exam_date").setAttribute("min", today);
@@ -98,6 +100,16 @@
       cancelBtn.addEventListener('click', () => createExamContainer.classList.add('d-none'));
       deleteCancelBtn.addEventListener('click', () => deleteExamContainer.classList.add('d-none'));
       createExam.addEventListener('click', () => {
+        document.getElementById("teacher_warning").style.display = 'none';
+        document.getElementById("course_warning").style.display = 'none';
+        document.getElementById("description_warning").style.display = 'none';
+        document.getElementById("section_name_warning").style.display = 'none';
+        document.getElementById("exam_date_less_than_current_warning").style.display = 'none';
+        document.getElementById("exam_start_time_warning").style.display = 'none';
+        document.getElementById("exam_end_time_warning").style.display = 'none';
+        document.getElementById("passing_score_warning").style.display = 'none';
+        document.getElementById("passing_score_number_limit").style.display = 'none';
+        document.getElementById("copy_warning").style.display = 'none';
         $("#student_guest_check").css("display", "block")
         createExamContainer.classList.remove('d-none')
         $("#exam_status_dropdown").css("display", "none");
@@ -133,6 +145,11 @@
       $("#filterbystatus").change(function () {
         console.log($("#filterbystatus :selected").text());
         window.location.href = "/admin/exam?examStatus=" + $("#filterbystatus :selected").text();
+      });
+
+      $("#filterbyexaminee").change(function () {
+        console.log($("#examineetype :selected").val());
+        window.location.href = "/admin/exam?examineetype=" + $("#filterbyexaminee :selected").val();
       });
 
       $("#clearFilter").click(function () {
@@ -178,6 +195,17 @@
 
     // Copy Exam dialog show function
     function setDataToCopyDialog(test) {
+      copiedData = test
+      document.getElementById("teacher_warning").style.display = 'none';
+      document.getElementById("course_warning").style.display = 'none';
+      document.getElementById("description_warning").style.display = 'none';
+      document.getElementById("section_name_warning").style.display = 'none';
+      document.getElementById("exam_date_less_than_current_warning").style.display = 'none';
+      document.getElementById("exam_start_time_warning").style.display = 'none';
+      document.getElementById("exam_end_time_warning").style.display = 'none';
+      document.getElementById("passing_score_warning").style.display = 'none';
+      document.getElementById("passing_score_number_limit").style.display = 'none';
+      document.getElementById("copy_warning").style.display = 'none';
       $("#student_guest_check").css("display", "none")
       $("#launchExam").hide();
       examTarget = test.exam_target;
@@ -225,6 +253,16 @@
     }
 
     function setDataToEditDialog(test) {
+      document.getElementById("teacher_warning").style.display = 'none';
+      document.getElementById("course_warning").style.display = 'none';
+      document.getElementById("description_warning").style.display = 'none';
+      document.getElementById("section_name_warning").style.display = 'none';
+      document.getElementById("exam_date_less_than_current_warning").style.display = 'none';
+      document.getElementById("exam_start_time_warning").style.display = 'none';
+      document.getElementById("exam_end_time_warning").style.display = 'none';
+      document.getElementById("passing_score_warning").style.display = 'none';
+      document.getElementById("passing_score_number_limit").style.display = 'none';
+      document.getElementById("copy_warning").style.display = 'none';
       $("#student_guest_check").css("display", "none")
       currentTest = test;
       $.ajax({
@@ -253,10 +291,7 @@
               $("#launchExam").hide();
               $("#questionCreated").hide();
               $("#examCreated").hide();
-
             }
-
-
           } else {
             currentTestTarget = "student"
             $("#teacher_sector").css("display", "block")
@@ -304,7 +339,7 @@
       document.getElementById("exam_start_time").value = test.start_time;
       document.getElementById("exam_end_time").value = test.end_time;
       if (test.examTarget == 1) {
-        var guestCheckBox = document.getElementById("guest");    
+        var guestCheckBox = document.getElementById("guest");
         guestCheckBox.checked = true
       } else {
         var studentCheckBox = document.getElementById("student");
@@ -360,11 +395,19 @@
       }
 
       var exam_date = document.getElementById("exam_date").value;
+      var ToDate = new Date();
       if (exam_date == "") {
         document.getElementById("exam_date_warning").style.display = 'block';
         return;
       } else {
         document.getElementById("exam_date_warning").style.display = 'none';
+      }
+
+      if (new Date(exam_date).getTime() <= ToDate.getTime()) {
+        document.getElementById("exam_date_less_than_current_warning").style.display = 'block';
+        return;
+      } else {
+        document.getElementById("exam_date_less_than_current_warning").style.display = 'none';
       }
 
       var exam_start_time = document.getElementById("exam_start_time").value;
@@ -426,7 +469,7 @@
         // teacherId = 	10001;
         teacherId = 40001;
         courseId = 599;
-    }
+      }
 
       if (submitType == "Created") {
         data = {
@@ -502,8 +545,8 @@
             window.location.reload();
           }
         })
-
       } else if (submitType == "Copy") {
+        exam_date_splited = exam_date.split('T')[0];
         if (examTarget == 1) {
           data = {
             student_guest: examTarget,
@@ -512,27 +555,43 @@
             course_id: 599,
             description: description,
             section_name: section_name,
-            passing_score: passing_score,
-            date: exam_date,
+            passing_score: parseInt(passing_score),
+            date: exam_date_splited,
             minutes_allowed: minutes_allowed,
             start_time: exam_start_time,
             end_time: exam_end_time
           }
-
         } else {
           data = {
             student_guest: examTarget,
             test_id: test_id,
-            teacher_id: teacherId,
-            course_id: courseId,
+            teacher_id: parseInt(teacherId),
+            course_id: parseInt(courseId),
             description: description,
             section_name: section_name,
-            passing_score: passing_score,
+            passing_score: parseInt(passing_score),
             date: exam_date,
             minutes_allowed: minutes_allowed,
             start_time: exam_start_time,
             end_time: exam_end_time
           }
+        }
+        checkCopiedData = {
+          student_guest: copiedData.exam_target,
+          test_id: copiedData.test_id,
+          teacher_id: copiedData.userInfo.uid,
+          course_id: copiedData.courseInfo.courseId,
+          description: copiedData.description,
+          section_name: copiedData.section_name,
+          passing_score: parseInt(copiedData.passing_score_percent),
+          date: copiedData.date.split('T')[0],
+          minutes_allowed: copiedData.minutes_allowed,
+          start_time: copiedData.start_time,
+          end_time: copiedData.end_time
+        }
+        if (_.isEqual(data, checkCopiedData)) {
+          document.getElementById("copy_warning").style.display = 'block';
+          return;
         }
 
         data = JSON.stringify(data);
@@ -587,6 +646,8 @@
       </div>
       <div class="px-3 pb-3">
         <h5 class="text-success text-center mb-3" id="dialogTitle">To Create Exam Content</h5>
+        <div class="text-center" style="color: red; font-size: 16px; display: none;" id="copy_warning">Cannot Copy Exact
+          Exam</div>
         <!--student_guest-->
         <div class="student_guest" id="student_guest_check">
           <div class="form-check form-check-inline">
@@ -599,7 +660,7 @@
               Guest
             </label>
           </div>
-        </div> 
+        </div>
 
         <script>
           $(document).ready(function () {
@@ -704,7 +765,9 @@
                 class="text-danger">*</span></small></label>
           <input type="date" class="form-control" id="exam_date" style="border-radius: 50px;" required />
         </div>
-        <div style="color: red; font-size: 12px; display: none;" id="exam_date_warning">Please Exam Date</div>
+        <div style="color: red; font-size: 12px; display: none;" id="exam_date_warning">Please Add Exam Date</div>
+        <div style="color: red; font-size: 12px; display: none;" id="exam_date_less_than_current_warning">Exam Date Must
+          Be Greater Than Today</div>
         <div class="d-flex align-items-center">
           <div class="col-6 px-1">
             <div class="input-group-sm mb-2 shadow-sm">
@@ -838,6 +901,13 @@
             </select>
           </div>
           <div class="">
+            <select name="guestorstudent" id="filterbyexaminee" class="px-3 rounded shadow-sm">
+              <option value="Filter By Examinee" selected><small>Filter By Examinee</small></option>
+              <option value="guest"><small>Guest Exam</small></option>
+              <option value="student"><small>Student Exam</small></option>
+            </select>
+          </div>
+          <div class="">
             <select name="course" id="filterbycourse" class="px-3 rounded shadow-sm">
               <option value="Filter By Course" selected><small>Filter By Course</small></option>
               <option th:each="course, index: ${courseList}" th:text="${course.courseName}" th:id="${course.courseId}">
@@ -876,7 +946,7 @@
       <div class="row">
 
 
-      <!-- ### Original Code starts here. -->
+        <!-- ### Original Code starts here. -->
         <!-- <div class="col-12 col-lg-4" th:each="test, index:${testList}">
           <div class="card bg-white mt-3 shadow-sm" data-custom-type="result_good">
             <div class="d-flex justify-content-end align-items-center p-2">
@@ -962,84 +1032,98 @@
 
         <div class="col-12 col-lg-6 col-xl-4" th:each="test, index:${testList}">
           <div class="card shadow-sm">
-              <div class="card-body">
-                  <div class="header">
-                      <div class="d-flex align-items-start justify-content-between">
-                          <h2 class="text-primary" id="index_no" th:text="${index.count}">01.</h2>
-                          <div class="icon-container d-flex" th:unless="${#strings.contains(test.isDelete, 'true')}">
-                              <a  class="text-primary me-2">
-                                  <i class="fa-solid fa-copy" style="cursor: pointer" th:onclick="setDataToCopyDialog([[${test}]]);"></i>
-                              </a>
-                              <a class="text-primary mx-2" th:unless="${#strings.contains(test.isDelete, 'true')}">
-                                  <i class="fa-solid fa-pen-to-square" style="cursor: pointer"  th:onclick="setDataToEditDialog([[${test}]]);"></i>
-                              </a>
-                              <a class="clc-icon bg-danger rounded-circle ms-2" th:unless="${#strings.contains(test.isDelete, 'true')}">
-                                  <i class="fa-solid fa-x" style="cursor: pointer" th:onclick="setDataToDeleteDialog([[${test}]]);"></i>
-                              </a>                              
-                          </div>
-                          <div th:if="${#strings.contains(test.isDelete, 'true')}">
-                            <button
-                              class="d-flex justify-content-center align-items-center bg-success text-white rounded-circle ms-2"
-                              style="width: 20px; height: 20px; cursor: pointer"
-                              th:onclick="'confirmRestoreExam(\'' + ${test.test_id} + '\')'">
-                              <i class="bi bi-arrow-clockwise"></i>
-                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z" />
-                                <path
-                                  d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z" />
-                              </svg>
-                            </button>
-                          </div>
-                      </div>
+            <div class="card-body">
+              <div class="header">
+                <div class="d-flex align-items-start justify-content-between">
+                  <h2 class="text-primary" id="index_no" th:text="${index.count}">01.</h2>
+                  <div class="icon-container d-flex" th:unless="${#strings.contains(test.isDelete, 'true')}">
+                    <a class="text-primary me-2">
+                      <i class="fa-solid fa-copy" style="cursor: pointer"
+                        th:onclick="setDataToCopyDialog([[${test}]]);"></i>
+                    </a>
+                    <a class="text-primary mx-2" th:unless="${#strings.contains(test.isDelete, 'true')}">
+                      <i class="fa-solid fa-pen-to-square" style="cursor: pointer"
+                        th:onclick="setDataToEditDialog([[${test}]]);"></i>
+                    </a>
+                    <a class="clc-icon bg-danger rounded-circle ms-2"
+                      th:unless="${#strings.contains(test.isDelete, 'true')}">
+                      <i class="fa-solid fa-x" style="cursor: pointer"
+                        th:onclick="setDataToDeleteDialog([[${test}]]);"></i>
+                    </a>
                   </div>
-                  <div class="group-1 mt-0">
-                      <div class="d-flex justify-content-start align-items-center gap-3">
-                          Title : 
-                          <span class="title fw-bold" id="title" th:text="${test.section_name}">20231102_Guest Exam</span>
-                      </div>
-                      <div class="d-flex justify-content-start align-items-center gap-3 mt-2">
-                          Status : 
-                          <span class="status bg-primary text-white px-3 py-1 rounded-pill" id="status" th:text="${test.exam_status}">Questions Created</span>
-                      </div>
+                  <div th:if="${#strings.contains(test.isDelete, 'true')}">
+                    <button
+                      class="d-flex justify-content-center align-items-center bg-success text-white rounded-circle ms-2"
+                      style="width: 20px; height: 20px; cursor: pointer"
+                      th:onclick="'confirmRestoreExam(\'' + ${test.test_id} + '\')'">
+                      <i class="bi bi-arrow-clockwise"></i>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z" />
+                        <path
+                          d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z" />
+                      </svg>
+                    </button>
                   </div>
-                  <div class="group-2 mt-3">
-                      <div class="d-flex justify-content-start align-items-center gap-3">
-                          <i class="fa-solid fa-user"></i>
-                          <span class="teacher-name fw-bold" id="teacher_name" th:text="${test.userInfo.userName}">Angela Yu</span>
-                      </div>
-                      <div class="d-flex justify-content-start align-items-center gap-3 mt-2">
-                          <img src="/images/calendar-time.svg" alt="" style="width: 20px;height:20px;">
-                          <span class="exam-date" id="exam_date" th:text="${#dates.format(test.date, 'yyyy-MM-dd')}" >2023-10-20 (09:00 - 11:00) </span>
-                          ( <span th:text="${test.start_time}"></span> - <span th:text="${test.end_time}"></span> )
-                      </div>
-                      <div class="d-flex justify-content-start align-items-center gap-3 mt-2">
-                          <i class="fa-solid fa-clock"></i>
-                          <span class="exam-take-time" id="exam_take_time" th:text="${test.minutes_allowed + ' minutes'}">60 Mins </span>
-                      </div>
-                  </div>
-                  <div class="group-3 mt-3">
-                      <p class="mt-0 mb-1 fw-bold">Description : </p>
-                      <div class="description shadow-sm px-3 py-2" id="description" th:text="${test.description}">
-                          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nec Lorem ipsum dolor sit, amet consectetur adipisicing elit. Qui, eaque. Quis hic aspernatur ratione assumenda molestias unde quam sequi. Quod porro in eveniet, repellat voluptatum odit at quasi deleniti nostrum?
-                      </div>
-                  </div>
-                  <div class="group-4 mt-3">
-                      <div class="d-flex justify-content-between align-items-center gap-2">
-                          <button class="btn btn-outline-primary"><a th:href="'/admin/exam/' + ${test.test_id} + '/questions'" class="text-success">Exam
-                            Questions</a></button>
-                          <button class="btn btn-outline-primary" th:if="${test.exam_target == 0}"><a th:href="'/admin/exam/' + ${test.test_id} + '/examinee'" class="text-success">Set Examinee</a></button>
-                          <button class="btn btn-outline-primary" th:if="${test.exam_target == 1}"><a th:href="'/admin/exam/' + ${test.test_id} + '/guest/examinee'" class="text-success">Set 
-                            Examinee</a></button>
-                          <button class="btn btn-outline-primary"><a th:href="'/admin/exam/' + ${test.test_id} + '/exam-result-list'"
-                            class="text-success">Exam
-                            Result</a></button>
-                      </div>
-                  </div>
+                </div>
               </div>
+              <div class="group-1 mt-0">
+                <div class="d-flex justify-content-start align-items-center gap-3">
+                  Title :
+                  <span class="title fw-bold" id="title" th:text="${test.section_name}">20231102_Guest Exam</span>
+                </div>
+                <div class="d-flex justify-content-start align-items-center gap-3 mt-2">
+                  Status :
+                  <span class="status bg-primary text-white px-3 py-1 rounded-pill" id="status"
+                    th:text="${test.exam_status}">Questions Created</span>
+                </div>
+              </div>
+              <div class="group-2 mt-3">
+                <div class="d-flex justify-content-start align-items-center gap-3">
+                  <i class="fa-solid fa-user"></i>
+                  <span class="teacher-name fw-bold" id="teacher_name" th:text="${test.userInfo.userName}">Angela
+                    Yu</span>
+                </div>
+                <div class="d-flex justify-content-start align-items-center gap-3 mt-2">
+                  <img src="/images/calendar-time.svg" alt="" style="width: 20px;height:20px;">
+                  <span class="exam-date" id="exam_date" th:text="${#dates.format(test.date, 'yyyy-MM-dd')}">2023-10-20
+                    (09:00 - 11:00) </span>
+                  ( <span th:text="${test.start_time}"></span> - <span th:text="${test.end_time}"></span> )
+                </div>
+                <div class="d-flex justify-content-start align-items-center gap-3 mt-2">
+                  <i class="fa-solid fa-clock"></i>
+                  <span class="exam-take-time" id="exam_take_time" th:text="${test.minutes_allowed + ' minutes'}">60
+                    Mins </span>
+                </div>
+              </div>
+              <div class="group-3 mt-3">
+                <p class="mt-0 mb-1 fw-bold">Description : </p>
+                <div class="description shadow-sm px-3 py-2" id="description" th:text="${test.description}">
+                  Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nec Lorem ipsum dolor sit, amet consectetur
+                  adipisicing elit. Qui, eaque. Quis hic aspernatur ratione assumenda molestias unde quam sequi. Quod
+                  porro in eveniet, repellat voluptatum odit at quasi deleniti nostrum?
+                </div>
+              </div>
+              <div class="group-4 mt-3">
+                <div class="d-flex justify-content-between align-items-center gap-2">
+                  <button class="btn btn-outline-primary"><a th:href="'/admin/exam/' + ${test.test_id} + '/questions'"
+                      class="text-success">Exam
+                      Questions</a></button>
+                  <button class="btn btn-outline-primary" th:if="${test.exam_target == 0}"><a
+                      th:href="'/admin/exam/' + ${test.test_id} + '/examinee'" class="text-success">Set
+                      Examinee</a></button>
+                  <button class="btn btn-outline-primary" th:if="${test.exam_target == 1}"><a
+                      th:href="'/admin/exam/' + ${test.test_id} + '/guest/examinee'" class="text-success">Set
+                      Examinee</a></button>
+                  <button class="btn btn-outline-primary"><a
+                      th:href="'/admin/exam/' + ${test.test_id} + '/exam-result-list'" class="text-success">Exam
+                      Result</a></button>
+                </div>
+              </div>
+            </div>
           </div>
-      </div>
-        
+        </div>
+
       </div>
     </div>
   </section>
@@ -1076,7 +1160,7 @@
     }
   </script>
 
-<script>
+  <script>
     const dialogCloseBtn = document.getElementById("dialog-close-btn");
     $("#dialog-close-btn").click(function () {
       closeDialog();
