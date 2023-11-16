@@ -68,7 +68,7 @@
                     <span>Please check the box after confirming the above transmission contents.</span>
                 </div>
                 <div class="submit-box">
-                    <input type="submit" id="submit" value="Contact Us">
+                    <input type="submit" id="submit" value="Submit">
                 </div>
             </form>
 
@@ -104,10 +104,7 @@
 
        $(document).ready(function (){
         $("#submit").click(function (event){
-           //event.preventDefault(); // Prevent default form submission behavior
-
-           
-            
+           //event.preventDefault(); // Prevent default form submission behavior    
             
             var name = document.getElementById("name").value;
             if (name == "") {
@@ -129,7 +126,7 @@
             var details = DetailsDropdown.value;
 
             DetailsDropdown.addEventListener("change", function () {
-                details = dropdown.value;
+                details = DetailsDropdown.value;
                 console.log("Selected option value changed: " + details);
             });
            
@@ -147,38 +144,38 @@
                 return;
             } 
             
-           
+            var data = JSON.stringify({
+            name: name,
+            email: email,
+            number: number,
+            details: details,
+            description: description
+        });
 
-
-
-            var data;
-
-             data = {
-                //key : value
-                name: name,
-                email: email,
-                number: number,
-                details: details,
-                description: description
+        fetch("/guest/saveInquiry", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: data
+        }).then(response => {
+            if (response.ok) {
+                return response.json(); // Parse response body as JSON
+            } else {
+                throw new Error('Network response was not ok');
             }
-
-            data = JSON.stringify(data);
-            fetch("/guest/saveInquiry", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: data
-            }).then(response => {
-                if (response.status == 200) {
-                    window.location.reload();
-                    
-                }
-            });
-
+        }).then(data => {
+            // Extract the ID from the response
+            const id = data; // Assuming the response directly contains the ID
+            if (id) {
+                window.location.href = "/guest/saveInquiry/confirm?id=" + id;
+            }
+        }).catch(error => {
+            // Handle errors here
+            console.error('There was a problem with the request:', error);
         });
-        
-        });
+    });
+});
 
        
 
