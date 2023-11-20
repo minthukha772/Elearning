@@ -14,6 +14,6 @@ import com.blissstock.mappingSite.entity.TestExaminee;
 @Repository
 public interface ContactRepository extends JpaRepository<Contact, Long> {
 
-   
+    Contact findByEmail(String email);
 
 }
