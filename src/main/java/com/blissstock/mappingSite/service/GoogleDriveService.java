@@ -49,7 +49,7 @@ public class GoogleDriveService {
      * If modifying these scopes, delete your previously saved tokens/ folder.
      */
     private static final List<String> SCOPES = Collections.singletonList(DriveScopes.DRIVE_FILE);
-    private static final String CREDENTIALS_FILE_PATH = "./credentials.json";
+    private static final String CREDENTIALS_FILE_PATH = "/root/MappingSite/Pyinnyar_Subuu/src/main/java/com/blissstock/mappingSite/service/credentials.json";
     /**
      * Creates an authorized Credential object.
      *
