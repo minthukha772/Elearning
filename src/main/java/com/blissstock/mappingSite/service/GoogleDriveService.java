@@ -59,7 +59,7 @@ public class GoogleDriveService {
             "    \"token_uri\": \"https://oauth2.googleapis.com/token\",\n" +
             "    \"auth_provider_x509_cert_url\": \"https://www.googleapis.com/oauth2/v1/certs\",\n" +
             "    \"client_secret\": \"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\",\n" +
-            "    \"redirect_uris\": [\"http://localhost:8888/Callback\",\"https://pyinnyarsubuu.com\",\"https://pyinnyar-subuu.com\"]\n" +
+            "    \"redirect_uris\": [\"https://pyinnyarsubuu.com/Callback\"]\n" +
             "  }\n" +
             "}";
 
@@ -82,7 +82,7 @@ public class GoogleDriveService {
                 .setDataStoreFactory(new FileDataStoreFactory(new java.io.File(TOKENS_DIRECTORY_PATH)))
                 .setAccessType("offline")
                 .build();
-        LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8888).build();
+        LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8080).build();
         Credential credential = new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
         // returns an authorized Credential object.
         return credential;
