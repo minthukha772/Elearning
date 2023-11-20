@@ -49,7 +49,20 @@ public class GoogleDriveService {
      * If modifying these scopes, delete your previously saved tokens/ folder.
      */
     private static final List<String> SCOPES = Collections.singletonList(DriveScopes.DRIVE_FILE);
-    private static final String CREDENTIALS_FILE_PATH = "/root/MappingSite/Pyinnyar_Subuu/src/main/java/com/blissstock/mappingSite/service/credentials.json";
+    private static final String CREDENTIALS_FILE_PATH = "./credentials.json";
+    // Embedding JSON data as a String in the class
+    private static final String CREDENTIALS_JSON_DATA = "{\n" +
+            "  \"web\": {\n" +
+            "    \"client_id\": \"823872642469-oda4iuopqqilne0kdds3d99spm1mh94o.apps.googleusercontent.com\",\n" +
+            "    \"project_id\": \"pyinnyar-subuu\",\n" +
+            "    \"auth_uri\": \"https://accounts.google.com/o/oauth2/auth\",\n" +
+            "    \"token_uri\": \"https://oauth2.googleapis.com/token\",\n" +
+            "    \"auth_provider_x509_cert_url\": \"https://www.googleapis.com/oauth2/v1/certs\",\n" +
+            "    \"client_secret\": \"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\",\n" +
+            "    \"redirect_uris\": [\"http://localhost:8888/Callback\",\"https://pyinnyarsubuu.com\",\"https://pyinnyar-subuu.com\"]\n" +
+            "  }\n" +
+            "}";
+
     /**
      * Creates an authorized Credential object.
      *
@@ -60,10 +73,7 @@ public class GoogleDriveService {
     private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT)
             throws IOException {
         // Load client secrets.
-        InputStream in = GoogleDriveService.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
-        if (in == null) {
-            throw new FileNotFoundException("Resource not found: " + CREDENTIALS_FILE_PATH);
-        }
+        InputStream in = new ByteArrayInputStream(CREDENTIALS_JSON_DATA.getBytes());
         GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
 
         // Build flow and trigger user authorization request.
