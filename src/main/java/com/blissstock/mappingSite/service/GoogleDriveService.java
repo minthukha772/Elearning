@@ -53,13 +53,13 @@ public class GoogleDriveService {
     // Embedding JSON data as a String in the class
     private static final String CREDENTIALS_JSON_DATA = "{\n" +
             "  \"web\": {\n" +
-            "    \"client_id\": \"823872642469-oda4iuopqqilne0kdds3d99spm1mh94o.apps.googleusercontent.com\",\n" +
+            "    \"client_id\": \"807260581765-ni6h7imb5ss3pk8860scnsukd0h9oour.apps.googleusercontent.com\",\n" +
             "    \"project_id\": \"pyinnyar-subuu\",\n" +
             "    \"auth_uri\": \"https://accounts.google.com/o/oauth2/auth\",\n" +
             "    \"token_uri\": \"https://oauth2.googleapis.com/token\",\n" +
             "    \"auth_provider_x509_cert_url\": \"https://www.googleapis.com/oauth2/v1/certs\",\n" +
-            "    \"client_secret\": \"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\",\n" +
-            "    \"redirect_uris\": [\"https://34.146.220.198:8888/Callback\"]\n" +
+            "    \"client_secret\": \"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\",\n" +
+            "    \"redirect_uris\": [\"https://pyinnyarsubuu.com:8888/Callback\"]\n" +
             "  }\n" +
             "}";
 
