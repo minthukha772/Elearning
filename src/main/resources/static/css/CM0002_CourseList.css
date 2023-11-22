@@ -209,14 +209,9 @@ section.explore__courses h1 {
   padding: 0 10px;
 }
 
-.course-name-div {
-	display: flex;
-	align-items: center;
+.tags-div {
+	height: 28px;
 	margin-bottom: 5px;
-}
-
-.course-name {
-	margin-bottom: 0px;
 }
 
 .new-tag {
@@ -228,5 +223,5 @@ section.explore__courses h1 {
 	font-size: 12px;
 	border-radius: 5px;
 	font-weight: 600;
-	margin-right: 10px;
+	display: inline;
 }

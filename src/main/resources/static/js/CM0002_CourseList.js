@@ -182,10 +182,10 @@ const renderCourseList = (courseList) => {
             <img width="200" height="200" src="${e.coursePhoto.url}" class="detail__img" alt="${e.coursePhoto.name}">
           </span>
             <div>
-              <div class="course-name-div">
+              <div class="tags-div">
                 ${differenceInDays <= 7 ? '<div class="new-tag shadow-sm">New</div>' : ''}
-                <h2 class="course-name">${e.courseName}</h2>
               </div>
+              <h2>${e.courseName}</h2>
               <a href="/guest/explore/teacher/${e.teacherId}">${e.teacherName}</a>
               <h6 class="mt-1">${e.category} &gt;${e.level}</h6>
               
