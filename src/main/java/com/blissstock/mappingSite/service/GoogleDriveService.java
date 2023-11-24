@@ -5,6 +5,7 @@ import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInsta
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
+import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.InputStreamContent;
 import com.google.api.client.http.javanet.NetHttpTransport;
@@ -70,21 +71,36 @@ public class GoogleDriveService {
      * @return An authorized Credential object.
      * @throws IOException If the credentials.json file cannot be found.
      */
-    private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT)
-            throws IOException {
-        // Load client secrets.
-        InputStream in = new ByteArrayInputStream(CREDENTIALS_JSON_DATA.getBytes());
-        GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
 
-        // Build flow and trigger user authorization request.
-        GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
-                HTTP_TRANSPORT, JSON_FACTORY, clientSecrets, SCOPES)
-                .setDataStoreFactory(new FileDataStoreFactory(new java.io.File(TOKENS_DIRECTORY_PATH)))
-                .setAccessType("offline")
-                .build();
-        LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8888).build();
-        Credential credential = new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
-        // returns an authorized Credential object.
+    //  private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT)
+    //         throws IOException {
+    //     // Load client secrets.
+    //     InputStream in = new ByteArrayInputStream(CREDENTIALS_JSON_DATA.getBytes());
+    //     GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
+
+    //     // Build flow and trigger user authorization request.
+    //     GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
+    //             HTTP_TRANSPORT, JSON_FACTORY, clientSecrets, SCOPES)
+    //             .setDataStoreFactory(new FileDataStoreFactory(new java.io.File(TOKENS_DIRECTORY_PATH)))
+    //             .setAccessType("offline")
+    //             .build();
+    //     LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8888).build();
+    //     Credential credential = new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
+    //     // returns an authorized Credential object.
+    //     return credential;
+    // }
+
+    private Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
+        InputStream in = getClass().getResourceAsStream(CREDENTIALS_FILE_PATH);
+        //InputStream in = new ByteArrayInputStream(CREDENTIALS_JSON_DATA.getBytes());
+
+        if (in == null) {
+            throw new FileNotFoundException("Resource not found: " + CREDENTIALS_FILE_PATH);
+        }
+
+        GoogleCredential credential = GoogleCredential.fromStream(in, HTTP_TRANSPORT, JSON_FACTORY)
+                .createScoped(SCOPES);
+
         return credential;
     }
 
@@ -96,6 +112,7 @@ public class GoogleDriveService {
                 .build();
         return service;
     }
+    
 
     // Code needs to be implemented for the uploding a file to drive
     // uploading functions are as follows as

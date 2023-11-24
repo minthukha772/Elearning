@@ -523,9 +523,10 @@
 					</div>
 					<table id="" class=" video-list-table rounded-3">
 						<thead>
-							<th class=" text-center t-header">No</th>
-							<th class=" text-center t-header">Video</th>
-							<th class=" text-center t-header">Video Title</th>
+							<th class=" text-center t-header" style="width: 5%;">No</th>
+							<th class=" text-center t-header" style="width: 15%;">Video</th>
+							<th class=" text-center t-header" style="width: 70%;">Video Title</th>
+							<th class=" text-center t-header" style="width: 10%;"> </th>
 						</thead>
 						<tbody>
 							<tr th:each="dr,index:${videoClassLists}">
@@ -541,7 +542,7 @@
 											class="shadow-sm" alt="Lesson Thumbnail" width="168" height="94">
 									</a>
 								</td>
-								<td class=" text-white video-no p-2">
+								<td class=" text-white video-no p-2" style="width: 70%;">
 									<p class=" video-text mb-2" th:text="${dr.videoTitle}">Lesson 1</p>
 									<p class=" video-text video-description mb-0" th:text="${dr.videoDesc}"></p>
 								</td>
@@ -567,9 +568,10 @@
 					</div>
 					<table id="" class=" video-list-table rounded-3">
 						<thead>
-							<th class=" text-center t-header">No</th>
-							<th class=" text-center t-header">Video</th>
-							<th class=" text-center t-header">Video Title</th>
+							<th class=" text-center t-header" style="width: 5%;">No</th>
+							<th class=" text-center t-header" style="width: 15%;">Video</th>
+							<th class=" text-center t-header" style="width: 70%;">Video Title</th>
+							<th class=" text-center t-header" style="width: 10%;"> </th>
 						</thead>
 						<tbody>
 							<tr th:each="dr,index:${videoClassLists}">
@@ -587,7 +589,7 @@
 								</td>
 
 
-								<td class=" text-white video-no p-2">
+								<td class=" text-white video-no p-2" style="width: 70%;">
 									<p class=" video-text mb-2" th:text="${dr.videoTitle}">Lesson 1</p>
 									<p class=" video-text video-description mb-0" th:text="${dr.videoDesc}"></p>
 								</td>
@@ -605,11 +607,7 @@
 								</td>
 							</tr>
 
-							<!-- static rows start - testing only for frontend -->
-
-
-							<!-- static rows end - testing only for frontend -->
-
+							
 						</tbody>
 					</table>
 				</div>
@@ -625,9 +623,10 @@
 					</div>
 					<table id="" class=" video-list-table rounded-3">
 						<thead>
-							<th class=" text-center t-header">No</th>
-							<th class=" text-center t-header">Video</th>
-							<th class=" text-center t-header">Video Title</th>
+							<th class=" text-center t-header" style="width: 5%;">No</th>
+							<th class=" text-center t-header" style="width: 15%;">Video</th>
+							<th class=" text-center t-header" style="width: 70%;">Video Title</th>
+							<th class=" text-center t-header" style="width: 10%;"> </th>
 						</thead>
 						<tbody>
 							<tr th:each="dr,index:${videoClassLists}">
@@ -644,7 +643,7 @@
 								</td>
 
 
-								<td class=" text-white video-no p-2">
+								<td class=" text-white video-no p-2" style="width: 70%;">
 									<p class=" video-text mb-2" th:text="${dr.videoTitle}">Lesson 1</p>
 									<p class=" video-text video-description mb-0" th:text="${dr.videoDesc}"></p>
 								</td>
