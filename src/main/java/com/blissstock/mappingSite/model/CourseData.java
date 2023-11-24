@@ -43,6 +43,8 @@ public class CourseData {
 
     private FileInfo coursePhoto;
 
+    private Date registeredDate;
+
     private CourseData() {
 
     };
@@ -64,6 +66,7 @@ public class CourseData {
         courseData.teacherName = courseInfo.getUserInfo().getUserName();
         courseData.teacherId = courseInfo.getUserInfo().getUid();
         courseData.photo = courseInfo.getUserInfo().getPhoto();
+        courseData.registeredDate = courseInfo.getCourseRegisteredDate();
         
         return courseData;
     }
