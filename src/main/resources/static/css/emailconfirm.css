@@ -1,0 +1,50 @@
+::-webkit-scrollbar {
+    width: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+    }
+    
+    ::-webkit-scrollbar-thumb {
+    background: #0F8173; 
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+    background: #00736C; 
+    }
+    a{
+        text-decoration: none !important;
+    }
+    .btn-primary{
+        background-color: #00736C !important;
+    }
+    .confirmation-screen{
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: right;
+        min-height: 100vh;
+    }
+    .confirmation-box{
+        min-width: 320px;
+        width: 500px;
+    }
+    .confirmation-box .items-container{
+        background-color: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(2px);
+    }
+    .items-container .items{
+        padding: 15px 5px 10px;
+        border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+    }
+    .items-container .items .title{
+        color: #0F8173;
+        margin-right: 10px;
+    }
+    .items-container .description{
+        max-height: 200px;
+        margin-top: 10px;
+        padding: 10px 15px;
+        overflow-y: auto;
+        border: 0.5px solid rgba(0, 0, 0, 0.2);
+    }

@@ -152,6 +152,7 @@ const renderCourseList = (courseList) => {
       // template method of yourself
       $("#courseList").hide();
       $("#courseList").empty();
+      const currentDate = new Date();
       data.forEach((e) => {
         const options = {
           timeZone: 'Asia/Tokyo',
@@ -169,6 +170,11 @@ const renderCourseList = (courseList) => {
           dates = ` <h4>Date</h4>
         <i>${startDate} - ${endDate}</i>`;
         }
+
+        const registeredDate = new Date(e.registeredDate);
+        const differenceInMilliseconds = currentDate - registeredDate;
+        const differenceInDays = differenceInMilliseconds / (1000 * 60 * 60 * 24);
+
         const template = `
         <div class="col-sm-12 col-md-12 col-xl-12 my-3">
           <div class="d-flex flex-column flex-md-column flex-sm-column flex-lg-column flex-xl-row">
@@ -176,6 +182,9 @@ const renderCourseList = (courseList) => {
             <img width="200" height="200" src="${e.coursePhoto.url}" class="detail__img" alt="${e.coursePhoto.name}">
           </span>
             <div>
+              <div class="tags-div">
+                ${differenceInDays <= 7 ? '<div class="new-tag shadow-sm">New</div>' : ''}
+              </div>
               <h2>${e.courseName}</h2>
               <a href="/guest/explore/teacher/${e.teacherId}">${e.teacherName}</a>
               <h6 class="mt-1">${e.category} &gt;${e.level}</h6>

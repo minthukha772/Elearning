@@ -3,28 +3,28 @@
   <nav class="fixed-top">
     <div class="d-flex justify-content-between w-100 navs">
 
-      <div class="navbar-logo-holder">
+      <div style="width: 250px;" class="navbar-logo-holder">
         <a th:href="@{/}"><img src="/images/logo.png" /></a>
       </div>
 
       <div class="d-flex links-div" id="linkholderteachers">
 
-        <div style="width: 200px;" class="d-flex form__group field align-items-center align-self-center ">
+        <div style="width: 180px;" class="d-flex form__group field align-items-center align-self-center ">
           <img src="/images/icons/search-icon.svg" class="icon" />
           <a class=" ms-3 linkholderteachers" th:href="@{/guest/explore}">Search the Course</a>
         </div>
 
-        <div style="width: 150px;" class="link-holder ">
+        <div style="width: 130px;" class="link-holder ">
           <a class="nav-link linkholderteachers" th:href="@{/home}">My Course</a>
         </div>
-        <div class="link-holder ">
+        <div style="width: 130px;" class="link-holder ">
           <a class="nav-link linkholderteachers" th:href="@{/student/exam}">Exam</a>
         </div>
-        <div style="width: 150px;" class="link-holder">
+        <div style="width: 130px;" class="link-holder">
           <a class="nav-link linkholderteachers" th:href="@{/student/profile/}">Profile</a>
         </div>
 
-        <div style="width: 150px;" class="link-holder">
+        <div style="width: 130px;" class="link-holder">
           <a class="nav-link linkholderteachers"
             th:href="@{https://drive.google.com/file/d/1mrarzmhrAMq4xxwnE592pYRXcbNlhtRa/view?usp=sharing}"
             th:target="_blank">
@@ -39,8 +39,13 @@
           </a>
         </div>
 
+       <div style="width: 130px;" class="link-holder">
+          <a class="nav-link linkholder" th:href="@{/contact}"
+          style="background-color: #309986;">Contact Us</a>
+        </div>
+      
 
-        <div style="width: 150px;" class="link-holder">
+        <div style="width: 130px;" class="link-holder">
           <a class="nav-link linkholderteachers " th:href="@{/logout}"
             style="background-color: #309986; font-weight: bold;">Log out</a>
         </div>
@@ -74,8 +79,8 @@
         </a>
       </li>
 
-
-
+  <li><a class="linkholderteachers " th:href="@{/guest/contact}" style="font-weight: bold;">Contact Us</a></li><br />
+ 
       <li><a class="linkholderteachers " th:href="@{/logout}" style="color: var(--log-out); font-weight: bold;">Log
           out</a></li><br />
       <!--<li>

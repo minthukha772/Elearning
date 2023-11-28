@@ -99,6 +99,8 @@
 
       cancelBtn.addEventListener('click', () => createExamContainer.classList.add('d-none'));
       deleteCancelBtn.addEventListener('click', () => deleteExamContainer.classList.add('d-none'));
+
+      // New Exam Create dialog show function
       createExam.addEventListener('click', () => {
         document.getElementById("teacher_warning").style.display = 'none';
         document.getElementById("course_warning").style.display = 'none';
@@ -110,6 +112,9 @@
         document.getElementById("passing_score_warning").style.display = 'none';
         document.getElementById("passing_score_number_limit").style.display = 'none';
         document.getElementById("copy_warning").style.display = 'none';
+
+        let dialogTitle = document.querySelector('#dialogTitle');
+        dialogTitle.innerHTML = "New Exam Create";
         $("#student_guest_check").css("display", "block")
         createExamContainer.classList.remove('d-none')
         $("#exam_status_dropdown").css("display", "none");
@@ -193,7 +198,7 @@
       });
     })
 
-    // Copy Exam dialog show function
+    // Exam Copy dialog show function
     function setDataToCopyDialog(test) {
       copiedData = test
       document.getElementById("teacher_warning").style.display = 'none';
@@ -207,6 +212,7 @@
       document.getElementById("passing_score_number_limit").style.display = 'none';
       document.getElementById("copy_warning").style.display = 'none';
       $("#student_guest_check").css("display", "none")
+      $("#exam_status_dropdown").css("display", "none");
       $("#launchExam").hide();
       examTarget = test.exam_target;
 
@@ -227,7 +233,7 @@
       type = "Copy";
       let copyExam = document.querySelector('.create-exam-container');
       let dialogTitle = document.querySelector('#dialogTitle');
-      dialogTitle.innerHTML = "To Copy Exam Content";
+      dialogTitle.innerHTML = "Exam Copy";
       copyExam.classList.remove('d-none');
       var datearray = test.date.split("T");
       document.getElementById("teacher_name").value = test.userInfo.uid;
@@ -252,6 +258,7 @@
       document.getElementById("exam_end_time").value = test.end_time;
     }
 
+    // Exam Edit dialog show function
     function setDataToEditDialog(test) {
       document.getElementById("teacher_warning").style.display = 'none';
       document.getElementById("course_warning").style.display = 'none';
@@ -264,6 +271,10 @@
       document.getElementById("passing_score_number_limit").style.display = 'none';
       document.getElementById("copy_warning").style.display = 'none';
       $("#student_guest_check").css("display", "none")
+
+      let dialogTitle = document.querySelector('#dialogTitle');
+      dialogTitle.innerHTML = "Exam Edit";
+
       currentTest = test;
       $.ajax({
         url: "/admin/testInfo",
@@ -348,6 +359,7 @@
       $("#exam_status_dropdown").css("display", "block");
     }
 
+    // Exam Delete dialog show function
     function setDataToDeleteDialog(test) {
       test_id = test.test_id;
       let deleteExamDialog = document.querySelector('.delete-exam-container');
@@ -645,7 +657,7 @@
         </div>
       </div>
       <div class="px-3 pb-3">
-        <h5 class="text-success text-center mb-3" id="dialogTitle">To Create Exam Content</h5>
+        <h5 class="text-success text-center mb-3" id="dialogTitle">New Exam Create</h5>
         <div class="text-center" style="color: red; font-size: 16px; display: none;" id="copy_warning">Cannot Copy Exact
           Exam</div>
         <!--student_guest-->
@@ -921,7 +933,7 @@
 
     <div style="margin-top: 10px;margin-left: 250px;">
       <small class="bg-success rounded text-white px-2 py-1 fw-bold" style="cursor: pointer" id="search_date_btn">Search
-        Date</small>
+        Exam By Date</small>
     </div>
     <div style="color: red; font-size: 12px; display: none; padding-top: 10px;" id="filter_date_warning">End Date Must
       Be Greater Than Start Date</div>

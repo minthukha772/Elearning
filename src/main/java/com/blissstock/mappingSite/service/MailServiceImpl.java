@@ -17,6 +17,7 @@ import com.blissstock.mappingSite.config.GmailConfig;
 import com.blissstock.mappingSite.controller.CourseDetailsController;
 import com.blissstock.mappingSite.controller.TestInfo;
 import com.blissstock.mappingSite.entity.AddAdmin;
+import com.blissstock.mappingSite.entity.Contact;
 import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.GuestUser;
 import com.blissstock.mappingSite.entity.JoinCourseUser;
@@ -26,6 +27,7 @@ import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.enums.TokenType;
 
 import com.blissstock.mappingSite.enums.UserRole;
+import com.blissstock.mappingSite.repository.ContactRepository;
 
 // import org.postgresql.translation.messages_bg;
 
@@ -62,6 +64,9 @@ public class MailServiceImpl implements MailService {
 
   @Autowired
   GmailConfig gmailConfig;
+
+  @Autowired
+  ContactRepository contactRepository;
   /*
    * @Autowired
    * private MessageSource messages;
@@ -894,10 +899,10 @@ public class MailServiceImpl implements MailService {
 
   }
 
-
   // guestExamLaunch
   @Override
-  public void guestsendVerificationMail(String guestUserName, String email, String examID,Test testData) throws MessagingException {
+  public void guestsendVerificationMail(String guestUserName, String email, String examID, Test testData)
+      throws MessagingException {
     logger.info("Guest exam request from :{} with exam id :{}, username:{}", email, examID, guestUserName);
     String ExamLink = getServerAddress() + "/guest-exam" + "/" + email + "_" + examID;
 
@@ -906,17 +911,16 @@ public class MailServiceImpl implements MailService {
 
     final Context ctx = new Context();
     ctx.setVariable("guestName", guestUserName);
-     ctx.setVariable("email", email);
-     ctx.setVariable("examID", examID);
+    ctx.setVariable("email", email);
+    ctx.setVariable("examID", examID);
     ctx.setVariable("Date", new Date());
     ctx.setVariable("ExamLink", ExamLink);
     ctx.setVariable("startTime", testData.getStart_time());
-     ctx.setVariable("endTime", testData.getEnd_time());
-     ctx.setVariable("date", testData.getDate());
-     ctx.setVariable("description", testData.getDescription());
-      
-     
-     final MimeMessage mimeMessage = mailSender.createMimeMessage();
+    ctx.setVariable("endTime", testData.getEnd_time());
+    ctx.setVariable("date", testData.getDate());
+    ctx.setVariable("description", testData.getDescription());
+
+    final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
     message.setSubject(subject);
     message.setFrom("sys@pyinnyarsubuu.com");
@@ -926,6 +930,58 @@ public class MailServiceImpl implements MailService {
     message.setText(htmlContent, true); // true = isHtml
 
     this.mailSender.send(mimeMessage);
+  }
+
+  @Override
+  public void sendEmailToAdmin(String adminEmail, String contactEmail, String name, String details, String description,
+      String phoneNumber) throws MessagingException {
+    String recipientAddress = adminEmail;
+    String subject = "【Pyinnyar Subuu]New Inquiry revieved successfully";
+
+    final Context ctx = new Context();
+    ctx.setVariable("Name", name);
+    ctx.setVariable("Email", contactEmail);
+    ctx.setVariable("PhoneNumber", phoneNumber);
+    ctx.setVariable("ContactReason", details);
+    ctx.setVariable("Deatailedescription", description);
+
+    final MimeMessage mimeMessage = mailSender.createMimeMessage();
+    final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
+    message.setSubject(subject);
+    message.setFrom(contactEmail);
+    message.setTo(recipientAddress);
+
+    final String htmlContent = templateEngine.process("SendEmailToAdmin", ctx);
+    message.setText(htmlContent, true); // true = isHtml
+
+    this.mailSender.send(mimeMessage);
+
+  }
+
+  @Override
+  public void sendEmailToAsker(String contactEmail, String name, String details, String description,
+      String phoneNumber) throws MessagingException {
+    String recipientAddress = contactEmail;
+    String subject = "【Pyinnyar Subuu】Your Inquiry about has successfully sent!";
+
+    final Context ctx = new Context();
+    ctx.setVariable("Name", name);
+    ctx.setVariable("Email", contactEmail);
+    ctx.setVariable("PhoneNumber", phoneNumber);
+    ctx.setVariable("ContactReason", details);
+    ctx.setVariable("Deatailedescription", description);
+
+    final MimeMessage mimeMessage = mailSender.createMimeMessage();
+    final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
+    message.setSubject(subject);
+    message.setFrom("sys@pyinnyar-subuu.com");
+    message.setTo(recipientAddress);
+
+    final String htmlContent = templateEngine.process("SendEmailToAsker", ctx);
+    message.setText(htmlContent, true); // true = isHtml
+
+    this.mailSender.send(mimeMessage);
+
   }
 
   // public void sendVerificationMail(UserAccount userAccount) throws
@@ -987,7 +1043,6 @@ public class MailServiceImpl implements MailService {
 
   // this.mailSender.send(mimeMessage);
   // }
-
 
   @Override
   public String getServerAddress() {

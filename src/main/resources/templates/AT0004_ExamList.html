@@ -43,6 +43,8 @@
 
       cancelBtn.addEventListener('click', () => createExamContainer.classList.add('d-none'));
       deleteCancelBtn.addEventListener('click', () => deleteExamContainer.classList.add('d-none'));
+
+      // New Exam Create dialog show function
       createExam.addEventListener('click', () => {
         document.getElementById("course_warning").style.display = 'none';
         document.getElementById("description_warning").style.display = 'none';
@@ -53,6 +55,9 @@
         document.getElementById("passing_score_warning").style.display = 'none';
         document.getElementById("passing_score_number_limit").style.display = 'none';
         document.getElementById("copy_warning").style.display = 'none';
+
+        let dialogTitle = document.getElementById("toCreateExam");
+        dialogTitle.innerHTML = "New Exam Create";
         createExamContainer.classList.remove('d-none')
         $("#exam_status_dropdown").css("display", "none");
         type = "Created";
@@ -69,6 +74,11 @@
         submitData(type);
       })
 
+<<<<<<< HEAD
+=======
+      
+
+>>>>>>> 579ab6492e0069664405fbbd70fb842e0c99621b
       $("#deleteSubmit").click(function () {
         fetch("/teacher/delete-exam?test_id=" + test_id, {
           method: "GET",
@@ -102,6 +112,7 @@
       });
     })
 
+    // Exam Edit dialog show function
     function setDataToEditDialog(test) {
       document.getElementById("course_warning").style.display = 'none';
       document.getElementById("description_warning").style.display = 'none';
@@ -118,7 +129,7 @@
 
       let createExamButton = document.getElementById("toCreateExam");
       if (type == "Update") {
-        createExamButton.innerHTML = "To Create Exam Content";
+        createExamButton.innerHTML = "Exam Edit";
       }
 
       createExam.classList.remove('d-none');
@@ -154,7 +165,7 @@
       let copyExam = document.querySelector('.create-exam-container');
       let createExamButton = document.getElementById("toCreateExam");
       if (type == "Copy") {
-        createExamButton.innerHTML = "To Copy Exam Content";
+        createExamButton.innerHTML = "Exam Copy";
       }
 
       copyExam.classList.remove('d-none');
@@ -174,6 +185,7 @@
 
     // EditCopy End
 
+    // Exam Delete dialog show function
     function setDataToDeleteDialog(test) {
       test_id = test.test_id;
       let deleteExamDialog = document.querySelector('.delete-exam-container');
@@ -412,7 +424,7 @@
         </div>
       </div>
       <div class="px-3 pb-3">
-        <h5 class="text-success text-center mb-3" id="toCreateExam">To Create Exam Content</h5>
+        <h5 class="text-success text-center mb-3" id="toCreateExam">New Exam Create</h5>
         <div class="text-center" style="color: red; font-size: 16px; display: none;" id="copy_warning">Cannot Copy Exact
           Exam</div>
         <div class="input-group-sm mb-2 shadow-sm">

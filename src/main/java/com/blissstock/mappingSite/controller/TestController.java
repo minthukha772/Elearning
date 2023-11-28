@@ -935,7 +935,7 @@ public class TestController {
             int passing_score = Integer.parseInt(jsonObject.getString("passing_score"));
             int minutes_allowed = jsonObject.getInt("minutes_allowed");
             CourseInfo courseInfo = courseInfoRepository.findByCourseID(course_id);
-            String student_guest = jsonObject.getString("student_guest");
+        //   String student_guest = jsonObject.getString("student_guest");
             if (courseInfo == null) {
                 logger.warn("Failed to find course with ID: " + course_id);
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -953,8 +953,13 @@ public class TestController {
             // examDate, exam_start_time, exam_end_time, exam_status, "false",
             // "null",student_guest);
             // }else{
-            Test test = new Test(null, courseInfo, userInfo, description, section_name, minutes_allowed, passing_score,
-                    examDate, exam_start_time, exam_end_time, exam_status, "false", "null", student_guest, 0);
+
+
+             Test test = new Test(null, courseInfo, userInfo, description, section_name, minutes_allowed, passing_score,
+                     examDate, exam_start_time, exam_end_time, exam_status, "false", "null","student", 0);
+
+
+             
 
             // origin // Test test = new Test(test_id, courseInfo, userInfo, description,
             // section_name, minutes_allowed,

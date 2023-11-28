@@ -1,0 +1,39 @@
+a{
+    text-decoration: none !important;
+}
+.text-primary{
+    color: #00736C !important;
+}
+.btn-primary{
+    background-color: #00736C !important;
+}
+.btn-outline-primary{
+    background-color: #fff !important;
+    border: 1px solid #00736C !important;
+    transition: 0.3s ease-in-out;
+}
+.btn-outline-primary:hover{
+    background-color: #00736C !important;
+}
+.btn-outline-primary a{
+    color: #00736C;
+    transition: 0.3s ease-in-out;
+}
+.btn-outline-primary:hover a{
+    color: white !important;
+}
+
+.success-screen{
+    min-height: 50vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.success-screen .text-container{
+    min-width: 320px;
+    width: 500px;
+}
+.success-screen .img-container{
+    min-width: 320px;
+    width: 450px;
+}
