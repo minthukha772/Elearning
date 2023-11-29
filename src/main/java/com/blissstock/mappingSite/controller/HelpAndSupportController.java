@@ -1,15 +1,10 @@
 package com.blissstock.mappingSite.controller;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import javax.mail.MessagingException;
-import javax.validation.Valid;
-
-import org.apache.tomcat.jni.User;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,15 +14,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
-
 import com.blissstock.mappingSite.entity.Contact;
-import com.blissstock.mappingSite.entity.CourseInfo;
 import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.repository.ContactRepository;
 import com.blissstock.mappingSite.repository.UserAccountRepository;

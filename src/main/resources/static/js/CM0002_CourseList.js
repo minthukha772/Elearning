@@ -11,26 +11,54 @@ $(function () {
   });
   LowestFeeInput = $("#lowestFee");
   HighestFeeInput = $("#highestFee");
-  LowestFeeInput.on("input", function () {
-    // To prevent Highest value from being less than Lowest value
-    // Update Highest value every time the lower value is higher them itself.
-    lowestValue = parseInt($(LowestFeeInput).val());
-    highestValue = parseInt($(HighestFeeInput).val());
-    console.log(lowestValue, highestValue);
-    if (lowestValue > highestValue) {
-      console.log(lowestValue, ">", highestValue);
-      $(HighestFeeInput).val(lowestValue);
+
+  document.getElementById('searchButton').addEventListener('click', function (event) {
+    // Prevent the default form submission
+    event.preventDefault();
+
+    // Get the form and input field values
+    const form = document.getElementById('searchForm');
+    const courseName = form.elements['courseName'].value;
+    const startDate = form.elements['startDate'].value;
+    const endDate = form.elements['endDate'].value;
+    const lowestFee = form.elements['lowestFee'].value;
+    const highestFee = form.elements['highestFee'].value;
+
+    // Perform validation checks here
+    // if (courseName.trim() === '') {
+    //   alert('Please enter a course name.');
+    //   return;
+    // }
+    if (lowestFee > highestFee) {
+      alert("Lowest Fee Amount must be greater than Hight Fee Amount");
+      return;
     }
+    // Validate other fields as needed...
+
+    // If all validations pass, submit the form
+    form.submit();
   });
-  HighestFeeInput.on("input", function () {
-    // To prevent Lowest value from being more than Lowest value
-    // Update Lowest value every time the highest value is higher them itself.
-    lowestValue = parseInt($(LowestFeeInput).val());
-    highestValue = parseInt($(HighestFeeInput).val());
-    if (highestValue < lowestValue) {
-      $(LowestFeeInput).val(highestValue);
-    }
-  });
+
+  // LowestFeeInput.on("input", function () {
+  //   // To prevent Highest value from being less than Lowest value
+  //   // Update Highest value every time the lower value is higher them itself.
+  //   lowestValue = parseInt($(LowestFeeInput).val());
+  //   highestValue = parseInt($(HighestFeeInput).val());
+  //   console.log(lowestValue, highestValue);
+  //   if (lowestValue > highestValue) {
+  //     console.log(lowestValue, ">", highestValue);
+  //     $(HighestFeeInput).val(lowestValue);
+  //   }
+  // });
+  // HighestFeeInput.on("input", function () {
+  //   // To prevent Lowest value from being more than Lowest value
+  //   // Update Lowest value every time the highest value is higher them itself.
+  //   lowestValue = parseInt($(LowestFeeInput).val());
+  //   highestValue = parseInt($(HighestFeeInput).val());
+  //   if (highestValue < lowestValue) {
+  //     $(LowestFeeInput).val(highestValue);
+  //   }
+  // });
 });
 
 const clearAction = (courseList) => {
@@ -137,6 +165,14 @@ const renderCourseList = (courseList) => {
     $("#zero-result-msg").show();
     $("#courseList").hide();
     $("#courseList").empty();
+    $("#course").pagination({
+      dataSource: courseList,
+      pageSize: 24,
+      showNavigator: true,
+      position: "top",
+      className: "paginationjs-theme-blue",
+      formatNavigator: '<span style="color: #f00">1</span> of 1 page, 0 entry'
+    });
     return;
   }
 

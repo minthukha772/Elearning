@@ -366,14 +366,13 @@
             })
         }
 
-
         submit = document.getElementById("submit");
         submit.addEventListener('click', () => {
             var allCheck = true;
             answerList = [];
-            var questionID;
-            let formData = new FormData();
+            var questionID;            
             questionList.forEach(question => {
+                let formData = new FormData();
                 answer = { "question_id": parseInt(question.id) };
                 student_choice = [];
                 var student_answer;
@@ -388,7 +387,7 @@
                     } else {
                         allCheck = false;
                     }
-                    answer = { "answer_type": "SINGLE_ANSWER" };
+                    formData.append('answer_type', 'SINGLE_ANSWER');
                 } else if (question.question_type == 'MULTIPLE_ANSWER') {
                     var selectedAnswer = $('input[name="' + question.id + '"]:checked');
                     if (selectedAnswer.length > 0) {
@@ -401,35 +400,36 @@
                     } else {
                         allCheck = false;
                     }
-                    answer = { "answer_type": "MULTIPLE_ANSWER" };
+                    formData.append('answer_type', 'MULTIPLE_ANSWER');
                 } else {
                     student_answer = $('#' + question.id + "_text").val();
                     answer_material = document.getElementById(question.id + "_image").files[0];
                     if (student_answer == "" && answer_material == undefined) {
                         allCheck = false;
                     }
-                    answer = { "answer_type": "FREE_ANSWER" };
-                    answer = { "answer_material": answer_material };
+                    formData.append('answer_type', 'FREE_ANSWER');
+                    formData.append('answer_material', answer_material);
+                    //answer = { "answer_material": answer_material };
                 }
-
-                answer = { "answer_type": "FREE_ANSWER" };
-                answerList.push(answer);
-
-                // var xhr = new XMLHttpRequest();
-                // xhr.open("POST", "https://pyinnyarsubuu.com/guestUser/submit-answer", true);
-                // xhr.send(formData);
-            });
-            if (allCheck) {
                 formData.append('test_id', parseInt(test_id));
-                formData.append('student_answer', JSON.stringify(answerList));
-            } else {
-                alert("Not All Answered")
-            }
-            //alert("Submitted Successfully.")
-            // dialog.style.visibility = "visible";
-            // var xhr = new XMLHttpRequest();
-            // // xhr.open("GET", "https://pyinnyarsubuu.com/guest-exam/logout", true);
-            // history.back()
+                formData.append('question_id', parseInt(question.id));
+                formData.append('student_answer', student_answer);
+                // answerList.push(answer);
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "https://pyinnyarsubuu.com/guestUser/submit-answer", true);
+                xhr.send(formData);
+            });
+            // if (allCheck) {
+            //     formData.append('test_id', parseInt(test_id));
+            //     formData.append('student_answer', JSON.stringify(answerList));
+            // } else {
+            //     alert("Not All Answered")
+            // }
+            alert("Submitted Successfully.")
+            dialog.style.visibility = "visible";
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "https://pyinnyarsubuu.com/guest-exam/logout", true);
+            history.back()
         });
 
         $("#dialog-confirm-btn").click(function () {

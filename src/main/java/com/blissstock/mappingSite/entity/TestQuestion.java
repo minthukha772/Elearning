@@ -38,7 +38,7 @@ public class TestQuestion {
     @Column(name = "question_materials_type", length = 255)
     private String question_materials_type;
 
-    @Column(name = "choices", length = 255)
+    @Column(name = "choices", columnDefinition = "TEXT")
     private String choices;
 
     @Column(name = "question_type", length = 255)
