@@ -116,6 +116,11 @@ public class CourseInfo {
   @ToString.Exclude
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "courseInfo")
   @JsonIgnore
+  private List<VideoClass> videoClasses = new ArrayList<>();
+
+  @ToString.Exclude
+  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "courseInfo")
+  @JsonIgnore
   private List<CourseTime> courseTime = new ArrayList<>();
 
   @ToString.Exclude

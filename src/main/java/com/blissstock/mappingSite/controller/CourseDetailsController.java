@@ -445,6 +445,9 @@ public class CourseDetailsController {
                         model.addAttribute("videoClassLists", videoClassLists);
                         model.addAttribute("noOfVideo", noOfVideo);
                     }
+                    else if (isDelete.equals("true")){
+                        model.addAttribute("noOfVideo", noOfVideo);
+                    }
 
                 }
             } else {
