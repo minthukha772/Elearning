@@ -204,7 +204,7 @@
                 <div class="row">
                
                <div style="display: flex; justify-content: center; align-items: center;">
-                <div class="fw-bold text-success" style="padding-top: 20px;"> 
+                <div class="fw-bold text-success" th:if="${questionList != null}" style="padding-top: 20px;"> 
                    Exam Title: <span class="" th:text="${exam_title}"></span>
                 </div>
             </div>
@@ -286,7 +286,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="mx-auto" style="padding-top: 30px;">
+                <div class="mx-auto" th:if="${questionList != null}" style="padding-top: 30px;">
                     <p style="color: red;"><strong>Important Notes before submitting your answer:</strong></p>
                     <ol style="list-style-position: inside; padding-left: 0; color: red;">
                         <li style="text-align: left;">The answer can be submitted only one time, please be aware you
