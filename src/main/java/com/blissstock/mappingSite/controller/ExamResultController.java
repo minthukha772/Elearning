@@ -610,7 +610,7 @@ public class ExamResultController {
                     studentEmail = testStudent.getUserInfo().getUserAccount().getMail();
                     studentName = testStudent.getUserInfo().getUserName();
                     studentPhone = testStudent.getUserInfo().getPhoneNo();
-                    userId = testStudent.getGuestUser().getGuest_id();
+                    userId = testStudent.getUserInfo().getUid();
                 } else {
                     studentEmail = testStudent.getGuestUser().getMail();
                     studentName = testStudent.getGuestUser().getName();

@@ -79,7 +79,7 @@ public class MailServiceImpl implements MailService {
   @Value("${com.blissstock.mapping-site.PRODUCTION_DOMAIN}")
   String PRODUCTION_DOMAIN;
 
-  private String email = "sys@pyinnyarsubuu.com";
+  private String email = "sys@pyinnyar-subuu.com";
   private String fromName = "PyinnyarSubuu";
 
   public void sendMail(
@@ -127,7 +127,7 @@ public class MailServiceImpl implements MailService {
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
     message.setSubject(subject);
-    message.setFrom("sys@pyinnyarsubuu.com");
+    message.setFrom("sys@pyinnyar-subuu.com");
     message.setTo(recipientAddress);
 
     final String htmlContent = templateEngine.process("sampleCss", ctx);
@@ -155,7 +155,7 @@ public class MailServiceImpl implements MailService {
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
     message.setSubject(subject);
-    message.setFrom("sys@pyinnyarsubuu.com");
+    message.setFrom("sys@pyinnyar-subuu.com");
     message.setTo(recipientAddress);
 
     final String htmlContent = templateEngine.process("SendAdminNewAdminMail", ctx);
@@ -183,7 +183,7 @@ public class MailServiceImpl implements MailService {
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
     message.setSubject(subject);
-    message.setFrom("sys@pyinnyarsubuu.com");
+    message.setFrom("sys@pyinnyar-subuu.com");
     message.setTo(recipientAddress);
 
     final String htmlContent = templateEngine.process("SendSuperAdminNewAdminMail", ctx);
@@ -195,7 +195,7 @@ public class MailServiceImpl implements MailService {
   public void SendAdminNewTeacher(UserInfo userInfo) throws MessagingException {
 
     String appUrl = getServerAddress();
-    String recipientAddress = "sys@pyinnyarsubuu.com";
+    String recipientAddress = "sys@pyinnyar-subuu.com";
     String subject = "New Teacher Has Registered";
 
     appUrl = appUrl + "/admin/teacher-list";
@@ -218,7 +218,7 @@ public class MailServiceImpl implements MailService {
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
     message.setSubject(subject);
-    message.setFrom("sys@pyinnyarsubuu.com");
+    message.setFrom("sys@pyinnyar-subuu.com");
     message.setTo(recipientAddress);
 
     final String htmlContent = templateEngine.process("NewTeacherRegisteMail", ctx);
@@ -229,7 +229,7 @@ public class MailServiceImpl implements MailService {
 
   public void SendAdminNewStudent(UserInfo userInfo) throws MessagingException {
     String appUrl = getServerAddress();
-    String recipientAddress = "sys@pyinnyarsubuu.com";
+    String recipientAddress = "sys@pyinnyar-subuu.com";
     String subject = "New Student Has Registered";
 
     appUrl = appUrl + "/admin/student-list";
@@ -249,7 +249,7 @@ public class MailServiceImpl implements MailService {
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
     message.setSubject(subject);
-    message.setFrom("sys@pyinnyarsubuu.com");
+    message.setFrom("sys@pyinnyar-subuu.com");
     message.setTo(recipientAddress);
 
     final String htmlContent = templateEngine.process("NewStudentRegisteMail", ctx);
@@ -260,7 +260,7 @@ public class MailServiceImpl implements MailService {
 
   public void SendAdminNewCourseByTeacher(CourseInfo courseInfo) throws MessagingException {
     String appUrl = getServerAddress();
-    String recipientAddress = "sys@pyinnyarsubuu.com";
+    String recipientAddress = "sys@pyinnyar-subuu.com";
     String subject = "【Pyinnyar Subuu】Course Registration by a teacher Successfully Completed!";
 
     appUrl = appUrl + "/admin/course-info";
@@ -279,7 +279,7 @@ public class MailServiceImpl implements MailService {
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
     message.setSubject(subject);
-    message.setFrom("sys@pyinnyarsubuu.com");
+    message.setFrom("sys@pyinnyar-subuu.com");
     message.setTo(recipientAddress);
 
     final String htmlContent = templateEngine.process("SendAdminNewCourseByTeacher", ctx);
@@ -308,7 +308,7 @@ public class MailServiceImpl implements MailService {
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
     message.setSubject(subject);
-    message.setFrom("sys@pyinnyarsubuu.com");
+    message.setFrom("sys@pyinnyar-subuu.com");
     message.setTo(recipientAddress);
 
     final String htmlContent = templateEngine.process("SendTeacherNewCourseByTeacher", ctx);
@@ -339,7 +339,7 @@ public class MailServiceImpl implements MailService {
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
     message.setSubject(subject);
-    message.setFrom("sys@pyinnyarsubuu.com");
+    message.setFrom("sys@pyinnyar-subuu.com");
     message.setTo(recipientAddress);
 
     final String htmlContent = templateEngine.process("SendAdminNewCourseByAdmin", ctx);
@@ -368,7 +368,7 @@ public class MailServiceImpl implements MailService {
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
     message.setSubject(subject);
-    message.setFrom("sys@pyinnyarsubuu.com");
+    message.setFrom("sys@pyinnyar-subuu.com");
     message.setTo(recipientAddress);
 
     final String htmlContent = templateEngine.process("SendTeacherNewCourseByAdmin", ctx);
@@ -381,7 +381,7 @@ public class MailServiceImpl implements MailService {
   public void SendAdminNewStudentEnroll(UserInfo userInfo, long courseId, CourseInfo courseInfo)
       throws MessagingException {
     String appUrl = getServerAddress();
-    String recipientAddress = "sys@pyinnyarsubuu.com";
+    String recipientAddress = "sys@pyinnyar-subuu.com";
     String ccAddress1 = "sys1pyinnyarsubuu@gmail.com";
     String ccAddress2 = "sys2pyinnyarsubuu@gmail.com";
 
@@ -407,7 +407,7 @@ public class MailServiceImpl implements MailService {
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
     message.setSubject(subject);
-    message.setFrom("sys@pyinnyarsubuu.com");
+    message.setFrom("sys@pyinnyar-subuu.com");
     message.setTo(recipientAddress);
     message.addCc(ccAddress1);
     message.addCc(ccAddress2);
@@ -444,7 +444,7 @@ public class MailServiceImpl implements MailService {
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
     message.setSubject(subject);
-    message.setFrom("sys@pyinnyarsubuu.com");
+    message.setFrom("sys@pyinnyar-subuu.com");
     message.setTo(recipientAddress);
 
     final String htmlContent = templateEngine.process("EnrollCourseMailForStudent", ctx);
@@ -492,7 +492,7 @@ public class MailServiceImpl implements MailService {
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
     message.setSubject(subject);
-    message.setFrom("sys@pyinnyarsubuu.com");
+    message.setFrom("sys@pyinnyar-subuu.com");
     message.setTo(recipientAddress);
 
     final String htmlContent = templateEngine.process("EnrollCourseMailForTeacher", ctx);
@@ -517,7 +517,7 @@ public class MailServiceImpl implements MailService {
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
     message.setSubject(subject);
-    message.setFrom("sys@pyinnyarsubuu.com");
+    message.setFrom("sys@pyinnyar-subuu.com");
     message.setTo(recipientAddress);
 
     final String htmlContent = templateEngine.process("SendGuestOTP", ctx);
@@ -546,7 +546,7 @@ public class MailServiceImpl implements MailService {
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
     message.setSubject(subject);
-    message.setFrom("sys@pyinnyarsubuu.com");
+    message.setFrom("sys@pyinnyar-subuu.com");
     message.setTo(recipientAddress);
 
     final String htmlContent = templateEngine.process("SendGuestRemovedNotification", ctx);
@@ -572,7 +572,7 @@ public class MailServiceImpl implements MailService {
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
     message.setSubject(subject);
-    message.setFrom("sys@pyinnyarsubuu.com");
+    message.setFrom("sys@pyinnyar-subuu.com");
     message.setTo(recipientAddress);
 
     final String htmlContent = templateEngine.process("PasswordResetMail", ctx);
@@ -604,7 +604,7 @@ public class MailServiceImpl implements MailService {
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
     message.setSubject(subject);
-    message.setFrom("sys@pyinnyarsubuu.com");
+    message.setFrom("sys@pyinnyar-subuu.com");
     message.setTo(recipientAddress);
 
     final String htmlContent = templateEngine.process("PaymentByStudentCss", ctx);
@@ -618,7 +618,7 @@ public class MailServiceImpl implements MailService {
   public void PaymentReceivedByAdmin(UserInfo userInfo, long courseId, CourseInfo courseInfo)
       throws MessagingException {
     String appUrl = getServerAddress();
-    String recipientAddress = "sys@pyinnyarsubuu.com";
+    String recipientAddress = "sys@pyinnyar-subuu.com";
     String subject = "【Pyinnyar Subuu】Please check student payment, course payment by a student is done successfully.";
 
     final Context ctx = new Context();
@@ -634,7 +634,7 @@ public class MailServiceImpl implements MailService {
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
     message.setSubject(subject);
-    message.setFrom("sys@pyinnyarsubuu.com");
+    message.setFrom("sys@pyinnyar-subuu.com");
     message.setTo(recipientAddress);
 
     final String htmlContent = templateEngine.process("PaymentReceivedByAdmin", ctx);
@@ -664,7 +664,7 @@ public class MailServiceImpl implements MailService {
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
     message.setSubject(subject);
-    message.setFrom("sys@pyinnyarsubuu.com");
+    message.setFrom("sys@pyinnyar-subuu.com");
     message.setTo(recipientAddress);
 
     final String htmlContent = templateEngine.process("VerifiedTeacherByAdmin", ctx);
@@ -694,7 +694,7 @@ public class MailServiceImpl implements MailService {
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
     message.setSubject(subject);
-    message.setFrom("sys@pyinnyarsubuu.com");
+    message.setFrom("sys@pyinnyar-subuu.com");
     message.setTo(recipientAddress);
 
     final String htmlContent = templateEngine.process("VerifiedTeacherByAdminToTeacher", ctx);
@@ -720,7 +720,7 @@ public class MailServiceImpl implements MailService {
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
     message.setSubject(subject);
-    message.setFrom("sys@pyinnyarsubuu.com");
+    message.setFrom("sys@pyinnyar-subuu.com");
     message.setTo(recipientAddress);
 
     final String htmlContent = templateEngine.process("StudentChangedPassword", ctx);
@@ -746,7 +746,7 @@ public class MailServiceImpl implements MailService {
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
     message.setSubject(subject);
-    message.setFrom("sys@pyinnyarsubuu.com");
+    message.setFrom("sys@pyinnyar-subuu.com");
     message.setTo(recipientAddress);
 
     final String htmlContent = templateEngine.process("TeacherChangedPassword", ctx);
@@ -772,7 +772,7 @@ public class MailServiceImpl implements MailService {
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
     message.setSubject(subject);
-    message.setFrom("sys@pyinnyarsubuu.com");
+    message.setFrom("sys@pyinnyar-subuu.com");
     message.setTo(recipientAddress);
 
     final String htmlContent = templateEngine.process("AdminChangedPassword", ctx);
@@ -800,7 +800,7 @@ public class MailServiceImpl implements MailService {
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
     message.setSubject(subject);
-    message.setFrom("sys@pyinnyarsubuu.com");
+    message.setFrom("sys@pyinnyar-subuu.com");
     message.setTo(recipientAddress);
 
     final String htmlContent = templateEngine.process("AdminResetPassword", ctx);
@@ -829,7 +829,7 @@ public class MailServiceImpl implements MailService {
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
     message.setSubject(subject);
-    message.setFrom("sys@pyinnyarsubuu.com");
+    message.setFrom("sys@pyinnyar-subuu.com");
     message.setTo(recipientAddress);
 
     final String htmlContent = templateEngine.process("TeacherResetPassword", ctx);
@@ -858,7 +858,7 @@ public class MailServiceImpl implements MailService {
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
     message.setSubject(subject);
-    message.setFrom("sys@pyinnyarsubuu.com");
+    message.setFrom("sys@pyinnyar-subuu.com");
     message.setTo(recipientAddress);
 
     final String htmlContent = templateEngine.process("StudentResetPassword", ctx);
@@ -888,7 +888,7 @@ public class MailServiceImpl implements MailService {
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
     message.setSubject(subject);
-    message.setFrom("sys@pyinnyarsubuu.com");
+    message.setFrom("sys@pyinnyar-subuu.com");
     message.setTo(recipientAddress);
 
     final String htmlContent = templateEngine.process("GuestRenewOneTimePassword", ctx);
@@ -923,7 +923,7 @@ public class MailServiceImpl implements MailService {
     final MimeMessage mimeMessage = mailSender.createMimeMessage();
     final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // true = multipart
     message.setSubject(subject);
-    message.setFrom("sys@pyinnyarsubuu.com");
+    message.setFrom("sys@pyinnyar-subuu.com");
     message.setTo(recipientAddress);
 
     final String htmlContent = templateEngine.process("GuestExam", ctx);
@@ -1005,7 +1005,7 @@ public class MailServiceImpl implements MailService {
   // final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true,
   // "UTF-8"); // true = multipart
   // message.setSubject(subject);
-  // message.setFrom("sys@pyinnyarsubuu.com");
+  // message.setFrom("sys@pyinnyar-subuu.com");
   // message.setTo(recipientAddress);
 
   // final String htmlContent = templateEngine.process("sampleCss", ctx);
@@ -1035,7 +1035,7 @@ public class MailServiceImpl implements MailService {
   // final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true,
   // "UTF-8"); // true = multipart
   // message.setSubject(subject);
-  // message.setFrom("sys@pyinnyarsubuu.com");
+  // message.setFrom("sys@pyinnyar-subuu.com");
   // message.setTo(recipientAddress);
 
   // final String htmlContent = templateEngine.process("sampleCss", ctx);

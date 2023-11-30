@@ -202,7 +202,7 @@
         <div class="d-flex justify-content-center align-items-center flex-wrap" style="padding-bottom: 50px;">
             <div class="box">
                 <div class="row">
-                    <div style="display: flex; justify-content: center; align-items: center;padding-top: 10px;">
+                    <div style="display: flex; justify-content: center; align-items: center;padding-top: 10px;" th:if="${questionList != null}">
                         <h3>Exam Title : <span th:text="${exam_title}"></span></h3>
                     </div>
                     <div class="col-12 col-lg-12" th:each="testquestion, index:${questionList}">
@@ -279,6 +279,14 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="mx-auto" th:if="${questionList != null}" style="padding-top: 30px;">
+                    <p style="color: red;"><strong>Important Notes before submitting your answer:</strong></p>
+                    <ol style="list-style-position: inside; padding-left: 0; color: red;">
+                        <li style="text-align: left;">The answer can be submitted only one time, please be aware you
+                            have answered all questions.</li>
+                        <li style="text-align: left;">The answer must be submitted not before the exam time is up.</li>
+                    </ol>
                 </div>
             </div>
         </div>
@@ -361,19 +369,18 @@
         if (guestLogoutButton != null) {
             guestLogoutButton.addEventListener('click', () => {
                 var xhr = new XMLHttpRequest();
-                xhr.open("GET", "https://pyinnyarsubuu.com/guest-user/logout", true);
+                xhr.open("GET", "/guest-user/logout", true);
                 history.back()
             })
         }
-
 
         submit = document.getElementById("submit");
         submit.addEventListener('click', () => {
             var allCheck = true;
             answerList = [];
-            var questionID;
-            let formData = new FormData();
+            var questionID;            
             questionList.forEach(question => {
+                let formData = new FormData();
                 answer = { "question_id": parseInt(question.id) };
                 student_choice = [];
                 var student_answer;
@@ -388,7 +395,7 @@
                     } else {
                         allCheck = false;
                     }
-                    answer = { "answer_type": "SINGLE_ANSWER" };
+                    formData.append('answer_type', 'SINGLE_ANSWER');
                 } else if (question.question_type == 'MULTIPLE_ANSWER') {
                     var selectedAnswer = $('input[name="' + question.id + '"]:checked');
                     if (selectedAnswer.length > 0) {
@@ -401,35 +408,36 @@
                     } else {
                         allCheck = false;
                     }
-                    answer = { "answer_type": "MULTIPLE_ANSWER" };
+                    formData.append('answer_type', 'MULTIPLE_ANSWER');
                 } else {
                     student_answer = $('#' + question.id + "_text").val();
                     answer_material = document.getElementById(question.id + "_image").files[0];
                     if (student_answer == "" && answer_material == undefined) {
                         allCheck = false;
                     }
-                    answer = { "answer_type": "FREE_ANSWER" };
-                    answer = { "answer_material": answer_material };
+                    formData.append('answer_type', 'FREE_ANSWER');
+                    formData.append('answer_material', answer_material);
+                    //answer = { "answer_material": answer_material };
                 }
-
-                answer = { "answer_type": "FREE_ANSWER" };
-                answerList.push(answer);
-
-                // var xhr = new XMLHttpRequest();
-                // xhr.open("POST", "https://pyinnyarsubuu.com/guestUser/submit-answer", true);
-                // xhr.send(formData);
-            });
-            if (allCheck) {
                 formData.append('test_id', parseInt(test_id));
-                formData.append('student_answer', JSON.stringify(answerList));
-            } else {
-                alert("Not All Answered")
-            }
-            //alert("Submitted Successfully.")
-            // dialog.style.visibility = "visible";
-            // var xhr = new XMLHttpRequest();
-            // // xhr.open("GET", "https://pyinnyarsubuu.com/guest-exam/logout", true);
-            // history.back()
+                formData.append('question_id', parseInt(question.id));
+                formData.append('student_answer', student_answer);
+                // answerList.push(answer);
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "/guestUser/submit-answer", true);
+                xhr.send(formData);
+            });
+            // if (allCheck) {
+            //     formData.append('test_id', parseInt(test_id));
+            //     formData.append('student_answer', JSON.stringify(answerList));
+            // } else {
+            //     alert("Not All Answered")
+            // }
+            alert("Submitted Successfully.")
+            dialog.style.visibility = "visible";
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/guest-exam/logout", true);
+            history.back()
         });
 
         $("#dialog-confirm-btn").click(function () {
