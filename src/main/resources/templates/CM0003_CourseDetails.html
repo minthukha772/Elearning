@@ -59,7 +59,7 @@
 							Title <span class="text-danger">*</span>
 						</small>
 					</label>
-					<input type="text" class="form-control shadow-sm" id="upload_title" placeholder="Title" required />
+					<input type="text" class="form-control shadow-sm" id="upload_title" placeholder="Title" maxlength="80" required />
 				</div>
 				<div style="color: red; font-size: 12px; display: none;" id="title_warning">
 					Please add Title
@@ -168,7 +168,7 @@
 							Title <span class="text-danger">*</span>
 						</small>
 					</label>
-					<input type="text" class="form-control shadow-sm" id="edit_title" placeholder="Title" required />
+					<input type="text" class="form-control shadow-sm" id="edit_title" placeholder="Title" maxlength="80" required />
 				</div>
 				<div style="color: red; font-size: 12px; display: none;" id="title_warning">
 					Please add Title
@@ -321,14 +321,14 @@
 							th:href="@{'/teacher/course_syllabus/course_id/' + ${courseInfo.courseId}}"><button
 								class="btn btn-primary">Manage Syllabus</button></a>
 
-						<div th:if="${teacherRegistered and !isLiveClass}" class="btn btn-primary" id="upload_a_video">
+						<button th:if="${teacherRegistered and !isLiveClass}" class="btn btn-primary"
+							id="upload_a_video">
 							Upload video
-						</div>
-						<div th:if="${teacherRegistered and !isLiveClass}">
-							<a href="#video_list_section" class="btn btn-primary">
-								Go to Videos
-							</a>
-						</div>
+						</button>
+						<a th:if="${teacherRegistered and !isLiveClass}" href="#video_list_section"
+							class="btn btn-primary">
+							Go to Videos
+						</a>
 
 						<div th:if="${teacherRegistered and isLiveClass}">
 							<p class="prerequisites my-3">Class Link</p>
@@ -449,14 +449,12 @@
 						<a th:href="@{'/admin/course_syllabus/course_id/' + ${courseInfo.courseId}}"><button
 								class="btn btn-primary">Manage Syllabus</button></a>
 
-						<div th:if="${isCourseDateValid} == null" class="btn btn-primary" id="upload_a_video">
+						<button th:if="${isCourseDateValid} == null" class="btn btn-primary" id="upload_a_video">
 							Upload video
-						</div>
-						<div th:if="${!isLiveClass}">
-							<a href="#video_list_section" class="btn btn-primary">
-								Go to Videos
-							</a>
-						</div>
+						</button>
+						<a th:if="${!isLiveClass}" href="#video_list_section" class="btn btn-primary">
+							Go to Videos
+						</a>
 
 						<div th:if="@{isLiveClass}">
 							<p class="prerequisites my-3">Class Link</p>
@@ -499,8 +497,6 @@
 			</div>
 			</div>
 
-
-			<!-- Syllabus -->
 			<h3 class="category__title my-3" th:text="${courseInfo.category} + ' > ' + ${courseInfo.level}">
 			</h3>
 			<div class="d-flex flex-column flex-md-row justify-content-center justify-content-xl-start">
@@ -510,12 +506,15 @@
 			<h3 class="prerequisites__title my-3">Prequisites</h3>
 			<p class="prerequisites__description" th:text="${courseInfo.prerequisite}">
 			</p>
+		</section>
+
+		<section class=" container">
 
 			<!-- Video List section -->
 			<!-- Video List for Student -->
 			<div th:if="${student == 'STUDENT'}">
 				<div th:if="${!isLiveClass and (studentRegistered and paymentComplete)}" style="margin-bottom: 60px;"
-					id="video_list_section">
+					id="video_list_section" class=" mx-2 mx-sm-0">
 					<div class=" video-list-header p-3 rounded-3 mb-2">
 						<p class=" text-center heading1 mb-0 fw-bolder text-white">Video List</p>
 						<p class=" text-center heading2 mb-0 fw-semibold text-white"
@@ -524,8 +523,8 @@
 					<table id="" class=" video-list-table rounded-3">
 						<thead>
 							<th class=" text-center t-header" style="width: 5%;">No</th>
-							<th class=" text-center t-header" style="width: 15%;">Video</th>
-							<th class=" text-center t-header" style="width: 70%;">Video Title</th>
+							<th class=" text-center t-header thumbnail-mobile" style="width: 15%;">Video</th>
+							<th class=" text-center t-header">Video Title</th>
 							<th class=" text-center t-header" style="width: 10%;"> </th>
 						</thead>
 						<tbody>
@@ -534,17 +533,21 @@
 									th:text="${dr.videoOrderNo}">
 									1
 								</td>
-								<td class=" text-center text-white p-2" style="width: 15%;">
-									<a th:href="@{'/video-class/' + ${courseInfo.courseId} + '/' + ${dr.id}}">
-										<img th:src="@{'https://lh3.googleusercontent.com/d/' + ${dr.thumbnail}}"
-										
-										onerror="this.onerror=null; this.src='/images/uploading.gif';"
-											class="shadow-sm" alt="Lesson Thumbnail" width="168" height="94">
-									</a>
+								<td class=" text-center text-white p-2 thumbnail-mobile" style="width: 15%;">
+									<div class="video-thumbnail-div">
+										<a th:href="@{'/video-class/' + ${courseInfo.courseId} + '/' + ${dr.id}}">
+											<img th:src="@{'https://lh3.googleusercontent.com/d/' + ${dr.thumbnail}}"
+												onerror="this.onerror=null; this.src='/images/uploading.gif';"
+												class="shadow-sm video-thumbnail" alt="Lesson Thumbnail">
+										</a>
+									</div>
 								</td>
-								<td class=" text-white video-no p-2" style="width: 70%;">
-									<p class=" video-text mb-2" th:text="${dr.videoTitle}">Lesson 1</p>
-									<p class=" video-text video-description mb-0" th:text="${dr.videoDesc}"></p>
+								<td class=" video-no p-2">
+									<a th:href="@{'/video-class/' + ${courseInfo.courseId} + '/' + ${dr.id}}"
+										class="video-info">
+										<p class=" video-text video-title" th:text="${dr.videoTitle}">Lesson 1</p>
+										<p class=" video-text video-description mb-0" th:text="${dr.videoDesc}"></p>
+									</a>
 								</td>
 							</tr>
 						</tbody>
@@ -554,7 +557,8 @@
 
 			<!-- Video List for Teacher -->
 			<div th:if="${teacher == 'TEACHER'}">
-				<div th:if="${!isLiveClass and teacherRegistered}" style="margin-bottom: 60px;" id="video_list_section">
+				<div th:if="${!isLiveClass and teacherRegistered}" style="margin-bottom: 60px;" id="video_list_section"
+					class=" mx-2 mx-sm-0">
 					<div class=" video-list-header p-3 rounded-3 mb-2">
 						<p class=" text-center heading1 mb-0 fw-bolder text-white">Video List</p>
 						<p class=" text-center heading2 mb-0 fw-semibold text-white"
@@ -563,8 +567,8 @@
 					<table id="" class=" video-list-table rounded-3">
 						<thead>
 							<th class=" text-center t-header" style="width: 5%;">No</th>
-							<th class=" text-center t-header" style="width: 15%;">Video</th>
-							<th class=" text-center t-header" style="width: 70%;">Video Title</th>
+							<th class=" text-center t-header thumbnail-mobile" style="width: 15%;">Video</th>
+							<th class=" text-center t-header">Video Title</th>
 							<th class=" text-center t-header" style="width: 10%;"> </th>
 						</thead>
 						<tbody>
@@ -572,20 +576,21 @@
 								<td class=" text-center text-white p-2 mb-auto video-no video-text" style="width: 5%;"
 									th:text="${dr.videoOrderNo}">1
 								</td>
-
-								<td class="text-center text-white p-2" style="width: 15%;">
-									<a th:href="@{'/video-class/' + ${courseInfo.courseId} + '/' + ${dr.id}}">
-										<img th:src="@{'https://lh3.googleusercontent.com/d/' + ${dr.thumbnail}}"
-										
-										onerror="this.onerror=null; this.src='/images/uploading.gif';"
-											class="shadow-sm" alt="Lesson Thumbnail" width="168" height="94">
-									</a>
+								<td class="text-center text-white p-2 thumbnail-mobile" style="width: 15%;">
+									<div class="video-thumbnail-div">
+										<a th:href="@{'/video-class/' + ${courseInfo.courseId} + '/' + ${dr.id}}">
+											<img th:src="@{'https://lh3.googleusercontent.com/d/' + ${dr.thumbnail}}"
+												onerror="this.onerror=null; this.src='/images/uploading.gif';"
+												class="shadow-sm video-thumbnail" alt="Lesson Thumbnail">
+										</a>
+									</div>
 								</td>
-
-
-								<td class=" text-white video-no p-2" style="width: 70%;">
-									<p class=" video-text mb-2" th:text="${dr.videoTitle}">Lesson 1</p>
-									<p class=" video-text video-description mb-0" th:text="${dr.videoDesc}"></p>
+								<td class=" video-no p-2">
+									<a th:href="@{'/video-class/' + ${courseInfo.courseId} + '/' + ${dr.id}}"
+										class="video-info">
+										<p class=" video-text video-title" th:text="${dr.videoTitle}">Lesson 1</p>
+										<p class=" video-text video-description mb-0" th:text="${dr.videoDesc}"></p>
+									</a>
 								</td>
 								<td class="p-2" style="width: 10%; text-align: center;">
 									<div class="btn-group" role="group" aria-label="Basic example">
@@ -600,8 +605,6 @@
 									</div>
 								</td>
 							</tr>
-
-							
 						</tbody>
 					</table>
 				</div>
@@ -609,7 +612,7 @@
 
 			<!-- Video List for Admin -->
 			<div th:if="${admin == 'ADMIN'}">
-				<div th:if="${!isLiveClass}" style="margin-bottom: 60px;" id="video_list_section">
+				<div th:if="${!isLiveClass}" style="margin-bottom: 60px;" id="video_list_section" class=" mx-2 mx-sm-0">
 					<div class=" video-list-header p-3 rounded-3 mb-2">
 						<p class=" text-center heading1 mb-0 fw-bolder text-white">Video List</p>
 						<p class=" text-center heading2 mb-0 fw-semibold text-white"
@@ -618,8 +621,8 @@
 					<table id="" class=" video-list-table rounded-3">
 						<thead>
 							<th class=" text-center t-header" style="width: 5%;">No</th>
-							<th class=" text-center t-header" style="width: 15%;">Video</th>
-							<th class=" text-center t-header" style="width: 70%;">Video Title</th>
+							<th class=" text-center t-header thumbnail-mobile" style="width: 15%;">Video</th>
+							<th class=" text-center t-header">Video Title</th>
 							<th class=" text-center t-header" style="width: 10%;"> </th>
 						</thead>
 						<tbody>
@@ -627,19 +630,21 @@
 								<td class=" text-center text-white p-2 mb-auto video-no video-text" style="width: 5%;"
 									th:text="${dr.videoOrderNo}">1
 								</td>
-
-								<td class="text-center text-white p-2" style="width: 15%;">
-									<a th:href="@{'/video-class/' + ${courseInfo.courseId} + '/' + ${dr.id}}">
-										<img th:src="@{'https://lh3.googleusercontent.com/d/' + ${dr.thumbnail}}"
-										onerror="this.onerror=null; this.src='/images/uploading.gif';"
-											class="shadow-sm" alt="Lesson Thumbnail" width="168" height="94">
-									</a>
+								<td class="text-center text-white p-2 thumbnail-mobile" style="width: 15%;">
+									<div class="video-thumbnail-div">
+										<a th:href="@{'/video-class/' + ${courseInfo.courseId} + '/' + ${dr.id}}">
+											<img th:src="@{'https://lh3.googleusercontent.com/d/' + ${dr.thumbnail}}"
+												onerror="this.onerror=null; this.src='/images/uploading.gif';"
+												class="shadow-sm video-thumbnail" alt="Lesson Thumbnail">
+										</a>
+									</div>
 								</td>
-
-
-								<td class=" text-white video-no p-2" style="width: 70%;">
-									<p class=" video-text mb-2" th:text="${dr.videoTitle}">Lesson 1</p>
-									<p class=" video-text video-description mb-0" th:text="${dr.videoDesc}"></p>
+								<td class=" video-no p-2">
+									<a th:href="@{'/video-class/' + ${courseInfo.courseId} + '/' + ${dr.id}}"
+										class="video-info">
+										<p class=" video-text video-title" th:text="${dr.videoTitle}">Lesson 1</p>
+										<p class=" video-text video-description mb-0" th:text="${dr.videoDesc}"></p>
+									</a>
 								</td>
 								<td class="p-2" style="width: 10%; text-align: center;">
 									<div class="btn-group" role="group" aria-label="Basic example">
@@ -659,7 +664,8 @@
 				</div>
 			</div>
 
-			<div class="syllabus__holder">
+			<!-- Syllabus -->
+			<div class="syllabus__holder mx-2 mx-sm-0">
 				<h3 class="syllabus__title">Syllabus</h3>
 				<!-- syllabus update -->
 				<div class="d-flex justify-content-between">
@@ -679,24 +685,28 @@
 				</div>
 			</div>
 
-			<h3 class="reviews__title mb-3">Reviews</h3>
-			<div th:if="${courseReviewListEmpty}">
-				<div class="mb-4 p-3 text-center">
-					<span class="letterpress">
-						There is no current reviews from students.
-					</span>
+			<!-- Review section -->
+			<div class=" mx-2 mx-sm-0">
+				<h3 class="reviews__title mb-3">Reviews</h3>
+				<div th:if="${courseReviewListEmpty}">
+					<div class="mb-4 p-3 text-center">
+						<span class="letterpress">
+							There is no current reviews from students.
+						</span>
+					</div>
 				</div>
-			</div>
-			<div class="reviews">
-				<div th:each="review:${courseReviewList}">
-					<div class="d-flex flex-column flex-md-row mb-3">
-						<img th:src="${review.join.userInfo.photo}" class="profileImage" alt="profileImage" />
-						<div class="profileDescription">
-							<h3 class="username" th:text="${review.join.userInfo.userName}"></h3>
-							<p class="reviewedDatetime" th:text="${#dates.format(review.assignedDate, 'yyyy-MM-dd')}">
-							</p>
-							<p class="reviewed__comment" th:text="${review.feedback}">
-							</p>
+				<div class="reviews">
+					<div th:each="review:${courseReviewList}">
+						<div class="d-flex flex-column flex-md-row mb-3">
+							<img th:src="${review.join.userInfo.photo}" class="profileImage" alt="profileImage" />
+							<div class="profileDescription">
+								<h3 class="username" th:text="${review.join.userInfo.userName}"></h3>
+								<p class="reviewedDatetime"
+									th:text="${#dates.format(review.assignedDate, 'yyyy-MM-dd')}">
+								</p>
+								<p class="reviewed__comment" th:text="${review.feedback}">
+								</p>
+							</div>
 						</div>
 					</div>
 				</div>
