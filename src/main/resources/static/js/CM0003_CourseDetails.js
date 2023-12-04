@@ -208,7 +208,12 @@ document.getElementById('videoUploadForm').addEventListener('submit', function (
     body: formData
   }).then(response => {
     if (response.ok) {
-      showDialogWithSuccessMessage("Successfully uploaded the video");
+      // showDialogWithSuccessMessage("Successfully uploaded the video");
+      createSuccessMsg(document.getElementById('uploadVideoErrorMsgBox'), "Successfully uploaded the video");
+      setTimeout(function () {
+        window.location.reload();
+      }, 2000);
+
     } else {
       createErrorMsg(document.getElementById('uploadVideoErrorMsgBox'), "Failed to upload the video. Please try again.");
     }
@@ -310,9 +315,14 @@ document.addEventListener('DOMContentLoaded', function () {
       body: data
     }).then(response => {
       if (response.ok) {
-        showDialogWithSuccessMessage("Successfully updated the video");
+        // showDialogWithSuccessMessage("Successfully updated the video");
+        createSuccessMsg(editVideoErrorMsgBox, "Successfully updated the video");
+        setTimeout(function () {
+          window.location.reload();
+        }, 2000);
+        
       } else {
-        createErrorMsg(document.getElementById('uploadVideoErrorMsgBox'), "Failed to upload the video. Please try again.");
+        createErrorMsg(editVideoErrorMsgBox, "Failed to update the video. Please try again.");
       }
     });
   });
@@ -398,16 +408,33 @@ document.addEventListener('DOMContentLoaded', function () {
           })
             .then((response) => {
               if (response.ok) {
-                Swal.fire('Video deleted!', '', 'success');
+                // Swal.fire('Video deleted!', '', 'success');
+                Swal.fire({
+                  icon: 'success',
+                  text: 'Video deleted!',
+                  confirmButtonText: 'OK',
+                  confirmButtonColor: '#3f877a'
+                });
                 window.location.reload();
 
               } else {
-                Swal.fire('Error deleting video', '', 'error');
-
+                // Swal.fire('Error deleting video', '', 'error');
+                Swal.fire({
+                  icon: 'error',
+                  text: 'Error deleting video',
+                  confirmButtonText: 'OK',
+                  confirmButtonColor: '#3f877a'
+                });
               }
             })
             .catch((error) => {
-              Swal.fire('Error deleting video', '', 'error');
+              // Swal.fire('Error deleting video', '', 'error');
+              Swal.fire({
+                icon: 'error',
+                text: 'Error deleting video',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#3f877a'
+              });
 
             });
         }
