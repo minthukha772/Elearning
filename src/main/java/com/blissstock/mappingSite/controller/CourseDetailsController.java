@@ -304,21 +304,21 @@ public class CourseDetailsController {
         model.addAttribute("syllabusSize", syllabusSize);
 
         // first syllabus
-        try {
-            if (syllabusSize > 0) {
+        // try {
+        //     if (syllabusSize > 0) {
 
-                Syllabus firstSyllabus = syllabusList.get(0);
+        //         Syllabus firstSyllabus = syllabusList.get(0);
 
-                // String firstContent = firstSyllabus.getContent().get(0).getContent();
-                model.addAttribute("firstSyllabus", firstSyllabus);
-                // model.addAttribute("firstContent", firstContent);
-                syllabusList.remove(0);
-            }
-        } catch (Exception e) {
-            e.getLocalizedMessage();
-            // TODO: handle exception
-            logger.info(e.toString());
-        }
+        //         // String firstContent = firstSyllabus.getContent().get(0).getContent();
+        //         model.addAttribute("firstSyllabus", firstSyllabus);
+        //         // model.addAttribute("firstContent", firstContent);
+        //         syllabusList.remove(0);
+        //     }
+        // } catch (Exception e) {
+        //     e.getLocalizedMessage();
+        //     // TODO: handle exception
+        //     logger.info(e.toString());
+        // }
 
         model.addAttribute("syllabusList", syllabusList);
 
