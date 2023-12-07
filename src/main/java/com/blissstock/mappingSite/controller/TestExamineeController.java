@@ -47,6 +47,7 @@ import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.entity.TestExaminee;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.enums.UserRole;
+import com.blissstock.mappingSite.model.FileInfo;
 import com.blissstock.mappingSite.model.TestExamineeWithMarkedCountModel;
 import com.blissstock.mappingSite.repository.GuestUserRepository;
 import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
@@ -57,6 +58,7 @@ import com.blissstock.mappingSite.repository.TestExamineeRepository;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
 import com.blissstock.mappingSite.repository.UserInfoRepository;
 import com.blissstock.mappingSite.service.MailService;
+import com.blissstock.mappingSite.service.StorageService;
 import com.blissstock.mappingSite.service.UserSessionService;
 import com.google.gson.Gson;
 
@@ -108,6 +110,9 @@ public class TestExamineeController {
 
         @Autowired
         MailService mailService;
+
+        @Autowired
+        StorageService storageService;
 
         // @Valid
         // @GetMapping(value = { "/teacher/exam/{test_id}/examinee",
@@ -1528,14 +1533,20 @@ public class TestExamineeController {
                                                 .getCountStudentAnswerListByTestAndStudent(
                                                                 test_id,
                                                                 TestExaminee.getUserInfo().getUid());
+
+                                try {
+                                        
+                                
                                 if (answerCount == 0) {
+                                        FileInfo profilePic = storageService.loadProfileAsFileInfo(TestExaminee.getUserInfo());
                                         TestExamineeWithMarkedCountModel testStudentWithMarkedCountModel = new TestExamineeWithMarkedCountModel(
                                                         TestExaminee.getId(), TestExaminee.getTest(),
                                                         TestExaminee.getUserInfo(),
                                                         total_free_questions,
-                                                        0);
+                                                        0, profilePic);
                                         testStudentList.add(testStudentWithMarkedCountModel);
                                 } else {
+                                        FileInfo profilePic = storageService.loadProfileAsFileInfo(TestExaminee.getUserInfo());
                                         int uncheck_free_questions = testExamineeAnswerRepository
                                                         .getUnCheckAnswerCountByTestAndStudent(
                                                                         test_id,
@@ -1544,11 +1555,15 @@ public class TestExamineeController {
                                                         TestExaminee.getId(), TestExaminee.getTest(),
                                                         TestExaminee.getUserInfo(),
                                                         total_free_questions,
-                                                        total_free_questions - uncheck_free_questions);
+                                                        total_free_questions - uncheck_free_questions, profilePic);
                                         if (uncheck_free_questions == 0) {
                                                 checked_students++;
                                         }
                                         testStudentList.add(testStudentWithMarkedCountModel);
+                                }
+                                } catch (Exception e) {
+                                        e.printStackTrace();
+                                        logger.info("unable to get profile {}", TestExaminee.getUserInfo());
                                 }
                         }
 

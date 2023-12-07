@@ -14,7 +14,7 @@ public interface TestExamineeAnswerRepository extends JpaRepository<TestExaminee
 
         @Query(value = "Select * from test_examinee_answer where examinee_student_id = :examinee_student_id and test_id = :test_id", nativeQuery = true)
         public List<TestExamineeAnswer> getStudentAnswerListByTestAndStudent(
-                        @Param("examinee") Long examinee_student_id,
+                        @Param("examinee_student_id") Long examinee_student_id,
                         @Param("test_id") Long test_id);
 
         @Query(value = "Select * from test_examinee_answer where examinee_guest_id = :examinee_guest_id and test_id = :test_id", nativeQuery = true)
