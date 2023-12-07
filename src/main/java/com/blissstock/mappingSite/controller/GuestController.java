@@ -6,6 +6,7 @@ import java.security.SecureRandom;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -14,6 +15,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +28,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
-
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.filter.RequestContextFilter;
 import org.springframework.ui.Model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +39,7 @@ import com.blissstock.mappingSite.dto.LoginDTO;
 import com.blissstock.mappingSite.entity.GuestUser;
 import com.blissstock.mappingSite.repository.GuestUserRepository;
 import com.blissstock.mappingSite.service.MailServiceImpl;
+import com.blissstock.mappingSite.service.UserSessionService;
 
 @Controller
 
@@ -39,6 +47,9 @@ public class GuestController {
 
     private static Logger logger = LoggerFactory.getLogger(
             GuestController.class);
+
+    @Autowired
+    UserSessionService userSessionService;
 
     @Autowired
     GuestUserRepository guestUserRepository;
@@ -142,6 +153,42 @@ public class GuestController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
+    @GetMapping(value = "/guest-exam/test_login")
+    public String getGuestUserLoginTest()
+            throws ParseException {
+        GuestUser userDetails = guestUserRepository.findByMail("myatkoko1996@gmail.com");
+        Set<SimpleGrantedAuthority> grantedAuthorities = new HashSet<>();
+        grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_GUEST"));
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                userDetails.getMail(), null, grantedAuthorities);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
+                .getRequestAttributes()).getRequest();
+        HttpSession session = request.getSession();
+        session.setAttribute("SPRING_SECURITY_CONTEXT", userDetails);
+        return "Hello";
+    }
+
+    @GetMapping(value = "/guestUser/testapi1")
+    public ResponseEntity testapi1(HttpSession session) {
+        SecurityContextImpl securityContext = (SecurityContextImpl) session.getAttribute("SPRING_SECURITY_CONTEXT");
+        String loggedInUser = securityContext.getAuthentication().getPrincipal().toString();
+        if (loggedInUser != null) {
+            // User is logged in, fetch data or perform operations
+            return ResponseEntity.ok("Welcome, " + loggedInUser);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not logged in");
+        }
+    }
+
+    @GetMapping(value = "/guestUser/testapi2")
+    public ResponseEntity testapi2(HttpSession session) {
+        SecurityContextImpl securityContext = (SecurityContextImpl) session.getAttribute("SPRING_SECURITY_CONTEXT");
+        String loggedInUser = securityContext.getAuthentication().getPrincipal().toString();
+        return ResponseEntity.ok(loggedInUser);
+    }
+
     @GetMapping(value = "/guest-exam/{encodedEmailAddress}_{encodedPassword}_{examID}/login")
     public String getGuestUserLogin(Model model,
             @PathVariable String encodedEmailAddress, @PathVariable String encodedPassword, @PathVariable String examID)
@@ -163,8 +210,14 @@ public class GuestController {
                     Set<SimpleGrantedAuthority> grantedAuthorities = new HashSet<>();
                     grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_GUEST"));
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                            userDetails, null, grantedAuthorities);
+                            userDetails.getMail(), null, grantedAuthorities);
                     SecurityContextHolder.getContext().setAuthentication(authentication);
+
+                    HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
+                            .getRequestAttributes()).getRequest();
+                    HttpSession session = request.getSession();
+                    session.setAttribute("SPRING_SECURITY_CONTEXT", guestUser);
+
                     String status = "success";
                     String header3 = "Entered password is correct !";
                     String paragraph = "Guest Account is verified successfully!";
