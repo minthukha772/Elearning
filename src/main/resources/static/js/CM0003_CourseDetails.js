@@ -138,6 +138,9 @@ function showFileName() {
 }
 // filename show end
 
+document.getElementById('uploadButton').addEventListener('click', function () {
+});
+
 // Check input data and send data to backend for Upload a video Dialog
 document.getElementById('videoUploadForm').addEventListener('submit', function (e) {
   e.preventDefault();
@@ -202,6 +205,12 @@ document.getElementById('videoUploadForm').addEventListener('submit', function (
     }, 2000);
   }
 
+  // Enable the "Cancel Upload" button when the "Upload" button is clicked
+  document.getElementById('cancelUploadButton').disabled = false;
+
+ // To prevent from clicking upload button mulitiple time. =)
+  document.getElementById('uploadButton').disabled = true;
+
   // Use the Fetch API to send the data to the backend
   fetch("/upload", {
     method: "POST",
@@ -230,12 +239,17 @@ $(document).ready(function () {
       type: "POST",
       url: "/cancelUpload",
       success: function (response) {
-
         console.log("Upload canceled: " + response);
+
+        // Reload the page after a 1-second delay
+        setTimeout(function () {
+          location.reload();
+        });
       }
     });
   });
 });
+
 
 //Upload progress bar
 const progressBar = document.getElementById('progressBar');

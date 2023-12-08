@@ -124,10 +124,10 @@
 
 
 
-				<div class=" d-flex justify-content-between">
-					<button id="cancelUploadButton" class=" btn btn-secondary btn-sm">Cancel Upload</button>
-					<button class=" btn btn-success btn-sm" form="videoUploadForm">Upload</button>
-				</div>
+				<div class="d-flex justify-content-between">
+					<button id="cancelUploadButton" class="btn btn-secondary btn-sm" disabled>Cancel Upload</button>
+					<button id="uploadButton" class="btn btn-success btn-sm" form="videoUploadForm">Upload</button>
+				</div>				  
 			</div>
 		</div>
 		<!-- upload a video modal box end -->
@@ -430,7 +430,7 @@
 									</div>
 									<div class="modal-body">
 										<p>
-											The data will permentently delete! recovery is not
+											The data will be permentently deleted! recovery is not
 											possible!
 										</p>
 									</div>
@@ -456,7 +456,7 @@
 							Go to Videos
 						</a>
 
-						<div th:if="@{isLiveClass}">
+						<div th:if="${isLiveClass}">
 							<p class="prerequisites my-3">Class Link</p>
 							<form th:action="@{/admin/course-details/insert-class-link}" method="POST">
 								<input type="hidden" name="courseId" th:value="${courseInfo.courseId}" />

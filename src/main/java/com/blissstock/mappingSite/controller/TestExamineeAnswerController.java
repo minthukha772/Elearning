@@ -2,6 +2,7 @@ package com.blissstock.mappingSite.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.json.JSONArray;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -74,16 +76,16 @@ public class TestExamineeAnswerController {
                         @RequestParam(value = "answer_material", required = false) MultipartFile answer_material)
                         throws JsonMappingException, JsonProcessingException, UnauthorizedFileAccessException {
                 Long userID = getUid();
-                
+
                 if (answer_material != null) {
                         logger.info(
-                            "Called submitAnswer with parameter (test_id={}, question_id={}, student_answer={}, answer_type={}, answer_material={})",
-                            test_id, question_id, student_answer, answer_type, answer_material.getSize());
-                    } else {
+                                        "Called submitAnswer with parameter (test_id={}, question_id={}, student_answer={}, answer_type={}, answer_material={})",
+                                        test_id, question_id, student_answer, answer_type, answer_material.getSize());
+                } else {
                         logger.info(
-                            "Called submitAnswer with parameter (test_id={}, question_id={}, student_answer={}, answer_type={}, answer_material is empty)",
-                            test_id, question_id, student_answer, answer_type);
-                    }
+                                        "Called submitAnswer with parameter (test_id={}, question_id={}, student_answer={}, answer_type={}, answer_material is empty)",
+                                        test_id, question_id, student_answer, answer_type);
+                }
 
                 logger.info("user_id: {}", userID);
                 Long student_id = userSessionService.getUserAccount().getAccountId();
@@ -178,10 +180,15 @@ public class TestExamineeAnswerController {
                         @RequestParam(value = "question_id") Long question_id,
                         @RequestParam(value = "student_answer") String student_answer,
                         @RequestParam(value = "answer_type") String answer_type,
-                        @RequestParam(value = "answer_material", required = false) MultipartFile answer_material)
+                        @RequestParam(value = "answer_material", required = false) MultipartFile answer_material,
+                        HttpSession session)
                         throws JsonMappingException, JsonProcessingException, UnauthorizedFileAccessException {
-                Long guestUserId = getGuestid();
-                GuestUser guestUser = guestUserRepository.findByGuestId(guestUserId);
+                SecurityContextImpl securityContext = (SecurityContextImpl) session
+                                .getAttribute("SPRING_SECURITY_CONTEXT");
+                String loggedInUser = securityContext.getAuthentication().getPrincipal().toString();
+
+                GuestUser guestUser = guestUserRepository.getGuestUserbyEmail(loggedInUser);
+                Long guestUserId = guestUser.getGuest_id();
                 logger.info("Initiate Operation Retrieve Table user_info by Query: guestUserId={}", guestUserId);
                 String answerStatus = "FALSE";
                 Integer acquiredmarks = 0;
@@ -191,7 +198,7 @@ public class TestExamineeAnswerController {
                                 "Operation Retrieve Table test_question by Query: question_id={}. Result List: Question={} | Success",
                                 question_id, question);
                 List<TestExamineeAnswer> testExamineeAnswer = TestExamineeAnswerRepository
-                                .getStudentAnswerByTestAndGuest(guestUserId, test_id);
+                                .getStudentAnswerByTestAndGuest(guestUserId, question_id);
                 if (testExamineeAnswer.size() == 0) {
                         if (!answer_type.equals("FREE_ANSWER")) {
                                 logger.info("Initiate Operation Retrieve Table test_question_correct_answer by Query: question_id={}",
@@ -264,7 +271,7 @@ public class TestExamineeAnswerController {
                                 }
                         }
                 }
-                SecurityContextHolder.clearContext();
+                // SecurityContextHolder.clearContext();
                 return ResponseEntity.ok(HttpStatus.OK);
         }
 
