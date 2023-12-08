@@ -198,7 +198,7 @@ public class TestExamineeAnswerController {
                                 "Operation Retrieve Table test_question by Query: question_id={}. Result List: Question={} | Success",
                                 question_id, question);
                 List<TestExamineeAnswer> testExamineeAnswer = TestExamineeAnswerRepository
-                                .getStudentAnswerByTestAndGuest(guestUserId, test_id);
+                                .getStudentAnswerByTestAndGuest(guestUserId, question_id);
                 if (testExamineeAnswer.size() == 0) {
                         if (!answer_type.equals("FREE_ANSWER")) {
                                 logger.info("Initiate Operation Retrieve Table test_question_correct_answer by Query: question_id={}",
@@ -271,7 +271,7 @@ public class TestExamineeAnswerController {
                                 }
                         }
                 }
-                SecurityContextHolder.clearContext();
+                // SecurityContextHolder.clearContext();
                 return ResponseEntity.ok(HttpStatus.OK);
         }
 
