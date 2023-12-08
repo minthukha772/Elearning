@@ -230,12 +230,17 @@ $(document).ready(function () {
       type: "POST",
       url: "/cancelUpload",
       success: function (response) {
-
         console.log("Upload canceled: " + response);
+
+        // Reload the page after a 1-second delay
+        setTimeout(function () {
+          location.reload();
+        }, 1000);
       }
     });
   });
 });
+
 
 //Upload progress bar
 const progressBar = document.getElementById('progressBar');
