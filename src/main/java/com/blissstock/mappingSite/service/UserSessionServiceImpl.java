@@ -110,6 +110,7 @@ public class UserSessionServiceImpl implements UserSessionService {
       GuestUser guestUser = (GuestUser) principal;
       email = guestUser.getMail();
     }
-    return guestUserRepository.findByMail(email);
+    GuestUser guestUser = guestUserRepository.findByMail(principal.toString());
+    return guestUser;
   }
 }
