@@ -933,10 +933,10 @@ public class MailServiceImpl implements MailService {
   }
 
   @Override
-  public void sendEmailToAdmin(String adminEmail, String contactEmail, String name, String details, String description,
-      String phoneNumber) throws MessagingException {
+  public void sendEmailToAdmin(String adminEmail, String name, String contactEmail, String phoneNumber, String details,
+      String description) throws MessagingException {
     String recipientAddress = adminEmail;
-    String subject = "【Pyinnyar Subuu]New Inquiry revieved successfully";
+    String subject = "【Pyinnyar Subuu]New Inquiry received successfully";
 
     final Context ctx = new Context();
     ctx.setVariable("Name", name);
@@ -959,8 +959,8 @@ public class MailServiceImpl implements MailService {
   }
 
   @Override
-  public void sendEmailToAsker(String contactEmail, String name, String details, String description,
-      String phoneNumber) throws MessagingException {
+  public void sendEmailToAsker(String name, String contactEmail, String phoneNumber, String details, String description)
+      throws MessagingException {
     String recipientAddress = contactEmail;
     String subject = "【Pyinnyar Subuu】Your Inquiry about has successfully sent!";
 
