@@ -1,0 +1,67 @@
+/* ::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #0F8173;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #00736C;
+} */
+
+a {
+    text-decoration: none !important;
+}
+
+.btn-primary {
+    background-color: #00736C !important;
+}
+
+.confirmation-screen {
+    background-image: url('/images/background11.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: right;
+    /* min-height: 100vh; */
+    /* margin-top: 100px; */
+}
+
+@media (max-width:650px) {
+    .confirmation-screen {
+        background-image: url('/images/background11-mobile.jpg');
+    }
+}
+
+.confirmation-box {
+    min-width: 320px;
+    width: 500px;
+}
+
+.confirmation-box .items-container {
+    background-color: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(2px);
+    border-radius: 10px;
+}
+
+.items-container .items {
+    padding: 15px 5px 10px;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+}
+
+.items-container .items .title {
+    color: #0F8173;
+    margin-right: 10px;
+}
+
+.items-container .description {
+    height: 100px;
+    margin-top: 10px;
+    padding: 10px 15px;
+    overflow-y: auto;
+    border: 0.5px solid rgba(0, 0, 0, 0.2);
+}
