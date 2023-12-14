@@ -4,11 +4,10 @@
     box-sizing: border-box;
 }
 .inquiry-form-container{
-    min-height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: center;
-    padding: 30px 15px;
+    padding: 30px;
+    margin-top: 80px;
 }
 .inquiry-form{
     width: 500px;
@@ -20,6 +19,8 @@
 .form-container{
     color: white;
     margin-top: 15px;
+    background-color: #0F8173;
+    border-radius: 10px;
 }
 form label{
     display: block;
@@ -32,15 +33,12 @@ form input,form textarea, form select{
     border: none !important;
 }
 .group{
-    background-color: #0F8173;
     padding: 7px 15px;
 }
 .group:first-child{
-    border-radius: 10px 10px 0 0;
     padding-top: 20px;
 }
 .group:nth-child(6){
-    border-radius: 0 0 10px 10px;
     padding-bottom: 20px;
 }
 .inquiry-form .w-100{
@@ -57,9 +55,7 @@ form textarea{
     text-align: end;
     margin-top: 15px;
 }
-input[type='submit']{
-    background-color: black;
-    color: white;
+/* input[type='submit']{
     width: 120px;
     padding: 10px 0px;
     cursor: pointer;
@@ -67,11 +63,23 @@ input[type='submit']{
 }
 input[type='submit']:hover{
     background-color: rgba(0, 0, 0, 0.8);
-}
+} */
 
-@media (max-width:768px) {
+@media (max-width:560px) {
     .inquiry-form{
-        width: 90% !important;
+        width: 100% !important;
     }
 }
-  
+
+.input-error-msg{
+    display: none;
+    margin-top: 3px;
+    margin-bottom: 0px;
+    border-radius: 50px;
+    color: red;
+    font-weight: bold;
+    font-size: 13px;
+    background-color: #ffffff80;
+    padding-left: 10px;
+    padding-right: 10px;
+}

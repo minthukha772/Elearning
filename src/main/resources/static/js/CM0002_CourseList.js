@@ -11,11 +11,12 @@ $(function () {
   });
   LowestFeeInput = $("#lowestFee");
   HighestFeeInput = $("#highestFee");
+  warningFee = $("#warningFee");
 
   document.getElementById('searchButton').addEventListener('click', function (event) {
     // Prevent the default form submission
     event.preventDefault();
-
+    warningFee.css("display", "none");
     // Get the form and input field values
     const form = document.getElementById('searchForm');
     const courseName = form.elements['courseName'].value;
@@ -30,7 +31,7 @@ $(function () {
     //   return;
     // }
     if (lowestFee > highestFee) {
-      alert("Lowest Fee Amount must be greater than Hight Fee Amount");
+      warningFee.css("display", "block");
       return;
     }
     // Validate other fields as needed...

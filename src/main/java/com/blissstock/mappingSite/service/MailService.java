@@ -81,12 +81,10 @@ public interface MailService {
         public void guestsendVerificationMail(String guestUserName, String email, String examID, Test testData)
                         throws MessagingException;
 
-        public void sendEmailToAdmin(String adminEmail, String contactEmail, String name, String details,
-                        String description, String phoneNumber)
-                        throws MessagingException;
+        public void sendEmailToAdmin(String adminEmail, String name, String contactEmail, String phoneNumber,
+                        String details, String description) throws MessagingException;
 
-        public void sendEmailToAsker(String contactEmail, String name, String details,
-                        String description, String phoneNumber)
-                        throws MessagingException;
+        public void sendEmailToAsker(String name, String contactEmail, String phoneNumber, String details,
+                        String description) throws MessagingException;
 
 }
