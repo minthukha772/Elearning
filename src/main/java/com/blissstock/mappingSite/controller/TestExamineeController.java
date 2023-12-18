@@ -76,9 +76,6 @@ public class TestExamineeController {
         UserSessionService userSessionService;
 
         @Autowired
-        TestExamineeRepository testStudentRepository;
-
-        @Autowired
         TestExamineeAnswerRepository testStudentAnswerRepository;
 
         @Autowired
@@ -1425,7 +1422,7 @@ public class TestExamineeController {
                                         "TestExaminee",
                                         name,
                                         test_id);
-                        testStudents = testStudentRepository.getExamineeByTest(test_id);
+                        testStudents = testExamineeRepository.getExamineeByTest(test_id);
                         logger.info("Operation Retrieve Table {} by query : findByNameandTestId {},{} | Success",
                                         "TestExaminee",
                                         name,
@@ -1434,7 +1431,7 @@ public class TestExamineeController {
                         logger.info("Initiate to Operation Retrieve Table {} by query :findByNameandTestId{}{}",
                                         "TestExaminee",
                                         name, test_id);
-                        testStudents = testStudentRepository.findByNameandTestId(name, test_id);
+                        testStudents = testExamineeRepository.findByNameandTestId(name, test_id);
                         logger.info("Operation Retrieve Table {} by query :findByNameandTestId{}{}Result List : {} Success",
                                         "TestExaminee", name, test_id, testStudents.toString());
                 }
@@ -1685,13 +1682,13 @@ public class TestExamineeController {
                         List<JoinCourseUser> enrolledList = joinCourseUserRepository
                                         .findByStudentByCourseID(course.getCourseId());
                         for (JoinCourseUser student : enrolledList) {
-                                TestExaminee checkStudent = testStudentRepository.getStudentByID(
+                                TestExaminee checkStudent = testExamineeRepository.getStudentByID(
                                                 student.getUserInfo().getUid(),
                                                 test_id);
                                 if (checkStudent == null) {
                                         TestExaminee TestExaminee = new TestExaminee(null, test, student.getUserInfo(),
                                                         null, null);
-                                        testStudentRepository.save(TestExaminee);
+                                        testExamineeRepository.save(TestExaminee);
                                 }
                         }
                 }
@@ -1717,7 +1714,7 @@ public class TestExamineeController {
                 Test test = testRepository.getTestByID(test_id);
                 UserInfo user = userInfoRepository.findStudentById(student_id);
                 if (test.getExam_status().equals("Exam Created") || test.getExam_status().equals("Questions Created")) {
-                        TestExaminee existingStudent = testStudentRepository.getStudentByID(student_id, test_id);
+                        TestExaminee existingStudent = testExamineeRepository.getStudentByID(student_id, test_id);
                         if (existingStudent == null) {
                                 logger.info("Initiate to Operation Retrieve Table {} by query :findByNameandTestId{}{}",
                                                 "TestExaminee",
@@ -1726,7 +1723,7 @@ public class TestExamineeController {
                                                 testid,
                                                 "student_id", student_id);
                                 TestExaminee TestExaminee = new TestExaminee(null, test, user, null, null);
-                                testStudentRepository.save(TestExaminee);
+                                testExamineeRepository.save(TestExaminee);
                                 logger.info("Operation Retrieve Table {} by query :findByNameandTestId{}{}Result List : {} Success",
                                                 "TestExaminee", student_id, test_id, TestExaminee.toString());
                                 logger.info("Operation Update Table {} Data {} By {} = {} Success", "TestExaminee",
