@@ -5,7 +5,7 @@
       <a th:href="@{/}"><img src="/images/logo.png" /></a>
     </div>
 
-     <div  class="d-flex links-div" id="linkholderteachers">
+    <div class="d-flex links-div" id="linkholderteachers">
 
       <div style="width: 200px;" class="d-flex form__group field align-items-center align-self-center ">
         <img src="/images/icons/search-icon.svg" class="icon" />
@@ -36,9 +36,14 @@
           User Manual
         </a>
       </div>
-      <div
-          style="width: 150px;" class="link-holder">
-        <a class="nav-link linkholderteachers " th:href="@{/logout}" style="background-color: #309986; font-weight: bold;">Log out</a>
+
+      <div style="width: 130px;" class="link-holder">
+        <a class="nav-link linkholder" th:href="@{/guest/contact}" style="background-color: #309986;">Contact Us</a>
+      </div>
+
+      <div style="width: 150px;" class="link-holder">
+        <a class="nav-link linkholderteachers " th:href="@{/logout}"
+          style="background-color: #309986; font-weight: bold;">Log out</a>
       </div>
 
     </div>
@@ -68,11 +73,12 @@
             d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
         </svg>
       </a>
-   </li>
+    </li>
 
-   
-   <li><a class="linkholderteachers " th:href="@{/logout}" style="color: var(--log-out); font-weight: bold;">Log out</a></li><br />
-   <!--<li>
+
+    <li><a class="linkholderteachers " th:href="@{/logout}" style="color: var(--log-out); font-weight: bold;">Log
+        out</a></li><br />
+    <!--<li>
       <div
         class="d-flex form__group field align-items-center align-self-center">
         <img
@@ -91,8 +97,8 @@
         Search
       </button>
     </li> -->
-        <img src="/images/icons/search-icon.svg" class="icon" />
-        <a class=" ms-3 linkholder" th:href="@{/guest/explore}">Search the Course</a>
-      </div>
+    <img src="/images/icons/search-icon.svg" class="icon" />
+    <a class=" ms-3 linkholder" th:href="@{/guest/explore}">Search the Course</a>
+  </div>
   </div>
 </nav>

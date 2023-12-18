@@ -31,7 +31,7 @@ public interface TestRepository extends JpaRepository<Test, Long> {
         @Query(value = "Select * from test where course_id = :course_id and user_id = :user_id order by test_id desc", nativeQuery = true)
         public List<Test> getListByCourseAndUser(@Param("course_id") Long course_id, @Param("user_id") Long user_id);
 
-        @Query(value = "Select * from test where date BETWEEN :fromDate and :toDate and user_id = :user_id order by test_id desc", nativeQuery = true)
+        @Query(value = "Select * from test where date BETWEEN :fromDate and :toDate and user_id = :user_id AND is_delete = 'false' order by test_id desc", nativeQuery = true)
         public List<Test> getListByDateAndUser(@Param("fromDate") Date fromDate, @Param("toDate") Date toDate,
                         @Param("user_id") Long user_id);
 
@@ -64,7 +64,7 @@ public interface TestRepository extends JpaRepository<Test, Long> {
         @Query(value = "Select * from test where course_id = :course_id order by test_id desc", nativeQuery = true)
         public List<Test> getListByCourse(@Param("course_id") Long course_id);
 
-        @Query(value = "Select * from test where date BETWEEN :fromDate and :toDate order by test_id desc", nativeQuery = true)
+        @Query(value = "Select * from test where date BETWEEN :fromDate and :toDate AND is_delete = 'false' order by test_id desc", nativeQuery = true)
         public List<Test> getListByDate(@Param("fromDate") Date fromDate, @Param("toDate") Date toDate);
 
         @Query(value = "Select * from test where test_id = :test_id limit 1", nativeQuery = true)
