@@ -22,7 +22,6 @@ import lombok.Setter;
 public class TestExaminee {
     @Id
     @Column(name = "test_examinee_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)

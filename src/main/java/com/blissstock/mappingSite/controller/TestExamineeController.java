@@ -1686,7 +1686,8 @@ public class TestExamineeController {
                                                 student.getUserInfo().getUid(),
                                                 test_id);
                                 if (checkStudent == null) {
-                                        TestExaminee TestExaminee = new TestExaminee(null, test, student.getUserInfo(),
+                                        Long testExamineeMaxid = testExamineeRepository.getExamineeTableMaxID();
+                                        TestExaminee TestExaminee = new TestExaminee(testExamineeMaxid, test, student.getUserInfo(),
                                                         null, null);
                                         testExamineeRepository.save(TestExaminee);
                                 }
