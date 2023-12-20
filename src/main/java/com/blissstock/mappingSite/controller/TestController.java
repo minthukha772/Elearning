@@ -935,7 +935,7 @@ public class TestController {
             int passing_score = Integer.parseInt(jsonObject.getString("passing_score"));
             int minutes_allowed = jsonObject.getInt("minutes_allowed");
             CourseInfo courseInfo = courseInfoRepository.findByCourseID(course_id);
-        //   String student_guest = jsonObject.getString("student_guest");
+            // String student_guest = jsonObject.getString("student_guest");
             if (courseInfo == null) {
                 logger.warn("Failed to find course with ID: " + course_id);
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -954,13 +954,9 @@ public class TestController {
             // "null",student_guest);
             // }else{
 
-
-             Test test = new Test(null, courseInfo, userInfo, description, section_name, minutes_allowed, passing_score,
-                     examDate, exam_start_time, exam_end_time, exam_status, "false", "null","student", 0);
-
-
-             
-
+            Test test = new Test(test_id, courseInfo, userInfo, description, section_name, minutes_allowed,
+                    passing_score,
+                    examDate, exam_start_time, exam_end_time, exam_status, "false", "null", "student", 0);
             // origin // Test test = new Test(test_id, courseInfo, userInfo, description,
             // section_name, minutes_allowed,
             // passing_score, examDate, exam_start_time, exam_end_time, exam_status,
@@ -977,16 +973,25 @@ public class TestController {
                     int total_mark = 0;
                     TestResult viewExamResult;
                     if (test.getExam_target() == 1) {
-                        viewExamResult = resultRepo.getResultByTestIdAndUser(test_id,
+                        viewExamResult = resultRepo.getResultByTestIdAndGuestUser(test_id,
                                 student.getGuestUser().getGuest_id());
                     } else {
                         viewExamResult = resultRepo.getResultByTestIdAndUser(test_id,
                                 student.getUserInfo().getUid());
                     }
+
                     if (viewExamResult == null) {
-                        List<TestExamineeAnswer> studentAnswerList = TestExamineeAnswerRepository
-                                .getStudentAnswerListByTestAndStudent(student.getUserInfo().getUid(),
-                                        test_id);
+                        List<TestExamineeAnswer> studentAnswerList;
+                        if (test.getExam_target() == 1) {
+                            studentAnswerList = TestExamineeAnswerRepository
+                                    .getGuestAnswerListByTestAndGuest(student.getGuestUser().getGuest_id(),
+                                            test_id);
+                        } else {
+                            studentAnswerList = TestExamineeAnswerRepository
+                                    .getStudentAnswerListByTestAndStudent(student.getUserInfo().getUid(),
+                                            test_id);
+                        }
+
                         for (TestExamineeAnswer studentAnswer : studentAnswerList) {
                             int acquired_mark = studentAnswer.getAcquired_mark();
                             int max_mark = studentAnswer.getQuestion().getMaximum_mark();
@@ -999,42 +1004,77 @@ public class TestController {
                         Float fcalculate_percent = (float) (ftotal_acquired_mark / ftotal_mark);
                         fcalculate_percent = fcalculate_percent * 100;
                         if (fcalculate_percent > passing_score_percent) {
-                            resultRepo.save(viewExamResult);
+                            TestResult result;
+                            if (test.getExam_target() == 1) {
+                                GuestUser guestUser = guestUserRepository
+                                        .findByGuestId(student.getGuestUser().getGuest_id());
+                                result = new TestResult(null, test, null, guestUser, total_acquired_mark,
+                                        "Passed",
+                                        "");
+                            } else {
+                                UserInfo studentInfo = userInfoRepository
+                                        .findStudentById(student.getUserInfo().getUid());
+                                result = new TestResult(null, test, studentInfo, null, total_acquired_mark,
+                                        "Passed",
+                                        "");
+                            }
+
+                            resultRepo.save(result);
                         } else {
-                            resultRepo.save(viewExamResult);
+                            TestResult result;
+                            if (test.getExam_target() == 1) {
+                                GuestUser guestUser = guestUserRepository
+                                        .findByGuestId(student.getGuestUser().getGuest_id());
+                                result = new TestResult(null, test, null, guestUser, total_acquired_mark,
+                                        "Failed",
+                                        "");
+                            } else {
+                                UserInfo studentInfo = userInfoRepository
+                                        .findStudentById(student.getUserInfo().getUid());
+                                result = new TestResult(null, test, studentInfo, null, total_acquired_mark,
+                                        "Failed",
+                                        "");
+                            }
+                            resultRepo.save(result);
                         }
-                    } else {
-                        List<TestExamineeAnswer> studentAnswerList = TestExamineeAnswerRepository
-                                .getStudentAnswerListByTestAndStudent(student.getUserInfo().getUid(),
-                                        test_id);
-                        for (TestExamineeAnswer studentAnswer : studentAnswerList) {
-                            int acquired_mark = studentAnswer.getAcquired_mark();
-                            int max_mark = studentAnswer.getQuestion().getMaximum_mark();
-                            total_acquired_mark += acquired_mark;
-                            total_mark += max_mark;
-                        }
-                        Float ftotal_acquired_mark = (float) (total_acquired_mark);
-                        Float ftotal_mark = (float) (total_mark);
-                        int passing_score_percent = test.getPassing_score_percent();
-                        Float fcalculate_percent = (float) (ftotal_acquired_mark / ftotal_mark);
-                        fcalculate_percent = fcalculate_percent * 100;
-                        if (fcalculate_percent > passing_score_percent) {
-
-                            viewExamResult.setResult("Passed");
-                            viewExamResult.setResultMark(total_acquired_mark);
-                            logger.info("Initiate to Operation Insert Table Result Data {}", viewExamResult.display());
-                            resultRepo.save(viewExamResult);
-                            logger.info("Operation Insert Table Result Data {} | Success", viewExamResult.display());
-                        } else {
-
-                            viewExamResult.setResult("Failed");
-                            viewExamResult.setResultMark(total_acquired_mark);
-                            logger.info("Initiate to Operation Insert Table Result Data {}", viewExamResult.display());
-                            resultRepo.save(viewExamResult);
-                            logger.info("Operation Insert Table Result Data {} | Success", viewExamResult.display());
-                        }
-
                     }
+                    // } else {
+                    // List<TestExamineeAnswer> studentAnswerList = TestExamineeAnswerRepository
+                    // .getStudentAnswerListByTestAndStudent(student.getUserInfo().getUid(),
+                    // test_id);
+                    // for (TestExamineeAnswer studentAnswer : studentAnswerList) {
+                    // int acquired_mark = studentAnswer.getAcquired_mark();
+                    // int max_mark = studentAnswer.getQuestion().getMaximum_mark();
+                    // total_acquired_mark += acquired_mark;
+                    // total_mark += max_mark;
+                    // }
+                    // Float ftotal_acquired_mark = (float) (total_acquired_mark);
+                    // Float ftotal_mark = (float) (total_mark);
+                    // int passing_score_percent = test.getPassing_score_percent();
+                    // Float fcalculate_percent = (float) (ftotal_acquired_mark / ftotal_mark);
+                    // fcalculate_percent = fcalculate_percent * 100;
+                    // if (fcalculate_percent > passing_score_percent) {
+
+                    // viewExamResult.setResult("Passed");
+                    // viewExamResult.setResultMark(total_acquired_mark);
+                    // logger.info("Initiate to Operation Insert Table Result Data {}",
+                    // viewExamResult.display());
+                    // resultRepo.save(viewExamResult);
+                    // logger.info("Operation Insert Table Result Data {} | Success",
+                    // viewExamResult.display());
+                    // } else {
+
+                    // viewExamResult.setResult("Failed");
+                    // viewExamResult.setResultMark(total_acquired_mark);
+                    // logger.info("Initiate to Operation Insert Table Result Data {}",
+                    // viewExamResult.display());
+                    // resultRepo.save(viewExamResult);
+                    // logger.info("Operation Insert Table Result Data {} | Success",
+                    // viewExamResult.display());
+                    // }
+
+                    // }
+
                 }
             }
             logger.info("Called editTeacherExam with parameter(payload={}) Success", payload);

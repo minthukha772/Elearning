@@ -22,7 +22,6 @@ import lombok.Setter;
 public class TestExamineeAnswer {
     @Column(name = "examinee_answer_id")
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @JoinColumn(name = "test_id")

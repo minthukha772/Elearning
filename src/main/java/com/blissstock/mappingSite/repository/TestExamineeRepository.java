@@ -38,7 +38,7 @@ public interface TestExamineeRepository extends JpaRepository<TestExaminee, Long
     @Query(value = "Select * from test_examinee where test_id = :test_id and examinee_guest_id = :guest_id limit 1", nativeQuery = true)
     public TestExaminee findByTestIdAndGuestId(@Param("test_id") Long test_id, @Param("guest_id") Long guest_id);
 
-    @Query(value = "Select max(test_examinee_id)+1 from test_examinee", nativeQuery = true)
+    @Query(value = "Select COALESCE(MAX(test_examinee_id) + 1, 1) from test_examinee", nativeQuery = true)
     public Long getExamineeTableMaxID();
 
 }

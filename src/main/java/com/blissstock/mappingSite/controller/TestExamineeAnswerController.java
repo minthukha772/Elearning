@@ -71,7 +71,7 @@ public class TestExamineeAnswerController {
         @PostMapping(value = { "/student/submit-answer" })
         private ResponseEntity submitAnswer(@RequestParam(value = "test_id") Long test_id,
                         @RequestParam(value = "question_id") Long question_id,
-                        @RequestParam(value = "student_answer") String student_answer,
+                        @RequestParam(value = "student_answer", required = false) String student_answer,
                         @RequestParam(value = "answer_type") String answer_type,
                         @RequestParam(value = "answer_material", required = false) MultipartFile answer_material)
                         throws JsonMappingException, JsonProcessingException, UnauthorizedFileAccessException {
@@ -133,7 +133,10 @@ public class TestExamineeAnswerController {
                                         question_id, student_id, checkTestStudent);
 
                         if (checkTestStudent == null) {
-                                TestExamineeAnswer TestExamineeAnswer = new TestExamineeAnswer(null, question.getTest(),
+                                Long testExamineeAnswerMAXID = TestExamineeAnswerRepository
+                                                .getExamineeAnswerTableMaxID();
+                                TestExamineeAnswer TestExamineeAnswer = new TestExamineeAnswer(testExamineeAnswerMAXID,
+                                                question.getTest(),
                                                 student, null, question,
                                                 student_answer, "", answerStatus, acquiredmarks, "MARKED");
                                 logger.info("Initiate to Operation Insert Table Test Student Answer Data {}",
@@ -158,7 +161,10 @@ public class TestExamineeAnswerController {
                         TestExamineeAnswer checkTestStudent = TestExamineeAnswerRepository
                                         .getStudentAnswerByQuestionID(question.getId(), student_id);
                         if (checkTestStudent == null) {
-                                TestExamineeAnswer TestExamineeAnswer = new TestExamineeAnswer(null, question.getTest(),
+                                Long testExamineeAnswerMAXID = TestExamineeAnswerRepository
+                                                .getExamineeAnswerTableMaxID();
+                                TestExamineeAnswer TestExamineeAnswer = new TestExamineeAnswer(testExamineeAnswerMAXID,
+                                                question.getTest(),
                                                 student, null, question,
                                                 student_answer, originalFileName, "", 0, "MARKING");
                                 logger.info("Initiate to Operation Insert Table Test Student Answer Data {}",
@@ -170,7 +176,7 @@ public class TestExamineeAnswerController {
                 }
                 logger.info(
                                 "Called submitAnswer with parameter (test_id={}, question_id={}, student_answer={}, answer_type={}, answer_material={}) Success",
-                                test_id, question_id, student_answer, answer_type, answer_material.getSize());
+                                test_id, question_id, student_answer, answer_type, "");
                 return ResponseEntity.ok(HttpStatus.OK);
         }
 
@@ -178,7 +184,7 @@ public class TestExamineeAnswerController {
         @PostMapping(value = { "/guestUser/submit-answer" })
         private ResponseEntity submitAnswerGuestUser(@RequestParam(value = "test_id") Long test_id,
                         @RequestParam(value = "question_id") Long question_id,
-                        @RequestParam(value = "student_answer") String student_answer,
+                        @RequestParam(value = "student_answer", required = false) String student_answer,
                         @RequestParam(value = "answer_type") String answer_type,
                         @RequestParam(value = "answer_material", required = false) MultipartFile answer_material,
                         HttpSession session)
@@ -233,7 +239,9 @@ public class TestExamineeAnswerController {
                                                 question_id, guestUserId, checkTestStudent);
 
                                 if (checkTestStudent == null) {
-                                        TestExamineeAnswer TestExamineeAnswer = new TestExamineeAnswer(null,
+                                        Long testExamineeAnswerMAXID = TestExamineeAnswerRepository
+                                                .getExamineeAnswerTableMaxID();
+                                        TestExamineeAnswer TestExamineeAnswer = new TestExamineeAnswer(testExamineeAnswerMAXID,
                                                         question.getTest(),
                                                         null, guestUser, question,
                                                         student_answer, "", answerStatus, acquiredmarks, "MARKED");
@@ -259,7 +267,8 @@ public class TestExamineeAnswerController {
                                 TestExamineeAnswer checkTestStudent = TestExamineeAnswerRepository
                                                 .getGuestUserAnswerByQuestionID(question.getId(), guestUserId);
                                 if (checkTestStudent == null) {
-                                        TestExamineeAnswer TestExamineeAnswer = new TestExamineeAnswer(null,
+                                        Long testExamineeAnswerMAXID = TestExamineeAnswerRepository.getExamineeAnswerTableMaxID();
+                                        TestExamineeAnswer TestExamineeAnswer = new TestExamineeAnswer(testExamineeAnswerMAXID,
                                                         question.getTest(),
                                                         null, guestUser, question,
                                                         student_answer, originalFileName, "", 0, "MARKING");
@@ -271,7 +280,6 @@ public class TestExamineeAnswerController {
                                 }
                         }
                 }
-                // SecurityContextHolder.clearContext();
                 return ResponseEntity.ok(HttpStatus.OK);
         }
 

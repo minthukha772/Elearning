@@ -2038,7 +2038,8 @@ public class TestExamineeController {
                                 // Check if guest user is already added to exam or not
 
                                 if (guestUser == null) {
-                                        GuestUser newGuestUser = new GuestUser(null, name, email, phone_number,
+                                        Long maxGuestID = guestUserRepository.getGuestableMaxID();
+                                        GuestUser newGuestUser = new GuestUser(maxGuestID, name, email, phone_number,
                                                         one_time_passwordEncoded,
                                                         password_update_date_time,
                                                         null, null);
@@ -2049,8 +2050,9 @@ public class TestExamineeController {
                                         guestUserRepository.save(existingGuestUser);
                                 }
                                 if (checkExaminee == null) {
+                                        Long maxTestExamineeID = testExamineeRepository.getExamineeTableMaxID();
                                         GuestUser newGuestUser = guestUserRepository.findByMail(email);
-                                        TestExaminee testExaminee = new TestExaminee(null, test, null, newGuestUser,
+                                        TestExaminee testExaminee = new TestExaminee(maxTestExamineeID, test, null, newGuestUser,
                                                         null);
                                         testExamineeRepository.save(testExaminee);
                                 }
@@ -2173,7 +2175,8 @@ public class TestExamineeController {
                                         }
                                 }).start();
                         } else {
-                                testExaminee = new TestExaminee(null, test, null, checkGuestByEmail, null);
+                                Long maxTestExamineeID = testExamineeRepository.getExamineeTableMaxID();
+                                testExaminee = new TestExaminee(maxTestExamineeID, test, null, checkGuestByEmail, null);
                                 testExamineeRepository.save(testExaminee);
                                 new Thread(new Runnable() {
                                         public void run() {

@@ -513,7 +513,7 @@ public class TestQuestionController {
                 studentId, test_id, studentAnswerInfo);
 
         String studentExamStartTime = studentInfo.getStudentExamStartTime();
-        String examTitle = testinfo.getDescription();
+        String examTitle = testinfo.getSection_name();
 
         DateTimeFormatter examTimeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
@@ -811,7 +811,7 @@ public class TestQuestionController {
                     guestUserID, test_id, guestAnswerInfo);
 
             String studentExamStartTime = studentInfo.getStudentExamStartTime();
-            String examTitle = testinfo.getDescription();
+            String examTitle = testinfo.getSection_name();
 
             DateTimeFormatter examTimeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
@@ -1043,8 +1043,14 @@ public class TestQuestionController {
             logger.info("Called saveComment with parameter(payLoad={}, userID={})", payLoad, userID);
             JSONObject jsonObject = new JSONObject(payLoad);
             Long testId = jsonObject.getLong("test_Id");
-            Long studentId = jsonObject.getLong("student_Id");
-            Long guestId = jsonObject.getLong("guest_Id");
+            Long studentId = null;
+            Long guestId = null;
+            if(jsonObject.has("student_Id")){
+                studentId = jsonObject.getLong("student_Id");
+            }
+            if(jsonObject.has("guest_Id")){
+                guestId = jsonObject.getLong("guest_Id");
+            }
             String comment = jsonObject.getString("comment");
             TestResult result = new TestResult();
 

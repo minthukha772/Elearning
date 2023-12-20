@@ -79,4 +79,7 @@ public interface TestExamineeAnswerRepository extends JpaRepository<TestExaminee
         @Query(value = "Select count(examinee_answer_id) from test_examinee_answer where marked_status = 'MARKING' and test_id = :test_id and examinee_guest_id = :examinee_guest_id", nativeQuery = true)
         public Integer getUnCheckAnswerCountByTestAndGuest(@Param("test_id") Long test_id,
                         @Param("examinee_guest_id") Long examinee_guest_id);
+
+        @Query(value = "Select COALESCE(MAX(examinee_answer_id) + 1, 1) from test_examinee_answer", nativeQuery = true)
+        public Long getExamineeAnswerTableMaxID();              
 }
