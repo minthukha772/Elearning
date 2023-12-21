@@ -244,9 +244,17 @@
         crossorigin="anonymous"></script>
 
     <script th:inline="javascript">
+        var url = "";
         var questionList = /*[[${questionList}]]*/ "default";
         var test_id = /*[[${test_id}]]*/ "test_id";
+        var role = /*[[${role}]]*/ "default";
+        var user_role =/*[[${user_role}]]*/ null;
 
+        if (user_role == "TEACHER") {
+            url = "teacher";
+        } else {
+            url = "admin";
+        }
         function setasmarked(test_question) {
             console.log(test_question);
             let formData = new FormData();
@@ -287,7 +295,7 @@
             const dialogConfirmBtn = document.getElementById("dialog-confirm-btn");
             const dialogCloseBtn = document.getElementById("dialog-close-btn");
 
-            xhr.open("POST", "https://pyinnyarsubuu.com/admin/mark-examinee-question", true);
+            xhr.open("POST", "https://pyinnyarsubuu.com/" + url + "/mark-examinee-question", true);
             /*xhr.onload = () => {
                 //alert("Marked Successfully.");
                  
@@ -321,7 +329,7 @@
             
             formData.append('comment',comment.value);
             var xhr = new XMLHttpRequest();
-            xhr.open("POST","http://pyinnyarsubuu.com/admin/comment",true);
+            xhr.open("POST","http://localhost:8080/admin/comment",true);
             xhr.send(formData);
 
 
@@ -354,8 +362,14 @@
 
         function submitData(submitType) {
             var testId = document.getElementById("testId").textContent;
-            var studentId = document.getElementById("studentId").textContent;
-            var guestId = document.getElementById("guestId").textContent;
+            var student = document.getElementById("studentId");
+            if (student != null) {
+                var studentId = student.textContent;
+            }
+            var guest = document.getElementById("guestId");
+            if (guest != null) {
+                var guestId = guest.textContent;
+            }
             var comment = document.getElementById("comment").value;
 
             var data;
@@ -366,10 +380,9 @@
                     student_Id: studentId,
                     guest_id: guestId,
                     comment: comment
-
                 }
                 data = JSON.stringify(data);
-
+                console.log(data);
                 fetch("/admin/comment", {
                     method: "POST",
                     headers: {
@@ -390,8 +403,14 @@
         }
         function submitData2(submitType) {
             var testId = document.getElementById("testId").textContent;
-            var studentId = document.getElementById("studentId").textContent;
-            var guestId = document.getElementById("guestId").textContent;
+            var student = document.getElementById("studentId");
+            if (student != null) {
+                var studentId = student.textContent;
+            }
+            var guest = document.getElementById("guestId");
+            if (guest != null) {
+                var guestId = guest.textContent;
+            }
             var comment = document.getElementById("comment").value;
 
             var data;

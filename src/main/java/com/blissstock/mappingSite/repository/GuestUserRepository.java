@@ -27,4 +27,6 @@ public interface GuestUserRepository extends JpaRepository<GuestUser, Long> {
         @Query(value = "Select * from guest where mail = :mail", nativeQuery = true)
         public GuestUser findByMail(@Param("mail") String mail);
 
+        @Query(value = "Select COALESCE(MAX(guest_id) + 1, 1) from guest", nativeQuery = true)
+        public Long getGuestableMaxID();
 }

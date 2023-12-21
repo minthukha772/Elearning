@@ -22,11 +22,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
-
-
 
 import org.apache.commons.lang3.builder.ToStringExclude;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -100,7 +101,22 @@ public class CourseInfo {
   @Column(name = "payment_type", length = 50)
   private String paymentType;
 
+  @Temporal(TemporalType.DATE)
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
+  @Column(name = "course_registered_date")
+  private Date courseRegisteredDate;
+
+  @PrePersist
+  public void prePersist() {
+    courseRegisteredDate = new Date();
+  }
+
   // mapping
+
+  @ToString.Exclude
+  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "courseInfo")
+  @JsonIgnore
+  private List<VideoClass> videoClasses = new ArrayList<>();
 
   @ToString.Exclude
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "courseInfo")
@@ -125,11 +141,7 @@ public class CourseInfo {
   @Transient
   private Long uid;
 
-  @OneToMany(
-    fetch = FetchType.LAZY,
-    cascade = CascadeType.ALL,
-    mappedBy = "courseInfo"
-  )
+  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "courseInfo")
   @JsonIgnore
   private List<PaymentForTeacher> paymentForTeachers = new ArrayList<>();
 
@@ -156,7 +168,7 @@ public class CourseInfo {
   }
 
   public void setPaymentType(String paymentType) {
-      this.paymentType = paymentType;
+    this.paymentType = paymentType;
   }
   // public String getTitle() {
   // return this.title;

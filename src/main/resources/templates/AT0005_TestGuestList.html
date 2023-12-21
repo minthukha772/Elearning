@@ -570,73 +570,77 @@
                     });
                 })
                 .catch(error => console.error('Error:', error));
-            // reader.readAsText(file);
-            // reader.onload = function (event) {
-            //     csvdata = event.target.result;
+                
+                // previously commented block starts
+            reader.readAsText(file);
+            reader.onload = function (event) {
+                csvdata = event.target.result;
 
-            //     // Check if csv file has data or not
-            //     if (csvdata == "") {
-            //         createCsvErrorMsg("There is an error with the uploaded CSV file. Please check the CSV file content and upload again.");
-            //         return;
-            //     }
+                // Check if csv file has data or not
+                if (csvdata == "") {
+                    createCsvErrorMsg("There is an error with the uploaded CSV file. Please check the CSV file content and upload again.");
+                    return;
+                }
 
-            //     // Check if csv file's data is encoded in utf-8 or not
-            //     if (!isUTF8Encoded(csvdata)) {
-            //         createCsvErrorMsg("There is an error with the uploaded CSV file. The uploaded file encoding type must be UTF-8.");
-            //         return;
-            //     }
+                // Check if csv file's data is encoded in utf-8 or not
+                if (!isUTF8Encoded(csvdata)) {
+                    createCsvErrorMsg("There is an error with the uploaded CSV file. The uploaded file encoding type must be UTF-8.");
+                    return;
+                }
 
-            //     var rowData = csvdata.split('\n');
+                var rowData = csvdata.split('\n');
 
 
-            //     // Check if csv file has more than 31 rows(including headers)
-            //     if (rowData.length > 32) {
-            //         createCsvErrorMsg("There is an error with the uploaded CSV file. The uploaded record is exceeded to maximum [30].");
-            //         return;
-            //     }
+                // Check if csv file has more than 31 rows(including headers)
+                if (rowData.length > 32) {
+                    createCsvErrorMsg("There is an error with the uploaded CSV file. The uploaded record is exceeded to maximum [30].");
+                    return;
+                }
 
-            //     // Check if csv file's headers are correct
-            //     csvFileHeaders = rowData[0].split(',');
-            //     console.log(csvFileHeaders)
-            //     if (csvFileHeaders[0] != "Name" || csvFileHeaders[1] != "Email" || csvFileHeaders[2] != "PhoneNumber") {
-            //         createCsvErrorMsg("There is an error with the uploaded CSV file. Row Headers Must be match as described in CSV Import Item's Specification.");
-            //         return;
-            //     }
+                // Check if csv file's headers are correct
+                csvFileHeaders = rowData[0].split(',');
+                console.log(csvFileHeaders)
+                if (csvFileHeaders[0] != "Name" || csvFileHeaders[1] != "Email" || csvFileHeaders[2] != "PhoneNumber") {
+                    createCsvErrorMsg("There is an error with the uploaded CSV file. Row Headers Must be match as described in CSV Import Item's Specification.");
+                    return;
+                }
 
-            //     // Check if csv file has at least one data row
-            //     csvFirstRow = rowData[1].split(',');
-            //     if (csvFirstRow[0] == "" || csvFirstRow[1] == "" || csvFirstRow[2] == "") {
-            //         createCsvErrorMsg("There is no record in the uploaded CSV file. Please check the CSV file content and upload again.");
-            //         return;
-            //     }
+                // Check if csv file has at least one data row
+                csvFirstRow = rowData[1].split(',');
+                if (csvFirstRow[0] == "" || csvFirstRow[1] == "" || csvFirstRow[2] == "") {
+                    createCsvErrorMsg("There is no record in the uploaded CSV file. Please check the CSV file content and upload again.");
+                    return;
+                }
 
-            //     var searchValue;
-            //     for (var row = 1; row < (rowData.length - 1); row++) {
-            //         rowColData = rowData[row].split(',');
-            //         ExamGuestUsers.push(rowColData);
+                var searchValue;
+                for (var row = 1; row < (rowData.length - 1); row++) {
+                    rowColData = rowData[row].split(',');
+                    ExamGuestUsers.push(rowColData);
 
-            //         // Check if there are incorrect email format
-            //         if (!validateEmail(rowColData[1])) {
-            //             createCsvErrorMsg("There is an error with the uploaded CSV file. Please check the CSV file content and upload again.");
-            //             return;
-            //         }
-            //     }
+                    // Check if there are incorrect email format
+                    if (!validateEmail(rowColData[1])) {
+                        createCsvErrorMsg("There is an error with the uploaded CSV file. Please check the CSV file content and upload again.");
+                        return;
+                    }
+                }
 
-            //     data = {
-            //         test_id: test_id,
-            //         exam_guest_users: ExamGuestUsers
-            //     };
-            //     data = JSON.stringify(data);
-            //     console.log(data);
-            //     fetch("/" + url + "/set-multi-guest-examinee", {
-            //         method: "POST",
-            //         headers: { "Content-Type": "application/json" },
-            //         body: data
-            //     }).then(response => {
-            //         createCsvSuccessMsg("Successfully add multiple guest user");
-            //         window.location.reload();
-            //     })
-            // };
+                data = {
+                    test_id: test_id,
+                    exam_guest_users: ExamGuestUsers
+                };
+                data = JSON.stringify(data);
+                console.log(data);
+                fetch("/" + url + "/set-multi-guest-examinee", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: data
+                }).then(response => {
+                    createCsvSuccessMsg("Successfully add multiple guest user");
+                    window.location.reload();
+                })
+            };
+
+            // previously commented block ends
         })
 
         // Create csv error message to put in csv error message box

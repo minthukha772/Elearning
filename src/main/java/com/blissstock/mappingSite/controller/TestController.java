@@ -1,5 +1,6 @@
 package com.blissstock.mappingSite.controller;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -7,6 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import com.blissstock.mappingSite.service.MailService;
+import com.blissstock.mappingSite.service.StorageService;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
@@ -36,7 +38,9 @@ import com.blissstock.mappingSite.entity.Test;
 import com.blissstock.mappingSite.entity.TestExaminee;
 import com.blissstock.mappingSite.entity.TestExamineeAnswer;
 import com.blissstock.mappingSite.entity.TestQuestion;
+import com.blissstock.mappingSite.entity.TestQuestionCorrectAnswer;
 import com.blissstock.mappingSite.entity.UserInfo;
+import com.blissstock.mappingSite.model.FileInfo;
 import com.blissstock.mappingSite.repository.CourseInfoRepository;
 import com.blissstock.mappingSite.repository.GuestUserRepository;
 import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
@@ -44,6 +48,8 @@ import com.blissstock.mappingSite.repository.TestResultRepository;
 import com.blissstock.mappingSite.repository.TestRepository;
 import com.blissstock.mappingSite.repository.TestExamineeAnswerRepository;
 import com.blissstock.mappingSite.repository.TestExamineeRepository;
+import com.blissstock.mappingSite.repository.TestQuestionCorrectAnswerRepositoy;
+import com.blissstock.mappingSite.repository.TestQuestionRepository;
 import com.blissstock.mappingSite.repository.UserInfoRepository;
 import com.blissstock.mappingSite.repository.UserRepository;
 import com.blissstock.mappingSite.service.UserSessionService;
@@ -84,11 +90,21 @@ public class TestController {
     @Autowired
     private GuestUserRepository guestUserRepository;
 
+    @Autowired
+    StorageService storageService;
+
+    @Autowired
+    TestQuestionRepository testQuestionRepository;
+
+    @Autowired
+    TestQuestionCorrectAnswerRepositoy testQuestionCorrectAnswerRepositoy;
+
     @Valid
     @GetMapping(value = { "/teacher/exam" })
     private String getExamManagementPage(Model model,
             @RequestParam(required = false) String examStatus, @RequestParam(required = false) String courseid,
-            @RequestParam(required = false) String fromDate, @RequestParam(required = false) String toDate)
+            @RequestParam(required = false) String fromDate, @RequestParam(required = false) String toDate,
+            @RequestParam(required = false) String examineetype)
             throws ParseException {
 
         if (examStatus == null) {
@@ -101,14 +117,16 @@ public class TestController {
             fromDate = "";
             toDate = "";
         }
-
+        if (examineetype == null) {
+            examineetype = "";
+        }
         try {
             Long userID = getUid();
             List<Test> testList;
             List<CourseInfo> courseList;
             // logger.info("user id {} start processing URL /teacher/exam", userID);
             logger.info("Called getExamManagementPage with parameter(user_id={})", userID);
-            if (examStatus != "" || courseid != "" || fromDate != "" || toDate != "") {
+            if (examStatus != "" || courseid != "" || fromDate != "" || toDate != "" || examineetype != "") {
                 if (examStatus != "") {
                     if (examStatus.equals("Deleted")) {
 
@@ -166,6 +184,16 @@ public class TestController {
                     logger.info(
                             "Operation Retrieve Table test by Query: user_id ={}, From ={}, To ={}. Result List: test_list={}, From ={}, To ={}  | Success",
                             userID, from, to, testList.size(), from, to);
+                } else if (examineetype != "") {
+                    if (examineetype.equals("guest")) {
+                        testList = testRepository.getExamByTargetAndTeacherID(1, userID);
+                        model.addAttribute("filter", "( Guest )");
+                    } else {
+                        testList = testRepository.getExamByTargetAndTeacherID(0, userID);
+                        model.addAttribute("filter", "( Student )");
+                    }
+                    model.addAttribute("testList", testList);
+                    model.addAttribute("filterType", "Filter By Examinee");
                 }
             } else {
                 logger.info("Initiate Operation Retrieve Table test by Query: user_id ={}", userID);
@@ -203,9 +231,7 @@ public class TestController {
             if (courseid == null) {
                 courseid = "";
             }
-
             if (teacherid == null) {
-
                 teacherid = "";
             }
             if (fromDate == null && toDate == null) {
@@ -323,7 +349,7 @@ public class TestController {
     private String getExamManagementPageByAdmin(Model model,
             @RequestParam(required = false) String examStatus, @RequestParam(required = false) String courseid,
             @RequestParam(required = false) String fromDate, @RequestParam(required = false) String toDate,
-            @RequestParam(required = false) String teacherid) {
+            @RequestParam(required = false) String teacherid, @RequestParam(required = false) String examineetype) {
         try {
             if (examStatus == null) {
                 examStatus = "";
@@ -334,6 +360,9 @@ public class TestController {
             if (teacherid == null) {
                 teacherid = "";
             }
+            if (examineetype == null) {
+                examineetype = "";
+            }
             if (fromDate == null && toDate == null) {
                 fromDate = "";
                 toDate = "";
@@ -342,7 +371,8 @@ public class TestController {
             List<CourseInfo> courseList;
             List<UserInfo> teacherList;
             String responseString = "";
-            if (examStatus != "" || courseid != "" || fromDate != "" || toDate != "" || teacherid != "") {
+            if (examStatus != "" || courseid != "" || fromDate != "" || toDate != "" || teacherid != ""
+                    || examineetype != "") {
                 if (examStatus != "") {
                     logger.info("Called getExamManagementPageByAdmin with parameters: examStatus={}", examStatus);
                     responseString = "Called AT_0004 with parameters: examStatus=" + examStatus + " Success";
@@ -401,6 +431,16 @@ public class TestController {
                     model.addAttribute("testList", testList);
                     model.addAttribute("filterType", "Filter By Teacher");
                     model.addAttribute("filter", "( " + teacher.getUserName() + " )");
+                } else if (examineetype != "") {
+                    if (examineetype.equals("guest")) {
+                        testList = testRepository.getExamByTarget(1);
+                        model.addAttribute("filter", "( Guest )");
+                    } else {
+                        testList = testRepository.getExamByTarget(0);
+                        model.addAttribute("filter", "( Student )");
+                    }
+                    model.addAttribute("testList", testList);
+                    model.addAttribute("filterType", "Filter By Examinee");
                 }
             } else {
                 responseString = "Called AT_0004 with parameters: None Success";
@@ -895,7 +935,7 @@ public class TestController {
             int passing_score = Integer.parseInt(jsonObject.getString("passing_score"));
             int minutes_allowed = jsonObject.getInt("minutes_allowed");
             CourseInfo courseInfo = courseInfoRepository.findByCourseID(course_id);
-            String student_guest = jsonObject.getString("student_guest");
+            // String student_guest = jsonObject.getString("student_guest");
             if (courseInfo == null) {
                 logger.warn("Failed to find course with ID: " + course_id);
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -913,9 +953,10 @@ public class TestController {
             // examDate, exam_start_time, exam_end_time, exam_status, "false",
             // "null",student_guest);
             // }else{
-            Test test = new Test(null, courseInfo, userInfo, description, section_name, minutes_allowed, passing_score,
-                    examDate, exam_start_time, exam_end_time, exam_status, "false", "null", student_guest, 0);
 
+            Test test = new Test(test_id, courseInfo, userInfo, description, section_name, minutes_allowed,
+                    passing_score,
+                    examDate, exam_start_time, exam_end_time, exam_status, "false", "null", "student", 0);
             // origin // Test test = new Test(test_id, courseInfo, userInfo, description,
             // section_name, minutes_allowed,
             // passing_score, examDate, exam_start_time, exam_end_time, exam_status,
@@ -932,16 +973,25 @@ public class TestController {
                     int total_mark = 0;
                     TestResult viewExamResult;
                     if (test.getExam_target() == 1) {
-                        viewExamResult = resultRepo.getResultByTestIdAndUser(test_id,
+                        viewExamResult = resultRepo.getResultByTestIdAndGuestUser(test_id,
                                 student.getGuestUser().getGuest_id());
                     } else {
                         viewExamResult = resultRepo.getResultByTestIdAndUser(test_id,
                                 student.getUserInfo().getUid());
                     }
+
                     if (viewExamResult == null) {
-                        List<TestExamineeAnswer> studentAnswerList = TestExamineeAnswerRepository
-                                .getStudentAnswerListByTestAndStudent(student.getUserInfo().getUid(),
-                                        test_id);
+                        List<TestExamineeAnswer> studentAnswerList;
+                        if (test.getExam_target() == 1) {
+                            studentAnswerList = TestExamineeAnswerRepository
+                                    .getGuestAnswerListByTestAndGuest(student.getGuestUser().getGuest_id(),
+                                            test_id);
+                        } else {
+                            studentAnswerList = TestExamineeAnswerRepository
+                                    .getStudentAnswerListByTestAndStudent(student.getUserInfo().getUid(),
+                                            test_id);
+                        }
+
                         for (TestExamineeAnswer studentAnswer : studentAnswerList) {
                             int acquired_mark = studentAnswer.getAcquired_mark();
                             int max_mark = studentAnswer.getQuestion().getMaximum_mark();
@@ -954,42 +1004,77 @@ public class TestController {
                         Float fcalculate_percent = (float) (ftotal_acquired_mark / ftotal_mark);
                         fcalculate_percent = fcalculate_percent * 100;
                         if (fcalculate_percent > passing_score_percent) {
-                            resultRepo.save(viewExamResult);
+                            TestResult result;
+                            if (test.getExam_target() == 1) {
+                                GuestUser guestUser = guestUserRepository
+                                        .findByGuestId(student.getGuestUser().getGuest_id());
+                                result = new TestResult(null, test, null, guestUser, total_acquired_mark,
+                                        "Passed",
+                                        "");
+                            } else {
+                                UserInfo studentInfo = userInfoRepository
+                                        .findStudentById(student.getUserInfo().getUid());
+                                result = new TestResult(null, test, studentInfo, null, total_acquired_mark,
+                                        "Passed",
+                                        "");
+                            }
+
+                            resultRepo.save(result);
                         } else {
-                            resultRepo.save(viewExamResult);
+                            TestResult result;
+                            if (test.getExam_target() == 1) {
+                                GuestUser guestUser = guestUserRepository
+                                        .findByGuestId(student.getGuestUser().getGuest_id());
+                                result = new TestResult(null, test, null, guestUser, total_acquired_mark,
+                                        "Failed",
+                                        "");
+                            } else {
+                                UserInfo studentInfo = userInfoRepository
+                                        .findStudentById(student.getUserInfo().getUid());
+                                result = new TestResult(null, test, studentInfo, null, total_acquired_mark,
+                                        "Failed",
+                                        "");
+                            }
+                            resultRepo.save(result);
                         }
-                    } else {
-                        List<TestExamineeAnswer> studentAnswerList = TestExamineeAnswerRepository
-                                .getStudentAnswerListByTestAndStudent(student.getUserInfo().getUid(),
-                                        test_id);
-                        for (TestExamineeAnswer studentAnswer : studentAnswerList) {
-                            int acquired_mark = studentAnswer.getAcquired_mark();
-                            int max_mark = studentAnswer.getQuestion().getMaximum_mark();
-                            total_acquired_mark += acquired_mark;
-                            total_mark += max_mark;
-                        }
-                        Float ftotal_acquired_mark = (float) (total_acquired_mark);
-                        Float ftotal_mark = (float) (total_mark);
-                        int passing_score_percent = test.getPassing_score_percent();
-                        Float fcalculate_percent = (float) (ftotal_acquired_mark / ftotal_mark);
-                        fcalculate_percent = fcalculate_percent * 100;
-                        if (fcalculate_percent > passing_score_percent) {
-
-                            viewExamResult.setResult("Passed");
-                            viewExamResult.setResultMark(total_acquired_mark);
-                            logger.info("Initiate to Operation Insert Table Result Data {}", viewExamResult.display());
-                            resultRepo.save(viewExamResult);
-                            logger.info("Operation Insert Table Result Data {} | Success", viewExamResult.display());
-                        } else {
-
-                            viewExamResult.setResult("Failed");
-                            viewExamResult.setResultMark(total_acquired_mark);
-                            logger.info("Initiate to Operation Insert Table Result Data {}", viewExamResult.display());
-                            resultRepo.save(viewExamResult);
-                            logger.info("Operation Insert Table Result Data {} | Success", viewExamResult.display());
-                        }
-
                     }
+                    // } else {
+                    // List<TestExamineeAnswer> studentAnswerList = TestExamineeAnswerRepository
+                    // .getStudentAnswerListByTestAndStudent(student.getUserInfo().getUid(),
+                    // test_id);
+                    // for (TestExamineeAnswer studentAnswer : studentAnswerList) {
+                    // int acquired_mark = studentAnswer.getAcquired_mark();
+                    // int max_mark = studentAnswer.getQuestion().getMaximum_mark();
+                    // total_acquired_mark += acquired_mark;
+                    // total_mark += max_mark;
+                    // }
+                    // Float ftotal_acquired_mark = (float) (total_acquired_mark);
+                    // Float ftotal_mark = (float) (total_mark);
+                    // int passing_score_percent = test.getPassing_score_percent();
+                    // Float fcalculate_percent = (float) (ftotal_acquired_mark / ftotal_mark);
+                    // fcalculate_percent = fcalculate_percent * 100;
+                    // if (fcalculate_percent > passing_score_percent) {
+
+                    // viewExamResult.setResult("Passed");
+                    // viewExamResult.setResultMark(total_acquired_mark);
+                    // logger.info("Initiate to Operation Insert Table Result Data {}",
+                    // viewExamResult.display());
+                    // resultRepo.save(viewExamResult);
+                    // logger.info("Operation Insert Table Result Data {} | Success",
+                    // viewExamResult.display());
+                    // } else {
+
+                    // viewExamResult.setResult("Failed");
+                    // viewExamResult.setResultMark(total_acquired_mark);
+                    // logger.info("Initiate to Operation Insert Table Result Data {}",
+                    // viewExamResult.display());
+                    // resultRepo.save(viewExamResult);
+                    // logger.info("Operation Insert Table Result Data {} | Success",
+                    // viewExamResult.display());
+                    // }
+
+                    // }
+
                 }
             }
             logger.info("Called editTeacherExam with parameter(payload={}) Success", payload);
@@ -1063,6 +1148,210 @@ public class TestController {
         }
 
         return ResponseEntity.ok(HttpStatus.OK);
+
+    }
+
+    @Valid
+    @PostMapping(value = { "/admin/copy-exam" })
+    private ResponseEntity copyExamForAdmin(@RequestBody String payload) {
+
+        try {
+
+            Long userID = getUid();
+            logger.info("Called copy Exam with parameter(payload={})", payload);
+            logger.info("user_id: {}", userID);
+
+            JSONObject jsonObject = new JSONObject(payload);
+            Long teacher_id = jsonObject.getLong("teacher_id");
+            Long test_id = jsonObject.getLong("test_id");
+            String description = jsonObject.getString("description");
+            String section_name = jsonObject.getString("section_name");
+
+            String date = jsonObject.getString("date");
+            Date examDate = null;
+            try {
+                examDate = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+            } catch (Exception e) {
+                logger.warn("Failed to parse date: " + e.getMessage());
+            }
+            String exam_status = null;
+            List<TestQuestion> checkQuestion = testQuestionRepository.getQuestionByTest(test_id);
+            if (checkQuestion.size() == 0) {
+                exam_status = "Exam Created";
+            } else {
+                exam_status = "Questions Created";
+            }
+            Long course_id = jsonObject.getLong("course_id");
+            CourseInfo courseInfo = courseInfoRepository.findByCourseID(course_id);
+            String exam_start_time = jsonObject.getString("start_time");
+            String exam_end_time = jsonObject.getString("end_time");
+            int passing_score = jsonObject.getInt("passing_score");
+            int minutes_allowed = jsonObject.getInt("minutes_allowed");
+
+            Test copyTest = testRepository.getById(test_id);
+
+            UserInfo userInfo = userInfoRepository.findById(teacher_id).orElse(null);
+            if (userInfo == null) {
+                logger.warn("Operation Retrieve Table user_info, user_account by query user_id = {} Result No Data",
+                        teacher_id);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to find user with ID: " + teacher_id);
+            }
+
+            String isDelete = "false";
+            String student_guest = copyTest.getStudent_guest();
+            Integer examTarget = copyTest.getExam_target();
+
+            Test newTest = new Test(null, courseInfo, userInfo, description, section_name, minutes_allowed,
+                    passing_score,
+                    examDate, exam_start_time, exam_end_time, exam_status, isDelete, null, student_guest, examTarget);
+
+            testRepository.save(newTest);
+            Long newTestId = newTest.getTest_id();
+            long srcSeparator = 100000L + test_id;
+            long tgtSeparator = 100000L + newTestId;
+
+            String srcString = Long.toString(srcSeparator);
+            String tgtString = Long.toString(tgtSeparator);
+
+            storageService.questionCopy(srcString, tgtString);
+
+            List<TestQuestion> testQuestion = testQuestionRepository.getQuestionByTest(test_id);
+
+            for (TestQuestion copyQuestion : testQuestion) {
+
+                Long questionId = copyQuestion.getId();
+                String choices = copyQuestion.getChoices();
+                Integer maxMarks = copyQuestion.getMaximum_mark();
+                String questMat = copyQuestion.getQuestion_materials();
+                String qMatType = copyQuestion.getQuestion_materials_type();
+                String qText = copyQuestion.getQuestion_text();
+                String qType = copyQuestion.getQuestion_type();
+
+                TestQuestion newQuestion = new TestQuestion(null, newTest, qText, questMat, qMatType, choices, qType,
+                        maxMarks);
+                testQuestionRepository.save(newQuestion);
+                // Long newQuestId = newQuestion.getId();
+
+                TestQuestionCorrectAnswer correctAnswer = testQuestionCorrectAnswerRepositoy
+                        .getCorrectAnswerByQuestion(questionId);
+                if (correctAnswer != null) {
+                    String answer = correctAnswer.getCorrectAnswer();
+                    TestQuestionCorrectAnswer newCorrectAnswer = new TestQuestionCorrectAnswer(null, newQuestion,
+                            answer);
+                    testQuestionCorrectAnswerRepositoy.save(newCorrectAnswer);
+                }
+
+            }
+
+            logger.info("Called copyExam with parameter(payload={}) Success", payload);
+            logger.info("user_id: {}", userID);
+            return ResponseEntity.ok(HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+
+    }
+
+    @Valid
+    @PostMapping(value = { "/teacher/copy-exam" })
+    private ResponseEntity copyExamForTeacher(@RequestBody String payload) {
+
+        try {
+
+            Long userID = getUid();
+            logger.info("Called copy Exam with parameter(payload={})", payload);
+            logger.info("user_id: {}", userID);
+
+            JSONObject jsonObject = new JSONObject(payload);
+            Long teacher_id = getUid();
+            Long test_id = jsonObject.getLong("test_id");
+            String description = jsonObject.getString("description");
+            String section_name = jsonObject.getString("section_name");
+
+            String date = jsonObject.getString("date");
+            Date examDate = null;
+            try {
+                examDate = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+            } catch (Exception e) {
+                logger.warn("Failed to parse date: " + e.getMessage());
+            }
+            String exam_status = null;
+            List<TestQuestion> checkQuestion = testQuestionRepository.getQuestionByTest(test_id);
+            if (checkQuestion.size() == 0) {
+                exam_status = "Exam Created";
+            } else {
+                exam_status = "Questions Created";
+            }
+            Long course_id = jsonObject.getLong("course_id");
+            CourseInfo courseInfo = courseInfoRepository.findByCourseID(course_id);
+            String exam_start_time = jsonObject.getString("start_time");
+            String exam_end_time = jsonObject.getString("end_time");
+            int passing_score = jsonObject.getInt("passing_score");
+            int minutes_allowed = jsonObject.getInt("minutes_allowed");
+
+            Test copyTest = testRepository.getById(test_id);
+
+            UserInfo userInfo = userInfoRepository.findById(teacher_id).orElse(null);
+            if (userInfo == null) {
+                logger.warn("Operation Retrieve Table user_info, user_account by query user_id = {} Result No Data",
+                        teacher_id);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to find user with ID: " + teacher_id);
+            }
+
+            String isDelete = "false";
+            String student_guest = copyTest.getStudent_guest();
+            Integer examTarget = copyTest.getExam_target();
+
+            Test newTest = new Test(null, courseInfo, userInfo, description, section_name, minutes_allowed,
+                    passing_score,
+                    examDate, exam_start_time, exam_end_time, exam_status, isDelete, null, student_guest, examTarget);
+
+            testRepository.save(newTest);
+            Long newTestId = newTest.getTest_id();
+            long srcSeparator = 100000L + test_id;
+            long tgtSeparator = 100000L + newTestId;
+
+            String srcString = Long.toString(srcSeparator);
+            String tgtString = Long.toString(tgtSeparator);
+
+            storageService.questionCopy(srcString, tgtString);
+
+            List<TestQuestion> testQuestion = testQuestionRepository.getQuestionByTest(test_id);
+
+            for (TestQuestion copyQuestion : testQuestion) {
+
+                Long questionId = copyQuestion.getId();
+                String choices = copyQuestion.getChoices();
+                Integer maxMarks = copyQuestion.getMaximum_mark();
+                String questMat = copyQuestion.getQuestion_materials();
+                String qMatType = copyQuestion.getQuestion_materials_type();
+                String qText = copyQuestion.getQuestion_text();
+                String qType = copyQuestion.getQuestion_type();
+
+                TestQuestion newQuestion = new TestQuestion(null, newTest, qText, questMat, qMatType, choices, qType,
+                        maxMarks);
+                testQuestionRepository.save(newQuestion);
+                // Long newQuestId = newQuestion.getId();
+
+                TestQuestionCorrectAnswer correctAnswer = testQuestionCorrectAnswerRepositoy
+                        .getCorrectAnswerByQuestion(questionId);
+                if (correctAnswer != null) {
+                    String answer = correctAnswer.getCorrectAnswer();
+                    TestQuestionCorrectAnswer newCorrectAnswer = new TestQuestionCorrectAnswer(null, newQuestion,
+                            answer);
+                    testQuestionCorrectAnswerRepositoy.save(newCorrectAnswer);
+                }
+
+            }
+
+            logger.info("Called copyExam with parameter(payload={}) Success", payload);
+            logger.info("user_id: {}", userID);
+            return ResponseEntity.ok(HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
 
     }
 

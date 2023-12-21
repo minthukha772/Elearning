@@ -11,26 +11,55 @@ $(function () {
   });
   LowestFeeInput = $("#lowestFee");
   HighestFeeInput = $("#highestFee");
-  LowestFeeInput.on("input", function () {
-    // To prevent Highest value from being less than Lowest value
-    // Update Highest value every time the lower value is higher them itself.
-    lowestValue = parseInt($(LowestFeeInput).val());
-    highestValue = parseInt($(HighestFeeInput).val());
-    console.log(lowestValue, highestValue);
-    if (lowestValue > highestValue) {
-      console.log(lowestValue, ">", highestValue);
-      $(HighestFeeInput).val(lowestValue);
+  warningFee = $("#warningFee");
+
+  document.getElementById('searchButton').addEventListener('click', function (event) {
+    // Prevent the default form submission
+    event.preventDefault();
+    warningFee.css("display", "none");
+    // Get the form and input field values
+    const form = document.getElementById('searchForm');
+    const courseName = form.elements['courseName'].value;
+    const startDate = form.elements['startDate'].value;
+    const endDate = form.elements['endDate'].value;
+    const lowestFee = form.elements['lowestFee'].value;
+    const highestFee = form.elements['highestFee'].value;
+
+    // Perform validation checks here
+    // if (courseName.trim() === '') {
+    //   alert('Please enter a course name.');
+    //   return;
+    // }
+    if (lowestFee > highestFee) {
+      warningFee.css("display", "block");
+      return;
     }
+    // Validate other fields as needed...
+
+    // If all validations pass, submit the form
+    form.submit();
   });
-  HighestFeeInput.on("input", function () {
-    // To prevent Lowest value from being more than Lowest value
-    // Update Lowest value every time the highest value is higher them itself.
-    lowestValue = parseInt($(LowestFeeInput).val());
-    highestValue = parseInt($(HighestFeeInput).val());
-    if (highestValue < lowestValue) {
-      $(LowestFeeInput).val(highestValue);
-    }
-  });
+
+  // LowestFeeInput.on("input", function () {
+  //   // To prevent Highest value from being less than Lowest value
+  //   // Update Highest value every time the lower value is higher them itself.
+  //   lowestValue = parseInt($(LowestFeeInput).val());
+  //   highestValue = parseInt($(HighestFeeInput).val());
+  //   console.log(lowestValue, highestValue);
+  //   if (lowestValue > highestValue) {
+  //     console.log(lowestValue, ">", highestValue);
+  //     $(HighestFeeInput).val(lowestValue);
+  //   }
+  // });
+  // HighestFeeInput.on("input", function () {
+  //   // To prevent Lowest value from being more than Lowest value
+  //   // Update Lowest value every time the highest value is higher them itself.
+  //   lowestValue = parseInt($(LowestFeeInput).val());
+  //   highestValue = parseInt($(HighestFeeInput).val());
+  //   if (highestValue < lowestValue) {
+  //     $(LowestFeeInput).val(highestValue);
+  //   }
+  // });
 });
 
 const clearAction = (courseList) => {
@@ -137,6 +166,14 @@ const renderCourseList = (courseList) => {
     $("#zero-result-msg").show();
     $("#courseList").hide();
     $("#courseList").empty();
+    $("#course").pagination({
+      dataSource: courseList,
+      pageSize: 24,
+      showNavigator: true,
+      position: "top",
+      className: "paginationjs-theme-blue",
+      formatNavigator: '<span style="color: #f00">1</span> of 1 page, 0 entry'
+    });
     return;
   }
 
@@ -152,6 +189,7 @@ const renderCourseList = (courseList) => {
       // template method of yourself
       $("#courseList").hide();
       $("#courseList").empty();
+      const currentDate = new Date();
       data.forEach((e) => {
         const options = {
           timeZone: 'Asia/Tokyo',
@@ -169,6 +207,11 @@ const renderCourseList = (courseList) => {
           dates = ` <h4>Date</h4>
         <i>${startDate} - ${endDate}</i>`;
         }
+
+        const registeredDate = new Date(e.registeredDate);
+        const differenceInMilliseconds = currentDate - registeredDate;
+        const differenceInDays = differenceInMilliseconds / (1000 * 60 * 60 * 24);
+
         const template = `
         <div class="col-sm-12 col-md-12 col-xl-12 my-3">
           <div class="d-flex flex-column flex-md-column flex-sm-column flex-lg-column flex-xl-row">
@@ -176,12 +219,15 @@ const renderCourseList = (courseList) => {
             <img width="200" height="200" src="${e.coursePhoto.url}" class="detail__img" alt="${e.coursePhoto.name}">
           </span>
             <div>
+              <div class="tags-div">
+                ${differenceInDays <= 7 ? '<div class="new-tag shadow-sm">New</div>' : ''}
+              </div>
               <h2>${e.courseName}</h2>
               <a href="/guest/explore/teacher/${e.teacherId}">${e.teacherName}</a>
               <h6 class="mt-1">${e.category} &gt;${e.level}</h6>
               
                <span>${dates}</span>
-              <h4 class="mt-2">${e.fees ? e.fees + 'MMK' : ''}</h4>
+              <h4 class="mt-2">${e.fees ? e.fees + 'MMK' : 'FREE'}</h4>
               <a href="/guest/course-detail/${e.courseId}" class="btn btn-primary">See Detail</a>
             </div>
           </div>

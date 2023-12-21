@@ -2,6 +2,7 @@ package com.blissstock.mappingSite.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.json.JSONArray;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -69,14 +71,22 @@ public class TestExamineeAnswerController {
         @PostMapping(value = { "/student/submit-answer" })
         private ResponseEntity submitAnswer(@RequestParam(value = "test_id") Long test_id,
                         @RequestParam(value = "question_id") Long question_id,
-                        @RequestParam(value = "student_answer") String student_answer,
+                        @RequestParam(value = "student_answer", required = false) String student_answer,
                         @RequestParam(value = "answer_type") String answer_type,
                         @RequestParam(value = "answer_material", required = false) MultipartFile answer_material)
                         throws JsonMappingException, JsonProcessingException, UnauthorizedFileAccessException {
                 Long userID = getUid();
-                logger.info(
-                                "Called submitAnswer with parameter (test_id={}, question_id={}, student_answer={}, answer_type={}, answer_material={})",
-                                test_id, question_id, student_answer, answer_type, answer_material.getSize());
+
+                if (answer_material != null) {
+                        logger.info(
+                                        "Called submitAnswer with parameter (test_id={}, question_id={}, student_answer={}, answer_type={}, answer_material={})",
+                                        test_id, question_id, student_answer, answer_type, answer_material.getSize());
+                } else {
+                        logger.info(
+                                        "Called submitAnswer with parameter (test_id={}, question_id={}, student_answer={}, answer_type={}, answer_material is empty)",
+                                        test_id, question_id, student_answer, answer_type);
+                }
+
                 logger.info("user_id: {}", userID);
                 Long student_id = userSessionService.getUserAccount().getAccountId();
                 logger.info("Initiate Operation Retrieve Table user_info by Query: student_id={}", student_id);
@@ -123,7 +133,10 @@ public class TestExamineeAnswerController {
                                         question_id, student_id, checkTestStudent);
 
                         if (checkTestStudent == null) {
-                                TestExamineeAnswer TestExamineeAnswer = new TestExamineeAnswer(null, question.getTest(),
+                                Long testExamineeAnswerMAXID = TestExamineeAnswerRepository
+                                                .getExamineeAnswerTableMaxID();
+                                TestExamineeAnswer TestExamineeAnswer = new TestExamineeAnswer(testExamineeAnswerMAXID,
+                                                question.getTest(),
                                                 student, null, question,
                                                 student_answer, "", answerStatus, acquiredmarks, "MARKED");
                                 logger.info("Initiate to Operation Insert Table Test Student Answer Data {}",
@@ -148,7 +161,10 @@ public class TestExamineeAnswerController {
                         TestExamineeAnswer checkTestStudent = TestExamineeAnswerRepository
                                         .getStudentAnswerByQuestionID(question.getId(), student_id);
                         if (checkTestStudent == null) {
-                                TestExamineeAnswer TestExamineeAnswer = new TestExamineeAnswer(null, question.getTest(),
+                                Long testExamineeAnswerMAXID = TestExamineeAnswerRepository
+                                                .getExamineeAnswerTableMaxID();
+                                TestExamineeAnswer TestExamineeAnswer = new TestExamineeAnswer(testExamineeAnswerMAXID,
+                                                question.getTest(),
                                                 student, null, question,
                                                 student_answer, originalFileName, "", 0, "MARKING");
                                 logger.info("Initiate to Operation Insert Table Test Student Answer Data {}",
@@ -160,7 +176,7 @@ public class TestExamineeAnswerController {
                 }
                 logger.info(
                                 "Called submitAnswer with parameter (test_id={}, question_id={}, student_answer={}, answer_type={}, answer_material={}) Success",
-                                test_id, question_id, student_answer, answer_type, answer_material.getSize());
+                                test_id, question_id, student_answer, answer_type, "");
                 return ResponseEntity.ok(HttpStatus.OK);
         }
 
@@ -168,12 +184,17 @@ public class TestExamineeAnswerController {
         @PostMapping(value = { "/guestUser/submit-answer" })
         private ResponseEntity submitAnswerGuestUser(@RequestParam(value = "test_id") Long test_id,
                         @RequestParam(value = "question_id") Long question_id,
-                        @RequestParam(value = "student_answer") String student_answer,
+                        @RequestParam(value = "student_answer", required = false) String student_answer,
                         @RequestParam(value = "answer_type") String answer_type,
-                        @RequestParam(value = "answer_material", required = false) MultipartFile answer_material)
+                        @RequestParam(value = "answer_material", required = false) MultipartFile answer_material,
+                        HttpSession session)
                         throws JsonMappingException, JsonProcessingException, UnauthorizedFileAccessException {
-                Long guestUserId = getGuestid();
-                GuestUser guestUser = guestUserRepository.findByGuestId(guestUserId);
+                SecurityContextImpl securityContext = (SecurityContextImpl) session
+                                .getAttribute("SPRING_SECURITY_CONTEXT");
+                String loggedInUser = securityContext.getAuthentication().getPrincipal().toString();
+
+                GuestUser guestUser = guestUserRepository.getGuestUserbyEmail(loggedInUser);
+                Long guestUserId = guestUser.getGuest_id();
                 logger.info("Initiate Operation Retrieve Table user_info by Query: guestUserId={}", guestUserId);
                 String answerStatus = "FALSE";
                 Integer acquiredmarks = 0;
@@ -183,7 +204,7 @@ public class TestExamineeAnswerController {
                                 "Operation Retrieve Table test_question by Query: question_id={}. Result List: Question={} | Success",
                                 question_id, question);
                 List<TestExamineeAnswer> testExamineeAnswer = TestExamineeAnswerRepository
-                                .getStudentAnswerByTestAndGuest(guestUserId, test_id);
+                                .getStudentAnswerByTestAndGuest(guestUserId, question_id);
                 if (testExamineeAnswer.size() == 0) {
                         if (!answer_type.equals("FREE_ANSWER")) {
                                 logger.info("Initiate Operation Retrieve Table test_question_correct_answer by Query: question_id={}",
@@ -218,7 +239,9 @@ public class TestExamineeAnswerController {
                                                 question_id, guestUserId, checkTestStudent);
 
                                 if (checkTestStudent == null) {
-                                        TestExamineeAnswer TestExamineeAnswer = new TestExamineeAnswer(null,
+                                        Long testExamineeAnswerMAXID = TestExamineeAnswerRepository
+                                                .getExamineeAnswerTableMaxID();
+                                        TestExamineeAnswer TestExamineeAnswer = new TestExamineeAnswer(testExamineeAnswerMAXID,
                                                         question.getTest(),
                                                         null, guestUser, question,
                                                         student_answer, "", answerStatus, acquiredmarks, "MARKED");
@@ -244,7 +267,8 @@ public class TestExamineeAnswerController {
                                 TestExamineeAnswer checkTestStudent = TestExamineeAnswerRepository
                                                 .getGuestUserAnswerByQuestionID(question.getId(), guestUserId);
                                 if (checkTestStudent == null) {
-                                        TestExamineeAnswer TestExamineeAnswer = new TestExamineeAnswer(null,
+                                        Long testExamineeAnswerMAXID = TestExamineeAnswerRepository.getExamineeAnswerTableMaxID();
+                                        TestExamineeAnswer TestExamineeAnswer = new TestExamineeAnswer(testExamineeAnswerMAXID,
                                                         question.getTest(),
                                                         null, guestUser, question,
                                                         student_answer, originalFileName, "", 0, "MARKING");
@@ -256,7 +280,6 @@ public class TestExamineeAnswerController {
                                 }
                         }
                 }
-                SecurityContextHolder.clearContext();
                 return ResponseEntity.ok(HttpStatus.OK);
         }
 

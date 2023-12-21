@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Us</title>
+    <link rel="icon" type="image/x-icon" href="/images/fav.png" />
+    <link rel="stylesheet" th:href="@{/css/CM0011_InquiryForm.css}" />
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
+    <link rel="stylesheet" th:href="@{/css/global.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert@2.1.2/dist/sweetalert.min.js"></script>
+</head>
+
+<body>
+
+    <div th:replace="@{fragments/nav}"></div>
+
+    <section class="inquiry-form-container">
+        <div class="inquiry-form">
+            <h2>Inquiry Form</h2>
+            <span class="text">
+                To contact us by phone, please dial +959 98-656-3091. To contact us by email, please use the contact
+                form.
+            </span>
+            <div class="form-container shadow-sm">
+                <form>
+                    <div class="group">
+                        <label for="name" class="">Name <span class="required">*</span></label>
+                        <input type="text" id="name" placeholder="Enter your full name" class="w-100">
+                        <p class=" input-error-msg" id="nameErrorMsg">Please fill the Name correctly.</p>
+                    </div>
+
+                    <div class="group">
+                        <label for="email" class="">Email <span class="required">*</span></label>
+                        <input type="email" id="email" placeholder="Enter your email" class="w-100">
+                        <p class=" input-error-msg" id="emailErrorMsg">Please fill in the Email Address correctly.</p>
+                    </div>
+                    <div class="group">
+                        <label for="number" class="">Phone Number<span class="required">*</span></label>
+                        <input type="number" id="number" placeholder="Enter your phone number" class="w-100">
+                        <p class=" input-error-msg" id="numberErrorMsg">Please fill the Phone Number correctly.</p>
+                    </div>
+                    <div class="group">
+                        <label for="select">Details<span class="required">*</span></label>
+                        <select name="" id="select" class="w-100">
+                            <option value="Service">Service</option>
+                            <option value="Payment">Payment</option>
+                            <option value="Want to be a teacher">Want to be a teacher?</option>
+                            <option value="Want to be an admin">Want to be an admin?</option>
+                            <option value="Consultation">Consultation</option>
+                            <option value="Complain">Complain</option>
+                            <option value="Others">Others</option>
+                        </select>
+                        <p class=" input-error-msg" id="selectErrorMsg">Please fill the Details correctly.</p>
+                    </div>
+                    <div class="group">
+                        <label for="textarea">Description<span class="required">*</span></label>
+                        <textarea name="" id="description" rows="5"
+                            placeholder="Please fill in information you want to know" class="w-100"></textarea>
+                        <p class=" input-error-msg" id="descriptionErrorMsg">Please fill the Descriptions correctly.</p>
+                    </div>
+                    <div class="group">
+                        <input type="checkbox" id="confirmationCheckbox">
+                        <span>Please check the box after confirming the above transmission contents.</span>
+                    </div>
+                </form>
+            </div>
+
+            <div class="submit-box">
+                <input class="btn btn-success px-3 shadow-sm" type="submit" id="submit" value="Submit">
+            </div>
+
+        </div>
+    </section>
+
+    <div style="height: 120px"></div>
+    <div th:replace="@{fragments/footer}"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <script th:inline="javascript">
+
+        // retrieve inquiry form data from session storage
+        let storedName = sessionStorage.getItem("inquiryName");
+        let storedEmail = sessionStorage.getItem("inquiryEmail");
+        let storedPhNo = sessionStorage.getItem("inquiryPhNo");
+        let storedSelectedDetail = sessionStorage.getItem("inquiryDetail");
+        let storedDescription = sessionStorage.getItem("inquiryDescription");
+
+        // input fields
+        let name = document.getElementById("name");
+        let email = document.getElementById("email");
+        let phNo = document.getElementById("number");
+        let detail = document.getElementById("select");
+        let description = document.getElementById("description");
+        let confirmCheckbox = document.getElementById("confirmationCheckbox");
+
+        // error messages
+        let nameErrorMsg = document.getElementById("nameErrorMsg");
+        let emailErrorMsg = document.getElementById("emailErrorMsg");
+        let phNoErrorMsg = document.getElementById("numberErrorMsg");
+        let detailErrorMsg = document.getElementById("selectErrorMsg");
+        let descriptionErrorMsg = document.getElementById("descriptionErrorMsg");
+
+        // inject inquiry form data to ui if it is stored in session storage
+        if (storedName != null) {
+            name.value = storedName;
+        }
+
+        if (storedEmail != null) {
+            email.value = storedEmail;
+        }
+
+        if (storedPhNo != null) {
+            phNo.value = storedPhNo;
+        }
+
+        if (storedSelectedDetail != null) {
+            detail.value = storedSelectedDetail;
+        }
+
+        if (storedDescription != null) {
+            description.value = storedDescription;
+        }
+
+        $(document).ready(function () {
+
+            $("#submit").click(function (event) {
+                event.preventDefault(); // Prevent default form submission behavior  
+                removeErrorMsgs();
+                let error = false;
+
+                var inputName = name.value;
+                if (inputName == "") {
+                    nameErrorMsg.style.display = 'block';
+                    error = true;
+                }
+
+                var inputEmail = email.value;
+                if (inputEmail == "" || !validateEmailFormat(inputEmail)) {
+                    emailErrorMsg.style.display = 'block';
+                    error = true;
+                }
+
+                var inputPhNo = phNo.value;
+                if (inputPhNo == "") {
+                    phNoErrorMsg.style.display = 'block';
+                    error = true;
+                }
+
+                var selectedDetail = detail.value;
+
+                var inputDescription = description.value;
+                if (inputDescription == "") {
+                    descriptionErrorMsg.style.display = 'block';
+                    error = true;
+                }
+
+                if (!confirmCheckbox.checked) {
+                    error = true;
+                }
+
+                if (error) {
+                    return;
+                }
+
+                // store inquiry form data in session storage
+                sessionStorage.setItem("inquiryName", inputName);
+                sessionStorage.setItem("inquiryEmail", inputEmail);
+                sessionStorage.setItem("inquiryPhNo", inputPhNo);
+                sessionStorage.setItem("inquiryDetail", selectedDetail);
+                sessionStorage.setItem("inquiryDescription", inputDescription);
+
+                // redirect to inquiry form data confirmation screen
+                window.location.href = "/guest/confirmInquiry";
+
+            });
+
+            // Email validation function
+            function validateEmailFormat(email) {
+                const emailRegex = /^[\w+-]+(\.[\w+-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
+                return emailRegex.test(email);
+            }
+
+            // Remove error messages from input boxes
+            function removeErrorMsgs() {
+                nameErrorMsg.style.display = 'none';
+                emailErrorMsg.style.display = 'none';
+                phNoErrorMsg.style.display = 'none';
+                descriptionErrorMsg.style.display = 'none';
+            }
+        });
+
+    </script>
+
+</body>
+
+</html>

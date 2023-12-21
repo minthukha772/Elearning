@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Video Playlist</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+        integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" th:href="@{/css/AT0004_ExamManagement.css}" />
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}" />
+    <link rel="stylesheet" th:href="@{/css/CM0004_Student Profile.css}" />
+    <link rel="stylesheet" th:href="@{/css/global.css}" />
+
+    <link rel="icon" type="image/x-icon" href="/images/fav.png" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.js"></script>
+
+    <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"
+        th:src="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+        th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js}"
+        integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+        crossorigin="anonymous"></script>
+
+
+
+
+
+    <style>
+        /* @import url("https://fonts.googleapis.com/css?family=Roboto:400,700");  */
+        /* *{
+    margin : 0;
+    padding : 0;
+    font-family:"poppins";
+    font-weight: 500;
+} */
+
+        /* body{
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+     min-height: 100vh;   
+    } */
+
+        .container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            align-items: flex-start;
+            padding: 5px 5%;
+        }
+
+        .container .main-video {
+            /* padding: 10px; origin */
+            margin-top: 100px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: rgba(0, 0, 0, 0) 0 0 20px;
+            width: 100;
+
+
+        }
+
+        .container video {
+            width: 100%;
+        }
+
+        .video-list .title-video,
+        .video-list .description-video {
+            font-size: 16px;
+        }
+
+
+        /* .video-list .description-video{  
+    display: block;
+    
+}    */
+
+        .main-video .title-video {
+            font-size: 25px;
+            padding: 10px 0 15px 0px;
+        }
+
+        .main-video .description-video {
+            font-size: 20px;
+            /* display: flex;  */
+            padding: 8px 0 15px 0px;
+        }
+
+        .video-list {
+            margin-top: 100px;
+            /*add new */
+            border-radius: 5px;
+            background: white;
+            height: 660px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.9);
+            overflow-y: scroll;
+        }
+
+        .video-list .videoSection {
+            /* display: flex; */
+            /* origin*/
+            display: flex;
+            /* align-items: center; */
+            gap: 15px;
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+            background-color: #f0f0f0;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.9);
+
+        }
+
+        .video-list video {
+            width: 130px;
+            border-radius: 5px;
+        }
+
+        .video-list::-webkit-scrollbar {
+            /*hide scrollbar*/
+            width: 10px
+        }
+
+        .video-list::-webkit-scrollbar-track {
+            background: #ccc;
+            border-radius: 70px;
+        }
+
+        .video-list::-webkit-scrollbar-thumb {
+            background: #777;
+            border-radius: 70px;
+        }
+
+        .videoSection:hover {
+            background: #099FBD;
+            /*color change */
+            color: #fff;
+        }
+
+        .videoSection.open {
+            background: #099FBD;
+            /*color change */
+
+        }
+
+        .videoSection.open .title-video {
+            color: #fff;
+        }
+
+        .videoSection.open .description-video {
+            color: #fff;
+            font-size: 16px;
+        }
+
+        button {
+            margin: 10px;
+
+        }
+
+        .allVideos {
+            font-size: 12px;
+            margin-top: 10px;
+            padding: 5px;
+            background-color: black;
+            color: white;
+            border-radius: 25px;
+            cursor: pointer;
+        }
+
+        .videoSection {
+            width: 350px;
+            height: 132px;
+            overflow: hidden;
+        }
+
+        .title-video,
+        .description-video {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 150px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+                padding: 5px 10px;
+            }
+
+            .container .main-video {
+                margin-top: 100px;
+            }
+
+            .video-list {
+                margin-top: 50px;
+                height: auto;
+                max-height: none;
+                overflow: visible;
+            }
+
+            .videoSection {
+                width: 95%;
+                height: auto;
+            }
+
+            .container iframe {
+                width: 100%;
+                height: auto;
+                min-height: 300px;
+            }
+
+            .main-video .title-video {
+                font-size: 20px;
+                padding: 8px 0 10px 0;
+            }
+
+            .main-video .description-video {
+                font-size: 16px;
+                padding: 5px 0 10px 0;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div style="width:100%; margin:0">
+        <div th:replace="@{fragments/nav}"></div>
+        <!-- <div th:replace="${nav_type}"></div> -->
+
+        <div class="container">
+
+            <div th:if="${class_announce == null or #strings.isEmpty(class_announce)}" class="main-video">
+                <!-- <video src ="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4" id="video" loop controls></video>  -->
+                <iframe th:src="@{'https://drive.google.com/file/d/' + ${v_link} + '/preview'}" width="640" id="video"
+                    height="480" sandbox="allow-same-origin allow-scripts" allowfullscreen="allowfullscreen"></iframe>
+                <h4 class="title-videos" th:text="${v_Title}">Video title 1</h4>
+                <p class="description-videos" th:text="${v_Desc}">Video Description 1</p>
+            </div>
+
+            <div th:if="${class_announce == null or #strings.isEmpty(class_announce)}" class="video-list">
+                <button class="allVideos">All Videos</button>
+                <div class="videoSection open" th:each="dr,index:${videoClassLists}">
+                    <a th:href="@{'/video-class/' + ${course_Id} + '/' + ${dr.id}}">
+                        <img th:src="@{'https://lh3.googleusercontent.com/d/' + ${dr.thumbnail}}"
+                            onerror="this.onerror=null; this.src='/images/uploading.gif';" class="shadow-sm"
+                            alt="Lesson Thumbnail" width="168" height="94">
+                    </a>
+                    <div class="video-details">
+                        <h4 class="title-video" th:text="${dr.videoTitle}">Video title 1</h4>
+                        <p class="description-video" th:text="${dr.videoDesc}">Video Description 1</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="d-flex justify-content-center align-items-center flex-wrap" style="padding-top: 100px;">
+            <div style="text-align: center;">
+                <h5 class="text-danger fw-bold">
+                    <span th:text="${class_announce}"></span>
+                </h5>
+                <div th:if="${class_announce}">
+                    <a th:href="@{'/guest/course-detail/' + ${course_Id}}" class="btn"
+                        style="background-color: #198754; color: #ffffff;">OK</a>
+                </div>
+            </div>
+        </div>
+        <div style="height: 100px"></div>
+        <script>
+            const mainVideo = document.querySelector('.main-video video');
+            const videoSections = document.querySelectorAll('.videoSection');
+            const videoTitle = document.querySelector('.main-video .title-video');
+            const videoDescription = document.querySelector('.main-video .description-video');
+            videoSections.forEach(videoSection => {
+                videoSection.onclick = () => {
+                    videoSections.forEach(videoSection => videoSection.classList.remove("open"))
+                    videoSection.classList.add('open');
+                    if (videoSection.classList.contains('open')) {
+                        const source = videoSection.children[0].getAttribute("src");
+                        mainVideo.src = source;
+                        const title = videoSection.children[1].textContent;
+                        const description = videoSection.children[2].textContent;
+                        videoTitle.textContent = title;
+                        videoDescription.textContent = description;
+                    }
+                }
+            });
+
+        </script>
+        <script th:src="@{/js/main.js}"></script>
+
+        <div class="mt-5"></div>
+        <div th:replace="@{fragments/footer}"></div>
+    </div>
+</body>
+
+</html>

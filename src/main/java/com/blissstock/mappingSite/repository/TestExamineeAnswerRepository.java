@@ -14,7 +14,7 @@ public interface TestExamineeAnswerRepository extends JpaRepository<TestExaminee
 
         @Query(value = "Select * from test_examinee_answer where examinee_student_id = :examinee_student_id and test_id = :test_id", nativeQuery = true)
         public List<TestExamineeAnswer> getStudentAnswerListByTestAndStudent(
-                        @Param("examinee") Long examinee_student_id,
+                        @Param("examinee_student_id") Long examinee_student_id,
                         @Param("test_id") Long test_id);
 
         @Query(value = "Select * from test_examinee_answer where examinee_guest_id = :examinee_guest_id and test_id = :test_id", nativeQuery = true)
@@ -71,12 +71,15 @@ public interface TestExamineeAnswerRepository extends JpaRepository<TestExaminee
         public Integer getUnCheckAnswerCountByTestAndStudent(@Param("test_id") Long test_id,
                         @Param("examinee_student_id") Long examinee_student_id);
 
-        @Query(value = "Select * from test_examinee_answer where examinee_guest_id = :guest_account_id and test_id = :test_id limit 1", nativeQuery = true)
+        @Query(value = "Select * from test_examinee_answer where examinee_guest_id = :guest_account_id and question_id = :question_id limit 1", nativeQuery = true)
         public List<TestExamineeAnswer> getStudentAnswerByTestAndGuest(
                         @Param("guest_account_id") Long guest_account_id,
-                        @Param("test_id") Long test_id);
+                        @Param("question_id") Long question_id);
 
         @Query(value = "Select count(examinee_answer_id) from test_examinee_answer where marked_status = 'MARKING' and test_id = :test_id and examinee_guest_id = :examinee_guest_id", nativeQuery = true)
         public Integer getUnCheckAnswerCountByTestAndGuest(@Param("test_id") Long test_id,
                         @Param("examinee_guest_id") Long examinee_guest_id);
+
+        @Query(value = "Select COALESCE(MAX(examinee_answer_id) + 1, 1) from test_examinee_answer", nativeQuery = true)
+        public Long getExamineeAnswerTableMaxID();              
 }

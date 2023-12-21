@@ -47,6 +47,7 @@ import com.blissstock.mappingSite.entity.UserAccount;
 import com.blissstock.mappingSite.entity.TestExaminee;
 import com.blissstock.mappingSite.entity.UserInfo;
 import com.blissstock.mappingSite.enums.UserRole;
+import com.blissstock.mappingSite.model.FileInfo;
 import com.blissstock.mappingSite.model.TestExamineeWithMarkedCountModel;
 import com.blissstock.mappingSite.repository.GuestUserRepository;
 import com.blissstock.mappingSite.repository.JoinCourseUserRepository;
@@ -57,6 +58,7 @@ import com.blissstock.mappingSite.repository.TestExamineeRepository;
 import com.blissstock.mappingSite.repository.UserAccountRepository;
 import com.blissstock.mappingSite.repository.UserInfoRepository;
 import com.blissstock.mappingSite.service.MailService;
+import com.blissstock.mappingSite.service.StorageService;
 import com.blissstock.mappingSite.service.UserSessionService;
 import com.google.gson.Gson;
 
@@ -72,9 +74,6 @@ public class TestExamineeController {
 
         @Autowired
         UserSessionService userSessionService;
-
-        @Autowired
-        TestExamineeRepository testStudentRepository;
 
         @Autowired
         TestExamineeAnswerRepository testStudentAnswerRepository;
@@ -108,6 +107,9 @@ public class TestExamineeController {
 
         @Autowired
         MailService mailService;
+
+        @Autowired
+        StorageService storageService;
 
         // @Valid
         // @GetMapping(value = { "/teacher/exam/{test_id}/examinee",
@@ -1420,7 +1422,7 @@ public class TestExamineeController {
                                         "TestExaminee",
                                         name,
                                         test_id);
-                        testStudents = testStudentRepository.getExamineeByTest(test_id);
+                        testStudents = testExamineeRepository.getExamineeByTest(test_id);
                         logger.info("Operation Retrieve Table {} by query : findByNameandTestId {},{} | Success",
                                         "TestExaminee",
                                         name,
@@ -1429,7 +1431,7 @@ public class TestExamineeController {
                         logger.info("Initiate to Operation Retrieve Table {} by query :findByNameandTestId{}{}",
                                         "TestExaminee",
                                         name, test_id);
-                        testStudents = testStudentRepository.findByNameandTestId(name, test_id);
+                        testStudents = testExamineeRepository.findByNameandTestId(name, test_id);
                         logger.info("Operation Retrieve Table {} by query :findByNameandTestId{}{}Result List : {} Success",
                                         "TestExaminee", name, test_id, testStudents.toString());
                 }
@@ -1528,14 +1530,20 @@ public class TestExamineeController {
                                                 .getCountStudentAnswerListByTestAndStudent(
                                                                 test_id,
                                                                 TestExaminee.getUserInfo().getUid());
+
+                                try {
+                                        
+                                
                                 if (answerCount == 0) {
+                                        FileInfo profilePic = storageService.loadProfileAsFileInfo(TestExaminee.getUserInfo());
                                         TestExamineeWithMarkedCountModel testStudentWithMarkedCountModel = new TestExamineeWithMarkedCountModel(
                                                         TestExaminee.getId(), TestExaminee.getTest(),
                                                         TestExaminee.getUserInfo(),
                                                         total_free_questions,
-                                                        0);
+                                                        0, profilePic);
                                         testStudentList.add(testStudentWithMarkedCountModel);
                                 } else {
+                                        FileInfo profilePic = storageService.loadProfileAsFileInfo(TestExaminee.getUserInfo());
                                         int uncheck_free_questions = testExamineeAnswerRepository
                                                         .getUnCheckAnswerCountByTestAndStudent(
                                                                         test_id,
@@ -1544,11 +1552,15 @@ public class TestExamineeController {
                                                         TestExaminee.getId(), TestExaminee.getTest(),
                                                         TestExaminee.getUserInfo(),
                                                         total_free_questions,
-                                                        total_free_questions - uncheck_free_questions);
+                                                        total_free_questions - uncheck_free_questions, profilePic);
                                         if (uncheck_free_questions == 0) {
                                                 checked_students++;
                                         }
                                         testStudentList.add(testStudentWithMarkedCountModel);
+                                }
+                                } catch (Exception e) {
+                                        e.printStackTrace();
+                                        logger.info("unable to get profile {}", TestExaminee.getUserInfo());
                                 }
                         }
 
@@ -1670,13 +1682,14 @@ public class TestExamineeController {
                         List<JoinCourseUser> enrolledList = joinCourseUserRepository
                                         .findByStudentByCourseID(course.getCourseId());
                         for (JoinCourseUser student : enrolledList) {
-                                TestExaminee checkStudent = testStudentRepository.getStudentByID(
+                                TestExaminee checkStudent = testExamineeRepository.getStudentByID(
                                                 student.getUserInfo().getUid(),
                                                 test_id);
                                 if (checkStudent == null) {
-                                        TestExaminee TestExaminee = new TestExaminee(null, test, student.getUserInfo(),
+                                        Long testExamineeMaxid = testExamineeRepository.getExamineeTableMaxID();
+                                        TestExaminee TestExaminee = new TestExaminee(testExamineeMaxid, test, student.getUserInfo(),
                                                         null, null);
-                                        testStudentRepository.save(TestExaminee);
+                                        testExamineeRepository.save(TestExaminee);
                                 }
                         }
                 }
@@ -1702,7 +1715,7 @@ public class TestExamineeController {
                 Test test = testRepository.getTestByID(test_id);
                 UserInfo user = userInfoRepository.findStudentById(student_id);
                 if (test.getExam_status().equals("Exam Created") || test.getExam_status().equals("Questions Created")) {
-                        TestExaminee existingStudent = testStudentRepository.getStudentByID(student_id, test_id);
+                        TestExaminee existingStudent = testExamineeRepository.getStudentByID(student_id, test_id);
                         if (existingStudent == null) {
                                 logger.info("Initiate to Operation Retrieve Table {} by query :findByNameandTestId{}{}",
                                                 "TestExaminee",
@@ -1711,7 +1724,7 @@ public class TestExamineeController {
                                                 testid,
                                                 "student_id", student_id);
                                 TestExaminee TestExaminee = new TestExaminee(null, test, user, null, null);
-                                testStudentRepository.save(TestExaminee);
+                                testExamineeRepository.save(TestExaminee);
                                 logger.info("Operation Retrieve Table {} by query :findByNameandTestId{}{}Result List : {} Success",
                                                 "TestExaminee", student_id, test_id, TestExaminee.toString());
                                 logger.info("Operation Update Table {} Data {} By {} = {} Success", "TestExaminee",
@@ -1763,32 +1776,65 @@ public class TestExamineeController {
                                                                 password_update_date_time,
                                                                 null, null);
                                                 guestUserRepository.save(newGuestUser);
+
+                                                new Thread(new Runnable() {
+                                                        public void run() {
+                                                                try {
+                                                                        mailService.SendGuestOneTimePassword(
+                                                                                        newGuestUser,
+                                                                                        one_time_password);
+                                                                        logger.info("One-time-password (OTP) sent to mail={} | Success",
+                                                                                        email);
+                                                                } catch (Exception e) {
+                                                                        logger.info(e.getLocalizedMessage());
+                                                                }
+                                                        }
+                                                }).start();
+
+                                                if (checkExaminee == null) {
+                                                        TestExaminee testExaminee = new TestExaminee(null, test, null,
+                                                                        newGuestUser, null);
+                                                        testExamineeRepository.save(testExaminee);
+
+                                                }
+
                                         } else {
                                                 guestUser.setOne_time_password(one_time_passwordEncoded);
                                                 guestUserRepository.save(guestUser);
-                                        }
-                                        if (checkExaminee == null) {
-                                                TestExaminee testExaminee = new TestExaminee(null, test, null,
-                                                                guestUser, null);
-                                                testExamineeRepository.save(testExaminee);
-                                        } else {
-                                                GuestUser existingGuestUser = guestUserRepository
-                                                                .getGuestUserbyEmail(email);
-                                                existingGuestUser.setOne_time_password(one_time_passwordEncoded);
-                                                guestUserRepository.save(existingGuestUser);
-                                        }
-                                        new Thread(new Runnable() {
-                                                public void run() {
-                                                        try {
-                                                                mailService.SendGuestOneTimePassword(guestUser,
-                                                                                one_time_password);
-                                                                logger.info("One-time-password (OTP) sent to mail={} | Success",
-                                                                                email);
-                                                        } catch (Exception e) {
-                                                                logger.info(e.getLocalizedMessage());
+
+                                                new Thread(new Runnable() {
+                                                        public void run() {
+                                                                try {
+                                                                        mailService.SendGuestOneTimePassword(guestUser,
+                                                                                        one_time_password);
+                                                                        logger.info("One-time-password (OTP) sent to mail={} | Success",
+                                                                                        email);
+                                                                } catch (Exception e) {
+                                                                        logger.info(e.getLocalizedMessage());
+                                                                }
                                                         }
+                                                }).start();
+
+                                                if (checkExaminee == null) {
+                                                        TestExaminee testExaminee = new TestExaminee(null, test, null,
+                                                                        guestUser, null);
+                                                        testExamineeRepository.save(testExaminee);
+
                                                 }
-                                        }).start();
+                                        }
+
+                                        // new Thread(new Runnable() {
+                                        // public void run() {
+                                        // try {
+                                        // mailService.SendGuestOneTimePassword(guestUser,
+                                        // one_time_password);
+                                        // logger.info("One-time-password (OTP) sent to mail={} | Success",
+                                        // email);
+                                        // } catch (Exception e) {
+                                        // logger.info(e.getLocalizedMessage());
+                                        // }
+                                        // }
+                                        // }).start();
                                 }
                         } catch (Exception e) {
                                 logger.error(e.getLocalizedMessage());
@@ -1992,7 +2038,8 @@ public class TestExamineeController {
                                 // Check if guest user is already added to exam or not
 
                                 if (guestUser == null) {
-                                        GuestUser newGuestUser = new GuestUser(null, name, email, phone_number,
+                                        Long maxGuestID = guestUserRepository.getGuestableMaxID();
+                                        GuestUser newGuestUser = new GuestUser(maxGuestID, name, email, phone_number,
                                                         one_time_passwordEncoded,
                                                         password_update_date_time,
                                                         null, null);
@@ -2003,8 +2050,9 @@ public class TestExamineeController {
                                         guestUserRepository.save(existingGuestUser);
                                 }
                                 if (checkExaminee == null) {
+                                        Long maxTestExamineeID = testExamineeRepository.getExamineeTableMaxID();
                                         GuestUser newGuestUser = guestUserRepository.findByMail(email);
-                                        TestExaminee testExaminee = new TestExaminee(null, test, null, newGuestUser,
+                                        TestExaminee testExaminee = new TestExaminee(maxTestExamineeID, test, null, newGuestUser,
                                                         null);
                                         testExamineeRepository.save(testExaminee);
                                 }
@@ -2127,7 +2175,8 @@ public class TestExamineeController {
                                         }
                                 }).start();
                         } else {
-                                testExaminee = new TestExaminee(null, test, null, checkGuestByEmail, null);
+                                Long maxTestExamineeID = testExamineeRepository.getExamineeTableMaxID();
+                                testExaminee = new TestExaminee(maxTestExamineeID, test, null, checkGuestByEmail, null);
                                 testExamineeRepository.save(testExaminee);
                                 new Thread(new Runnable() {
                                         public void run() {

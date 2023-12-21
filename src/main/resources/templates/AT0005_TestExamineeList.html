@@ -95,7 +95,7 @@
                     <div class="card border-0 shadow-sm">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-start">
-                                <img th:src="@{/images/profile.png}" alt="" class="img-fluid rounded-circle"
+                                <img th:src="@{${test_examinee.profilePic.url}}" alt="" class="img-fluid rounded-circle"
                                     style="width: 50px; height: 50px" />
 
                                 <!-- delete button for student examinee -->
@@ -1055,11 +1055,11 @@
                 $(".total_guests_found").text(totalGuests);
             });
 
-          /*  $("#submit-single-guest").click(function (event) {
+            $("#submit-single-guest").click(function (event) {
                 // Prevent the default form submission behavior
                 event.preventDefault();
                 submitData();
-            });*/
+            });
 
             $("#update-single-guest").click(function (event) {
                 // Prevent the default form submission behavior

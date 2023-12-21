@@ -16,7 +16,8 @@ public interface TestExamineeRepository extends JpaRepository<TestExaminee, Long
     public List<TestExaminee> findByNameandTestId(@Param("userName") String userName, @Param("test_id") Long test_id);
 
     @Query(value = "select test_examinee.* from guest, test_examinee where test_examinee.test_id = :test_id and test_examinee.examinee_guest_id = guest.guest_id and lower(name) like :guestName%", nativeQuery = true)
-    public List<TestExaminee> findByGuestNameandTestId(@Param("guestName") String guestName, @Param("test_id") Long test_id);
+    public List<TestExaminee> findByGuestNameandTestId(@Param("guestName") String guestName,
+            @Param("test_id") Long test_id);
 
     @Query(value = "Select * from test_examinee where examinee_student_id = :id and test_id = :test_id limit 1", nativeQuery = true)
     public TestExaminee getStudentByID(@Param("id") Long id, @Param("test_id") Long test_id);
@@ -36,5 +37,8 @@ public interface TestExamineeRepository extends JpaRepository<TestExaminee, Long
 
     @Query(value = "Select * from test_examinee where test_id = :test_id and examinee_guest_id = :guest_id limit 1", nativeQuery = true)
     public TestExaminee findByTestIdAndGuestId(@Param("test_id") Long test_id, @Param("guest_id") Long guest_id);
+
+    @Query(value = "Select COALESCE(MAX(test_examinee_id) + 1, 1) from test_examinee", nativeQuery = true)
+    public Long getExamineeTableMaxID();
 
 }
